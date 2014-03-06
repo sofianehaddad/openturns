@@ -1,0 +1,76 @@
+//                                               -*- C++ -*-
+/**
+ *  @file  IntegrationAlgorithmImplementation.hxx
+ *  @brief This class allows to compute integrals of a function over an interval
+ *
+ *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  @author schueller
+ *  @date   2012-04-18 17:56:46 +0200 (Wed, 18 Apr 2012)
+ */
+#ifndef OPENTURNS_INTEGRATIONALGORITHMIMPLEMENTATION_HXX
+#define OPENTURNS_INTEGRATIONALGORITHMIMPLEMENTATION_HXX
+
+#include "PersistentObject.hxx"
+#include "NumericalMathFunction.hxx"
+#include "Interval.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class IntegrationAlgorithmImplementation
+ */
+
+class IntegrationAlgorithmImplementation
+  : public PersistentObject
+{
+
+  CLASSNAME;
+
+public:
+
+  /** Default constructor without parameters */
+  explicit IntegrationAlgorithmImplementation(const String & name = DefaultName);
+
+  /** Virtual copy constructor */
+  virtual IntegrationAlgorithmImplementation * clone() const;
+
+  /** Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
+   * is an n-D interval
+   */
+  virtual NumericalScalar integrate(const NumericalMathFunction & function,
+                                    const Interval & interval) const;
+
+#ifndef SWIG
+  virtual NumericalScalar integrate(const NumericalMathFunction & function,
+                                    const Interval & interval,
+                                    NumericalScalar & error) const;
+#endif
+
+  virtual NumericalScalar integrate(const NumericalMathFunction & function,
+                                    const Interval & interval,
+                                    NumericalPoint & error) const;
+  /** String converter */
+  virtual String __repr__() const;
+
+  /** String converter */
+  virtual String __str__(const String & offset = "") const;
+
+} ; /* class IntegrationAlgorithmImplementation */
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_INTEGRATIONALGORITHMIMPLEMENTATION_HXX */

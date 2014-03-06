@@ -1,0 +1,1315 @@
+* [1.3] 2014-03-07  Julien Schueller <schueller(:AT:)phimeca(:DOT:)com>
+      
+    Improved the description of marginal distributions extracted from a ComposedDistribution. It fixes ticket #643.
+    Added the Skellam class. It is the distribution of the difference between two independent Poisson distributions.
+    Added the SkellamFactory class.
+    Applied Barbier's patch to speed-up the creation of 1D elliptical distributions.
+    Moved the RegularGrid class from Base/Stat into Base/Geom. Made it inherit from the Mesh class.
+    Added the getVerticesNumber(), getSimplicesNumber() and getClosestVertexIndex() methods to the Mesh class.
+    Added missing files in the two previous commits.
+    Renamed the getClosestVertexIndex() method into getNearestVertexIndex() in the Mesh class.
+    Added an efficient implementation of the getNearestVertexIndex() method to the RegularGrid class.
+    Renamed the computeSpectralDensity() method into an evaluation operator for all the spectral models.
+    Renamed the computeCovariance() method into an evaluation operator for all the covariance models.
+    Changed the return type of the build() method of the CovarianceModelFactory class to avoid memory leak.
+    Renamed the discretizeCovariance() method into discretize() for all the covariance models.
+    Added the ability to evaluate a covariance model on points of any dimension.
+    Added the ability to discretize a covariance model on any mesh.
+    Removed the build() method based on TimeSeries in the NonStationaryCovarianceModelFactory class as it is not mathematically defined.
+    Removed debugging traces.
+    Fixed various bugs related to the propagation of coefficients into the EV3 embedded library.
+    Changed the default initialization of the PiecewiseHermiteEvaluationImplementation class.
+    Added the LogGamma() and Log1p() functions of complex argument to the SpecFunc class.
+    Parallelized some methods of the Mesh class.
+    Started the work on the Field class.
+    Added the computeRawMomentPerComponent() method to the NumericalSample class.
+    Improved the stability of the getRealization() method of the InverseNormal class.
+    Added an analytic computation of the getStandardMoment() method of the InverseNormal class.
+    Added the method of moments estimator for the InverseNormal class to the InverseNormalFactory class. The algorithm is selected using a key in the ResourceMap.
+    Added the MeixnerD distribution (to prevent name conflict with the Meixner polynomials).
+    Added the MeixnerDFactory class based on moments.
+    Added the getStandardRepresentative() and the getStandardMoment() methods to the Histogram class.
+    Changed the way the drawPDF() method of the Histogram class represents the underlying Drawable.
+    Added a specific implementation of the getSkewness() and getKurtosis() methods of the GeneralizedPareto class.
+    Fixed a minor precision trouble in a test.
+    Changed the default parameters for the Combinations, KPermutations and Tuples classes.
+    Added the DiLog() and Log1MExp() methods to the SpecFunc class.
+    Added the setDefaultColors() method to the Graph class.
+    Renamed the getErrorHistory() into drawErrorHistory() in the NearestPointAlgorithmImplementationResult class.
+    Fixed a bug in the computation of the Kendall tau when one of the components is constant in the NumericalSample class.
+    Added exceptions to many methods in the Matrix class.
+    Added a new constructor to the SimulationSensitivityAnalysis class.
+    Forced the saving of the description when exporting a NumericalSample to a csv file.
+    Added the computeLinearCorrelation() method as an alias to the computePearsonCorrelation() method of the NumericalSample class.
+    Added two in-place division operators to the NumericalSample class.
+    Applied Dubourg's patch to the MarginalTransformationEvaluation class to perform simplifications in the Normal/LogNormal case.
+    Added the getSpearmanCorrelation() and getKendallTau() methods to the AliMikhailHaqCopula, ClaytonCopula, ComposedCopula, FarlieGumbelMorgensternCopula, FrankCopula, GumbelCopula, IndependentCopula, MinCopula, NormalCopula, CopulaImplementation, Distribution, DistributionImplementation
+    Added the computeSurvivalFunction() method to the ComposedDistribution, IndependentCopula, KernelMixture, MinCopula, Mixture, NormalCopula, ContinuousDistribution, CopulaImplementation, Distribution, EllipticalDistribution and DistributionImplementation classes.
+    Implemented the getSupport() method of the KPermutationsDistribution class.
+    Added the computeComplementaryCDF() method to the Laplace class.
+    Renamed the MeixnerD and MeixnerDFactory classes into MeixnerDistribution and MeixnerDistributionFactory classes.
+    Added the getShapeMatrix() method to the NormalCopula, Copula, Distribution and DistributionImplementation classes.
+    Added the getLinearCorrelation() and getPearsonCorrelation() aliases to the getCorrelation() method in the Distribution and DistributionImplementation classes.
+    Modified the rank() method of the NumericalSample class to take into account ties.
+    Modified the sortAccordingToAComponent() method of the NumericalSample class to take into account the changes in the rank() method.
+    Added the IntegrationAlgorithm to compute the integral of a function over an interval.
+    Added the GaussKronrod class that allows the adaptive integration of 1D scalar functions.
+    Fixed a minor accuracy issue in tests.
+    Added a generic implementation of the transform() method of the FFTImplementation class for scalar arguments.
+    Modified the GaussKronrod class in order to benefit from possible parallelism in the evaluations of the function.
+    Added the __str__() method to the LinearNumericalMathEvaluationImplementation and LinearNumericalMathGradientImplementation classes.
+    Modified the gradient() method of the MarginalTransformationGradient class and the hessian() method of the MarginalTransformationHessian class in order to benefit from possible analytical simplifications.
+    Modified the getIsoProbabilistic() and getInverseIsoProbabilistic() methods of the ComposedDistribution class in order to detect the elliptical distribution and elliptical copula special cases.
+    Made a minor improvement of the computeCDF() method of the InverseNormal class.
+    Fixed a bug in the getParametersCollection() method of the KernelMixture class. It closes ticket #661.
+    Switched to the GaussKronrod integration method in the DistributionImplementation class.
+    Modified the drawPDF() and drawCDF() methods of the DistributionImplementation class to benefit from parallelism.
+    Removed useless generic implementation of the computeConditionalCDF() method in the ContinuousDistribution class.
+    Do not allow to instantiate static RandomGenerator class. distcheck ok.
+    Updated README
+    Fixed typo in ComposedNumericalMathFunction leading to a false warning. distcheck ok.
+    Fixed Poisson test depending on rot.
+    Added url to doc from start menu.
+    Fixed R optional packages detection with cmake < 2.8.8. distcheck ok.
+    Fixed TBB include path detection. distcheck ok.
+    Deprecated wrappers framework data. distcheck ok.
+    Use cmake toolchain file. distcheck ok.
+    Pass some more env variables to ctest processes to handle external dependencies. distcheck ok.
+    Fixed path separator wrt previous commit. distcheck ok.
+    Fixed hardcoded thread lib.
+    Fixed missing header.
+    Workaround for cmake bug #0014358. distcheck ok.
+    Missing GPL text.
+    Added thread include dir. distcheck ok.
+    Simplified linking. distcheck ok.
+    Added header to include windows redefinitions.
+    Missing file in previous commit
+    Workaround for cmake bug #0013449. distcheck ok.
+    Fixed mistake in previous commit.
+    Require bison>=2.4 because of the %code directive introduced to support bison 2.7, moreover bison and flex are required for csv support. distcheck ok.
+    Fixed #646
+    Added test case for #646.
+    Fixed #647
+    Added test case for #647.
+    Set mingw link flags globally. distcheck ok.
+    Missing modification in previous commit. distcheck ok.
+    Fixed python flags in previous commit.
+    Useless undef in Log test. distcheck ok.
+    Fixed map conversion. distcheck ok.
+    Fixed version comparison in cmake macros. distcheck ok.
+    Do not use scipy >= 0.9 methods rv_continuous.interval|mean|std. distcheck ok.
+    Strip dlls correctly. distcheck ok.
+    Fixed #648
+    Allow to reuse figure/axes from matplotlib viewer. distcheck ok.
+    Fixed warning at uninstall
+    glibc 2.18 does not define __malloc_ptr_t anymore. distcheck ok.
+    Fixed #652
+    Fixed possible segfault in SensitivityAnalysis. distcheck ok.
+    Reordered libraries. distcheck ok.
+    Prevent from using a correlated prior as it would require standard space transformation in order to make component-wise walks. distcheck ok.
+    Fixed module install for python-only modules.
+    Added BUILD_SHARED_LIBS option. distcheck ok
+    Fixed #657. distcheck ok.
+    Reverted r3277 as prior is not evaluated marginal by marginal.
+    Check that the MCMC initial state gives a positive likelihood. distcheck ok.
+    Fixed calibration strategy initialization bug. distcheck ok.
+    Improved numerical stability of InverseNormal cdf, eg when lambda/mu becomes > 354 ; ot.InverseNormal(355.,1.).computeCDF([1.]) -> nan. distcheck ok.
+    Reverted r3288: conflicts lebrun r3290
+    Removed cmake symlinks for mingw. Removed distcc instructions. distcheck ok.
+    Use of CRT_fp8 depends on CMAKE_SIZEOF_VOID_P.
+    Copy dlls before make check. distcheck ok.
+    Fixed dll copy.
+    Preserve history state in the marginal function.
+    Added NumericalSample::_repr_html_
+    Removed useless compiler check
+    Added OpenMP compilation option for future improvements. distcheck ok.
+    Created CRT_fp8 lib. distcheck ok.
+    Fixed win32 R path configuration wrt spaces.
+    Set version number 1.3dev
+    Do not embbed lapack & muparser sources. distcheck ok.
+    Speed up some tests wrt mingw.
+    Switch to mingw64. distcheck ok.
+    Fixed python detection. distcheck ok.
+    Update CRT_fp8.c for mingw64 crt3
+    Fixed compilation bug with mingw64
+    Fixed warnings
+    Removed empty files
+    Updated changelog.
+    Removed useless toolchain files.
+    Fixed bug introduced in r3315. distcheck ok.
+    Fixed muParser detection. distcheck ok.
+    Link external muParser & LAPACK statically.
+    Added more detailed versions of the integrad() method to the GaussKronrod and IntegrationAlgorithm classes.
+    Added the GaussKronrodRule class.
+    Added an optimization for regularly discretized locations to the PiecewiseHermiteEvaluationImplementation and PiecewiseLinearEvaluationImplementation classes. lib/srcAdded the streamToVTKFormat() method to the Mesh class.
+    Added a new constructor to the Cloud, Curve and Polygon classes.
+    Removed the call to the ResourceMap in many different places in order to increase the performance and to allow for parallelism.
+    Improved the implementation of the FiledImplementation and Field classes.
+    Added a new simplification rule to the MarginalTransformationEvaluation for the case where the input and output distributions are linked by an affine transformation.
+    Fixed several missing calls to the computeRange() method in the different copula classes.
+    Added the description of the sample as the description of the created distribution to all the distribution factories.
+    Added the computeCharacteristicFunction() method to the Arcsine class.
+    Improved the accuracy of the computeCDF() method of the Exponential class.
+    Added a generic method to interpolate the PDF and CDF to the continuous 1D distributions to the DistributionImplementation class and used this facility into the Mixture and KernelMixture classes.
+    Improved the getParametersCollection() method of the KernelMixture class.
+    Improved the compactSupport() method of the UserDefined class.
+    Added the interpolateCDF() method to the ContinuousDistribution class.
+    Added the interpolatePDFCDF() method to the DistributionImplementation class.
+    Added the computeSpearmanCorrelation() and computeKendallTau() methods to all the multivariate distributions.
+    Added generic methods to compute the covariance and the shifted moments of the continuous and discrete distributions to the DistributionImplementation class.
+    Propagated the use of potential parallel evaluations of the computeDDF(), computePDF() and computeCDF() methods in many places, which greatly improves the performance of many algorithms.
+    Moved several classes from the Base/Stat folder into the Base/Common folder.
+    Fixed the use of deprecated methods in several places.
+    Reverted file moves of the previous commit in order to ease the release process.
+    Improved the simplification rules in the MarginalTransformation/MarginalTransformationEvaluation class.
+    Improved the computeCharacteristicFunction() function of the Arcsine distribution.
+    Added the getParameters() and parametersGradient() methods to the AggregatedNumericalMathEvaluationImplementation class. It fixes ticket #664.
+    Made the clone() method of the ApproximationAlgorithmImplementation class no more pure virtual.
+    Added the save/load mechanism to the FittingAlgorithmImplementation class, which is no more an abstract class.
+    Made the ComparisonOperatorImplementation class no more abstract.
+    Fixed a bug in the use of unsigned int in the CenteredFiniteDifferenceHessian class.
+    Made the FiniteDifferenceGradient and FiniteDifferenceGradient classes no more abstract.
+    Made the FiniteDifferenceStepImplementation class no more abstract.
+    Added the missing clone() method to the Basis class.
+    Made the BasisSequenceFactoryImplementation class no more abstract.
+    Improved the robustness of the LAR class.
+    Added the save/load mechanism to the ODESolverImplementation class.
+    Simplified the Field class.
+    Added the getTimeGrid() method to the FieldImplementation class for 1D fields.
+    Fixed a bug in the exportToCSVFile() method of the NumericalSampleImplementation class. It fixes ticket #669.
+    Removed dead code in the NumericalSampleImplementation class.
+    Made the computeKendallTau() method parallel wrt the dimension in the NumericalSampleImplementation class.
+    Added the save/load mechanism to the EnumerateFunctionImplementation class.
+    Added the save/load mechanism to the Simulation class.
+    Added the missing clone() method to the InverseNatafEllipticalDistributionEvaluation, InverseNatafEllipticalDistributionGradient, InverseNatafEllipticalDistributionHessian, NatafEllipticalDistributionEvaluation, NatafEllipticalDistributionGradient, NatafEllipticalDistributionHessian classes.
+    Allowed for non-continuous prior distributions in the MCMC class.
+    Fixed a possible loss of accuracy and division by zero in the AliMikhailHaqCopulaFactory class.
+    Fixed a bug due to an uninitialized attribute in the ComposedCopula class.
+    Added a partially parallel implementation of the getSample() method of the ComposedDistribution class.
+    Fixed a bug in the description of parameters in the getParametersCollection() method of the ComposedDistribution class.
+    Added the hasEllipticalCopula(), isContinuous(), isDiscrete() and isIntegral() methods to the ComposedDistribution class.
+    Improved the range computation in the FisherSnedecor class.
+    Fixed a possible division by zero in the computeScalarQuantile() method of the FisherSnedecor class.
+    Added the isDiscrete() method to the Mixture class.
+    Added a partially parallel implementation of the getSample() method of the NormalCopula class.
+    Fixed a bug in the use of signed/unsigned integers in the Skellam class.
+    Fixed a bug in the getRealization() method in case of discrete underlying distribution in the TruncatedDistribution class.
+    Added the isDiscrete() method to the TruncatedDistribution class. It fixes ticket #670.
+    Improved the getSample() method of the Uniform class.
+    Improved the setPairCollection() method of the UserDefined class.
+    Made the computeQuantile() method over a grid of values parallel in the DistributionImplementation class.
+    Fixed a bug in the getParametersNumber() method in the case of repeated parameters in the DistributionImplementation class.
+    Added missing files.
+    Fixed ticket #675.
+    Added a new evaluation operator to the DynamicalFunction class.
+    Propagated the use of the Field class into all the stochastic processes related classes.
+    Improved the isRegular() method of the Mesh class.
+    Added a constructor based on a Mesh to the RegularGrid class.
+    Added many data accessors to the Field class.
+    Improved the Field and FieldImplementation classes.
+    Added the stack() method to the NumericalSample class.
+    Added the inplace addition and soustraction of two NumericalSample with same size and dimension.
+    Reworked completely the ProcesSample class.
+    Removed the TimeSeriesImplementation class.
+    Added the isBlank() method to the Description class.
+    Added the getMeshDimension() method to the Process class, which implements now random fields.
+    Fixed a bug in the add() method of the TimeSeries class when the object is initialy empty.
+    Fixed a bug in the default trend in the TemporalNormalProcess class when the underlying mesh is of dimension greater than one.
+    Added some verbosity to the TemporalNormalProcess class.
+    Creation of a parser for text file. distcheck ok
+    Replace call of wrapper by using analytical formula in tests. distcheck ok.
+    Create the RandomGeneratorState class and allow to save and load a RandomGeneratorState. distcheck ok.
+    Add accessors to the RandomGeneratorState class. distcheck ok.
+    MERGE: svn merge -r3326:3333 https://.../trunk
+    Allow the use of a sample as operator() method argument of the AnalyticalNumericalMathEvaluationImplementation class. distcheck ok.
+    Correction of CMakeLists and SimulationSensitivityAnalysis_std test. distcheck ok.
+    Change state_ attribute name by buffer_ in RandomGeneratorState class. distcheck ok.
+    Add some comments in initialize method of AnalyticalNumericalMathEvaluationImplementation class. distcheck ok.
+    Introducing KrigingAlgorithm. distcheck ok.
+    Added some more basis factories.
+    Added some covariance models.
+    Added 2-d test.
+    Added likelihood optimization. distcheck ok.
+    Fixed Kriging tests. distcheck ok.
+    Fixed multi-output evaluation.
+    Added regularization parameter.
+    Added QuadraticNumericalMathFunction.
+    Missing file in previous commit
+    Added covariance gradient.
+    Missing files.
+    Added KrigingGradietn class.
+    Added python tests. distcheck ok.
+    Added resourcemap keys for covariance models. distcheck ok.
+    Fixed display bug in SymmetricMatrix & SymmetricTensor. distcheck ok.
+    Reverted r3360.
+    QuadraticNumericalMathEvaluationImplementation::__str__, LinearNumericalMathGradientImplementation::__str__: we should not mix __str__ and __repr__ calls.
+    Allowe more digits in Kriging test. distcheck ok.
+    Added KrigingAlgorithm::getOptimizer.
+    Tweak regularization parameter. distcheck ok.
+    Error in previous commit. distcheck ok.
+    Use iterative regularization.
+    Fixed bug in iterative regularization.
+    Dont use decimal logarithm.
+    Round first eval.
+    Use matrix evaluation
+    Fixed covariance model gradient.
+    Enabled kriging gradient.
+    Fixed Kriging tests not passing with squeeze version of lapack through the use of assert tests functions. distcheck ok.
+    Added TriangularMatrix
+    Use TriangularMatrix where needed.
+    Optimize log likelihood.
+    Added missing fortran string size arguments. distcheck ok.
+    Fixed Kriging test for MinGW. distcheck ok.
+    Added conversion test for TriangularMatrix
+
+    Linux build ok.
+    MinGW build ok.
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../schueller (3328:3393)
+
+    Do not use deprecated LOCATION property. distcheck ok.
+    Removed OPENTURNS_INSTALL_PATH to always honor CMAKE_INSTALL_PREFIX. distcheck ok
+    Applied patch for #677. distcheck ok.
+    Propagate UINT64 macro into modules. distcheck ok.
+    BoxCoxFactory test should not draw
+    Some test depend on bc.
+    Fixed #674: python nmf dont force cache
+    Reverted r3255
+    Reverted r3256
+
+    Linux build ok.
+    MinGW build ok.
+    distcheck ok.
+
+
+    Fixed a problem in DistFunc. Fixed some warnings. distcheck ok.
+
+    Reindent code
+
+    Let cmake use default 644 permissions on non-executable files.
+
+    Set version number 1.3rc1
+
+    Fixed #672
+
+    Typo in previous commit
+
+    Updated changelog
+
+    Limited python output precision.
+
+    Fixed Typo
+
+    Update packages.
+
+    Fixed lapack md5sum.
+
+    Reverted r3358.
+
+    Removed debug trace in win32 script.
+
+    Reverted changes in swig interface at r3332 causing build failures on rhel.
+
+    Fixed unowned dir in rpm package.
+
+    Temporarily disable muparser2 features. distcheck ok.
+
+    bump soname to 0.4
+
+    Fixed unused var warning.
+
+    Fixed typo
+
+    Reverted 3424-3426
+
+    MERGE: trunk> svn merge --reintegrate https://.../rc (3421:3444)
+
+    Fixed a minor bug in the LogNormalFactory class. Thanks Sofiane for reporting the bug.
+    Fixed the reference output of the test of the LogNormalFactory class.
+    Implemented the scaling procedure suggested by Sofiane in the TruncatedNormalFactory class. It closes ticket #645.
+    Re-enable bulk mode.
+    Applied Barbier's patch for #506.
+    Applied 3424-3426
+    Fixed typo
+    updated changelog
+    Fixed typo in deb package
+    Fixed an error in previous commit regarding bulk mode.
+    Minor optim in NMEI: do not copy empty NPs.
+    Use deb version 1.3~rc1-1 instead of 1.2.99~1.3rc1-1. distcheck ok.
+    Fixed missing dependencies dlls
+    Fixed type error in Analytical derivates.
+    Disable bulk mode. distcheck ok.
+    Added new high order integration rules to the GaussKronrodRule class.
+    Modified the HyperbolicAnisotropicEnumerateFunction class to allow parameters greater than 1.
+    Removed the specific implementation of the computeScalarQuantile() method from the NonCentralStudent class.
+    Missing bugfix entry in changelog.
+    openturns-module: reinstall module; show error log on failure
+    Fixed a minor bug in the GaussKronrodRule class.
+    Fixed conflict in conf files. distcheck ok.
+
+    Linux build ok.
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../rc (3449:3484)
+
+    Removed deprecated method Distribution::computeCDF(x, tail). distcheck ok.
+    Fixed warnings
+    Re-enable bulk mode. distcheck ok.
+    Revert r3451. distcheck ok.
+    Fixed #681: add binary operators for NumericalSample:  + - (translation) and * / (scaling)
+    Updated KrigingAlgorithm. Now supports covariance models with parameters number greater or equal to 1.
+    Applied J. Schueller's patch to not use log-parameters, this will be needed by some models.
+    Minor changes in previous commit
+    Updated rpm package: no rhel lapack-devel, enabled tests, no suse python-base, no mdk, no gs, O0 x86 cflags.
+    openturns-module: do not delete tempdir on failure.
+    coupling_tools: applied #640 patch
+    Commented GaussKronrod unused validation graph in test. distcheck ok.
+    Do not set name of NumericalSample when created by binary operators +-*/.
+    Added tests for NumericalSample operators. distcheck ok.
+    Removed the embedded CDFLIB library for licensing incompatibility.
+    Switched to the Faddeeva package (MIT license) for the implementation of the faddeeva, dawso and erf-related special functions.
+    Added the implementation of the incomplete beta and incomplete gamma functions and related variants.
+    Made a minor improvement in the KrigingAlgorithm for the case of 1D output functions.
+    Added a new integration-based implementation of the pNonCentralStudent() method of the DistFunc class. Not yet activated.
+    Improved the stability of the Gamma class for large shape parameter.
+    Fixed a packaging trouble with the Faddeeva package.
+    Added a bound on the iterations of some algorithms related to the incomplete beta and gamma functions.
+    Added a bound on the iterations of some algorithms in the SpecFunc and DistFunc classes.
+    Fixed return value of DistFunc::pBeta
+    Fixed a typo in the DistFunc class.
+    Fixed t_DistFunc_beta failure on Linux x86.
+    This problem is caused by extended precision on Linux x86.
+    The following block is executed within a loop:
+      const NumericalScalar betaMiddle(RegularizedIncompleteBeta(a, b, middle, tail));
+      if ((betaMiddle < x) == (betaLower < x))
+        {
+          lower = middle;
+          betaLower = betaMiddle;
+        }
+      else
+        {
+          upper = middle;
+          betaUpper = betaMiddle;
+        }
+    On x86, betaMiddle was written into a floating-point register, thus condition
+    (betaMiddle < x) was computed with extended precision.  When the first branch
+    is executed, betaMiddle is stored in a variable.  At the next iteration, it
+    may happen that (betaLower < x) has a different value than (betaMiddle < x)
+    had here, because standard precision applies then; and algorithm goes havoc.
+    A solution is to declare betaMiddle volatile, to make sure it is stored in a
+    variable.  Another solution, chosen here, is to store and reuse this condition
+    to avoid this inconsistency.
+    Fixed a numerical precision issue in a test.
+    Set the same precision as in the C++ test so that this test does not fail on x86.
+    Removed duplicate poutre_arguments script
+    Updated changelog.
+    Rebased debian package.
+    MinGW: add zlib, parallel checks by default
+    Set version number 1.3rc2. distcheck ok.
+    Fixed wrapper test.
+    NEWS for rc2
+    Mentioned kriging & fields. distcheck ok.
+    Added the message from the author of KolmogorovSmirnovDist.c that allows OpenTURNS to use his work to the COPYING.KolmogorovSmirnovDist file.
+    Added keys to the ResourceMap to manage the precision of algorithms and the number of iterations.
+    Propagated Denis Barbier's correction of the BetaFunctions to the GammaFunctions.
+    Removed the file wrappers/AnalyticalFunctionCompiler/COPYING
+    Updated Changelog
+    Rename SpecFunc-MaximumIterations resource name into SpecFunc-MaximumIteration to be consistent with other *-MaximumIteration names.
+    Also rename SpecFunc::MaximumIterations member into SpecFunc::MaximumIteration.
+    Remove lib/COPYING.MuParser and lib/COPYING.lapack, those dependencies are now external.
+    No cmakelists in utils.
+    Removed deprecated module site-loading code. distcheck ok
+    Fixed muparser & lapack ref in cmakelists.
+    Fixed sys import
+    Fixed another missing import
+
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../rc (3489:3586)
+
+    Removed methods which were deprecated in 1.2. distcheck ok.
+    updated changelog
+    Improved the accuracy of the pStudent() and qStudent() methods of the DistFunc class.
+    Remove unused local variables, spotted by cppcheck.
+    Use END_NAMESPACE_OPENTURNS instead of right brace.
+    Revert r3378; currently compilation of code using OT may fail if OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64 is not defined whereas it is needed.
+    Make sure that all source files using macros from OTconfig.hxx do include this file.
+    The following commands are used to detect missing #include lines; size_t and malloc
+    macros have not been taken into account.
+      for d in $(grep '#\(cmake\)\?define' lib/include/OTconfig.h.in |\
+                  sed -e 's,^#cmakedefine ,,' -e 's,#define  *\([^ (]*\)[ (].*,\1,'); \
+      do \
+        for f in $(grep -rlw $d lib/src lib/include ); \
+        do \
+          grep -q OTconfig.h $f ${f%cxx}hxx ${f%cxx}h 2>/dev/null || echo $d $f; \
+        done; \
+      done
+    Fix build failure with Intel compiler on Linux
+    .../lib/src/Base/Stat/dsfmt.cxx(59): error: expression must have a constant value
+        r ^= a ^ lshift_byte<dsfmt<M>::A>(a);
+                            ^
+              detected during:
+                instantiation of "void tutils::detail::<unnamed>::twist<M>(tutils::uint64v2_t &, tutils::uint64v2_t &, const tutils::uint64v2_t &, const tutils::uint64v2_t &) [with M=607]" at line 194
+                instantiation of "void tutils::detail::dsfmt<MEXP>::gen_rand_all() [with MEXP=607]" at line 59 of ".../lib/src/Base/Stat/dsfmt.h"
+    Add #include "OTconfig.hxx" to 3 files which had been forgotten in r3494.
+    Fix OTconfig.hxx to always include OTconfig.h.  distcheck ok.
+    Do not install these header files, they are used only to compile OT
+    Improve encapsulation of libxml2.
+    Developers can now use OT header files without having to
+    specify location of libxml2 header files.
+    Make other minor changes so that header files are self-contained:
+      $ make install
+      $ cd <install-prefix>/include/openturns
+      $ for f in *.h*; do g++ -c -I. $f -o /dev/null 2>/dev/null || echo $f; done
+    The only problematic header files are Python* and XMLToolbox.hxx,
+    the latter needs libxml2 header files.  But XMLToolbox.hxx is no more
+    included by other header files, thus only people who write code to deal
+    with XML files have to detect libxml2 header files and set -I flag
+    accordingly.
+    Fix usage of macros in installed header files.
+    When compiling with CMake programs linking against OpenTURNS,
+    one has to simply write:
+      find_package(OpenTURNS REQUIRED)
+      include(${OPENTURNS_USE_FILE})
+    in CMakeLists.txt, and CMake will automatically set compiler
+    flags.
+    This caused problems when compiling without CMake, because
+    some macros may not be defined as they should.
+    In r3493 and r3497, we ensured that all macros are set
+    in OTconfig.h, and that header files using those macros do
+    include OTconfig.h.  But there is still one problem, those
+    macros have generic names and are very likely to be redefined,
+    which may cause lots of compiler warnings.
+    This commit avoids this situation by:
+    * adding an OPENTURNS_ prefix to macros used in header files
+    * defining only the minimum required macros in OTconfig.h
+    There are now two OTconfig.h files, first one is used when
+    building, and the new one is installed and used when
+    compiling against OpenTURNS.  The latter contains only
+    macros which are required by those header files:
+      OPENTURNS_HAVE_LIBXML2
+      OPENTURNS_HAVE_MALLOC_H
+      OPENTURNS_HAVE_PTHREAD_H
+      OPENTURNS_HAVE_TBB
+      OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+      PACKAGE_NAME
+      PACKAGE_VERSION
+    The last two macros should probably be renamed too.
+    Added the poissinv package from Mike Giles to compute Poisson quantiles. Not yet activated as the validation process has not yet been done.
+    Made a minor cleanup of BetaFunctions and GammaFunctions.
+    Implemented a parallel version of the evaluation operator based on a sample in the KrigingEvaluation class.
+    Fixed a bug in the initial guess of the quantile in the Poisson class.
+    Changed the values returned by qNormal() in the DistFunc class in order to insure the continuity of the quantile function at 0 and 1.
+    Added the drawQuantile() method to the DistributionImplementation class for the 1D and 2D cases.
+    Removed the CUDA dependence in poissinv.h from Mike Giles, which is now the default implementation for the qPoisson() method of the DistFunc class. It is both more accurate and more efficient than the previous implementation, which is now implemented as the qPoissonAlt() method.
+    Fixed Pairs labels. R bullet=>dot marker.
+    Fixed #686: allow default constructor of SklarCopula, ~SklarCopula(Uniform()).
+    Fixed #685
+    updated changelog
+    Added test for changes at r3504
+    Removed useless cast. distcheck ok.
+    Fixed #687
+    Updated changelog
+    doxygen: new mainpage title. removed Func & Wrapper modules. distcheck ok
+    Separated the Student related functions from the main DistFunc body.
+    Added a new implementation of the computeCDF() method dedicated to the case of large degree of freedom in the StudentFunctions set of functions. 
+    Used the last version of the poissinv dependency.
+    Added the isCopula() method to all the distributions. It is now possible to define a copula using the PythonDistribution class.
+    Fixed bug in Pairs. Various MingGW enhancements. distcheck ok.
+    Fixed missing include.
+    Fixed #688: problem in exp & abs diff. distcheck ok.
+    Fixed circular fonctions nans. distcheck ok.
+    Removed TestCompositionLeft wrapper.
+    Fixed a bug in ev3.
+    Removed TestCompositionRight. distcheck ok.
+    Fixed analytical functions test. distcheck ok.
+    Fixed other bugs in the analytical expressions.
+    Fixed coeff not kept during division/product simplifications. Cleanup. distcheck ok.
+    Fixed another issue in the simplification pass. distcheck ok.
+    Added missing parameters constructors for kriging correlation functions. distcheck ok.
+    Started the C++ reimplementation of Algo. 708 for the incomplete beta function.
+    Added the IGamma1pm1() and LogGamma1p() methods to the SpecFunc class.
+    Added new special cases and a Cornish Fisher expansion based method to the StudentFunctions set of functions.
+    Fixed a serialization bug in AnalyticalResult.
+    Removed useless casts.
+    Proper use of explicit keyword. Fixes a bug in NumericalSampleImplementation.
+    Forgot some explicit keywords.
+    Removed useless Thread classes.
+    Removed the now useless IncompleteBetaP and IncompleteBetaQ functions in BetaFunctions.
+    Implemented in C++ the SLATEC algorithm for the RegularizedIncompleteBeta method, still not active.
+    Added the boost implementation of the RegularizedIncompleteBeta function, used by default if boost is available.
+    Added the boost implementation of the RegularizedIncompleteBetaInverse function, used by default if boost is available.
+    Added the boost implementation of the RegularizedIncompleteGamma function, used by default if boost is available.
+    Added the boost implementation of the RegularizedIncompleteGammaInverse function, used by default if boost is available.
+    Added the C++ implementation of the RegularizedIncompleteGamma function as proposed by Temme et al, used if boost is not available.
+    Fixed a bug in the RegularizedIncompleteGammaInverse function when the bracketing fails.
+    Improved the accuracy of the LnBeta() method of the SpecFunc class.
+    Added the GammaCorrection() method to the SpecFunc class.
+    Improved the computeCDF() method of all the distributions with bounded or half-bounded support.
+    Removed deprecated methods in the DistFunc class.
+    Fixed a minor bug in the NonCentralChiSquare class.
+    Improved the knowledge-based simplification algorithm in the RandomMixture class.
+    Added the boost implementation of the StudentCDF function, used by default if boost is available.
+    Added the boost implementation of the StudentQuantile function, used by default if boost is available.
+    Improved the StudentRealization function.
+    Added the boost implementation of the NonCentralStudentCDF function, used by default if boost is available.
+    Added the boost implementation of the NonCentralStudentQuantile function, used by default if boost is available.
+    Improved the NonCentralStudentRealization function.
+    Fixed several bugs in ev3.
+    Fixed several bugs in the computation of the RegularizedIncompleteGamma function.
+    Do not compile ev3's tree.cxx. No need to link boost headers only libraries.
+    Deprecated norm2->normSquare because of norm1, normalize2->normalizeSquare for consistency.
+    Fixed a bug in the new simplification rule in the RandomMixture class.
+    Added the missing drawQuantile() methods to the Distribution class.
+    Mentioned NP::norm* in API changes
+    Removed empty MeixnerD test. Updated maintenance scripts.
+    Changed the default constructor of the Mesh class. Now, the default is to contains a unique vertex.
+    Fixed a bug in the RegularGrid class.
+    Changed the output of the getFuture() method from Field to TimeSeries as it is defined only in this context.
+    Changed the output of the build() method of the ARMA factories in order to fix memory leak.
+    Added the getFuture() method to the CompositeProcess class.
+    Changed the Field argument of the constructors of the DickeyFullerTest class to a TimeSeries type.
+    Factorized several methods of the Mesh and Interval classes into the Domain class.
+    Added the missing implementation of the drawMarginal() method to the FieldImplementation class.
+    Added the missing implementation of the getContinuousRealization() method to some process-related classes.
+    Fixed a bug in the FunctionalBasisProcess class to allow for a multivariate dimension construction.
+    Updated authors list
+    Fixed empty kissfft license.
+    Removed unused test files.
+    Removed debug trace
+    Removed duplicate AUTHORS and COPYING files.
+    Removed unused README/NEWS/Changelog/TODO files.
+    Fixed a handful of automatic differentiation bugs in ev3.
+    Update copyright date. distcheck ok.
+    Fixed return of FieldImplementation::drawMarginal.
+    Enable boost temporarily. distcheck ok.
+    Reverted previous commit.
+    Cleaned debug output.
+    Set exe flag on some python tests
+    Fixed ev3 bug in simplifyrecursive.
+    Use boost>=1.48 by default. distcheck ok.
+    Set version number 1.3rc3
+    Fixed ev3 build. distcheck ok.
+    Fixed several bugs in the invincgam() function of the C++ translation of the incomplete gamma package of Gil, Segura and Temme.
+    Removed obsolete functions in GammaFunctions.
+    Removed debug trace in GammaFunctions.
+    Fixed an invalid access in incgam.
+    Fixed leaks in ev3.
+    Removed deprecated method OpenTURNSPythonFunction.f distcheck ok
+    Changed the default constructor of the Cloud, Curve and Polygon class.
+    Added a parallel implementation of the operator() method of the KrigingEvaluation class.
+    Modified the drawProbabilityConvergence() method of the Simulation class. Now, the resulting graph contains 3 drawables even if no confidence bound has been computed. It closes ticket #691.
+    Set some Analytical methods virtual to enhance API.
+    Removed useless wrappers TestStrongMaximumTestDimensionX. distcheck ok.
+    Fixed a minor bug in the NonCentralChiSquare class.
+    Improved the performance of the KrigingAlgorithm class for the multivariate output case.
+    Added the KrigingResult class. Ongoing work.
+    Made default KrigingAlgorithm constructor public. distcheck ok.
+    Updated README.
+    Allow to compile without muParser.
+    Boost from 1.46 is fine too. distcheck ok.
+    Do not use analytical classes in Restricted test.
+    Fixed initialization in incgam
+    Missing explicit keywords.
+    Set version number 1.3. distcheck ok.
+    Removed license text from CMakeLists as they're usually very short. distcheck ok.
+    Fixed discrepancies between ResourceMap & openturns.conf.
+    Fixed more missing explicit.
+    Reindented source code. distcheck ok.
+    Try to get the full traceback when rethrowing the python exception. distcheck ok.
+    Simplify previous code.
+    Print the inner traceback to stderr.
+    Renamed conflicting header presence macros. distcheck ok.
+    Removed duplicated malloc_h detection macro.
+    Made the quantile function continuous for the Gamma and Student distributions in the DistFunc class.
+
+    distcheck ok.
+
+
+    Updated NEWS & README.
+
+    MERGE: trunk> svn merge --reintegrate https://.../lebrun (3225:3296)
+
+    Improved the description of marginal distributions extracted from a ComposedDistribution. It fixes ticket #643.
+    Added the Skellam class. It is the distribution of the difference between two independent Poisson distributions.
+    Added the SkellamFactory class.
+    Applied Barbier's patch to speed-up the creation of 1D elliptical distributions.
+    Moved the RegularGrid class from Base/Stat into Base/Geom. Made it inherit from the Mesh class.
+    Added the getVerticesNumber(), getSimplicesNumber() and getClosestVertexIndex() methods to the Mesh class.
+    Added missing files in the two previous commits.
+    Renamed the getClosestVertexIndex() method into getNearestVertexIndex() in the Mesh class.
+    Added an efficient implementation of the getNearestVertexIndex() method to the RegularGrid class.
+    Renamed the computeSpectralDensity() method into an evaluation operator for all the spectral models.
+    Renamed the computeCovariance() method into an evaluation operator for all the covariance models.
+    Changed the return type of the build() method of the CovarianceModelFactory class to avoid memory leak.
+    Renamed the discretizeCovariance() method into discretize() for all the covariance models.
+    Added the ability to evaluate a covariance model on points of any dimension.
+    Added the ability to discretize a covariance model on any mesh.
+    Removed the build() method based on TimeSeries in the NonStationaryCovarianceModelFactory class as it is not mathematically defined.
+    Removed debugging traces.
+    Fixed various bugs related to the propagation of coefficients into the EV3 embedded library.
+    Changed the default initialization of the PiecewiseHermiteEvaluationImplementation class.
+    Added the LogGamma() and Log1p() functions of complex argument to the SpecFunc class.
+    Parallelized some methods of the Mesh class.
+    Started the work on the Field class.
+    Added the computeRawMomentPerComponent() method to the NumericalSample class.
+    Improved the stability of the getRealization() method of the InverseNormal class.
+    Added an analytic computation of the getStandardMoment() method of the InverseNormal class.
+    Added the method of moments estimator for the InverseNormal class to the InverseNormalFactory class. The algorithm is selected using a key in the ResourceMap.
+    Added the MeixnerD distribution (to prevent name conflict with the Meixner polynomials).
+    Added the MeixnerDFactory class based on moments.
+    Added the getStandardRepresentative() and the getStandardMoment() methods to the Histogram class.
+    Changed the way the drawPDF() method of the Histogram class represents the underlying Drawable.
+    Added a specific implementation of the getSkewness() and getKurtosis() methods of the GeneralizedPareto class.
+    Fixed a minor precision trouble in a test.
+    Changed the default parameters for the Combinations, KPermutations and Tuples classes.
+    Added the DiLog() and Log1MExp() methods to the SpecFunc class.
+    Added the setDefaultColors() method to the Graph class.
+    Renamed the getErrorHistory() into drawErrorHistory() in the NearestPointAlgorithmImplementationResult class.
+    Fixed a bug in the computation of the Kendall tau when one of the components is constant in the NumericalSample class.
+    Added exceptions to many methods in the Matrix class.
+    Added a new constructor to the SimulationSensitivityAnalysis class.
+    Forced the saving of the description when exporting a NumericalSample to a csv file.
+    Added the computeLinearCorrelation() method as an alias to the computePearsonCorrelation() method of the NumericalSample class.
+    Added two in-place division operators to the NumericalSample class.
+    Applied Dubourg's patch to the MarginalTransformationEvaluation class to perform simplifications in the Normal/LogNormal case.
+    Added the getSpearmanCorrelation() and getKendallTau() methods to the AliMikhailHaqCopula, ClaytonCopula, ComposedCopula, FarlieGumbelMorgensternCopula, FrankCopula, GumbelCopula, IndependentCopula, MinCopula, NormalCopula, CopulaImplementation, Distribution, DistributionImplementation
+    Added the computeSurvivalFunction() method to the ComposedDistribution, IndependentCopula, KernelMixture, MinCopula, Mixture, NormalCopula, ContinuousDistribution, CopulaImplementation, Distribution, EllipticalDistribution and DistributionImplementation classes.
+    Implemented the getSupport() method of the KPermutationsDistribution class.
+    Added the computeComplementaryCDF() method to the Laplace class.
+    Renamed the MeixnerD and MeixnerDFactory classes into MeixnerDistribution and MeixnerDistributionFactory classes.
+    Added the getShapeMatrix() method to the NormalCopula, Copula, Distribution and DistributionImplementation classes.
+    Added the getLinearCorrelation() and getPearsonCorrelation() aliases to the getCorrelation() method in the Distribution and DistributionImplementation classes.
+    Modified the rank() method of the NumericalSample class to take into account ties.
+    Modified the sortAccordingToAComponent() method of the NumericalSample class to take into account the changes in the rank() method.
+    Added the IntegrationAlgorithm to compute the integral of a function over an interval.
+    Added the GaussKronrod class that allows the adaptive integration of 1D scalar functions.
+    Fixed a minor accuracy issue in tests.
+    Added a generic implementation of the transform() method of the FFTImplementation class for scalar arguments.
+    Modified the GaussKronrod class in order to benefit from possible parallelism in the evaluations of the function.
+    Added the __str__() method to the LinearNumericalMathEvaluationImplementation and LinearNumericalMathGradientImplementation classes.
+    Modified the gradient() method of the MarginalTransformationGradient class and the hessian() method of the MarginalTransformationHessian class in order to benefit from possible analytical simplifications.
+    Modified the getIsoProbabilistic() and getInverseIsoProbabilistic() methods of the ComposedDistribution class in order to detect the elliptical distribution and elliptical copula special cases.
+    Made a minor improvement of the computeCDF() method of the InverseNormal class.
+    Fixed a bug in the getParametersCollection() method of the KernelMixture class. It closes ticket #661.
+    Switched to the GaussKronrod integration method in the DistributionImplementation class.
+    Modified the drawPDF() and drawCDF() methods of the DistributionImplementation class to benefit from parallelism.
+    Removed useless generic implementation of the computeConditionalCDF() method in the ContinuousDistribution class.
+
+    Linux/CMake build ok.
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../phimeca (3226:3304)
+
+    Do not allow to instantiate static RandomGenerator class. distcheck ok.
+    Updated README
+    Fixed typo in ComposedNumericalMathFunction leading to a false warning. distcheck ok.
+    Fixed Poisson test depending on rot.
+    Added url to doc from start menu.
+    Fixed R optional packages detection with cmake < 2.8.8. distcheck ok.
+    Fixed TBB include path detection. distcheck ok.
+    Deprecated wrappers framework data. distcheck ok.
+    Use cmake toolchain file. distcheck ok.
+    Pass some more env variables to ctest processes to handle external dependencies. distcheck ok.
+    Fixed path separator wrt previous commit. distcheck ok.
+    Fixed hardcoded thread lib.
+    Fixed missing header.
+    Workaround for cmake bug #0014358. distcheck ok.
+    Missing GPL text.
+    Added thread include dir. distcheck ok.
+    Simplified linking. distcheck ok.
+    Added header to include windows redefinitions.
+    Missing file in previous commit
+    Workaround for cmake bug #0013449. distcheck ok.
+    Fixed mistake in previous commit.
+    Require bison>=2.4 because of the %code directive introduced to support bison 2.7, moreover bison and flex are required for csv support. distcheck ok.
+    Fixed #646
+    Added test case for #646.
+    Fixed #647
+    Added test case for #647.
+    Set mingw link flags globally. distcheck ok.
+    Missing modification in previous commit. distcheck ok.
+    Fixed python flags in previous commit.
+    Useless undef in Log test. distcheck ok.
+    Fixed map conversion. distcheck ok.
+    Fixed version comparison in cmake macros. distcheck ok.
+    Do not use scipy >= 0.9 methods rv_continuous.interval|mean|std. distcheck ok.
+    Strip dlls correctly. distcheck ok.
+    Fixed #648
+    Allow to reuse figure/axes from matplotlib viewer. distcheck ok.
+    Fixed warning at uninstall
+    glibc 2.18 does not define __malloc_ptr_t anymore. distcheck ok.
+    Fixed #652
+    Fixed possible segfault in SensitivityAnalysis. distcheck ok.
+    Reordered libraries. distcheck ok.
+    Prevent from using a correlated prior as it would require standard space transformation in order to make component-wise walks. distcheck ok.
+    Fixed module install for python-only modules.
+    Added BUILD_SHARED_LIBS option. distcheck ok
+    Fixed #657. distcheck ok.
+    Reverted r3277 as prior is not evaluated marginal by marginal.
+    Check that the MCMC initial state gives a positive likelihood. distcheck ok.
+    Fixed calibration strategy initialization bug. distcheck ok.
+    Improved numerical stability of InverseNormal cdf, eg when lambda/mu becomes > 354 ; ot.InverseNormal(355.,1.).computeCDF([1.]) -> nan. distcheck ok.
+    Reverted r3288: conflicts lebrun r3290
+    Removed cmake symlinks for mingw. Removed distcc instructions. distcheck ok.
+    Use of CRT_fp8 depends on CMAKE_SIZEOF_VOID_P.
+    Copy dlls before make check. distcheck ok.
+    Fixed dll copy.
+    Preserve history state in the marginal function.
+    Added NumericalSample::_repr_html_
+    Removed useless compiler check
+    Added OpenMP compilation option for future improvements. distcheck ok.
+    Created CRT_fp8 lib. distcheck ok.
+    Fixed win32 R path configuration wrt spaces.
+
+    Linux build ok.
+    distcheck ok.
+
+
+    Set version number 1.3dev
+
+    Do not embbed lapack & muparser sources. distcheck ok.
+
+    Speed up some tests wrt mingw.
+
+    Switch to mingw64. distcheck ok.
+
+    Fixed python detection. distcheck ok.
+
+    Update CRT_fp8.c for mingw64 crt3
+
+    Fixed compilation bug with mingw64
+
+    Fixed warnings
+
+    Fixed warnings
+
+    Removed empty files
+
+    Updated changelog.
+
+    Removed useless toolchain files.
+
+    Fixed bug introduced in r3315. distcheck ok.
+
+    Fixed muParser detection. distcheck ok.
+
+    Link external muParser & LAPACK statically.
+
+    MERGE: trunk> svn merge --reintegrate https://.../lebrun (3323:3395)
+
+    MERGE: lebrun> svn merge -r3322:3325 https://.../trunk
+    Added more detailed versions of the integrad() method to the GaussKronrod and IntegrationAlgorithm classes.
+    Added the GaussKronrodRule class.
+    Added an optimization for regularly discretized locations to the PiecewiseHermiteEvaluationImplementation and PiecewiseLinearEvaluationImplementation classes. lib/srcAdded the streamToVTKFormat() method to the Mesh class.
+    Added a new constructor to the Cloud, Curve and Polygon classes.
+    Removed the call to the ResourceMap in many different places in order to increase the performance and to allow for parallelism.
+    Improved the implementation of the FiledImplementation and Field classes.
+    Added a new simplification rule to the MarginalTransformationEvaluation for the case where the input and output distributions are linked by an affine transformation.
+    Fixed several missing calls to the computeRange() method in the different copula classes.
+    Added the description of the sample as the description of the created distribution to all the distribution factories.
+    Added the computeCharacteristicFunction() method to the Arcsine class.
+    Improved the accuracy of the computeCDF() method of the Exponential class.
+    Added a generic method to interpolate the PDF and CDF to the continuous 1D distributions to the DistributionImplementation class and used this facility into the Mixture and KernelMixture classes.
+    Improved the getParametersCollection() method of the KernelMixture class.
+    Improved the compactSupport() method of the UserDefined class.
+    Added the interpolateCDF() method to the ContinuousDistribution class.
+    Added the interpolatePDFCDF() method to the DistributionImplementation class.
+    Added the computeSpearmanCorrelation() and computeKendallTau() methods to all the multivariate distributions.
+    Added generic methods to compute the covariance and the shifted moments of the continuous and discrete distributions to the DistributionImplementation class.
+    Propagated the use of potential parallel evaluations of the computeDDF(), computePDF() and computeCDF() methods in many places, which greatly improves the performance of many algorithms.
+    Moved several classes from the Base/Stat folder into the Base/Common folder.
+    Fixed the use of deprecated methods in several places.
+    Reverted file moves of the previous commit in order to ease the release process.
+    Improved the simplification rules in the MarginalTransformation/MarginalTransformationEvaluation class.
+    Improved the computeCharacteristicFunction() function of the Arcsine distribution.
+    Added the getParameters() and parametersGradient() methods to the AggregatedNumericalMathEvaluationImplementation class. It fixes ticket #664.
+    Made the clone() method of the ApproximationAlgorithmImplementation class no more pure virtual.
+    Added the save/load mechanism to the FittingAlgorithmImplementation class, which is no more an abstract class.
+    Made the ComparisonOperatorImplementation class no more abstract.
+    Fixed a bug in the use of unsigned int in the CenteredFiniteDifferenceHessian class.
+    Made the FiniteDifferenceGradient and FiniteDifferenceGradient classes no more abstract.
+    Made the FiniteDifferenceStepImplementation class no more abstract.
+    Added the missing clone() method to the Basis class.
+    Made the BasisSequenceFactoryImplementation class no more abstract.
+    Improved the robustness of the LAR class.
+    Added the save/load mechanism to the ODESolverImplementation class.
+    Simplified the Field class.
+    Added the getTimeGrid() method to the FieldImplementation class for 1D fields.
+    Fixed a bug in the exportToCSVFile() method of the NumericalSampleImplementation class. It fixes ticket #669.
+    Removed dead code in the NumericalSampleImplementation class.
+    Made the computeKendallTau() method parallel wrt the dimension in the NumericalSampleImplementation class.
+    Added the save/load mechanism to the EnumerateFunctionImplementation class.
+    Added the save/load mechanism to the Simulation class.
+    Added the missing clone() method to the InverseNatafEllipticalDistributionEvaluation, InverseNatafEllipticalDistributionGradient, InverseNatafEllipticalDistributionHessian, NatafEllipticalDistributionEvaluation, NatafEllipticalDistributionGradient, NatafEllipticalDistributionHessian classes.
+    Allowed for non-continuous prior distributions in the MCMC class.
+    Fixed a possible loss of accuracy and division by zero in the AliMikhailHaqCopulaFactory class.
+    Fixed a bug due to an uninitialized attribute in the ComposedCopula class.
+    Added a partially parallel implementation of the getSample() method of the ComposedDistribution class.
+    Fixed a bug in the description of parameters in the getParametersCollection() method of the ComposedDistribution class.
+    Added the hasEllipticalCopula(), isContinuous(), isDiscrete() and isIntegral() methods to the ComposedDistribution class.
+    Improved the range computation in the FisherSnedecor class.
+    Fixed a possible division by zero in the computeScalarQuantile() method of the FisherSnedecor class.
+    Added the isDiscrete() method to the Mixture class.
+    Added a partially parallel implementation of the getSample() method of the NormalCopula class.
+    Fixed a bug in the use of signed/unsigned integers in the Skellam class.
+    Fixed a bug in the getRealization() method in case of discrete underlying distribution in the TruncatedDistribution class.
+    Added the isDiscrete() method to the TruncatedDistribution class. It fixes ticket #670.
+    Improved the getSample() method of the Uniform class.
+    Improved the setPairCollection() method of the UserDefined class.
+    Made the computeQuantile() method over a grid of values parallel in the DistributionImplementation class.
+    Fixed a bug in the getParametersNumber() method in the case of repeated parameters in the DistributionImplementation class.
+    Added missing files.
+    Fixed ticket #675.
+    Added a new evaluation operator to the DynamicalFunction class.
+    Propagated the use of the Field class into all the stochastic processes related classes.
+    Improved the isRegular() method of the Mesh class.
+    Added a constructor based on a Mesh to the RegularGrid class.
+    Added many data accessors to the Field class.
+    Improved the Field and FieldImplementation classes.
+    Added the stack() method to the NumericalSample class.
+    Added the inplace addition and soustraction of two NumericalSample with same size and dimension.
+    Reworked completely the ProcesSample class.
+    Removed the TimeSeriesImplementation class.
+    Added the isBlank() method to the Description class.
+    Added the getMeshDimension() method to the Process class, which implements now random fields.
+    Fixed a bug in the add() method of the TimeSeries class when the object is initialy empty.
+    Fixed a bug in the default trend in the TemporalNormalProcess class when the underlying mesh is of dimension greater than one.
+    Added some verbosity to the TemporalNormalProcess class.
+
+    Linux build ok.
+    MinGW build ok.
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../ladier (3325:3386)
+
+    MERGE: svn merge -c3325 https://.../trunk
+    Creation of a parser for text file. distcheck ok
+    Replace call of wrapper by using analytical formula in tests. distcheck ok.
+    Create the RandomGeneratorState class and allow to save and load a RandomGeneratorState. distcheck ok.
+    Add accessors to the RandomGeneratorState class. distcheck ok.
+    MERGE: svn merge -r3326:3333 https://.../trunk
+    Allow the use of a sample as operator() method argument of the AnalyticalNumericalMathEvaluationImplementation class. distcheck ok.
+    Correction of CMakeLists and SimulationSensitivityAnalysis_std test. distcheck ok.
+    Change state_ attribute name by buffer_ in RandomGeneratorState class. distcheck ok.
+    Add some comments in initialize method of AnalyticalNumericalMathEvaluationImplementation class. distcheck ok.
+
+    Linux build ok.
+    MinGW build ok.
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../kriging (3330:3389)
+
+    Introducing KrigingAlgorithm. distcheck ok.
+    Added some more basis factories.
+    Added some covariance models.
+    Added 2-d test.
+    Added likelihood optimization. distcheck ok.
+    Fixed Kriging tests. distcheck ok.
+    Fixed multi-output evaluation.
+    Added regularization parameter.
+    Added QuadraticNumericalMathFunction.
+    Missing file in previous commit
+    Added covariance gradient.
+    Missing files.
+    Added KrigingGradietn class.
+    Added python tests. distcheck ok.
+    Added resourcemap keys for covariance models. distcheck ok.
+    Fixed display bug in SymmetricMatrix & SymmetricTensor. distcheck ok.
+    Reverted r3360.
+    QuadraticNumericalMathEvaluationImplementation::__str__, LinearNumericalMathGradientImplementation::__str__: we should not mix __str__ and __repr__ calls.
+    Allowe more digits in Kriging test. distcheck ok.
+    Added KrigingAlgorithm::getOptimizer.
+    Tweak regularization parameter. distcheck ok.
+    Error in previous commit. distcheck ok.
+    Use iterative regularization.
+    Fixed bug in iterative regularization.
+    Dont use decimal logarithm.
+    Round first eval.
+    Use matrix evaluation
+    Fixed covariance model gradient.
+    Enabled kriging gradient.
+    Fixed Kriging tests not passing with squeeze version of lapack through the use of assert tests functions. distcheck ok.
+    Added TriangularMatrix
+    Use TriangularMatrix where needed.
+    Optimize log likelihood.
+    Added missing fortran string size arguments. distcheck ok.
+    Fixed Kriging test for MinGW. distcheck ok.
+    Added conversion test for TriangularMatrix
+
+    Linux build ok.
+    MinGW build ok.
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../schueller (3328:3393)
+
+    Do not use deprecated LOCATION property. distcheck ok.
+    Removed OPENTURNS_INSTALL_PATH to always honor CMAKE_INSTALL_PREFIX. distcheck ok
+    Applied patch for #677. distcheck ok.
+    Propagate UINT64 macro into modules. distcheck ok.
+    BoxCoxFactory test should not draw
+    Some test depend on bc.
+    Fixed #674: python nmf dont force cache
+    Reverted r3255
+    Reverted r3256
+
+    Linux build ok.
+    MinGW build ok.
+    distcheck ok.
+
+
+    Fixed a problem in DistFunc. Fixed some warnings. distcheck ok.
+
+    Reindent code
+
+    Let cmake use default 644 permissions on non-executable files.
+
+    Set version number 1.3rc1
+
+    Fixed #672
+
+    Typo in previous commit
+
+    Updated changelog
+
+    Limited python output precision.
+
+    Fixed Typo
+
+    Update packages.
+
+    Fixed lapack md5sum.
+
+    Reverted r3358.
+
+    Removed debug trace in win32 script.
+
+    Reverted changes in swig interface at r3332 causing build failures on rhel.
+
+    Fixed unowned dir in rpm package.
+
+    Temporarily disable muparser2 features. distcheck ok.
+
+    bump soname to 0.4
+
+    Fixed unused var warning.
+
+    Fixed typo
+
+    Reverted 3424-3426
+
+    MERGE: trunk> svn merge --reintegrate https://.../rc (3421:3444)
+
+    Fixed a minor bug in the LogNormalFactory class. Thanks Sofiane for reporting the bug.
+    Fixed the reference output of the test of the LogNormalFactory class.
+    Implemented the scaling procedure suggested by Sofiane in the TruncatedNormalFactory class. It closes ticket #645.
+    Re-enable bulk mode.
+    Applied Barbier's patch for #506.
+    Applied 3424-3426
+    Fixed typo
+    updated changelog
+    Fixed typo in deb package
+    Fixed an error in previous commit regarding bulk mode.
+    Minor optim in NMEI: do not copy empty NPs.
+    Use deb version 1.3~rc1-1 instead of 1.2.99~1.3rc1-1. distcheck ok.
+    Fixed missing dependencies dlls
+    Fixed type error in Analytical derivates.
+    Disable bulk mode. distcheck ok.
+    Added new high order integration rules to the GaussKronrodRule class.
+    Modified the HyperbolicAnisotropicEnumerateFunction class to allow parameters greater than 1.
+    Removed the specific implementation of the computeScalarQuantile() method from the NonCentralStudent class.
+    Missing bugfix entry in changelog.
+    openturns-module: reinstall module; show error log on failure
+    Fixed a minor bug in the GaussKronrodRule class.
+    Fixed conflict in conf files. distcheck ok.
+
+    Linux build ok.
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../rc (3449:3484)
+
+    Removed deprecated method Distribution::computeCDF(x, tail). distcheck ok.
+    Fixed warnings
+    Re-enable bulk mode. distcheck ok.
+    Revert r3451. distcheck ok.
+    Fixed #681: add binary operators for NumericalSample:  + - (translation) and * / (scaling)
+    Updated KrigingAlgorithm. Now supports covariance models with parameters number greater or equal to 1.
+    Applied J. Schueller's patch to not use log-parameters, this will be needed by some models.
+    Minor changes in previous commit
+    Updated rpm package: no rhel lapack-devel, enabled tests, no suse python-base, no mdk, no gs, O0 x86 cflags.
+    openturns-module: do not delete tempdir on failure.
+    coupling_tools: applied #640 patch
+    Commented GaussKronrod unused validation graph in test. distcheck ok.
+    Do not set name of NumericalSample when created by binary operators +-*/.
+    Added tests for NumericalSample operators. distcheck ok.
+    Removed the embedded CDFLIB library for licensing incompatibility.
+    Switched to the Faddeeva package (MIT license) for the implementation of the faddeeva, dawso and erf-related special functions.
+    Added the implementation of the incomplete beta and incomplete gamma functions and related variants.
+    Made a minor improvement in the KrigingAlgorithm for the case of 1D output functions.
+    Added a new integration-based implementation of the pNonCentralStudent() method of the DistFunc class. Not yet activated.
+    Improved the stability of the Gamma class for large shape parameter.
+    Fixed a packaging trouble with the Faddeeva package.
+    Added a bound on the iterations of some algorithms related to the incomplete beta and gamma functions.
+    Added a bound on the iterations of some algorithms in the SpecFunc and DistFunc classes.
+    Fixed return value of DistFunc::pBeta
+    Fixed a typo in the DistFunc class.
+    Fixed t_DistFunc_beta failure on Linux x86.
+    This problem is caused by extended precision on Linux x86.
+    The following block is executed within a loop:
+      const NumericalScalar betaMiddle(RegularizedIncompleteBeta(a, b, middle, tail));
+      if ((betaMiddle < x) == (betaLower < x))
+        {
+          lower = middle;
+          betaLower = betaMiddle;
+        }
+      else
+        {
+          upper = middle;
+          betaUpper = betaMiddle;
+        }
+    On x86, betaMiddle was written into a floating-point register, thus condition
+    (betaMiddle < x) was computed with extended precision.  When the first branch
+    is executed, betaMiddle is stored in a variable.  At the next iteration, it
+    may happen that (betaLower < x) has a different value than (betaMiddle < x)
+    had here, because standard precision applies then; and algorithm goes havoc.
+    A solution is to declare betaMiddle volatile, to make sure it is stored in a
+    variable.  Another solution, chosen here, is to store and reuse this condition
+    to avoid this inconsistency.
+    Fixed a numerical precision issue in a test.
+    Set the same precision as in the C++ test so that this test does not fail on x86.
+    Removed duplicate poutre_arguments script
+    Updated changelog.
+    Rebased debian package.
+    MinGW: add zlib, parallel checks by default
+    Set version number 1.3rc2. distcheck ok.
+    Fixed wrapper test.
+    NEWS for rc2
+    Mentioned kriging & fields. distcheck ok.
+    Added the message from the author of KolmogorovSmirnovDist.c that allows OpenTURNS to use his work to the COPYING.KolmogorovSmirnovDist file.
+    Added keys to the ResourceMap to manage the precision of algorithms and the number of iterations.
+    Propagated Denis Barbier's correction of the BetaFunctions to the GammaFunctions.
+    Removed the file wrappers/AnalyticalFunctionCompiler/COPYING
+    Updated Changelog
+    Rename SpecFunc-MaximumIterations resource name into SpecFunc-MaximumIteration to be consistent with other *-MaximumIteration names.
+    Also rename SpecFunc::MaximumIterations member into SpecFunc::MaximumIteration.
+    Remove lib/COPYING.MuParser and lib/COPYING.lapack, those dependencies are now external.
+    No cmakelists in utils.
+    Removed deprecated module site-loading code. distcheck ok
+    Fixed muparser & lapack ref in cmakelists.
+    Fixed sys import
+    Fixed another missing import
+
+    distcheck ok.
+
+
+    MERGE: trunk> svn merge --reintegrate https://.../rc (3489:3586)
+
+    Removed methods which were deprecated in 1.2. distcheck ok.
+    updated changelog
+    Improved the accuracy of the pStudent() and qStudent() methods of the DistFunc class.
+    Remove unused local variables, spotted by cppcheck.
+    Use END_NAMESPACE_OPENTURNS instead of right brace.
+    Revert r3378; currently compilation of code using OT may fail if OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64 is not defined whereas it is needed.
+    Make sure that all source files using macros from OTconfig.hxx do include this file.
+    The following commands are used to detect missing #include lines; size_t and malloc
+    macros have not been taken into account.
+      for d in $(grep '#\(cmake\)\?define' lib/include/OTconfig.h.in |\
+                  sed -e 's,^#cmakedefine ,,' -e 's,#define  *\([^ (]*\)[ (].*,\1,'); \
+      do \
+        for f in $(grep -rlw $d lib/src lib/include ); \
+        do \
+          grep -q OTconfig.h $f ${f%cxx}hxx ${f%cxx}h 2>/dev/null || echo $d $f; \
+        done; \
+      done
+    Fix build failure with Intel compiler on Linux
+    .../lib/src/Base/Stat/dsfmt.cxx(59): error: expression must have a constant value
+        r ^= a ^ lshift_byte<dsfmt<M>::A>(a);
+                            ^
+              detected during:
+                instantiation of "void tutils::detail::<unnamed>::twist<M>(tutils::uint64v2_t &, tutils::uint64v2_t &, const tutils::uint64v2_t &, const tutils::uint64v2_t &) [with M=607]" at line 194
+                instantiation of "void tutils::detail::dsfmt<MEXP>::gen_rand_all() [with MEXP=607]" at line 59 of ".../lib/src/Base/Stat/dsfmt.h"
+    Add #include "OTconfig.hxx" to 3 files which had been forgotten in r3494.
+    Fix OTconfig.hxx to always include OTconfig.h.  distcheck ok.
+    Do not install these header files, they are used only to compile OT
+    Improve encapsulation of libxml2.
+    Developers can now use OT header files without having to
+    specify location of libxml2 header files.
+    Make other minor changes so that header files are self-contained:
+      $ make install
+      $ cd <install-prefix>/include/openturns
+      $ for f in *.h*; do g++ -c -I. $f -o /dev/null 2>/dev/null || echo $f; done
+    The only problematic header files are Python* and XMLToolbox.hxx,
+    the latter needs libxml2 header files.  But XMLToolbox.hxx is no more
+    included by other header files, thus only people who write code to deal
+    with XML files have to detect libxml2 header files and set -I flag
+    accordingly.
+    Fix usage of macros in installed header files.
+    When compiling with CMake programs linking against OpenTURNS,
+    one has to simply write:
+      find_package(OpenTURNS REQUIRED)
+      include(${OPENTURNS_USE_FILE})
+    in CMakeLists.txt, and CMake will automatically set compiler
+    flags.
+    This caused problems when compiling without CMake, because
+    some macros may not be defined as they should.
+    In r3493 and r3497, we ensured that all macros are set
+    in OTconfig.h, and that header files using those macros do
+    include OTconfig.h.  But there is still one problem, those
+    macros have generic names and are very likely to be redefined,
+    which may cause lots of compiler warnings.
+    This commit avoids this situation by:
+    * adding an OPENTURNS_ prefix to macros used in header files
+    * defining only the minimum required macros in OTconfig.h
+    There are now two OTconfig.h files, first one is used when
+    building, and the new one is installed and used when
+    compiling against OpenTURNS.  The latter contains only
+    macros which are required by those header files:
+      OPENTURNS_HAVE_LIBXML2
+      OPENTURNS_HAVE_MALLOC_H
+      OPENTURNS_HAVE_PTHREAD_H
+      OPENTURNS_HAVE_TBB
+      OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+      PACKAGE_NAME
+      PACKAGE_VERSION
+    The last two macros should probably be renamed too.
+    Added the poissinv package from Mike Giles to compute Poisson quantiles. Not yet activated as the validation process has not yet been done.
+    Made a minor cleanup of BetaFunctions and GammaFunctions.
+    Implemented a parallel version of the evaluation operator based on a sample in the KrigingEvaluation class.
+    Fixed a bug in the initial guess of the quantile in the Poisson class.
+    Changed the values returned by qNormal() in the DistFunc class in order to insure the continuity of the quantile function at 0 and 1.
+    Added the drawQuantile() method to the DistributionImplementation class for the 1D and 2D cases.
+    Removed the CUDA dependence in poissinv.h from Mike Giles, which is now the default implementation for the qPoisson() method of the DistFunc class. It is both more accurate and more efficient than the previous implementation, which is now implemented as the qPoissonAlt() method.
+    Fixed Pairs labels. R bullet=>dot marker.
+    Fixed #686: allow default constructor of SklarCopula, ~SklarCopula(Uniform()).
+    Fixed #685
+    updated changelog
+    Added test for changes at r3504
+    Removed useless cast. distcheck ok.
+    Fixed #687
+    Updated changelog
+    doxygen: new mainpage title. removed Func & Wrapper modules. distcheck ok
+    Separated the Student related functions from the main DistFunc body.
+    Added a new implementation of the computeCDF() method dedicated to the case of large degree of freedom in the StudentFunctions set of functions. 
+    Used the last version of the poissinv dependency.
+    Added the isCopula() method to all the distributions. It is now possible to define a copula using the PythonDistribution class.
+    Fixed bug in Pairs. Various MingGW enhancements. distcheck ok.
+    Fixed missing include.
+    Fixed #688: problem in exp & abs diff. distcheck ok.
+    Fixed circular fonctions nans. distcheck ok.
+    Removed TestCompositionLeft wrapper.
+    Fixed a bug in ev3.
+    Removed TestCompositionRight. distcheck ok.
+    Fixed analytical functions test. distcheck ok.
+    Fixed other bugs in the analytical expressions.
+    Fixed coeff not kept during division/product simplifications. Cleanup. distcheck ok.
+    Fixed another issue in the simplification pass. distcheck ok.
+    Added missing parameters constructors for kriging correlation functions. distcheck ok.
+    Started the C++ reimplementation of Algo. 708 for the incomplete beta function.
+    Added the IGamma1pm1() and LogGamma1p() methods to the SpecFunc class.
+    Added new special cases and a Cornish Fisher expansion based method to the StudentFunctions set of functions.
+    Fixed a serialization bug in AnalyticalResult.
+    Removed useless casts.
+    Proper use of explicit keyword. Fixes a bug in NumericalSampleImplementation.
+    Forgot some explicit keywords.
+    Removed useless Thread classes.
+    Removed the now useless IncompleteBetaP and IncompleteBetaQ functions in BetaFunctions.
+    Implemented in C++ the SLATEC algorithm for the RegularizedIncompleteBeta method, still not active.
+    Added the boost implementation of the RegularizedIncompleteBeta function, used by default if boost is available.
+    Added the boost implementation of the RegularizedIncompleteBetaInverse function, used by default if boost is available.
+    Added the boost implementation of the RegularizedIncompleteGamma function, used by default if boost is available.
+    Added the boost implementation of the RegularizedIncompleteGammaInverse function, used by default if boost is available.
+    Added the C++ implementation of the RegularizedIncompleteGamma function as proposed by Temme et al, used if boost is not available.
+    Fixed a bug in the RegularizedIncompleteGammaInverse function when the bracketing fails.
+    Improved the accuracy of the LnBeta() method of the SpecFunc class.
+    Added the GammaCorrection() method to the SpecFunc class.
+    Improved the computeCDF() method of all the distributions with bounded or half-bounded support.
+    Removed deprecated methods in the DistFunc class.
+    Fixed a minor bug in the NonCentralChiSquare class.
+    Improved the knowledge-based simplification algorithm in the RandomMixture class.
+    Added the boost implementation of the StudentCDF function, used by default if boost is available.
+    Added the boost implementation of the StudentQuantile function, used by default if boost is available.
+    Improved the StudentRealization function.
+    Added the boost implementation of the NonCentralStudentCDF function, used by default if boost is available.
+    Added the boost implementation of the NonCentralStudentQuantile function, used by default if boost is available.
+    Improved the NonCentralStudentRealization function.
+    Fixed several bugs in ev3.
+    Fixed several bugs in the computation of the RegularizedIncompleteGamma function.
+    Do not compile ev3's tree.cxx. No need to link boost headers only libraries.
+    Deprecated norm2->normSquare because of norm1, normalize2->normalizeSquare for consistency.
+    Fixed a bug in the new simplification rule in the RandomMixture class.
+    Added the missing drawQuantile() methods to the Distribution class.
+    Mentioned NP::norm* in API changes
+    Removed empty MeixnerD test. Updated maintenance scripts.
+    Changed the default constructor of the Mesh class. Now, the default is to contains a unique vertex.
+    Fixed a bug in the RegularGrid class.
+    Changed the output of the getFuture() method from Field to TimeSeries as it is defined only in this context.
+    Changed the output of the build() method of the ARMA factories in order to fix memory leak.
+    Added the getFuture() method to the CompositeProcess class.
+    Changed the Field argument of the constructors of the DickeyFullerTest class to a TimeSeries type.
+    Factorized several methods of the Mesh and Interval classes into the Domain class.
+    Added the missing implementation of the drawMarginal() method to the FieldImplementation class.
+    Added the missing implementation of the getContinuousRealization() method to some process-related classes.
+    Fixed a bug in the FunctionalBasisProcess class to allow for a multivariate dimension construction.
+    Updated authors list
+    Fixed empty kissfft license.
+    Removed unused test files.
+    Removed debug trace
+    Removed duplicate AUTHORS and COPYING files.
+    Removed unused README/NEWS/Changelog/TODO files.
+    Fixed a handful of automatic differentiation bugs in ev3.
+    Update copyright date. distcheck ok.
+    Fixed return of FieldImplementation::drawMarginal.
+    Enable boost temporarily. distcheck ok.
+    Reverted previous commit.
+    Cleaned debug output.
+    Set exe flag on some python tests
+    Fixed ev3 bug in simplifyrecursive.
+    Use boost>=1.48 by default. distcheck ok.
+    Set version number 1.3rc3
+    Fixed ev3 build. distcheck ok.
+    Fixed several bugs in the invincgam() function of the C++ translation of the incomplete gamma package of Gil, Segura and Temme.
+    Removed obsolete functions in GammaFunctions.
+    Removed debug trace in GammaFunctions.
+    Fixed an invalid access in incgam.
+    Fixed leaks in ev3.
+    Removed deprecated method OpenTURNSPythonFunction.f distcheck ok
+    Changed the default constructor of the Cloud, Curve and Polygon class.
+    Added a parallel implementation of the operator() method of the KrigingEvaluation class.
+    Modified the drawProbabilityConvergence() method of the Simulation class. Now, the resulting graph contains 3 drawables even if no confidence bound has been computed. It closes ticket #691.
+    Set some Analytical methods virtual to enhance API.
+    Removed useless wrappers TestStrongMaximumTestDimensionX. distcheck ok.
+    Fixed a minor bug in the NonCentralChiSquare class.
+    Improved the performance of the KrigingAlgorithm class for the multivariate output case.
+    Added the KrigingResult class. Ongoing work.
+    Made default KrigingAlgorithm constructor public. distcheck ok.
+    Updated README.
+    Allow to compile without muParser.
+    Boost from 1.46 is fine too. distcheck ok.
+    Do not use analytical classes in Restricted test.
+    Fixed initialization in incgam
+    Missing explicit keywords.
+    Set version number 1.3. distcheck ok.
+    Removed license text from CMakeLists as they're usually very short. distcheck ok.
+    Fixed discrepancies between ResourceMap & openturns.conf.
+    Fixed more missing explicit.
+    Reindented source code. distcheck ok.
+    Try to get the full traceback when rethrowing the python exception. distcheck ok.
+    Simplify previous code.
+    Print the inner traceback to stderr.
+    Renamed conflicting header presence macros. distcheck ok.
+    Removed duplicated malloc_h detection macro.
+    Made the quantile function continuous for the Gamma and Student distributions in the DistFunc class.
+
+    distcheck ok.
+
+
+    Updated NEWS & README.

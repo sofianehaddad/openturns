@@ -1,0 +1,134 @@
+testCases= [[class=Uniform name=Uniform dimension=1 a=-1 b=3,class=Uniform name=Uniform dimension=1 a=-1 b=3], [class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[-2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]], [class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0]]
+references= [Triangular(a = -2, m = 2, b = 6),Normal(mu = -1, sigma = 3),Gamma(k = 3, lambda = 1, gamma = 0)]
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=-2 m=2 b=6] constant=0
+Distribution  RandomMixture(Triangular(a = -2, m = 2, b = 6))
+Elliptical =  False
+Continuous =  True
+oneRealization= [2.5585]
+oneSample first= [4.06345]  last= [1.68661]
+mean= [2.01813]
+covariance= [[ 2.72012 ]]
+Point=  [0.5]
+ddf      = [0.0625]
+ddf (ref)= [0.0625]
+pdf      =0.156250
+pdf  (FD)=0.156250
+pdf (ref)=0.156250
+cdf      =0.195312
+cdf (ref)=0.195312
+characteristic function=0.382574 + 0.595823i
+log characteristic function=-0.345207 + 1.000000i
+quantile      = [4.73509]
+quantile (ref)= [4.73509]
+cdf(quantile)=0.950000
+mean      = [2]
+mean (ref)= [2]
+standard deviation      = [1.63299]
+standard deviation (ref)= [1.63299]
+skewness      = [0]
+skewness (ref)= [0]
+kurtosis      = [2.4]
+kurtosis (ref)= [2.4]
+covariance      = [[ 2.66667 ]]
+covariance (ref)= [[ 2.66667 ]]
+parameters= [[Triangular_a : -2, Triangular_m : 2, Triangular_b : 6]]
+Standard representative= RandomMixture(Triangular(a = -2, m = 2, b = 6))
+weights= [1]
+new weights= [2]
+blockMin= 5
+blockMax= 20
+maxSize= 65536
+alpha= 5.0
+beta= 8.5
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[-1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] constant=0
+Distribution  RandomMixture(Normal(mu = -1, sigma = 3))
+Elliptical =  False
+Continuous =  True
+oneRealization= [-3.87153]
+oneSample first= [-4.03363]  last= [0.331499]
+mean= [-1.0314]
+covariance= [[ 8.91043 ]]
+Point=  [0.5]
+ddf      = [-0.0195592]
+ddf (ref)= [-0.0195592]
+pdf      =0.117355
+pdf  (FD)=0.117355
+pdf (ref)=0.117355
+cdf      =0.691462
+cdf (ref)=0.691462
+characteristic function=0.284909 + -0.155647i
+log characteristic function=-1.125000 + -0.500000i
+quantile      = [3.93456]
+quantile (ref)= [3.93456]
+cdf(quantile)=0.950000
+mean      = [-1]
+mean (ref)= [-1]
+standard deviation      = [3]
+standard deviation (ref)= [3]
+skewness      = [0]
+skewness (ref)= [0]
+kurtosis      = [3]
+kurtosis (ref)= [3]
+covariance      = [[ 9 ]]
+covariance (ref)= [[ 9 ]]
+parameters= [[Normal_mean : -1, Normal_standard deviation : 3]]
+Standard representative= RandomMixture(Normal(mu = -1, sigma = 3))
+weights= [1]
+new weights= [2]
+blockMin= 5
+blockMax= 20
+maxSize= 65536
+alpha= 5.0
+beta= 8.5
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0] constant=0
+Distribution  RandomMixture(Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.665902]
+oneSample first= [5.24685]  last= [5.44861]
+mean= [2.9992]
+covariance= [[ 2.9295 ]]
+Point=  [0.5]
+ddf      = [0.227449]
+ddf (ref)= [0.227449]
+pdf      =0.075816
+pdf  (FD)=0.075816
+pdf (ref)=0.075816
+cdf      =0.014388
+cdf (ref)=0.014388
+characteristic function=0.128000 + 0.704000i
+log characteristic function=-0.334715 + 1.390943i
+quantile      = [6.29573]
+quantile (ref)= [6.29579]
+cdf(quantile)=0.950000
+mean      = [3]
+mean (ref)= [3]
+standard deviation      = [1.73205]
+standard deviation (ref)= [1.73205]
+skewness      = [1.1547]
+skewness (ref)= [1.1547]
+kurtosis      = [5]
+kurtosis (ref)= [5]
+covariance      = [[ 3 ]]
+covariance (ref)= [[ 3 ]]
+parameters= [[Exponential_lambda : 1, Exponential_gamma : 0, Exponential_lambda : 1, Exponential_gamma : 0, Exponential_lambda : 1, Exponential_gamma : 0]]
+Standard representative= RandomMixture(Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
+weights= [1,1,1]
+new weights= [2,2,2]
+blockMin= 5
+blockMax= 20
+maxSize= 65536
+alpha= 5.0
+beta= 8.5
+distribution= class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Gamma name=Gamma dimension=1 k=3 lambda=4 gamma=-2,class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[6] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[13.4629] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] constant=-0.75
+distribution= RandomMixture(-0.75 + Triangular(a = 2, m = 6, b = 10) + 1.5 * Exponential(lambda = 2, gamma = -3) - 2.5 * Triangular(a = 2, m = 6, b = 10) - 3.75 * Exponential(lambda = 2, gamma = -3) + 2.5 * Gamma(k = 3, lambda = 4, gamma = -2) + Normal(mu = 6, sigma = 13.4629))
+pdf( -44.290678 )=0.000311
+pdf( -34.726083 )=0.001834
+pdf( -25.161488 )=0.006936
+pdf( -15.596893 )=0.016849
+pdf( -6.032298 )=0.026283
+pdf( 3.532298 )=0.026313
+pdf( 13.096893 )=0.016889
+pdf( 22.661488 )=0.006940
+pdf( 32.226083 )=0.001821
+pdf( 41.790678 )=0.000305

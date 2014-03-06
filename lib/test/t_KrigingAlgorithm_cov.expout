@@ -1,0 +1,15 @@
+myDefautModel = class=SquaredExponential theta=0.1
+myModel = class=SquaredExponential theta=0.1
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00302755]
+dCov =class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=1 columns=1 sheets=2 values=[-0.00423858,0.00181653]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.00423855,0.00181654]
+myDefautModel = class=GeneralizedExponential theta=0.1 p=1
+myModel = class=GeneralizedExponential theta=0.1 p=1.5
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0423292]
+dCov =class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=1 columns=1 sheets=2 values=[-0.0200785,0.0200785]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0200785,0.0200786]
+myDefautModel = class=AbsoluteExponential theta=0.1
+myModel = class=AbsoluteExponential theta=0.1
+myModel(class=NumericalPoint name=Unnamed dimension=2 values=[4,-4], class=NumericalPoint name=Unnamed dimension=2 values=[-3,-1])=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.367879]
+dCov =class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=1 columns=1 sheets=2 values=[-0.0367879,0.0367879]
+dCov (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0367879,0.036788]

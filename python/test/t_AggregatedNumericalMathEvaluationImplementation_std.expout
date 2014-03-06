@@ -1,0 +1,49 @@
+evaluation= [NumericalMathFunction :
+  input  : [x0,x1,x2]
+  output : [y0]
+  evaluation :   x0^2+2*x1+3*x2^3
+  gradient   :   
+  | d(y0) / d(x0) = 2*x0 
+  | d(y0) / d(x1) = 2 
+  | d(y0) / d(x2) = 9*x2^2 
+
+  hessian    :   
+  |    d^2(y0) / d(x0)^2 = 2 
+  | d^2(y0) / d(x1)d(x0) = 0 
+  |    d^2(y0) / d(x1)^2 = 0 
+  | d^2(y0) / d(x2)d(x0) = 0 
+  | d^2(y0) / d(x2)d(x1) = 0 
+  |    d^2(y0) / d(x2)^2 = 18*x2 
+,NumericalMathFunction :
+  input  : [x0,x1,x2]
+  output : [z0,z1]
+  evaluation :   
+
+  | z0 = cos(x0*sin(x2+x1))
+  | z1 = exp(x1 - x0 * sin(x2))
+
+  gradient   :   
+  | d(z0) / d(x0) = (-((sin((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))) 
+  | d(z0) / d(x1) = (-((x0)*(cos((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))) 
+  | d(z0) / d(x2) = (-((x0)*(cos((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))) 
+  | d(z1) / d(x0) = (-((sin(x2))*(exp((x1)+((-((x0)*(sin(x2))))))))) 
+  | d(z1) / d(x1) = exp((x1)+((-((x0)*(sin(x2)))))) 
+  | d(z1) / d(x2) = (-((x0)*(cos(x2))*(exp((x1)+((-((x0)*(sin(x2))))))))) 
+
+  hessian    :   
+  |    d^2(z0) / d(x0)^2 = (-((sin((x2)+(x1)))*(cos((x0)*(sin((x2)+(x1)))))*(sin((x2)+(x1))))) 
+  | d^2(z0) / d(x1)d(x0) = ((-((cos((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))))+((-((x0)*(sin((x2)+(x1)))*(cos((x0)*(sin((x2)+(x1)))))*(cos((x2)+(x1)))))) 
+  |    d^2(z0) / d(x1)^2 = ((x0)*(sin((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))+((-((x0^2)*(cos((x2)+(x1)))*(cos((x0)*(sin((x2)+(x1)))))*(cos((x2)+(x1)))))) 
+  | d^2(z0) / d(x2)d(x0) = ((-((cos((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))))+((-((x0)*(sin((x2)+(x1)))*(cos((x0)*(sin((x2)+(x1)))))*(cos((x2)+(x1)))))) 
+  | d^2(z0) / d(x2)d(x1) = ((x0)*(sin((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))+((-((x0^2)*(cos((x2)+(x1)))*(cos((x0)*(sin((x2)+(x1)))))*(cos((x2)+(x1)))))) 
+  |    d^2(z0) / d(x2)^2 = ((x0)*(sin((x2)+(x1)))*(sin((x0)*(sin((x2)+(x1))))))+((-((x0^2)*(cos((x2)+(x1)))*(cos((x0)*(sin((x2)+(x1)))))*(cos((x2)+(x1)))))) 
+  |    d^2(z1) / d(x0)^2 = (sin(x2))*(exp((x1)+((-((x0)*(sin(x2)))))))*(sin(x2)) 
+  | d^2(z1) / d(x1)d(x0) = (-((sin(x2))*(exp((x1)+((-((x0)*(sin(x2))))))))) 
+  |    d^2(z1) / d(x1)^2 = exp((x1)+((-((x0)*(sin(x2)))))) 
+  | d^2(z1) / d(x2)d(x0) = ((-((cos(x2))*(exp((x1)+((-((x0)*(sin(x2))))))))))+((x0)*(sin(x2))*(exp((x1)+((-((x0)*(sin(x2)))))))*(cos(x2))) 
+  | d^2(z1) / d(x2)d(x1) = (-((x0)*(exp((x1)+((-((x0)*(sin(x2)))))))*(cos(x2)))) 
+  |    d^2(z1) / d(x2)^2 = ((x0)*(sin(x2))*(exp((x1)+((-((x0)*(sin(x2))))))))+((x0^2)*(cos(x2))*(exp((x1)+((-((x0)*(sin(x2)))))))*(cos(x2))) 
+]
+function 1 at [4.0, -4.0, 1.0] = [11]
+function 2 at [4.0, -4.0, 1.0] = [0.844867,0.000632466]
+evaluation at [4.0, -4.0, 1.0] = [11,0.844867,0.000632466]

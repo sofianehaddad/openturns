@@ -1,0 +1,144 @@
+//                                               -*- C++ -*-
+/**
+ *  @file  Field.hxx
+ *  @brief The class Field implements samples indexed by time
+ *
+ *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  @author schueller
+ *  @date   2012-07-16 15:59:45 +0200 (Mon, 16 Jul 2012)
+ */
+#ifndef OPENTURNS_FIELD_HXX
+#define OPENTURNS_FIELD_HXX
+
+#include "TypedInterfaceObject.hxx"
+#include "FieldImplementation.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class Field
+ */
+
+class Field
+  : public TypedInterfaceObject<FieldImplementation>
+{
+  CLASSNAME;
+
+public:
+
+  /**
+   * Default constructor
+   */
+  Field();
+
+  /** Constructor from a Mesh and a dimension */
+  Field(const Mesh & mesh,
+        const UnsignedLong dim);
+
+  /** Constructor from a Mesh and a sample */
+  Field(const Mesh & mesh,
+        const NumericalSample & values);
+
+  /** Constructor from implementation */
+  Field(const FieldImplementation & implementation);
+
+#ifndef SWIG
+  /** Constructor from implementation */
+  Field(const Implementation & implementation);
+
+  /** Individual value accessor */
+  NSI_point operator[](const UnsignedLong index);
+  NSI_const_point operator[](const UnsignedLong index) const;
+  NSI_point at(const UnsignedLong index);
+  NSI_const_point at(const UnsignedLong index) const;
+  NumericalScalar & operator() (const UnsignedLong i,
+                                const UnsignedLong j);
+  const NumericalScalar & operator() (const UnsignedLong i,
+                                      const UnsignedLong j) const;
+  NumericalScalar & at(const UnsignedLong i,
+                       const UnsignedLong j);
+  const NumericalScalar & at(const UnsignedLong i,
+                             const UnsignedLong j) const;
+#endif
+
+  /** Accessor to values */
+  NumericalPoint getValueAtIndex(const UnsignedLong index) const;
+  void setValueAtIndex(const UnsignedLong index,
+                       const NumericalPoint & val);
+
+  NumericalPoint getValueAtNearestPosition(const NumericalPoint & position) const;
+  void setValueAtNearestPosition(const NumericalPoint & position,
+                                 const NumericalPoint & val);
+
+  /** Description accessor */
+  void setDescription(const Description & description);
+  Description getDescription() const;
+
+  /** Mesh accessor */
+  Mesh getMesh() const;
+  RegularGrid getTimeGrid() const;
+
+  /** Comparison operator */
+  Bool operator ==(const Field & other) const;
+
+  /* Method __len__() is for Python */
+  UnsignedLong __len__() const;
+
+  NumericalPoint __getitem__ (const UnsignedLong index) const;
+  void __setitem__ (const UnsignedLong index,
+                    const NumericalPoint & val);
+
+  /**
+   * String converter
+   * This method shows human readable information on the
+   * internal state of an Field. It is used when streaming
+   * the Field or for user information.
+   */
+  String __repr__() const;
+
+  String __str__(const String & offset = "") const;
+
+  /** Size accessor */
+  UnsignedLong getSize() const;
+
+  /** Dimension accessor */
+  UnsignedLong getMeshDimension() const;
+  UnsignedLong getDimension() const;
+
+  /** Return the values stored in the field as a sample */
+  NumericalSample getSample() const;
+  NumericalSample getValues() const;
+
+  /** Compute the spatial mean of the field */
+  NumericalPoint getSpatialMean() const;
+
+  /** Compute the temporal mean of the field */
+  NumericalPoint getTemporalMean() const;
+
+  /** Draw a marginal of the field */
+  Graph drawMarginal(const UnsignedLong index = 0,
+                     const Bool interpolate = true) const;
+
+  /** VTK export */
+  void exportToVTKFile(const String & fileName) const;
+
+}; /* class Field */
+
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_FIELD_HXX */

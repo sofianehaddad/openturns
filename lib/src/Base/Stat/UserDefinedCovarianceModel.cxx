@@ -1,0 +1,157 @@
+//                                               -*- C++ -*-
+/**
+ *  @file  UserDefinedCovarianceModel.cxx
+ *  @brief
+ *
+ *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  @author: $LastChangedBy$
+ *  @date:   $LastChangedDate$
+ *  Id:      $Id$
+ */
+#include "UserDefinedCovarianceModel.hxx"
+#include "PersistentObjectFactory.hxx"
+#include "Exception.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+TEMPLATE_CLASSNAMEINIT(PersistentCollection< CovarianceMatrix >);
+static Factory< PersistentCollection< CovarianceMatrix > > RegisteredFactory1("PersistentCollection< CovarianceMatrix >");
+
+
+CLASSNAMEINIT(UserDefinedCovarianceModel);
+static Factory<UserDefinedCovarianceModel> RegisteredFactory("UserDefinedCovarianceModel");
+/* Constructor with parameters */
+UserDefinedCovarianceModel::UserDefinedCovarianceModel(const String & name)
+  : CovarianceModelImplementation(name)
+  , covarianceCollection_(0)
+  , p_mesh_(RegularGrid().clone())
+{
+  dimension_ = 0;
+}
+
+// For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
+UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
+    const CovarianceMatrixCollection & covarianceFunction,
+    const String & name)
+  : CovarianceModelImplementation(name)
+  , covarianceCollection_(0)
+  , p_mesh_(0)
+{
+  const UnsignedLong N(mesh.getVerticesNumber());
+  const UnsignedLong size((N * (N + 1)) / 2);
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the mesh is empty.";
+  if (size != covarianceFunction.getSize())
+    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
+                                         << " mesh size=" << N << " and covariance function size=" << covarianceFunction.getSize() << " instead of " << size;
+  p_mesh_ = mesh.clone();
+
+  covarianceCollection_ = CovarianceMatrixCollection(size);
+  // put the first element
+  covarianceCollection_[0] = covarianceFunction[0];
+  dimension_ = covarianceCollection_[0].getDimension();
+  // put the next elements if dimension is ok
+  for (UnsignedLong k = 1; k < size; ++k)
+  {
+    if (covarianceFunction[k].getDimension() != dimension_)
+      throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
+    covarianceCollection_[k] = covarianceFunction[k];
+  }
+}
+
+/* Virtual constructor */
+UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
+{
+  return new UserDefinedCovarianceModel(*this);
+}
+
+
+/* Computation of the covariance density function */
+CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & s,
+    const NumericalPoint & t) const
+{
+  // If the grid size is one, return the covariance function
+  // else find in the grid the nearest instant values
+  const UnsignedLong N(p_mesh_->getVerticesNumber());
+  if (N == 1) return covarianceCollection_[0];
+
+  // We look for the two vertices of the mesh the nearest to s and t resp.
+  UnsignedLong sIndex(p_mesh_->getNearestVertexIndex(s));
+  UnsignedLong tIndex(p_mesh_->getNearestVertexIndex(t));
+  // If sIndex > tIndex, swap the indices
+  if (sIndex > tIndex) std::swap(sIndex, tIndex);
+  // We use the information about the ordering of the collection
+  // N first elements => s = first vertex and t = (first vertex...last vertex)
+  // then s = second vertex and t = (second vertex...last vertex)
+  // size is N * (N + 1) / 2 with N the mesh size
+  const SignedInteger index(tIndex + (sIndex * (2 * N - sIndex - 1)) / 2);
+  return covarianceCollection_[index];
+}
+
+/* Mesh accessor */
+Mesh UserDefinedCovarianceModel::getMesh() const
+{
+  return *p_mesh_;
+}
+
+/* Time grid accessor */
+RegularGrid UserDefinedCovarianceModel::getTimeGrid() const
+{
+  if (p_mesh_->getClassName() != RegularGrid().getClassName()) throw InternalException(HERE) << "Error: the discretization of the covariance model does not correspond to a regular 1D grid.";
+  const NumericalSample vertices(p_mesh_->getVertices());
+  const UnsignedLong n(vertices.getSize());
+  const NumericalScalar start(vertices[0][0]);
+  const NumericalScalar step((vertices[n - 1][0] - start) / n);
+  return RegularGrid(start, step, n);
+}
+
+/* String converter */
+String UserDefinedCovarianceModel::__repr__() const
+{
+  OSS oss(true);
+  oss << "class=" << UserDefinedCovarianceModel::GetClassName()
+      << " mesh=" << p_mesh_->__repr__()
+      << " dimension=" << dimension_
+      << " covarianceCollection=" << covarianceCollection_;
+  return oss;
+
+}
+
+/* String converter */
+String UserDefinedCovarianceModel::__str__(const String & offset) const
+{
+  return __repr__();
+}
+
+/* Method save() stores the object through the StorageManager */
+void UserDefinedCovarianceModel::save(Advocate & adv) const
+{
+  CovarianceModelImplementation::save(adv);
+  adv.saveAttribute( "mesh_", *p_mesh_);
+  adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void UserDefinedCovarianceModel::load(Advocate & adv)
+{
+  TypedInterfaceObject<Mesh> mesh;
+  CovarianceModelImplementation::load(adv);
+  adv.loadAttribute( "mesh_", mesh);
+  p_mesh_ = mesh.getImplementation();
+  adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
+}
+
+END_NAMESPACE_OPENTURNS

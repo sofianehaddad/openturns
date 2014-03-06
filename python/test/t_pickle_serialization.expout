@@ -1,0 +1,32 @@
+object: [1.6,-8.7]
+same: True
+
+object: 0 : [  4.6 -3.7 ]
+1 : [  8.4  6.3 ]
+same: True
+
+object: [x,y,z]
+same: True
+
+object: [1,2,4]
+same: True
+
+object: [[ 1 2 ]
+ [ 3 4 ]]
+same: True
+
+object: NumericalMathFunction :
+  input  : [x1,x2]
+  output : [y1]
+  evaluation :   y1=x1+x2
+  gradient   :   
+  | d(y1) / d(x1) = 1 
+  | d(y1) / d(x2) = 1 
+
+  hessian    :   
+  |    d^2(y1) / d(x1)^2 = 0 
+  | d^2(y1) / d(x2)d(x1) = 0 
+  |    d^2(y1) / d(x2)^2 = 0 
+
+same: True
+

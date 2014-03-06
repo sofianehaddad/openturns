@@ -1,0 +1,217 @@
+//                                               -*- C++ -*-
+/**
+ *  @file  GeneralizedParetoFactory.cxx
+ *  @brief Factory for GeneralizedPareto distribution
+ *
+ *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  @author dutka
+ *  @date   2007-05-10 16:43:31 +0200 (jeu. 10 mai 2007)
+ */
+#include "GeneralizedParetoFactory.hxx"
+#include "MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "CenteredFiniteDifferenceGradient.hxx"
+#include "SpecFunc.hxx"
+#include "TNC.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+CLASSNAMEINIT(GeneralizedParetoFactory);
+
+/* Default constructor */
+GeneralizedParetoFactory::GeneralizedParetoFactory()
+  : DistributionImplementationFactory()
+{
+  // Nothing to do
+}
+
+/* Virtual constructor */
+GeneralizedParetoFactory * GeneralizedParetoFactory::clone() const
+{
+  return new GeneralizedParetoFactory(*this);
+}
+
+/* Here is the interface that all derived class must implement */
+
+GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const NumericalSample & sample) const
+{
+  return buildAsGeneralizedPareto(sample).clone();
+}
+
+GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const NumericalPointCollection & parameters) const
+{
+  return buildAsGeneralizedPareto(parameters).clone();
+}
+
+GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build() const
+{
+  return buildAsGeneralizedPareto().clone();
+}
+
+GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalSample & sample) const
+{
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  const UnsignedLong size(sample.getSize());
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from an empty sample";
+  NumericalScalar xMin(sample.getMin()[0]);
+  if (xMin <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution based on a sample with nonpositive values.";
+  NumericalScalar smallSize(ResourceMap::GetAsUnsignedLong( "GeneralizedParetoFactory-SmallSize" ));
+  // The strategy is to use the probability weighted moment method for small size and to switch to the maximum likelihood if the estimator is not defined. For large size, we only use the ML estimator.
+  if (size <= smallSize)
+  {
+    try
+    {
+      return buildMethodOfProbabilityWeightedMoments(sample);
+    }
+    catch (InternalException & ex)
+    {
+      return buildMethodOfExponentialRegression(sample);
+    }
+  } // small size
+  return buildMethodOfExponentialRegression(sample);
+}
+
+
+GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalPointWithDescriptionCollection & parameters) const
+{
+  return buildAsGeneralizedPareto(RemoveDescriptionFromCollection(parameters));
+}
+
+GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalPointCollection & parameters) const
+{
+  try
+  {
+    GeneralizedPareto distribution;
+    distribution.setParametersCollection(parameters);
+    return distribution;
+  }
+  catch (InvalidArgumentException & ex)
+  {
+    throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from the given parameters";
+  }
+}
+
+GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto() const
+{
+  return GeneralizedPareto();
+}
+
+/* Algorithm associated with the method of moments */
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const NumericalSample & sample) const
+{
+  const NumericalScalar mean(sample.computeMean()[0]);
+  const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
+  const NumericalScalar xi(0.5 * (pow(mean / std, 2) - 1.0));
+  // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
+  if (xi <= -0.25) throw InternalException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";
+  const NumericalScalar sigma(0.5 * mean * (pow(mean / std, 2) + 1.0));
+  GeneralizedPareto result(sigma, xi);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
+struct GeneralizedParetoFactoryParameterConstraint
+{
+  /** Constructor from a sample and a derivative factor estimate */
+  GeneralizedParetoFactoryParameterConstraint(const NumericalSample & sample)
+    : sampleY_(0, 1)
+    , size_(sample.getSize())
+  {
+    const NumericalSample sortedSample(sample.sort());
+    sampleY_ = NumericalSample(size_ - 2, 1);
+    for (UnsignedLong j = 0; j < size_ - 2; ++j)
+      sampleY_[j][0] = (j + 1.0) * log((sortedSample[size_ - 1 - j][0] - sortedSample[0][0]) / (sortedSample[size_ - 2 - j][0] - sortedSample[0][0]));
+  };
+
+  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  {
+    const NumericalScalar gamma(parameter[0]);
+    // Separate the small gamma case for stability purpose
+    if (fabs(gamma) < 1.0e-4)
+    {
+      NumericalScalar exponentialRegressionLogLikelihood(0.0);
+      for (UnsignedLong j = 0; j < size_ - 2; ++j)
+      {
+        const NumericalScalar logAlphaJ(log((j + 1.0) / size_));
+        const NumericalScalar gammaLogAlphaJ(gamma * logAlphaJ);
+        const NumericalScalar yLogAlphaJ(sampleY_[j][0] * logAlphaJ);
+        exponentialRegressionLogLikelihood += log(-logAlphaJ) + yLogAlphaJ + 0.5 * gammaLogAlphaJ * (1.0 + yLogAlphaJ + gammaLogAlphaJ * (1.0 / 12.0 + yLogAlphaJ / 3.0 + gammaLogAlphaJ * yLogAlphaJ / 12.0));
+      }
+      return NumericalPoint(1, -exponentialRegressionLogLikelihood);
+    }
+    // Large gamma case
+    NumericalScalar exponentialRegressionLogLikelihood(0.0);
+    for (UnsignedLong j = 0; j < size_ - 2; ++j)
+    {
+      const NumericalScalar alphaJ((1.0 - pow((j + 1.0) / size_, gamma)) / gamma);
+      exponentialRegressionLogLikelihood += log(alphaJ) - alphaJ * sampleY_[j][0];
+    }
+    return NumericalPoint(1, -exponentialRegressionLogLikelihood);
+  }
+
+  NumericalSample sampleY_;
+  UnsignedLong size_;
+};
+
+/* Algorithm associated with the method of exponential regression */
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const NumericalSample & sample) const
+{
+  GeneralizedParetoFactoryParameterConstraint constraint(sample);
+  NumericalMathFunction f(bindMethod<GeneralizedParetoFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
+  CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluationImplementation());
+  f.setGradientImplementation(gradient);
+  // Solver
+  TNC optimizationAlgorithm(f);
+  optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedLong( "GeneralizedParetoFactory-MaximumEvaluationNumber"));
+  optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumAbsoluteError"));
+  optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumRelativeError"));
+  optimizationAlgorithm.setMaximumObjectiveError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumObjectiveError"));
+  optimizationAlgorithm.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumConstraintError"));
+  optimizationAlgorithm.run();
+  const NumericalScalar xi(optimizationAlgorithm.getResult().getOptimizer()[0]);
+  const NumericalScalar mean(sample.computeMean()[0]);
+  const NumericalSample sortedSample(sample.sort());
+  // Compute the first probability weighted moment
+  NumericalScalar m(0.0);
+  const UnsignedLong size(sample.getSize());
+  for (UnsignedLong i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
+  m /= size * size;
+  const NumericalScalar sigma(2.0 * mean * m / (mean - 2.0 * m));
+  GeneralizedPareto result(sigma, xi);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
+/* Algorithm associated with the method of modified moments */
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const NumericalSample & sample) const
+{
+  const NumericalScalar mean(sample.computeMean()[0]);
+  const NumericalSample sortedSample(sample.sort());
+  // Compute the first probability weighted moment
+  NumericalScalar m(0.0);
+  const UnsignedLong size(sample.getSize());
+  for (UnsignedLong i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
+  m /= size * size;
+  const NumericalScalar xi(mean / (mean - 2.0 * m) - 2.0);
+  if (xi <= -0.5) throw InternalException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of probability weighted moments when the estimated xi parameter=" << xi << " is less than -0.5";
+  const NumericalScalar sigma(2.0 * mean * m / (mean - 2.0 * m));
+  GeneralizedPareto result(sigma, xi);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
+
+END_NAMESPACE_OPENTURNS

@@ -1,0 +1,647 @@
+#! /bin/sh
+#                                               -*- Shell-script -*-
+#
+# openturns-module-build.in / openturns-module-build / openturns-module
+#
+#  Copyright (C) 2005-2013 EDF
+#
+#  Permission to copy, use, modify, sell and distribute this software
+#  is granted provided this copyright notice appears in all copies.
+#  This software is provided "as is" without express or implied
+#  warranty, and with no claim as to its suitability for any purpose.
+#
+#
+#  @author dutka
+#  @date   2008-10-31 16:07:46 +0100 (Fri, 31 Oct 2008)
+#  Id      openturns-config.in 996 2008-10-31 15:07:46Z dutka
+#
+#  This script installs or removes extra modules
+#
+
+print_usage()
+{
+  cat <<EOT
+Usage: openturns-module [--silent] {--install=<module> | --remove=<module>} [--prefix=PFX] [extra_configure_args]
+       openturns-module [--silent] {--install <module> | --remove <module>} [--prefix PFX] [extra_configure_args]
+       openturns-module [--silent] {--module=<module> | --module <module>} [options]
+Note:
+For installation, 'module' can be either a path to a directory
+or a path to a archive file (compressed or not).
+For removal, 'module' is the module name.
+The extra configure args are passed as is to the module configure
+script.
+
+Example:
+(install)
+  openturns-module --install=mymodule/
+  openturns-module --install=/path/to/mymodule/
+  openturns-module --install=mymodule.tar
+  openturns-module --install=mymodule.tar.gz
+  openturns-module --install=mymodule.tgz
+  openturns-module --install=mymodule.tar.bz2
+  openturns-module --install=mymodule.tbz
+  openturns-module --install=URL
+
+You can provide a prefix to choose where the module will be installed.
+PFX can take one of the following values:
+ * python [default]: the module will be installed in python user path ($HOME/.local)
+ * openturns : the module will be installed in the Open TURNS installation tree
+ * user : the module will be installed in the Open TURNS user directory ($HOME/openturns)
+ * <dir> : the module will be installed in <dir>. You should append <dir> to the
+   OPENTURNS_MODULE_PATH envvar to tell Open TURNS where to find the module
+
+(remove)
+  openturns-module --remove=mymodule
+
+(mixed form)
+  openturns-module --remove=myoldmodule1 --install=mynewmodule1 --install=mymodule2
+(module)
+  openturns-module --module=mymodule
+
+Options:
+  --silent          Do not output any message
+
+EOT
+  exit 1
+}
+
+build_tempdir()
+{
+  test $# = 0 || { $silent || echo "internal error: wrong number of args for build_tempdir(): $# (0 expected)" ; return 1 ; }
+  tempdir=/tmp/openturns-module.$$
+  mkdir -p $tempdir || return 1
+  echo $tempdir
+  return 0
+}
+
+delete_tempdir()
+{
+  test $# = 1 || { $silent || echo "internal error: wrong number of args for delete_tempdir(): $# (1 expected)" ; return 1 ; }
+  tempdir=$1
+  test -d $tempdir && rm -rf $tempdir || return 1
+  return 0
+}
+
+# this function checks the type of the module and returns a string
+# describing this type :
+# dir -> the module is a directory
+# tar -> the module is an uncompressed archive
+# tgz -> the module is a gzip compressed archive
+# tbz -> the module is a bzip2 compressed archive
+# tZ  -> the module is a compressed archive
+# otherwise it aborts the global process 
+get_module_type()
+{
+  test $# = 1 || { $silent || echo "internal error: wrong number of args for get_module_type(): $# (1 expected)" ; return 1 ; }
+  module=$1
+  if test -d $module
+  then
+    echo "dir"
+  elif test -f $module
+  then
+    if echo $module | egrep -q -e '(\.tar\.gz|\.tgz)$'
+    then 
+      echo "tgz"
+    elif echo $module | egrep -q -e '(\.tar\.bz2|\.tbz)$'
+    then
+      echo "tbz"
+    elif echo $module | egrep -q -e '\.tar\.Z$'
+    then
+      echo "tZ"
+    elif echo $module | egrep -q -e '\.tar$'
+    then
+      echo "tar"
+    else
+      echo "none"
+    fi
+  elif echo $module | grep -q -e '^http://'
+  then
+    echo "http"
+  else
+    dummy=`git ls-remote $module 2>&1 >/dev/null`
+    if test "$?" -eq "0"
+    then
+      echo "git"
+    else
+      dummy=`svn ls $module 2>&1 >/dev/null`
+      if test "$?" -eq "0"
+      then
+        echo "svn"
+      else
+        echo "none"
+      fi
+    fi
+  fi
+  return 0
+}
+
+# this function uncompress the archive into the temporary directory
+# in the case of a directory, just use it
+prepare_module_in_tempdir()
+{
+  test $# = 3 || { $silent || echo "internal error: wrong number of args for prepare_module_in_tempdir(): $# (3 expected)" ; return 1 ; }
+  module=$1
+  tempdir=$2
+  type=$3
+
+  case $type in
+    "dir")
+      modulename=`echo $module | sed -e 's,/$,,' | sed -e 's,^.*/,,'`
+      if echo $module | egrep -q -e '^/'
+      then
+        cp -rf $module $tempdir/$modulename
+      else
+        cp -rf `pwd`/$module $tempdir/$modulename
+      fi
+      echo $tempdir/$modulename
+      ;;
+
+    "tar")
+      modulename=`echo $module | sed -e 's,^.*/,,' -e 's,\.tar$,,'`
+      if echo $module | egrep -q -e '^/'
+      then
+        absmodule=$module
+      else
+        absmodule=`pwd`/$module
+      fi
+      ( cd $tempdir && tar -xf $absmodule )
+      echo $tempdir/$modulename
+      ;;
+
+    "tgz")
+      modulename=`echo $module | sed -e 's,^.*/,,' -e 's,\.tar\..*$,,'`
+      if echo $module | egrep -q -e '^/'
+      then
+        absmodule=$module
+      else
+        absmodule=`pwd`/$module
+      fi
+      ( cd $tempdir && tar -xzf $absmodule )
+      echo $tempdir/$modulename
+      ;;
+
+    "tbz")
+      modulename=`echo $module | sed -e 's,^.*/,,' -e 's,\.tar\..*$,,'`
+      if echo $module | egrep -q -e '^/'
+      then
+        absmodule=$module
+      else
+        absmodule=`pwd`/$module
+      fi
+      ( cd $tempdir && tar -xjf $absmodule )
+      echo $tempdir/$modulename
+      ;;
+
+    "tZ")
+      modulename=`echo $module | sed -e 's,^.*/,,' -e 's,\.tar\..*$,,'`
+      if echo $module | egrep -q -e '^/'
+      then
+        absmodule=$module
+      else
+        absmodule=`pwd`/$module
+      fi
+      ( cd $tempdir && { uncompress -c $absmodule | tar -xjf - ; } )
+      echo $tempdir/$modulename
+      ;;
+    
+    "http")
+      modulename=`echo $module | sed -e 's,^.*/,,'`
+      if ( @WGET@ $module >> openturns-module.log 2>&1 )
+      then
+        t=`get_module_type $modulename`
+        newmodule=`prepare_module_in_tempdir $modulename $tempdir $t`
+      elif ( @CURL@ $module -O -f --silent >> openturns-module.log 2>&1 )
+      then
+        t=`get_module_type $modulename`
+        newmodule=`prepare_module_in_tempdir $modulename $tempdir $t`
+      else
+        $silent || echo "Can't get $module."
+        return 1
+      fi
+      echo $newmodule
+      ;;
+      
+    "svn")
+      if ( svn co --non-interactive --trust-server-cert $module $tempdir >> openturns-module.log 2>&1 )
+      then
+        echo "ok" >> openturns-module.log
+      else
+        $silent || echo "Can't get $module."
+        return 1
+      fi
+      echo $tempdir
+      ;;
+      
+    "git")
+      if ( git clone $module $tempdir >> openturns-module.log 2>&1 )
+      then
+        echo "ok" >> openturns-module.log
+      else
+        $silent || echo "Can't get $module."
+        return 1
+      fi
+      echo $tempdir
+      ;;      
+
+    *)
+      $silent || echo "internal error: wrong type in prepare_module_in_tempdir(): $type"
+      return 1
+      ;;
+
+  esac
+
+  return 0
+}
+
+# run the bootstrap script
+run_bootstrap()
+{
+  rc=0
+  if test -x bootstrap
+  then
+    ./bootstrap
+    rc=$?
+  else
+    sh bootstrap
+    rc=$?
+  fi
+  return $rc
+}
+
+# configure the prepared module into its destination
+configure_module()
+{
+  test $# = 1 || { $silent || echo "internal error: wrong number of args for configure_module(): $# (1 expected)" ; return 1 ; }
+  extra_configure_args=$1
+
+  if test -f setup.py
+  then
+    echo "Pure python module."
+  elif test -f CMakeLists.txt
+  then
+    for cmd in "cmake . -DCMAKE_INSTALL_PREFIX=$destdir -DINSTALL_DESTDIR=$tempdir/_install -DOpenTURNS_DIR=@CONFIG_CMAKE_PATH@ $extra_configure_args"
+    do
+      echo "========================================"
+      echo "Running command : $cmd"
+      echo "========================================"
+      eval $cmd || return 1
+    done
+  else 
+    if test ! -x configure
+    then
+      if test -f bootstrap
+      then 
+        echo "No configure script found but there seems to be a bootstrap. Try running bootstrap ..."
+        if run_bootstrap
+        then 
+          test ! -x configure && { echo "bootstrap did not build a configure script. Abort." ; return 1 ; }
+        else
+          echo "Bootstrap failed. No configure script available. Abort."
+          return 1
+        fi
+      else
+        echo "Neither configure script nor bootstrap available. Trying autoreconf."
+        autoreconf
+        return $?
+      fi
+    fi
+
+    for cmd in "sh configure --disable-option-checking --prefix=$destdir --with-openturns=@prefix@ $extra_configure_args"
+    do
+      echo "========================================"
+      echo "Running command : $cmd"
+      echo "========================================"
+      eval $cmd || return 1
+    done
+  fi
+  return 0
+}
+
+# compile the prepared module into its destination
+compile_module()
+{
+  test $# = 0 || { $silent || echo "internal error: wrong number of args for compile_module(): $# (0 expected)" ; return 1 ; }
+  if test -f setup.py
+  then
+    python setup.py build
+  else
+    for cmd in "make" "make check"
+    do
+      echo "========================================"
+      echo "Running command : $cmd"
+      echo "========================================"
+      eval $cmd || return 1
+    done
+  fi
+  return 0
+}
+
+# install the prepared module into its destination
+install_module()
+{
+  test $# = 1 || { $silent || echo "internal error: wrong number of args for install_module(): $# (1 expected)" ; return 1 ; }
+  modulename=$1
+
+  if test -f setup.py
+  then
+    python setup.py install --prefix=$destdir
+  else
+    for cmd in "make install DESTDIR=`pwd`/_install" \
+              ": > $modulename.tmp" \
+              "cat $modlocation/CONF >> $modulename.tmp || true" \
+              "cat FLAGS >> $modulename.tmp || true" \
+              "( cd `pwd`/_install/$destdir && ( find . -depth | sed -e 's/^\.\//file: /' ) ) >> $modulename.tmp" \
+              "mkdir -p `pwd`/_install/$destdir/conf" \
+              "mv $modulename.tmp `pwd`/_install/$destdir/conf/$modulename" \
+              "mkdir -p $destdir" \
+              "cp -r `pwd`/_install/$destdir/* $destdir" \
+              "make installcheck"
+    do
+      echo "========================================"
+      echo "Running command : $cmd"
+      echo "========================================"
+      eval $cmd || return 1
+    done
+  fi
+  return 0
+}
+
+# find a module by name in the standard directories
+find_module()
+{
+  test $# = 1 || { $silent || echo "internal error: wrong number of args for find_module(): $# (1 expected)" ; return 1 ; }
+  module=$1
+
+  echo $OPENTURNS_MODULE_PATH ~/.local $HOME/openturns/lib/openturns/module @libdir@/@PACKAGE@/module | tr ":" "/n" | tr " " "\n" | while read dir
+  do
+    if test -f $dir/conf/$module
+    then
+      echo $dir
+    fi
+  done
+}
+
+# get the list of all available modules
+all_modules()
+{
+  test $# = 0 || { $silent || echo "internal error: wrong number of args for all_modules(): $# (0 expected)" ; return 1 ; }
+
+  mods=
+  for dir in `echo $OPENTURNS_MODULE_PATH $HOME/openturns/lib/openturns/module @libdir@/@PACKAGE@/module | tr ":" "/n" | tr " " "\n"`
+  do
+    for conffile in `ls $dir/conf/* 2>/dev/null`
+    do
+      modulename=`grep -e "^name: *" $conffile | sed -e "s/^name: *//"`
+      mods="$mods $modulename"
+    done
+  done
+  echo $mods
+}
+
+# get the list of missing prerequisite modules
+check_prerequisite()
+{
+  test $# = 1 || { $silent || echo "internal error: wrong number of args for check_prerequisite(): $# (1 expected)" ; return 1 ; }
+  modlocation=$1
+
+  prereq=
+  if test -f $modlocation/CONF
+  then
+    for mod in `grep -e "^needs: *" $modlocation/CONF | sed -e "s/^needs: *//"`
+    do
+      loc=`find_module $mod`
+      test -z "$loc" && prereq="$prereq $mod"
+    done
+    echo $prereq
+  fi
+  return 0
+}
+
+########################################
+
+test $# -lt 1 && print_usage
+
+action=
+module=
+worklist=
+extra_args=
+modulename=
+
+silent=false
+postmsg=no
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+prefixarg=python
+
+# Argument parsing
+while test $# != 0
+do
+  arg=$1
+  shift
+
+  case $arg in
+    --silent)
+      silent=true
+      ;;
+    --install | --remove)
+      action=`echo $arg | sed -e 's/^--//'`
+      module=$1
+      worklist="$worklist $action:$module"
+      shift
+      ;;
+    --install=* | --remove=*)
+      action=`echo $arg | sed -e 's/^--//' -e 's/=.*//'`
+      module=`echo $arg | sed -e "s/^--$action=//"`
+      worklist="$worklist $action:$module"
+      ;;
+    --prefix)
+      prefixarg=$1
+      shift
+      ;;
+    --prefix=*)
+      prefixarg=`echo $arg | sed -e 's/^--prefix=//'`
+      ;;
+    --module)
+      action=query
+      module=$1
+      worklist="$worklist $action:$module"      
+      shift
+      ;;
+    --module=*)
+      action=query
+      module=`echo $arg | sed -e "s/^--module=//"`
+      worklist="$worklist $action:$module"      
+      ;;
+    *)
+      extra_args="$extra_args $arg"
+      ;;
+  esac
+done
+
+
+# Prefix keyword / destination directory mapping
+case $prefixarg in
+  python)
+    destdir=$HOME/.local
+    ;;
+  openturns)
+    destdir=@libdir@/@PACKAGE@/module
+    ;;
+  user)
+    destdir=$HOME/openturns/lib/openturns/module
+    ;;
+  *)
+    destdir=$prefixarg
+    postmsg=yes
+    ;;
+esac
+
+
+# Process each module in turn
+rc=0
+for work in $worklist
+do
+  action=`echo $work | sed -e 's/:.*$//'`
+  module=`echo $work | sed -e 's/^[^:]*://'`
+  case $action in
+    install)
+      $silent || echo "Trying to install module '$module' ..."
+      : > openturns-module.log
+      type=`get_module_type $module`
+      #echo "module type is '$type'"
+      test "$type" = none && print_usage
+      tempdir=`build_tempdir`
+      #echo "tempdir=$tempdir"
+      modlocation=`prepare_module_in_tempdir $module $tempdir $type`
+      #echo "modlocation=$modlocation"
+      ( cd "$modlocation" && configure_module "$extra_args" ) >> openturns-module.log 2>&1
+      rc=$?
+      if test $rc = 0
+      then
+        if ! test -f $modlocation/CONF
+        then
+          echo "Warning! Module '$module' has no CONF file" >> openturns-module.log
+          if test -f $modlocation/setup.py
+          then
+            modulename=`grep -e "name='*'" $modlocation/setup.py | sed -e "s/.*name='\(.*\)'.*/\1/"`
+          elif test -f $modlocation/CMakeLists.txt
+          then
+            modulename=`grep -e "project (.*)" $modlocation/CMakeLists.txt | cut -d " " -f 3`
+          elif test -f $modlocation/configure.ac
+          then
+            modulename=`grep -e "AC_INIT(\[OpenTURNS module" $modlocation/configure.ac | sed -e "s/AC_INIT(\[OpenTURNS module\s*'*\([0-9a-zA-Z]*\).*/\1/"`
+          else
+            $silent || echo "Can't get module name."
+            return 1
+          fi
+          echo "name: $modulename" >> $modlocation/CONF
+        fi
+        modulename=`grep -e "^name: *" $modlocation/CONF | head -1 | sed -e "s/^name: *//"`
+        ( cd $modlocation && compile_module ) >> openturns-module.log 2>&1
+        rc=$?
+        if test $rc = 0
+        then
+          loc=`find_module $modulename`
+          if test -n "$loc"
+          then
+            $silent || echo "Module '$modulename' is already installed, reinstalling."
+          fi
+          prereq=`check_prerequisite $modlocation`
+          #echo "prereq='$prereq'"
+          if test -z "$prereq"
+          then
+            ( cd $modlocation && install_module $modulename ) >> openturns-module.log 2>&1
+            rc=$?
+            if test $rc = 0
+            then
+              $silent || echo "Module '$modulename' successfully installed"
+              rm openturns-module.log
+              test $postmsg = yes && cat <<EOF
+Module installed in $destdir which is non standard for Open TURNS.
+You should inform Open TURNS of this directory in order to use
+the module. You may either append the directory to the
+OPENTURNS_MODULE_PATH envvar or use the PYTHONPATH envvar.
+EOF
+              delete_tempdir $tempdir
+            else
+              $silent || { cat openturns-module.log; echo "==> Module '$modulename' installation failed."; } ;
+            fi
+          else
+            $silent || echo "Module '$modulename' needs: $prereq"
+            rc=1
+          fi
+        else
+          $silent || { cat openturns-module.log; echo "==> Module '$modulename' installation failed."; } ;
+        fi
+      else
+        $silent || { cat openturns-module.log; echo "==> Module '$modulename' installation failed."; } ;
+      fi
+      ;;
+
+    remove)
+      modulename=$module
+      $silent || echo "Trying to remove module '$module' ..."
+      destdir=`find_module $modulename`
+      test -n "$destdir" || { $silent || echo "No module '$module' found." ; exit 1 ; }
+      mods=`all_modules` || { $silent || echo "Can't retrieve all modules." ; exit 1 ; }
+      usedby=
+      for mod in $mods
+      do
+        loc=`find_module $mod`
+        grep -e "^needs: *$modulename" $loc/conf/$mod && usedby="$usedby $mod"
+      done
+      if test -z "$usedby"
+      then
+        cp $destdir/conf/$modulename /tmp/openturns-module.$$
+        rm $destdir/conf/$modulename 2>/dev/null
+        rmdir $destdir/conf 2>/dev/null
+        grep -e "^file: *" /tmp/openturns-module.$$ | sed -e "s/^file: *//" | while read file
+        do
+          test -f $destdir/$file && rm $destdir/$file 2>/dev/null
+        done
+        rm /tmp/openturns-module.$$
+        $silent || echo "Module '$module' successfully removed"
+      else
+        $silent || echo "Can't remove module '$modulename' used by: $usedby"
+        rc=1
+      fi
+      ;;
+
+    query)
+      modulename=$module
+      $silent || echo "Trying to find module '$module' ..."
+      destdir=`find_module $modulename`
+      test -n $destdir || { $silent || echo "No module '$module' found." ; exit 1 ; }
+      $silent || echo "Module '$module' located at '$destdir'."
+      flags=
+      for arg in $extra_args
+      do
+        case $arg in
+          --swigflags)
+            flags="$flags `grep -e "^swigflags: " $destdir/conf/$modulename | sed -e 's/^swigflags: //g'`"
+            ;;
+          --cppflags)
+            flags="$flags `grep -e "^cppflags: " $destdir/conf/$modulename | sed -e 's/^cppflags: //g'`"
+            ;;
+          --ldflags)
+            flags="$flags `grep -e "^ldflags: " $destdir/conf/$modulename | sed -e 's/^ldflags: //g'`"
+            ;;
+          --libs)
+            flags="$flags `grep -e "^libs: " $destdir/conf/$modulename | sed -e 's/^libs: //g'`"
+            ;;
+        esac
+      done
+      echo $flags
+      ;;
+
+    *)
+      $silent || echo "Error: unknown action '$action'"
+      $silent || print_usage
+      rc=1
+      ;;
+  
+  esac
+  test $rc = 0 || break
+done
+exit $rc
