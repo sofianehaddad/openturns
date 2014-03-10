@@ -28,7 +28,6 @@
 #include "NumericalSample.hxx"
 #include "LinearModel.hxx"
 #include "Distribution.hxx"
-#include "Copula.hxx"
 #include "DistributionImplementation.hxx"
 #include "Normal.hxx"
 #include "Graph.hxx"
@@ -98,7 +97,7 @@ public:
 
   /** Draw the Kendall plot to assess a copula for a bidimensional sample */
   static Graph DrawKendallPlot(const NumericalSample & data,
-                               const Copula & copula);
+                               const Distribution & copula);
 
   /** Draw the Kendall plot to assess if two bidimensional samples share the same copula */
   static Graph DrawKendallPlot(const NumericalSample & firstSample,
@@ -110,7 +109,7 @@ private:
   static NumericalSample ComputeKendallPlotEmpiricalStatistics(const NumericalSample & sample);
 
   /** Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
-  static NumericalSample ComputeKendallPlotTheoreticalStatistics(const Copula & copula,
+  static NumericalSample ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
       const UnsignedLong size);
 
   VisualTest();

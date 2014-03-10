@@ -463,10 +463,11 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
 
 /* Draw the Kendall plot to assess a copula for a bidimensional sample */
 Graph VisualTest::DrawKendallPlot(const NumericalSample & data,
-                                  const Copula & copula)
+                                  const Distribution & copula)
 {
   if (data.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample is empty.";
   if (data.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample has a dimension not equal to 2.";
+  if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
   if (copula.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the copula has a dimension not equal to 2.";
   const NumericalSample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(data));
   const NumericalSample theoreticalStatistics(ComputeKendallPlotTheoreticalStatistics(copula, data.getSize()));
@@ -535,9 +536,10 @@ NumericalSample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Numerica
 }
 
 /* Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
-NumericalSample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Copula & copula,
+NumericalSample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
     const UnsignedLong size)
 {
+  if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
   const UnsignedLong maximumIteration(ResourceMap::GetAsUnsignedLong( "VisualTest-KendallPlot-MonteCarloSize" ));
   NumericalSample result(size, 1);
   for (UnsignedLong i = 0; i < maximumIteration; ++i)
