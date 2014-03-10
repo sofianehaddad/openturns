@@ -51,8 +51,8 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   , covarianceCollection_(0)
   , p_mesh_(0)
 {
-  const UnsignedLong N(mesh.getVerticesNumber());
-  const UnsignedLong size((N * (N + 1)) / 2);
+  const UnsignedInteger N(mesh.getVerticesNumber());
+  const UnsignedInteger size((N * (N + 1)) / 2);
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the mesh is empty.";
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
@@ -64,7 +64,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   covarianceCollection_[0] = covarianceFunction[0];
   dimension_ = covarianceCollection_[0].getDimension();
   // put the next elements if dimension is ok
-  for (UnsignedLong k = 1; k < size; ++k)
+  for (UnsignedInteger k = 1; k < size; ++k)
   {
     if (covarianceFunction[k].getDimension() != dimension_)
       throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
@@ -85,12 +85,12 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
 {
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values
-  const UnsignedLong N(p_mesh_->getVerticesNumber());
+  const UnsignedInteger N(p_mesh_->getVerticesNumber());
   if (N == 1) return covarianceCollection_[0];
 
   // We look for the two vertices of the mesh the nearest to s and t resp.
-  UnsignedLong sIndex(p_mesh_->getNearestVertexIndex(s));
-  UnsignedLong tIndex(p_mesh_->getNearestVertexIndex(t));
+  UnsignedInteger sIndex(p_mesh_->getNearestVertexIndex(s));
+  UnsignedInteger tIndex(p_mesh_->getNearestVertexIndex(t));
   // If sIndex > tIndex, swap the indices
   if (sIndex > tIndex) std::swap(sIndex, tIndex);
   // We use the information about the ordering of the collection
@@ -112,7 +112,7 @@ RegularGrid UserDefinedCovarianceModel::getTimeGrid() const
 {
   if (p_mesh_->getClassName() != RegularGrid().getClassName()) throw InternalException(HERE) << "Error: the discretization of the covariance model does not correspond to a regular 1D grid.";
   const NumericalSample vertices(p_mesh_->getVertices());
-  const UnsignedLong n(vertices.getSize());
+  const UnsignedInteger n(vertices.getSize());
   const NumericalScalar start(vertices[0][0]);
   const NumericalScalar step((vertices[n - 1][0] - start) / n);
   return RegularGrid(start, step, n);

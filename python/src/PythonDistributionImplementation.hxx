@@ -69,7 +69,7 @@ public:
   NumericalPoint getRealization() const;
 
   /** Get a numerical sample whose elements follow the distributionImplementation */
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution */
   NumericalPoint computeDDF(const NumericalPoint & point) const;
@@ -113,13 +113,13 @@ public:
   NumericalPoint getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the raw moments of the distribution */
-  NumericalPoint getMoment(const UnsignedLong n) const;
+  NumericalPoint getMoment(const UnsignedInteger n) const;
 
   /** Get the centered moments of the distribution */
-  NumericalPoint getCenteredMoment(const UnsignedLong n) const;
+  NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
 
   /** Parameters value and description accessor */
   //   NumericalPointWithDescriptionCollection getParametersCollection() const;

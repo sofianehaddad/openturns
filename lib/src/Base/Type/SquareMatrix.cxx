@@ -41,7 +41,7 @@ SquareMatrix::SquareMatrix()
 
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-SquareMatrix::SquareMatrix(const UnsignedLong dim)
+SquareMatrix::SquareMatrix(const UnsignedInteger dim)
   : Matrix(dim, dim)
 {
   // Nothing to do
@@ -51,7 +51,7 @@ SquareMatrix::SquareMatrix(const UnsignedLong dim)
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-SquareMatrix::SquareMatrix(const UnsignedLong dim,
+SquareMatrix::SquareMatrix(const UnsignedInteger dim,
                            const NumericalScalarCollection & elementsValues)
   : Matrix(dim, dim, elementsValues)
 {
@@ -77,7 +77,7 @@ String SquareMatrix::__repr__() const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedLong SquareMatrix::getDimension() const
+const UnsignedInteger SquareMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -149,7 +149,7 @@ SquareMatrix SquareMatrix::operator / (const NumericalScalar s) const
 }
 
 /* SquareMatrix integer power */
-SquareMatrix SquareMatrix::power(const UnsignedLong n) const
+SquareMatrix SquareMatrix::power(const UnsignedInteger n) const
 {
   return Implementation(getImplementation()->genPower(n).clone());
 }
@@ -196,11 +196,11 @@ Bool SquareMatrix::isDiagonal() const
 {
   // The loops must be done in this order in order to use the quick accessor
   // of the underlying implementation.
-  for (UnsignedLong j = 0; j < getDimension(); ++j)
+  for (UnsignedInteger j = 0; j < getDimension(); ++j)
   {
-    for (UnsignedLong i = 0; i < j; ++i)
+    for (UnsignedInteger i = 0; i < j; ++i)
       if ((*getImplementation())(i, j) != 0.0) return false;
-    for (UnsignedLong i = j + 1; i < getDimension(); ++i)
+    for (UnsignedInteger i = j + 1; i < getDimension(); ++i)
       if ((*getImplementation())(i, j) != 0.0) return false;
   }
   return true;

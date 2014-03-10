@@ -48,7 +48,7 @@ public:
   typedef Collection<DistributionFactory>           DistributionFactoryCollection;
 
   /** Default constructor */
-  explicit DistributionFactory(const UnsignedLong bootstrapSize = ResourceMap::GetAsUnsignedLong("DistributionImplementationFactory-DefaultBootstrapSize"),
+  explicit DistributionFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"),
                                const String & name = DefaultName);
 
   /** Parameter constructor */

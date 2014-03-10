@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     input[3] = "I";
     NumericalMathFunction myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
 
-    UnsignedLong dim(myFunction.getInputDimension());
+    UnsignedInteger dim(myFunction.getInputDimension());
     /* We create a normal distribution point of dimension dim */
     NumericalPoint mean(dim, 0.0);
     NumericalPoint sigma(dim, 1.0);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
     // Build a standard event based on an event
     CorrelationMatrix R = IdentityMatrix(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.5;
     }
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 
     /* Check if the StandardEvent is really a StandardEvent */
     /* Get a sample from the second antecedent of the standard event */
-    UnsignedLong size(2000);
+    UnsignedInteger size(2000);
     NumericalSample sample(stdEvent.getImplementation()->getAntecedent()->getSample(size));
     /* Check if the sample mean is nearly the null vector */
     fullprint << "sample mean=" << sample.computeMean() << std::endl;

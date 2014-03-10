@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     //    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
-    UnsignedLong dim(3);
+    UnsignedInteger dim(3);
     IndependentCopula copula(dim);
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10000;
+    UnsignedInteger size = 10000;
     NumericalSample oneSample = copula.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
     // Specific to this copula
 
     // Extract the marginals
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       Copula margin(copula.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;

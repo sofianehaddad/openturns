@@ -59,7 +59,7 @@ public:
   CalibrationStrategy(const Interval & range,
                       const NumericalScalar expansionFactor,
                       const NumericalScalar shrinkFactor,
-                      const UnsignedLong calibrationStep);
+                      const UnsignedInteger calibrationStep);
 
   /** Constructor from implementation */
   CalibrationStrategy(const CalibrationStrategyImplementation & op);
@@ -77,8 +77,8 @@ public:
   NumericalScalar getShrinkFactor() const;
 
   /** Calibration period */
-  void setCalibrationStep(const UnsignedLong calibrationStep);
-  UnsignedLong getCalibrationStep() const;
+  void setCalibrationStep(const UnsignedInteger calibrationStep);
+  UnsignedInteger getCalibrationStep() const;
 
   /**
    * Compute the new update factor

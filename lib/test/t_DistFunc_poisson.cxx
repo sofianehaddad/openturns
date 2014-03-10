@@ -40,12 +40,12 @@ int main(int argc, char *argv[])
       // rPoisson
       NumericalScalar lambdaMin(0.2);
       NumericalScalar lambdaMax(5.0);
-      UnsignedLong n1(5);
-      UnsignedLong nR(5);
-      for (UnsignedLong i1 = 0; i1 < n1; ++i1)
+      UnsignedInteger n1(5);
+      UnsignedInteger nR(5);
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         NumericalScalar lambda(lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1));
-        for (UnsignedLong iR = 0; iR < nR; ++iR)
+        for (UnsignedInteger iR = 0; iR < nR; ++iR)
         {
           fullprint << "rPoisson(" << lambda << ")=" << DistFunc::rPoisson(lambda) << std::endl;
         }

@@ -228,8 +228,8 @@ Path::DirectoryList Path::GetWrapperDirectoryList()
   if (openturnsWrapperDirectory)
   {
     std::string  pathToSplit = openturnsWrapperDirectory;
-    UnsignedLong lastColonPosition = 0;
-    UnsignedLong currentColonPosition = 0;
+    UnsignedInteger lastColonPosition = 0;
+    UnsignedInteger currentColonPosition = 0;
     while ( ((currentColonPosition = pathToSplit.find(Os::GetDirectoryListSeparator(), lastColonPosition)) != String::npos) &&
             ( currentColonPosition < pathToSplit.size() ) )
     {
@@ -286,8 +286,8 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   if (openturnsConfigDirectory)
   {
     std::string  pathToSplit = openturnsConfigDirectory;
-    UnsignedLong lastColonPosition = 0;
-    UnsignedLong currentColonPosition = 0;
+    UnsignedInteger lastColonPosition = 0;
+    UnsignedInteger currentColonPosition = 0;
     while ( ((currentColonPosition = pathToSplit.find(Os::GetDirectoryListSeparator(), lastColonPosition)) != String::npos) &&
             ( currentColonPosition < pathToSplit.size() ) )
     {
@@ -399,7 +399,7 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
  */
 void Path::AntislashFileName(FileName & filename)
 {
-  UnsignedLong i;
+  UnsignedInteger i;
   for(i = 0; i < filename.size(); i++)
     if(filename.at(i) == '/')
       filename.at(i) = '\\';
@@ -462,7 +462,7 @@ FileName Path::BuildTemporaryFileName(const FileName & pattern)
 {
 #ifndef WIN32
   String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + pattern);
-  UnsignedLong size(fullPattern.size());
+  UnsignedInteger size(fullPattern.size());
   char temporaryFileName[size + 1];
   strcpy(temporaryFileName, fullPattern.c_str());
   temporaryFileName[size] = 0;

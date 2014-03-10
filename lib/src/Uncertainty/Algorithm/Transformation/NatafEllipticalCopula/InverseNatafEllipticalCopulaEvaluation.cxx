@@ -53,8 +53,8 @@ InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation(c
   cholesky_(cholesky)
 {
   Description description;
-  for (UnsignedLong i = 0; i < cholesky_.getNbColumns(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedLong i = 0; i < cholesky_.getNbRows(); ++i) description.add(OSS() << "y" << i);
+  for (UnsignedInteger i = 0; i < cholesky_.getNbColumns(); ++i) description.add(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < cholesky_.getNbRows(); ++i) description.add(OSS() << "y" << i);
   setDescription(description);
 }
 
@@ -84,12 +84,12 @@ String InverseNatafEllipticalCopulaEvaluation::__repr__() const
  */
 NumericalPoint InverseNatafEllipticalCopulaEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension(getInputDimension());
+  const UnsignedInteger dimension(getInputDimension());
   // First, correlate the components
   NumericalPoint result(cholesky_ * inP);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Second, apply the commmon marginal distribution
-  for (UnsignedLong i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(NumericalPoint(1, result[i]));
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(NumericalPoint(1, result[i]));
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -107,13 +107,13 @@ Matrix InverseNatafEllipticalCopulaEvaluation::parametersGradient(const Numerica
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseNatafEllipticalCopulaEvaluation::getInputDimension() const
+UnsignedInteger InverseNatafEllipticalCopulaEvaluation::getInputDimension() const
 {
   return cholesky_.getNbColumns();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseNatafEllipticalCopulaEvaluation::getOutputDimension() const
+UnsignedInteger InverseNatafEllipticalCopulaEvaluation::getOutputDimension() const
 {
   return cholesky_.getNbRows();
 }

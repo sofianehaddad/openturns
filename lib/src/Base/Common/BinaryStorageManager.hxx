@@ -57,14 +57,14 @@ class BinaryStorageManager
 
   class VersionList
   {
-    std::vector<UnsignedLong> versions_;
+    std::vector<UnsignedInteger> versions_;
   public:
     VersionList() : versions_()
     {
       versions_.push_back(1);
     }
 
-    Bool contains(UnsignedLong v) const
+    Bool contains(UnsignedInteger v) const
     {
       return find(versions_.begin(), versions_.end(), v) != versions_.end();
     }
@@ -161,7 +161,7 @@ public:
    * @internal
    */
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedLong value);
+  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value);
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalScalar value);
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalComplex value);
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const String & value);
@@ -171,19 +171,19 @@ public:
   /* Add an indexed value to an internal object
    * @internal
    */
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Bool value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, UnsignedLong value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalScalar value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalComplex value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const String & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const InterfaceObject & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const PersistentObject & value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const PersistentObject & value);
 
   /* Read an attribute
    * @internal
    */
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedLong & value);
+  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value);
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalScalar & value);
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalComplex & value);
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, String & value);
@@ -193,20 +193,20 @@ public:
   /* Read an indexed value
    * @internal
    */
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Bool & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, UnsignedLong & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalScalar & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalComplex & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, String & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, InterfaceObject & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, PersistentObject & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, PersistentObject & value);
 #endif
 
 
 protected:
 
   /** Query the manager if the version is correct */
-  virtual Bool canManageVersion(UnsignedLong version) const;
+  virtual Bool canManageVersion(UnsignedInteger version) const;
 
   /** Return the current state of the storage manager (for those having one) */
   virtual const StorageManager::InternalObject & getState() const;

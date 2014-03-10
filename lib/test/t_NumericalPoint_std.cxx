@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     point1.add(0.);
     point1.add(1.);
 
-    UnsignedLong size = ref_point1.getDimension();
+    UnsignedInteger size = ref_point1.getDimension();
     fullprint << "size of point1 = " << size << std::endl;
 
     val1 = ref_point1[0];

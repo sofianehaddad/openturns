@@ -63,7 +63,7 @@ public:
   String __repr__() const;
 
   /** Dimension accessor */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Domain accessor */
   Domain getDomain() const;
@@ -74,7 +74,7 @@ public:
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(const UnsignedLong size) const;
+  virtual NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

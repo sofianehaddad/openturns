@@ -51,7 +51,7 @@ WelchFactory::WelchFactory(const String & name)
 }
 
 WelchFactory::WelchFactory(const FilteringWindows & window,
-                           const UnsignedLong blockNumber,
+                           const UnsignedInteger blockNumber,
                            const NumericalScalar overlap,
                            const String & name)
   : SpectralModelFactoryImplementation(name),
@@ -98,12 +98,12 @@ String WelchFactory::__str__(const String & offset) const
 }
 
 /* Number of blockNumber accessor */
-UnsignedLong WelchFactory::getBlockNumber() const
+UnsignedInteger WelchFactory::getBlockNumber() const
 {
   return blockNumber_;
 }
 
-void WelchFactory::setBlockNumber(const UnsignedLong blockNumber)
+void WelchFactory::setBlockNumber(const UnsignedInteger blockNumber)
 {
   if (blockNumber < 1) throw InvalidArgumentException(HERE) << "Error: the number of blocks should be at least 1";
   blockNumber_ = blockNumber;
@@ -123,16 +123,16 @@ void WelchFactory::setOverlap(const NumericalScalar overlap)
 
 UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) const
 {
-  const UnsignedLong dimension(sample.getDimension());
-  const UnsignedLong sampleSize(sample.getSize());
+  const UnsignedInteger dimension(sample.getDimension());
+  const UnsignedInteger sampleSize(sample.getSize());
   const RegularGrid timeGrid(sample.getTimeGrid());
-  const UnsignedLong N(timeGrid.getN());
+  const UnsignedInteger N(timeGrid.getN());
   const NumericalScalar timeStep(timeGrid.getStep());
   const NumericalScalar T(timeGrid.getEnd());
   // Preprocessing: the scaling factor, including the tappering window
   NumericalComplexCollection alpha(N);
   const NumericalScalar factor(timeStep / sqrt(sampleSize * T));
-  for (UnsignedLong m = 0; m < N; ++m)
+  for (UnsignedInteger m = 0; m < N; ++m)
   {
     // The window argument is normalized on [0, 1]
     const NumericalScalar xiM(static_cast<NumericalScalar>(m) / N);
@@ -144,7 +144,7 @@ UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) con
   // nonnegative frequency values. It is then extended as a stepwise function of
   // the frequency on positive and negative values using the hermitian symmetry
   // If N is even, kMax = N / 2, else kMax = (N + 1) / 2.
-  UnsignedLong kMax(N / 2);
+  UnsignedInteger kMax(N / 2);
   const NumericalScalar frequencyStep(1.0 / T);
   NumericalScalar frequencyMin(0.5 * frequencyStep);
   // Adjust kMax and frequencyMin if N is odd
@@ -156,29 +156,29 @@ UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) con
   const RegularGrid frequencyGrid(frequencyMin, frequencyStep, kMax);
   HermitianMatrixCollection DSPCollection(kMax, HermitianMatrix(dimension));
   // Loop over the time series
-  for (UnsignedLong l = 0 ; l < sampleSize; ++l)
+  for (UnsignedInteger l = 0 ; l < sampleSize; ++l)
   {
     // The current time series values are stored into a ComplexMatrix in order to
     // have a two-indices access and an internal linear storage. The data are stored column-wise, i.e the column elements are contiguous in memory
     ComplexMatrix zHat(kMax, dimension);
     // Loop over the dimension
     // For each component, compute the FFT of the time series component
-    for (UnsignedLong p = 0; p < dimension; ++p)
+    for (UnsignedInteger p = 0; p < dimension; ++p)
     {
       // Loop over the time stamps
       NumericalComplexCollection zP(N);
-      for (UnsignedLong m = 0; m < N; ++m) zP[m] = alpha[m] * sample[l][m][p]; // The first component of the value of a time series at a given index is the time value
+      for (UnsignedInteger m = 0; m < N; ++m) zP[m] = alpha[m] * sample[l][m][p]; // The first component of the value of a time series at a given index is the time value
       // Perform the FFT direct transform of the tapered data
       const NumericalComplexCollection zPHat(fftAlgorithm_.transform(zP));
       // Stores the result. Only the values associated with nonnegative frequency values are stored.
-      for (UnsignedLong k = 0; k < kMax; ++k) zHat(k, p) = zPHat[N - kMax + k];
+      for (UnsignedInteger k = 0; k < kMax; ++k) zHat(k, p) = zPHat[N - kMax + k];
     }
     // Now, we can estimate the spectral density over the reduced frequency grid
-    for (UnsignedLong k = 0; k < kMax; ++k)
+    for (UnsignedInteger k = 0; k < kMax; ++k)
     {
       // Perform the row-wise kronecker product
-      for (UnsignedLong p = 0; p < dimension; ++p)
-        for (UnsignedLong q = 0; q <= p; ++q)
+      for (UnsignedInteger p = 0; p < dimension; ++p)
+        for (UnsignedInteger q = 0; q <= p; ++q)
           DSPCollection[k](p, q) += zHat(k, p) * std::conj(zHat(k, q));
     }
   } // Loop over the time series
@@ -188,21 +188,21 @@ UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) con
 UserDefinedSpectralModel * WelchFactory::build(const Field & timeSeries) const
 {
   // We split the time series into overlaping blockNumbers that are used as a ProcessSample
-  const UnsignedLong size(timeSeries.getSize());
-  const UnsignedLong dimension(timeSeries.getDimension());
+  const UnsignedInteger size(timeSeries.getSize());
+  const UnsignedInteger dimension(timeSeries.getDimension());
   // First, compute the block size
-  const UnsignedLong blockSize(static_cast<UnsignedLong>(size / (1.0 + (blockNumber_ - 1.0) * (1.0 - overlap_))));
+  const UnsignedInteger blockSize(static_cast<UnsignedInteger>(size / (1.0 + (blockNumber_ - 1.0) * (1.0 - overlap_))));
   // Then, compute the associated hop size, even if it is not exactly associated with the overlap value
   // No hop size if only one block
-  const UnsignedLong hopSize(blockNumber_ == 1 ? 0 : (size - blockSize) / (blockNumber_ - 1));
+  const UnsignedInteger hopSize(blockNumber_ == 1 ? 0 : (size - blockSize) / (blockNumber_ - 1));
   const RegularGrid timeGrid(timeSeries.getTimeGrid());
   // Initialize the equivalent process sample with the correct time grid
   ProcessSample sample(blockNumber_, Field(RegularGrid(timeGrid.getStart(), timeGrid.getStep(), blockSize), dimension));
-  for (UnsignedLong blockIndex = 0; blockIndex < blockNumber_; ++blockIndex)
+  for (UnsignedInteger blockIndex = 0; blockIndex < blockNumber_; ++blockIndex)
   {
-    for (UnsignedLong timeIndex = 0; timeIndex < blockSize; ++timeIndex)
+    for (UnsignedInteger timeIndex = 0; timeIndex < blockSize; ++timeIndex)
     {
-      for (UnsignedLong i = 0; i < dimension; ++i)
+      for (UnsignedInteger i = 0; i < dimension; ++i)
         sample[blockIndex][timeIndex][i] = timeSeries.getValues()[blockIndex * hopSize + timeIndex][i];
     } // Loop on the time index
   } // Loop on the blocks

@@ -84,7 +84,7 @@ String DynamicalFunction::__str__(const String & offset) const
 }
 
 /* Get the i-th marginal function */
-DynamicalFunction DynamicalFunction::getMarginal(const UnsignedLong i) const
+DynamicalFunction DynamicalFunction::getMarginal(const UnsignedInteger i) const
 {
   return *(getImplementation()->getMarginal(i));
 }
@@ -132,19 +132,19 @@ ProcessSample DynamicalFunction::operator() (const ProcessSample & inPS) const
 }
 
 /* Accessor for input point dimension */
-UnsignedLong DynamicalFunction::getInputDimension() const
+UnsignedInteger DynamicalFunction::getInputDimension() const
 {
   return getImplementation()->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong DynamicalFunction::getOutputDimension() const
+UnsignedInteger DynamicalFunction::getOutputDimension() const
 {
   return getImplementation()->getOutputDimension();
 }
 
 /* Number of calls to the dynamical function */
-UnsignedLong DynamicalFunction::getCallsNumber() const
+UnsignedInteger DynamicalFunction::getCallsNumber() const
 {
   return getImplementation()->getCallsNumber();
 }

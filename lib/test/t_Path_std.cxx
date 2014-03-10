@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
     fullprint << "Installation directory=" << Path::GetInstallationDirectory() << std::endl;
     fullprint << "Module directory=" << Path::GetModuleDirectory() << std::endl;
     Path::DirectoryList wrapperDirectoryList(Path::GetWrapperDirectoryList());
-    for (UnsignedLong i = 0; i < wrapperDirectoryList.size(); ++i)
+    for (UnsignedInteger i = 0; i < wrapperDirectoryList.size(); ++i)
       fullprint << "wrapperDirectoryList[" << i << "]=" << wrapperDirectoryList[i] << std::endl;
     Path::DirectoryList configDirectoryList(Path::GetConfigDirectoryList());
-    for (UnsignedLong i = 0; i < configDirectoryList.size(); ++i)
+    for (UnsignedInteger i = 0; i < configDirectoryList.size(); ++i)
       fullprint << "configDirectoryList[" << i << "]=" << configDirectoryList[i] << std::endl;
     Path::DirectoryList list(2);
     FileName directory1(Path::CreateTemporaryDirectory("testDirectory1"));

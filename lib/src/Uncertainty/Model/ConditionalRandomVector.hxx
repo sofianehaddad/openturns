@@ -64,7 +64,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Realization accessor */
   NumericalPoint getRealization() const;

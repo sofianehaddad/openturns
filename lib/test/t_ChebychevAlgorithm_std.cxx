@@ -34,15 +34,15 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedLong iMax(5);
+    const UnsignedInteger iMax(5);
     Triangular distribution(-1.0, 0.3, 1.0);
     ChebychevAlgorithm algo(distribution);
     fullprint << "algo=" << algo << std::endl;
-    for (UnsignedLong i = 0; i < iMax; ++i)
+    for (UnsignedInteger i = 0; i < iMax; ++i)
       fullprint << distribution.getClassName() << " polynomial(" << i << ")=" << algo.getRecurrenceCoefficients(i).__str__() << std::endl;
     algo.setReferenceFamily(HermiteFactory());
     fullprint << "algo=" << algo << std::endl;
-    for (UnsignedLong i = 0; i < iMax; ++i)
+    for (UnsignedInteger i = 0; i < iMax; ++i)
       fullprint << distribution.getClassName() << " polynomial(" << i << ")=" << algo.getRecurrenceCoefficients(i).__str__() << std::endl;
   }
   catch (TestFailed & ex)

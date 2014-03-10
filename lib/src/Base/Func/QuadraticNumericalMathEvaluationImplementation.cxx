@@ -56,8 +56,8 @@ QuadraticNumericalMathEvaluationImplementation::QuadraticNumericalMathEvaluation
   /* Check if the dimension of the center is compatible with the linear and quadratic terms */
   if ((center.getDimension() != linear.getNbRows()) || (center.getDimension() != quadratic.getNbRows())) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term or with the quadratic term";
   Description description(0);
-  for (UnsignedLong i = 0; i < center.getDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedLong i = 0; i < constant.getDimension(); ++i) description.add(OSS() << "y" << i);
+  for (UnsignedInteger i = 0; i < center.getDimension(); ++i) description.add(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < constant.getDimension(); ++i) description.add(OSS() << "y" << i);
   setDescription(description);
 }
 
@@ -131,8 +131,8 @@ NumericalPoint QuadraticNumericalMathEvaluationImplementation::operator() (const
   const NumericalPoint delta(inP - center_);
   NumericalPoint result(constant_ + linear_ * delta);
   /* As we don't have a sheet extractor yet, we can't use the following code */
-  const UnsignedLong sheetNumber(quadratic_.getNbSheets());
-  for(UnsignedLong index = 0; index < sheetNumber; ++index)
+  const UnsignedInteger sheetNumber(quadratic_.getNbSheets());
+  for(UnsignedInteger index = 0; index < sheetNumber; ++index)
     result[index] += 0.5 * dot(delta, quadratic_.getSheet(index) * delta);
   ++callsNumber_;
   if (isHistoryEnabled_)
@@ -144,13 +144,13 @@ NumericalPoint QuadraticNumericalMathEvaluationImplementation::operator() (const
 }
 
 /* Accessor for input point dimension */
-UnsignedLong QuadraticNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger QuadraticNumericalMathEvaluationImplementation::getInputDimension() const
 {
   return center_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong QuadraticNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger QuadraticNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   return constant_.getDimension();
 }

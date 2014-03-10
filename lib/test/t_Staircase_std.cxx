@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   {
 
     // Instanciate one distribution object
-    UnsignedLong dim(1);
+    UnsignedInteger dim(1);
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     NumericalPoint sigma(dim, 1.0);
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
     Normal distribution2(meanPoint, sigma, R);
 
     // Test for sampling
-    UnsignedLong size = 2000;
-    UnsignedLong nPoints = 20;
+    UnsignedInteger size = 2000;
+    UnsignedInteger nPoints = 20;
     NumericalSample sample1(distribution1.getSample( size ));
     NumericalSample sample2(distribution2.getSample( size ));
 
@@ -63,14 +63,14 @@ int main(int argc, char *argv[])
     NumericalScalar count1;
     NumericalScalar count2;
 
-    for(UnsignedLong i = 0; i < nPoints; i++)
+    for(UnsignedInteger i = 0; i < nPoints; i++)
     {
       cursor1[0] = 13.*i / nPoints - 6.5;
       count1 = 0;
       cursor2[0] = 24.*i / nPoints - 13.5;
       count2 = 0;
 
-      for(UnsignedLong j = 0; j < size; j++)
+      for(UnsignedInteger j = 0; j < size; j++)
       {
         if(sample1[j][0] < cursor1[0]) count1++;
         if(sample2[j][0] < cursor2[0]) count2++;

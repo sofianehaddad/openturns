@@ -56,11 +56,11 @@ CleaningStrategy::CleaningStrategy()
 
 /* Constructor from an orthogonal basis */
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
-                                   const UnsignedLong maximumDimension,
+                                   const UnsignedInteger maximumDimension,
                                    const Bool verbose)
   : AdaptiveStrategyImplementation(basis, maximumDimension),
     currentVectorIndex_(0),
-    maximumSize_(ResourceMap::GetAsUnsignedLong( "CleaningStrategy-DefaultMaximumSize" )),
+    maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" )),
     significanceFactor_(ResourceMap::GetAsNumericalScalar( "CleaningStrategy-DefaultSignificanceFactor" )),
     verbose_(verbose)
 {
@@ -70,8 +70,8 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
 
 /* Constructor from an orthogonal basis */
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
-                                   const UnsignedLong maximumDimension,
-                                   const UnsignedLong maximumSize,
+                                   const UnsignedInteger maximumDimension,
+                                   const UnsignedInteger maximumSize,
                                    const NumericalScalar significanceFactor,
                                    const Bool verbose)
   : AdaptiveStrategyImplementation(basis, maximumDimension),
@@ -88,11 +88,11 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
 void CleaningStrategy::computeInitialBasis()
 {
   // Start with the first set of vectors
-  const UnsignedLong size(std::min(maximumSize_, maximumDimension_));
+  const UnsignedInteger size(std::min(maximumSize_, maximumDimension_));
   Psi_k_p_ = NumericalMathFunctionCollection(size);
   I_p_ = Indices(size);
   I_p_.fill();
-  for (UnsignedLong i = 0; i < size; ++i) Psi_k_p_[i] = basis_.build(i);
+  for (UnsignedInteger i = 0; i < size; ++i) Psi_k_p_[i] = basis_.build(i);
   addedPsi_k_ranks_ = Indices(I_p_.getSize());
   addedPsi_k_ranks_.fill();
   removedPsi_k_ranks_ = Indices(0);
@@ -106,7 +106,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k_p_,
                                    const NumericalScalar relativeError_p_)
 {
   // The dimension will be adapted, so it is not const
-  UnsignedLong dimension(alpha_k_p_.getSize());
+  UnsignedInteger dimension(alpha_k_p_.getSize());
   NumericalScalarCollection coefficients(alpha_k_p_.getCollection());
   if (verbose_)
   {
@@ -130,8 +130,8 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k_p_,
     NumericalScalar largest(fabs(coefficients[1]));
     NumericalScalar smallest(largest);
     NumericalScalar secondSmallest(smallest);
-    UnsignedLong rankSmallest(1);
-    for (UnsignedLong i = 2; i < dimension; ++i)
+    UnsignedInteger rankSmallest(1);
+    for (UnsignedInteger i = 2; i < dimension; ++i)
     {
       const NumericalScalar tmp(fabs(coefficients[i]));
       if (tmp > largest) largest = tmp;
@@ -143,7 +143,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k_p_,
       }
     } // Search for the extrems
     // Second, if the coefficient list is too large (it can be by only one term), remove the smallest term to free a place for the next vector.
-    UnsignedLong shift(0);
+    UnsignedInteger shift(0);
     if ((dimension > maximumSize_) && (currentVectorIndex_ < maximumDimension_))
     {
       // Add the smallest element to the removed list
@@ -173,8 +173,8 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k_p_,
     // Quick rejection test: nothing to do if smallest >= largest * significanceFactor_
     if (smallest < largest * significanceFactor_)
     {
-      UnsignedLong currentIndex(0);
-      for (UnsignedLong i = 0; i < dimension; ++i)
+      UnsignedInteger currentIndex(0);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
       {
         if (fabs(coefficients[i]) >= largest * significanceFactor_)
         {
@@ -210,7 +210,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k_p_,
     // First, sort the ranks of the deleted vectors in ascending order
     std::sort(removedPsi_k_ranks_.begin(), removedPsi_k_ranks_.end());
     // Second, remove them from end to start to avoid shift in the conservedPsi_k_ranks_ values
-    for (UnsignedLong i = removedPsi_k_ranks_.getSize(); i > 0; --i) conservedPsi_k_ranks_.erase(conservedPsi_k_ranks_.begin() + removedPsi_k_ranks_[i - 1]);
+    for (UnsignedInteger i = removedPsi_k_ranks_.getSize(); i > 0; --i) conservedPsi_k_ranks_.erase(conservedPsi_k_ranks_.begin() + removedPsi_k_ranks_[i - 1]);
   } // If dimension > 1
   // If we have not generated all the vectors, go to the next one
   if (currentVectorIndex_ < maximumDimension_)
@@ -256,18 +256,18 @@ String CleaningStrategy::__repr__() const
 
 
 /* Current vector index accessor */
-UnsignedLong CleaningStrategy::getCurrentVectorIndex() const
+UnsignedInteger CleaningStrategy::getCurrentVectorIndex() const
 {
   return currentVectorIndex_;
 }
 
 /* Maximum size accessor */
-UnsignedLong CleaningStrategy::getMaximumSize() const
+UnsignedInteger CleaningStrategy::getMaximumSize() const
 {
   return maximumSize_;
 }
 
-void CleaningStrategy::setMaximumSize(const UnsignedLong maximumSize)
+void CleaningStrategy::setMaximumSize(const UnsignedInteger maximumSize)
 {
   maximumSize_ = maximumSize;
 }

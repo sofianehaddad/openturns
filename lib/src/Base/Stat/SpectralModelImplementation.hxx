@@ -52,8 +52,8 @@ public:
   virtual SpectralModelImplementation * clone() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
-  void setDimension(const UnsignedLong dimension);
+  UnsignedInteger getDimension() const;
+  void setDimension(const UnsignedInteger dimension);
 
   /** Computation of the spectral density function */
   /** @deprecated */
@@ -80,7 +80,7 @@ public:
 protected:
 
   /** dimension parameter */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** Frequency grid */
   RegularGrid frequencyGrid_;

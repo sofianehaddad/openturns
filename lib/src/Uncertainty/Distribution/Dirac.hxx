@@ -105,7 +105,7 @@ public:
   NumericalPoint getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
@@ -119,7 +119,7 @@ public:
   NumericalPoint getPoint() const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;

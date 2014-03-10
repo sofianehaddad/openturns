@@ -40,17 +40,17 @@ int main(int argc, char *argv[])
   {
     // Overwide bug 471
     ResourceMap::SetAsNumericalScalar("BoxCox-RootEpsilon", 1.0e-6);
-    ResourceMap::SetAsUnsignedLong("ARMALikelihoodFactory-DefaultMaxFun", 100000);
+    ResourceMap::GetAsUnsignedLong("ARMALikelihoodFactory-DefaultMaxFun", 100000);
 
     // ARMA(p, q)
-    const UnsignedLong p(2);
-    const UnsignedLong q(1);
-    const UnsignedLong dimension(2);
+    const UnsignedInteger p(2);
+    const UnsignedInteger q(1);
+    const UnsignedInteger dimension(2);
 
     // Make a realization of an ARMA model
     // Tmin , Tmax and N points for TimeGrid
     const NumericalScalar dt(1.0);
-    const UnsignedLong size(400);
+    const UnsignedInteger size(400);
     RegularGrid timeGrid(0.0, dt, size);
 
     // Fixing the distributions for the WhiteNoise
@@ -103,21 +103,21 @@ int main(int argc, char *argv[])
 
     cov(0, 0) += 0.01 * DistFunc::rNormal();
     cov(1, 1) += 0.01 * DistFunc::rNormal();
-    for (UnsignedLong k = 0; k < p; ++k)
+    for (UnsignedInteger k = 0; k < p; ++k)
     {
-      for (UnsignedLong j = 0; j < dimension; ++j)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        for (UnsignedLong i = 0; i < dimension; ++i)
+        for (UnsignedInteger i = 0; i < dimension; ++i)
           alpha(i, j) = 0.01 * DistFunc::rNormal() ;
       }
       phi[k] = phi[k] + alpha;
     }
     //
-    for (UnsignedLong k = 0; k < q; ++k)
+    for (UnsignedInteger k = 0; k < q; ++k)
     {
-      for (UnsignedLong j = 0; j < dimension; ++j)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        for (UnsignedLong i = 0; i < dimension; ++i)
+        for (UnsignedInteger i = 0; i < dimension; ++i)
           alpha(i, j) = 0.01 * DistFunc::rNormal() ;
       }
       theta[k] = theta[k] + alpha;

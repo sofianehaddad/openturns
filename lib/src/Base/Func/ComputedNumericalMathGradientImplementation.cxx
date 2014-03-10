@@ -131,7 +131,7 @@ void * ComputedNumericalMathGradientImplementation::getState() const
 Matrix
 ComputedNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   try
   {
@@ -152,9 +152,9 @@ ComputedNumericalMathGradientImplementation::gradient(const NumericalPoint & inP
 
 
 /* Accessor for input point dimension */
-UnsignedLong ComputedNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger ComputedNumericalMathGradientImplementation::getInputDimension() const
 {
-  UnsignedLong inputDimension = 0;
+  UnsignedInteger inputDimension = 0;
 
   try
   {
@@ -171,9 +171,9 @@ UnsignedLong ComputedNumericalMathGradientImplementation::getInputDimension() co
 
 
 /* Accessor for output point dimension */
-UnsignedLong ComputedNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger ComputedNumericalMathGradientImplementation::getOutputDimension() const
 {
-  UnsignedLong outputDimension = 0;
+  UnsignedInteger outputDimension = 0;
 
   try
   {

@@ -40,20 +40,20 @@ int main(int argc, char *argv[])
       // dNonCentralChiSquare
       NumericalScalar nuMin(0.2);
       NumericalScalar nuMax(5.0);
-      UnsignedLong n1(5);
+      UnsignedInteger n1(5);
       NumericalScalar lambdaMin(0.2);
       NumericalScalar lambdaMax(5.0);
-      UnsignedLong n2(5);
+      UnsignedInteger n2(5);
       NumericalScalar xMin(0.1);
       NumericalScalar xMax(0.9);
-      UnsignedLong nX(5);
-      for (UnsignedLong i1 = 0; i1 < n1; ++i1)
+      UnsignedInteger nX(5);
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         NumericalScalar nu(nuMin + (nuMax - nuMin) * i1 / (n1 - 1));
-        for (UnsignedLong i2 = 0; i2 < n2; ++i2)
+        for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
           NumericalScalar lambda(lambdaMin + (lambdaMax - lambdaMin) * i2 / (n2 - 1));
-          for (UnsignedLong iX = 0; iX < nX; ++iX)
+          for (UnsignedInteger iX = 0; iX < nX; ++iX)
           {
             NumericalScalar x(xMin + (xMax - xMin) * iX / (nX - 1));
             fullprint << "dNonCentralChiSquare(" << nu << ", " << lambda << ", " << x << ")=" << DistFunc::dNonCentralChiSquare(nu, lambda, x) << std::endl;
@@ -65,20 +65,20 @@ int main(int argc, char *argv[])
       // pNonCentralChiSquare
       NumericalScalar nuMin(0.2);
       NumericalScalar nuMax(5.0);
-      UnsignedLong n1(5);
+      UnsignedInteger n1(5);
       NumericalScalar lambdaMin(0.2);
       NumericalScalar lambdaMax(5.0);
-      UnsignedLong n2(5);
+      UnsignedInteger n2(5);
       NumericalScalar xMin(0.1);
       NumericalScalar xMax(0.9);
-      UnsignedLong nX(5);
-      for (UnsignedLong i1 = 0; i1 < n1; ++i1)
+      UnsignedInteger nX(5);
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         NumericalScalar nu(nuMin + (nuMax - nuMin) * i1 / (n1 - 1));
-        for (UnsignedLong i2 = 0; i2 < n2; ++i2)
+        for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
           NumericalScalar lambda(lambdaMin + (lambdaMax - lambdaMin) * i2 / (n2 - 1));
-          for (UnsignedLong iX = 0; iX < nX; ++iX)
+          for (UnsignedInteger iX = 0; iX < nX; ++iX)
           {
             NumericalScalar x(xMin + (xMax - xMin) * iX / (nX - 1));
             fullprint << "pNonCentralChiSquare(" << nu << ", " << lambda << ", " << x << ")=" << DistFunc::pNonCentralChiSquare(nu, lambda, x) << ", complementary=" << DistFunc::pNonCentralChiSquare(nu, lambda, x, true) << std::endl;
@@ -90,18 +90,18 @@ int main(int argc, char *argv[])
       // rNonCentralChiSquare
       NumericalScalar nuMin(0.2);
       NumericalScalar nuMax(5.0);
-      UnsignedLong n1(5);
+      UnsignedInteger n1(5);
       NumericalScalar lambdaMin(0.2);
       NumericalScalar lambdaMax(5.0);
-      UnsignedLong n2(5);
-      UnsignedLong nR(5);
-      for (UnsignedLong i1 = 0; i1 < n1; ++i1)
+      UnsignedInteger n2(5);
+      UnsignedInteger nR(5);
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         NumericalScalar nu(nuMin + (nuMax - nuMin) * i1 / (n1 - 1));
-        for (UnsignedLong i2 = 0; i2 < n2; ++i2)
+        for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
           NumericalScalar lambda(lambdaMin + (lambdaMax - lambdaMin) * i2 / (n2 - 1));
-          for (UnsignedLong iR = 0; iR < nR; ++iR)
+          for (UnsignedInteger iR = 0; iR < nR; ++iR)
           {
             fullprint << "rNonCentralChiSquare(" << nu << ", " << lambda << ")=" << DistFunc::rNonCentralChiSquare(nu, lambda) << std::endl;
           }

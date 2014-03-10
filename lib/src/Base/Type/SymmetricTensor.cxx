@@ -40,8 +40,8 @@ SymmetricTensor::SymmetricTensor()
 /* Constructor with size (squareDim and sheetDim) */
 /* The SymmetricTensor is made up of a collection of squareDim*squareDim*sheetDim elements */
 /* The SymmetricTensor is viewed as a set of column vectors read one after another, one sheet after another */
-SymmetricTensor::SymmetricTensor(const UnsignedLong squareDim,
-                                 const UnsignedLong sheetDim)
+SymmetricTensor::SymmetricTensor(const UnsignedInteger squareDim,
+                                 const UnsignedInteger sheetDim)
   : Tensor(squareDim, squareDim, sheetDim),
     hasBeenSymmetrized_(false)
 {
@@ -49,8 +49,8 @@ SymmetricTensor::SymmetricTensor(const UnsignedLong squareDim,
 }
 
 /* Constructor from external collection */
-SymmetricTensor::SymmetricTensor(const UnsignedLong squareDim,
-                                 const UnsignedLong sheetDim,
+SymmetricTensor::SymmetricTensor(const UnsignedInteger squareDim,
+                                 const UnsignedInteger sheetDim,
                                  const Collection<NumericalScalar> & elementsValues)
   : Tensor(squareDim, squareDim, sheetDim, elementsValues),
     hasBeenSymmetrized_(false)
@@ -92,9 +92,9 @@ void SymmetricTensor::checkSymmetry() const
 
 /* Operator () gives access to the elements of the symmetric tensor (to modify these elements and their symmetric element) */
 /* The element of the symmetric tensor is designated by its row number i, its column number j and its sheet number k*/
-NumericalScalar & SymmetricTensor::operator () (const UnsignedLong i,
-    const UnsignedLong j,
-    const UnsignedLong k)
+NumericalScalar & SymmetricTensor::operator () (const UnsignedInteger i,
+    const UnsignedInteger j,
+    const UnsignedInteger k)
 {
   copyOnWrite();
   hasBeenSymmetrized_ = false;
@@ -103,21 +103,21 @@ NumericalScalar & SymmetricTensor::operator () (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the tensor (read only) */
 /* The element of the tensor is designated by its row number i and its column number j */
-const NumericalScalar & SymmetricTensor::operator () (const UnsignedLong i,
-    const UnsignedLong j,
-    const UnsignedLong k) const
+const NumericalScalar & SymmetricTensor::operator () (const UnsignedInteger i,
+    const UnsignedInteger j,
+    const UnsignedInteger k) const
 {
   return ( (i > j) ? (*getImplementation())(i, j, k) : (*getImplementation())(j, i, k) );
 }
 
 /* getSheet returns the sheet specified by its sheet number k */
-SymmetricMatrix SymmetricTensor::getSheet(const UnsignedLong k) const
+SymmetricMatrix SymmetricTensor::getSheet(const UnsignedInteger k) const
 {
   return getImplementation()->getSheetSym(k);
 }
 
 /* setSheet sets matrix m as the sheet specified by its sheet number k  */
-void SymmetricTensor::setSheet(const UnsignedLong k,
+void SymmetricTensor::setSheet(const UnsignedInteger k,
                                const SymmetricMatrix & m)
 {
   hasBeenSymmetrized_ = false;

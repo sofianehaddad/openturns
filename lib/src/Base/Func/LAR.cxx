@@ -55,8 +55,8 @@ BasisSequence LAR::build(const NumericalSample & x,
                          const NumericalSample & y,
                          const Basis & psi) const
 {
-  const UnsignedLong sampleSize( x.getSize() );
-  const UnsignedLong basisSize( psi.getSize() );
+  const UnsignedInteger sampleSize( x.getSize() );
+  const UnsignedInteger basisSize( psi.getSize() );
 
   if ( sampleSize == 0 ) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
   if ( y.getDimension() != 1 ) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
@@ -67,12 +67,12 @@ BasisSequence LAR::build(const NumericalSample & x,
 
   // get y as as point
   NumericalPoint mY( sampleSize );
-  for ( UnsignedLong j = 0; j < sampleSize; ++ j ) mY[j] = y[j][0];
+  for ( UnsignedInteger j = 0; j < sampleSize; ++ j ) mY[j] = y[j][0];
 
   // precompute the Gram matrix
   Matrix mPsiX( sampleSize, basisSize );
-  for ( UnsignedLong i = 0; i < sampleSize; ++ i )
-    for ( UnsignedLong j = 0; j < basisSize; ++ j )
+  for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
+    for ( UnsignedInteger j = 0; j < basisSize; ++ j )
       mPsiX(i, j) = psi[j](x[i])[0];
 
   // regression coefficients
@@ -91,16 +91,16 @@ BasisSequence LAR::build(const NumericalSample & x,
   NumericalScalar relativeConvergence( 1.0);
   Matrix squareRootGramMatrix;
 
-  const UnsignedLong maximumNumberOfIterations(std::min( basisSize, sampleSize - 1 ));
-  UnsignedLong iterations(0);
+  const UnsignedInteger maximumNumberOfIterations(std::min( basisSize, sampleSize - 1 ));
+  UnsignedInteger iterations(0);
 
   do
   {
     // find the predictor most correlated with the current residual
     const NumericalPoint c( mPsiX.transpose() * ( mY - mu ));
-    UnsignedLong candidatePredictor(0);
+    UnsignedInteger candidatePredictor(0);
     NumericalScalar cMax(-1.0);
-    for ( UnsignedLong j = 0; j < basisSize; ++ j )
+    for ( UnsignedInteger j = 0; j < basisSize; ++ j )
       if ( ! predictors.__contains__(j) )
       {
         NumericalScalar cAbs(fabs( c[j] ));
@@ -117,13 +117,13 @@ BasisSequence LAR::build(const NumericalSample & x,
     predictors.add( candidatePredictor );
     // Starting from here, predictors has a size at least equal to 1
     // store the sign of the correlation
-    UnsignedLong predictorsSize(predictors.getSize());
+    UnsignedInteger predictorsSize(predictors.getSize());
     NumericalPoint s( predictorsSize );
-    for ( UnsignedLong j = 0; j < predictorsSize; ++ j ) s[j] = (c[predictors[j]] < 0.0 ? -1.0 : 1.0);
+    for ( UnsignedInteger j = 0; j < predictorsSize; ++ j ) s[j] = (c[predictors[j]] < 0.0 ? -1.0 : 1.0);
 
     // store correlations of the inactive set
     NumericalPoint cI;
-    for ( UnsignedLong j = 0; j < basisSize; ++ j )
+    for ( UnsignedInteger j = 0; j < basisSize; ++ j )
       if ( ! predictors.__contains__(j) )
         cI.add( c[j] );
 
@@ -131,11 +131,11 @@ BasisSequence LAR::build(const NumericalSample & x,
     // Here, basisSize >= predictorsSize as we perform a maximum
     // of min(basisSize, sampleSize-1) iterations and predictorsSize <= sampleSize
     Matrix mPsiAc ( sampleSize, basisSize - predictorsSize );
-    UnsignedLong acIndex(0);
-    for ( UnsignedLong j = 0; j < basisSize; ++ j )
+    UnsignedInteger acIndex(0);
+    for ( UnsignedInteger j = 0; j < basisSize; ++ j )
       if ( ! predictors.__contains__(j) )
       {
-        for ( UnsignedLong i = 0; i < sampleSize; ++ i )
+        for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
         {
           mPsiAc(i, acIndex) = mPsiX(i, j);
         }
@@ -145,8 +145,8 @@ BasisSequence LAR::build(const NumericalSample & x,
     if ( getVerbose() ) LOGINFO( OSS() << "matrix of elements of the inactive set built.");
 
     Matrix mPsiAk( sampleSize, predictorsSize - 1 );
-    for ( UnsignedLong i = 0; i < sampleSize; ++ i )
-      for ( UnsignedLong j = 0; j < predictorsSize - 1; ++ j )
+    for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
+      for ( UnsignedInteger j = 0; j < predictorsSize - 1; ++ j )
         mPsiAk(i, j) = mPsiX(i, predictors[j]);
 
     if ( getVerbose() ) LOGINFO( OSS() << "matrix of elements of the active set built.");
@@ -154,7 +154,7 @@ BasisSequence LAR::build(const NumericalSample & x,
     // update the cholesky decomposition of the Gram matrix
     Matrix xk( sampleSize, 1 );
     NumericalScalar diagk( 0.0 );
-    for ( UnsignedLong i = 0; i < sampleSize; ++ i )
+    for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
     {
       xk(i, 0) = mPsiX(i, candidatePredictor);
       diagk += pow( xk(i, 0), 2.0 );
@@ -164,10 +164,10 @@ BasisSequence LAR::build(const NumericalSample & x,
       // solve upper triangular system R*rk=xk'*A to get the extra column
       NumericalPoint colk( ( (xk.transpose() * mPsiAk).transpose()) * NumericalPoint( 1, 1.0 ) ) ;
       NumericalPoint rk( predictorsSize - 1, 0.0 );
-      for (UnsignedLong i = 0; i < predictorsSize - 1; ++ i)
+      for (UnsignedInteger i = 0; i < predictorsSize - 1; ++ i)
       {
         NumericalScalar sum( colk[i] );
-        for ( UnsignedLong j = 0; j < i; ++ j )
+        for ( UnsignedInteger j = 0; j < i; ++ j )
           sum -= squareRootGramMatrix( j, i ) * rk[j];
         rk[i] = sum / squareRootGramMatrix( i, i );
       }
@@ -177,10 +177,10 @@ BasisSequence LAR::build(const NumericalSample & x,
 
       // reconstitute the whole decomposition matrix
       SquareMatrix newSquareRootGramMatrix( predictorsSize );
-      for ( UnsignedLong i = 0; i < predictorsSize - 1; ++ i )
-        for ( UnsignedLong j = 0; j < predictorsSize - 1; ++ j )
+      for ( UnsignedInteger i = 0; i < predictorsSize - 1; ++ i )
+        for ( UnsignedInteger j = 0; j < predictorsSize - 1; ++ j )
           newSquareRootGramMatrix(i, j) = squareRootGramMatrix( i, j );
-      for ( UnsignedLong i = 0; i < predictorsSize - 1; ++ i )
+      for ( UnsignedInteger i = 0; i < predictorsSize - 1; ++ i )
         newSquareRootGramMatrix(i, predictorsSize - 1 ) = rk[i];
       newSquareRootGramMatrix( predictorsSize - 1, predictorsSize - 1 ) = rkk;
       squareRootGramMatrix = newSquareRootGramMatrix;
@@ -191,16 +191,16 @@ BasisSequence LAR::build(const NumericalSample & x,
 
     // compute ga1 = AA'^-1*s using the cholesky decomposition
     NumericalPoint ga1( predictorsSize );
-    for ( UnsignedLong i = 0; i < predictorsSize; ++ i )
+    for ( UnsignedInteger i = 0; i < predictorsSize; ++ i )
     {
       NumericalScalar sum( s[i] );
-      for ( UnsignedLong j = 0; j < i; ++ j ) sum -= squareRootGramMatrix( j, i ) * ga1[j];
+      for ( UnsignedInteger j = 0; j < i; ++ j ) sum -= squareRootGramMatrix( j, i ) * ga1[j];
       ga1[i] = sum / squareRootGramMatrix( i, i );
     }
     for ( SignedInteger i = predictorsSize - 1; i >= 0; -- i )
     {
       NumericalScalar sum( ga1[i] );
-      for ( UnsignedLong j = i + 1; j < predictorsSize; ++ j )
+      for ( UnsignedInteger j = i + 1; j < predictorsSize; ++ j )
         sum -= squareRootGramMatrix( i, j ) * ga1[j];
       ga1[i] = sum / squareRootGramMatrix( i, i );
     }
@@ -212,8 +212,8 @@ BasisSequence LAR::build(const NumericalSample & x,
 
     // update the Matrix of elements of the active set
     mPsiAk = Matrix ( sampleSize, predictorsSize );
-    for ( UnsignedLong i = 0; i < sampleSize; ++ i )
-      for ( UnsignedLong j = 0; j < predictorsSize; ++ j )
+    for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
+      for ( UnsignedInteger j = 0; j < predictorsSize; ++ j )
         mPsiAk( i, j ) = mPsiX( i, predictors[j] );
 
     // descent direction
@@ -223,7 +223,7 @@ BasisSequence LAR::build(const NumericalSample & x,
 
     // compute step
     NumericalScalar step( cMax / cNorm );
-    for ( UnsignedLong j = 0; j < basisSize - predictorsSize; ++ j )
+    for ( UnsignedInteger j = 0; j < basisSize - predictorsSize; ++ j )
     {
       NumericalScalar lhs( (cMax - cI[j]) / (cNorm - d[j]) );
       NumericalScalar rhs( (cMax + cI[j]) / (cNorm + d[j]) );
@@ -239,7 +239,7 @@ BasisSequence LAR::build(const NumericalSample & x,
     // update coefficients
     oldCoefficientsL1Norm = coefficientsL1Norm;
     coefficientsL1Norm = 0.0;
-    for ( UnsignedLong j = 0; j < predictorsSize; ++ j )
+    for ( UnsignedInteger j = 0; j < predictorsSize; ++ j )
     {
       coefficients[predictors[j]] += step * descentDirectionAk[j];
       coefficientsL1Norm += fabs( coefficients[predictors[j]] );

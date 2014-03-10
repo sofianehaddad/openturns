@@ -42,7 +42,7 @@ AdaptiveStrategy::AdaptiveStrategy()
 
 /* Constructor from an orthogonal basis */
 AdaptiveStrategy::AdaptiveStrategy(const OrthogonalBasis & basis,
-                                   const UnsignedLong maximumDimension)
+                                   const UnsignedInteger maximumDimension)
   : TypedInterfaceObject<AdaptiveStrategyImplementation>(new FixedStrategy(basis, maximumDimension))
 {
   // Nothing to do
@@ -65,13 +65,13 @@ OrthogonalBasis AdaptiveStrategy::getBasis() const
 
 
 /* Maximum dimension accessor */
-void AdaptiveStrategy::setMaximumDimension(const UnsignedLong maximumDimension)
+void AdaptiveStrategy::setMaximumDimension(const UnsignedInteger maximumDimension)
 {
   copyOnWrite();
   getImplementation()->setMaximumDimension(maximumDimension);
 }
 
-UnsignedLong AdaptiveStrategy::getMaximumDimension() const
+UnsignedInteger AdaptiveStrategy::getMaximumDimension() const
 {
   return getImplementation()->getMaximumDimension();
 }

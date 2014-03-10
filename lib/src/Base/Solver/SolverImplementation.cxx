@@ -36,7 +36,7 @@ CLASSNAMEINIT(SolverImplementation);
 SolverImplementation::SolverImplementation(const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
     const NumericalScalar residualError,
-    const UnsignedLong maximumFunctionEvaluation)
+    const UnsignedInteger maximumFunctionEvaluation)
   : PersistentObject()
   , maximumFunctionEvaluation_(maximumFunctionEvaluation)
   , usedFunctionEvaluation_(0)
@@ -111,12 +111,12 @@ NumericalScalar SolverImplementation::getResidualError() const
 }
 
 /** Maximum function evaluation accessor */
-void SolverImplementation::setMaximumFunctionEvaluation(const UnsignedLong maximumFunctionEvaluation)
+void SolverImplementation::setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation)
 {
   maximumFunctionEvaluation_ = maximumFunctionEvaluation;
 }
 
-UnsignedLong SolverImplementation::getMaximumFunctionEvaluation() const
+UnsignedInteger SolverImplementation::getMaximumFunctionEvaluation() const
 {
   return maximumFunctionEvaluation_;
 }

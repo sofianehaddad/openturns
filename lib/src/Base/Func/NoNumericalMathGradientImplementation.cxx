@@ -78,20 +78,20 @@ Bool NoNumericalMathGradientImplementation::isActualImplementation() const
 /* Gradient method */
 Matrix NoNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   return Matrix();
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NoNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger NoNumericalMathGradientImplementation::getInputDimension() const
 {
   return 0;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NoNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger NoNumericalMathGradientImplementation::getOutputDimension() const
 {
   return 0;
 }

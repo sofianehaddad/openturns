@@ -188,7 +188,7 @@ void ProjectionStrategyImplementation::computeCoefficients(const NumericalMathFu
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
-    const UnsignedLong marginalIndex)
+    const UnsignedInteger marginalIndex)
 {
   throw NotYetImplementedException(HERE);
 }

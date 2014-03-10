@@ -54,8 +54,8 @@ MatrixImplementation::MatrixImplementation()
 /* Constructor with size (rowDim and colDim) */
 /* The MatrixImplementation is made up of a collection of rowDim*colDim elements */
 /* The MatrixImplementation is viewed as a set of column vectors read one after another */
-MatrixImplementation::MatrixImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim)
+MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim)
   : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
     nbRows_(rowDim),
     nbColumns_(colDim)
@@ -64,15 +64,15 @@ MatrixImplementation::MatrixImplementation(const UnsignedLong rowDim,
 }
 
 /* Constructor from external collection */
-MatrixImplementation::MatrixImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim,
+MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim,
     const Collection<NumericalScalar> & elementsValues)
   : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
     nbRows_(rowDim),
     nbColumns_(colDim)
 {
-  const UnsignedLong matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
-  for(UnsignedLong i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
+  const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
+  for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
 
 /* Virtual constructor */
@@ -97,14 +97,14 @@ String MatrixImplementation::__str__(const String & offset) const
   OSS oss(false);
   if (nbRows_ == 0 || nbColumns_ == 0) return "[]";
 
-  if ( (nbRows_ >= ResourceMap::GetAsUnsignedLong("Matrix-size-visible-in-str-from")) ||
-       (nbColumns_ >= ResourceMap::GetAsUnsignedLong("Matrix-size-visible-in-str-from")) )
+  if ( (nbRows_ >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) ||
+       (nbColumns_ >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) )
     oss << nbRows_ << "x" << nbColumns_ << "\n";
 
   size_t lwidth(0);
   size_t rwidth(0);
-  for ( UnsignedLong i = 0; i < nbRows_; ++i )
-    for ( UnsignedLong j = 0; j < nbColumns_; ++j )
+  for ( UnsignedInteger i = 0; i < nbRows_; ++i )
+    for ( UnsignedInteger j = 0; j < nbColumns_; ++j )
     {
       String st(OSS() << (*this)(i, j));
       size_t dotpos(st.find( '.' ));
@@ -114,11 +114,11 @@ String MatrixImplementation::__str__(const String & offset) const
 
   const char * bracket("[");
   const char * newline("");
-  for ( UnsignedLong i = 0; i < nbRows_; ++i, newline = "\n", bracket = " " )
+  for ( UnsignedInteger i = 0; i < nbRows_; ++i, newline = "\n", bracket = " " )
   {
     oss << newline << offset << bracket << "[ ";
     const char * sep("");
-    for ( UnsignedLong j = 0; j < nbColumns_; ++j, sep = " " )
+    for ( UnsignedInteger j = 0; j < nbColumns_; ++j, sep = " " )
     {
       String st(OSS() << (*this)(i, j));
       size_t dotpos(st.find( '.' ));
@@ -135,8 +135,8 @@ String MatrixImplementation::__str__(const String & offset) const
 /* Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
 /* The element of the MatrixImplementation is designated by its row number i and its column number j */
 /* the first element of the MatrixImplementation is m(0,0) */
-NumericalScalar & MatrixImplementation::operator() (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalScalar & MatrixImplementation::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
   if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
@@ -145,8 +145,8 @@ NumericalScalar & MatrixImplementation::operator() (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the MatrixImplementation (read only) */
 /* The element of the MatrixImplementation is designated by its row number i and its column number j */
-const NumericalScalar & MatrixImplementation::operator() (const UnsignedLong i,
-    const UnsignedLong j)  const
+const NumericalScalar & MatrixImplementation::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)  const
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
   if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
@@ -155,19 +155,19 @@ const NumericalScalar & MatrixImplementation::operator() (const UnsignedLong i,
 
 
 /* Get the dimensions of the MatrixImplementation : number of rows */
-const UnsignedLong MatrixImplementation::getNbRows() const
+const UnsignedInteger MatrixImplementation::getNbRows() const
 {
   return nbRows_;
 }
 
 /* Get the dimensions of the MatrixImplementation : number of columns */
-const UnsignedLong MatrixImplementation::getNbColumns() const
+const UnsignedInteger MatrixImplementation::getNbColumns() const
 {
   return nbColumns_;
 }
 
 /* Get the dimensions of the MatrixImplementation : dimension (square matrix : nbRows_) */
-const UnsignedLong MatrixImplementation::getDimension() const
+const UnsignedInteger MatrixImplementation::getDimension() const
 {
   return nbRows_;
 }
@@ -177,45 +177,45 @@ MatrixImplementation MatrixImplementation::transpose () const
 {
   MatrixImplementation trans(nbColumns_, nbRows_);
   // The source matrix is accessed columnwise in the natural order
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
       trans(j, i) = operator()(i, j);
   return trans;
 }
 
 /* Row extraction */
-const MatrixImplementation MatrixImplementation::getRow(const UnsignedLong rowIndex) const
+const MatrixImplementation MatrixImplementation::getRow(const UnsignedInteger rowIndex) const
 {
   if (rowIndex >= nbRows_) throw InvalidArgumentException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
   MatrixImplementation row(1, nbColumns_);
-  for (UnsignedLong i = 0; i < nbColumns_; ++i) row(0, i) = (*this)(rowIndex, i);
+  for (UnsignedInteger i = 0; i < nbColumns_; ++i) row(0, i) = (*this)(rowIndex, i);
   return row;
 }
 
-const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedLong rowIndex) const
+const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedInteger rowIndex) const
 {
   if (rowIndex >= nbRows_) throw InvalidArgumentException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
   MatrixImplementation row(1, nbColumns_);
-  for (UnsignedLong i = 0; i < rowIndex; ++i) row(0, i) = (*this)(rowIndex, i);
-  for (UnsignedLong i = rowIndex; i < nbColumns_; ++i) row(0, i) = (*this)(i, rowIndex);
+  for (UnsignedInteger i = 0; i < rowIndex; ++i) row(0, i) = (*this)(rowIndex, i);
+  for (UnsignedInteger i = rowIndex; i < nbColumns_; ++i) row(0, i) = (*this)(i, rowIndex);
   return row;
 }
 
 /* Column extration */
-const MatrixImplementation MatrixImplementation::getColumn(const UnsignedLong columnIndex) const
+const MatrixImplementation MatrixImplementation::getColumn(const UnsignedInteger columnIndex) const
 {
   if (columnIndex >= nbColumns_) throw InvalidArgumentException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
   MatrixImplementation column(nbRows_, 1);
-  for (UnsignedLong i = 0; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
+  for (UnsignedInteger i = 0; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
   return column;
 }
 
-const MatrixImplementation MatrixImplementation::getColumnSym(const UnsignedLong columnIndex) const
+const MatrixImplementation MatrixImplementation::getColumnSym(const UnsignedInteger columnIndex) const
 {
   if (columnIndex >= nbColumns_) throw InvalidArgumentException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
   MatrixImplementation column(nbRows_, 1);
-  for (UnsignedLong i = 0; i < columnIndex; ++i) column(i, 0) = (*this)(columnIndex, i);
-  for (UnsignedLong i = columnIndex; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
+  for (UnsignedInteger i = 0; i < columnIndex; ++i) column(i, 0) = (*this)(columnIndex, i);
+  for (UnsignedInteger i = columnIndex; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
   return column;
 }
 
@@ -386,16 +386,16 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
 }
 
 /* Integer power, general matrix */
-MatrixImplementation MatrixImplementation::genPower(const UnsignedLong n) const
+MatrixImplementation MatrixImplementation::genPower(const UnsignedInteger n) const
 {
   Bool first(true);
-  UnsignedLong exponent(n);
+  UnsignedInteger exponent(n);
   MatrixImplementation y;
   MatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedLong t(exponent % 2);
+    const UnsignedInteger t(exponent % 2);
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -418,16 +418,16 @@ MatrixImplementation MatrixImplementation::genPower(const UnsignedLong n) const
 }
 
 /* Integer power, symmetric matrix */
-MatrixImplementation MatrixImplementation::symPower(const UnsignedLong n) const
+MatrixImplementation MatrixImplementation::symPower(const UnsignedInteger n) const
 {
   Bool first(true);
-  UnsignedLong exponent(n);
+  UnsignedInteger exponent(n);
   MatrixImplementation y;
   MatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedLong t(exponent % 2);
+    const UnsignedInteger t(exponent % 2);
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -460,8 +460,8 @@ const Bool MatrixImplementation::isTriangular(Bool lower) const
 {
   if ( nbRows_ == nbColumns_ )
   {
-    for ( UnsignedLong j = 1; j < nbColumns_; ++ j )
-      for ( UnsignedLong i = 0; i < j; ++ i )
+    for ( UnsignedInteger j = 1; j < nbColumns_; ++ j )
+      for ( UnsignedInteger i = 0; i < j; ++ i )
         if ( fabs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0. )
           return false;
     return true;
@@ -491,8 +491,8 @@ Bool MatrixImplementation::isSymmetric() const
 {
   if ( nbRows_ == nbColumns_ )
   {
-    for ( UnsignedLong i = 1; i < nbRows_; ++ i )
-      for ( UnsignedLong j = 0; j < i; ++ j )
+    for ( UnsignedInteger i = 1; i < nbRows_; ++ i )
+      for ( UnsignedInteger j = 0; j < i; ++ j )
         if ( this->operator[](convertPosition(i, j)) != operator[](convertPosition(j, i)) )
           return false;
     return true;
@@ -507,8 +507,8 @@ void MatrixImplementation::symmetrize() const
 {
   MatrixImplementation *refThis(const_cast<MatrixImplementation *>(this));
   // Loop over the upper triangle
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < j; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < j; ++i)
       refThis->operator[](convertPosition(i, j)) = operator[](convertPosition(j, i));
 }
 
@@ -516,8 +516,8 @@ void MatrixImplementation::symmetrize() const
 Bool MatrixImplementation::hasUnitRange() const
 {
   bool unitRange = true;
-  for (UnsignedLong i = 0; i < nbRows_; ++i)
-    for (UnsignedLong j = 0; j < nbColumns_; ++j)
+  for (UnsignedInteger i = 0; i < nbRows_; ++i)
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     {
       if (fabs(this->operator[](convertPosition(i, j))) > 1.0)
       {
@@ -532,8 +532,8 @@ Bool MatrixImplementation::hasUnitRange() const
 MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold) const
 {
   MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
       NumericalScalar value((*this)(i, j));
       if (fabs(value) <= threshold) value = 0.0;
@@ -546,8 +546,8 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
 MatrixImplementation MatrixImplementation::cleanSym(const NumericalScalar threshold) const
 {
   MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = j; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = j; i < nbRows_; ++i)
     {
       NumericalScalar value((*this)(i, j));
       if (fabs(value) <= threshold) value = 0.0;
@@ -570,8 +570,8 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
   int p(std::max(m, n));
   int q(b.nbColumns_);
   MatrixImplementation B(p, q);
-  for(UnsignedLong j = 0; j < static_cast<UnsignedLong>(q); ++j)
-    for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(m); ++i)
+  for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
+    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(m); ++i)
       B(i, j) = b(i, j);
   int nrhs(q);
   int lwork(-1);
@@ -597,8 +597,8 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
     DGELSY_F77(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
   }
   MatrixImplementation result(n, q);
-  for(UnsignedLong j = 0; j < static_cast<UnsignedLong>(q); ++j)
-    for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(n); ++i)
+  for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
+    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
       result(i, j) = B(i, j);
   return result;
 }
@@ -609,7 +609,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
 NumericalPoint MatrixImplementation::solveLinearSystemRect (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedLong m(b.getDimension());
+  const UnsignedInteger m(b.getDimension());
   if (nbRows_ != m) throw InvalidDimensionException(HERE);
   if (nbRows_ == 0) throw InvalidDimensionException(HERE);
   // Solve the matrix linear system
@@ -664,7 +664,7 @@ NumericalPoint MatrixImplementation::solveLinearSystemTri (const NumericalPoint 
     const Bool keepIntact,
     const Bool lower)
 {
-  const UnsignedLong m(b.getDimension());
+  const UnsignedInteger m(b.getDimension());
   if (nbRows_ != m) throw InvalidDimensionException(HERE);
   if (nbRows_ == 0) throw InvalidDimensionException(HERE);
   // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
@@ -700,7 +700,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const Matrix
 NumericalPoint MatrixImplementation::solveLinearSystemSquare (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedLong m(b.getDimension());
+  const UnsignedInteger m(b.getDimension());
   if (nbRows_ != m) throw InvalidDimensionException(HERE);
   if (nbRows_ == 0) throw InvalidDimensionException(HERE);
   // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
@@ -747,7 +747,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
 NumericalPoint MatrixImplementation::solveLinearSystemSym (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedLong dimension(b.getDimension());
+  const UnsignedInteger dimension(b.getDimension());
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE);
   if (nbRows_ == 0) throw InvalidDimensionException(HERE);
   MatrixImplementation B(dimension, 1, b);
@@ -785,7 +785,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCov (const MatrixImp
 NumericalPoint MatrixImplementation::solveLinearSystemCov (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  const UnsignedLong dimension(b.getDimension());
+  const UnsignedInteger dimension(b.getDimension());
   MatrixImplementation B(dimension, 1, b);
   // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
   return solveLinearSystemCov(B, keepIntact);
@@ -827,7 +827,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
       DGETRF_F77(&n, &n, &A[0], &n, &ipiv[0], &info);
       if (info > 0) return -SpecFunc::MaxNumericalScalar;
       // Determinant computation
-      for (UnsignedLong i = 0; i < ipiv.size(); ++i)
+      for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
       {
         const NumericalScalar pivot(A[i * (ipiv.size() + 1)]);
         if (fabs(pivot) == 0.0)
@@ -845,7 +845,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
       DGETRF_F77(&n, &n, &(*this)[0], &n, &ipiv[0], &info);
       if (info > 0) return -SpecFunc::MaxNumericalScalar;
       // Determinant computation
-      for (UnsignedLong i = 0; i < ipiv.size(); ++i)
+      for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
       {
         const NumericalScalar pivot((*this)[i * (ipiv.size() + 1)]);
         if (fabs(pivot) == 0.0)
@@ -899,7 +899,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      NumericalPoint work(lwork);
      DSYTRF_F77(&uplo, &n, &A[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
      // Determinant computation
-     for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(n); ++i)
+     for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
      {
      determinant *= A[i * (ipiv.size() + 1)];
      if (ipiv[i] != int(i + 1)) determinant = -determinant;
@@ -912,7 +912,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      NumericalPoint work(lwork);
      DSYTRF_F77(&uplo, &n, &(*this)[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
      // Determinant computation
-     for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(n); ++i)
+     for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
      {
      determinant *= (*this)[i * (ipiv.size() + 1)];
      if (ipiv[i] != int(i + 1)) determinant = -determinant;
@@ -969,7 +969,7 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEi
   }
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   NumericalComplexCollection eigenValues(n);
-  for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(n); ++i) eigenValues[i] = NumericalComplex(wr[i], wi[i]);
+  for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i) eigenValues[i] = NumericalComplex(wr[i], wi[i]);
   return eigenValues;
 }
 
@@ -1008,26 +1008,26 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEi
   }
   // Cast the eigenvalues into OpenTURNS data structures
   NumericalComplexCollection eigenValues(n);
-  for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(n); ++i)
+  for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
   {
     eigenValues[i] = NumericalComplex(wr[i], wi[i]);
   }
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   // Cast the eigenvectors into OpenTURNS data structures
   v = ComplexMatrixImplementation(n, n);
-  UnsignedLong j(0);
-  while (j < static_cast<UnsignedLong>(n))
+  UnsignedInteger j(0);
+  while (j < static_cast<UnsignedInteger>(n))
   {
     // Real eigenvalue
     if (wi[j] == 0.0)
     {
-      for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(n); ++i) v(i, j) = vr(i, j);
+      for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i) v(i, j) = vr(i, j);
       ++j;
     }
     // Complex conjugate pair of eigenvalues
     else
     {
-      for (UnsignedLong i = 0; i < static_cast<UnsignedLong>(n); ++i)
+      for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
       {
         v(i, j)     = NumericalComplex(vr(i, j),  vr(i, j + 1));
         v(i, j + 1) = NumericalComplex(vr(i, j), -vr(i, j + 1));
@@ -1227,7 +1227,7 @@ MatrixImplementation::NumericalScalarCollection MatrixImplementation::triangular
   int one(1);
 
   NumericalScalarCollection x(nbRows_);
-  for (UnsignedLong i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
+  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
   DTRMV_F77(&uplo, &trans, &diag, &n, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
@@ -1252,8 +1252,8 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
     MatrixImplementation A(*this);
     DPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
-    for (UnsignedLong j = 0; j < (UnsignedLong)(n); ++j)
-      for (UnsignedLong i = 0; i < j; ++i)
+    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+      for (UnsignedInteger i = 0; i < j; ++i)
         A(i, j) = 0.0;
     A.setName(DefaultName);
     return A;
@@ -1261,8 +1261,8 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
   else
   {
     DPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
-    for (UnsignedLong j = 0; j < (UnsignedLong)(n); ++j)
-      for (UnsignedLong i = 0; i < (UnsignedLong)(j); ++i)
+    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+      for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
         (*this)(i, j) = 0.0;
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
     setName(DefaultName);
@@ -1297,8 +1297,8 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
     if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
 
     // rebuild R
-    for ( UnsignedLong i = 0; i < static_cast<UnsignedLong>(k) ; ++ i )
-      for ( UnsignedLong j = 0; j < static_cast<UnsignedLong>(n); ++ j )
+    for ( UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(k) ; ++ i )
+      for ( UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(n); ++ j )
         R(i, j) = Q(i, j);
 
     lwork = -1;
@@ -1323,8 +1323,8 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
     if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
 
     // rebuild R
-    for ( UnsignedLong i = 0; i < static_cast<UnsignedLong>(k) ; ++ i )
-      for ( UnsignedLong j = 0; j < static_cast<UnsignedLong>(n); ++ j )
+    for ( UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(k) ; ++ i )
+      for ( UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(n); ++ j )
         R(i, j) = (*this)(i, j);
 
     lwork = -1;
@@ -1363,14 +1363,14 @@ const NumericalScalar* MatrixImplementation::__baseaddress__() const
   return &(*this)[0];
 }
 
-UnsignedLong MatrixImplementation::__elementsize__() const
+UnsignedInteger MatrixImplementation::__elementsize__() const
 {
   return sizeof(NumericalScalar);
 }
 
-UnsignedLong MatrixImplementation::__stride__(UnsignedLong dim) const
+UnsignedInteger MatrixImplementation::__stride__(UnsignedInteger dim) const
 {
-  UnsignedLong stride = __elementsize__();
+  UnsignedInteger stride = __elementsize__();
   if (dim > 0)
     stride *= nbRows_;
   return stride;

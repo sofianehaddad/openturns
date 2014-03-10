@@ -47,18 +47,18 @@ NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation()
 }
 
 /* Parameter constructor */
-NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation(const UnsignedLong dimension)
+NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation(const UnsignedInteger dimension)
   : NumericalMathEvaluationImplementation()
   , dimension_(dimension)
 {
   Description description;
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     OSS oss;
     oss << "x" << i;
     description.add(oss);
   }
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     OSS oss;
     oss << "y" << i;
@@ -92,7 +92,7 @@ String NatafIndependentCopulaEvaluation::__repr__() const
 NumericalPoint NatafIndependentCopulaEvaluation::operator () (const NumericalPoint & inP) const
 {
   NumericalPoint result(dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const NumericalScalar x(inP[i]);
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaEvaluation if all the components are not in [0, 1], here in=" << inP;
@@ -115,13 +115,13 @@ Matrix NatafIndependentCopulaEvaluation::parametersGradient(const NumericalPoint
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NatafIndependentCopulaEvaluation::getInputDimension() const
+UnsignedInteger NatafIndependentCopulaEvaluation::getInputDimension() const
 {
   return dimension_;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NatafIndependentCopulaEvaluation::getOutputDimension() const
+UnsignedInteger NatafIndependentCopulaEvaluation::getOutputDimension() const
 {
   return dimension_;
 }

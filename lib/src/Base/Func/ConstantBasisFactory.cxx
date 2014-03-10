@@ -34,7 +34,7 @@ CLASSNAMEINIT(ConstantBasisFactory);
 static Factory<ConstantBasisFactory> RegisteredFactory("ConstantBasisFactory");
 
 /* Default constructor */
-ConstantBasisFactory::ConstantBasisFactory (const UnsignedLong inputDimension)
+ConstantBasisFactory::ConstantBasisFactory (const UnsignedInteger inputDimension)
   : BasisFactory()
   , inputDimension_(inputDimension)
 {

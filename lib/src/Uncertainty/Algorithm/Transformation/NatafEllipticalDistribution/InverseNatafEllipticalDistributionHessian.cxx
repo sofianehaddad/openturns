@@ -46,7 +46,7 @@ InverseNatafEllipticalDistributionHessian::InverseNatafEllipticalDistributionHes
 }
 
 /* Parameter constructor */
-InverseNatafEllipticalDistributionHessian::InverseNatafEllipticalDistributionHessian(const UnsignedLong dimension):
+InverseNatafEllipticalDistributionHessian::InverseNatafEllipticalDistributionHessian(const UnsignedInteger dimension):
   ConstantNumericalMathHessianImplementation(SymmetricTensor(dimension, dimension))
 {
   // Nothing to do

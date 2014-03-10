@@ -41,7 +41,7 @@ RandomGeneratorState::RandomGeneratorState(): buffer_(0), index_(0)
 }
 
 /* Standard constructor */
-RandomGeneratorState::RandomGeneratorState(const Indices buffer, const UnsignedLong index) : buffer_(buffer), index_(index)
+RandomGeneratorState::RandomGeneratorState(const Indices buffer, const UnsignedInteger index) : buffer_(buffer), index_(index)
 {
   // Nothing to do
 }
@@ -74,7 +74,7 @@ Indices RandomGeneratorState::getBuffer() const
 }
 
 /* Index Accessor */
-UnsignedLong RandomGeneratorState::getIndex() const
+UnsignedInteger RandomGeneratorState::getIndex() const
 {
   return index_;
 }
@@ -93,7 +93,7 @@ void RandomGeneratorState::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   Indices indicesState(buffer_.getSize());
-  for(UnsignedLong i = 0; i < buffer_.getSize(); i++)
+  for(UnsignedInteger i = 0; i < buffer_.getSize(); i++)
     indicesState[i] = buffer_[i];
   adv.saveAttribute( "buffer_", indicesState);
   adv.saveAttribute( "index_", index_);

@@ -35,7 +35,7 @@ CLASSNAMEINIT(QuadraticBasisFactory);
 static Factory<QuadraticBasisFactory> RegisteredFactory("QuadraticBasisFactory");
 
 /* Default constructor */
-QuadraticBasisFactory::QuadraticBasisFactory (const UnsignedLong inputDimension)
+QuadraticBasisFactory::QuadraticBasisFactory (const UnsignedInteger inputDimension)
   : BasisFactory()
   , inputDimension_(inputDimension)
 {
@@ -63,7 +63,7 @@ Basis QuadraticBasisFactory::build() const
   basis.add(LinearNumericalMathFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 1.0), Matrix(1, inputDimension_)));
 
   // linear terms
-  for ( UnsignedLong i = 0; i < inputDimension_; ++ i )
+  for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
   {
     Matrix linear(1, inputDimension_);
     linear(0, i) = 1.0;
@@ -71,9 +71,9 @@ Basis QuadraticBasisFactory::build() const
   }
 
   // square terms
-  for ( UnsignedLong i = 0; i < inputDimension_; ++ i )
+  for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
   {
-    for ( UnsignedLong j = i; j < inputDimension_; ++ j )
+    for ( UnsignedInteger j = i; j < inputDimension_; ++ j )
     {
       SymmetricTensor quadratic(inputDimension_, 1);
       quadratic(i, j, 0) = 1.0;

@@ -257,7 +257,7 @@ void Logistic::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Logistic::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Logistic::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return NumericalPoint(1, 0.0);
   if (n ==  2) return NumericalPoint(1, 3.2898681336964528730e00);

@@ -35,11 +35,11 @@ int main(int argc, char *argv[])
   try
   {
     NumericalMathFunction ref("x", "sin(x)");
-    UnsignedLong size(12);
+    UnsignedInteger size(12);
     NumericalPoint locations(size);
     NumericalPoint values(size);
     // Build locations/values with non-increasing locations
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       locations[i] = 10.0 * i * i / (size - 1.0) / (size - 1.0);
       values[i] = ref(NumericalPoint(1, locations[i]))[0];
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     PiecewiseLinearEvaluationImplementation evaluation(locations, values);
     fullprint << "evaluation=" << evaluation << std::endl;
     // Check the values
-    for (UnsignedLong i = 0; i < 2 * size; ++i)
+    for (UnsignedInteger i = 0; i < 2 * size; ++i)
     {
       NumericalPoint x(1, -1.0 + 12.0 * i / (2.0 * size - 1.0));
       fullprint << "f(" << x[0] << ")=" << evaluation(x) << ", ref=" << ref(x) << std::endl;

@@ -101,8 +101,8 @@ NumericalPoint PosteriorDistribution::computeLikelihood(const NumericalPoint & t
   Distribution conditionedDistribution(conditionalDistribution_.getConditionedDistribution());
   conditionedDistribution.setParametersCollection(theta);
   NumericalScalar likelihood(1.0);
-  const UnsignedLong size(observations_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(observations_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar atomicValue(conditionedDistribution.computePDF(observations_[i]));
     likelihood *= atomicValue;
@@ -127,7 +127,7 @@ NumericalScalar PosteriorDistribution::computeCDF(const NumericalPoint & point) 
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   Description inputDescription(getDimension());
-  for (UnsignedLong i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
   const NumericalMathFunction f(inputDescription, Description(1, "1"));
   const NumericalScalar cdf(conditionalDistribution_.computeExpectation(f, point)[0]);
   return cdf;
@@ -152,8 +152,8 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   conditionalDistribution_ = conditionalDistribution;
   setDimension(conditionalDistribution.getConditioningDistribution().getDimension());
   logNormalizationFactor_ = 0.0;
-  const UnsignedLong size(observations_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(observations_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
     logNormalizationFactor_ += log(conditionalDistribution_.computePDF(observations_[i]));
   if (logNormalizationFactor_ == -SpecFunc::MaxNumericalScalar) throw InvalidArgumentException(HERE) << "Error: the normalization factor is null with the given conditional distribution and observations.";
   computeRange();
@@ -199,7 +199,7 @@ void PosteriorDistribution::computeMean() const
 {
   // std::cerr << "in PosteriorDistribution::computeMean()" << std::endl;
   Description inputDescription(getDimension());
-  for (UnsignedLong i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
   const NumericalMathFunction meanFunction(inputDescription, inputDescription);
   // std::cerr << "meanFunction=" << meanFunction << std::endl;
   const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
@@ -214,7 +214,7 @@ NumericalPoint PosteriorDistribution::getStandardDeviation() const /*throw(NotDe
   // To insure that the covariance has been computed
   getCovariance();
   NumericalPoint sigma(getDimension());
-  for (UnsignedLong i = 0; i < getDimension(); ++i) sigma[i] = sqrt(covariance_(i, i));
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) sigma[i] = sqrt(covariance_(i, i));
   return sigma;
 }
 
@@ -233,18 +233,18 @@ NumericalPoint PosteriorDistribution::getKurtosis() const /*throw(NotDefinedExce
 /* Compute the covariance of the distribution */
 void PosteriorDistribution::computeCovariance() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   covariance_ = CovarianceMatrix(dimension);
   // To insure that the mean has been computed
   getMean();
   Description inputDescription(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i) inputDescription[i] = String(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < dimension; ++i) inputDescription[i] = String(OSS() << "x" << i);
   Description formulas((dimension * (dimension + 1)) / 2);
-  UnsignedLong index(0);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar muI(mean_[i]);
-    for (UnsignedLong j = 0; j <= i; ++j)
+    for (UnsignedInteger j = 0; j <= i; ++j)
     {
       const NumericalScalar muJ(mean_[j]);
       formulas[index] = String(OSS() << "(x" << i << "-" << muI << ")*(x" << j << "-" << muJ << ")");
@@ -255,8 +255,8 @@ void PosteriorDistribution::computeCovariance() const
   const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
   const NumericalPoint result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / exp(logNormalizationFactor_));
   index = 0;
-  for (UnsignedLong i = 0; i < dimension; ++i)
-    for (UnsignedLong j = 0; j <= i; ++j)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
     {
       covariance_(i, j) = result[index];
       ++index;

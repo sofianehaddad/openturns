@@ -73,8 +73,8 @@ public:
   void setFillStyle(const String & fillStyle);
 
   /** Line width accessor */
-  UnsignedLong getLineWidth() const;
-  void setLineWidth(const UnsignedLong lineWidth);
+  UnsignedInteger getLineWidth() const;
+  void setLineWidth(const UnsignedInteger lineWidth);
 
   /** Accessor for color */
   String getColor() const;
@@ -129,7 +129,7 @@ public:
   String draw() const;
 
   /** Get R point code from key */
-  UnsignedLong getPointCode(const String key) const;
+  UnsignedInteger getPointCode(const String key) const;
 
   /** Clean all the temporary data created by draw() method */
   void clean() const;
@@ -150,15 +150,15 @@ public:
   static String ConvertFromName(const String & name);
 
   /** Convert an RGB triplet to a valid hexadecimal code */
-  static String ConvertFromRGB(const UnsignedLong red,
-                               const UnsignedLong green,
-                               const UnsignedLong blue);
+  static String ConvertFromRGB(const UnsignedInteger red,
+                               const UnsignedInteger green,
+                               const UnsignedInteger blue);
 
   /** Convert an RGBA quadruplet to a valid hexadecimal code */
-  static String ConvertFromRGBA(const UnsignedLong red,
-                                const UnsignedLong green,
-                                const UnsignedLong blue,
-                                const UnsignedLong alpha);
+  static String ConvertFromRGBA(const UnsignedInteger red,
+                                const UnsignedInteger green,
+                                const UnsignedInteger blue,
+                                const UnsignedInteger alpha);
 
   /** Convert an RGB triplet to a valid hexadecimal code */
   static String ConvertFromRGB(const NumericalScalar red,
@@ -188,7 +188,7 @@ public:
                                 const NumericalScalar alpha);
 
   /** Build default palette */
-  static Description BuildDefaultPalette(const UnsignedLong size);
+  static Description BuildDefaultPalette(const UnsignedInteger size);
 
 }; /* class Drawable */
 

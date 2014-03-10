@@ -35,7 +35,7 @@ class ConstantBasisFactory
 public:
 
   /** Default constructor */
-  ConstantBasisFactory (const UnsignedLong inputDimension = 1);
+  ConstantBasisFactory (const UnsignedInteger inputDimension = 1);
 
   /* String converter */
   OT::String __repr__() const;
@@ -55,7 +55,7 @@ public:
   void load(OT::Advocate & adv);
 
 private:
-  UnsignedLong inputDimension_;
+  UnsignedInteger inputDimension_;
 };
 
 END_NAMESPACE_OPENTURNS

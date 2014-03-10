@@ -67,8 +67,8 @@ PythonNumericalMathEvaluationImplementation::PythonNumericalMathEvaluationImplem
 
 
 
-  const UnsignedLong inputDimension  = getInputDimension();
-  const UnsignedLong outputDimension = getOutputDimension();
+  const UnsignedInteger inputDimension  = getInputDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
   Description description(inputDimension + outputDimension);
 
   ScopedPyObjectPointer descIn(PyObject_CallMethod( pyObj_,
@@ -79,12 +79,12 @@ PythonNumericalMathEvaluationImplementation::PythonNumericalMathEvaluationImplem
        && ( PySequence_Size( descIn.get() ) == (SignedInteger)inputDimension ) )
   {
     Description inputDescription(convert< _PySequence_, Description >( descIn.get() ));
-    for (UnsignedLong i = 0; i < inputDimension; ++i)
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       description[i] = inputDescription[i];
     }
   }
-  else for (UnsignedLong i = 0; i < inputDimension; ++i) description[i] = (OSS() << "x" << i);
+  else for (UnsignedInteger i = 0; i < inputDimension; ++i) description[i] = (OSS() << "x" << i);
 
 
   ScopedPyObjectPointer descOut(PyObject_CallMethod( pyObj_,
@@ -95,12 +95,12 @@ PythonNumericalMathEvaluationImplementation::PythonNumericalMathEvaluationImplem
        && ( PySequence_Size( descOut.get() ) == (SignedInteger)outputDimension ) )
   {
     Description outputDescription(convert< _PySequence_, Description >( descOut.get() ));
-    for (UnsignedLong i = 0; i < outputDimension; ++i)
+    for (UnsignedInteger i = 0; i < outputDimension; ++i)
     {
       description[inputDimension + i] = outputDescription[i];
     }
   }
-  else for (UnsignedLong i = 0; i < outputDimension; ++i) description[inputDimension + i] = (OSS() << "y" << i);
+  else for (UnsignedInteger i = 0; i < outputDimension; ++i) description[inputDimension + i] = (OSS() << "y" << i);
 
   setDescription(description);
 }
@@ -164,7 +164,7 @@ Bool PythonNumericalMathEvaluationImplementation::isActualImplementation() const
 /* Operator () */
 NumericalPoint PythonNumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension( inP.getDimension() );
+  const UnsignedInteger dimension( inP.getDimension() );
 
   if ( dimension != getInputDimension() )
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getInputDimension();
@@ -219,9 +219,9 @@ NumericalPoint PythonNumericalMathEvaluationImplementation::operator() (const Nu
 /* Operator () */
 NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const NumericalSample & inS) const
 {
-  const UnsignedLong size = inS.getSize();
-  const UnsignedLong inDim = inS.getDimension();
-  const UnsignedLong outDim = getOutputDimension();
+  const UnsignedInteger size = inS.getSize();
+  const UnsignedInteger inDim = inS.getDimension();
+  const UnsignedInteger outDim = getOutputDimension();
   const bool useCache = p_cache_->isEnabled();
 
   NumericalSample outS(size, outDim);
@@ -229,7 +229,7 @@ NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const N
   if ( useCache )
   {
     std::set<NumericalPoint> uniqueValues;
-    for ( UnsignedLong i = 0; i < size; ++ i )
+    for ( UnsignedInteger i = 0; i < size; ++ i )
     {
       CacheKeyType inKey( inS[i].getCollection() );
       if ( p_cache_->hasKey( inKey ) )
@@ -253,7 +253,7 @@ NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const N
     toDo = inS;
   }
 
-  UnsignedLong toDoSize = toDo.getSize();
+  UnsignedInteger toDoSize = toDo.getSize();
   CacheType tempCache( toDoSize );
   if ( useCache ) tempCache.enable();
 
@@ -263,10 +263,10 @@ NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const N
 
     ScopedPyObjectPointer inTuple(PyTuple_New( toDoSize ));
 
-    for ( UnsignedLong i = 0; i < toDoSize; ++ i )
+    for ( UnsignedInteger i = 0; i < toDoSize; ++ i )
     {
       PyObject * eltTuple = PyTuple_New( inDim );
-      for ( UnsignedLong j = 0; j < inDim; ++ j ) PyTuple_SetItem( eltTuple, j, convert< NumericalScalar, _PyFloat_ > ( toDo[i][j] ) );
+      for ( UnsignedInteger j = 0; j < inDim; ++ j ) PyTuple_SetItem( eltTuple, j, convert< NumericalScalar, _PyFloat_ > ( toDo[i][j] ) );
       PyTuple_SetItem( inTuple.get(), i, eltTuple );
     }
     ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs( pyObj_, inTuple.get(), NULL ));
@@ -278,21 +278,21 @@ NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const N
 
     if ( PySequence_Check( result.get() ) )
     {
-      const UnsignedLong lengthResult = PySequence_Size( result.get() );
+      const UnsignedInteger lengthResult = PySequence_Size( result.get() );
       if ( lengthResult == toDoSize )
       {
-        for (UnsignedLong i = 0; i < toDoSize; ++i)
+        for (UnsignedInteger i = 0; i < toDoSize; ++i)
         {
           ScopedPyObjectPointer elt(PySequence_GetItem( result.get(), i ));
           if ( PySequence_Check( elt.get() ) )
           {
-            const UnsignedLong lengthElt = PySequence_Size( elt.get() );
+            const UnsignedInteger lengthElt = PySequence_Size( elt.get() );
             if ( lengthElt == outDim )
             {
               if ( useCache )
               {
                 NumericalPoint outP(outDim);
-                for (UnsignedLong j = 0; j < outDim; ++j)
+                for (UnsignedInteger j = 0; j < outDim; ++j)
                 {
                   ScopedPyObjectPointer val(PySequence_GetItem( elt.get(), j ));
                   outP[j] = convert< _PyFloat_, NumericalScalar >( val.get() );
@@ -301,7 +301,7 @@ NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const N
               }
               else
               {
-                for (UnsignedLong j = 0; j < outDim; ++j)
+                for (UnsignedInteger j = 0; j < outDim; ++j)
                 {
                   ScopedPyObjectPointer val(PySequence_GetItem( elt.get(), j ));
                   outS[i][j] = convert< _PyFloat_, NumericalScalar >( val.get() );
@@ -332,7 +332,7 @@ NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const N
   if ( useCache )
   {
     // fill all the output values
-    for( UnsignedLong i = 0; i < size; ++i )
+    for( UnsignedInteger i = 0; i < size; ++i )
     {
       CacheKeyType inKey( inS[i].getCollection() );
       if ( tempCache.hasKey( inKey ) )
@@ -353,23 +353,23 @@ NumericalSample PythonNumericalMathEvaluationImplementation::operator() (const N
 
 
 /* Accessor for input point dimension */
-UnsignedLong PythonNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger PythonNumericalMathEvaluationImplementation::getInputDimension() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getInputDimension" ),
                                const_cast<char *>( "()" ) ));
-  UnsignedLong dim = convert< _PyInt_, UnsignedLong >( result.get() );
+  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >( result.get() );
   return dim;
 }
 
 
 /* Accessor for output point dimension */
-UnsignedLong PythonNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger PythonNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getOutputDimension" ),
                                const_cast<char *>( "()" ) ));
-  UnsignedLong dim = convert< _PyInt_, UnsignedLong >( result.get() );
+  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >( result.get() );
   return dim;
 }
 

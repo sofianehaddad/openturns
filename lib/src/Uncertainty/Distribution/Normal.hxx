@@ -42,7 +42,7 @@ class Normal
 public:
 
   /** Default constructor */
-  explicit Normal(const UnsignedLong dimension = 1);
+  explicit Normal(const UnsignedInteger dimension = 1);
 
   /** Dimension 1 constructor */
   explicit Normal(const NumericalScalar mu, const NumericalScalar sd);
@@ -78,7 +78,7 @@ public:
 
   /** Get one realization of the Normal distribution */
   NumericalPoint getRealization() const;
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the CDF of the Normal distribution */
   using EllipticalDistribution::computeCDF;
@@ -110,7 +110,7 @@ public:
   NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;
@@ -125,7 +125,7 @@ public:
   NumericalPoint getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;

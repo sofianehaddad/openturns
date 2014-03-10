@@ -44,7 +44,7 @@ DescriptionImplementation::DescriptionImplementation()
 }
 
 /* Constructor with size */
-DescriptionImplementation::DescriptionImplementation(const UnsignedLong size)
+DescriptionImplementation::DescriptionImplementation(const UnsignedInteger size)
   : PersistentCollection<String>(size)
 {
   // Nothing to do
@@ -59,7 +59,7 @@ DescriptionImplementation::DescriptionImplementation(const String & value)
 
 
 /* Constructor with size and default value */
-DescriptionImplementation::DescriptionImplementation(const UnsignedLong size,
+DescriptionImplementation::DescriptionImplementation(const UnsignedInteger size,
     const String & value)
   : PersistentCollection<String>(size, value)
 {
@@ -84,10 +84,10 @@ DescriptionImplementation * DescriptionImplementation::clone() const
 /* Check if the content is blank */
 Bool DescriptionImplementation::isBlank() const
 {
-  for (UnsignedLong i = 0; i < getSize(); ++i)
+  for (UnsignedInteger i = 0; i < getSize(); ++i)
   {
-    const UnsignedLong length((*this)[i].size());
-    for (UnsignedLong j = 0; j < length; ++j)
+    const UnsignedInteger length((*this)[i].size());
+    for (UnsignedInteger j = 0; j < length; ++j)
       if (!isblank((*this)[i][j])) return false;
   }
   return true;
@@ -102,7 +102,7 @@ String DescriptionImplementation::__repr__() const
   if (!isEmpty())
   {
     String separator = "";
-    for(UnsignedLong i = 0; i < getSize(); ++i, separator = ",")
+    for(UnsignedInteger i = 0; i < getSize(); ++i, separator = ",")
       oss << separator << (*this)[i];
   }
 

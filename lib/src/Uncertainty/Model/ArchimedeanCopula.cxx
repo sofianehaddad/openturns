@@ -117,7 +117,7 @@ NumericalScalar ArchimedeanCopula::computeProbability(const Interval & interval)
 NumericalScalar ArchimedeanCopula::computeConditionalPDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // If x is outside of the range of the marginal distribution
   if ((x <= 0.0) || (x >= 1.0)) return 0.0;
@@ -177,7 +177,7 @@ ArchimedeanCopula::Implementation ArchimedeanCopula::getMarginal(const Indices &
 {
   if (!indices.check(1)) throw InvalidArgumentException(HERE) << "The indices of an archimedean copula  must be in the range [0, 1] and  must be different";
   // General case
-  const UnsignedLong outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension(indices.getSize());
   // Only one indice is needed, call the specialized method
   if (outputDimension == 1) return getMarginal(indices[0]);
   // The indices correspond to all the components, with a possible transposition of the two components.

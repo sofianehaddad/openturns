@@ -62,7 +62,7 @@ SecondOrderModelImplementation * SecondOrderModelImplementation::clone() const
 }
 
 /* Dimension accessor */
-UnsignedLong SecondOrderModelImplementation::getDimension() const
+UnsignedInteger SecondOrderModelImplementation::getDimension() const
 {
   return covarianceModel_.getDimension();
 }

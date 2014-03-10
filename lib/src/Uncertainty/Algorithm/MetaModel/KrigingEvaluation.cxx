@@ -99,21 +99,21 @@ Bool KrigingEvaluation::isActualImplementation() const
 NumericalPoint KrigingEvaluation::operator()(const NumericalPoint & inP) const
 {
   //  return operator()(NumericalSample(1, inP))[0];
-  const UnsignedLong trainingSize(inputSample_.getSize());
+  const UnsignedInteger trainingSize(inputSample_.getSize());
   // Evaluate the kernel part in parallel
   KrigingEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, trainingSize, functor );
   NumericalScalar value(functor.accumulator_);
   // Evaluate the basis part sequentially
-  const UnsignedLong basisSize(basis_.getSize());
-  for (UnsignedLong i = 0; i < basisSize; ++i) value += basis_[i](inP)[0] * beta_[i];
+  const UnsignedInteger basisSize(basis_.getSize());
+  for (UnsignedInteger i = 0; i < basisSize; ++i) value += basis_[i](inP)[0] * beta_[i];
   ++callsNumber_;
   return NumericalPoint(1, value);
 }
 
 NumericalSample KrigingEvaluation::operator()(const NumericalSample & inS) const
 {
-  const UnsignedLong size(inS.getSize());
+  const UnsignedInteger size(inS.getSize());
   NumericalSample result(size, getOutputDimension());
   const KrigingEvaluationSampleFunctor functor( inS, result, *this );
   TBB::ParallelFor( 0, size, functor );
@@ -123,13 +123,13 @@ NumericalSample KrigingEvaluation::operator()(const NumericalSample & inS) const
 
 
 /* Accessor for input point dimension */
-UnsignedLong KrigingEvaluation::getInputDimension() const
+UnsignedInteger KrigingEvaluation::getInputDimension() const
 {
   return basis_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong KrigingEvaluation::getOutputDimension() const
+UnsignedInteger KrigingEvaluation::getOutputDimension() const
 {
   return 1;
 }

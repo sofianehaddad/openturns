@@ -65,7 +65,7 @@ public:
 
   /** Get one realization of the distribution */
   NumericalPoint getRealization() const;
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
   using ContinuousDistribution::computeDDF;
@@ -103,7 +103,7 @@ public:
   NumericalPoint getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;

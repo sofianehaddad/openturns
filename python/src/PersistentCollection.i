@@ -8,4 +8,4 @@
 
 %include PersistentCollection.hxx
 
-%template(UnsignedLongPersistentCollection) OT::PersistentCollection<OT::UnsignedLong>;
+%template(UnsignedIntegerPersistentCollection) OT::PersistentCollection<OT::UnsignedInteger>;

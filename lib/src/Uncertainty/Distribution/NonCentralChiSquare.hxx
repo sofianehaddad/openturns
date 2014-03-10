@@ -92,7 +92,7 @@ public:
   NumericalPoint getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
@@ -110,8 +110,8 @@ public:
   NumericalScalar getLambda() const;
 
   /** Maximum iterations accessor */
-  void setMaximumIteration(const UnsignedLong maximumIteration);
-  UnsignedLong getMaximumIteration() const;
+  void setMaximumIteration(const UnsignedInteger maximumIteration);
+  UnsignedInteger getMaximumIteration() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -138,7 +138,7 @@ private:
   NumericalScalar lambda_;
 
   /** The maximum iterations for the PDF and CDF computations */
-  UnsignedLong maximumIteration_;
+  UnsignedInteger maximumIteration_;
 
 }; /* class NonCentralChiSquare */
 

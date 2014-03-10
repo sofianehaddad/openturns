@@ -74,7 +74,7 @@ int Os::ExecuteCommand(const String & command)
   int rc = -1;
   LOGINFO( OSS() << "Execute command=" << command );
 #ifdef WIN32
-  if ( ResourceMap::GetAsUnsignedLong("Os-create-process") == 1 )
+  if ( ResourceMap::GetAsUnsignedInteger("Os-create-process") == 1 )
   {
     // Startup information
     STARTUPINFO si;

@@ -55,10 +55,10 @@ MarginalTransformationGradient * MarginalTransformationGradient::clone() const
 /* Gradient */
 Matrix MarginalTransformationGradient::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   Matrix result(dimension, dimension);
   // (G^{-1} o F)' = F' . G^{-1}' o F = F' / (G' o G^{-1} o F)
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradientImplementation()->getClassName() == "AnalyticalNumericalMathGradientImplementation") result(i, i) = evaluation_.getExpressions()[i].gradient(NumericalPoint(1, inP[i]))(0, 0);
     else
@@ -84,13 +84,13 @@ Matrix MarginalTransformationGradient::gradient(const NumericalPoint & inP) cons
 }
 
 /* Accessor for input point dimension */
-UnsignedLong MarginalTransformationGradient::getInputDimension() const
+UnsignedInteger MarginalTransformationGradient::getInputDimension() const
 {
   return evaluation_.inputDistributionCollection_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong MarginalTransformationGradient::getOutputDimension() const
+UnsignedInteger MarginalTransformationGradient::getOutputDimension() const
 {
   return evaluation_.outputDistributionCollection_.getSize();
 }

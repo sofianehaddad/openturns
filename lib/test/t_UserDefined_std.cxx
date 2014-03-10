@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     NumericalSample oneSample = distribution.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
@@ -79,13 +79,13 @@ int main(int argc, char *argv[])
     NumericalPoint quantile = distribution.computeQuantile( 0.95 );
     fullprint << "Quantile=" << quantile << std::endl;
 
-    for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
     NumericalSample sample(4, 3);
-    for (UnsignedLong i = 0; i < 4; ++i)
+    for (UnsignedInteger i = 0; i < 4; ++i)
     {
-      for (UnsignedLong j = 0; j < 3; ++j)
+      for (UnsignedInteger j = 0; j < 3; ++j)
       {
         sample[i][j] = 10 * (i + 1) + 0.1 * (j + 1);
       }

@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
     /** Instance creation */
     NumericalMathFunction deviation("poutre_sample_no_retry");
 
-    UnsignedLong size(10);
+    UnsignedInteger size(10);
     NumericalSample inSample(size, 4);
     NumericalSample outSample1(size, 1);
-    for(UnsignedLong i = 0; i < size; i++)
+    for(UnsignedInteger i = 0; i < size; i++)
     {
       NumericalScalar fact(1.0 + NumericalScalar(i) / size);
       inSample[i][0] = 210.e9 * fact;

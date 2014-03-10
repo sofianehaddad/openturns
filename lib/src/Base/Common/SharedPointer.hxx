@@ -113,7 +113,7 @@ public:
    * Return: the number of references
    * See also: release() and add_ref_copy()
    */
-  UnsignedLong use_count()
+  UnsignedInteger use_count()
   {
     return static_cast<int volatile>( use_count_.get() );
   }
@@ -188,7 +188,7 @@ public:
     return use_count() == 1;
   }
 
-  UnsignedLong use_count() const
+  UnsignedInteger use_count() const
   {
     return ( p_impl_ != 0 ) ? p_impl_->use_count() : 0 ;
   }
@@ -376,7 +376,7 @@ public:
    * Use_count returns the number of shared pointers that
    * share the pointed-to object
    */
-  inline UnsignedLong use_count() const
+  inline UnsignedInteger use_count() const
   {
     return count_.use_count();
   }

@@ -57,8 +57,8 @@ FiniteDifferenceStepImplementation * FiniteDifferenceStepImplementation::clone()
 /* Epsilon accessor */
 void FiniteDifferenceStepImplementation::setEpsilon(const NumericalPoint & epsilon)
 {
-  const UnsignedLong dimension( epsilon.getDimension() );
-  for (UnsignedLong i = 0; i < dimension; ++ i)
+  const UnsignedInteger dimension( epsilon.getDimension() );
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     if (epsilon[i] < SpecFunc::MinNumericalScalar ) throw InvalidArgumentException(HERE) << "Null epsilon for component " << i;
   }

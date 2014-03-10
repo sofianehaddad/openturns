@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     point[1] =  4.0;
     point[2] = -4.0;
     fullprint << "value at " << point << "=" << evaluation(point) << std::endl;
-    for (UnsignedLong i = 0; i < evaluation.getOutputDimension(); ++i)
+    for (UnsignedInteger i = 0; i < evaluation.getOutputDimension(); ++i)
       fullprint << "Marginal " << i << "=" << evaluation.getMarginal(i)->__repr__() << std::endl;
   }
   catch (TestFailed & ex)

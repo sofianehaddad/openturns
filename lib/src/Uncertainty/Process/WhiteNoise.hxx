@@ -78,10 +78,10 @@ public:
 
   /** Continuation of the last realization on a given number of steps */
   using ProcessImplementation::getFuture;
-  TimeSeries getFuture(const UnsignedLong stepNumber) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
 
   /** Get the marginal process corresponding to the i-th marginal component */
-  Implementation getMarginalProcess(const UnsignedLong i) const;
+  Implementation getMarginalProcess(const UnsignedInteger i) const;
 
   /** Get the marginal process corresponding to indices components */
   Implementation getMarginalProcess(const Indices & indices) const;

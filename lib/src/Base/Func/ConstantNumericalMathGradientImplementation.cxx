@@ -75,11 +75,11 @@ String ConstantNumericalMathGradientImplementation::__repr__() const
 String ConstantNumericalMathGradientImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   Description description(getDescription());
-  if (description.getSize() == 0) for (UnsignedLong i = 0; i < inputDimension; ++i) description.add(OSS() << "x" << i);
+  if (description.getSize() == 0) for (UnsignedInteger i = 0; i < inputDimension; ++i) description.add(OSS() << "x" << i);
   if (hasVisibleName()) oss << offset << getName() << ":\n";
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     if (i == 0) oss << offset << "  (";
     oss << description[i];
@@ -108,13 +108,13 @@ Matrix ConstantNumericalMathGradientImplementation::gradient(const NumericalPoin
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ConstantNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger ConstantNumericalMathGradientImplementation::getInputDimension() const
 {
   return constant_.getNbRows();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ConstantNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger ConstantNumericalMathGradientImplementation::getOutputDimension() const
 {
   return constant_.getNbColumns();
 }

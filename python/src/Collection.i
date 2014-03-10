@@ -45,14 +45,14 @@ PyObject * __getitem__(PyObject * arg) const
   }
   else
   {
-    OT::UnsignedLong arg2;
+    OT::UnsignedInteger arg2;
     unsigned long val2 ;
     int ecode2 = 0 ;
     ecode2 = SWIG_AsVal_unsigned_SS_long(arg, &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #collectionType "___getitem__" "', argument " "2"" of type '" "OT::UnsignedLong""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #collectionType "___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
     }
-    arg2 = static_cast< OT::UnsignedLong >(val2);
+    arg2 = static_cast< OT::UnsignedInteger >(val2);
     return OT::convert< elementType, OT::traitsPythonType<elementType>::Type>( self->at( arg2 ) );
   }
 fail:
@@ -85,14 +85,14 @@ void __setitem__(PyObject * arg, PyObject * valObj)
   } 
   else
   {
-    OT::UnsignedLong arg2;
+    OT::UnsignedInteger arg2;
     unsigned long val2 ;
     int ecode2 = 0 ;
     ecode2 = SWIG_AsVal_unsigned_SS_long(arg, &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #collectionType "___setitem__" "', argument " "2"" of type '" "OT::UnsignedLong""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" #collectionType "___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
     }
-    arg2 = static_cast< OT::UnsignedLong >(val2);
+    arg2 = static_cast< OT::UnsignedInteger >(val2);
     elementType val = OT::convert< OT::traitsPythonType<elementType>::Type, elementType >( valObj );
     self->at(arg2) = val;
   }

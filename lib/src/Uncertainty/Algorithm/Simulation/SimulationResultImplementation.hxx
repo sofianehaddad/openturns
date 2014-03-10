@@ -53,8 +53,8 @@ public:
   SimulationResultImplementation(const Event & event,
                                  const NumericalScalar probabilityEstimate,
                                  const NumericalScalar varianceEstimate,
-                                 const UnsignedLong outerSampling,
-                                 const UnsignedLong blockSize);
+                                 const UnsignedInteger outerSampling,
+                                 const UnsignedInteger blockSize);
 
   /** Virtual constructor */
   virtual SimulationResultImplementation * clone() const;
@@ -87,12 +87,12 @@ public:
   Graph drawImportanceFactors() const;
 
   /** Sample size accessor */
-  UnsignedLong getOuterSampling() const;
-  void setOuterSampling(const UnsignedLong outerSampling);
+  UnsignedInteger getOuterSampling() const;
+  void setOuterSampling(const UnsignedInteger outerSampling);
 
   /** Block size accessor */
-  UnsignedLong getBlockSize() const;
-  void setBlockSize(const UnsignedLong blockSize);
+  UnsignedInteger getBlockSize() const;
+  void setBlockSize(const UnsignedInteger blockSize);
 
   /** Confidence length */
   virtual NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "SimulationResultImplementation-DefaultConfidenceLevel" )) const;
@@ -112,8 +112,8 @@ protected:
   Event event_;
   NumericalScalar probabilityEstimate_;
   NumericalScalar varianceEstimate_;
-  UnsignedLong outerSampling_;
-  UnsignedLong blockSize_;
+  UnsignedInteger outerSampling_;
+  UnsignedInteger blockSize_;
 
 }; // class SimulationResultImplementation
 

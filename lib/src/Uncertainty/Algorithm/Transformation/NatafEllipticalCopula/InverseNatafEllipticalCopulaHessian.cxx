@@ -91,19 +91,19 @@ String InverseNatafEllipticalCopulaHessian::__repr__() const
  */
 SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP) const
 {
-  UnsignedLong dimension(getInputDimension());
+  UnsignedInteger dimension(getInputDimension());
   // First, correlate the components
   NumericalPoint point(cholesky_ * inP);
   SymmetricTensor result(dimension, dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Then, apply standard marginal transformation
-  for (UnsignedLong k = 0; k < dimension; ++k)
+  for (UnsignedInteger k = 0; k < dimension; ++k)
   {
     NumericalScalar ddf(standardMarginal.computeDDF(NumericalPoint(1, point[k]))[0]);
-    for (UnsignedLong i = 0; i <= k; ++i)
+    for (UnsignedInteger i = 0; i <= k; ++i)
     {
       NumericalScalar factor(ddf * cholesky_(k, i));
-      for (UnsignedLong j = 0; j <= k; ++j)
+      for (UnsignedInteger j = 0; j <= k; ++j)
       {
         result(i, j, k) = cholesky_(k, j) * factor;
       }
@@ -113,13 +113,13 @@ SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const NumericalPoin
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseNatafEllipticalCopulaHessian::getInputDimension() const
+UnsignedInteger InverseNatafEllipticalCopulaHessian::getInputDimension() const
 {
   return cholesky_.getNbColumns();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseNatafEllipticalCopulaHessian::getOutputDimension() const
+UnsignedInteger InverseNatafEllipticalCopulaHessian::getOutputDimension() const
 {
   return cholesky_.getNbRows();
 }

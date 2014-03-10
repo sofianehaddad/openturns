@@ -51,12 +51,12 @@ public:
   virtual ClassifierImplementation * clone() const;
 
   /** Associate a point with a class */
-  virtual UnsignedLong classify(const NumericalPoint & inP) const;
+  virtual UnsignedInteger classify(const NumericalPoint & inP) const;
   virtual Indices classify(const NumericalSample & inS) const;
 
   /** Grade a point as if it were associated to a class */
   virtual NumericalScalar grade(const NumericalPoint & inP,
-                                UnsignedLong outC) const;
+                                UnsignedInteger outC) const;
   virtual NumericalPoint grade(const NumericalSample & inS,
                                const Indices & outC) const;
 
@@ -69,7 +69,7 @@ public:
   Bool getVerbose() const;
 
   /** Input space dimension */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

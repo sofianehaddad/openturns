@@ -45,7 +45,7 @@ public:
 
   /** Standard constructor using a filtering windows and a frequency limit*/
   WelchFactory(const FilteringWindows & window,
-               const UnsignedLong blockNumber,
+               const UnsignedInteger blockNumber,
                const NumericalScalar overlap = 0.5,
                const String & name = DefaultName);
 
@@ -63,8 +63,8 @@ public:
   void setFilteringWindows(const FilteringWindows & window);
 
   /** Number of block accessor */
-  UnsignedLong getBlockNumber() const;
-  void setBlockNumber(const UnsignedLong blockNumber);
+  UnsignedInteger getBlockNumber() const;
+  void setBlockNumber(const UnsignedInteger blockNumber);
 
   /** Overlap accessor */
   NumericalScalar getOverlap() const;
@@ -88,7 +88,7 @@ private:
   FilteringWindows window_;
 
   /** Size of a block */
-  UnsignedLong blockNumber_;
+  UnsignedInteger blockNumber_;
 
   /** Overlap percentage for Welch method */
   NumericalScalar overlap_;

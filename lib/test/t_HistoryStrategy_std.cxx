@@ -34,13 +34,13 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong size(10);
-    UnsignedLong dimension(2);
+    UnsignedInteger size(10);
+    UnsignedInteger dimension(2);
     NumericalSample sample(size, dimension);
     // Fill-in the sample
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedLong j = 0; j < dimension; ++j)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
       {
         sample[i][j] = i + NumericalScalar(j) / dimension;
       }
@@ -48,42 +48,42 @@ int main(int argc, char *argv[])
     fullprint << "sample=" << sample << std::endl;
     // History using the Null strategy
     Null nullStrategy;
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       nullStrategy.store(sample[i]);
     }
     fullprint << "Null strategy sample=" << nullStrategy.getSample() << std::endl;
     // History using the Full strategy
     Full fullStrategy;
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       fullStrategy.store(sample[i]);
     }
     fullprint << "Full strategy sample=" << fullStrategy.getSample() << std::endl;
     // History using the Last strategy, large storage
     Last lastStrategy(3 * size);
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       lastStrategy.store(sample[i]);
     }
     fullprint << "Last strategy sample (large storage)=" << lastStrategy.getSample() << std::endl;
     lastStrategy = Last(size / 3);
     // History using the Last strategy, small storage
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       lastStrategy.store(sample[i]);
     }
     fullprint << "Last strategy sample (small storage)=" << lastStrategy.getSample() << std::endl;
     // History using the Compact strategy, large storage
     Compact compactStrategy(3 * size);
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       compactStrategy.store(sample[i]);
     }
     fullprint << "Compact strategy sample (large storage)=" << compactStrategy.getSample() << std::endl;
     compactStrategy = Compact(size / 3);
     // History using the Compact strategy, small storage
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       compactStrategy.store(sample[i]);
     }

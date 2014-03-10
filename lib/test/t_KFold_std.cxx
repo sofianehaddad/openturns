@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  const UnsignedLong size = 100;
+  const UnsignedInteger size = 100;
   Uniform xuniform(0.9, 1.1);
   NumericalSample x( xuniform.getSample(size) );
   Uniform yuniform(1.9, 2.1);

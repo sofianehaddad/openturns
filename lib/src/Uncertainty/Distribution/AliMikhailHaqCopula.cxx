@@ -106,7 +106,7 @@ NumericalPoint AliMikhailHaqCopula::getRealization() const
 /* Get the DDF of the distribution */
 NumericalPoint AliMikhailHaqCopula::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -134,7 +134,7 @@ NumericalPoint AliMikhailHaqCopula::computeDDF(const NumericalPoint & point) con
 /* Get the PDF of the distribution */
 NumericalScalar AliMikhailHaqCopula::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -151,7 +151,7 @@ NumericalScalar AliMikhailHaqCopula::computePDF(const NumericalPoint & point) co
 /* Get the CDF of the distribution */
 NumericalScalar AliMikhailHaqCopula::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -189,7 +189,7 @@ CorrelationMatrix AliMikhailHaqCopula::getKendallTau() const
 /* Get the PDFGradient of the distribution */
 NumericalPoint AliMikhailHaqCopula::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   throw NotYetImplementedException(HERE);
@@ -198,7 +198,7 @@ NumericalPoint AliMikhailHaqCopula::computePDFGradient(const NumericalPoint & po
 /* Get the CDFGradient of the distribution */
 NumericalPoint AliMikhailHaqCopula::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   throw NotYetImplementedException(HERE);
@@ -214,7 +214,7 @@ NumericalPoint AliMikhailHaqCopula::computeQuantile(const NumericalScalar prob,
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar AliMikhailHaqCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
@@ -227,7 +227,7 @@ NumericalScalar AliMikhailHaqCopula::computeConditionalCDF(const NumericalScalar
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar AliMikhailHaqCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   if (q == 0.0) return 0.0;

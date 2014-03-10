@@ -47,7 +47,7 @@ public:
 
   /** Constructor from a Mesh and a dimension */
   Field(const Mesh & mesh,
-        const UnsignedLong dim);
+        const UnsignedInteger dim);
 
   /** Constructor from a Mesh and a sample */
   Field(const Mesh & mesh,
@@ -61,23 +61,23 @@ public:
   Field(const Implementation & implementation);
 
   /** Individual value accessor */
-  NSI_point operator[](const UnsignedLong index);
-  NSI_const_point operator[](const UnsignedLong index) const;
-  NSI_point at(const UnsignedLong index);
-  NSI_const_point at(const UnsignedLong index) const;
-  NumericalScalar & operator() (const UnsignedLong i,
-                                const UnsignedLong j);
-  const NumericalScalar & operator() (const UnsignedLong i,
-                                      const UnsignedLong j) const;
-  NumericalScalar & at(const UnsignedLong i,
-                       const UnsignedLong j);
-  const NumericalScalar & at(const UnsignedLong i,
-                             const UnsignedLong j) const;
+  NSI_point operator[](const UnsignedInteger index);
+  NSI_const_point operator[](const UnsignedInteger index) const;
+  NSI_point at(const UnsignedInteger index);
+  NSI_const_point at(const UnsignedInteger index) const;
+  NumericalScalar & operator() (const UnsignedInteger i,
+                                const UnsignedInteger j);
+  const NumericalScalar & operator() (const UnsignedInteger i,
+                                      const UnsignedInteger j) const;
+  NumericalScalar & at(const UnsignedInteger i,
+                       const UnsignedInteger j);
+  const NumericalScalar & at(const UnsignedInteger i,
+                             const UnsignedInteger j) const;
 #endif
 
   /** Accessor to values */
-  NumericalPoint getValueAtIndex(const UnsignedLong index) const;
-  void setValueAtIndex(const UnsignedLong index,
+  NumericalPoint getValueAtIndex(const UnsignedInteger index) const;
+  void setValueAtIndex(const UnsignedInteger index,
                        const NumericalPoint & val);
 
   NumericalPoint getValueAtNearestPosition(const NumericalPoint & position) const;
@@ -96,10 +96,10 @@ public:
   Bool operator ==(const Field & other) const;
 
   /* Method __len__() is for Python */
-  UnsignedLong __len__() const;
+  UnsignedInteger __len__() const;
 
-  NumericalPoint __getitem__ (const UnsignedLong index) const;
-  void __setitem__ (const UnsignedLong index,
+  NumericalPoint __getitem__ (const UnsignedInteger index) const;
+  void __setitem__ (const UnsignedInteger index,
                     const NumericalPoint & val);
 
   /**
@@ -113,11 +113,11 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Size accessor */
-  UnsignedLong getSize() const;
+  UnsignedInteger getSize() const;
 
   /** Dimension accessor */
-  UnsignedLong getMeshDimension() const;
-  UnsignedLong getDimension() const;
+  UnsignedInteger getMeshDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Return the values stored in the field as a sample */
   NumericalSample getSample() const;
@@ -130,7 +130,7 @@ public:
   NumericalPoint getTemporalMean() const;
 
   /** Draw a marginal of the field */
-  Graph drawMarginal(const UnsignedLong index = 0,
+  Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;
 
   /** VTK export */

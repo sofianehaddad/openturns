@@ -68,7 +68,7 @@ PythonDistributionImplementation::PythonDistributionImplementation(PyObject * py
   ScopedPyObjectPointer dim(PyObject_CallMethod ( pyObj_,
                             const_cast<char *>( "getDimension" ),
                             const_cast<char *>( "()" ) ));
-  setDimension(checkAndConvert< _PyInt_, UnsignedLong >( dim.get() ));
+  setDimension(checkAndConvert< _PyInt_, UnsignedInteger >( dim.get() ));
 
   if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("computeCDF") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
 
@@ -149,12 +149,12 @@ NumericalPoint PythonDistributionImplementation::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample PythonDistributionImplementation::getSample(const UnsignedLong size) const
+NumericalSample PythonDistributionImplementation::getSample(const UnsignedInteger size) const
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getSample") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getSample" ));
-    ScopedPyObjectPointer sizeArg(convert< UnsignedLong, _PyInt_ >( size ));
+    ScopedPyObjectPointer sizeArg(convert< UnsignedInteger, _PyInt_ >( size ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      sizeArg.get(), NULL ));
@@ -179,7 +179,7 @@ NumericalPoint PythonDistributionImplementation::computeDDF(const NumericalPoint
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("computeDDF") ) )
   {
-    const UnsignedLong dimension = inP.getDimension();
+    const UnsignedInteger dimension = inP.getDimension();
     if ( dimension != getDimension() )
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeDDF" ));
@@ -206,7 +206,7 @@ NumericalScalar PythonDistributionImplementation::computePDF(const NumericalPoin
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("computePDF") ) )
   {
-    const UnsignedLong dimension = inP.getDimension();
+    const UnsignedInteger dimension = inP.getDimension();
     if ( dimension != getDimension() )
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computePDF" ));
@@ -232,7 +232,7 @@ NumericalScalar PythonDistributionImplementation::computeLogPDF(const NumericalP
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("computeLogPDF") ) )
   {
-    const UnsignedLong dimension = inP.getDimension();
+    const UnsignedInteger dimension = inP.getDimension();
     if ( dimension != getDimension() )
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeLogPDF" ));
@@ -256,7 +256,7 @@ NumericalScalar PythonDistributionImplementation::computeLogPDF(const NumericalP
 /* Get the CDF of the distribution */
 NumericalScalar PythonDistributionImplementation::computeCDF(const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension = inP.getDimension();
+  const UnsignedInteger dimension = inP.getDimension();
   if ( dimension != getDimension() )
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
   ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeCDF" ));
@@ -278,7 +278,7 @@ NumericalScalar PythonDistributionImplementation::computeComplementaryCDF(const 
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("computeComplementaryCDF") ) )
   {
-    const UnsignedLong dimension = inP.getDimension();
+    const UnsignedInteger dimension = inP.getDimension();
     if ( dimension != getDimension() )
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeComplementaryCDF" ));
@@ -327,7 +327,7 @@ NumericalComplex PythonDistributionImplementation::computeCharacteristicFunction
 /* Get the PDFGradient of the distribution */
 NumericalPoint PythonDistributionImplementation::computePDFGradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension = inP.getDimension();
+  const UnsignedInteger dimension = inP.getDimension();
   if ( dimension != getDimension() )
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
   ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computePDFGradient" ));
@@ -347,7 +347,7 @@ NumericalPoint PythonDistributionImplementation::computePDFGradient(const Numeri
 /* Get the CDFGradient of the distribution */
 NumericalPoint PythonDistributionImplementation::computeCDFGradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension = inP.getDimension();
+  const UnsignedInteger dimension = inP.getDimension();
   if ( dimension != getDimension() )
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
   ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeCDFGradient" ));
@@ -494,12 +494,12 @@ NumericalPoint PythonDistributionImplementation::getKurtosis() const
 
 
 /* Get the raw moments of the distribution */
-NumericalPoint PythonDistributionImplementation::getStandardMoment(const UnsignedLong n) const
+NumericalPoint PythonDistributionImplementation::getStandardMoment(const UnsignedInteger n) const
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getStandardMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getStandardMoment" ));
-    ScopedPyObjectPointer nArg(convert< UnsignedLong, _PyInt_ >( n ));
+    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyInt_ >( n ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      nArg.get(), NULL ));
@@ -519,12 +519,12 @@ NumericalPoint PythonDistributionImplementation::getStandardMoment(const Unsigne
 
 
 /* Get the raw moments of the distribution */
-NumericalPoint PythonDistributionImplementation::getMoment(const UnsignedLong n) const
+NumericalPoint PythonDistributionImplementation::getMoment(const UnsignedInteger n) const
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getMoment" ));
-    ScopedPyObjectPointer nArg(convert< UnsignedLong, _PyInt_ >( n ));
+    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyInt_ >( n ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      nArg.get(), NULL ));
@@ -543,12 +543,12 @@ NumericalPoint PythonDistributionImplementation::getMoment(const UnsignedLong n)
 }
 
 /* Get the centered moments of the distribution */
-NumericalPoint PythonDistributionImplementation::getCenteredMoment(const UnsignedLong n) const
+NumericalPoint PythonDistributionImplementation::getCenteredMoment(const UnsignedInteger n) const
 {
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getCenteredMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getCenteredMoment" ));
-    ScopedPyObjectPointer nArg(convert< UnsignedLong, _PyInt_ >( n ));
+    ScopedPyObjectPointer nArg(convert< UnsignedInteger, _PyInt_ >( n ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      nArg.get(), NULL ));
@@ -731,7 +731,7 @@ void PythonDistributionImplementation::computeRange()
       handleException();
     }
 
-    const UnsignedLong size = PySequence_Fast_GET_SIZE( callResult.get() );
+    const UnsignedInteger size = PySequence_Fast_GET_SIZE( callResult.get() );
 
     if (size < 2)
     {
@@ -743,15 +743,15 @@ void PythonDistributionImplementation::computeRange()
     PyObject * elt2 = PySequence_Fast_GET_ITEM( callResult.get(), 1 );
     NumericalPoint upperBound(convert< _PySequence_, NumericalPoint >(elt2));
 
-    const UnsignedLong dimension = getDimension();
+    const UnsignedInteger dimension = getDimension();
     Interval::BoolCollection finiteLowerBound(dimension, false);
     Interval::BoolCollection finiteUpperBound(dimension, false);
     if (size > 3)
     {
       PyObject * elt3 = PySequence_Fast_GET_ITEM( callResult.get(), 2 );
-      finiteLowerBound = convert< _PySequence_, Collection<UnsignedLong> >(elt3);
+      finiteLowerBound = convert< _PySequence_, Collection<UnsignedInteger> >(elt3);
       PyObject * elt4 = PySequence_Fast_GET_ITEM( callResult.get(), 3 );
-      finiteUpperBound = convert< _PySequence_, Collection<UnsignedLong> >(elt4);
+      finiteUpperBound = convert< _PySequence_, Collection<UnsignedInteger> >(elt4);
     }
 
     Interval result(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);

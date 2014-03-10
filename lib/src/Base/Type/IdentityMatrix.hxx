@@ -47,7 +47,7 @@ public:
   IdentityMatrix();
 
   /** Constructor with size */
-  explicit IdentityMatrix(const UnsignedLong dim);
+  explicit IdentityMatrix(const UnsignedInteger dim);
 
 
   /** String converter */
@@ -59,8 +59,8 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j) const;
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j) const;
 #endif
 
   /** Multiplications */
@@ -112,8 +112,8 @@ private:
 
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j);
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j);
 }; /* class IdentityMatrix */
 
 END_NAMESPACE_OPENTURNS

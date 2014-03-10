@@ -49,8 +49,8 @@ public:
   typedef PersistentCollection<SquareMatrix>   SquareMatrixPersistentCollection;
 
   /** Default and standard constructors */
-  explicit ARMACoefficients(const UnsignedLong & size = 0,
-                            const UnsignedLong & dimension = 1);
+  explicit ARMACoefficients(const UnsignedInteger & size = 0,
+                            const UnsignedInteger & dimension = 1);
   explicit ARMACoefficients(const SquareMatrixCollection & collection);
   explicit ARMACoefficients(const NumericalPoint & ScalarCoefficients);
   explicit ARMACoefficients(const UniVariatePolynomial & polynomial);
@@ -63,7 +63,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Definition of add method : control of SquareMatrix sizes */
   void add(const SquareMatrix & matrix);
@@ -77,7 +77,7 @@ public:
 private:
 
   /** Dimension of the underlying ARMA process */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
 }; /* class ARMACoefficients */
 END_NAMESPACE_OPENTURNS

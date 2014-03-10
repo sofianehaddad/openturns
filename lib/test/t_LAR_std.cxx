@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   //   Log::Show( Log::Flags() | Log::INFO );
 
   // Problem parameters
-  UnsignedLong dimension(3);
+  UnsignedInteger dimension(3);
   NumericalScalar a(7.0);
   NumericalScalar b(0.1);
   // Reference analytical values
@@ -84,12 +84,12 @@ int main(int argc, char *argv[])
   OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
   // design experiment
-  UnsignedLong samplingSize(75);
+  UnsignedInteger samplingSize(75);
   Experiment experiment(LowDiscrepancyExperiment(SobolSequence(dimension), distribution, samplingSize));
 
   // build the isoprobabilistic transformation
   Collection<Distribution> marginalZ;
-  for (UnsignedLong i = 0; i < dimension; ++ i )
+  for (UnsignedInteger i = 0; i < dimension; ++ i )
   {
     marginalZ.add(productBasis.getMeasure().getMarginal(i));
   }
@@ -104,10 +104,10 @@ int main(int argc, char *argv[])
   NumericalSample y( model(x) );
 
   // build basis
-  UnsignedLong degree = 10;
-  UnsignedLong basisSize = enumerateFunction.getStrataCumulatedCardinal(degree);
+  UnsignedInteger degree = 10;
+  UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal(degree);
   Basis psi;
-  for ( UnsignedLong i = 0; i < basisSize; ++ i )
+  for ( UnsignedInteger i = 0; i < basisSize; ++ i )
   {
     psi.add(productBasis.build(i));
   }
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 
   BasisSequence seq = factory.build( u, y, psi );
 
-  UnsignedLong first = 20;
+  UnsignedInteger first = 20;
   if ( seq.getSize() >= first )
     fullprint << "first " << first << " indices = " << seq[first - 1] << std::endl;
 

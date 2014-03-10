@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
     Dirac distribution(0.7);
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));
     DiracFactory factory;
     CovarianceMatrix covariance;

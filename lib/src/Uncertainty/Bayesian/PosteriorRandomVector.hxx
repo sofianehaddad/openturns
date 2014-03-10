@@ -60,13 +60,13 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Dimension accessor */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Realization accessor */
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(const UnsignedLong size) const;
+  virtual NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

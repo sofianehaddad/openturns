@@ -40,12 +40,12 @@ int main(int argc, char *argv[])
     NumericalMathFunction myFunction("wrapper");
 
     /* We create a distribution */
-    UnsignedLong dim(myFunction.getInputDimension());
+    UnsignedInteger dim(myFunction.getInputDimension());
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       R(i, i) = 1.0;
-      for (UnsignedLong j = 0; j < i; j++)
+      for (UnsignedInteger j = 0; j < i; j++)
       {
         R(i, j) = NumericalScalar(j + 1) / dim;
       }

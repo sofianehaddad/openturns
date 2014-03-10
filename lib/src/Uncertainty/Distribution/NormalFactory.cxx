@@ -77,7 +77,7 @@ Normal NormalFactory::buildAsNormal(const NumericalPointCollection & parameters)
 {
   try
   {
-    UnsignedLong dimension(parameters.getSize() == 1 ? 1 : parameters.getSize() - 1);
+    UnsignedInteger dimension(parameters.getSize() == 1 ? 1 : parameters.getSize() - 1);
     Normal distribution(dimension);
     distribution.setParametersCollection(parameters);
     return distribution;

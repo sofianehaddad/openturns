@@ -45,7 +45,7 @@ public:
 
   /** Constructor from an orthogonal basis */
   SequentialStrategy(const OrthogonalBasis & basis,
-                     const UnsignedLong maximumDimension,
+                     const UnsignedInteger maximumDimension,
                      const Bool verbose = false);
 
   /** Virtual constructor */
@@ -78,7 +78,7 @@ protected:
 
 private:
   // Index of the next vector to be generated
-  UnsignedLong currentVectorIndex_;
+  UnsignedInteger currentVectorIndex_;
 
   // Verbose
   Bool verbose_;

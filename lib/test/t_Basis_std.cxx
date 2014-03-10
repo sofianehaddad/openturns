@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  const UnsignedLong dimension = 3;
+  const UnsignedInteger dimension = 3;
   Description input;
   Description output[dimension];
-  for ( UnsignedLong j = 0; j < dimension; ++ j )
+  for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
     OSS oss;
     oss << "x" << j;
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     output[j].add(in);
   }
   Collection<NumericalMathFunction> coll;
-  for ( UnsignedLong j = 0; j < dimension; ++ j )
+  for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
     NumericalMathFunction ei(input, output[j], output[j]);
     coll.add(ei);

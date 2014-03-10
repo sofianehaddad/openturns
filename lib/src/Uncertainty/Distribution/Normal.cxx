@@ -47,7 +47,7 @@ CLASSNAMEINIT(Normal);
 static Factory<Normal> RegisteredFactory("Normal");
 
 /* Constructor for multiD standard normal distribution */
-Normal::Normal(const UnsignedLong dimension)
+Normal::Normal(const UnsignedInteger dimension)
   : EllipticalDistribution(NumericalPoint(dimension, 0.0)
                            , NumericalPoint(dimension, 1.0)
                            , CorrelationMatrix(dimension),
@@ -102,15 +102,15 @@ Normal::Normal(const NumericalPoint & mean,
   , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, mean.getDimension())))
   , hasIndependentCopula_(false)
 {
-  UnsignedLong dimension(mean.getDimension());
+  UnsignedInteger dimension(mean.getDimension());
   if (C.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mean vector and the covariance matrix have incompatible dimensions";
   if (!const_cast<CovarianceMatrix*>(&C)->isPositiveDefinite()) throw InvalidArgumentException(HERE) << "Error: the covariance matrix is not positive definite";
   NumericalPoint sigma(dimension);
   CorrelationMatrix R(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     sigma[i] = sqrt(C(i, i));
-    for (UnsignedLong j = 0; j < i; ++j)
+    for (UnsignedInteger j = 0; j < i; ++j)
     {
       R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
     }
@@ -152,15 +152,15 @@ Normal * Normal::clone() const
 /* Get one realization of the distribution */
 NumericalPoint Normal::getRealization() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (dimension == 1) return NumericalPoint(1, mean_[0] + sigma_[0] * DistFunc::rNormal());
   NumericalPoint value(dimension);
   // First, a realization of independant standard coordinates
-  for (UnsignedLong i = 0; i < dimension; i++) value[i] = DistFunc::rNormal();
+  for (UnsignedInteger i = 0; i < dimension; i++) value[i] = DistFunc::rNormal();
   // Then, transform the independant standard coordinates into the needed ones */
   if (hasIndependentCopula_)
   {
-    for (UnsignedLong i = 0; i < dimension; i++)
+    for (UnsignedInteger i = 0; i < dimension; i++)
     {
       value[i] *= sigma_[i];
       value[i] += mean_[i];
@@ -171,12 +171,12 @@ NumericalPoint Normal::getRealization() const
   return cholesky_ * value + mean_;
 }
 
-NumericalSample Normal::getSample(const UnsignedLong size) const
+NumericalSample Normal::getSample(const UnsignedInteger size) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   NumericalSample result(size, dimension);
-  for (UnsignedLong i = 0; i < size; ++i)
-    for (UnsignedLong j = 0; j < dimension; ++j) result[i][j] = DistFunc::rNormal();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j) result[i][j] = DistFunc::rNormal();
   if (hasIndependentCopula_) result *= sigma_;
   else result *= cholesky_;
   result += mean_;
@@ -208,7 +208,7 @@ NumericalScalar Normal::computeDensityGeneratorSecondDerivative(const NumericalS
 /* Get the CDF of the distribution */
 NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pNormal((point[0] - mean_[0]) / sigma_[0]);
@@ -218,7 +218,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
   if (hasIndependentCopula_)
   {
     NumericalScalar value(DistFunc::pNormal(u[0]));
-    for (UnsignedLong i = 1; i < dimension; ++i) value *= DistFunc::pNormal(u[i]);
+    for (UnsignedInteger i = 1; i < dimension; ++i) value *= DistFunc::pNormal(u[i]);
     return value;
   }
   /* General case */
@@ -227,11 +227,11 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
   // For the tridimensional case, use specialized high precision routine
   if (dimension == 3) return DistFunc::pNormal3D(u[0], u[1], u[2], R_(0, 1), R_(0, 2), R_(1, 2));
   // For moderate dimension, use a Gauss-Legendre integration
-  if (dimension <= ResourceMap::GetAsUnsignedLong("Normal-SmallDimension"))
+  if (dimension <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Normal-SmallDimension
-    const UnsignedLong maximumNumber(static_cast< UnsignedLong > (round(pow(ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
-    const UnsignedLong candidateNumber(ResourceMap::GetAsUnsignedLong( "Normal-MarginalIntegrationNodesNumber" ));
+    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
+    const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" ));
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeCDF(point);
@@ -243,10 +243,10 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     std::vector<int> infin(dimension, 0);
     NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
     /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedLong i = 0; i < dimension; i++)
-      for (UnsignedLong j = 0; j < i; j++)
+    for (UnsignedInteger i = 0; i < dimension; i++)
+      for (UnsignedInteger j = 0; j < i; j++)
         correl[j + i * (i - 1) / 2] = R_(j, i);
-    int maxpts(ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ));
+    int maxpts(ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
     // Use only relative precision
     double abseps(0.0);
     // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) for dimension=500
@@ -254,7 +254,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     double error;
     double value;
     int inform;
-    int dim = static_cast<UnsignedLong>( dimension );
+    int dim = static_cast<UnsignedInteger>( dimension );
     do
     {
       MVNDST_F77(&dim, &lower[0], &u[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
@@ -265,31 +265,31 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
       }
       else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
     }
-    while ((static_cast<UnsignedLong>(maxpts) <= ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" )) && (inform == 1));
+    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" )) && (inform == 1));
     if (inform == 1) LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
     if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Normal::computeCDF(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
     cdfEpsilon_ = error;
     return std::min(std::max(value, 0.0), 1.0);
   }
   // For very large dimension, use a MonteCarlo algorithm
-  LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
+  LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
   RandomGeneratorState initialState(RandomGenerator::GetState());
-  RandomGenerator::SetSeed(ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ));
+  RandomGenerator::SetSeed(ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
   NumericalScalar value(0.0);
   NumericalScalar variance(0.0);
   NumericalScalar a99(DistFunc::qNormal(0.995));
-  UnsignedLong outerMax(10 * ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ));
+  UnsignedInteger outerMax(10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
   NumericalScalar precision(0.0);
-  for (UnsignedLong indexOuter = 0; indexOuter < outerMax; ++indexOuter)
+  for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
   {
     NumericalScalar valueBlock(0.0);
     NumericalScalar varianceBlock(0.0);
-    for (UnsignedLong indexSample = 0; indexSample < ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ); ++indexSample)
+    for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ); ++indexSample)
     {
       Bool inside(true);
       NumericalPoint realization(getRealization());
       // Check if the realization is in the integration domain
-      for (UnsignedLong i = 0; i < dimension; ++i)
+      for (UnsignedInteger i = 0; i < dimension; ++i)
       {
         inside = realization[i] <= point[i];
         if (!inside) break;
@@ -305,7 +305,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
     if ((value >= 1.0 - ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
-    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ));
+    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
@@ -341,7 +341,7 @@ NumericalComplex Normal::computeLogCharacteristicFunction(const NumericalPoint &
 NumericalScalar Normal::computeProbability(const Interval & interval) const
 {
   if (interval.isNumericallyEmpty()) return 0.0;
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
   // Decompose and normalize the interval
@@ -357,7 +357,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     NumericalScalar upperCDF(1.0);
     if (finiteUpper[0]) upperCDF = DistFunc::pNormal(upper[0]);
     NumericalScalar value(upperCDF - lowerCDF);
-    for (UnsignedLong i = 1; i < dimension; ++i)
+    for (UnsignedInteger i = 1; i < dimension; ++i)
     {
       lowerCDF = 0.0;
       if (finiteLower[i]) lowerCDF = DistFunc::pNormal(lower[i]);
@@ -369,11 +369,11 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
   }
   /* General case */
   // For moderate dimension, use a Gauss-Legendre integration
-  if (dimension <= ResourceMap::GetAsUnsignedLong("Normal-SmallDimension"))
+  if (dimension <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Normal-SmallDimension
-    const UnsignedLong maximumNumber(static_cast< UnsignedLong > (round(pow(ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
-    const UnsignedLong candidateNumber(ResourceMap::GetAsUnsignedLong( "Normal-MarginalIntegrationNodesNumber" ));
+    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
+    const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" ));
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeProbability(interval);
@@ -383,7 +383,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
   {
     // Build finite/infinite flags according to MVNDST documentation
     std::vector<int> infin(dimension, -1);
-    for (UnsignedLong i = 0; i < dimension; i++)
+    for (UnsignedInteger i = 0; i < dimension; i++)
     {
       // Infin[i] should be:
       //  2 if finiteLower[i] && finiteUpper[i]
@@ -394,14 +394,14 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     }
     NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
     /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedLong i = 0; i < UnsignedLong(dimension); i++)
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      for (UnsignedLong j = 0; j < i; j++)
+      for (UnsignedInteger j = 0; j < i; j++)
       {
         correl[j + i * (i - 1) / 2] = R_(j, i);
       }
     }
-    int maxpts(ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ));
+    int maxpts(ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
     // Use only relative precision
     double abseps(0.0);
     // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) for dimension=500
@@ -409,7 +409,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     double error;
     double value;
     int inform;
-    int dim = static_cast<UnsignedLong>( dimension );
+    int dim = static_cast<UnsignedInteger>( dimension );
     do
     {
       MVNDST_F77(&dim, &lower[0], &upper[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
@@ -420,23 +420,23 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
       }
       else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
     }
-    while ((static_cast<UnsignedLong>(maxpts) <= ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" )) && (inform == 1));
+    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" )) && (inform == 1));
     if (inform == 1) LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
     if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Normal::computeProbability(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
     return std::min(std::max(value, 0.0), 1.0);
   }
   // For very large dimension, use a MonteCarlo algorithm
-  LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");
+  LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");
   NumericalScalar value(0.0);
   NumericalScalar variance(0.0);
   NumericalScalar a99(DistFunc::qNormal(0.995));
-  UnsignedLong outerMax(10 * ResourceMap::GetAsUnsignedLong( "Normal-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ));
+  UnsignedInteger outerMax(10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
   NumericalScalar precision(0.0);
-  for (UnsignedLong indexOuter = 0; indexOuter < outerMax; ++indexOuter)
+  for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
   {
     NumericalScalar valueBlock(0.0);
     NumericalScalar varianceBlock(0.0);
-    for (UnsignedLong indexSample = 0; indexSample < ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ); ++indexSample)
+    for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ); ++indexSample)
     {
       // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
       NumericalScalar ind(interval.numericallyContains(getRealization()));
@@ -449,7 +449,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
     if ((value >= 1.0 - ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
-    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedLong( "Normal-MinimumNumberOfPoints" ));
+    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
@@ -460,7 +460,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
 /* Get the CDF gradient of the distribution */
 NumericalPoint Normal::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   NumericalPoint gradientCDF(2 * dimension);
   if (dimension == 1)
   {
@@ -491,14 +491,14 @@ NumericalScalar Normal::computeScalarQuantile(const NumericalScalar prob,
 NumericalScalar Normal::computeConditionalPDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return Distribution(getMarginal(conditioningDimension)).computePDF(x);
   // General case
   NumericalScalar meanRos(0.0);
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  for (UnsignedLong i = 0; i < conditioningDimension; ++i)
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
   }
@@ -510,14 +510,14 @@ NumericalScalar Normal::computeConditionalPDF(const NumericalScalar x,
 NumericalScalar Normal::computeConditionalCDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return Distribution(getMarginal(conditioningDimension)).computeCDF(x);
   // General case
   NumericalScalar meanRos(0.0);
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  for (UnsignedLong i = 0; i < conditioningDimension; ++i)
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
   }
@@ -529,7 +529,7 @@ NumericalScalar Normal::computeConditionalCDF(const NumericalScalar x,
 NumericalScalar Normal::computeConditionalQuantile(const NumericalScalar q,
     const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case when no contitioning or independent copula
@@ -537,7 +537,7 @@ NumericalScalar Normal::computeConditionalQuantile(const NumericalScalar q,
   // General case
   NumericalScalar meanRos(0.0);
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  for (UnsignedLong i = 0; i < conditioningDimension; ++i)
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
   }
@@ -548,9 +548,9 @@ NumericalScalar Normal::computeConditionalQuantile(const NumericalScalar q,
 }
 
 /* Get the i-th marginal distribution */
-Normal::Implementation Normal::getMarginal(const UnsignedLong i) const
+Normal::Implementation Normal::getMarginal(const UnsignedInteger i) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
   if (dimension == 1) return clone();
@@ -564,22 +564,22 @@ Normal::Implementation Normal::getMarginal(const UnsignedLong i) const
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Normal::Implementation Normal::getMarginal(const Indices & indices) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  const UnsignedLong outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension(indices.getSize());
   CorrelationMatrix R(outputDimension);
   NumericalPoint sigma(outputDimension);
   NumericalPoint mean(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
-  for (UnsignedLong i = 0; i < outputDimension; ++i)
+  for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
-    const UnsignedLong index_i(indices[i]);
+    const UnsignedInteger index_i(indices[i]);
     sigma[i] = sigma_[index_i];
     mean[i] = mean_[index_i];
-    for (UnsignedLong j = 0; j <= i; ++j)
+    for (UnsignedInteger j = 0; j <= i; ++j)
     {
       R(i, j) = R_(index_i, indices[j]);
     }
@@ -594,11 +594,11 @@ NumericalPoint Normal::getSkewness() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Normal::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Normal::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return NumericalPoint(1, 0.0);
   NumericalScalar moment(1.0);
-  for (UnsignedLong i = 1; i < n / 2; ++i)
+  for (UnsignedInteger i = 1; i < n / 2; ++i)
     moment *= 2.0 * i + 1.0;
   return NumericalPoint(1, moment);
 }
@@ -650,7 +650,7 @@ void Normal::setCorrelation(const CorrelationMatrix & R)
 /* Compute the numerical range of the distribution given the parameters values */
 void Normal::computeRange()
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   const NumericalScalar qNorm(DistFunc::qNormal(cdfEpsilon_));
   // qNorm is negative as cdfEpsilon_ < 0
   setRange(Interval(mean_ + qNorm * sigma_, mean_ - qNorm * sigma_, Interval::BoolCollection(dimension, false), Interval::BoolCollection(dimension, false)));
@@ -666,11 +666,11 @@ Bool Normal::hasIndependentCopula() const
 void Normal::checkIndependentCopula()
 {
   hasIndependentCopula_ = true;
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (dimension == 1) return;
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
-    for (UnsignedLong j = 0; j < i; j++)
+    for (UnsignedInteger j = 0; j < i; j++)
     {
       if (R_(i, j) != 0.0)
       {

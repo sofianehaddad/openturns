@@ -156,7 +156,7 @@ void GraphImplementation::add(const Drawable & aDrawable)
 }
 
 /* Erase a drawable instance from the collection of drawables contained in GraphImplementation */
-void GraphImplementation::erase(const UnsignedLong i)
+void GraphImplementation::erase(const UnsignedInteger i)
 {
   drawablesCollection_.erase(drawablesCollection_.begin() + i);
 }
@@ -164,7 +164,7 @@ void GraphImplementation::erase(const UnsignedLong i)
 /* Adds a collection of drawable instances to the collection of drawables contained in GraphImplementation */
 void GraphImplementation::add(const DrawableCollection & drawableCollection)
 {
-  for (UnsignedLong i = 0; i < drawableCollection.getSize(); ++i) drawablesCollection_.add(drawableCollection[i]);
+  for (UnsignedInteger i = 0; i < drawableCollection.getSize(); ++i) drawablesCollection_.add(drawableCollection[i]);
 }
 
 /* Adds a collection of drawable instances to the collection of drawables contained in GraphImplementation */
@@ -193,14 +193,14 @@ void GraphImplementation::setDrawables(const DrawableCollection & drawableCollec
 }
 
 /* Individual drawable accessor */
-Drawable GraphImplementation::getDrawable(const UnsignedLong index) const
+Drawable GraphImplementation::getDrawable(const UnsignedInteger index) const
 {
   if (index >= drawablesCollection_.getSize()) throw InvalidRangeException(HERE) << "Error: trying to get a drawable at position " << index << " from a collection of size " << drawablesCollection_.getSize();
   return drawablesCollection_[index];
 }
 
 void GraphImplementation::setDrawable(const Drawable & drawable,
-                                      const UnsignedLong index)
+                                      const UnsignedInteger index)
 {
   if (index >= drawablesCollection_.getSize()) throw InvalidRangeException(HERE) << "Error: trying to set a drawable at position " << index << " into a collection of size " << drawablesCollection_.getSize();
   drawablesCollection_[index] = drawable;
@@ -209,39 +209,39 @@ void GraphImplementation::setDrawable(const Drawable & drawable,
 /** Global color accessor */
 Description GraphImplementation::getColors() const
 {
-  const UnsignedLong size(drawablesCollection_.getSize());
+  const UnsignedInteger size(drawablesCollection_.getSize());
   Description colors(size);
-  for (UnsignedLong i = 0; i < size; ++i) colors[i] = drawablesCollection_[i].getColor();
+  for (UnsignedInteger i = 0; i < size; ++i) colors[i] = drawablesCollection_[i].getColor();
   return colors;
 }
 
 void GraphImplementation::setColors(const Description & colors)
 {
-  const UnsignedLong size(drawablesCollection_.getSize());
-  const UnsignedLong inputSize(colors.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) drawablesCollection_[i].setColor(colors[i % inputSize]);
+  const UnsignedInteger size(drawablesCollection_.getSize());
+  const UnsignedInteger inputSize(colors.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setColor(colors[i % inputSize]);
 }
 
 void GraphImplementation::setDefaultColors()
 {
-  const UnsignedLong size(drawablesCollection_.getSize());
+  const UnsignedInteger size(drawablesCollection_.getSize());
   setColors(Drawable::BuildDefaultPalette(size));
 }
 
 /** Global legend accessor */
 Description GraphImplementation::getLegends() const
 {
-  const UnsignedLong size(drawablesCollection_.getSize());
+  const UnsignedInteger size(drawablesCollection_.getSize());
   Description legends(size);
-  for (UnsignedLong i = 0; i < size; ++i) legends[i] = drawablesCollection_[i].getLegend();
+  for (UnsignedInteger i = 0; i < size; ++i) legends[i] = drawablesCollection_[i].getLegend();
   return legends;
 }
 
 void GraphImplementation::setLegends(const Description & legends)
 {
-  const UnsignedLong size(drawablesCollection_.getSize());
-  const UnsignedLong inputSize(legends.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) drawablesCollection_[i].setLegend(legends[i % inputSize]);
+  const UnsignedInteger size(drawablesCollection_.getSize());
+  const UnsignedInteger inputSize(legends.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setLegend(legends[i % inputSize]);
 }
 
 
@@ -468,8 +468,8 @@ String GraphImplementation::makeRCoreCommand() const
   graphCommand << ", cex.main=2, cex.axis=1.5, cex.lab=1.5)\n";
 
   // add the R code attached to each drawable
-  UnsignedLong drawablesSize(drawablesCollection_.getSize());
-  for(UnsignedLong i = 0; i < drawablesSize; ++i)
+  UnsignedInteger drawablesSize(drawablesCollection_.getSize());
+  for(UnsignedInteger i = 0; i < drawablesSize; ++i)
   {
     if (drawablesCollection_[i].getData().getSize() != 0)
       graphCommand << drawablesCollection_[i].draw() << "\n";
@@ -535,9 +535,9 @@ void GraphImplementation::draw(const String & path,
 /* Clean temporary files */
 void GraphImplementation::clean()
 {
-  UnsignedLong drawableNumber(drawablesCollection_.getSize());
+  UnsignedInteger drawableNumber(drawablesCollection_.getSize());
   // Clean all the temporary data created by the drawables during their drawing
-  for (UnsignedLong i = 0; i < drawableNumber; ++i)
+  for (UnsignedInteger i = 0; i < drawableNumber; ++i)
   {
     if (drawablesCollection_[i].getData().getSize() != 0)
       drawablesCollection_[i].clean();
@@ -652,7 +652,7 @@ void GraphImplementation::setAutomaticBoundingBox(const Bool automaticBoundingBo
 /* Compute the best bounding box to enclose all the drawables */
 void GraphImplementation::computeBoundingBox() const
 {
-  UnsignedLong size(drawablesCollection_.getSize());
+  UnsignedInteger size(drawablesCollection_.getSize());
   boundingBox_ = BoundingBox(4);
   // First exceptional case: no drawable, we default to default bounding box
   if (size == 0)
@@ -667,7 +667,7 @@ void GraphImplementation::computeBoundingBox() const
   NumericalSample boxes(size, 4);
 
   // first, get each Drawable's bounding box and drawing command
-  for(UnsignedLong i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (drawablesCollection_[i].getData().getSize() != 0)
       boxes[i] = drawablesCollection_[i].getBoundingBox();

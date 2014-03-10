@@ -122,7 +122,7 @@ private:
 
   // Attributes used to exchange data between the different methods
   // The current output index
-  mutable UnsignedLong outputIndex_;
+  mutable UnsignedInteger outputIndex_;
   // The coefficients of the current output conditional expectation part
   mutable NumericalPoint beta_;
   // The coefficients of the current output deterministic trend

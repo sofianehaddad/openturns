@@ -102,20 +102,20 @@ int main(int argc, char *argv[])
   distributionCollection.add(userdefined);
   discreteDistributionCollection.add(userdefined);
 
-  UnsignedLong size(100);
+  UnsignedInteger size(100);
 
-  UnsignedLong continuousDistributionNumber(continuousDistributionCollection.getSize());
-  UnsignedLong discreteDistributionNumber(discreteDistributionCollection.getSize());
-  UnsignedLong distributionNumber(continuousDistributionNumber + discreteDistributionNumber);
+  UnsignedInteger continuousDistributionNumber(continuousDistributionCollection.getSize());
+  UnsignedInteger discreteDistributionNumber(discreteDistributionCollection.getSize());
+  UnsignedInteger distributionNumber(continuousDistributionNumber + discreteDistributionNumber);
   Collection<NumericalSample> sampleCollection(distributionNumber);
   Collection<NumericalSample> continuousSampleCollection(continuousDistributionNumber);
   Collection<NumericalSample> discreteSampleCollection(discreteDistributionNumber);
-  for (UnsignedLong i = 0; i < continuousDistributionNumber; i++)
+  for (UnsignedInteger i = 0; i < continuousDistributionNumber; i++)
   {
     continuousSampleCollection[i] = continuousDistributionCollection[i].getSample(size);
     sampleCollection[i] = continuousSampleCollection[i];
   }
-  for (UnsignedLong i = 0; i < discreteDistributionNumber; i++)
+  for (UnsignedInteger i = 0; i < discreteDistributionNumber; i++)
   {
     discreteSampleCollection[i] = discreteDistributionCollection[i].getSample(size);
     sampleCollection[continuousDistributionNumber + i] = discreteSampleCollection[i];
@@ -129,9 +129,9 @@ int main(int argc, char *argv[])
   fullprint << "best model Kolmogorov=" << FittingTest::BestModelKolmogorov(aSample, factoryCollection) << std::endl;
 
   SquareMatrix resultBIC(distributionNumber);
-  for (UnsignedLong i = 0; i < distributionNumber; i++)
+  for (UnsignedInteger i = 0; i < distributionNumber; i++)
   {
-    for (UnsignedLong j = 0; j < distributionNumber; j++)
+    for (UnsignedInteger j = 0; j < distributionNumber; j++)
     {
       const NumericalScalar value(FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0));
       resultBIC(i, j) = (fabs(value) < 1.0e-6 ? 0.0 : value);
@@ -139,9 +139,9 @@ int main(int argc, char *argv[])
   }
   fullprint << "resultBIC=" << resultBIC << std::endl;
   SquareMatrix resultKolmogorov(continuousDistributionNumber);
-  for (UnsignedLong i = 0; i < continuousDistributionNumber; i++)
+  for (UnsignedInteger i = 0; i < continuousDistributionNumber; i++)
   {
-    for (UnsignedLong j = 0; j < continuousDistributionNumber; j++)
+    for (UnsignedInteger j = 0; j < continuousDistributionNumber; j++)
     {
       const NumericalScalar value(FittingTest::Kolmogorov(continuousSampleCollection[i], continuousDistributionCollection[j], 0.95, 0).getPValue());
       resultKolmogorov(i, j) = (fabs(value) < 1.0e-6 ? 0.0 : value);
@@ -149,9 +149,9 @@ int main(int argc, char *argv[])
   }
   fullprint << "resultKolmogorov=" << resultKolmogorov << std::endl;
   SquareMatrix resultChiSquared(discreteDistributionNumber - 1);
-  for (UnsignedLong i = 0; i < discreteDistributionNumber - 1; i++)
+  for (UnsignedInteger i = 0; i < discreteDistributionNumber - 1; i++)
   {
-    for (UnsignedLong j = 0; j < discreteDistributionNumber - 1; j++)
+    for (UnsignedInteger j = 0; j < discreteDistributionNumber - 1; j++)
     {
       const NumericalScalar value(FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.95, 0).getPValue());
       resultChiSquared(i, j) = (fabs(value) < 1.0e-6 ? 0.0 : value);

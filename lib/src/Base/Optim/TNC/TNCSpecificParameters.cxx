@@ -41,7 +41,7 @@ TNCSpecificParameters::TNCSpecificParameters():
   PersistentObject(),
   scale_(0),
   offset_(0),
-  maxCGit_(ResourceMap::GetAsUnsignedLong( "TNC-DefaultMaxCGit" )),
+  maxCGit_(ResourceMap::GetAsUnsignedInteger( "TNC-DefaultMaxCGit" )),
   eta_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultEta" )),
   stepmx_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultStepmx" )),
   accuracy_(ResourceMap::GetAsNumericalScalar( "TNC-DefaultAccuracy" )),
@@ -54,7 +54,7 @@ TNCSpecificParameters::TNCSpecificParameters():
 /* Parameters with parameters */
 TNCSpecificParameters::TNCSpecificParameters(const NumericalPoint & scale,
     const NumericalPoint & offset,
-    const UnsignedLong    maxCGit,
+    const UnsignedInteger    maxCGit,
     const NumericalScalar eta,
     const NumericalScalar stepmx,
     const NumericalScalar accuracy,
@@ -102,12 +102,12 @@ void TNCSpecificParameters::setOffset(const NumericalPoint & offset)
 }
 
 /* MaxCGit accessor */
-UnsignedLong TNCSpecificParameters::getMaxCGit() const
+UnsignedInteger TNCSpecificParameters::getMaxCGit() const
 {
   return maxCGit_;
 }
 
-void TNCSpecificParameters::setMaxCGit(const UnsignedLong maxCGit)
+void TNCSpecificParameters::setMaxCGit(const UnsignedInteger maxCGit)
 {
   maxCGit_ = maxCGit;
 }

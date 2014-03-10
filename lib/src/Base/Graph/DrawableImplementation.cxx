@@ -38,12 +38,12 @@ static Factory<DrawableImplementation> RegisteredFactory("DrawableImplementation
 
 /* default graphic paramaters */
 
-const UnsignedLong DrawableImplementation::BoundingBoxSize  = 4;
+const UnsignedInteger DrawableImplementation::BoundingBoxSize  = 4;
 
 Bool DrawableImplementation::IsFirstInitialization          = true;
 
 /* A map  matching keys with R codes for point symbols */
-std::map<String, UnsignedLong> DrawableImplementation::SymbolCodes;
+std::map<String, UnsignedInteger> DrawableImplementation::SymbolCodes;
 /* A map  matching keys with R codes for point symbols */
 
 std::map<String, String> DrawableImplementation::ColorCodes;
@@ -798,7 +798,7 @@ Description DrawableImplementation::GetValidPointStyles()
     IsFirstInitialization = false;
   }
   Description validPointStyle;
-  std::map<String, UnsignedLong>::const_iterator it(SymbolCodes.begin());
+  std::map<String, UnsignedInteger>::const_iterator it(SymbolCodes.begin());
   for (it = SymbolCodes.begin(); it != SymbolCodes.end(); ++it) validPointStyle.add(it->first);
   return validPointStyle;
 }
@@ -815,9 +815,9 @@ String DrawableImplementation::ConvertFromName(const String & name)
 
 
 /* Convert an RGB triplet to a valid hexadecimal code */
-String DrawableImplementation::ConvertFromRGB(const UnsignedLong red,
-    const UnsignedLong green,
-    const UnsignedLong blue)
+String DrawableImplementation::ConvertFromRGB(const UnsignedInteger red,
+    const UnsignedInteger green,
+    const UnsignedInteger blue)
 {
   return OSS() << "#"
          << std::hex << std::setw(2) << std::setfill('0') << std::right << std::min(red, 255UL)
@@ -826,10 +826,10 @@ String DrawableImplementation::ConvertFromRGB(const UnsignedLong red,
 }
 
 /* Convert an RGBA quadruplet to a valid hexadecimal code */
-String DrawableImplementation::ConvertFromRGBA(const UnsignedLong red,
-    const UnsignedLong green,
-    const UnsignedLong blue,
-    const UnsignedLong alpha)
+String DrawableImplementation::ConvertFromRGBA(const UnsignedInteger red,
+    const UnsignedInteger green,
+    const UnsignedInteger blue,
+    const UnsignedInteger alpha)
 {
   return OSS() << ConvertFromRGB(red, green, blue)
          << std::hex << std::setw(2) << std::setfill('0') << std::right << std::min(alpha, 255UL);
@@ -840,9 +840,9 @@ String DrawableImplementation::ConvertFromRGB(const NumericalScalar red,
     const NumericalScalar green,
     const NumericalScalar blue)
 {
-  return ConvertFromRGB(static_cast<UnsignedLong>(round(255 * red)),
-                        static_cast<UnsignedLong>(round(255 * green)),
-                        static_cast<UnsignedLong>(round(255 * blue)));
+  return ConvertFromRGB(static_cast<UnsignedInteger>(round(255 * red)),
+                        static_cast<UnsignedInteger>(round(255 * green)),
+                        static_cast<UnsignedInteger>(round(255 * blue)));
 }
 
 /* Convert an RGBA quadruplet to a valid hexadecimal code */
@@ -851,10 +851,10 @@ String DrawableImplementation::ConvertFromRGBA(const NumericalScalar red,
     const NumericalScalar blue,
     const NumericalScalar alpha)
 {
-  return ConvertFromRGBA(static_cast<UnsignedLong>(round(255 * red)),
-                         static_cast<UnsignedLong>(round(255 * green)),
-                         static_cast<UnsignedLong>(round(255 * blue)),
-                         static_cast<UnsignedLong>(round(255 * alpha)));
+  return ConvertFromRGBA(static_cast<UnsignedInteger>(round(255 * red)),
+                         static_cast<UnsignedInteger>(round(255 * green)),
+                         static_cast<UnsignedInteger>(round(255 * blue)),
+                         static_cast<UnsignedInteger>(round(255 * alpha)));
 }
 
 /* Convert an HSV triplet to a valid hexadecimal code */
@@ -862,7 +862,7 @@ NumericalPoint DrawableImplementation::ConvertFromHSVIntoRGB(const NumericalScal
     const NumericalScalar saturation,
     const NumericalScalar value)
 {
-  const UnsignedLong i(static_cast<UnsignedLong>(hue / 60.0) % 6);
+  const UnsignedInteger i(static_cast<UnsignedInteger>(hue / 60.0) % 6);
   const NumericalScalar f(hue / 60.0 - i);
   const NumericalScalar l(value * (1.0 - saturation));
   const NumericalScalar m(value * (1.0 - f * saturation));
@@ -935,7 +935,7 @@ DrawableImplementation::DrawableImplementation(const NumericalSample & data,
     fillStyle_(ResourceMap::Get("DrawableImplementation-DefaultFillStyle")),
     lineStyle_(ResourceMap::Get("DrawableImplementation-DefaultLineStyle")),
     pointStyle_(ResourceMap::Get("DrawableImplementation-DefaultPointStyle")),
-    lineWidth_(ResourceMap::GetAsUnsignedLong("DrawableImplementation-DefaultLineWidth")),
+    lineWidth_(ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DefaultLineWidth")),
     dataFileName_("")
 {
   if(IsFirstInitialization)
@@ -999,10 +999,10 @@ void DrawableImplementation::setLegend(const String & legend)
 }
 
 /* Point code accessor */
-UnsignedLong DrawableImplementation::getPointCode(const String & key) const
+UnsignedInteger DrawableImplementation::getPointCode(const String & key) const
 {
-  const std::map<String, UnsignedLong>::const_iterator it(SymbolCodes.find(key));
-  UnsignedLong pointCode = 0;
+  const std::map<String, UnsignedInteger>::const_iterator it(SymbolCodes.find(key));
+  UnsignedInteger pointCode = 0;
   if(it != SymbolCodes.end()) pointCode = it->second;
 
   return pointCode;
@@ -1024,7 +1024,7 @@ Bool DrawableImplementation::IsValidColorName(const String & key)
 Bool DrawableImplementation::IsValidColorCode(const String & key)
 {
   // First, check if the color is given in RGB format
-  const UnsignedLong keySize(key.size());
+  const UnsignedInteger keySize(key.size());
   if (keySize == 0) return false;
   // Check if it is a #RRGGBB[AA] code
   if (key[0] != '#') return false;
@@ -1033,7 +1033,7 @@ Bool DrawableImplementation::IsValidColorCode(const String & key)
   // 9 for #RRGGBBAA
   if ((keySize != 7) && (keySize != 9)) return false;
   // Second, check that the values are ok
-  for (UnsignedLong i = 1; i < keySize; ++i)
+  for (UnsignedInteger i = 1; i < keySize; ++i)
   {
     const char c(key[i]);
     // If the current character is not a valid hexadecimal figure
@@ -1072,7 +1072,7 @@ Bool DrawableImplementation::IsValidPointStyle(const String & key)
     InitializeValidParameterList();
     IsFirstInitialization = false;
   }
-  const std::map<String, UnsignedLong>::iterator it(SymbolCodes.find(key));
+  const std::map<String, UnsignedInteger>::iterator it(SymbolCodes.find(key));
 
   return (it != SymbolCodes.end());
 }
@@ -1128,9 +1128,9 @@ void DrawableImplementation::setData(const NumericalSample & data)
 void DrawableImplementation::setData(const NumericalPoint & data)
 {
   checkData(data);
-  const UnsignedLong size(data.getDimension());
+  const UnsignedInteger size(data.getDimension());
   data_ = NumericalSample(size, 1);
-  for (UnsignedLong i = 0; i < size; ++i) data_[i][0] = data[i];
+  for (UnsignedInteger i = 0; i < size; ++i) data_[i][0] = data[i];
 }
 
 /* Bounding box accessor */
@@ -1212,13 +1212,13 @@ void DrawableImplementation::setPointStyle(const String & pointStyle)
 }
 
 /* Accessor for line width */
-UnsignedLong DrawableImplementation::getLineWidth() const
+UnsignedInteger DrawableImplementation::getLineWidth() const
 {
   return lineWidth_;
 }
 
 /* Accessor for line width */
-void DrawableImplementation::setLineWidth(const UnsignedLong lineWidth)
+void DrawableImplementation::setLineWidth(const UnsignedInteger lineWidth)
 {
   if(lineWidth == 0) throw InvalidArgumentException(HERE) << "Given line width=" << lineWidth << " is incorrect";
   lineWidth_ = lineWidth;
@@ -1348,12 +1348,12 @@ void DrawableImplementation::setDrawLabels(const Bool & drawLabels)
 /* R command generating method, for plotting through R */
 String DrawableImplementation::draw() const
 {
-  const UnsignedLong size(data_.getSize());
+  const UnsignedInteger size(data_.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: trying to build a Drawable with empty data";
   // Two strategies: if data is small, it is inlined, else it is passed through a file
-  const UnsignedLong dimension(data_.getDimension());
+  const UnsignedInteger dimension(data_.getDimension());
   dataFileName_ = "";
-  if (size * dimension > ResourceMap::GetAsUnsignedLong("DrawableImplementation-DataThreshold"))
+  if (size * dimension > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
   {
     dataFileName_ = data_.storeToTemporaryFile();
     return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\"))";
@@ -1369,19 +1369,19 @@ void DrawableImplementation::clean() const
 
 /* Build default palette
    Cycle through the hue wheel with 10 nuances and increasing darkness */
-Description DrawableImplementation::BuildDefaultPalette(const UnsignedLong size)
+Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger size)
 {
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0";
   Description palette(size);
-  const UnsignedLong divider(std::min(size + 1, static_cast< UnsignedLong >(12)));
+  const UnsignedInteger divider(std::min(size + 1, static_cast< UnsignedInteger >(12)));
   const NumericalScalar multiplier(360.0 / divider);
-  const UnsignedLong cycles(size / divider + 1);
-  UnsignedLong paletteIndex(0);
-  for (UnsignedLong iCycle = 0; iCycle < cycles; ++iCycle)
+  const UnsignedInteger cycles(size / divider + 1);
+  UnsignedInteger paletteIndex(0);
+  for (UnsignedInteger iCycle = 0; iCycle < cycles; ++iCycle)
   {
     const NumericalScalar value(1.0 - iCycle / static_cast< NumericalScalar >(cycles));
-    const UnsignedLong iHueMax(std::min(size - paletteIndex, static_cast< UnsignedLong >(12)));
-    for (UnsignedLong iHue = 0; iHue < iHueMax; ++iHue)
+    const UnsignedInteger iHueMax(std::min(size - paletteIndex, static_cast< UnsignedInteger >(12)));
+    for (UnsignedInteger iHue = 0; iHue < iHueMax; ++iHue)
     {
       const NumericalScalar hue(multiplier * iHue);
       palette[paletteIndex] = ConvertFromHSV(hue, 1.0, value);

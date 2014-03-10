@@ -65,7 +65,7 @@ const NumericalScalar SpecFunc::MaxNumericalScalar    = std::numeric_limits<Nume
 const NumericalScalar SpecFunc::LogMaxNumericalScalar = log(MaxNumericalScalar);
 const NumericalScalar SpecFunc::NumericalScalarEpsilon = std::numeric_limits<NumericalScalar>::epsilon();
 // Maximum number of iterations for the algorithms
-const UnsignedLong SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedLong("SpecFunc-MaximumIteration");
+const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const NumericalScalar SpecFunc::Precision = ResourceMap::GetAsNumericalScalar("SpecFunc-Precision");
 
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
@@ -74,7 +74,7 @@ NumericalScalar SpecFunc::SmallCaseBesselI0(const NumericalScalar x)
   const NumericalScalar x2(x * x);
   NumericalScalar value(1.0);
   NumericalScalar r(1.0);
-  UnsignedLong k(1);
+  UnsignedInteger k(1);
   while ((fabs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
   {
     r *= 0.25 * x2 / (k * k);
@@ -94,13 +94,13 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI0(const NumericalScalar x)
                                   5.5133589612202e+02, 3.0380905109224e+03
                                  };
   const NumericalScalar ax(fabs(x));
-  UnsignedLong k0(12);
+  UnsignedInteger k0(12);
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
   NumericalScalar value(1.0);
   const NumericalScalar xR(1.0 / ax);
   NumericalScalar xRPow(xR);
-  for (UnsignedLong k = 0; k < k0; ++k)
+  for (UnsignedInteger k = 0; k < k0; ++k)
   {
     value += A[k] * xRPow;
     xRPow *= xR;
@@ -133,7 +133,7 @@ NumericalScalar SpecFunc::SmallCaseBesselI1(const NumericalScalar x)
   const NumericalScalar x2(x * x);
   NumericalScalar value(1.0);
   NumericalScalar r(1.0);
-  UnsignedLong k(1);
+  UnsignedInteger k(1);
   while ((fabs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
   {
     r *= 0.25 * x2 / (k * (k + 1));
@@ -154,13 +154,13 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI1(const NumericalScalar x)
                                    -6.0384407670507e+02, -3.3022722944809e+03
                                  };
   const NumericalScalar ax(fabs(x));
-  UnsignedLong k0(12);
+  UnsignedInteger k0(12);
   if (ax >= 35.0) k0 = 9;
   if (ax >= 50.0) k0 = 7;
   NumericalScalar value(1.0);
   const NumericalScalar xR(1.0 / ax);
   NumericalScalar xRPow(xR);
-  for (UnsignedLong k = 0; k < k0; ++k)
+  for (UnsignedInteger k = 0; k < k0; ++k)
   {
     value += B[k] * xRPow;
     xRPow *= xR;
@@ -273,7 +273,7 @@ NumericalComplex SpecFunc::Dawson(const NumericalComplex & z)
 
 // Debye function of order n: DebyeN(x, n) = n / x^n \int_0^x t^n/(\exp(t)-1) dt
 NumericalScalar SpecFunc::Debye(const NumericalScalar x,
-                                const UnsignedLong n)
+                                const UnsignedInteger n)
 {
   if ((n == 0) || (n > 20)) throw InvalidArgumentException(HERE) << "Error: cannot compute Debye function of order outside of {1,...,20}";
   if (x < 0.0) return 0.0;
@@ -302,10 +302,10 @@ NumericalScalar SpecFunc::DiLog(const NumericalScalar x)
   // DiLog(x)=\sum_{k=1}^{\infty} x^k/k^2
   // for (0, 1/2)
   // This upper bound is an easy-to compute tight upper bound of the number of iterations
-  const UnsignedLong nMax(static_cast<UnsignedLong>(round(8 + 68 * x)));
+  const UnsignedInteger nMax(static_cast<UnsignedInteger>(round(8 + 68 * x)));
   NumericalScalar value(0.0);
   NumericalScalar powerX(1.0);
-  for (UnsignedLong n = 1; n <= nMax; ++n)
+  for (UnsignedInteger n = 1; n <= nMax; ++n)
   {
     powerX *= x;
     value += powerX / (n * n);
@@ -383,7 +383,7 @@ NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
     z = -z;
     flip = true;
   }
-  const UnsignedLong coefficientsSize(11);
+  const UnsignedInteger coefficientsSize(11);
   static const NumericalScalar coefficients[coefficientsSize] =
   {
     1.000000000000000174663,      5716.400188274341379136,
@@ -397,7 +397,7 @@ NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
   NumericalComplex t(z + g);
   NumericalComplex s(0.0);
   NumericalComplex ss(t - 0.5);
-  for (UnsignedLong k = coefficientsSize - 1; k > 0; --k)
+  for (UnsignedInteger k = coefficientsSize - 1; k > 0; --k)
   {
     s += coefficients[k] / t;
     t -= 1.0;
@@ -510,7 +510,7 @@ NumericalScalar SpecFunc::DiGammaInv(const NumericalScalar a)
   NumericalScalar x( a < -2.22 ? -1.0 / (a - EulerConstant) : exp(a) + 0.5);
   // Use a Newton scheme
   NumericalScalar d(0.0);
-  for (UnsignedLong k = 0; k < 6; ++k)
+  for (UnsignedInteger k = 0; k < 6; ++k)
   {
     d = (DiGamma(x) - a) / TriGamma(x);
     if (d == 0.0) break;
@@ -563,7 +563,7 @@ NumericalScalar SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
   NumericalScalar factorial(1.0);
   NumericalScalar sum(term);
   NumericalScalar eps;
-  UnsignedLong k(0);
+  UnsignedInteger k(0);
   do
   {
     term *= pochhammerP1 * t / (pochhammerQ1 * factorial);
@@ -589,7 +589,7 @@ NumericalComplex SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
   NumericalComplex term(1.0);
   NumericalComplex sum(term);
   NumericalComplex eps(0.0);
-  UnsignedLong k(0);
+  UnsignedInteger k(0);
   do
   {
     term *= pochhammerP1 * x / (pochhammerQ1 * factorial);
@@ -617,7 +617,7 @@ NumericalScalar SpecFunc::HyperGeom_2_1(const NumericalScalar p1,
   NumericalScalar term(1.0);
   NumericalScalar sum(term);
   NumericalScalar eps(0.0);
-  UnsignedLong k(0);
+  UnsignedInteger k(0);
   do
   {
     term *= pochhammerP1 * pochhammerP2 * x / (pochhammerQ1 * factorial);
@@ -652,7 +652,7 @@ NumericalScalar SpecFunc::HyperGeom_2_2(const NumericalScalar p1,
   const NumericalScalar logX(log(fabs(x)));
   NumericalScalar signX(x > 0.0 ? 1.0 : -1.0);
   NumericalScalar signTerm(1.0);
-  UnsignedLong k(0);
+  UnsignedInteger k(0);
   do
   {
     term += log(pochhammerP1) + log(pochhammerP2) + logX - log(pochhammerQ1) - log(pochhammerQ2) - log(factorial);
@@ -805,7 +805,7 @@ NumericalScalar SpecFunc::LambertW(const NumericalScalar x,
     }
   }
   // Halley's iteration
-  for (UnsignedLong i = 0; i < 3; ++i)
+  for (UnsignedInteger i = 0; i < 3; ++i)
   {
     const NumericalScalar expW(exp(w));
     const NumericalScalar numerator(w * expW - x);
@@ -831,9 +831,9 @@ NumericalComplex SpecFunc::Log1MExp(const NumericalScalar x)
 }
 
 // Compute the smallest power of two greater or equal to the given n
-UnsignedLong SpecFunc::NextPowerOfTwo(const UnsignedLong n)
+UnsignedInteger SpecFunc::NextPowerOfTwo(const UnsignedInteger n)
 {
-  UnsignedLong powerOfTwo(1);
+  UnsignedInteger powerOfTwo(1);
   while (powerOfTwo < n) powerOfTwo <<= 1;
   return powerOfTwo;
 }

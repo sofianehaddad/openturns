@@ -247,7 +247,7 @@ NumericalPoint GeneralizedPareto::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint GeneralizedPareto::getStandardMoment(const UnsignedLong n) const
+NumericalPoint GeneralizedPareto::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   if (xi_ == 0.0) return NumericalPoint(1, SpecFunc::Gamma(n + 1.0));

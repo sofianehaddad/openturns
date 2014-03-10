@@ -45,7 +45,7 @@ public:
 
   /** Constructor from an orthogonal basis */
   FixedStrategy(const OrthogonalBasis & basis,
-                const UnsignedLong maximumDimension);
+                const UnsignedInteger maximumDimension);
 
   /** Virtual constructor */
   virtual FixedStrategy * clone() const;

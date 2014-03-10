@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    UnsignedLong dim(2);
+    UnsignedInteger dim(2);
     Normal distribution(dim);
 
     //
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
       RandomVector X(distribution);
       // The model: the identity function
       Description inVars(dim);
-      for (UnsignedLong i = 0; i < dim; ++i) inVars[i] = OSS() << "x" << i;
+      for (UnsignedInteger i = 0; i < dim; ++i) inVars[i] = OSS() << "x" << i;
       NumericalMathFunction model(inVars, inVars);
       // The output vector
       RandomVector Y(model, X);

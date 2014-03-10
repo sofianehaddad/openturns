@@ -49,8 +49,8 @@ public:
   OrthogonalDirection();
 
   /** Constructor with parameters */
-  OrthogonalDirection(const UnsignedLong dimension,
-                      const UnsignedLong size);
+  OrthogonalDirection(const UnsignedInteger dimension,
+                      const UnsignedInteger size);
 
 
   /** Virtual constructor */
@@ -77,7 +77,7 @@ private:
                             const Matrix & Q,
                             NumericalSample & result) const;
   /** Size of the direction subset */
-  UnsignedLong size_;
+  UnsignedInteger size_;
 
 } ; /* class OrthogonalDirection */
 

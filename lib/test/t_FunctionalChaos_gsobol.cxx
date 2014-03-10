@@ -31,7 +31,7 @@ NumericalScalar sobol(const Indices & indices,
                       const NumericalPoint & a)
 {
   NumericalScalar value(1.0);
-  for (UnsignedLong i = 0; i < indices.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
   {
     value *= 1.0 / (3.0 * pow(1.0 + a[indices[i]], 2.0));
   }
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
   {
 
     // Problem parameters
-    UnsignedLong dimension(5);
+    UnsignedInteger dimension(5);
 
     // Reference analytical values
     NumericalScalar meanTh(1.0);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     outputVariables[0] = "y";
     Description formula(1);
     formula[0] = "1.0";
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       a[i] = 0.5 * i;
       covTh *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension);
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       marginals[i] = Uniform(0.0, 1.0);
     }
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       polynomialCollection[i] = LegendreFactory();
     }
@@ -92,9 +92,9 @@ int main(int argc, char *argv[])
     // We can choose amongst several strategies
     // First, the most efficient (but more complex!) strategy
     Collection<AdaptiveStrategy> listAdaptiveStrategy(0);
-    UnsignedLong degree(4);
-    UnsignedLong indexMax(enumerateFunction.getStrataCumulatedCardinal(degree));
-    UnsignedLong basisDimension(enumerateFunction.getStrataCumulatedCardinal(degree / 2));
+    UnsignedInteger degree(4);
+    UnsignedInteger indexMax(enumerateFunction.getStrataCumulatedCardinal(degree));
+    UnsignedInteger basisDimension(enumerateFunction.getStrataCumulatedCardinal(degree / 2));
     NumericalScalar threshold(1.0e-6);
     listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
     // Second, the most used (and most basic!) strategy
@@ -102,11 +102,11 @@ int main(int argc, char *argv[])
     // Third, a slight enhancement with respect to the basic strategy
     listAdaptiveStrategy.add(SequentialStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree / 2), false));
 
-    for(UnsignedLong adaptiveStrategyIndex = 0; adaptiveStrategyIndex < listAdaptiveStrategy.getSize(); ++adaptiveStrategyIndex)
+    for(UnsignedInteger adaptiveStrategyIndex = 0; adaptiveStrategyIndex < listAdaptiveStrategy.getSize(); ++adaptiveStrategyIndex)
     {
       AdaptiveStrategy adaptiveStrategy(listAdaptiveStrategy[adaptiveStrategyIndex]);
       // Create the projection strategy
-      UnsignedLong samplingSize(250);
+      UnsignedInteger samplingSize(250);
       Collection<ProjectionStrategy> listProjectionStrategy(0);
       // The least squares strategy
       // Monte Carlo sampling
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
       listProjectionStrategy.add(IntegrationStrategy(LHSExperiment(samplingSize)));
       // Low Discrepancy sequence
       listProjectionStrategy.add(IntegrationStrategy(LowDiscrepancyExperiment(LowDiscrepancySequence(SobolSequence()), samplingSize)));
-      for(UnsignedLong projectionStrategyIndex = 0; projectionStrategyIndex < listProjectionStrategy.getSize(); ++projectionStrategyIndex)
+      for(UnsignedInteger projectionStrategyIndex = 0; projectionStrategyIndex < listProjectionStrategy.getSize(); ++projectionStrategyIndex)
       {
         ProjectionStrategy projectionStrategy(listProjectionStrategy[projectionStrategyIndex]);
         // Create the polynomial chaos algorithm
@@ -151,18 +151,18 @@ int main(int argc, char *argv[])
         NumericalScalar variance(vector.getCovariance()(0, 0));
         fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << fabs(variance - covTh) << std::endl;
         Indices indices(1);
-        for(UnsignedLong i = 0; i < dimension; ++i)
+        for(UnsignedInteger i = 0; i < dimension; ++i)
         {
           indices[0] = i;
           NumericalScalar value(vector.getSobolIndex(i));
           fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << fabs(value - sobol(indices, a) / covTh) << std::endl;
         }
         indices = Indices(2);
-        UnsignedLong k(0);
-        for (UnsignedLong i = 0; i < dimension; ++i)
+        UnsignedInteger k(0);
+        for (UnsignedInteger i = 0; i < dimension; ++i)
         {
           indices[0] = i;
-          for (UnsignedLong j = i + 1; j < dimension; ++j)
+          for (UnsignedInteger j = i + 1; j < dimension; ++j)
           {
             indices[1] = j;
             NumericalScalar value(vector.getSobolIndex(indices));

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong dimension( 2 );
+    UnsignedInteger dimension( 2 );
     NumericalPoint epsilon( dimension, 1e-5 );
     NumericalPoint eta( dimension, 1.0 );
     Collection<FiniteDifferenceStep> coll;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
     NumericalPoint x(dimension, -3.0);
 
-    for (UnsignedLong i = 0; i < coll.getSize(); ++ i)
+    for (UnsignedInteger i = 0; i < coll.getSize(); ++ i)
     {
       FiniteDifferenceStep step_i( coll[i] );
       std::cout << "step type=" << step_i.getImplementation()->getClassName() << " x=" << x << " epsilon=" << step_i.getEpsilon() << " step value=" << step_i.operator()(x) << std::endl;

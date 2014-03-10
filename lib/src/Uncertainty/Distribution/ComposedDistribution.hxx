@@ -85,9 +85,9 @@ public:
   /** Get one realization of the ComposedDistribution */
   NumericalPoint getRealization() const;
 protected:
-  NumericalSample getSampleParallel(const UnsignedLong size) const;
+  NumericalSample getSampleParallel(const UnsignedInteger size) const;
 public:
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the ComposedDistribution */
   using DistributionImplementation::computeDDF;
@@ -134,7 +134,7 @@ public:
   NumericalPoint getKurtosis() const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;
@@ -185,7 +185,7 @@ private:
     const NumericalSample input_;
     NumericalSample & output_;
     const Collection<Distribution> distributionCollection_;
-    UnsignedLong dimension_;
+    UnsignedInteger dimension_;
 
     ComputeSamplePolicy( const NumericalSample & input,
                          NumericalSample & output,
@@ -196,10 +196,10 @@ private:
       , dimension_(distributionCollection.getSize())
     {}
 
-    inline void operator()( const TBB::BlockedRange<UnsignedLong> & r ) const
+    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
     {
-      for (UnsignedLong i = r.begin(); i != r.end(); ++i)
-        for (UnsignedLong j = 0; j < dimension_; ++j)
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        for (UnsignedInteger j = 0; j < dimension_; ++j)
           output_[i][j] = distributionCollection_[j].computeQuantile(input_[i][j])[0];
     }
 

@@ -65,11 +65,11 @@ String ContinuousDistribution::__repr__() const
 /* Get the DDF of the distributionImplementation */
 NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   NumericalPoint ddf(dimension);
   const NumericalScalar h(pow(pdfEpsilon_, 1.0 / 3.0));
   const NumericalScalar idenom(1.0 / (2.0 * h));
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalPoint left(point);
     left[i] += h;
@@ -89,11 +89,11 @@ NumericalScalar ContinuousDistribution::computePDF(const NumericalPoint & point)
 /* Get the CDF of the distribution */
 NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   const NumericalPoint lowerBounds(getRange().getLowerBound());
   const NumericalPoint upperBounds(getRange().getUpperBound());
   Bool allOutside(true);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (point[i] <= lowerBounds[i]) return 0.0;
     allOutside &= (point[i] >= upperBounds[i]);
@@ -106,12 +106,12 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
 /* Get the survival function of the distribution */
 NumericalScalar ContinuousDistribution::computeSurvivalFunction(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (dimension == 1) return computeComplementaryCDF(point);
   const NumericalPoint lowerBounds(getRange().getLowerBound());
   const NumericalPoint upperBounds(getRange().getUpperBound());
   Bool allOutside(true);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (point[i] >= upperBounds[i]) return 0.0;
     allOutside &= (point[i] <= lowerBounds[i]);
@@ -127,22 +127,22 @@ NumericalScalar ContinuousDistribution::computeProbability(const Interval & inte
   const Interval reducedInterval(interval.intersect(getRange()));
   if (reducedInterval.isNumericallyEmpty()) return 0.0;
   if (reducedInterval == getRange()) return 1.0;
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   const NumericalPoint lowerBounds(reducedInterval.getLowerBound());
   const NumericalPoint upperBounds(reducedInterval.getUpperBound());
   NumericalSample nodesAndWeights(getGaussNodesAndWeights());
   // Perform the integration
-  const UnsignedLong marginalNodesNumber(getIntegrationNodesNumber());
-  const UnsignedLong size(static_cast< UnsignedLong >(round(pow(marginalNodesNumber, dimension))));
+  const UnsignedInteger marginalNodesNumber(getIntegrationNodesNumber());
+  const UnsignedInteger size(static_cast< UnsignedInteger >(round(pow(marginalNodesNumber, dimension))));
   NumericalScalar probability(0.0);
   Indices indices(dimension, 0);
-  for (UnsignedLong linearIndex = 0; linearIndex < size; ++linearIndex)
+  for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
   {
     NumericalPoint node(dimension);
     NumericalScalar weight(1.0);
-    for (UnsignedLong j = 0; j < dimension; ++j)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const UnsignedLong indiceJ(indices[j]);
+      const UnsignedInteger indiceJ(indices[j]);
       const NumericalScalar delta(0.5 * (upperBounds[j] - lowerBounds[j]));
       node[j] = lowerBounds[j] + delta * (1.0 + nodesAndWeights[0][indiceJ]);
       weight *= delta * nodesAndWeights[1][indiceJ];
@@ -151,15 +151,15 @@ NumericalScalar ContinuousDistribution::computeProbability(const Interval & inte
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
-    for (UnsignedLong j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalNodesNumber);
+    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalNodesNumber);
     /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedLong j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
+    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
   } // Loop over the n-D nodes
   return probability;
 }
 
 /* Build a C1 interpolation of the CDF function for 1D continuous distributions */
-Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::interpolateCDF(const UnsignedLong n)
+Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::interpolateCDF(const UnsignedInteger n)
 {
   if (getDimension() != 1) throw NotYetImplementedException(HERE) << "Error: cannot interpolate CDF for multidimensional distributions.";
   const PDFWrapper pdfWrapper(this);
@@ -180,7 +180,7 @@ Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::int
   GaussKronrod algo;
   const NumericalScalar stepCDF((mu - xMin) / (n - 1.0));
   const NumericalScalar stepCCDF((xMax - mu) / (n - 1.0));
-  for (UnsignedLong i = 1; i < n; ++i)
+  for (UnsignedInteger i = 1; i < n; ++i)
   {
     const NumericalScalar xCDF(xMin + i * stepCDF);
     const NumericalScalar xCCDF(xMax - i * stepCCDF);

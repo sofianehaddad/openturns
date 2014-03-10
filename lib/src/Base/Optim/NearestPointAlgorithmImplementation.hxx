@@ -89,10 +89,10 @@ public:
   void setResult(const Result & result);
 
   /** Maximum iterations number accessor */
-  UnsignedLong getMaximumIterationsNumber() const;
+  UnsignedInteger getMaximumIterationsNumber() const;
 
   /** Maximum iterations number accessor */
-  void setMaximumIterationsNumber(const UnsignedLong maximumIterationsNumber);
+  void setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber);
 
   /** Maximum absolute error accessor */
   NumericalScalar getMaximumAbsoluteError() const;
@@ -132,7 +132,7 @@ private:
   NumericalMathFunction levelFunction_;
   NumericalPoint startingPoint_;
   NumericalScalar levelValue_;
-  UnsignedLong    maximumIterationsNumber_; /**< Number of outermost iterations (in case of nested iterations) */
+  UnsignedInteger    maximumIterationsNumber_; /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   NumericalScalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */

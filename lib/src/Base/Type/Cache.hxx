@@ -83,7 +83,7 @@ class Cache
 public:
 
   typedef K_                              KeyType;
-  typedef std::pair< V_ , UnsignedLong >  ValueType;
+  typedef std::pair< V_ , UnsignedInteger >  ValueType;
   typedef std::pair< KeyType, ValueType > PairType;
 #ifndef SWIG
   struct ConvertMapToCollections
@@ -96,11 +96,11 @@ public:
 
     PersistentCollection< KeyType >      & keyColl_;
     PersistentCollection< KeyType >      & valueColl_;
-    PersistentCollection< UnsignedLong > & ageColl_;
-    UnsignedLong i_;
+    PersistentCollection< UnsignedInteger > & ageColl_;
+    UnsignedInteger i_;
     ConvertMapToCollections(PersistentCollection< KeyType > & keyColl,
                             PersistentCollection< KeyType > & valueColl,
-                            PersistentCollection< UnsignedLong > & ageColl)
+                            PersistentCollection< UnsignedInteger > & ageColl)
       : keyColl_(keyColl), valueColl_(valueColl), ageColl_(ageColl), i_(0) {}
 
     ConvertMapToCollections &
@@ -135,10 +135,10 @@ protected:
   mutable Bool enabled_;
 
   /** Upper bound for the cache size */
-  const UnsignedLong maxSize_;
+  const UnsignedInteger maxSize_;
 
   /** Number of hits */
-  mutable UnsignedLong hits_;
+  mutable UnsignedInteger hits_;
 
   /** The map of elements */
   mutable std::map< KeyType, ValueType > points_;
@@ -149,7 +149,7 @@ public:
   inline
   Cache() : PersistentObject(),
     enabled_(true),
-    maxSize_(ResourceMap::GetAsUnsignedLong("cache-max-size")),
+    maxSize_(ResourceMap::GetAsUnsignedInteger("cache-max-size")),
     hits_(0),
     points_()
   {
@@ -158,7 +158,7 @@ public:
 
   /** Constructor with upper bound size */
   inline
-  Cache(const UnsignedLong maxSize) : PersistentObject(),
+  Cache(const UnsignedInteger maxSize) : PersistentObject(),
     enabled_(true),
     maxSize_(maxSize),
     hits_(0),
@@ -212,7 +212,7 @@ public:
     if (this != &other)
     {
       PersistentObject::operator=(other);
-      const_cast<UnsignedLong&>(this->maxSize_)        = other.maxSize_;
+      const_cast<UnsignedInteger&>(this->maxSize_)        = other.maxSize_;
       this->points_                                    = other.points_;
       this->enabled_                                   = other.enabled_;
       this->hits_                                      = other.hits_;
@@ -235,7 +235,7 @@ public:
   }
 
   /** Returns the number of successful hits in the cache */
-  inline UnsignedLong getHits() const
+  inline UnsignedInteger getHits() const
   {
     return this->hits_;
   }
@@ -285,10 +285,10 @@ public:
   inline
   void save(Advocate & adv) const
   {
-    const UnsignedLong size(this->points_.size());
+    const UnsignedInteger size(this->points_.size());
     PersistentCollection< KeyType >      keyColl(size);
     PersistentCollection< KeyType >      valueColl(size);
-    PersistentCollection< UnsignedLong > ageColl(size);
+    PersistentCollection< UnsignedInteger > ageColl(size);
     std::copy(this->points_.begin(),
               this->points_.end(),
               ConvertMapToCollections(keyColl, valueColl, ageColl));
@@ -305,18 +305,18 @@ public:
   void load(Advocate & adv)
   {
     PersistentObject::load(adv);
-    UnsignedLong size;
+    UnsignedInteger size;
     adv.loadAttribute( "size", size );
 
     PersistentCollection< KeyType >      keyColl(size);
     PersistentCollection< KeyType >      valueColl(size);
-    PersistentCollection< UnsignedLong > ageColl(size);
+    PersistentCollection< UnsignedInteger > ageColl(size);
     adv.loadAttribute( "keyColl", keyColl );
     adv.loadAttribute( "valueColl", valueColl );
     adv.loadAttribute( "ageColl", ageColl );
 
     clear();
-    for( UnsignedLong i = 0; i < size; ++i) this->points_[ keyColl[i] ] = ValueType( valueColl[i], ageColl[i] );
+    for( UnsignedInteger i = 0; i < size; ++i) this->points_[ keyColl[i] ] = ValueType( valueColl[i], ageColl[i] );
   }
 
 
@@ -324,14 +324,14 @@ public:
 
   /** @brief return the size
    */
-  inline UnsignedLong getSize() const
+  inline UnsignedInteger getSize() const
   {
     return points_.size();
   }
 
   /** @brief return the maximum size
    */
-  inline UnsignedLong getMaxSize() const
+  inline UnsignedInteger getMaxSize() const
   {
     return this->maxSize_;
   }

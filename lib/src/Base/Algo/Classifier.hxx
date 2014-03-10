@@ -58,17 +58,17 @@ public:
   Classifier(const NumericalSample & inS, const Indices & outC);
 
   /** Associate a point with a class */
-  UnsignedLong classify(const NumericalPoint & inP) const;
+  UnsignedInteger classify(const NumericalPoint & inP) const;
   Indices classify(const NumericalSample & inS) const;
 
   /** Grade a point as if it were associated to a class */
   NumericalScalar grade(const NumericalPoint & inP,
-                        UnsignedLong outC) const;
+                        UnsignedInteger outC) const;
   NumericalPoint grade(const NumericalSample & inS,
                        const Indices & outC) const;
 
   /** Input space dimension */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);

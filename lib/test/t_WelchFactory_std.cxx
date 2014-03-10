@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
   {
     // Dimension of the input model
     // Size of the TimeGrid
-    UnsignedLong size(64);
-    UnsignedLong dimension(1);
+    UnsignedInteger size(64);
+    UnsignedInteger dimension(1);
     RegularGrid timeGrid(0.0, 0.1, size);
     NumericalPoint amplitude(dimension, 2.0);
     NumericalPoint scale(dimension, 1.0);
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     SpectralNormalProcess myProcess(model, timeGrid);
 
     // Create a Process sample
-    UnsignedLong N(100);
+    UnsignedInteger N(100);
     ProcessSample sample(myProcess.getSample(N));
 
     // Filtering Windows
@@ -56,12 +56,12 @@ int main(int argc, char *argv[])
 
     // Get the frequency grid of the model
     RegularGrid myFrequencyGrid(mySpectralModel.getFrequencyGrid());
-    for (UnsignedLong i = 0 ; i < dimension ; ++i)
+    for (UnsignedInteger i = 0 ; i < dimension ; ++i)
     {
-      for (UnsignedLong j = 0 ; j < dimension ; ++j)
+      for (UnsignedInteger j = 0 ; j < dimension ; ++j)
       {
         fullprint << "Spectre " << i << "-" << j << std::endl;
-        for (UnsignedLong k = 0; k < myFrequencyGrid.getN(); ++k)
+        for (UnsignedInteger k = 0; k < myFrequencyGrid.getN(); ++k)
         {
           const NumericalScalar frequency(myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep());
           const NumericalScalar estimatedValue(std::real(mySpectralModel(frequency)(i, j)));
@@ -79,12 +79,12 @@ int main(int argc, char *argv[])
 
     // Get the frequency grid of the model
     myFrequencyGrid = mySpectralModel2.getFrequencyGrid();
-    for (UnsignedLong i = 0 ; i < dimension ; ++i)
+    for (UnsignedInteger i = 0 ; i < dimension ; ++i)
     {
-      for (UnsignedLong j = 0 ; j < dimension ; ++j)
+      for (UnsignedInteger j = 0 ; j < dimension ; ++j)
       {
         fullprint << "Spectre " << i << "-" << j << std::endl;
-        for (UnsignedLong k = 0; k < myFrequencyGrid.getN(); ++k)
+        for (UnsignedInteger k = 0; k < myFrequencyGrid.getN(); ++k)
         {
           const NumericalScalar frequency(myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep());
           const NumericalScalar estimatedValue(std::real(mySpectralModel2.computeSpectralDensity(frequency)(i, j)));

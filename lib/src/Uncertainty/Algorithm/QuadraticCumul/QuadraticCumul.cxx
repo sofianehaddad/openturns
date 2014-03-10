@@ -194,16 +194,16 @@ void QuadraticCumul::computeCovariance() const
 
   /* a matrix, in fact a square symmetric matrix but we don't know it from its C++ definition */
   /* outputCovariance is a pxp matrix */
-  const UnsignedLong inputDimension(gradientAtMean_.getNbRows());
-  const UnsignedLong outputDimension(gradientAtMean_.getNbColumns());
+  const UnsignedInteger inputDimension(gradientAtMean_.getNbRows());
+  const UnsignedInteger outputDimension(gradientAtMean_.getNbColumns());
   covariance_ = CovarianceMatrix(outputDimension);
   /* we unroll the matrix multiplications transpose(gradient).covariance.gradient */
-  for (UnsignedLong i = 0; i < outputDimension; ++i)
-    for (UnsignedLong j = 0; j < outputDimension; ++j)
+  for (UnsignedInteger i = 0; i < outputDimension; ++i)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
     {
       covariance_(i, j) = 0.0;
-      for (UnsignedLong k = 0; k < inputDimension; ++k)
-        for (UnsignedLong l = 0; l < inputDimension; ++l)
+      for (UnsignedInteger k = 0; k < inputDimension; ++k)
+        for (UnsignedInteger l = 0; l < inputDimension; ++l)
           covariance_(i, j) += gradientAtMean_(l, i) * inputCovariance_(l, k) * gradientAtMean_(k, j);
     }
   /* We check that outputCovariance is really symmetric positive definite */
@@ -220,15 +220,15 @@ void QuadraticCumul::computeImportanceFactors() const
   computeCovariance();
   /* we compute here the importance factors */
   /* in this scalar case, gradientAtMean is a NumericalPoint */
-  const UnsignedLong dimension(gradientAtMean_.getNbRows());
+  const UnsignedInteger dimension(gradientAtMean_.getNbRows());
 
   /* in this scalar case, importance factors is a NumericalPoint, defined as importanceFactors = gradient .* inputCovariance * gradient / outputCovariance, where .* means an element-wise multiplication between vectors */
   importanceFactors_ = NumericalPointWithDescription(dimension, 0.0);
   // This line looks strange, but it is here to ensure that the covariance has actually been computed
   getCovariance();
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    for (UnsignedLong j = 0; j < dimension; ++j) importanceFactors_[i] += inputCovariance_(i, j) * gradientAtMean_(j, 0);
+    for (UnsignedInteger j = 0; j < dimension; ++j) importanceFactors_[i] += inputCovariance_(i, j) * gradientAtMean_(j, 0);
     importanceFactors_[i] *= gradientAtMean_(i, 0) / covariance_(0, 0);
   }
   importanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent()->getDescription());
@@ -255,21 +255,21 @@ void QuadraticCumul::computeMeanSecondOrder() const
   /* tensoriel writting : setCovariance(getGradientAtMean() + 0.5*getHessianAtMean().dotdot(getInputCovariance())); */
   /* developped formula */
 
-  const UnsignedLong rowDimension(hessianAtMean_.getNbRows());
+  const UnsignedInteger rowDimension(hessianAtMean_.getNbRows());
   /* i */
-  const UnsignedLong sheetDimension(hessianAtMean_.getNbSheets());
+  const UnsignedInteger sheetDimension(hessianAtMean_.getNbSheets());
   /* k */
   meanSecondOrder_ = valueAtMean_;
   /* loop on k */
-  for (UnsignedLong k = 0; k < sheetDimension; ++k)
+  for (UnsignedInteger k = 0; k < sheetDimension; ++k)
   {
     NumericalScalar kSecondOrderContribution(0.0);
     /* loop on i */
-    for (UnsignedLong i = 0; i < rowDimension; ++i)
+    for (UnsignedInteger i = 0; i < rowDimension; ++i)
     {
       kSecondOrderContribution += 0.5 * inputCovariance_(i, i) * hessianAtMean_(i, i, k);
       /* loop on j */
-      for (UnsignedLong j = 0; j < i; ++j) kSecondOrderContribution += inputCovariance_(i, j) * hessianAtMean_(i, j, k);
+      for (UnsignedInteger j = 0; j < i; ++j) kSecondOrderContribution += inputCovariance_(i, j) * hessianAtMean_(i, j, k);
     }/* end loop on i */
     meanSecondOrder_[k] += kSecondOrderContribution;
   } /* end loop on k */

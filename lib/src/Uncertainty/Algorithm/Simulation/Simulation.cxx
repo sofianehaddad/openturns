@@ -45,10 +45,10 @@ Simulation::Simulation(const Event & event,
                        const HistoryStrategy & convergenceStrategy)
   : PersistentObject()
   , convergenceStrategy_(convergenceStrategy)
-  , blockSize_(ResourceMap::GetAsUnsignedLong( "Simulation-DefaultBlockSize" ))
+  , blockSize_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultBlockSize" ))
   , event_(event)
   , result_()
-  , maximumOuterSampling_(ResourceMap::GetAsUnsignedLong( "Simulation-DefaultMaximumOuterSampling" ))
+  , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling" ))
   , maximumCoefficientOfVariation_(ResourceMap::GetAsNumericalScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
   , maximumStandardDeviation_(ResourceMap::GetAsNumericalScalar( "Simulation-DefaultMaximumStandardDeviation" ))
   , verbose_(verbose)
@@ -81,13 +81,13 @@ SimulationResult Simulation::getResult() const
 }
 
 /* Maximum sample size accessor */
-void Simulation::setMaximumOuterSampling(const UnsignedLong maximumOuterSampling)
+void Simulation::setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling)
 {
   maximumOuterSampling_ = maximumOuterSampling;
 }
 
 /* Maximum sample size accessor */
-UnsignedLong Simulation::getMaximumOuterSampling() const
+UnsignedInteger Simulation::getMaximumOuterSampling() const
 {
   return maximumOuterSampling_;
 }
@@ -118,7 +118,7 @@ NumericalScalar Simulation::getMaximumStandardDeviation() const
 }
 
 /* Block size accessor */
-void Simulation::setBlockSize(const UnsignedLong blockSize)
+void Simulation::setBlockSize(const UnsignedInteger blockSize)
 {
   // Check if the given block size is >= 1
   if (blockSize < 1) throw InvalidArgumentException(HERE) << "The block size must be >= 1";
@@ -126,7 +126,7 @@ void Simulation::setBlockSize(const UnsignedLong blockSize)
 }
 
 /* Block size accessor */
-UnsignedLong Simulation::getBlockSize() const
+UnsignedInteger Simulation::getBlockSize() const
 {
   return blockSize_;
 }
@@ -168,12 +168,12 @@ void Simulation::run()
    */
   // First, reset the convergence history
   convergenceStrategy_.clear();
-  UnsignedLong outerSampling(0);
+  UnsignedInteger outerSampling(0);
   NumericalScalar coefficientOfVariation(-1.0);
   NumericalScalar standardDeviation(-1.0);
   NumericalScalar probabilityEstimate(0.0);
   NumericalScalar varianceEstimate(0.0);
-  const UnsignedLong blockSize(getBlockSize());
+  const UnsignedInteger blockSize(getBlockSize());
   // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
@@ -253,11 +253,11 @@ HistoryStrategy Simulation::getConvergenceStrategy() const
 Graph Simulation::drawProbabilityConvergence(const NumericalScalar level) const
 {
   const NumericalSample convergenceSample(convergenceStrategy_.getSample());
-  const UnsignedLong size(convergenceSample.getSize());
+  const UnsignedInteger size(convergenceSample.getSize());
   NumericalSample dataEstimate(size, 2);
   NumericalSample dataLowerBound(0, 2);
   NumericalSample dataUpperBound(0, 2);
-  for (UnsignedLong i = 0; i < size; i++)
+  for (UnsignedInteger i = 0; i < size; i++)
   {
     const NumericalScalar probabilityEstimate(convergenceSample[i][0]);
     const NumericalScalar varianceEstimate(convergenceSample[i][1]);

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
     MeixnerFactory meixner(10, 0.3);
     fullprint << "meixner=" << meixner << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
     {
       fullprint << "meixner(" << i << ")=" << meixner.build(i).__str__() << std::endl;
     }

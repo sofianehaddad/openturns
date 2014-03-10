@@ -30,7 +30,7 @@
 
 /**
  * @namespace  OpenTURNS
- * @brief      The namespace where all Open TURNS symbols live.
+ * @brief      The namespace where all OpenTURNS symbols live.
  */
 
 #define BEGIN_NAMESPACE_OPENTURNS namespace OT {
@@ -87,18 +87,6 @@ typedef uint64_t Unsigned64BitsInteger;
  * Type Signed64BitsInteger stores signed values that needs 64 bits word length.
  */
 typedef int64_t Signed64BitsInteger;
-
-/**
- * Type UnsignedLong stores values for that should be positive integers
- * @deprecated
- */
-typedef unsigned long UnsignedLong;
-
-/**
- * Type IndexType stores signed integers.
- * @deprecated
- */
-typedef long IndexType;
 
 /**
  * Type LibraryHandle stores dynamic library pointers

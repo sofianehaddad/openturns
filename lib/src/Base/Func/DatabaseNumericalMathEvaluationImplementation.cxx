@@ -119,7 +119,7 @@ void DatabaseNumericalMathEvaluationImplementation::setSample(const NumericalSam
     const NumericalSample & outputSample,
     const Bool activateCache)
 {
-  const UnsignedLong size = inputSample.getSize();
+  const UnsignedInteger size = inputSample.getSize();
 
   if(size == 0)
     throw InvalidDimensionException(HERE) << "Empty input sample";
@@ -149,7 +149,7 @@ void DatabaseNumericalMathEvaluationImplementation::setSample(const NumericalSam
 /* Operator () */
 NumericalPoint DatabaseNumericalMathEvaluationImplementation::operator()( const NumericalPoint & inP ) const
 {
-  const UnsignedLong inputDimension = getInputDimension();
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   NumericalPoint result;
   CacheKeyType inKey(inP.getCollection());
@@ -161,10 +161,10 @@ NumericalPoint DatabaseNumericalMathEvaluationImplementation::operator()( const 
   else
   {
     // find the nearest
-    const UnsignedLong size(inputSample_.getSize());
-    UnsignedLong nearestPointIndex(0);
+    const UnsignedInteger size(inputSample_.getSize());
+    UnsignedInteger nearestPointIndex(0);
     NumericalScalar nearestPointDistance( (inputSample_[0] - inP).norm() );
-    for ( UnsignedLong i = 1; i < size; ++ i )
+    for ( UnsignedInteger i = 1; i < size; ++ i )
     {
       NumericalScalar pointDistance( (inputSample_[i] - inP).norm() );
       if (pointDistance < nearestPointDistance)
@@ -186,14 +186,14 @@ NumericalPoint DatabaseNumericalMathEvaluationImplementation::operator()( const 
 }
 
 /* Accessor for input point dimension */
-UnsignedLong DatabaseNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger DatabaseNumericalMathEvaluationImplementation::getInputDimension() const
 {
   return inputSample_.getDimension();
 }
 
 
 /* Accessor for output point dimension */
-UnsignedLong DatabaseNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger DatabaseNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   return outputSample_.getDimension();
 }

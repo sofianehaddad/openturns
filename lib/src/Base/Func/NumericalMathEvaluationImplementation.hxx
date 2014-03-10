@@ -121,7 +121,7 @@ public:
 
   /** @brief Returns the number of successful hits in the cache
    */
-  UnsignedLong getCacheHits() const;
+  UnsignedInteger getCacheHits() const;
 
   /** @brief Add some content to the cache
    */
@@ -154,13 +154,13 @@ public:
   virtual Field operator() (const Field & inField) const;
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Get the i-th marginal evaluation */
-  virtual Implementation getMarginal(const UnsignedLong i) const;
+  virtual Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the evaluation corresponding to indices components */
   virtual Implementation getMarginal(const Indices & indices) const;
@@ -173,34 +173,34 @@ public:
   virtual void setParameters(const NumericalPointWithDescription & parameters);
 
   /** Get the number of calls to operator() */
-  UnsignedLong getCallsNumber() const;
+  UnsignedInteger getCallsNumber() const;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-  virtual Graph draw(const UnsignedLong inputMarginal,
-                     const UnsignedLong outputMarginal,
+  virtual Graph draw(const UnsignedInteger inputMarginal,
+                     const UnsignedInteger outputMarginal,
                      const NumericalPoint & centralPoint,
                      const NumericalScalar xMin,
                      const NumericalScalar xMax,
-                     const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
 
   /** Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
-  virtual Graph draw(const UnsignedLong firstInputMarginal,
-                     const UnsignedLong secondInputMarginal,
-                     const UnsignedLong outputMarginal,
+  virtual Graph draw(const UnsignedInteger firstInputMarginal,
+                     const UnsignedInteger secondInputMarginal,
+                     const UnsignedInteger outputMarginal,
                      const NumericalPoint & centralPoint,
                      const NumericalPoint & xMin,
                      const NumericalPoint & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
   virtual Graph draw(const NumericalScalar xMin,
                      const NumericalScalar xMax,
-                     const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
   virtual Graph draw(const NumericalPoint & xMin,
                      const NumericalPoint & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -212,7 +212,7 @@ public:
 protected:
 
   /** Number of calls since the construction */
-  mutable UnsignedLong callsNumber_;
+  mutable UnsignedInteger callsNumber_;
 
   /** A cache to store already computed points */
   mutable CacheImplementation p_cache_;
@@ -226,7 +226,7 @@ protected:
   mutable Bool isHistoryEnabled_;
 
   /** Build a default description */
-  static Description BuildDefaultDescription(const UnsignedLong dimension,
+  static Description BuildDefaultDescription(const UnsignedInteger dimension,
       const String & prefix = "Component");
 
 private:

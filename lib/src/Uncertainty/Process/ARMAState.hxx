@@ -66,7 +66,7 @@ public:
   NumericalSample getEpsilon() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

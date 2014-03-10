@@ -6,4 +6,4 @@
 #include "PythonWrappingFunctions.hxx"
 %}
 
-%template(UnsignedLongCollection) OT::Collection<OT::UnsignedLong>;
+%template(UnsignedIntegerCollection) OT::Collection<OT::UnsignedInteger>;

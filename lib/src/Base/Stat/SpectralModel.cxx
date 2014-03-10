@@ -63,13 +63,13 @@ SpectralModel::SpectralModel(SpectralModelImplementation * p_implementation,
 
 
 /* Dimension accessor */
-UnsignedLong SpectralModel::getDimension() const
+UnsignedInteger SpectralModel::getDimension() const
 {
   return getImplementation()->getDimension();
 }
 
 /* Dimension accessor */
-void SpectralModel::setDimension(const UnsignedLong dimension)
+void SpectralModel::setDimension(const UnsignedInteger dimension)
 {
   copyOnWrite();
   getImplementation()->setDimension(dimension);

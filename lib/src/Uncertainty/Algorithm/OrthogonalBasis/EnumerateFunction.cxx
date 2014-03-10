@@ -46,14 +46,14 @@ EnumerateFunction::EnumerateFunction(Implementation & p_implementation)
 }
 
 /* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const UnsignedLong dimension)
+EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new LinearEnumerateFunction(dimension))
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const UnsignedLong dimension,
+EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension,
                                      const NumericalScalar q)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(dimension, q))
 {
@@ -80,49 +80,49 @@ String EnumerateFunction::__str__(const String & offset) const
 }
 
 /* The bijective association between an integer and a set of indices */
-Indices EnumerateFunction::operator() (const UnsignedLong index) const
+Indices EnumerateFunction::operator() (const UnsignedInteger index) const
 {
   return getImplementation()->operator()( index );
 }
 
 /* The inverse of the association */
-UnsignedLong EnumerateFunction::inverse(const Indices & indices) const
+UnsignedInteger EnumerateFunction::inverse(const Indices & indices) const
 {
   return getImplementation()->inverse( indices );
 }
 
 /* The cardinal of the given strata */
-UnsignedLong EnumerateFunction::getStrataCardinal(const UnsignedLong strataIndex) const
+UnsignedInteger EnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
   return getImplementation()->getStrataCardinal( strataIndex );
 }
 
 /* The cardinal of the cumulated strata above or equal to the given strata */
-UnsignedLong EnumerateFunction::getStrataCumulatedCardinal(const UnsignedLong strataIndex) const
+UnsignedInteger EnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
   return getImplementation()->getStrataCumulatedCardinal( strataIndex );
 }
 
 /* The index of the strata of degree max < degree */
-UnsignedLong EnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const
+UnsignedInteger EnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
 {
   return getImplementation()->getMaximumDegreeStrataIndex( maximumDegree );
 }
 
 /* The cardinal of indices of degree max <= maximumDegree */
-UnsignedLong EnumerateFunction::getMaximumDegreeCardinal(const UnsignedLong maximumDegree) const
+UnsignedInteger EnumerateFunction::getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const
 {
   return getImplementation()->getMaximumDegreeCardinal(maximumDegree);
 }
 
 /* Dimension accessor */
-void EnumerateFunction::setDimension(const UnsignedLong dimension)
+void EnumerateFunction::setDimension(const UnsignedInteger dimension)
 {
   copyOnWrite();
   getImplementation()->setDimension( dimension );
 }
 
-UnsignedLong EnumerateFunction::getDimension() const
+UnsignedInteger EnumerateFunction::getDimension() const
 {
   return getImplementation()->getDimension();
 }

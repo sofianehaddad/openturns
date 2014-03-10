@@ -187,7 +187,7 @@ NumericalPoint FisherSnedecor::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint FisherSnedecor::getStandardMoment(const UnsignedLong n) const
+NumericalPoint FisherSnedecor::getStandardMoment(const UnsignedInteger n) const
 {
   if (2 * n >= d2_) throw NotDefinedException(HERE) << "Error: The raw moment of a FisherSnedecor distribution is defined only up to order d2/2, here n=" << n << " and d2=" << d2_;
   return NumericalPoint(1, exp(n * log(d2_ / d1_) + SpecFunc::LogGamma(0.5 * d1_ + n) + SpecFunc::LogGamma(0.5 * d2_ - n) - SpecFunc::LogGamma(0.5 * d1_) - SpecFunc::LogGamma(0.5 * d2_)));

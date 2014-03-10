@@ -37,7 +37,7 @@ MonteCarloExperiment::MonteCarloExperiment(const String & name):
 }
 
 /* Constructor with parameters */
-MonteCarloExperiment::MonteCarloExperiment(const UnsignedLong size,
+MonteCarloExperiment::MonteCarloExperiment(const UnsignedInteger size,
     const String & name):
   WeightedExperiment(size, name)
 {
@@ -46,7 +46,7 @@ MonteCarloExperiment::MonteCarloExperiment(const UnsignedLong size,
 
 /* Constructor with parameters */
 MonteCarloExperiment::MonteCarloExperiment(const Distribution & distribution,
-    const UnsignedLong size,
+    const UnsignedInteger size,
     const String & name):
   WeightedExperiment(distribution, size, name)
 {

@@ -36,13 +36,13 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    for (UnsignedLong dim = 1; dim <= 2; dim++)
+    for (UnsignedInteger dim = 1; dim <= 2; dim++)
     {
       NumericalPoint theta(dim + 1);
-      for (UnsignedLong i = 0; i <= dim; i++) theta[i] = 1.0 + (i + 1.0) / 4.0;
+      for (UnsignedInteger i = 0; i <= dim; i++) theta[i] = 1.0 + (i + 1.0) / 4.0;
       Dirichlet distribution(theta);
       Description description(dim);
-      for (UnsignedLong j = 1; j <= dim; j++)
+      for (UnsignedInteger j = 1; j <= dim; j++)
       {
         OSS oss;
         oss << "Marginal " << j;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10000;
+      UnsignedInteger size = 10000;
       NumericalSample oneSample(distribution.getSample( size ));
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
       if (distribution.getDimension() == 1)
       {
         size = 100;
-        for (UnsignedLong i = 0; i < 2; ++i)
+        for (UnsignedInteger i = 0; i < 2; ++i)
         {
           RandomGenerator::SetSeed(2);
           fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
       fullprint << "after set= " << tmp << std::endl;
 
       // Extract the marginals
-      for (UnsignedLong i = 0; i < dim; i++)
+      for (UnsignedInteger i = 0; i < dim; i++)
       {
         Distribution margin(distribution.getMarginal(i));
         fullprint << "margin=" << margin << std::endl;

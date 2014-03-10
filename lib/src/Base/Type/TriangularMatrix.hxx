@@ -59,7 +59,7 @@ public:
   TriangularMatrix();
 
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
-  explicit TriangularMatrix(const UnsignedLong dimension,
+  explicit TriangularMatrix(const UnsignedInteger dimension,
                             Bool isLower = true);
 
   /** Constructor with implementation */
@@ -71,7 +71,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Get the dimension of the matrix */
-  const UnsignedLong getDimension() const;
+  const UnsignedInteger getDimension() const;
 
   /** TriangularMatrix transpose */
   TriangularMatrix transpose () const;
@@ -82,13 +82,13 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator ()(const UnsignedLong i,
-                                const UnsignedLong j) ;
+  NumericalScalar & operator ()(const UnsignedInteger i,
+                                const UnsignedInteger j) ;
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator ()(const UnsignedLong i,
-                                      const UnsignedLong j) const;
+  const NumericalScalar & operator ()(const UnsignedInteger i,
+                                      const UnsignedInteger j) const;
 #endif
 
 

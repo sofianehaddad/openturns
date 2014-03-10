@@ -46,7 +46,7 @@ public:
   ZipfMandelbrot();
 
   /** Parameters constructor */
-  ZipfMandelbrot(const UnsignedLong n,
+  ZipfMandelbrot(const UnsignedInteger n,
                  const NumericalScalar q,
                  const NumericalScalar s);
 
@@ -95,8 +95,8 @@ public:
   NumericalScalar getS() const;
 
   /** N accessor */
-  void setN(const UnsignedLong n);
-  UnsignedLong getN() const;
+  void setN(const UnsignedInteger n);
+  UnsignedInteger getN() const;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
@@ -116,7 +116,7 @@ public:
 protected:
 
   /* Compute generalized harmonic numbers */
-  NumericalScalar getHarmonicNumbers(UnsignedLong const) const;
+  NumericalScalar getHarmonicNumbers(UnsignedInteger const) const;
   void computeHarmonicNumbers() const;
 
   mutable Bool isAlreadyComputedHarmonicNumbers_;
@@ -139,7 +139,7 @@ private:
   void computeRange();
 
   /** The maximum value of the ZipfMandelbrot distribution */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
   /** The q probability parameter of the ZipfMandelbrot distribution */
   NumericalScalar q_;

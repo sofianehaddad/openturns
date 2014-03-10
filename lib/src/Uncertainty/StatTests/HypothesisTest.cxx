@@ -166,9 +166,9 @@ HypothesisTest::TestResultCollection HypothesisTest::FullPearson(const Numerical
     const NumericalSample & secondSample,
     const NumericalScalar level)
 {
-  const UnsignedLong dimension(firstSample.getDimension());
+  const UnsignedInteger dimension(firstSample.getDimension());
   Indices selection(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     selection[i] = i;
   }
@@ -180,9 +180,9 @@ HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Numeri
     const NumericalSample & sampleLab,
     const NumericalScalar level)
 {
-  const UnsignedLong dimension(samplePred.getDimension());
+  const UnsignedInteger dimension(samplePred.getDimension());
   Indices selection(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     selection[i] = i;
   }
@@ -194,9 +194,9 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Numerica
     const NumericalSample & secondSample,
     const NumericalScalar level)
 {
-  const UnsignedLong dimension(firstSample.getDimension());
+  const UnsignedInteger dimension(firstSample.getDimension());
   Indices selection(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     selection[i] = i;
   }
@@ -212,9 +212,9 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
 {
   const String firstDataFileName(firstSample.storeToTemporaryFile());
   const String secondDataFileName(secondSample.storeToTemporaryFile());
-  const UnsignedLong size(selection.getSize());
+  const UnsignedInteger size(selection.getSize());
   NumericalSample selectionSample(size, 1);
-  for (UnsignedLong i = 0; i < size; ++i) selectionSample[i][0] = selection[i] + 1.0;
+  for (UnsignedInteger i = 0; i < size; ++i) selectionSample[i][0] = selection[i] + 1.0;
   const String selectionFileName(selectionSample.storeToTemporaryFile());
   const String resultFileName(Path::BuildTemporaryFileName("RResult.txt.XXXXXX"));
   const String commandFileName(Path::BuildTemporaryFileName("RCmd.R.XXXXXX"));
@@ -245,13 +245,13 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   resultFile >> testType;
   // Second, test results
   Indices results(size);
-  for (UnsignedLong i = 0; i < size; ++i) resultFile >> results[i];
+  for (UnsignedInteger i = 0; i < size; ++i) resultFile >> results[i];
   // Third, test threshold
   NumericalScalar pThreshold;
   resultFile >> pThreshold;
   // Fourth, test values
   NumericalPoint pValues(size);
-  for (UnsignedLong i = 0; i < size; ++i) resultFile >> pValues[i];
+  for (UnsignedInteger i = 0; i < size; ++i) resultFile >> pValues[i];
 
   // Clean-up everything
   if (remove(firstDataFileName.c_str()) == -1) LOGWARN(OSS() << "Warning: cannot remove file " << firstDataFileName);
@@ -262,7 +262,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
 
   // Then, build the collection of results
   TestResultCollection resultCollection(size);
-  for (UnsignedLong i = 0; i < size; ++i) resultCollection[i] = TestResult(testType, results[i] == 1, pValues[i], pThreshold);
+  for (UnsignedInteger i = 0; i < size; ++i) resultCollection[i] = TestResult(testType, results[i] == 1, pValues[i], pThreshold);
   return resultCollection;
 }
 

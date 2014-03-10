@@ -49,7 +49,7 @@ public:
 
   typedef Collection<NumericalScalar>                 NumericalScalarCollection;
   typedef Collection<Coefficients>                    CoefficientsCollection;
-  typedef std::map<UnsignedLong, NumericalScalar>                 NumericalScalarCache;
+  typedef std::map<UnsignedInteger, NumericalScalar>                 NumericalScalarCache;
 
   /** Default constructor */
   ChebychevAlgorithm();
@@ -66,7 +66,7 @@ public:
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedLong n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** Reference univariate orthogonal polynomial family accessor */
   void setReferenceFamily(const OrthogonalUniVariatePolynomialFamily & family);
@@ -84,26 +84,26 @@ public:
 private:
 
   /** Return the order-th raw moment of the underlying measure */
-  NumericalScalar getStandardMoment(const UnsignedLong order) const;
+  NumericalScalar getStandardMoment(const UnsignedInteger order) const;
 
   /** Return the order-th modified moment, i.e. the weighted integral of the order-th
       reference polynomial with respect to the underlying measure */
-  NumericalScalar getModifiedMoment(const UnsignedLong order) const;
+  NumericalScalar getModifiedMoment(const UnsignedInteger order) const;
 
   /** Methods for the modified Chebichev algorithm */
   /** Mixed moments E[Pj * Qk] where Pj is the j-th monic orthogonal polynomial
       for the given measure and Qk the k-th monic orthogonal polynomial of
       the reference factory */
   NumericalScalar getMixedMoment(const int j,
-                                 const UnsignedLong k) const;
+                                 const UnsignedInteger k) const;
 
   /** Recurrence coefficients (alphak, betak) of the monic orthogonal polynomials
       Pk+1(x) = (x - alphak) * Pk(x) - betak * Pk-1(x) */
-  Coefficients getMonicRecurrenceCoefficients(const UnsignedLong k) const;
+  Coefficients getMonicRecurrenceCoefficients(const UnsignedInteger k) const;
 
   /** Recurrence coefficients (ak, bk) of the monic reference polynomials
       Qk+1(x) = (x - ak) * Qk(x) - bk * Qk-1(x) */
-  Coefficients getReferenceMonicRecurrenceCoefficients(const UnsignedLong k) const;
+  Coefficients getReferenceMonicRecurrenceCoefficients(const UnsignedInteger k) const;
 
   /** Reference orthogonal polynomial factory for the modified moments */
   OrthogonalUniVariatePolynomialFamily referenceFamily_;

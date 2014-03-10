@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
     KrawtchoukFactory krawtchouk(10, 0.3);
     fullprint << "krawtchouk=" << krawtchouk << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
     {
       fullprint << "krawtchouk(" << i << ")=" << krawtchouk.build(i).__str__() << std::endl;
     }

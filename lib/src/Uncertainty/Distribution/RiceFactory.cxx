@@ -90,7 +90,7 @@ RiceFactory::Implementation RiceFactory::build() const
 
 Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Rice distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar mu(sample.computeMean()[0]);
@@ -104,8 +104,8 @@ Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
   NumericalScalar fA(f(NumericalPoint(1, a))[0]);
   NumericalScalar fB(f(NumericalPoint(1, b))[0]);
   const NumericalScalar largeValue(sqrt(SpecFunc::MaxNumericalScalar));
-  const UnsignedLong maximumIteration(ResourceMap::GetAsUnsignedLong( "RiceFactory-MaximumIteration" ));
-  UnsignedLong iteration(0);
+  const UnsignedInteger maximumIteration(ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" ));
+  UnsignedInteger iteration(0);
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0) && (fabs(fA) < largeValue) && (fabs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
   {

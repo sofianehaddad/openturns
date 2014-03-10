@@ -60,18 +60,18 @@ public:
   SymmetricTensor hessian(const NumericalPoint & inP) const;
 
   /** Accessor to a specific formula */
-  String getFormula(const UnsignedLong i,
-                    const UnsignedLong j,
-                    const UnsignedLong k) const;
+  String getFormula(const UnsignedInteger i,
+                    const UnsignedInteger j,
+                    const UnsignedInteger k) const;
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   Implementation getMarginal(const Indices & indices) const;

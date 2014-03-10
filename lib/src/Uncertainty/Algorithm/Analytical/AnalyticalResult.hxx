@@ -147,7 +147,7 @@ private:
   void setHasoferReliabilityIndex(const NumericalScalar & hasoferReliabilityIndex);
 
   /** Returns the position of the given (value, name) into the NumericalPoint or the dimension of the NumericalPoint if failed */
-  UnsignedLong computePosition(const String & marginalName,
+  UnsignedInteger computePosition(const String & marginalName,
                                const String & marginalParameterName,
                                const Description & parameterSetNames) const;
 

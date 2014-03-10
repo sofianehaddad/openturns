@@ -70,7 +70,7 @@ public:
 
 protected:
   /** Interpolate the CDF for smooth continuous distributions */
-  Collection<PiecewiseHermiteEvaluationImplementation> interpolateCDF(const UnsignedLong n);
+  Collection<PiecewiseHermiteEvaluationImplementation> interpolateCDF(const UnsignedInteger n);
 
 public:
   /** String converter */

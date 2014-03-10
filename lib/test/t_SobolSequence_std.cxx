@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
     fullprint << sobolSample << std::endl;
 
     // Create another Sobol' sequence of dimension 2 to estimate Pi in [0; 1)^2
-    UnsignedLong dimension(2);
+    UnsignedInteger dimension(2);
     sequence = SobolSequence(dimension);
-    UnsignedLong pointInsideCircle(0);
-    UnsignedLong sampleSize(1000);
-    for(UnsignedLong i = 0; i < sampleSize; ++i)
+    UnsignedInteger pointInsideCircle(0);
+    UnsignedInteger sampleSize(1000);
+    for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
       NumericalPoint sobolPoint(sequence.generate());
       fullprint << sobolPoint << std::endl;

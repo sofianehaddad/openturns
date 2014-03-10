@@ -63,8 +63,8 @@ Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Skellam distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // Check if all the components of the sample are integers
-  const UnsignedLong size(sample.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(sample.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar x(sample[i][0]);
     if (x != trunc(x)) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample with integer components, here sample[" << i << "][0]=" << x;

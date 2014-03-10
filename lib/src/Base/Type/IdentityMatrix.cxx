@@ -37,7 +37,7 @@ IdentityMatrix::IdentityMatrix()
 }
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-IdentityMatrix::IdentityMatrix(const UnsignedLong dim)
+IdentityMatrix::IdentityMatrix(const UnsignedInteger dim)
   : CorrelationMatrix(dim)
 {
   // Nothing to do
@@ -59,8 +59,8 @@ String IdentityMatrix::__repr__() const
 }
 
 /* Operator () : should do nothing, in order to prevent any modification on the matrix */
-NumericalScalar & IdentityMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);
@@ -68,8 +68,8 @@ NumericalScalar & IdentityMatrix::operator() (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & IdentityMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)  const
+const NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j);
 }

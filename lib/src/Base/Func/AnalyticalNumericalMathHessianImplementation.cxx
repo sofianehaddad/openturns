@@ -99,25 +99,25 @@ String AnalyticalNumericalMathHessianImplementation::__str__(const String & offs
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(evaluation_.getInputVariablesNames());
       const Description outputVariablesNames(evaluation_.getOutputVariablesNames());
-      UnsignedLong length(0);
-      const UnsignedLong iMax(getInputDimension());
-      const UnsignedLong kMax(getOutputDimension());
-      for (UnsignedLong k = 0; k < kMax; ++k)
+      UnsignedInteger length(0);
+      const UnsignedInteger iMax(getInputDimension());
+      const UnsignedInteger kMax(getOutputDimension());
+      for (UnsignedInteger k = 0; k < kMax; ++k)
       {
-        const UnsignedLong lengthK(outputVariablesNames[k].length());
-        for (UnsignedLong i = 0; i < iMax; ++i)
+        const UnsignedInteger lengthK(outputVariablesNames[k].length());
+        for (UnsignedInteger i = 0; i < iMax; ++i)
         {
-          const UnsignedLong lengthI(inputVariablesNames[i].length());
+          const UnsignedInteger lengthI(inputVariablesNames[i].length());
           // The diagonal term is always shorter than one of the off-diagonal terms
-          for (UnsignedLong j = 0; j < i; ++j)
-            length = std::max(length, lengthI + lengthK + static_cast<UnsignedLong>(inputVariablesNames[j].length()) + 14);
+          for (UnsignedInteger j = 0; j < i; ++j)
+            length = std::max(length, lengthI + lengthK + static_cast<UnsignedInteger>(inputVariablesNames[j].length()) + 14);
         } // For i
       } // For k
-      for (UnsignedLong k = 0; k < kMax; ++k)
+      for (UnsignedInteger k = 0; k < kMax; ++k)
       {
-        for (UnsignedLong i = 0; i < iMax; ++i)
+        for (UnsignedInteger i = 0; i < iMax; ++i)
         {
-          for (UnsignedLong j = 0; j < i; ++j)
+          for (UnsignedInteger j = 0; j < i; ++j)
           {
             oss << offset << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")d(" + inputVariablesNames[j] + ")") << " = " << getFormula(i, j, k) << Os::GetEndOfLine();
           }
@@ -142,20 +142,20 @@ void AnalyticalNumericalMathHessianImplementation::initialize() const
   try
   {
     isAnalytical_ = false;
-    const UnsignedLong inputSize(evaluation_.inputVariablesNames_.getSize());
-    const UnsignedLong outputSize(evaluation_.outputVariablesNames_.getSize());
-    const UnsignedLong hessianSize(inputSize * (inputSize + 1) * outputSize / 2);
+    const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
+    const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
+    const UnsignedInteger hessianSize(inputSize * (inputSize + 1) * outputSize / 2);
     parsers_ = ParserCollection(hessianSize);
     inputVariables_ = NumericalScalarCollection(inputSize);
     // For each element of the hessian, do
-    UnsignedLong hessianIndex(0);
-    for (UnsignedLong sheetIndex = 0; sheetIndex < outputSize; ++sheetIndex)
+    UnsignedInteger hessianIndex(0);
+    for (UnsignedInteger sheetIndex = 0; sheetIndex < outputSize; ++sheetIndex)
     {
       // Parse the current formula with Ev3
       int nerr(0);
       Ev3::ExpressionParser ev3Parser;
       // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
-      for (UnsignedLong inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
+      for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
       Ev3::Expression ev3Expression;
       try
       {
@@ -167,7 +167,7 @@ void AnalyticalNumericalMathHessianImplementation::initialize() const
       }
       if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << evaluation_.formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
       //                Ev3::Simplify(&ev3Expression);
-      for (UnsignedLong rowIndex = 0; rowIndex < inputSize; ++rowIndex)
+      for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
       {
         Ev3::Expression firstDerivative;
         try
@@ -180,11 +180,11 @@ void AnalyticalNumericalMathHessianImplementation::initialize() const
         {
           throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << evaluation_.inputVariablesNames_[rowIndex];
         }
-        for (UnsignedLong columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
+        for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
         {
           // First, define all the variable names and associate them
           // to the corresponding component of the input vector
-          for(UnsignedLong inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) parsers_[hessianIndex].DefineVar(evaluation_.inputVariablesNames_[inputVariableIndex].c_str(), &inputVariables_[inputVariableIndex]);
+          for(UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) parsers_[hessianIndex].DefineVar(evaluation_.inputVariablesNames_[inputVariableIndex].c_str(), &inputVariables_[inputVariableIndex]);
           // Second, define the formula
           try
           {
@@ -215,22 +215,22 @@ void AnalyticalNumericalMathHessianImplementation::initialize() const
 /* Hessian */
 SymmetricTensor AnalyticalNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The hessian does not have an analytical expression.";
-  for (UnsignedLong i = 0; i < inP.getDimension(); ++i) inputVariables_[i] = inP[i];
-  const UnsignedLong outputDimension(getOutputDimension());
+  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i) inputVariables_[i] = inP[i];
+  const UnsignedInteger outputDimension(getOutputDimension());
   SymmetricTensor out(inputDimension, outputDimension);
   ++callsNumber_;
   try
   {
-    UnsignedLong parserIndex(0);
-    for (UnsignedLong sheetIndex = 0; sheetIndex < outputDimension; ++sheetIndex)
+    UnsignedInteger parserIndex(0);
+    for (UnsignedInteger sheetIndex = 0; sheetIndex < outputDimension; ++sheetIndex)
     {
-      for (UnsignedLong rowIndex = 0; rowIndex < inputDimension; ++rowIndex)
+      for (UnsignedInteger rowIndex = 0; rowIndex < inputDimension; ++rowIndex)
       {
-        for (UnsignedLong columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
+        for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
         {
           out(rowIndex, columnIndex, sheetIndex) = parsers_[parserIndex].Eval();
           ++parserIndex;
@@ -246,17 +246,17 @@ SymmetricTensor AnalyticalNumericalMathHessianImplementation::hessian(const Nume
 }
 
 /* Accessor to a specific formula */
-String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedLong i,
-    const UnsignedLong j,
-    const UnsignedLong k) const
+String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedInteger i,
+    const UnsignedInteger j,
+    const UnsignedInteger k) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if ((i >= inputDimension) || (j >= inputDimension) || (k >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the hessian dimensions.";
   if (!isInitialized_) initialize();
   // Convert the 3D index into a linear index
-  UnsignedLong rowIndex(i);
-  UnsignedLong columnIndex(j);
-  UnsignedLong sheetIndex(k);
+  UnsignedInteger rowIndex(i);
+  UnsignedInteger columnIndex(j);
+  UnsignedInteger sheetIndex(k);
   // First, take the symmetry into account
   if (i < j)
   {
@@ -264,7 +264,7 @@ String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedLo
     columnIndex = i;
   }
   // Now, columnIndex <= rowIndex
-  UnsignedLong linearIndex(0);
+  UnsignedInteger linearIndex(0);
   // Each sheet adds a triangle with the main diagonal
   linearIndex += ((inputDimension * (inputDimension + 1)) / 2) * sheetIndex;
   // Compute the linear sub-index into the triangle
@@ -273,19 +273,19 @@ String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedLo
 }
 
 /* Accessor for input point dimension */
-UnsignedLong AnalyticalNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger AnalyticalNumericalMathHessianImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong AnalyticalNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger AnalyticalNumericalMathHessianImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }
 
 /* Get the i-th marginal function */
-AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumericalMathHessianImplementation::getMarginal(const UnsignedLong i) const
+AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumericalMathHessianImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal hessian must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
@@ -295,12 +295,12 @@ AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumerical
 AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumericalMathHessianImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal hessian must be in the range [0, dim-1] and  must be different";
-  const UnsignedLong marginalDimension(indices.getSize());
+  const UnsignedInteger marginalDimension(indices.getSize());
   Description marginalFormulas(marginalDimension);
   Description marginalOutputNames(marginalDimension);
   Description outputNames(evaluation_.getOutputVariablesNames());
   Description formulas(evaluation_.getFormulas());
-  for (UnsignedLong i = 0; i < marginalDimension; ++i)
+  for (UnsignedInteger i = 0; i < marginalDimension; ++i)
   {
     marginalFormulas[i] = formulas[indices[i]];
     marginalOutputNames[i] = outputNames[indices[i]];

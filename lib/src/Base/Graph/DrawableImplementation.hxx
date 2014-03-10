@@ -61,7 +61,7 @@ public:
   Bool operator == (const DrawableImplementation & other) const;
 
   /** Code for point style accessor */
-  virtual UnsignedLong getPointCode(const String & key) const;
+  virtual UnsignedInteger getPointCode(const String & key) const;
 
   /** Check validity of color */
   static Bool IsValidColorCode(const String & key);
@@ -106,8 +106,8 @@ public:
   virtual void setFillStyle(const String & fillStyle);
 
   /** Line width accessor */
-  virtual UnsignedLong getLineWidth() const;
-  virtual void setLineWidth(const UnsignedLong lineWidth);
+  virtual UnsignedInteger getLineWidth() const;
+  virtual void setLineWidth(const UnsignedInteger lineWidth);
 
   /** Accessor for pattern */
   virtual String getPattern() const;
@@ -181,15 +181,15 @@ public:
   static String ConvertFromName(const String & name);
 
   /** Convert an RGB triplet to a valid hexadecimal code */
-  static String ConvertFromRGB(const UnsignedLong red,
-                               const UnsignedLong green,
-                               const UnsignedLong blue);
+  static String ConvertFromRGB(const UnsignedInteger red,
+                               const UnsignedInteger green,
+                               const UnsignedInteger blue);
 
   /** Convert an RGBA quadruplet to a valid hexadecimal code */
-  static String ConvertFromRGBA(const UnsignedLong red,
-                                const UnsignedLong green,
-                                const UnsignedLong blue,
-                                const UnsignedLong alpha);
+  static String ConvertFromRGBA(const UnsignedInteger red,
+                                const UnsignedInteger green,
+                                const UnsignedInteger blue,
+                                const UnsignedInteger alpha);
 
   /** Convert an RGB triplet to a valid hexadecimal code */
   static String ConvertFromRGB(const NumericalScalar red,
@@ -219,7 +219,7 @@ public:
                                 const NumericalScalar alpha);
 
   /** Build default palette */
-  static Description BuildDefaultPalette(const UnsignedLong size);
+  static Description BuildDefaultPalette(const UnsignedInteger size);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -236,7 +236,7 @@ protected:
       fillStyle_(ResourceMap::Get("DrawableImplementation-DefaultFillStyle")),
       lineStyle_(ResourceMap::Get("DrawableImplementation-DefaultLineStyle")),
       pointStyle_(ResourceMap::Get("DrawableImplementation-DefaultPointStyle")),
-      lineWidth_(ResourceMap::GetAsUnsignedLong("DrawableImplementation-DefaultLineWidth")),
+      lineWidth_(ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DefaultLineWidth")),
       dataFileName_("")
   {};
   friend class Factory<DrawableImplementation>;
@@ -244,7 +244,7 @@ protected:
   static Bool IsFirstInitialization;
 
   /** A map matching keys with R codes for point symbols */
-  static std::map<String, UnsignedLong> SymbolCodes;
+  static std::map<String, UnsignedInteger> SymbolCodes;
 
   /** A map matching keys with HTML definition for R colors */
   static std::map<String, String> ColorCodes;
@@ -256,7 +256,7 @@ protected:
   static Description ValidFillStyles;
 
   /** Bounding box size */
-  static const UnsignedLong BoundingBoxSize;
+  static const UnsignedInteger BoundingBoxSize;
 
   /** Data accessor */
   virtual void setData(const NumericalSample & data);
@@ -285,7 +285,7 @@ protected:
   String pointStyle_;
 
   /** Line width of the curve */
-  UnsignedLong lineWidth_;
+  UnsignedInteger lineWidth_;
 
   /** Initialize Valid parameter list */
   static void InitializeValidParameterList();

@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     try
     {
       // Function
-      UnsignedLong sampleSize(20);
+      UnsignedInteger sampleSize(20);
       Description input(4);
       input[0] = "x1";
       input[1] = "x2";
@@ -49,25 +49,25 @@ int main(int argc, char *argv[])
       NumericalScalar threshold(2.0);
       NumericalSample mySample(0, levelFunction.getInputDimension());
       NumericalScalar random(0.1);
-      for(UnsignedLong index = 0; index < sampleSize; index++)
+      for(UnsignedInteger index = 0; index < sampleSize; index++)
       {
         NumericalPoint point(levelFunction.getInputDimension());
         NumericalScalar norm(0.0);
-        for(UnsignedLong coordinate = 0; coordinate < levelFunction.getInputDimension(); coordinate++)
+        for(UnsignedInteger coordinate = 0; coordinate < levelFunction.getInputDimension(); coordinate++)
         {
           point[coordinate] = sqrt(-2.0 * log(random));
           random = fmod(random + sqrt(2.0), 1.0);
           point[coordinate] *= cos(2.0 * atan(1.0) * random);
           norm += point[coordinate] * point[coordinate];
         }
-        for(UnsignedLong coordinate = 0; coordinate < levelFunction.getInputDimension(); coordinate++)
+        for(UnsignedInteger coordinate = 0; coordinate < levelFunction.getInputDimension(); coordinate++)
         {
           point[coordinate] /= sqrt(norm);
         }
         mySample.add(point);
       }
       NearestPointChecker myNearestPointChecker(levelFunction, myOperator, threshold, mySample);
-      for(UnsignedLong index = 0; index < sampleSize; index++)
+      for(UnsignedInteger index = 0; index < sampleSize; index++)
       {
         fullprint << mySample[index] << std::endl;
       }

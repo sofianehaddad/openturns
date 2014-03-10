@@ -59,20 +59,20 @@ AggregatedNumericalMathGradientImplementation * AggregatedNumericalMathGradientI
 /* Gradient method */
 Matrix AggregatedNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
   Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
-  UnsignedLong columnIndex(0);
+  UnsignedInteger columnIndex(0);
   // Loop over the contributors
-  for (UnsignedLong contributorIndex = 0; contributorIndex < size; ++contributorIndex)
+  for (UnsignedInteger contributorIndex = 0; contributorIndex < size; ++contributorIndex)
   {
     const Matrix contributorGradient(evaluation_.functionsCollection_[contributorIndex].gradient(inP));
     // Copy the contributor gradient into the global matrix gradient
     // Must proceed in column order
-    for (UnsignedLong j = 0; j < contributorGradient.getNbColumns(); ++j)
+    for (UnsignedInteger j = 0; j < contributorGradient.getNbColumns(); ++j)
     {
-      for (UnsignedLong i = 0; i < contributorGradient.getNbRows(); ++i)
+      for (UnsignedInteger i = 0; i < contributorGradient.getNbRows(); ++i)
         result(i, columnIndex) = contributorGradient(i, j);
       ++columnIndex;
     }
@@ -81,13 +81,13 @@ Matrix AggregatedNumericalMathGradientImplementation::gradient(const NumericalPo
 }
 
 /* Accessor for input point dimension */
-UnsignedLong AggregatedNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger AggregatedNumericalMathGradientImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong AggregatedNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger AggregatedNumericalMathGradientImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }

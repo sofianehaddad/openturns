@@ -45,13 +45,13 @@ int main(int argc, char *argv[])
     NumericalPoint beta(2);
     beta[0] = 0.9;
     beta[1] = 0.95;
-    for (UnsignedLong a = 0; a < 2; a++)
+    for (UnsignedInteger a = 0; a < 2; a++)
     {
       fullprint << "alpha=" << alpha[a] << std::endl;
-      for (UnsignedLong b = 0; b < 2; b++)
+      for (UnsignedInteger b = 0; b < 2; b++)
       {
         fullprint << "beta=" << beta[b] << std::endl;
-        for (UnsignedLong i = 0; i < 5; i++)
+        for (UnsignedInteger i = 0; i < 5; i++)
         {
           // Sample size for various parameters set
           fullprint << "n(" << alpha[a] << ", " << beta[b] << ", " << i << ")=" << Wilks::ComputeSampleSize(alpha[a], beta[b], i) << std::endl;

@@ -31,13 +31,13 @@ static Factory<SquaredExponential> RegisteredFactory("SquaredExponential");
 
 
 /* Constructor with parameters */
-SquaredExponential::SquaredExponential(const UnsignedLong & dimension)
+SquaredExponential::SquaredExponential(const UnsignedInteger & dimension)
   : CovarianceModelImplementation(dimension)
   , theta_(ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta"))
 {
 }
 
-SquaredExponential::SquaredExponential(const UnsignedLong & dimension,
+SquaredExponential::SquaredExponential(const UnsignedInteger & dimension,
                                        const NumericalScalar theta
                                       )
   : CovarianceModelImplementation(dimension)
@@ -65,10 +65,10 @@ CovarianceMatrix SquaredExponential::operator() (const NumericalPoint & s,
 SymmetricTensor SquaredExponential::partialGradient(const NumericalPoint & s,
     const NumericalPoint & t) const
 {
-  UnsignedLong dimension = getDimension();
+  UnsignedInteger dimension = getDimension();
   SymmetricTensor gradient(1, dimension);
   const NumericalScalar d = (s - t).normSquare();
-  for (UnsignedLong j = 0; j < dimension; ++ j)
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     gradient(0, 0, j) = -2.*theta_ * (s[j] - t[j]) * exp(-theta_ * d);
   }

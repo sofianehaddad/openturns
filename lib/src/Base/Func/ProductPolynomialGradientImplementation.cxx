@@ -50,8 +50,8 @@ ProductPolynomialGradientImplementation::ProductPolynomialGradientImplementation
 {
   // Nothing to do
   Description description(0);
-  for (UnsignedLong i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedLong i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
   setDescription(description);
 }
 
@@ -73,12 +73,12 @@ String ProductPolynomialGradientImplementation::__repr__() const
 /* Compute the gradient of a product of univariate polynomials */
 Matrix ProductPolynomialGradientImplementation::gradient (const NumericalPoint & inP) const
 {
-  const UnsignedLong inDimension(inP.getDimension());
+  const UnsignedInteger inDimension(inP.getDimension());
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   NumericalScalar productEvaluation(1.0);
   NumericalPoint evaluations(inDimension);
   NumericalPoint derivatives(inDimension);
-  for (UnsignedLong i = 0; i < inDimension; ++i)
+  for (UnsignedInteger i = 0; i < inDimension; ++i)
   {
     const NumericalScalar x(inP[i]);
     const NumericalScalar y(polynomials_[i](x));
@@ -91,7 +91,7 @@ Matrix ProductPolynomialGradientImplementation::gradient (const NumericalPoint &
   // Usual case: productEvaluation <> 0
   if (productEvaluation != 0.0)
   {
-    for (UnsignedLong i = 0; i < inDimension; ++i)
+    for (UnsignedInteger i = 0; i < inDimension; ++i)
     {
       gradient(i, 0) = derivatives[i] * (productEvaluation / evaluations[i]);
     }
@@ -99,11 +99,11 @@ Matrix ProductPolynomialGradientImplementation::gradient (const NumericalPoint &
   // Must compute the gradient in a more expensive way
   else
   {
-    for (UnsignedLong i = 0; i < inDimension; ++i)
+    for (UnsignedInteger i = 0; i < inDimension; ++i)
     {
       gradient(i, 0) = derivatives[i];
-      for (UnsignedLong j = 0; j < i; ++j) gradient(i, 0) *= evaluations[j];
-      for (UnsignedLong j = i + 1; j < inDimension; ++j) gradient(i, 0) *= evaluations[j];
+      for (UnsignedInteger j = 0; j < i; ++j) gradient(i, 0) *= evaluations[j];
+      for (UnsignedInteger j = i + 1; j < inDimension; ++j) gradient(i, 0) *= evaluations[j];
     }
   }
   return gradient;
@@ -111,13 +111,13 @@ Matrix ProductPolynomialGradientImplementation::gradient (const NumericalPoint &
 
 
 /* Accessor for input point dimension */
-UnsignedLong ProductPolynomialGradientImplementation::getInputDimension() const
+UnsignedInteger ProductPolynomialGradientImplementation::getInputDimension() const
 {
   return polynomials_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ProductPolynomialGradientImplementation::getOutputDimension() const
+UnsignedInteger ProductPolynomialGradientImplementation::getOutputDimension() const
 {
   return 1;
 }

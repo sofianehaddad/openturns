@@ -136,7 +136,7 @@ void * ComputedNumericalMathEvaluationImplementation::getState() const
 NumericalPoint
 ComputedNumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   NumericalPoint result;
   try
@@ -188,7 +188,7 @@ ComputedNumericalMathEvaluationImplementation::operator() (const NumericalSample
 {
   try
   {
-    const UnsignedLong size(inS.getSize());
+    const UnsignedInteger size(inS.getSize());
     // The sample out will store all the results as if there was no specific action for multiple input points or already computed values
     NumericalSample outS( size, getOutputDimension() );
     // First, initialize the external code on first invocation
@@ -199,7 +199,7 @@ ComputedNumericalMathEvaluationImplementation::operator() (const NumericalSample
     if ( useCache )
     {
       std::set<NumericalPoint> uniqueValues;
-      for (UnsignedLong i = 0; i < size; ++ i )
+      for (UnsignedInteger i = 0; i < size; ++ i )
       {
         if ( useCache )
         {
@@ -231,7 +231,7 @@ ComputedNumericalMathEvaluationImplementation::operator() (const NumericalSample
     }
 
 
-    UnsignedLong toDoSize = toDo.getSize();
+    UnsignedInteger toDoSize = toDo.getSize();
     CacheType tempCache( toDoSize );
     if ( useCache ) tempCache.enable();
 
@@ -241,7 +241,7 @@ ComputedNumericalMathEvaluationImplementation::operator() (const NumericalSample
       NumericalSample newOut(p_function_->execute( p_state_, toDo ));
       if ( useCache )
       {
-        for(UnsignedLong i = 0; i < toDoSize; ++i)
+        for(UnsignedInteger i = 0; i < toDoSize; ++i)
         {
           tempCache.add( toDo[i].getCollection(), newOut[i].getCollection() );
         }
@@ -255,7 +255,7 @@ ComputedNumericalMathEvaluationImplementation::operator() (const NumericalSample
     if ( useCache )
     {
       // fill all the output values
-      for( UnsignedLong i = 0; i < size; ++i )
+      for( UnsignedInteger i = 0; i < size; ++i )
       {
         CacheKeyType inKey( inS[i].getCollection() );
         if ( tempCache.hasKey( inKey ) )
@@ -289,9 +289,9 @@ ComputedNumericalMathEvaluationImplementation::operator() (const NumericalSample
 
 
 /* Accessor for input point dimension */
-UnsignedLong ComputedNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger ComputedNumericalMathEvaluationImplementation::getInputDimension() const
 {
-  UnsignedLong inputDimension = 0;
+  UnsignedInteger inputDimension = 0;
 
   try
   {
@@ -308,9 +308,9 @@ UnsignedLong ComputedNumericalMathEvaluationImplementation::getInputDimension() 
 
 
 /* Accessor for output point dimension */
-UnsignedLong ComputedNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger ComputedNumericalMathEvaluationImplementation::getOutputDimension() const
 {
-  UnsignedLong outputDimension = 0;
+  UnsignedInteger outputDimension = 0;
 
   try
   {
@@ -336,7 +336,7 @@ Description ComputedNumericalMathEvaluationImplementation::getDescription() cons
     if (description.getSize() == getInputDimension())
     {
       // Put generic names for the output description if something they are missing in the wrapper
-      for (UnsignedLong i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
+      for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
     }
     // If the description does not match the dimensions, error
     if (description.getSize() != getInputDimension() + getOutputDimension()) throw InternalException(HERE) << "Error: the description " << description << " does not match the dimensions of the function. Here, input dimension=" << getInputDimension() << " and output dimension=" << getOutputDimension() << ". Check the wrapper description.";

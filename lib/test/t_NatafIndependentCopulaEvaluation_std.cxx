@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong dim(2);
+    UnsignedInteger dim(2);
     NatafIndependentCopulaEvaluation transformation(dim);
     fullprint << "transformation=" << transformation << std::endl;
     NumericalPoint point(dim, 0.75);

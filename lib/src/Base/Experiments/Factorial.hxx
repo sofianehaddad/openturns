@@ -52,7 +52,7 @@ public:
             const String & name = DefaultName);
 
   /** Constructor with parameters */
-  Factorial(const UnsignedLong dimension,
+  Factorial(const UnsignedInteger dimension,
             const NumericalPoint & levels,
             const String & name = DefaultName);
 

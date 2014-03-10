@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
     /* Create a TimeSeries */
     RegularGrid tg(0.0, 0.2, 6);
     NumericalSample data(tg.getN(), myFunc.getInputDimension() - 1);
-    for (UnsignedLong i = 0; i < data.getSize(); ++i)
-      for (UnsignedLong j = 0; j < data.getDimension(); ++j)
+    for (UnsignedInteger i = 0; i < data.getSize(); ++i)
+      for (UnsignedInteger j = 0; j < data.getDimension(); ++j)
         data(i, j) = i * data.getDimension() + j;
     TimeSeries ts(tg, data);
     fullprint << "input time series=" << ts << std::endl;

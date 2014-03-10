@@ -31,13 +31,13 @@ static Factory<AbsoluteExponential> RegisteredFactory("AbsoluteExponential");
 
 
 /* Constructor with parameters */
-AbsoluteExponential::AbsoluteExponential(const UnsignedLong & dimension)
+AbsoluteExponential::AbsoluteExponential(const UnsignedInteger & dimension)
   : CovarianceModelImplementation(dimension)
   , theta_(ResourceMap::GetAsNumericalScalar("AbsoluteExponential-DefaultTheta"))
 {
 }
 
-AbsoluteExponential::AbsoluteExponential(const UnsignedLong & dimension,
+AbsoluteExponential::AbsoluteExponential(const UnsignedInteger & dimension,
     const NumericalScalar theta)
   : CovarianceModelImplementation(dimension)
   , theta_(theta)
@@ -64,10 +64,10 @@ CovarianceMatrix AbsoluteExponential::operator() (const NumericalPoint & s,
 SymmetricTensor AbsoluteExponential::partialGradient(const NumericalPoint & s,
     const NumericalPoint & t) const
 {
-  UnsignedLong dimension = getDimension();
+  UnsignedInteger dimension = getDimension();
   SymmetricTensor gradient(1, dimension);
   const NumericalScalar d = (s - t).norm1();
-  for (UnsignedLong j = 0; j < dimension; ++ j)
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const NumericalScalar sign = (s[j] - t[j] >= 0.) ? 1. : -1.;
     gradient(0, 0, j) = -theta_ * sign * exp(-theta_ * d);

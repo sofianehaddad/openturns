@@ -52,8 +52,8 @@ SimulationResultImplementation::SimulationResultImplementation()
 SimulationResultImplementation::SimulationResultImplementation(const Event & event,
     const NumericalScalar probabilityEstimate,
     const NumericalScalar varianceEstimate,
-    const UnsignedLong outerSampling,
-    const UnsignedLong blockSize)
+    const UnsignedInteger outerSampling,
+    const UnsignedInteger blockSize)
   : PersistentObject()
   , event_(event)
   , probabilityEstimate_(probabilityEstimate)
@@ -127,23 +127,23 @@ NumericalScalar SimulationResultImplementation::getStandardDeviation() const
 }
 
 /* Outer sampling accessor */
-UnsignedLong SimulationResultImplementation::getOuterSampling() const
+UnsignedInteger SimulationResultImplementation::getOuterSampling() const
 {
   return outerSampling_;
 }
 
-void SimulationResultImplementation::setOuterSampling(const UnsignedLong outerSampling)
+void SimulationResultImplementation::setOuterSampling(const UnsignedInteger outerSampling)
 {
   outerSampling_ = outerSampling;
 }
 
 /* Block size accessor */
-UnsignedLong SimulationResultImplementation::getBlockSize() const
+UnsignedInteger SimulationResultImplementation::getBlockSize() const
 {
   return blockSize_;
 }
 
-void SimulationResultImplementation::setBlockSize(const UnsignedLong blockSize)
+void SimulationResultImplementation::setBlockSize(const UnsignedInteger blockSize)
 {
   blockSize_ = blockSize;
 }

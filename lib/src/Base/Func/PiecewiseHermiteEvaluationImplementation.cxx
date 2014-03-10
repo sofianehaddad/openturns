@@ -55,12 +55,12 @@ PiecewiseHermiteEvaluationImplementation::PiecewiseHermiteEvaluationImplementati
   , values_(0, 0)
   , derivatives_(0, 0)
 {
-  const UnsignedLong sizeValues(values.getSize());
+  const UnsignedInteger sizeValues(values.getSize());
   NumericalSample sampleValues(sizeValues, 1);
-  for (UnsignedLong i = 0; i < sizeValues; ++i) sampleValues[i][0] = values[i];
-  const UnsignedLong sizeDerivatives(derivatives.getSize());
+  for (UnsignedInteger i = 0; i < sizeValues; ++i) sampleValues[i][0] = values[i];
+  const UnsignedInteger sizeDerivatives(derivatives.getSize());
   NumericalSample sampleDerivatives(sizeDerivatives, 1);
-  for (UnsignedLong i = 0; i < sizeDerivatives; ++i) sampleDerivatives[i][0] = derivatives[i];
+  for (UnsignedInteger i = 0; i < sizeDerivatives; ++i) sampleDerivatives[i][0] = derivatives[i];
   // Check the input
   setLocationsValuesAndDerivatives(locations, sampleValues, sampleDerivatives);
 }
@@ -106,20 +106,20 @@ NumericalPoint PiecewiseHermiteEvaluationImplementation::operator () (const Nume
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const NumericalScalar x(inP[0]);
-  UnsignedLong i0(0);
+  UnsignedInteger i0(0);
   if (x <= locations_[i0]) return values_[i0];
-  UnsignedLong i1(locations_.getSize() - 1);
+  UnsignedInteger i1(locations_.getSize() - 1);
   if (x >= locations_[i1]) return values_[i1];
   if (isRegular_)
   {
-    i0 = static_cast<UnsignedLong>(trunc(x - locations_[0]) / (locations_[1] - locations_[0]));
+    i0 = static_cast<UnsignedInteger>(trunc(x - locations_[0]) / (locations_[1] - locations_[0]));
     i1 = i0 + 1;
   }
   else
     // Find the segment containing x by bisection
     while (i1 - i0 > 1)
     {
-      const UnsignedLong im((i1 + i0) / 2);
+      const UnsignedInteger im((i1 + i0) / 2);
       if (x < locations_[im]) i1 = im;
       else i0 = im;
     }
@@ -130,12 +130,12 @@ NumericalPoint PiecewiseHermiteEvaluationImplementation::operator () (const Nume
   const NumericalPoint v1(values_[i1]);
   const NumericalPoint dv0(derivatives_[i0]);
   const NumericalPoint dv1(derivatives_[i1]);
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   NumericalPoint value(dimension);
   const NumericalScalar alpha(1.0 - theta);
   const NumericalScalar beta(theta * alpha);
   const NumericalScalar gamma(2.0 * theta - 1.0);
-  for (UnsignedLong i = 0; i < dimension; ++i) value[i] = alpha * v0[i] + theta * v1[i] + beta * (gamma * (v1[i] - v0[i]) + h * (alpha * dv0[i] - theta * dv1[i]));
+  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * v0[i] + theta * v1[i] + beta * (gamma * (v1[i] - v0[i]) + h * (alpha * dv0[i] - theta * dv1[i]));
   return value;
 }
 
@@ -144,20 +144,20 @@ NumericalPoint PiecewiseHermiteEvaluationImplementation::derivate(const Numerica
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const NumericalScalar x(inP[0]);
-  UnsignedLong i0(0);
+  UnsignedInteger i0(0);
   if (x <= locations_[i0]) return values_[i0];
-  UnsignedLong i1(locations_.getSize() - 1);
+  UnsignedInteger i1(locations_.getSize() - 1);
   if (x >= locations_[i1]) return values_[i1];
   if (isRegular_)
   {
-    i0 = static_cast<UnsignedLong>(trunc(x - locations_[0]) / (locations_[1] - locations_[0]));
+    i0 = static_cast<UnsignedInteger>(trunc(x - locations_[0]) / (locations_[1] - locations_[0]));
     i1 = i0 + 1;
   }
   else
     // Find the segment containing x by bisection
     while (i1 - i0 > 1)
     {
-      const UnsignedLong im((i1 + i0) / 2);
+      const UnsignedInteger im((i1 + i0) / 2);
       if (x < locations_[im]) i1 = im;
       else i0 = im;
     }
@@ -168,12 +168,12 @@ NumericalPoint PiecewiseHermiteEvaluationImplementation::derivate(const Numerica
   const NumericalPoint v1(values_[i1]);
   const NumericalPoint dv0(derivatives_[i0]);
   const NumericalPoint dv1(derivatives_[i1]);
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   NumericalPoint value(dimension);
   const NumericalScalar alpha(1.0 - theta);
   const NumericalScalar beta(theta * alpha);
   const NumericalScalar gamma(2.0 * theta - 1.0);
-  for (UnsignedLong i = 0; i < dimension; ++i) value[i] = (-v0[i] + v1[i] + alpha * (gamma * (v1[i] - v0[i]) + h * (alpha * dv0[i] - theta * dv1[i])) + beta * (2.0 * (v1[i] - v0[i]) + h * (- dv0[i] - dv1[i]))) / h;
+  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-v0[i] + v1[i] + alpha * (gamma * (v1[i] - v0[i]) + h * (alpha * dv0[i] - theta * dv1[i])) + beta * (2.0 * (v1[i] - v0[i]) + h * (- dv0[i] - dv1[i]))) / h;
   return value;
 }
 
@@ -185,13 +185,13 @@ NumericalPoint PiecewiseHermiteEvaluationImplementation::getLocations() const
 
 void PiecewiseHermiteEvaluationImplementation::setLocations(const NumericalPoint & locations)
 {
-  const UnsignedLong size(locations.getSize());
+  const UnsignedInteger size(locations.getSize());
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
   const NumericalScalar step(locations_[0] - locations_[0]);
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * fabs(step));
   isRegular_ = true;
-  for (UnsignedLong i = 0; i < size; ++i) isRegular_ = isRegular_ && (fabs(locations[i] - locations[0] - i * step) < epsilon);
+  for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (fabs(locations[i] - locations[0] - i * step) < epsilon);
   locations_ = locations;
   std::stable_sort(locations_.begin(), locations_.end());
 }
@@ -204,7 +204,7 @@ NumericalSample PiecewiseHermiteEvaluationImplementation::getValues() const
 
 void PiecewiseHermiteEvaluationImplementation::setValues(const NumericalSample & values)
 {
-  const UnsignedLong size(values.getSize());
+  const UnsignedInteger size(values.getSize());
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
   values_ = values;
@@ -218,7 +218,7 @@ NumericalSample PiecewiseHermiteEvaluationImplementation::getDerivatives() const
 
 void PiecewiseHermiteEvaluationImplementation::setDerivatives(const NumericalSample & derivatives)
 {
-  const UnsignedLong size(derivatives.getSize());
+  const UnsignedInteger size(derivatives.getSize());
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of derivatives=" << size << " must match the number of previously set locations=" << locations_.getSize();
   derivatives_ = derivatives;
@@ -229,20 +229,20 @@ void PiecewiseHermiteEvaluationImplementation::setLocationsValuesAndDerivatives(
     const NumericalSample & values,
     const NumericalSample & derivatives)
 {
-  const UnsignedLong size(locations.getSize());
+  const UnsignedInteger size(locations.getSize());
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << values.getSize() << " must match the number of locations=" << size;
   if (size != derivatives.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of derivatives=" << derivatives.getSize() << " must match the number of locations=" << size;
-  const UnsignedLong outputDimension(values.getDimension());
+  const UnsignedInteger outputDimension(values.getDimension());
   if (outputDimension != derivatives.getDimension()) throw InvalidArgumentException(HERE) << "Error: the dimension of the derivatives=" << derivatives.getDimension() << " must match the dimension of the locations=" << outputDimension;
   // Sort the data in increasing order according to the locations
   NumericalSample data(size, 1 + 2 * outputDimension);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = locations[i];
-    for (UnsignedLong j = 0; j < outputDimension; ++j)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
       data[i][1 + j] = values[i][j];
-    for (UnsignedLong j = 0; j < outputDimension; ++j)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
       data[i][1 + outputDimension + j] = derivatives[i][j];
   }
   data = data.sortAccordingToAComponent(0);
@@ -252,25 +252,25 @@ void PiecewiseHermiteEvaluationImplementation::setLocationsValuesAndDerivatives(
   const NumericalScalar step(data[1][0] - data[0][0]);
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * fabs(step));
   isRegular_ = true;
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     locations_[i] = data[i][0];
     isRegular_ = isRegular_ && (fabs(locations_[i] - locations_[0] - i * step) < epsilon);
-    for (UnsignedLong j = 0; j < outputDimension; ++j)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
       values_[i][j] = data[i][1 + j];
-    for (UnsignedLong j = 0; j < outputDimension; ++j)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
       derivatives_[i][j] = data[i][1 + outputDimension + j];
   }
 }
 
 /* Input dimension accessor */
-UnsignedLong PiecewiseHermiteEvaluationImplementation::getInputDimension() const
+UnsignedInteger PiecewiseHermiteEvaluationImplementation::getInputDimension() const
 {
   return 1;
 }
 
 /* Output dimension accessor */
-UnsignedLong PiecewiseHermiteEvaluationImplementation::getOutputDimension() const
+UnsignedInteger PiecewiseHermiteEvaluationImplementation::getOutputDimension() const
 {
   return values_.getDimension();
 }

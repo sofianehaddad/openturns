@@ -46,7 +46,7 @@ NatafEllipticalDistributionHessian::NatafEllipticalDistributionHessian():
 }
 
 /* Parameter constructor */
-NatafEllipticalDistributionHessian::NatafEllipticalDistributionHessian(const UnsignedLong dimension):
+NatafEllipticalDistributionHessian::NatafEllipticalDistributionHessian(const UnsignedInteger dimension):
   ConstantNumericalMathHessianImplementation(SymmetricTensor(dimension, dimension))
 {
   // Nothing to do

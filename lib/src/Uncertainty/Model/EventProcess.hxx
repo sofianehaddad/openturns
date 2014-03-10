@@ -65,7 +65,7 @@ public:
   String __repr__() const;
 
   /** Dimension accessor */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Domain accessor */
   Domain getDomain() const;

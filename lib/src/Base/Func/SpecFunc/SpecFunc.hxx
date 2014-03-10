@@ -56,7 +56,7 @@ public:
   // 1.20205690315959429 = Zeta(3)
   static const NumericalScalar ZETA3;
   // Maximum number of iterations for algorithms
-  static const UnsignedLong MaximumIteration;
+  static const UnsignedInteger MaximumIteration;
   // Maximum precision for algorithms
   static const NumericalScalar Precision;
   // Minimum positive real number
@@ -115,7 +115,7 @@ public:
   static NumericalComplex Dawson(const NumericalComplex & z);
   // Debye function of order n: DebyeN(x, n) = n / x^n \int_0^x t^n/(\exp(t)-1) dt
   static NumericalScalar Debye(const NumericalScalar x,
-                               const UnsignedLong n);
+                               const UnsignedInteger n);
   // DiLog function: Dilog(x) = -\int_0^x \log(1-t)/t dt
   static NumericalScalar DiLog(const NumericalScalar x);
   // Complex Faddeeva function: Faddeeva(z) = exp(-z^2)\erfc(-I*z)
@@ -202,7 +202,7 @@ public:
   //      static NumericalScalar MarcumQFunction(const NumericalScalar a,const NumericalScalar b);
 
   // Next power of two
-  static UnsignedLong NextPowerOfTwo(const UnsignedLong n);
+  static UnsignedInteger NextPowerOfTwo(const UnsignedInteger n);
 
 }; /* class SpecFunc */
 

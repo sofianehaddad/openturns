@@ -48,10 +48,10 @@ public:
   CorrelationMatrix();
 
   /** Constructor with size */
-  explicit CorrelationMatrix(const UnsignedLong dim);
+  explicit CorrelationMatrix(const UnsignedInteger dim);
 
   /** Constructor from external collection */
-  CorrelationMatrix(const UnsignedLong dim,
+  CorrelationMatrix(const UnsignedInteger dim,
                     const NumericalScalarCollection & elementsValues);
 
   /** Constructor with implementation */

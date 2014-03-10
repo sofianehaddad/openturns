@@ -110,7 +110,7 @@ String ProductNumericalMathFunction::__str__(const String & offset) const
  */
 Matrix ProductNumericalMathFunction::parametersGradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // Values of the functions
   NumericalScalar leftValue(p_leftFunction_->operator()(inP)[0]);
@@ -119,18 +119,18 @@ Matrix ProductNumericalMathFunction::parametersGradient(const NumericalPoint & i
   Matrix upper(p_leftFunction_->parametersGradient(inP) * leftValue);
   Matrix lower(p_rightFunction_->parametersGradient(inP) * rightValue);
   // Fill-in the result
-  UnsignedLong leftParametersDimension(upper.getNbRows());
-  UnsignedLong rightParametersDimension(lower.getNbRows());
+  UnsignedInteger leftParametersDimension(upper.getNbRows());
+  UnsignedInteger rightParametersDimension(lower.getNbRows());
   Matrix gradient(rightParametersDimension + leftParametersDimension, 1);
-  UnsignedLong rowIndex(0);
+  UnsignedInteger rowIndex(0);
   // Gradient according to left parameters
-  for (UnsignedLong i = 0; i < leftParametersDimension; ++i)
+  for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
   {
     gradient(rowIndex, 0) = upper(i, 0);
     ++rowIndex;
   }
   // Gradient accroding to right parameters
-  for (UnsignedLong i = 0; i < leftParametersDimension; ++i)
+  for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
   {
     gradient(rowIndex, 0) = lower(i, 0);
     ++rowIndex;

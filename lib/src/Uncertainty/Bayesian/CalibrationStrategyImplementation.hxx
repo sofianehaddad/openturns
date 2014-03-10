@@ -53,7 +53,7 @@ public:
                                     ResourceMap::GetAsNumericalScalar("CalibrationStrategyImplementation-DefaultUpperBound")),
                                     const NumericalScalar expansionFactor = ResourceMap::GetAsNumericalScalar("CalibrationStrategyImplementation-DefaultExpansionFactor"),
                                     const NumericalScalar shrinkFactor = ResourceMap::GetAsNumericalScalar("CalibrationStrategyImplementation-DefaultShrinkFactor"),
-                                    const UnsignedLong calibrationStep = ResourceMap::GetAsUnsignedLong("CalibrationStrategyImplementation-DefaultCalibrationStep"));
+                                    const UnsignedInteger calibrationStep = ResourceMap::GetAsUnsignedInteger("CalibrationStrategyImplementation-DefaultCalibrationStep"));
 
   /** String converter */
   virtual String __repr__() const;
@@ -71,8 +71,8 @@ public:
   NumericalScalar getShrinkFactor() const;
 
   /** Calibration period */
-  void setCalibrationStep(const UnsignedLong calibrationStep);
-  UnsignedLong getCalibrationStep() const;
+  void setCalibrationStep(const UnsignedInteger calibrationStep);
+  UnsignedInteger getCalibrationStep() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -94,7 +94,7 @@ private:
   NumericalScalar expansionFactor_;
 
   /// period between recalibrations
-  UnsignedLong calibrationStep_;
+  UnsignedInteger calibrationStep_;
 
 }; /* class CalibrationStrategyImplementation */
 

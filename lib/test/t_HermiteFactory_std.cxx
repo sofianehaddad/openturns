@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
     HermiteFactory hermite;
     fullprint << "hermite=" << hermite << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
     {
       fullprint << "hermite(" << i << ")=" << hermite.build(i).__str__() << std::endl;
       //        fullprint << "hermite(" << i << ")=" << UniVariatePolynomial(clean(hermite.build(i).getCoefficients())).__str__() << std::endl;

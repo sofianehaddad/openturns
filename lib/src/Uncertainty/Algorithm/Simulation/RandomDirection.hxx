@@ -47,7 +47,7 @@ public:
   RandomDirection();
 
   /** Constructor with parameters */
-  explicit RandomDirection(const UnsignedLong dimension);
+  explicit RandomDirection(const UnsignedInteger dimension);
 
 
   /** Virtual constructor */

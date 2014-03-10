@@ -116,11 +116,11 @@ Matrix LinearNumericalMathGradientImplementation::gradient(const NumericalPoint 
   if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   Matrix value(constant_);
   // Add the linear term <linear, x>
-  for(UnsignedLong i = 0; i < linear_.getNbRows(); ++i)
+  for(UnsignedInteger i = 0; i < linear_.getNbRows(); ++i)
   {
-    for(UnsignedLong j = 0; j < linear_.getNbColumns(); ++j)
+    for(UnsignedInteger j = 0; j < linear_.getNbColumns(); ++j)
     {
-      for(UnsignedLong k = 0; k < linear_.getNbSheets(); ++k)
+      for(UnsignedInteger k = 0; k < linear_.getNbSheets(); ++k)
       {
         value(i, k) += (inP[j] - center_[j]) * linear_(i, j, k);
       }
@@ -131,13 +131,13 @@ Matrix LinearNumericalMathGradientImplementation::gradient(const NumericalPoint 
 }
 
 /* Accessor for input point dimension */
-UnsignedLong LinearNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger LinearNumericalMathGradientImplementation::getInputDimension() const
 {
   return center_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong LinearNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger LinearNumericalMathGradientImplementation::getOutputDimension() const
 {
   return constant_.getNbColumns();
 }

@@ -72,7 +72,7 @@ String KissFFT::__str__(const String & offset) const
 KissFFT::NumericalComplexCollection KissFFT::transform(const NumericalComplexCollection & collection) const
 {
   // Get the size of the collection
-  const UnsignedLong fftSize(collection.getSize());
+  const UnsignedInteger fftSize(collection.getSize());
 
   // Init of kissfft  - Boolean argument is to tell that we perform a direct transformation
   KISSFFTScalar fft(fftSize, false);
@@ -85,8 +85,8 @@ KissFFT::NumericalComplexCollection KissFFT::transform(const NumericalComplexCol
 
 /* FFT transformation on a regular complex sequence of the collection (between first and last, with elements separated by step)*/
 KissFFT::NumericalComplexCollection KissFFT::transform(const NumericalComplexCollection & collection,
-    const UnsignedLong first,
-    const UnsignedLong size) const
+    const UnsignedInteger first,
+    const UnsignedInteger size) const
 {
   // Init of kissfft  - Boolean argument is to tell that we perform a direct transformation
   KISSFFTScalar fft(size, false);
@@ -101,7 +101,7 @@ KissFFT::NumericalComplexCollection KissFFT::transform(const NumericalComplexCol
 KissFFT::NumericalComplexCollection KissFFT::inverseTransform(const NumericalComplexCollection & collection) const
 {
   // Get the size of the collection
-  const UnsignedLong size(collection.getSize());
+  const UnsignedInteger size(collection.getSize());
 
   // Init of kissfft  - Boolean argument is to tell that we perform an inverse transformation
   KISSFFTScalar fft(size, true);
@@ -113,14 +113,14 @@ KissFFT::NumericalComplexCollection KissFFT::inverseTransform(const NumericalCom
   // Call inverse transformation
   fft.transform( &collection[0] , &transformationResult[0] );
   const NumericalScalar alpha(1.0 / size);
-  for (UnsignedLong index = 0; index < size; ++index) transformationResult[index] *= alpha;
+  for (UnsignedInteger index = 0; index < size; ++index) transformationResult[index] *= alpha;
   return transformationResult;
 }
 
 /* FFT transformation on a regular complex sequence of the collection (between first and last, with elements separated by step)*/
 KissFFT::NumericalComplexCollection KissFFT::inverseTransform(const NumericalComplexCollection & collection,
-    const UnsignedLong first,
-    const UnsignedLong size) const
+    const UnsignedInteger first,
+    const UnsignedInteger size) const
 {
   // Init of kissfft  - Boolean argument is true
   KISSFFTScalar fft(size, true);
@@ -129,7 +129,7 @@ KissFFT::NumericalComplexCollection KissFFT::inverseTransform(const NumericalCom
   NumericalComplexCollection transformationResult(size);
   fft.transform( &collection[first] , &transformationResult[0] );
   const NumericalScalar alpha(1.0 / size);
-  for (UnsignedLong index = 0; index < size; ++index) transformationResult[index] *= alpha;
+  for (UnsignedInteger index = 0; index < size; ++index) transformationResult[index] *= alpha;
   return transformationResult;
 }
 

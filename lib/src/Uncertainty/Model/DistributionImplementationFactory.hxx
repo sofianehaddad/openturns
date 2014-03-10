@@ -47,7 +47,7 @@ public:
   typedef DistributionImplementation::Implementation Implementation;
 
   /** Default constructor */
-  explicit DistributionImplementationFactory(const UnsignedLong bootstrapSize = ResourceMap::GetAsUnsignedLong("DistributionImplementationFactory-DefaultBootstrapSize"),
+  explicit DistributionImplementationFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"),
       const String & name = DefaultName);
 
   /** Virtual constructor */
@@ -76,8 +76,8 @@ public:
   virtual Implementation build() const;
 
   /** Bootstrap size accessor */
-  UnsignedLong getBootstrapSize() const;
-  void setBootstrapSize(const UnsignedLong bootstrapSize);
+  UnsignedInteger getBootstrapSize() const;
+  void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
 
 protected:
@@ -86,7 +86,7 @@ protected:
                                      const DistributionImplementation & distribution) const;
 
   /* Number of bootstrap resampling for ovariance estimation */
-  UnsignedLong bootstrapSize_;
+  UnsignedInteger bootstrapSize_;
 
   /* Convert a NumericalPointWithDescriptionCollection into a NumericalPointCollection */
   static NumericalPointCollection RemoveDescriptionFromCollection(const NumericalPointWithDescriptionCollection & coll);

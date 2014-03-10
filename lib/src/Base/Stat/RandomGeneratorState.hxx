@@ -44,7 +44,7 @@ public:
   RandomGeneratorState();
 
   /** Standard constructor */
-  RandomGeneratorState(const Indices buffer, const UnsignedLong index);
+  RandomGeneratorState(const Indices buffer, const UnsignedInteger index);
 
   /** Virtual constructor */
   RandomGeneratorState * clone() const;
@@ -57,7 +57,7 @@ public:
   Indices getBuffer() const;
 
   /** Index Acccessor */
-  UnsignedLong getIndex() const;
+  UnsignedInteger getIndex() const;
 
   /** Comparison operator */
   Bool operator ==(const RandomGeneratorState & other) const;
@@ -71,7 +71,7 @@ public:
 
 private:
   Indices buffer_;
-  UnsignedLong index_;
+  UnsignedInteger index_;
 
 
 }; /* end class RandomGeneratorState */

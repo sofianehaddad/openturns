@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
   {
     // Big test case for correlated components
     // Instanciate one distribution object
-    UnsignedLong dim(4);
+    UnsignedInteger dim(4);
     NumericalPoint meanPoint(dim, 1.0);
     NumericalPoint sigma(dim, 1.0);
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.5;
     }
@@ -49,16 +49,16 @@ int main(int argc, char *argv[])
     Normal distribution(meanPoint, sigma, R);
 
     // Test for sampling
-    UnsignedLong size = 1000;
+    UnsignedInteger size = 1000;
     NumericalSample oneSample = distribution.getSample( size );
     fullprint << "sample of size " << size << " first=" << oneSample[0] << " last=" << oneSample[oneSample.getSize() - 1] << std::endl;
     NumericalPoint mean(oneSample.computeMean());
     fullprint << "mean error (relative)=" << (mean - meanPoint).norm() / meanPoint.norm() << std::endl;
     CovarianceMatrix covariance(oneSample.computeCovariance());
     NumericalScalar errorCovariance(0.0);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
-      for (UnsignedLong j = 0; j < dim; j++)
+      for (UnsignedInteger j = 0; j < dim; j++)
       {
         errorCovariance += fabs(covariance(i, j) - sigma[i] * sigma[j] * R(i, j));
       }
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
               << " density generator=" << distribution.computeDensityGenerator(0.0)
               << std::endl;
     // Extract the marginals
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       Distribution margin(distribution.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
@@ -116,9 +116,9 @@ int main(int argc, char *argv[])
     fullprint << "mean error (relative)=" << (mean - meanPoint).norm() / meanPoint.norm() << std::endl;
     covariance = oneSample.computeCovariance();
     errorCovariance = 0.0;
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
-      for (UnsignedLong j = 0; j < dim; j++)
+      for (UnsignedInteger j = 0; j < dim; j++)
       {
         errorCovariance += fabs(covariance(i, j) - (i == j ? sigma[i] * sigma[j] : 0));
       }

@@ -23,7 +23,7 @@ try:
     outputSample = f(inputSample)
     comparisonOperators = [Less(), LessOrEqual(), Greater(), GreaterOrEqual()]
     threshold = 3.0
-    ResourceMap.SetAsUnsignedLong(
+    ResourceMap.SetAsUnsignedInteger(
         "SimulationSensitivityAnalysis-DefaultSampleMargin", 10)
     for i in range(4):
         algo = SimulationSensitivityAnalysis(

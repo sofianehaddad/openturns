@@ -45,8 +45,8 @@ QuasiMonteCarloResult::QuasiMonteCarloResult()
 QuasiMonteCarloResult::QuasiMonteCarloResult(const Event & event,
     const NumericalScalar probabilityEstimate,
     const NumericalScalar varianceEstimate,
-    const UnsignedLong outerSampling,
-    const UnsignedLong blockSize)
+    const UnsignedInteger outerSampling,
+    const UnsignedInteger blockSize)
   : SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize)
 {
   // Nothing to do

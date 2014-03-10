@@ -47,7 +47,7 @@ public:
   NumericalPointWithDescription();
 
   /** Constructor with size */
-  explicit NumericalPointWithDescription(const UnsignedLong size,
+  explicit NumericalPointWithDescription(const UnsignedInteger size,
                                          const NumericalScalar value = 0.0);
 
   /** Constructor from a collection */

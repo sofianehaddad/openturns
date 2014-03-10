@@ -359,7 +359,7 @@ NumericalPoint Gamma::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Gamma::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Gamma::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
 }

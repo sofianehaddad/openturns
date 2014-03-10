@@ -104,14 +104,14 @@ OrthogonalProductPolynomialFactory::PolynomialFamilyCollection OrthogonalProduct
 }
 
 /* Build the NumericalMathFunction of the given index */
-NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedLong index) const
+NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedInteger index) const
 {
   // Compute the multi-indices using the EnumerateFunction
   Indices indices(phi_(index));
-  const UnsignedLong size(indices.getSize());
+  const UnsignedInteger size(indices.getSize());
   // Then build the collection of polynomials using the collection of factories
   PolynomialCollection polynomials(size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     polynomials[i] = coll_[i].build(indices[i]);
   }
@@ -148,9 +148,9 @@ void OrthogonalProductPolynomialFactory::load(Advocate & adv)
 /* Build the measure based on the one found in the family collection */
 void OrthogonalProductPolynomialFactory::buildMeasure()
 {
-  const UnsignedLong size(coll_.getSize());
+  const UnsignedInteger size(coll_.getSize());
   Collection<Distribution> distributions(size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     distributions[i] = coll_[i].getMeasure();
   }
@@ -161,18 +161,18 @@ void OrthogonalProductPolynomialFactory::buildMeasure()
 NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & degrees,
     NumericalPoint & weights) const
 {
-  const UnsignedLong degreesSize(degrees.getSize());
+  const UnsignedInteger degreesSize(degrees.getSize());
   if (degreesSize != coll_.getSize()) throw InvalidArgumentException(HERE) << "Error: the degrees size must match the size of the orthogonal univariate polynomials factories size.";
   Bool isConstant(true);
-  for (UnsignedLong i = 0; i < degreesSize; ++i) isConstant = isConstant && (degrees[i] == 0);
+  for (UnsignedInteger i = 0; i < degreesSize; ++i) isConstant = isConstant && (degrees[i] == 0);
   if (isConstant) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
   // First, get the nodes and weights of the marginal factories
   NumericalPointCollection marginalNodes;
   NumericalPointCollection marginalWeights;
-  UnsignedLong totalSize(1);
-  for (UnsignedLong i = 0; i < degreesSize; ++i)
+  UnsignedInteger totalSize(1);
+  for (UnsignedInteger i = 0; i < degreesSize; ++i)
   {
-    const UnsignedLong d(degrees[i]);
+    const UnsignedInteger d(degrees[i]);
     totalSize *= d;
     NumericalPoint w;
     marginalNodes.add(coll_[i].getNodesAndWeights(d, w));
@@ -182,10 +182,10 @@ NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Ind
   NumericalSample nodes(totalSize, degreesSize);
   weights = NumericalPoint(totalSize, 1.0);
   Indices indices(degreesSize, 0);
-  for (UnsignedLong i = 0; i < totalSize; ++i)
+  for (UnsignedInteger i = 0; i < totalSize; ++i)
   {
     // Build the current node
-    for (UnsignedLong j = 0; j < degreesSize; ++j)
+    for (UnsignedInteger j = 0; j < degreesSize; ++j)
     {
       nodes[i][j] = marginalNodes[j][indices[j]];
       weights[i] *= marginalWeights[j][indices[j]];
@@ -193,9 +193,9 @@ NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Ind
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
-    for (UnsignedLong i = 0; i < degreesSize - 1; ++i) indices[i + 1] += (indices[i] == degrees[i]);
+    for (UnsignedInteger i = 0; i < degreesSize - 1; ++i) indices[i + 1] += (indices[i] == degrees[i]);
     /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedLong i = 0; i < degreesSize - 1; ++i) indices[i] = indices[i] % degrees[i];
+    for (UnsignedInteger i = 0; i < degreesSize - 1; ++i) indices[i] = indices[i] % degrees[i];
   }
   return nodes;
 }

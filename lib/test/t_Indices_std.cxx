@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong size(4);
+    UnsignedInteger size(4);
     Indices indices(size, 0);
-    for (UnsignedLong i = 0; i < size; i++)
+    for (UnsignedInteger i = 0; i < size; i++)
     {
       indices[i] = i;
     }

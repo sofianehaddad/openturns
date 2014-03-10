@@ -242,7 +242,7 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const NumericalScal
   }
   else
   {
-    UnsignedLong integrationNodesNumber(ResourceMap::GetAsUnsignedLong("LogNormal-CharacteristicFunctionIntegrationNodes"));
+    UnsignedInteger integrationNodesNumber(ResourceMap::GetAsUnsignedInteger("LogNormal-CharacteristicFunctionIntegrationNodes"));
     // Check if the integration nodes have to be recomputed
     if (integrationNodesNumber != hermiteNodes_.getSize()) hermiteNodes_ = HermiteFactory().getNodesAndWeights(integrationNodesNumber, hermiteWeights_);
     // Hermite integration of the Fourier transform for small sigma
@@ -255,10 +255,10 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const NumericalScal
       // sigma << 1
       // sigma(x_n-x_{n-1}) < 2*\pi/(8*nu)
       // const NumericalScalar maxPulsation(exp(sigmaLog_ * nodes[integrationNodesNumber - 1]));
-      // const UnsignedLong minimumIntegrationNodesNumber(static_cast<UnsignedLong>(8 * 2 * M_PI * nu));
-      // integrationNodesNumber = std::max(integrationNodesNumber, static_cast<UnsignedLong>(8 * 2 * M_PI * nu));
+      // const UnsignedInteger minimumIntegrationNodesNumber(static_cast<UnsignedInteger>(8 * 2 * M_PI * nu));
+      // integrationNodesNumber = std::max(integrationNodesNumber, static_cast<UnsignedInteger>(8 * 2 * M_PI * nu));
       NumericalComplex value(0.0);
-      for (UnsignedLong i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * exp(NumericalComplex(0.0, nu * exp(sigmaLog_ * hermiteNodes_[i])));
+      for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * exp(NumericalComplex(0.0, nu * exp(sigmaLog_ * hermiteNodes_[i])));
       logCFValue = log(value);
     } // Small sigma
     else
@@ -267,7 +267,7 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const NumericalScal
       // Compute the characteristic function for the positive arguments
       const NumericalScalar sStar(-SpecFunc::LambertW(sigmaLog_ * sigmaLog_ * nu) / sigmaLog_);
       NumericalComplex value(0.0);
-      for (UnsignedLong i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * characteristicIntegrand(hermiteNodes_[i], sStar);
+      for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * characteristicIntegrand(hermiteNodes_[i], sStar);
       logCFValue = log(value) + H_ - NumericalComplex(sStar * sStar / 2.0, M_PI * sStar / (2.0 * sigmaLog_));
     } // Large sigma
   } // Large argument
@@ -346,7 +346,7 @@ NumericalPoint LogNormal::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint LogNormal::getStandardMoment(const UnsignedLong n) const
+NumericalPoint LogNormal::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, exp(n * muLog_ + 0.5 * pow(n * sigmaLog_, 2)));
 }

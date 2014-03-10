@@ -32,12 +32,12 @@ typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilis
 
 SymmetricTensor clean(SymmetricTensor in)
 {
-  UnsignedLong rowDim(in.getNbRows());
-  UnsignedLong colDim(in.getNbColumns());
-  UnsignedLong sheetDim(in.getNbSheets());
-  for(UnsignedLong i = 0; i < rowDim; i++)
-    for(UnsignedLong j = 0; j < colDim; j++)
-      for (UnsignedLong k = 0; k < sheetDim; k++)
+  UnsignedInteger rowDim(in.getNbRows());
+  UnsignedInteger colDim(in.getNbColumns());
+  UnsignedInteger sheetDim(in.getNbSheets());
+  for(UnsignedInteger i = 0; i < rowDim; i++)
+    for(UnsignedInteger j = 0; j < colDim; j++)
+      for (UnsignedInteger k = 0; k < sheetDim; k++)
       {
         in(i, j, k) = 1.e-4 * round(1.e4 * in(i, j, k));
         if (fabs(in(i, j, k)) < 1.e-4) in(i, j, k) = 0.0;
@@ -49,9 +49,9 @@ void print(NumericalPoint point)
 {
   OStream fullprint(std::cout);
 
-  UnsignedLong dimension(point.getDimension());
+  UnsignedInteger dimension(point.getDimension());
   fullprint << "[";
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     fullprint << ((i == 0) ? "" : ", ");
     fullprint << std::setprecision(16) << point[i];
@@ -63,12 +63,12 @@ void print(Matrix matrix)
 {
   OStream fullprint(std::cout);
 
-  UnsignedLong rowDimension(matrix.getNbRows());
-  UnsignedLong colDimension(matrix.getNbColumns());
-  for (UnsignedLong i = 0; i < rowDimension; i++)
+  UnsignedInteger rowDimension(matrix.getNbRows());
+  UnsignedInteger colDimension(matrix.getNbColumns());
+  for (UnsignedInteger i = 0; i < rowDimension; i++)
   {
     fullprint << "|";
-    for (UnsignedLong j = 0; j < colDimension; j++)
+    for (UnsignedInteger j = 0; j < colDimension; j++)
     {
       fullprint << ((j == 0) ? "" : ", ");
       fullprint << std::setw(21) << std::setprecision(16) << matrix(i, j);
@@ -81,8 +81,8 @@ void print(SymmetricTensor tensor)
 {
   OStream fullprint(std::cout);
 
-  UnsignedLong sheetDimension(tensor.getNbSheets());
-  for (UnsignedLong k = 0; k < sheetDimension; k++)
+  UnsignedInteger sheetDimension(tensor.getNbSheets());
+  for (UnsignedInteger k = 0; k < sheetDimension; k++)
   {
     print(Matrix(tensor.getSheet(k)));
     fullprint << std::endl;
@@ -104,12 +104,12 @@ int main(int argc, char *argv[])
     aCollection.add(Uniform(-1.0, 2.0));
     aCollection.add(Gamma(2.0, 2.0, 0.0));
 
-    UnsignedLong dim(aCollection.getSize());
+    UnsignedInteger dim(aCollection.getSize());
 
     // Instanciate one distribution object
     ComposedDistribution distribution(aCollection, IndependentCopula(dim));
     // Test for sampling
-    UnsignedLong size = 10000;
+    UnsignedInteger size = 10000;
     NumericalSample sample = distribution.getSample( size );
     fullprint << "sample first=" << sample[0] << " last=" << sample[size - 1] << std::endl;
     // Should be close to [0.5, 1, 0.544439]

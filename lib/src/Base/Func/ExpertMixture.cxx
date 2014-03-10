@@ -111,22 +111,22 @@ Classifier ExpertMixture::getClassifier() const
 /* Operator () */
 NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(experts_[0].getInputDimension());
+  const UnsignedInteger inputDimension(experts_[0].getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a point of dimension=" << inP.getDimension();
-  const UnsignedLong outputDimension(experts_[0].getOutputDimension());
-  const UnsignedLong size(experts_.getSize());
-  UnsignedLong bestClass(0);
+  const UnsignedInteger outputDimension(experts_[0].getOutputDimension());
+  const UnsignedInteger size(experts_.getSize());
+  UnsignedInteger bestClass(0);
   // Build the point (x, f(x)) for the first class and grade it according to the classifier
   NumericalPoint mixedPoint(inP);
   NumericalPoint bestValue(experts_[0](inP));
   mixedPoint.add(bestValue);
   NumericalScalar bestGrade(classifier_.grade(mixedPoint, bestClass));
   LOGDEBUG(OSS() << "Class index=" << 0 << ", grade=" << bestGrade << ", value=" << bestValue);
-  for (UnsignedLong classIndex = 1; classIndex < size; ++classIndex)
+  for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
     const NumericalPoint localValue(experts_[classIndex](inP));
-    for (UnsignedLong i = 0; i < outputDimension; ++i) mixedPoint[inputDimension + i] = localValue[i];
+    for (UnsignedInteger i = 0; i < outputDimension; ++i) mixedPoint[inputDimension + i] = localValue[i];
     const NumericalScalar grade(classifier_.grade(mixedPoint, classIndex));
     LOGDEBUG(OSS() << "Class index=" << classIndex << ", grade=" << grade << ", value=" << localValue);
     // The best class will give the output value
@@ -142,13 +142,13 @@ NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ExpertMixture::getInputDimension() const
+UnsignedInteger ExpertMixture::getInputDimension() const
 {
   return experts_[0].getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ExpertMixture::getOutputDimension() const
+UnsignedInteger ExpertMixture::getOutputDimension() const
 {
   return experts_[0].getOutputDimension();
 }

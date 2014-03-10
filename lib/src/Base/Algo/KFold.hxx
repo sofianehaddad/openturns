@@ -44,7 +44,7 @@ public:
 
 
   /** Default constructor */
-  explicit KFold(const UnsignedLong k = ResourceMap::GetAsUnsignedLong( "KFold-DefaultK" ));
+  explicit KFold(const UnsignedInteger k = ResourceMap::GetAsUnsignedInteger( "KFold-DefaultK" ));
 
   /** Virtual constructor */
   virtual KFold * clone() const;
@@ -64,13 +64,13 @@ public:
   void load(Advocate & adv);
 
   /** K accessor */
-  void setK(const UnsignedLong p);
-  UnsignedLong getK() const;
+  void setK(const UnsignedInteger p);
+  UnsignedInteger getK() const;
 
 protected:
 
   /** The data is split into k subsamples */
-  UnsignedLong k_;
+  UnsignedInteger k_;
 
 }; /* class KFold */
 

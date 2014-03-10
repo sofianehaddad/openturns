@@ -49,7 +49,7 @@ OrthogonalUniVariatePolynomialFamily::OrthogonalUniVariatePolynomialFamily(const
 
 
 /* The method to get the polynomial of any degree */
-OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFamily::build(const UnsignedLong degree) const
+OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFamily::build(const UnsignedInteger degree) const
 {
   return getImplementation()->build(degree);
 }
@@ -64,7 +64,7 @@ Distribution OrthogonalUniVariatePolynomialFamily::getMeasure() const
 
 /* Calculate the coefficients of recurrence a0, a1, a2 such that
    Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-OrthogonalUniVariatePolynomialFamily::Coefficients OrthogonalUniVariatePolynomialFamily::getRecurrenceCoefficients(const UnsignedLong n) const
+OrthogonalUniVariatePolynomialFamily::Coefficients OrthogonalUniVariatePolynomialFamily::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
   return getImplementation()->getRecurrenceCoefficients(n);
 }
@@ -78,14 +78,14 @@ String OrthogonalUniVariatePolynomialFamily::__repr__() const
 }
 
 /* Roots of the polynomial of degree n */
-NumericalPoint OrthogonalUniVariatePolynomialFamily::getRoots(const UnsignedLong n) const
+NumericalPoint OrthogonalUniVariatePolynomialFamily::getRoots(const UnsignedInteger n) const
 {
   return getImplementation()->getRoots(n);
 }
 
 /* Nodes and weights of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix and the square
    of the first component of the associated normalized eigenvectors */
-NumericalPoint OrthogonalUniVariatePolynomialFamily::getNodesAndWeights(const UnsignedLong n,
+NumericalPoint OrthogonalUniVariatePolynomialFamily::getNodesAndWeights(const UnsignedInteger n,
     NumericalPoint & weights) const
 {
   return getImplementation()->getNodesAndWeights(n, weights);

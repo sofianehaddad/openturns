@@ -75,11 +75,11 @@ String ConstantNumericalMathHessianImplementation::__repr__() const
 String ConstantNumericalMathHessianImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   Description description(getDescription());
-  if (description.getSize() == 0) for (UnsignedLong i = 0; i < inputDimension; ++i) description.add(OSS() << "x" << i);
+  if (description.getSize() == 0) for (UnsignedInteger i = 0; i < inputDimension; ++i) description.add(OSS() << "x" << i);
   if (hasVisibleName()) oss << offset << getName() << ":" << Os::GetEndOfLine();
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     if (i == 0) oss << offset << "  (";
     oss << description[i];
@@ -108,13 +108,13 @@ SymmetricTensor ConstantNumericalMathHessianImplementation::hessian(const Numeri
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ConstantNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger ConstantNumericalMathHessianImplementation::getInputDimension() const
 {
   return constant_.getNbRows();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ConstantNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger ConstantNumericalMathHessianImplementation::getOutputDimension() const
 {
   return constant_.getNbSheets();
 }

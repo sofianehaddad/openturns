@@ -49,7 +49,7 @@ ZipfMandelbrot::ZipfMandelbrot()
 }
 
 /* Parameters constructor */
-ZipfMandelbrot::ZipfMandelbrot(const UnsignedLong n,
+ZipfMandelbrot::ZipfMandelbrot(const UnsignedInteger n,
                                const NumericalScalar q,
                                const NumericalScalar s )
   : DiscreteDistribution("ZipfMandelbrot")
@@ -136,7 +136,7 @@ NumericalScalar ZipfMandelbrot::computeCDF(const NumericalPoint & point) const
   if (k < 1 - supportEpsilon_) return 0.0;
   if (k > n_ - 1 + supportEpsilon_) return 1.0;
 
-  NumericalScalar value (getHarmonicNumbers(static_cast<UnsignedLong>(round(k))) / getHarmonicNumbers(n_));
+  NumericalScalar value (getHarmonicNumbers(static_cast<UnsignedInteger>(round(k))) / getHarmonicNumbers(n_));
   return value;
 }
 
@@ -144,7 +144,7 @@ NumericalScalar ZipfMandelbrot::computeCDF(const NumericalPoint & point) const
 void ZipfMandelbrot::computeMean() const
 {
   NumericalScalar value(0.0);
-  for (UnsignedLong i = 1; i <= n_; ++i) value += i * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += i * pow(i + q_, -s_);
   mean_ = NumericalPoint(1, value / getHarmonicNumbers(n_));
   isAlreadyComputedMean_ = true;
 }
@@ -161,7 +161,7 @@ NumericalPoint ZipfMandelbrot::getSkewness() const
   NumericalScalar mean(getMean()[0]);
   NumericalScalar std(getStandardDeviation()[0]);
   NumericalScalar value(0.0);
-  for (UnsignedLong i = 1; i <= n_; ++i) value += pow((i - mean) / std, 3) * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += pow((i - mean) / std, 3) * pow(i + q_, -s_);
   return NumericalPoint(1, value / getHarmonicNumbers(n_));
 }
 
@@ -171,7 +171,7 @@ NumericalPoint ZipfMandelbrot::getKurtosis() const
   NumericalScalar mean(getMean()[0]);
   NumericalScalar std(getStandardDeviation()[0]);
   NumericalScalar value(0.0);
-  for (UnsignedLong i = 1; i <= n_; ++i) value += pow((i - mean) / std, 4) * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += pow((i - mean) / std, 4) * pow(i + q_, -s_);
   return NumericalPoint(1, value / getHarmonicNumbers(n_));
 }
 
@@ -180,7 +180,7 @@ void ZipfMandelbrot::computeCovariance() const
 {
   NumericalScalar mean(getMean()[0]);
   NumericalScalar value(0.0);
-  for (UnsignedLong i = 1; i <= n_; ++i) value += pow(i - mean, 2) * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += pow(i - mean, 2) * pow(i + q_, -s_);
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = value / getHarmonicNumbers(n_);
   isAlreadyComputedCovariance_ = true;
@@ -230,12 +230,12 @@ void ZipfMandelbrot::setS(const NumericalScalar s)
 }
 
 /* N accessor */
-UnsignedLong ZipfMandelbrot::getN() const
+UnsignedInteger ZipfMandelbrot::getN() const
 {
   return n_;
 }
 
-void ZipfMandelbrot::setN(const UnsignedLong n)
+void ZipfMandelbrot::setN(const UnsignedInteger n)
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "N must be > 0";
   if (n != n_)
@@ -263,10 +263,10 @@ void ZipfMandelbrot::computeRange()
 NumericalSample ZipfMandelbrot::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedLong kMin(static_cast< UnsignedLong > (std::max(ceil(interval.getLowerBound()[0]), 1.0)));
-  const UnsignedLong kMax(static_cast< UnsignedLong > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_))));
+  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 1.0)));
+  const UnsignedInteger kMax(static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_))));
   NumericalSample result(0, 1);
-  for (UnsignedLong k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
+  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
   return result;
 }
 
@@ -290,7 +290,7 @@ ZipfMandelbrot::NumericalPointWithDescriptionCollection ZipfMandelbrot::getParam
 
 void ZipfMandelbrot::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
-  *this = ZipfMandelbrot(static_cast< UnsignedLong >(round(parametersCollection[0][0])), parametersCollection[0][1], parametersCollection[0][2]);
+  *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parametersCollection[0][0])), parametersCollection[0][1], parametersCollection[0][2]);
 }
 
 
@@ -317,7 +317,7 @@ void ZipfMandelbrot::load(Advocate & adv)
 
 
 /* Method getHarmonicNumbers returns the k-th harmonic number for the current distribution */
-NumericalScalar ZipfMandelbrot::getHarmonicNumbers(const UnsignedLong k ) const
+NumericalScalar ZipfMandelbrot::getHarmonicNumbers(const UnsignedInteger k ) const
 {
   if (! isAlreadyComputedHarmonicNumbers_)computeHarmonicNumbers();
 
@@ -335,7 +335,7 @@ void ZipfMandelbrot::computeHarmonicNumbers() const
 {
   harmonicNumbers_ = NumericalScalarCollection(n_);
   harmonicNumbers_[0] = pow(1.0 + q_, -s_);
-  for (UnsignedLong i = 2; i <= n_; ++i)
+  for (UnsignedInteger i = 2; i <= n_; ++i)
   {
     const NumericalScalar hiqs(pow(i + q_, -s_));
     harmonicNumbers_[i - 1] = harmonicNumbers_[i - 2] + hiqs;

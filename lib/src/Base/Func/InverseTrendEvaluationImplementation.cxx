@@ -39,9 +39,9 @@ InverseTrendEvaluationImplementation::InverseTrendEvaluationImplementation(const
 {
   Description inputDescription(function.getInputDescription());
   const Description outputDescription(function.getOutputDescription());
-  const UnsignedLong outputDimension(outputDescription.getSize());
+  const UnsignedInteger outputDimension(outputDescription.getSize());
   const Description otherInputDescription(BuildDefaultDescription(outputDimension, "x"));
-  for (UnsignedLong i = 0; i < outputDimension; ++i) inputDescription.add(otherInputDescription[i]);
+  for (UnsignedInteger i = 0; i < outputDimension; ++i) inputDescription.add(otherInputDescription[i]);
   setInputDescription(inputDescription);
   setOutputDescription(outputDescription);
 }
@@ -86,15 +86,15 @@ NumericalMathFunction InverseTrendEvaluationImplementation::getFunction() const
 /* Operator () */
 NumericalPoint InverseTrendEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Invalid input dimension";
-  UnsignedLong outputDimension(getOutputDimension());
+  UnsignedInteger outputDimension(getOutputDimension());
   NumericalPoint result(outputDimension);
-  const UnsignedLong reducedInputDimension(function_.getInputDimension());
+  const UnsignedInteger reducedInputDimension(function_.getInputDimension());
   NumericalPoint t(reducedInputDimension);
-  for (UnsignedLong i = 0; i < reducedInputDimension; ++i) t[i] = inP[i];
+  for (UnsignedInteger i = 0; i < reducedInputDimension; ++i) t[i] = inP[i];
   const NumericalPoint z(function_(t));
-  for (UnsignedLong i = 0; i < outputDimension; ++i) result[i] = inP[i + reducedInputDimension] - z[i];
+  for (UnsignedInteger i = 0; i < outputDimension; ++i) result[i] = inP[i + reducedInputDimension] - z[i];
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -105,13 +105,13 @@ NumericalPoint InverseTrendEvaluationImplementation::operator() (const Numerical
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseTrendEvaluationImplementation::getInputDimension() const
+UnsignedInteger InverseTrendEvaluationImplementation::getInputDimension() const
 {
   return function_.getInputDimension() + function_.getOutputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseTrendEvaluationImplementation::getOutputDimension() const
+UnsignedInteger InverseTrendEvaluationImplementation::getOutputDimension() const
 {
   return function_.getOutputDimension();
 }

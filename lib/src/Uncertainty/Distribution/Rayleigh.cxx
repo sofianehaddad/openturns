@@ -236,7 +236,7 @@ NumericalPoint Rayleigh::getKurtosis() const
 }
 
 /* Get the moments of the distribution */
-NumericalPoint Rayleigh::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Rayleigh::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
 }

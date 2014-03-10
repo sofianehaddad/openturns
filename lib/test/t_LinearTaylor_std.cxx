@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     /** Instance creation */
     NumericalMathFunction myFunc("TestResponseSurface");
     NumericalPoint center(myFunc.getInputDimension());
-    for(UnsignedLong i = 0; i < center.getDimension(); i++)
+    for(UnsignedInteger i = 0; i < center.getDimension(); i++)
     {
       center[i] = 1.0 + i;
     }

@@ -101,7 +101,7 @@ String ProductNumericalMathHessianImplementation::__repr__() const
  */
 SymmetricTensor ProductNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   const NumericalPoint leftValue(p_leftEvaluation_->operator()(inP));
@@ -110,9 +110,9 @@ SymmetricTensor ProductNumericalMathHessianImplementation::hessian(const Numeric
   const Matrix rightGradient(p_rightGradient_->gradient(inP));
   const SymmetricTensor leftHessian(p_leftHessian_->hessian(inP));
   const SymmetricTensor rightHessian(p_rightHessian_->hessian(inP));
-  const UnsignedLong sheetDimension(getOutputDimension());
+  const UnsignedInteger sheetDimension(getOutputDimension());
   SymmetricTensor result(inputDimension, sheetDimension);
-  for (UnsignedLong k = 0; k < sheetDimension; ++k)
+  for (UnsignedInteger k = 0; k < sheetDimension; ++k)
   {
     const SymmetricMatrix leftHessianSheet(leftHessian.getSheet(0));
     const SymmetricMatrix rightHessianSheet(rightHessian.getSheet(k));
@@ -123,21 +123,21 @@ SymmetricTensor ProductNumericalMathHessianImplementation::hessian(const Numeric
     const Matrix term3(leftGradient * rightGradient.transpose().getRow(k));
     const Matrix term4(rightGradient.getColumn(k) * leftGradient.transpose());
     const SymmetricMatrix sheet((term1 + term2 + term3 + term4).getImplementation());
-    for (UnsignedLong i = 0; i < inputDimension; ++i)
-      for (UnsignedLong j = i; j < inputDimension; ++j)
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      for (UnsignedInteger j = i; j < inputDimension; ++j)
         result(i, j, k) = sheet(i, j);
   }
   return result;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ProductNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger ProductNumericalMathHessianImplementation::getInputDimension() const
 {
   return p_rightHessian_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ProductNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger ProductNumericalMathHessianImplementation::getOutputDimension() const
 {
   return p_rightHessian_->getOutputDimension();
 }

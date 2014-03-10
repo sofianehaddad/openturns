@@ -74,7 +74,7 @@ public:
   Description getDescription() const;
 
   /** Get the i-th marginal evaluation */
-  virtual Implementation getMarginal(const UnsignedLong i) const;
+  virtual Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the evaluation corresponding to indices components */
   virtual Implementation getMarginal(const Indices & indices) const;
@@ -90,13 +90,13 @@ public:
   virtual Matrix gradient(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Get the number of calls to operator() */
-  UnsignedLong getCallsNumber() const;
+  UnsignedInteger getCallsNumber() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -107,7 +107,7 @@ public:
 protected:
 
   /** Number of calls since the construction */
-  mutable UnsignedLong callsNumber_;
+  mutable UnsignedInteger callsNumber_;
 
 private:
 

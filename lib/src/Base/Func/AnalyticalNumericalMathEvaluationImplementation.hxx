@@ -64,13 +64,13 @@ public:
   NumericalSample operator() (const NumericalSample & inS) const;
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   Implementation getMarginal(const Indices & indices) const;
@@ -97,7 +97,7 @@ private:
   friend class AnalyticalNumericalMathHessianImplementation;
   /* Must initialize the parser at the first call to operator() as the
      reference associated with the variables may have change after the construction */
-  void initialize(UnsignedLong inputDimension) const;
+  void initialize(UnsignedInteger inputDimension) const;
 
   mutable Bool isInitialized_;
   mutable NumericalSample inputVariables_;

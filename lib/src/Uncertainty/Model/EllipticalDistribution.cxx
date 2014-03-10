@@ -60,7 +60,7 @@ EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
   , R_(R)
   , covarianceScalingFactor_(covarianceScalingFactor)
 {
-  const UnsignedLong dimension(R.getDimension());
+  const UnsignedInteger dimension(R.getDimension());
   // We check if the inputs have the same dimension. If not, we throw an exception
   if ( (dimension != mean.getDimension()) ||
        (dimension != sigma.getDimension()) )
@@ -71,14 +71,14 @@ EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
   // We check that the given correlation matrix is definite positive
   if ( !R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
   // We check that the marginal standard deviations are > 0
-  for(UnsignedLong i = 0; i < dimension; ++i)
+  for(UnsignedInteger i = 0; i < dimension; ++i)
     if (sigma[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma;
   // Then we set the dimension of the Elliptical distribution
   setDimension(dimension);
   // We initialize the description
   Description description(dimension);
   // Set default description
-  for (UnsignedLong i = 0; i < dimension; ++i) description[i] = OSS() << "marginal " << i + 1;
+  for (UnsignedInteger i = 0; i < dimension; ++i) description[i] = OSS() << "marginal " << i + 1;
   setDescription(description);
   // The mean attribute is stored at an upper level
   mean_ = mean;
@@ -101,7 +101,7 @@ Bool EllipticalDistribution::operator ==(const EllipticalDistribution & other) c
 NumericalPoint EllipticalDistribution::normalize(const NumericalPoint & x) const
 {
   NumericalPoint u(x - mean_);
-  for (UnsignedLong i = 0; i < getDimension(); ++i) u[i] /= sigma_[i];
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) u[i] /= sigma_[i];
   return u;
 }
 
@@ -109,7 +109,7 @@ NumericalPoint EllipticalDistribution::normalize(const NumericalPoint & x) const
 NumericalPoint EllipticalDistribution::denormalize(const NumericalPoint & u) const
 {
   NumericalPoint x(mean_);
-  for (UnsignedLong i = 0; i < getDimension(); ++i) x[i] += sigma_[i] * u[i];
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) x[i] += sigma_[i] * u[i];
   return x;
 }
 
@@ -181,7 +181,7 @@ NumericalScalar EllipticalDistribution::computePDF(const NumericalPoint & point)
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (dimension == 1)
   {
     const NumericalScalar iLx((point[0] - mean_[0]) / sigma_[0]);
@@ -201,14 +201,14 @@ NumericalPoint EllipticalDistribution::computePDFGradient(const NumericalPoint &
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalPoint minusGardientMean(computeDDF(point));
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   const NumericalPoint u(normalize(point));
   const NumericalPoint iRu(inverseR_ * u);
   const NumericalScalar betaSquare(dot(u, iRu));
   const NumericalScalar phi(computeDensityGenerator(betaSquare));
   const NumericalScalar phiDerivative(computeDensityGeneratorDerivative(betaSquare));
   NumericalPoint pdfGradient(2 * dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalScalar iSigma(1.0 / sigma_[i]);
     // dPDF / dmu_i
@@ -228,13 +228,13 @@ NumericalScalar EllipticalDistribution::computeSurvivalFunction(const NumericalP
 /* Update the derivative attributes */
 void EllipticalDistribution::update()
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (dimension > 1)
   {
     // Build the shape matrix
     shape_ = R_;
-    for (UnsignedLong i = 0; i < dimension; ++i)
-      for (UnsignedLong j = 0; j <= i; ++j)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
         shape_(i, j) *= sigma_[i] * sigma_[j];
     // Compute its Cholesky factor
     cholesky_ = shape_.computeCholesky();
@@ -245,11 +245,11 @@ void EllipticalDistribution::update()
     // R^(-1) = D.L^(-1).L^(-1)'.D
     inverseR_ = SymmetricMatrix(dimension);
     const SquareMatrix inverseShape(inverseCholesky_.transpose() * inverseCholesky_);
-    for (UnsignedLong i = 0; i < dimension; ++i)
-      for (UnsignedLong j = 0; j <= i; ++j)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
         inverseR_(i, j) = sigma_[i] * inverseShape(i, j) * sigma_[j];
     normalizationFactor_ = 1.0;
-    for (UnsignedLong i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
+    for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
   }
   else  // dimension 1
   {
@@ -308,7 +308,7 @@ void EllipticalDistribution::setSigma(const NumericalPoint & sigma)
         << "). Unable to construct elliptical distribution object.";
 
   // We check that the marginal standard deviations are > 0
-  for(UnsignedLong i = 0; i < sigma.getDimension(); ++i)
+  for(UnsignedInteger i = 0; i < sigma.getDimension(); ++i)
     if (sigma[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma;
   sigma_ = sigma;
   update();
@@ -389,11 +389,11 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
   // in the following form:
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   NumericalPointWithDescription parameters(2 * dimension);
   Description description(parameters.getDimension());
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Description parametersDescription(parametersCollection[i].getDescription());
     const String marginalName(parametersCollection[i].getName());
@@ -419,11 +419,11 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
   // in the following form:
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   NumericalPointWithDescription parameters(2 * dimension);
   Description description(parameters.getDimension());
   NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Description parametersDescription(parametersCollection[i].getDescription());
     const String marginalName(parametersCollection[i].getName());
@@ -442,7 +442,7 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
 EllipticalDistribution::Implementation EllipticalDistribution::getStandardDistribution() const
 {
   EllipticalDistribution * p_standardDistribution(clone());
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   p_standardDistribution->setMean(NumericalPoint(dimension, 0.0));
   p_standardDistribution->setSigma(NumericalPoint(dimension, 1.0));
   p_standardDistribution->setCorrelation(CorrelationMatrix(dimension));
@@ -452,11 +452,11 @@ EllipticalDistribution::Implementation EllipticalDistribution::getStandardDistri
 /* Parameters value and description accessor */
 EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistribution::getParametersCollection() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   NumericalPointWithDescriptionCollection parameters(dimension + (dimension > 1 ? 1 : 0));
   // First put the marginal parameters
   const Description description(getDescription());
-  for (UnsignedLong marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
   {
     NumericalPointWithDescription point(2);
     Description marginalDescription(point.getDimension());
@@ -474,10 +474,10 @@ EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistri
     NumericalPointWithDescription point(dimension * (dimension - 1) / 2);
     Description dependenceDescription(point.getDimension());
     point.setName("dependence");
-    UnsignedLong dependenceIndex(0);
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    UnsignedInteger dependenceIndex(0);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      for (UnsignedLong j = 0; j < i; ++j)
+      for (UnsignedInteger j = 0; j < i; ++j)
       {
         point[dependenceIndex] = R_(i, j);
         dependenceDescription[dependenceIndex] = OSS() << "R_" << i << "_" << j;
@@ -492,8 +492,8 @@ EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistri
 
 void EllipticalDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
-  const UnsignedLong size(parametersCollection.getSize());
-  const UnsignedLong dimension(size > 1 ? size - 1 : size);
+  const UnsignedInteger size(parametersCollection.getSize());
+  const UnsignedInteger dimension(size > 1 ? size - 1 : size);
   setDimension(dimension);
   mean_ = NumericalPoint(dimension);
   sigma_ = NumericalPoint(dimension);
@@ -506,16 +506,16 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
   }
   else
   {
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       mean_[i] = parametersCollection[i][0];
       sigma_[i] = parametersCollection[i][1];
       if (sigma_[i] <= 0.0) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma_;
     }
-    UnsignedLong parameterIndex(0);
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    UnsignedInteger parameterIndex(0);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      for (UnsignedLong j = 0; j < i; ++j)
+      for (UnsignedInteger j = 0; j < i; ++j)
       {
         R_(i, j) = parametersCollection[size - 1][parameterIndex];
         ++parameterIndex;
@@ -530,7 +530,7 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
 
 void EllipticalDistribution::setParametersCollection(const NumericalPoint & flattenCollection)
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (dimension == 1)
   {
     if (flattenCollection.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given parameters point has an invalid dimension (" << flattenCollection.getDimension() << "), it should be 2";

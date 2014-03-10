@@ -50,17 +50,17 @@ public:
                       const NumericalMathFunction & model);
 
   /** First order indices accessor */
-  NumericalPoint getFirstOrderIndices(const UnsignedLong marginalIndex = 0) const;
+  NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Second order indices accessor */
-  SymmetricMatrix getSecondOrderIndices(const UnsignedLong marginalIndex = 0) const;
+  SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  NumericalPoint getTotalOrderIndices(UnsignedLong marginalIndex = 0) const;
+  NumericalPoint getTotalOrderIndices(UnsignedInteger marginalIndex = 0) const;
 
   /** Block size accessor */
-  void setBlockSize(const UnsignedLong blockSize);
-  UnsignedLong getBlockSize() const;
+  void setBlockSize(const UnsignedInteger blockSize);
+  UnsignedInteger getBlockSize() const;
 
   /** ImportanceFactors graph */
   static Graph DrawImportanceFactors(const NumericalPointWithDescription & importanceFactors,
@@ -73,7 +73,7 @@ public:
 
 private:
   /** Compute all the Sobol indices */
-  void computeSobolIndices(const UnsignedLong order) const;
+  void computeSobolIndices(const UnsignedInteger order) const;
 
   /** Two independently generated samples */
   NumericalSample inputSample1_;
@@ -92,10 +92,10 @@ private:
   mutable SymmetricTensor secondOrderIndice_;
 
   /** Size of blocks */
-  UnsignedLong blockSize_;
+  UnsignedInteger blockSize_;
 
   /** Store the maximum order already computed */
-  mutable UnsignedLong alreadyComputedOrder_;
+  mutable UnsignedInteger alreadyComputedOrder_;
 
 }; /* class SensitivityAnalysis */
 

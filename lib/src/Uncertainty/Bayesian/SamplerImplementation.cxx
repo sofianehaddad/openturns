@@ -68,7 +68,7 @@ Bool SamplerImplementation::getVerbose() const
 /* Here is the interface that all derived class must implement */
 
 
-UnsignedLong SamplerImplementation::getDimension() const
+UnsignedInteger SamplerImplementation::getDimension() const
 {
   throw NotYetImplementedException(HERE);
 }
@@ -80,10 +80,10 @@ NumericalPoint SamplerImplementation::getRealization() const
 }
 
 
-NumericalSample SamplerImplementation::getSample(const UnsignedLong size) const
+NumericalSample SamplerImplementation::getSample(const UnsignedInteger size) const
 {
   NumericalSample sample(size, getDimension());
-  for (UnsignedLong i = 0; i < size; ++ i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     NumericalPoint realization(getRealization());
     sample[i] = realization;

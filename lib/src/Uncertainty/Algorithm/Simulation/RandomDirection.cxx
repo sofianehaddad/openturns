@@ -40,7 +40,7 @@ RandomDirection::RandomDirection():
 }
 
 /* Constructor with parameters */
-RandomDirection::RandomDirection(const UnsignedLong dimension):
+RandomDirection::RandomDirection(const UnsignedInteger dimension):
   SamplingStrategyImplementation(dimension)
 {
   // Nothing to do

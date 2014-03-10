@@ -51,21 +51,21 @@ int main(int argc, char *argv[])
     inS.add(NumericalPoint(1, 4.));
     inS.add(NumericalPoint(1, 6.));
     inS.add(NumericalPoint(1, 8.));
-    for (UnsignedLong i = 0; i < inS.getSize(); ++ i)
+    for (UnsignedInteger i = 0; i < inS.getSize(); ++ i)
     {
       fullprint << "inP=" << NumericalPoint(inS[i]).__str__() << " class=" << classifier.classify(inS[i]) << std::endl;
     }
     fullprint << "classes=" << classifier.classify(inS) << std::endl;
 
-    for (UnsignedLong i = 0; i < inS.getSize(); ++ i)
+    for (UnsignedInteger i = 0; i < inS.getSize(); ++ i)
     {
-      for (UnsignedLong j = 0; j < aCollection.getSize(); ++ j )
+      for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
       {
         fullprint << "inP=" << NumericalPoint(inS[i]).__str__() << " grade|" << j << "=" << classifier.grade(inS[i], j) << std::endl;
       }
     }
 
-    for (UnsignedLong j = 0; j < aCollection.getSize(); ++ j )
+    for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
     {
       fullprint << "grades|" << j << "=" << NumericalPoint(classifier.grade(inS, Indices(inS.getSize(), j))).__str__() << std::endl;
     }

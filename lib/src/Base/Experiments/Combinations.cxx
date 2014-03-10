@@ -40,8 +40,8 @@ Combinations::Combinations()
 }
 
 /* Constructor with parameters */
-Combinations::Combinations(const UnsignedLong k,
-                           const UnsignedLong n)
+Combinations::Combinations(const UnsignedInteger k,
+                           const UnsignedInteger n)
   : CombinatorialGeneratorImplementation()
   , k_(k)
   , n_(n)
@@ -67,16 +67,16 @@ CombinatorialGeneratorImplementation::IndicesCollection Combinations::generate()
   indices.fill();
   if (k_ == n_) return IndicesCollection(1, indices);
   /* Size of the sample to be generated: C(k, n) */
-  const UnsignedLong size(static_cast< UnsignedLong >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(k_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1)))));
+  const UnsignedInteger size(static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(k_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1)))));
   IndicesCollection allCombinations(size, indices);
-  for (UnsignedLong flatIndex = 0; flatIndex < size; ++flatIndex)
+  for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
   {
     allCombinations[flatIndex] = indices;
     /* Update the indices */
-    UnsignedLong t(k_ - 1);
+    UnsignedInteger t(k_ - 1);
     while ((t != 0) && (indices[t] == n_ + t - k_)) --t;
     ++indices[t];
-    for (UnsignedLong i = t + 1; i < k_; ++i) indices[i] = indices[i - 1] + 1;
+    for (UnsignedInteger i = t + 1; i < k_; ++i) indices[i] = indices[i - 1] + 1;
   }
   return allCombinations;
 } // generate()
@@ -93,23 +93,23 @@ String Combinations::__repr__() const
 }
 
 /* Subset size accessor */
-void Combinations::setK(const UnsignedLong k)
+void Combinations::setK(const UnsignedInteger k)
 {
   k_ = k;
 }
 
-UnsignedLong Combinations::getK() const
+UnsignedInteger Combinations::getK() const
 {
   return k_;
 }
 
 /* Set size accessor */
-void Combinations::setN(const UnsignedLong n)
+void Combinations::setN(const UnsignedInteger n)
 {
   n_ = n;
 }
 
-UnsignedLong Combinations::getN() const
+UnsignedInteger Combinations::getN() const
 {
   return n_;
 }

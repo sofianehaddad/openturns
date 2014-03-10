@@ -124,7 +124,7 @@ void FORMResult::computeEventProbabilitySensitivity() const
 {
   NumericalPoint correctedReliabilityIndex(1, (getIsStandardPointOriginInFailureSpace() ? getHasoferReliabilityIndex() : -getHasoferReliabilityIndex()));
   Distribution antecedent(getLimitStateVariable().getImplementation()->getAntecedent()->getDistribution());
-  UnsignedLong dimension(antecedent.getDimension());
+  UnsignedInteger dimension(antecedent.getDimension());
 
   /* Be carefull! computeCDF method takes an NumericalPoint as an input argument */
   /* in the standard space all marginals of the standard distribution are identical */
@@ -140,19 +140,19 @@ void FORMResult::computeEventProbabilitySensitivity() const
   /* We initialize eventProbabilitySensitivity_ this way in order to inherit from the name and description of hasoferReliabilityIndexSensitivity */
   eventProbabilitySensitivity_ = getHasoferReliabilityIndexSensitivity();
   /* sensitivity with respect to the parameters influencing beta (beta is not sensitive to the parameters relative to the copula type) */
-  UnsignedLong size(eventProbabilitySensitivity_.getSize());
-  for(UnsignedLong i = 0; i < size; ++i) eventProbabilitySensitivity_[i] *= correctedReliabilityIndexDensity;
+  UnsignedInteger size(eventProbabilitySensitivity_.getSize());
+  for(UnsignedInteger i = 0; i < size; ++i) eventProbabilitySensitivity_[i] *= correctedReliabilityIndexDensity;
   /* sensitivity with respect to the parameters of the density generator of the standard distribution */
   NumericalPointWithDescriptionCollection standardMarginalParametersCollection(standardMarginalDistribution.getParametersCollection());
-  UnsignedLong parametersDimension(standardMarginalParametersCollection[0].getDimension());
+  UnsignedInteger parametersDimension(standardMarginalParametersCollection[0].getDimension());
   /* there 2 parameters generic to 1D elliptical distributions : mean and standard deviation */
-  UnsignedLong genericParametersNumber(2);
+  UnsignedInteger genericParametersNumber(2);
   if (antecedent.getImplementation()->hasEllipticalCopula() && parametersDimension > genericParametersNumber)
   {
     const NumericalPoint standardParametersGradient(standardMarginalDistribution.computeCDFGradient(correctedReliabilityIndex));
     /* shift is the number of parameters of the correlation matrix (upper triangle) for elliptical copula*/
-    const UnsignedLong shift(dimension * (dimension - 1) / 2);
-    for (UnsignedLong index = genericParametersNumber; index < standardParametersGradient.getDimension(); ++index) eventProbabilitySensitivity_[dimension][index + shift - genericParametersNumber] = standardParametersGradient[index];
+    const UnsignedInteger shift(dimension * (dimension - 1) / 2);
+    for (UnsignedInteger index = genericParametersNumber; index < standardParametersGradient.getDimension(); ++index) eventProbabilitySensitivity_[dimension][index + shift - genericParametersNumber] = standardParametersGradient[index];
   }
   isAlreadyComputedEventProbabilitySensitivity_ = true;
 
@@ -173,12 +173,12 @@ AnalyticalResult::GraphCollection FORMResult::drawEventProbabilitySensitivity(Nu
   GraphCollection eventProbabilitySensitivityGraphCollection(0);
   // To ensure that the eventProbabilitySensitivity_ are up to date
   if (! isAlreadyComputedEventProbabilitySensitivity_) computeEventProbabilitySensitivity();
-  UnsignedLong dimension(getStandardSpaceDesignPoint().getDimension());
-  UnsignedLong size(eventProbabilitySensitivity_.getSize());
+  UnsignedInteger dimension(getStandardSpaceDesignPoint().getDimension());
+  UnsignedInteger size(eventProbabilitySensitivity_.getSize());
 
   // The first graph shows the sensitivities with respect to the marginal parameters
   Sensitivity marginalSensitivity(dimension);
-  for(UnsignedLong i = 0; i < dimension; ++i) marginalSensitivity[i] = eventProbabilitySensitivity_[i];
+  for(UnsignedInteger i = 0; i < dimension; ++i) marginalSensitivity[i] = eventProbabilitySensitivity_[i];
   Graph eventProbabilitySensitivityGraphMarginal(drawSensitivity(marginalSensitivity, width));
   OSS oss1;
   oss1 << "FORM - Event Probability Sensitivities - Marginal parameters - " << getLimitStateVariable().getName() ;
@@ -189,7 +189,7 @@ AnalyticalResult::GraphCollection FORMResult::drawEventProbabilitySensitivity(Nu
   if (size > dimension)
   {
     Sensitivity otherSensitivity(size - dimension);
-    for(UnsignedLong i = dimension; i < size; ++i) otherSensitivity[i - dimension] = eventProbabilitySensitivity_[i];
+    for(UnsignedInteger i = dimension; i < size; ++i) otherSensitivity[i - dimension] = eventProbabilitySensitivity_[i];
     Graph eventProbabilitySensitivityGraphOther(drawSensitivity(otherSensitivity, width));
     OSS oss2;
     oss2 << "FORM - Event Probability Sensitivities - Other parameters - " << getLimitStateVariable().getName() ;

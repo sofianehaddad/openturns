@@ -51,7 +51,7 @@ Domain::Domain(const DomainImplementation & implementation):
 }
 
 /* Dimension accessor */
-UnsignedLong Domain::getDimension() const
+UnsignedInteger Domain::getDimension() const
 {
   return getImplementation()->getDimension();
 }

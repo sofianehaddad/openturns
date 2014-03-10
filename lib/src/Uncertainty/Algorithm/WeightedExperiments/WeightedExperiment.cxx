@@ -39,14 +39,14 @@ CLASSNAMEINIT(WeightedExperiment);
 WeightedExperiment::WeightedExperiment(const String & name):
   ExperimentImplementation(name),
   distribution_(),
-  size_(ResourceMap::GetAsUnsignedLong( "WeightedExperiment-DefaultSize" )),
-  weights_(ResourceMap::GetAsUnsignedLong( "WeightedExperiment-DefaultSize" ), 1.0 / ResourceMap::GetAsUnsignedLong( "WeightedExperiment-DefaultSize" ))
+  size_(ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" )),
+  weights_(ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" ), 1.0 / ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" ))
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-WeightedExperiment::WeightedExperiment(const UnsignedLong size,
+WeightedExperiment::WeightedExperiment(const UnsignedInteger size,
                                        const String & name):
   ExperimentImplementation(name),
   distribution_(),
@@ -59,7 +59,7 @@ WeightedExperiment::WeightedExperiment(const UnsignedLong size,
 
 /* Constructor with parameters */
 WeightedExperiment::WeightedExperiment(const Distribution & distribution,
-                                       const UnsignedLong size,
+                                       const UnsignedInteger size,
                                        const String & name):
   ExperimentImplementation(name),
   distribution_(distribution),
@@ -99,14 +99,14 @@ Distribution WeightedExperiment::getDistribution() const
 }
 
 /* Size accessor */
-void WeightedExperiment::setSize(const UnsignedLong size)
+void WeightedExperiment::setSize(const UnsignedInteger size)
 {
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0.";
   size_ = size;
   weights_ = NumericalPoint(size_, 1.0 / size_);
 }
 
-UnsignedLong WeightedExperiment::getSize() const
+UnsignedInteger WeightedExperiment::getSize() const
 {
   return size_;
 }

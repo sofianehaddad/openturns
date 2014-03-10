@@ -48,7 +48,7 @@ NatafIndependentCopulaHessian::NatafIndependentCopulaHessian()
 }
 
 /* Parameter constructor */
-NatafIndependentCopulaHessian::NatafIndependentCopulaHessian(const UnsignedLong dimension)
+NatafIndependentCopulaHessian::NatafIndependentCopulaHessian(const UnsignedInteger dimension)
   : NumericalMathHessianImplementation()
   , dimension_(dimension)
 {
@@ -81,7 +81,7 @@ String NatafIndependentCopulaHessian::__repr__() const
 SymmetricTensor NatafIndependentCopulaHessian::hessian(const NumericalPoint & inP) const
 {
   SymmetricTensor result(dimension_, dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     NumericalScalar x(inP[i]);
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaHessian if all the components are not in [0, 1], here in=" << inP;
@@ -96,13 +96,13 @@ SymmetricTensor NatafIndependentCopulaHessian::hessian(const NumericalPoint & in
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NatafIndependentCopulaHessian::getInputDimension() const
+UnsignedInteger NatafIndependentCopulaHessian::getInputDimension() const
 {
   return dimension_;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NatafIndependentCopulaHessian::getOutputDimension() const
+UnsignedInteger NatafIndependentCopulaHessian::getOutputDimension() const
 {
   return dimension_;
 }

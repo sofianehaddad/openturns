@@ -51,7 +51,7 @@ public:
             const String & name = DefaultName);
 
   /** Constructor with parameters */
-  Composite(const UnsignedLong dimension,
+  Composite(const UnsignedInteger dimension,
             const NumericalPoint & levels,
             const String & name = DefaultName);
 

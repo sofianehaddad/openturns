@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     // Default dimension parameter to evaluate the model
-    const UnsignedLong dimension(1);
+    const UnsignedInteger dimension(1);
 
     /* Amplitude values */
     NumericalPoint amplitude(dimension);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     NumericalPoint scale(dimension);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
-    for (UnsignedLong index = 0 ; index < dimension; ++index)
+    for (UnsignedInteger index = 0 ; index < dimension; ++index)
     {
       // constant amplitude
       amplitude[index] = 1.0 ;
@@ -63,10 +63,10 @@ int main(int argc, char *argv[])
     /* Sample a CauchyModel */
     ExponentialModel referenceModel(amplitude, scale, spatialCorrelation);
 
-    UnsignedLong size(20);
+    UnsignedInteger size(20);
     RegularGrid timeGrid(0.0, 0.1, size);
     UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       const NumericalScalar t(timeGrid.getValue(i));
       covarianceCollection[i] = referenceModel(0, t);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     fullprint << "myModel= " << myModel << std::endl;
 
     /* Sample the UserDefinedStationaryCovarianceModel */
-    for (UnsignedLong i = 0; i < timeGrid.getN(); ++i)
+    for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
       const NumericalScalar t(timeGrid.getValue(i));
       // We look for cov(t) ==> when adding to the collection, we compute cov(t)

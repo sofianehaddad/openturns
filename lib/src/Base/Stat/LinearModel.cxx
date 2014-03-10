@@ -68,11 +68,11 @@ LinearModel::LinearModel(const NumericalPoint & vectorR)
   : PersistentObject(),
     regression_(vectorR)
 {
-  UnsignedLong dimension(vectorR.getDimension());
+  UnsignedInteger dimension(vectorR.getDimension());
   ConfidenceIntervalCollection intervalsColl(dimension, ConfidenceInterval(0., 0.));
   NumericalScalarCollection pValuesOfR(dimension, 0);
 
-  for (UnsignedLong i = 0; i < dimension; i++) intervalsColl[i] = ConfidenceInterval(vectorR[i], vectorR[i]);
+  for (UnsignedInteger i = 0; i < dimension; i++) intervalsColl[i] = ConfidenceInterval(vectorR[i], vectorR[i]);
 
   confidenceIntervals_ = intervalsColl;
   pValues_ = pValuesOfR;
@@ -123,12 +123,12 @@ const LinearModel::NumericalScalarCollection & LinearModel::getPValues() const
 NumericalSample LinearModel::getPredicted(const NumericalSample & predictor) const
 {
   if (predictor.getDimension() + 1 != regression_.getDimension()) throw InvalidArgumentException(HERE) << "Error: predictors must have a dimension compatible with the linear model dimension";
-  UnsignedLong size(predictor.getSize());
+  UnsignedInteger size(predictor.getSize());
   NumericalSample predicted(size, 1);
-  UnsignedLong dimension(predictor.getDimension());
+  UnsignedInteger dimension(predictor.getDimension());
   NumericalPoint linear(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
-  for (UnsignedLong i = 0; i < size; ++i) predicted[i][0] = dot(linear, predictor[i]) + regression_[0];
+  for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
+  for (UnsignedInteger i = 0; i < size; ++i) predicted[i][0] = dot(linear, predictor[i]) + regression_[0];
   return predicted;
 }
 
@@ -137,13 +137,13 @@ NumericalSample LinearModel::getResidual(const NumericalSample & predictor,
     const NumericalSample & measured) const
 {
   if (predictor.getDimension() + 1 != regression_.getDimension()) throw InvalidArgumentException(HERE) << "Error: predictors must have a dimension compatible with the linear model dimension";
-  UnsignedLong size(predictor.getSize());
+  UnsignedInteger size(predictor.getSize());
   if (measured.getSize() != size) throw InvalidArgumentException(HERE) << "Error: measured must have the same size as predictor";
   NumericalSample residual(size, 1);
-  UnsignedLong dimension(predictor.getDimension());
+  UnsignedInteger dimension(predictor.getDimension());
   NumericalPoint linear(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
-  for (UnsignedLong i = 0; i < size; ++i) residual[i][0] = measured[i][0] - dot(linear, predictor[i]) - regression_[0];
+  for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
+  for (UnsignedInteger i = 0; i < size; ++i) residual[i][0] = measured[i][0] - dot(linear, predictor[i]) - regression_[0];
   return residual;
 }
 

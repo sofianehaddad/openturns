@@ -74,8 +74,8 @@ public:
   virtual Bool isComposite() const;
 
   /** Dimension accessor */
-  virtual UnsignedLong getMeshDimension() const;
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getMeshDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** TimeGrid accessor */
   virtual RegularGrid getTimeGrid() const;
@@ -92,15 +92,15 @@ public:
   virtual NumericalMathFunction getContinuousRealization() const;
 
   /** Process sample accessors */
-  virtual ProcessSample getSample(const UnsignedLong size) const;
+  virtual ProcessSample getSample(const UnsignedInteger size) const;
 
   /** Continuation of the last realization on a given number of steps */
-  virtual TimeSeries getFuture(const UnsignedLong stepNumber) const;
-  virtual ProcessSample getFuture(const UnsignedLong stepNumber,
-                                  const UnsignedLong size) const;
+  virtual TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  virtual ProcessSample getFuture(const UnsignedInteger stepNumber,
+                                  const UnsignedInteger size) const;
 
   /** Get the marginal process corresponding to the i-th marginal component */
-  virtual Implementation getMarginalProcess(const UnsignedLong i) const;
+  virtual Implementation getMarginalProcess(const UnsignedInteger i) const;
 
   /** Get the marginal process corresponding to indices components */
   virtual Implementation getMarginalProcess(const Indices & indices) const;
@@ -118,13 +118,13 @@ public:
 protected:
 
   /** Dimension accessor */
-  void setDimension(const UnsignedLong dimension);
+  void setDimension(const UnsignedInteger dimension);
 
   /** Description of each component */
   Description description_;
 
   /** Dimension of the process */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** The mesh over which the process is defined or discretized */
   Mesh mesh_;

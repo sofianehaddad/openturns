@@ -52,8 +52,8 @@ RestrictedEvaluationImplementation::RestrictedEvaluationImplementation(const Num
   const Description inputDescription(evaluation.getInputDescription());
   const Description outputDescription(evaluation.getOutputDescription());
   Description description;
-  for (UnsignedLong i = 0; i < restrictionIndices.getSize(); ++i) description.add(inputDescription[restrictionIndices[i]]);
-  for (UnsignedLong i = 0; i < outputDescription.getSize(); ++i) description.add(outputDescription[i]);
+  for (UnsignedInteger i = 0; i < restrictionIndices.getSize(); ++i) description.add(inputDescription[restrictionIndices[i]]);
+  for (UnsignedInteger i = 0; i < outputDescription.getSize(); ++i) description.add(outputDescription[i]);
   setDescription(description);
 } // RestrictedEvaluationImplementation
 
@@ -71,8 +71,8 @@ RestrictedEvaluationImplementation::RestrictedEvaluationImplementation(const Imp
   const Description inputDescription(p_evaluation->getInputDescription());
   const Description outputDescription(p_evaluation->getOutputDescription());
   Description description;
-  for (UnsignedLong i = 0; i < restrictionIndices.getSize(); ++i) description.add(inputDescription[restrictionIndices[i]]);
-  for (UnsignedLong i = 0; i < outputDescription.getSize(); ++i) description.add(outputDescription[i]);
+  for (UnsignedInteger i = 0; i < restrictionIndices.getSize(); ++i) description.add(inputDescription[restrictionIndices[i]]);
+  for (UnsignedInteger i = 0; i < outputDescription.getSize(); ++i) description.add(outputDescription[i]);
   setDescription(description);
 } // RestrictedEvaluationImplementation
 
@@ -117,18 +117,18 @@ NumericalPoint RestrictedEvaluationImplementation::operator() (const NumericalPo
 {
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   NumericalPoint point(referencePoint_);
-  for (UnsignedLong i = 0; i < restrictionIndices_.getSize(); ++i) point[restrictionIndices_[i]] = inP[i];
+  for (UnsignedInteger i = 0; i < restrictionIndices_.getSize(); ++i) point[restrictionIndices_[i]] = inP[i];
   return (*p_evaluation_)(point);
 }
 
 /* Accessor for input point dimension */
-UnsignedLong RestrictedEvaluationImplementation::getInputDimension() const
+UnsignedInteger RestrictedEvaluationImplementation::getInputDimension() const
 {
   return restrictionIndices_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong RestrictedEvaluationImplementation::getOutputDimension() const
+UnsignedInteger RestrictedEvaluationImplementation::getOutputDimension() const
 {
   return p_evaluation_->getOutputDimension();
 }

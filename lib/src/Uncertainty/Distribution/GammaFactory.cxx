@@ -60,7 +60,7 @@ GammaFactory::Implementation GammaFactory::build() const
 
 Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
 {
-  UnsignedLong size(sample.getSize());
+  UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);

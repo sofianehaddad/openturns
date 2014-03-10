@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     RandomGeneratorState state(RandomGenerator::GetState());
     fullprint << "new state index=" << state.getIndex() << std::endl;
     // Test the generation of several realizations
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     NumericalPoint several(RandomGenerator::Generate(size));
     fullprint << size << " realizations, first=" << several[0] << ", last=" << several[size  - 1] << std::endl;
     // Test the state accessor for writing
@@ -54,34 +54,34 @@ int main(int argc, char *argv[])
     // Test the uniformity of the random generator
     size = 100000;
     NumericalPoint manyPoints(RandomGenerator::Generate(size));
-    UnsignedLong slice(10);
+    UnsignedInteger slice(10);
     NumericalPoint frequencies(slice, 0.0);
     NumericalScalar mean(0.0);
-    for (UnsignedLong i = 0; i < size; i++)
+    for (UnsignedInteger i = 0; i < size; i++)
     {
-      frequencies[(UnsignedLong)(slice * manyPoints[i])]++;
+      frequencies[(UnsignedInteger)(slice * manyPoints[i])]++;
       mean += manyPoints[i];
     }
     mean /= size;
     fullprint << "mean of " << size << " realizations=" << mean << std::endl;
-    for (UnsignedLong i = 0; i < slice; i++)
+    for (UnsignedInteger i = 0; i < slice; i++)
     {
       frequencies[i] /= size;
       fullprint << "frequency in slice [" << NumericalScalar(i) / slice << ", " << NumericalScalar(i + 1) / slice << "]=" << frequencies[i] << std::endl;
     }
     fullprint << "One integer generation in [[0, " << slice - 1 << "]]=" << RandomGenerator::IntegerGenerate(slice) << std::endl;
     fullprint << "Another integer generation in [[0, " << slice - 1 << "]]=" << RandomGenerator::IntegerGenerate(slice) << std::endl;
-    Collection<UnsignedLong> manyUnsignedLong(RandomGenerator::IntegerGenerate(size, slice));
+    Collection<UnsignedInteger> manyUnsignedInteger(RandomGenerator::IntegerGenerate(size, slice));
     frequencies = NumericalPoint(slice, 0.0);
     mean = 0.0;
-    for (UnsignedLong i = 0; i < size; i++)
+    for (UnsignedInteger i = 0; i < size; i++)
     {
-      frequencies[manyUnsignedLong[i]]++;
-      mean += manyUnsignedLong[i];
+      frequencies[manyUnsignedInteger[i]]++;
+      mean += manyUnsignedInteger[i];
     }
     mean /= size;
     fullprint << "mean of " << size << " integer realizations=" << mean << std::endl;
-    for (UnsignedLong i = 0; i < slice; i++)
+    for (UnsignedInteger i = 0; i < slice; i++)
     {
       frequencies[i] /= size;
       fullprint << "frequency for value " << i << "=" << frequencies[i] << std::endl;

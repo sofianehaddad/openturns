@@ -65,7 +65,7 @@ BoxCoxFactory * BoxCoxFactory::clone() const
  */
 NumericalScalar BoxCoxFactory::computeLogLikelihood(const NumericalScalar & lambda) const
 {
-  const UnsignedLong size(sample_.getSize());
+  const UnsignedInteger size(sample_.getSize());
   BoxCoxEvaluationImplementation myBoxFunction(NumericalPoint(1, lambda));
   // compute the mean of the sample using the Box-Cox function
   const NumericalSample outSample(myBoxFunction(sample_));
@@ -131,11 +131,11 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
                                      Graph & graph) const
 {
   // Check the input size
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Box-Cox factory from an empty time series";
 
   // Check the input dimensions
-  const UnsignedLong dimension(sample.getDimension());
+  const UnsignedInteger dimension(sample.getDimension());
   if (shift.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the sample dimension=" << dimension;
 
   // Shape parameters of the transformation
@@ -155,7 +155,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   cobyla_message message( COBYLA_MSG_NONE );
   // Keep the shifted marginal samples
   Collection< NumericalSample > marginalSamples(dimension);
-  for (UnsignedLong d = 0; d < dimension; ++d)
+  for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // Extract the marginal sample
     sample_ = sample.getMarginal(d);
@@ -169,7 +169,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
     // starting point
     NumericalPoint x(n, 1.0);
     // Compute the sum of the log-data
-    for (UnsignedLong k = 0; k < size; ++k) sumLog[d] += log(sample_[k][0]);
+    for (UnsignedInteger k = 0; k < size; ++k) sumLog[d] += log(sample_[k][0]);
     // Use
     sumLog_ = sumLog[d];
     // call cobyla algo
@@ -184,15 +184,15 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   const NumericalScalar lambdaMin(*std::max_element(lambda.begin(), lambda.end()));
   const NumericalScalar xMin(std::min(0.0, 0.002 * round(1000.0 * lambdaMin)));
   const NumericalScalar xMax(std::max(0.0, 0.002 * round(1000.0 * lambdaMax)));
-  const UnsignedLong npts = ResourceMap::GetAsUnsignedLong("BoxCoxFactory-DefaultPointNumber");
+  const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
   NumericalSample lambdaValues(npts, 1);
-  for (UnsignedLong i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);
-  for (UnsignedLong d = 0; d < dimension; ++d)
+  for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);
+  for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     NumericalSample logLikelihoodValues(npts, 1);
     sumLog_ = sumLog[d];
     sample_ = marginalSamples[d];
-    for (UnsignedLong i = 0; i < npts; ++i) logLikelihoodValues[i][0] = computeLogLikelihood(lambdaValues[i][0]);
+    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = computeLogLikelihood(lambdaValues[i][0]);
     Curve curve(lambdaValues, logLikelihoodValues);
     curve.setColor(Curve::ConvertFromHSV((360.0 * d) / dimension, 1.0, 1.0));
     graph.add(curve);

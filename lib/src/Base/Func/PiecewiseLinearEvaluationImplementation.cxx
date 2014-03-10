@@ -53,9 +53,9 @@ PiecewiseLinearEvaluationImplementation::PiecewiseLinearEvaluationImplementation
   , values_(0, 0)
 {
   // Convert the values into a sample
-  const UnsignedLong size(values.getSize());
+  const UnsignedInteger size(values.getSize());
   NumericalSample sampleValues(size, 1);
-  for (UnsignedLong i = 0; i < size; ++i) sampleValues[i][0] = values[i];
+  for (UnsignedInteger i = 0; i < size; ++i) sampleValues[i][0] = values[i];
   // Check the input
   setLocationsAndValues(locations, sampleValues);
 }
@@ -97,14 +97,14 @@ NumericalPoint PiecewiseLinearEvaluationImplementation::operator () (const Numer
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const NumericalScalar x(inP[0]);
-  UnsignedLong iLeft(0);
+  UnsignedInteger iLeft(0);
   if (x <= locations_[iLeft]) return values_[iLeft];
-  UnsignedLong iRight(locations_.getSize() - 1);
+  UnsignedInteger iRight(locations_.getSize() - 1);
   if (x >= locations_[iRight]) return values_[iRight];
   // Find the segment containing x by bisection
   while (iRight - iLeft > 1)
   {
-    const UnsignedLong iMiddle((iRight + iLeft) / 2);
+    const UnsignedInteger iMiddle((iRight + iLeft) / 2);
     if (x < locations_[iMiddle]) iRight = iMiddle;
     else iLeft = iMiddle;
   }
@@ -113,11 +113,11 @@ NumericalPoint PiecewiseLinearEvaluationImplementation::operator () (const Numer
   const NumericalScalar dx(xLeft - xRight);
   const NumericalPoint vLeft(values_[iLeft]);
   const NumericalPoint vRight(values_[iRight]);
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   NumericalPoint value(dimension);
   const NumericalScalar alpha((x - xRight) / dx);
   const NumericalScalar beta((xLeft - x) / dx);
-  for (UnsignedLong i = 0; i < dimension; ++i) value[i] = alpha * vLeft[i] + beta * vRight[i];
+  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * vLeft[i] + beta * vRight[i];
   return value;
 }
 
@@ -129,13 +129,13 @@ NumericalPoint PiecewiseLinearEvaluationImplementation::getLocations() const
 
 void PiecewiseLinearEvaluationImplementation::setLocations(const NumericalPoint & locations)
 {
-  const UnsignedLong size(locations.getSize());
+  const UnsignedInteger size(locations.getSize());
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
   const NumericalScalar step(locations_[0] - locations_[0]);
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluationImplementation-EpsilonRegular") * fabs(step));
   isRegular_ = true;
-  for (UnsignedLong i = 0; i < size; ++i) isRegular_ = isRegular_ && (fabs(locations[i] - locations[0] - i * step) < epsilon);
+  for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (fabs(locations[i] - locations[0] - i * step) < epsilon);
   locations_ = locations;
   std::stable_sort(locations_.begin(), locations_.end());
 }
@@ -148,16 +148,16 @@ NumericalSample PiecewiseLinearEvaluationImplementation::getValues() const
 
 void PiecewiseLinearEvaluationImplementation::setValues(const NumericalPoint & values)
 {
-  const UnsignedLong size(values.getSize());
+  const UnsignedInteger size(values.getSize());
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
   NumericalSample sampleValues(size, 1);
-  for (UnsignedLong i = 0; i < size; ++i) sampleValues[i][0] = values[i];
+  for (UnsignedInteger i = 0; i < size; ++i) sampleValues[i][0] = values[i];
   values_ = sampleValues;
 }
 
 void PiecewiseLinearEvaluationImplementation::setValues(const NumericalSample & values)
 {
-  const UnsignedLong size(values.getSize());
+  const UnsignedInteger size(values.getSize());
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
   values_ = values;
@@ -166,15 +166,15 @@ void PiecewiseLinearEvaluationImplementation::setValues(const NumericalSample & 
 void PiecewiseLinearEvaluationImplementation::setLocationsAndValues(const NumericalPoint & locations,
     const NumericalSample & values)
 {
-  const UnsignedLong size(locations.getSize());
+  const UnsignedInteger size(locations.getSize());
   if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << values.getSize() << " must match the number of locations=" << size;
   // Sort the data in increasing order according to the locations
-  const UnsignedLong dimension(values.getDimension());
+  const UnsignedInteger dimension(values.getDimension());
   NumericalSample data(size, 1 + dimension);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = locations[i];
-    for (UnsignedLong j = 0; j < dimension; ++j)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
       data[i][j + 1] = values[i][j];
   }
   data = data.sortAccordingToAComponent(0);
@@ -183,23 +183,23 @@ void PiecewiseLinearEvaluationImplementation::setLocationsAndValues(const Numeri
   const NumericalScalar step(data[1][0] - data[0][0]);
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluationImplementation-EpsilonRegular") * fabs(step));
   isRegular_ = true;
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     locations_[i] = data[i][0];
     isRegular_ = isRegular_ && (fabs(locations_[i] - locations_[0] - i * step) < epsilon);
-    for (UnsignedLong j = 0; j < dimension; ++j)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
       values_[i][j] = data[i][j + 1];
   }
 }
 
 /* Input dimension accessor */
-UnsignedLong PiecewiseLinearEvaluationImplementation::getInputDimension() const
+UnsignedInteger PiecewiseLinearEvaluationImplementation::getInputDimension() const
 {
   return 1;
 }
 
 /* Output dimension accessor */
-UnsignedLong PiecewiseLinearEvaluationImplementation::getOutputDimension() const
+UnsignedInteger PiecewiseLinearEvaluationImplementation::getOutputDimension() const
 {
   return values_.getDimension();
 }

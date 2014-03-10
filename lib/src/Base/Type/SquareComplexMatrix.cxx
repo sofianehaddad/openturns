@@ -38,7 +38,7 @@ SquareComplexMatrix::SquareComplexMatrix()
 
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-SquareComplexMatrix::SquareComplexMatrix(const UnsignedLong dimension)
+SquareComplexMatrix::SquareComplexMatrix(const UnsignedInteger dimension)
   : ComplexMatrix(dimension, dimension)
 {
   // Nothing to do
@@ -48,7 +48,7 @@ SquareComplexMatrix::SquareComplexMatrix(const UnsignedLong dimension)
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-SquareComplexMatrix::SquareComplexMatrix(const UnsignedLong dimension,
+SquareComplexMatrix::SquareComplexMatrix(const UnsignedInteger dimension,
     const NumericalComplexCollection & elementsValues)
   : ComplexMatrix(dimension, dimension, elementsValues)
 {
@@ -73,7 +73,7 @@ String SquareComplexMatrix::__repr__() const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedLong SquareComplexMatrix::getDimension() const
+const UnsignedInteger SquareComplexMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -178,7 +178,7 @@ SquareComplexMatrix SquareComplexMatrix::operator / (const NumericalComplex s) c
 }
 
 /* SquareComplexMatrix integer power */
-SquareComplexMatrix SquareComplexMatrix::power(const UnsignedLong n) const
+SquareComplexMatrix SquareComplexMatrix::power(const UnsignedInteger n) const
 {
   return Implementation(getImplementation()->genPower(n).clone());
 }

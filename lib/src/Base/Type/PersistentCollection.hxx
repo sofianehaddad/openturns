@@ -96,7 +96,7 @@ public:
   }
 
   /** Constructor that pre-allocate size elements */
-  PersistentCollection(const UnsignedLong size)
+  PersistentCollection(const UnsignedInteger size)
     : PersistentObject(),
       Collection<T>(size)
   {
@@ -104,7 +104,7 @@ public:
   }
 
   /** Constructor that pre-allocate size elements with value */
-  PersistentCollection(const UnsignedLong size,
+  PersistentCollection(const UnsignedInteger size,
                        const T & value)
     : PersistentObject(),
       Collection<T>(size, value)
@@ -159,7 +159,7 @@ public:
   void load(Advocate & adv)
   {
     PersistentObject::load(adv);
-    UnsignedLong size = 0;
+    UnsignedInteger size = 0;
     adv.loadAttribute( "size", size );
     Collection<T>::coll__.resize(size);
     std::generate( Collection<T>::coll__.begin(),

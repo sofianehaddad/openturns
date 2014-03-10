@@ -55,9 +55,9 @@ MarginalTransformationHessian * MarginalTransformationHessian::clone() const
 /* Hessian */
 SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   SymmetricTensor result(dimension, dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getHessianImplementation()->getClassName() == "AnalyticalNumericalMathHessianImplementation") result(i, i, i) = evaluation_.getExpressions()[i].hessian(NumericalPoint(1, inP[i]))(0, 0, 0);
     else
@@ -88,13 +88,13 @@ SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & in
 }
 
 /* Accessor for input point dimension */
-UnsignedLong MarginalTransformationHessian::getInputDimension() const
+UnsignedInteger MarginalTransformationHessian::getInputDimension() const
 {
   return evaluation_.inputDistributionCollection_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong MarginalTransformationHessian::getOutputDimension() const
+UnsignedInteger MarginalTransformationHessian::getOutputDimension() const
 {
   return evaluation_.outputDistributionCollection_.getSize();
 }

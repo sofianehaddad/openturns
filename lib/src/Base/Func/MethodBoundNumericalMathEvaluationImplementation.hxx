@@ -117,7 +117,7 @@ public:
 
 
   /** Default constructor */
-  MethodBoundNumericalMathEvaluationImplementation( const EvaluableObject & obj, EvaluationMethod method, const UnsignedLong inputDimension, const UnsignedLong outputDimension )
+  MethodBoundNumericalMathEvaluationImplementation( const EvaluableObject & obj, EvaluationMethod method, const UnsignedInteger inputDimension, const UnsignedInteger outputDimension )
     : obj_(obj),
       method_(method),
       inputDimension_(inputDimension),
@@ -168,13 +168,13 @@ public:
   }
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const
+  virtual UnsignedInteger getInputDimension() const
   {
     return inputDimension_;
   }
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const
+  virtual UnsignedInteger getOutputDimension() const
   {
     return outputDimension_;
   }
@@ -196,8 +196,8 @@ protected:
 private:
   const EvaluableObject & obj_;
   EvaluationMethod method_;
-  UnsignedLong inputDimension_;
-  UnsignedLong outputDimension_;
+  UnsignedInteger inputDimension_;
+  UnsignedInteger outputDimension_;
 
 }; /* class MethodBoundNumericalMathEvaluationImplementation */
 
@@ -210,8 +210,8 @@ template <typename EvaluableObject, typename ReturnType_, typename ArgumentType_
 NumericalMathFunctionImplementation
 bindMethod (const EvaluableObject & obj,
             typename MethodBoundNumericalMathEvaluationImplementation<EvaluableObject, ReturnType_, ArgumentType_>::EvaluationMethod method,
-            const UnsignedLong inputDimension,
-            const UnsignedLong outputDimension )
+            const UnsignedInteger inputDimension,
+            const UnsignedInteger outputDimension )
 {
   return NumericalMathFunctionImplementation( new MethodBoundNumericalMathEvaluationImplementation<EvaluableObject, ReturnType_, ArgumentType_>( obj, method, inputDimension, outputDimension ) );
 }

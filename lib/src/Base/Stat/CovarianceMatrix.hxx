@@ -47,10 +47,10 @@ public:
   CovarianceMatrix();
 
   /** Constructor with size */
-  explicit CovarianceMatrix(const UnsignedLong dim);
+  explicit CovarianceMatrix(const UnsignedInteger dim);
 
   /** Constructor from external collection */
-  CovarianceMatrix(const UnsignedLong dim,
+  CovarianceMatrix(const UnsignedInteger dim,
                    const NumericalScalarCollection & elementsValues);
 
   /** String converter */

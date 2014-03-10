@@ -38,7 +38,7 @@ CLASSNAMEINIT(LowDiscrepancySequenceImplementation);
 static Factory<LowDiscrepancySequenceImplementation> RegisteredFactory("LowDiscrepancySequenceImplementation");
 
 /* Constructor with parameters */
-LowDiscrepancySequenceImplementation::LowDiscrepancySequenceImplementation(const UnsignedLong dimension) :
+LowDiscrepancySequenceImplementation::LowDiscrepancySequenceImplementation(const UnsignedInteger dimension) :
   PersistentObject(),
   dimension_(dimension)
 {
@@ -54,14 +54,14 @@ LowDiscrepancySequenceImplementation * LowDiscrepancySequenceImplementation::clo
 
 
 /* initialize the sequence */
-void LowDiscrepancySequenceImplementation::initialize(const UnsignedLong dimension)
+void LowDiscrepancySequenceImplementation::initialize(const UnsignedInteger dimension)
 {
   throw NotYetImplementedException(HERE); // this function is supposed to be pure virtual
 }
 
 
 /* Dimension accessor*/
-UnsignedLong LowDiscrepancySequenceImplementation::getDimension() const
+UnsignedInteger LowDiscrepancySequenceImplementation::getDimension() const
 {
   return dimension_;
 }
@@ -75,10 +75,10 @@ NumericalPoint LowDiscrepancySequenceImplementation::generate()
 
 
 /* Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedLong size)
+NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size)
 {
   NumericalSample sequenceSample(size, dimension_);
-  for(UnsignedLong i = 0; i < size ; ++i) sequenceSample[i] = generate();
+  for(UnsignedInteger i = 0; i < size ; ++i) sequenceSample[i] = generate();
   return sequenceSample;
 }
 
@@ -87,12 +87,12 @@ NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedLon
 NumericalScalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(const NumericalSample & sample)
 {
   // computationnaly heavy function : O(N²), let N the size of the sample
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
 
   // discrepancy is the maximum of the local discrepancy
   const NumericalPoint lowerPoint(sample.getDimension());
   NumericalScalar discrepancy(0.0);
-  for(UnsignedLong i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar local(ComputeLocalDiscrepancy(sample, Interval(lowerPoint, sample[i])));
     if(local > discrepancy)
@@ -134,9 +134,9 @@ NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(co
 {
   if (sample.getDimension() != interval.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample must have the same dimension as the given interval.";
   // calculate number of inner points
-  const UnsignedLong size(sample.getSize());
-  UnsignedLong inPoints(0);
-  for(UnsignedLong j = 0; j < size; ++j)
+  const UnsignedInteger size(sample.getSize());
+  UnsignedInteger inPoints(0);
+  for(UnsignedInteger j = 0; j < size; ++j)
     if (interval.numericallyContains(sample[j])) ++inPoints;
   // The local discrepancy is the absolute difference between the fraction of points
   // that fall into the given interval and its volume
@@ -146,7 +146,7 @@ NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(co
 /* Get the needed prime numbers */
 LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrepancySequenceImplementation::GetPrimeNumbers(const Indices & indices)
 {
-  static const UnsignedLong MaxPrime(1600);
+  static const UnsignedInteger MaxPrime(1600);
   static const Unsigned64BitsInteger Table[MaxPrime] =
   {
     2,    3,    5,    7,   11,   13,   17,   19,   23,   29,
@@ -310,11 +310,11 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
     13313, 13327, 13331, 13337, 13339, 13367, 13381, 13397, 13399, 13411,
     13417, 13421, 13441, 13451, 13457, 13463, 13469, 13477, 13487, 13499
   };
-  const UnsignedLong size(indices.getSize());
+  const UnsignedInteger size(indices.getSize());
   Unsigned64BitsIntegerCollection result(size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedLong index(indices[i]);
+    const UnsignedInteger index(indices[i]);
     if (index > MaxPrime) throw InvalidArgumentException(HERE) << "Error: cannot ask for a prime number greater than the " << MaxPrime << "th prime number.";
     result[i] = Table[index];
   }
@@ -322,7 +322,7 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
 }
 
 /* Compute the n first prime numbers */
-LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrepancySequenceImplementation::ComputeFirstPrimeNumbers(const UnsignedLong n)
+LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrepancySequenceImplementation::ComputeFirstPrimeNumbers(const UnsignedInteger n)
 {
   Indices indices(n);
   indices.fill();
@@ -330,9 +330,9 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
 }
 
 /* Compute the least prime number greater or equal to n */
-Unsigned64BitsInteger LowDiscrepancySequenceImplementation::ComputeNextPrimeNumber(const UnsignedLong n)
+Unsigned64BitsInteger LowDiscrepancySequenceImplementation::ComputeNextPrimeNumber(const UnsignedInteger n)
 {
-  UnsignedLong i(0);
+  UnsignedInteger i(0);
   Unsigned64BitsIntegerCollection primes(GetPrimeNumbers(Indices(1, i)));
   while (primes[0] < n)
   {

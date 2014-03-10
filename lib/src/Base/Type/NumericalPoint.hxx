@@ -52,7 +52,7 @@ public:
   NumericalPoint();
 
   /** Constructor with size */
-  explicit NumericalPoint(const UnsignedLong size,
+  explicit NumericalPoint(const UnsignedInteger size,
                           const NumericalScalar value = 0.0);
 
   /** Constructor from a collection */
@@ -76,11 +76,11 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Dimension accessor */
-  inline UnsignedLong getDimension() const
+  inline UnsignedInteger getDimension() const
   {
     return PersistentCollection<NumericalScalar>::getSize();
   }
-  inline UnsignedLong getSize() const
+  inline UnsignedInteger getSize() const
   {
     return PersistentCollection<NumericalScalar>::getSize();
   }
@@ -93,8 +93,8 @@ public:
 
 #ifndef SWIG
   /** Coordinate accessor */
-  NumericalScalar & operator[](const UnsignedLong index);
-  const NumericalScalar & operator[](const UnsignedLong index) const;
+  NumericalScalar & operator[](const UnsignedInteger index);
+  const NumericalScalar & operator[](const UnsignedInteger index) const;
 
   /** Erase the elements between first and last */
   iterator erase(iterator first, iterator last);
@@ -103,7 +103,7 @@ public:
   iterator erase(iterator position);
 
   /** Erase the element pointed by position */
-  iterator erase(UnsignedLong position);
+  iterator erase(UnsignedInteger position);
 
   /** In-place addition operator */
   NumericalPoint & operator +=(const NumericalPoint & other);

@@ -71,34 +71,34 @@ LinearModel LinearModelFactory::build(const NumericalSample & samplePred,
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
   std::ifstream resultFile(resultFileName.c_str(), std::ios::in);
-  UnsignedLong dimension(samplePred.getDimension() + 1);
+  UnsignedInteger dimension(samplePred.getDimension() + 1);
   NumericalPoint regression(dimension);
   // Read the regression parameters
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> regression[i];
   }
   // Read the lower bounds of the intervals
   NumericalPoint lowerBounds(dimension);
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> lowerBounds[i];
   }
   // Read the upper bounds of the intervals
   NumericalPoint upperBounds(dimension);
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> upperBounds[i];
   }
   // Convert the bounds to an interval collection
   ConfidenceIntervalPersistentCollection confidenceIntervals(dimension, ConfidenceInterval(0.0, 1.0));
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     confidenceIntervals[i].setValues(lowerBounds[i], upperBounds[i]);
   }
   // Read the p-values of the coefficients
   NumericalScalarPersistentCollection pValues(dimension);
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> pValues[i];
   }

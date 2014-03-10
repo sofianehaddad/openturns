@@ -78,14 +78,14 @@ public:
 
   /** FFT transformation on complex - For some FFT implementation, the transformation is applied on a part of the collection */
   NumericalComplexCollection transform(const NumericalComplexCollection & collection,
-                                       const UnsignedLong first,
-                                       const UnsignedLong size) const;
+                                       const UnsignedInteger first,
+                                       const UnsignedInteger size) const;
 
   /** FFT transformation on complex - For some FFT implementation, the need is to transform a regular sequence of the collection (between first and last, by step = step)*/
   NumericalComplexCollection transform(const NumericalComplexCollection & collection,
-                                       const UnsignedLong first,
-                                       const UnsignedLong step,
-                                       const UnsignedLong last) const;
+                                       const UnsignedInteger first,
+                                       const UnsignedInteger step,
+                                       const UnsignedInteger last) const;
 
   /** FFT inverse transformation
    * Given the complex sequence Z_n, compute the sequence Y_k such that:
@@ -95,14 +95,14 @@ public:
 
   /** FFT inverse transformation - The transformation is applied on a part of the collection */
   NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection,
-      const UnsignedLong first,
-      const UnsignedLong size) const;
+      const UnsignedInteger first,
+      const UnsignedInteger size) const;
 
   /** FFT inverse transformation on a regular sequence of the collection (between first and last, by step = step)*/
   NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection,
-      const UnsignedLong first,
-      const UnsignedLong step,
-      const UnsignedLong last) const;
+      const UnsignedInteger first,
+      const UnsignedInteger step,
+      const UnsignedInteger last) const;
 
   /** String converter */
   String __repr__() const;

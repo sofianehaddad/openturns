@@ -63,24 +63,24 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
   const NumericalScalar min(sample.getMin()[0]);
   const NumericalScalar max(sample.getMax()[0]);
   if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram for a sample with constant realizations";
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   NumericalScalar hOpt(sample.computeStandardDeviationPerComponent()[0] * pow(24.0 * sqrt(M_PI) / size, 1.0 / 3.0));
-  const UnsignedLong barNumber(static_cast<UnsignedLong>(ceil((max - min) / hOpt + 0.5)));
+  const UnsignedInteger barNumber(static_cast<UnsignedInteger>(ceil((max - min) / hOpt + 0.5)));
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
   const NumericalScalar delta(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon") * (max - min));
   hOpt = ((max - min) + delta) / barNumber;
   NumericalPoint heights(barNumber, 0.0);
   const NumericalScalar step(1.0 / hOpt);
   // Aggregate the realizations into the bins
-  for(UnsignedLong i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     // The index takes values in [[0, barNumber-1]] because min <= sample[i][0] <= max and step < barNumber / (max - min)
-    const UnsignedLong index(static_cast<UnsignedLong>(floor((sample[i][0] - min) * step)));
+    const UnsignedInteger index(static_cast<UnsignedInteger>(floor((sample[i][0] - min) * step)));
     heights[index] += 1.0;
   }
   const NumericalScalar inverseArea(1.0 / (hOpt * size));
   Histogram::HistogramPairCollection collection(barNumber);
-  for(UnsignedLong i = 0; i < barNumber; ++i) collection[i] = HistogramPair(hOpt, heights[i] * inverseArea);
+  for(UnsignedInteger i = 0; i < barNumber; ++i) collection[i] = HistogramPair(hOpt, heights[i] * inverseArea);
   Histogram result(min, collection);
   result.setDescription(sample.getDescription());
   return result;

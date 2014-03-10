@@ -45,12 +45,12 @@ try:
 
     print "One integer generation in [[0, ", slice - 1, "]]=", RandomGenerator.IntegerGenerate(slice)
     print "Another integer generation in [[0, ", slice - 1, "]]=", RandomGenerator.IntegerGenerate(slice)
-    manyUnsignedLong = RandomGenerator.IntegerGenerate(size, slice)
+    manyUnsignedInteger = RandomGenerator.IntegerGenerate(size, slice)
     frequencies = NumericalPoint(slice, 0.0)
     mean = 0.0
     for i in range(size):
-        frequencies[manyUnsignedLong[i]] = frequencies[manyUnsignedLong[i]] + 1
-        mean = mean + manyUnsignedLong[i]
+        frequencies[manyUnsignedInteger[i]] = frequencies[manyUnsignedInteger[i]] + 1
+        mean = mean + manyUnsignedInteger[i]
 
     mean = mean / size
     print "mean of ", size, " integer realizations=", mean

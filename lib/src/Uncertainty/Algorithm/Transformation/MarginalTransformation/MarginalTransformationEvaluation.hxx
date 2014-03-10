@@ -58,12 +58,12 @@ public:
 
   /** Parameter constructor */
   MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
-                                   const UnsignedLong direction = FROM);
+                                   const UnsignedInteger direction = FROM);
 
   /** Parameter constructor */
   MarginalTransformationEvaluation(const DistributionCollection & inputDistributionCollection,
                                    const DistributionCollection & outputDistributionCollection,
-                                   const Bool simplify = ResourceMap::GetAsUnsignedLong("MarginalTransformationEvaluation-Simplify"));
+                                   const Bool simplify = ResourceMap::GetAsUnsignedInteger("MarginalTransformationEvaluation-Simplify"));
 
   /** Virtual constructor */
   virtual MarginalTransformationEvaluation * clone() const;
@@ -75,14 +75,14 @@ public:
   Matrix parametersGradient(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Direction accessor */
   void setDirection(const TranformationDirection direction);
-  UnsignedLong getDirection() const;
+  UnsignedInteger getDirection() const;
 
   /** Input distribution collection accessor */
   void setInputDistributionCollection(const DistributionCollection & inputDistributionCollection);
@@ -93,7 +93,7 @@ public:
   DistributionCollection getOutputDistributionCollection() const;
 
   /** Simplifications accessor */
-  Collection<UnsignedLong> getSimplifications() const;
+  Collection<UnsignedInteger> getSimplifications() const;
 
   /** Expressions accessor */
   Collection<NumericalMathFunction> getExpressions() const;
@@ -123,10 +123,10 @@ private:
   DistributionPersistentCollection outputDistributionCollection_;
 
   // Direction of the transformation
-  UnsignedLong direction_;
+  UnsignedInteger direction_;
 
   // Flag to tell if simpler expressions are available
-  Collection<UnsignedLong> simplifications_;
+  Collection<UnsignedInteger> simplifications_;
 
   // Collection of simpler expressions
   Collection<NumericalMathFunction> expressions_;

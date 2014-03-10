@@ -33,7 +33,7 @@ CLASSNAMEINIT(HaltonSequence);
 
 
 /* Constructor with parameters */
-HaltonSequence::HaltonSequence(const UnsignedLong dimension) :
+HaltonSequence::HaltonSequence(const UnsignedInteger dimension) :
   LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
@@ -48,12 +48,12 @@ HaltonSequence * HaltonSequence::clone() const
 
 
 /* Initialize the sequence */
-void HaltonSequence::initialize(const UnsignedLong dimension)
+void HaltonSequence::initialize(const UnsignedInteger dimension)
 {
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
   base_ = ComputeFirstPrimeNumbers(dimension);
-  seed_ = ResourceMap::GetAsUnsignedLong( "HaltonSequence-InitialSeed" );
+  seed_ = ResourceMap::GetAsUnsignedInteger( "HaltonSequence-InitialSeed" );
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
@@ -61,7 +61,7 @@ NumericalPoint HaltonSequence::generate()
 {
   NumericalPoint realization(dimension_);
   // Loop over the components
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     NumericalScalar xI(0.0);
     const Unsigned64BitsInteger radix(base_[i]);

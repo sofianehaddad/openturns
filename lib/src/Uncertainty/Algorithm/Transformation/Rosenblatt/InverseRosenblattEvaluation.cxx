@@ -47,8 +47,8 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & di
   distribution_(distribution)
 {
   Description description(distribution.getDescription());
-  const UnsignedLong size(description.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(description.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     OSS oss;
     oss << "y" << i;
@@ -66,11 +66,11 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 /* Evaluation */
 NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply conditional Quantile o Phi over the components
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     result[i] = distribution_.computeConditionalQuantile(DistFunc::pNormal(inP[i]), y);
     y.add(result[i]);
@@ -100,13 +100,13 @@ Matrix InverseRosenblattEvaluation::parametersGradient(const NumericalPoint & in
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseRosenblattEvaluation::getInputDimension() const
+UnsignedInteger InverseRosenblattEvaluation::getInputDimension() const
 {
   return distribution_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseRosenblattEvaluation::getOutputDimension() const
+UnsignedInteger InverseRosenblattEvaluation::getOutputDimension() const
 {
   return distribution_.getDimension();
 }

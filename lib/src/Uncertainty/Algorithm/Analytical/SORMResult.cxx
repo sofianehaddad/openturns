@@ -75,8 +75,8 @@ SORMResult::SORMResult(const NumericalPoint & standardSpaceDesignPoint,
   const SymmetricTensor hessian(limitStateFunction.hessian(getStandardSpaceDesignPoint()));
   /* Get the first sheet */
   hessianLimitStateFunction_ = SquareMatrix(hessian.getNbRows());
-  for (UnsignedLong i = 0; i < hessian.getNbRows(); ++i)
-    for (UnsignedLong j = 0; j < hessian.getNbColumns(); ++j)
+  for (UnsignedInteger i = 0; i < hessian.getNbRows(); ++i)
+    for (UnsignedInteger j = 0; j < hessian.getNbColumns(); ++j)
       hessianLimitStateFunction_(i, j) = hessian(i, j, 0);
 } // end SORMResult::Result
 
@@ -110,20 +110,20 @@ void SORMResult::computeSortedCurvatures() const
 {
   /* see Mefisto v3.2 documentation */
   /* we compute the main curvatures */
-  const UnsignedLong dimension(getStandardSpaceDesignPoint().getDimension());
+  const UnsignedInteger dimension(getStandardSpaceDesignPoint().getDimension());
   // If the dimension is zero, throw an exception
   if (dimension == 0) throw NotDefinedException(HERE) << "Error: the curvatures cannot be computed when the dimension is zero.";
   const NumericalScalar inverseGradientNorm(1.0 / gradientLimitStateFunction_.norm());
   const NumericalPoint unitGradientLimitStateFunction(inverseGradientNorm * gradientLimitStateFunction_);
   SquareMatrix kroneckerUnitGradientLimitStateFunction(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
-    for (UnsignedLong j = 0; j < dimension; ++j)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
       kroneckerUnitGradientLimitStateFunction(i, j) = unitGradientLimitStateFunction[i] * unitGradientLimitStateFunction[j];
   /* W = (uGrad.uGrad^t -Id) * Hess(g) */
   const SquareMatrix Id = IdentityMatrix(dimension);
   const SquareMatrix::NumericalComplexCollection eigenValues(((kroneckerUnitGradientLimitStateFunction - Id) * hessianLimitStateFunction_).computeEigenValues());
   NumericalPoint realEigenValues(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i) realEigenValues[i] = eigenValues[i].real();
+  for (UnsignedInteger i = 0; i < dimension; ++i) realEigenValues[i] = eigenValues[i].real();
 
   /* The curvatures are proportional to the eigenvalues of W
      If the normal of the boundary of the failure domain points to the origin at the design point, then we change
@@ -164,7 +164,7 @@ NumericalScalar SORMResult::getEventProbabilityBreitung() const
   }
   /* PBreitung = E(-beta)/Prod(sqrt(1+beta*curvature[i])) */
   eventProbabilityBreitung_ = standardCDFBeta;
-  for (UnsignedLong index = 0 ; index < sortedCurvatures_.getDimension(); ++index) eventProbabilityBreitung_ /= sqrt(1.0 + beta * sortedCurvatures_[index]);
+  for (UnsignedInteger index = 0 ; index < sortedCurvatures_.getDimension(); ++index) eventProbabilityBreitung_ /= sqrt(1.0 + beta * sortedCurvatures_[index]);
   /* if the Standard Point Origin is in the failure space, take the complementry probability */
   if (getIsStandardPointOriginInFailureSpace()) eventProbabilityBreitung_ = 1.0 - eventProbabilityBreitung_;
   if ((eventProbabilityBreitung_ < 0.0) || (eventProbabilityBreitung_ > 1.0))
@@ -205,7 +205,7 @@ NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
   }
   /* P_hohenbichler = Phi(-beta)/Prod(sqrt(1+rho*curvature[i])) */
   eventProbabilityHohenBichler_ = standardCDFBeta;
-  for (UnsignedLong index = 0 ; index < sortedCurvatures_.getDimension(); ++index) eventProbabilityHohenBichler_ /= sqrt(1.0 + rho * sortedCurvatures_[index]);
+  for (UnsignedInteger index = 0 ; index < sortedCurvatures_.getDimension(); ++index) eventProbabilityHohenBichler_ /= sqrt(1.0 + rho * sortedCurvatures_[index]);
 
   /* if the Standard Point Origin is in the failure space, take the complementry probability */
   if (getIsStandardPointOriginInFailureSpace()) eventProbabilityHohenBichler_ = 1.0 - eventProbabilityHohenBichler_;
@@ -250,8 +250,8 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
   /* compute the first term A1 */
 
   NumericalScalar prod1(1.0);
-  const UnsignedLong dimension(sortedCurvatures_.getDimension());
-  for (UnsignedLong index = 0 ; index < dimension; ++index) prod1 /= sqrt(1.0 + beta * sortedCurvatures_[index]);
+  const UnsignedInteger dimension(sortedCurvatures_.getDimension());
+  for (UnsignedInteger index = 0 ; index < dimension; ++index) prod1 /= sqrt(1.0 + beta * sortedCurvatures_[index]);
   const NumericalScalar termA1(standardCDFBeta * prod1);
 
   /* compute the second term A2 */
@@ -259,7 +259,7 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
   const NumericalScalar rho(beta * standardCDFBeta - standardPDFBeta);
 
   NumericalScalar prod2(1.0);
-  for (UnsignedLong index = 0; index < dimension; ++index) prod2 /= sqrt(1.0 + (1.0 + beta) * sortedCurvatures_[index]);
+  for (UnsignedInteger index = 0; index < dimension; ++index) prod2 /= sqrt(1.0 + (1.0 + beta) * sortedCurvatures_[index]);
 
   const NumericalScalar termA2(rho * (prod1 - prod2));
 
@@ -268,7 +268,7 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
   NumericalComplex complexProd3(1.0, 0.0);
   NumericalComplex iPlusBeta(beta, 1.0);
 
-  for (UnsignedLong index = 0; index < dimension; ++index) complexProd3 /= sqrt(1.0 + iPlusBeta * sortedCurvatures_[index]);
+  for (UnsignedInteger index = 0; index < dimension; ++index) complexProd3 /= sqrt(1.0 + iPlusBeta * sortedCurvatures_[index]);
   const NumericalScalar termA3((beta + 1.0) * rho * (prod1 - complexProd3.real()));
 
   /* compute tvedt probability */

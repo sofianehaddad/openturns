@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   {
 
     CalibrationStrategy myAlgo(Interval(0.3, 0.5));
-    for ( UnsignedLong i = 0; i < 4; ++ i )
+    for ( UnsignedInteger i = 0; i < 4; ++ i )
     {
       NumericalScalar rho = 0.1 + i * 0.2;
       NumericalScalar updateFactor = myAlgo.computeUpdateFactor(rho);

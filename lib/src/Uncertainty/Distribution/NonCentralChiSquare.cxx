@@ -41,7 +41,7 @@ NonCentralChiSquare::NonCentralChiSquare(const NumericalScalar nu,
   : ContinuousDistribution("NonCentralChiSquare")
   , nu_(0.0)
   , lambda_(0.0)
-  , maximumIteration_(ResourceMap::GetAsUnsignedLong("DistFunc-MaximumIteration"))
+  , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
   // This call set also the range.
   setNuLambda(nu, lambda);
@@ -157,14 +157,14 @@ NumericalPoint NonCentralChiSquare::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint NonCentralChiSquare::getStandardMoment(const UnsignedLong n) const
+NumericalPoint NonCentralChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
   UniVariatePolynomial p(NumericalPoint(1, 1.0));
   NumericalPoint derivativeFactor(3);
   derivativeFactor[0] = 1.0;
   derivativeFactor[1] = -4.0;
   derivativeFactor[2] = 4.0;
-  for (UnsignedLong k = 0; k < n; ++k)
+  for (UnsignedInteger k = 0; k < n; ++k)
   {
     NumericalPoint polynomialFactor(2);
     polynomialFactor[0] = lambda_ + 4.0 * k + nu_;
@@ -270,12 +270,12 @@ NumericalScalar NonCentralChiSquare::getLambda() const
 }
 
 /* Maximum iterations accessor */
-void NonCentralChiSquare::setMaximumIteration(const UnsignedLong maximumIteration)
+void NonCentralChiSquare::setMaximumIteration(const UnsignedInteger maximumIteration)
 {
   maximumIteration_ = maximumIteration;
 }
 
-UnsignedLong NonCentralChiSquare::getMaximumIteration() const
+UnsignedInteger NonCentralChiSquare::getMaximumIteration() const
 {
   return maximumIteration_;
 }

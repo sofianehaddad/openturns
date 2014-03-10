@@ -47,13 +47,13 @@ public:
 
   /** Parameters constructor */
   ImportanceSamplingExperiment(const Distribution & importanceDistribution,
-                               const UnsignedLong size,
+                               const UnsignedInteger size,
                                const String & name = DefaultName);
 
   /** Parameters constructor */
   ImportanceSamplingExperiment(const Distribution & distribution,
                                const Distribution & importanceDistribution,
-                               const UnsignedLong size,
+                               const UnsignedInteger size,
                                const String & name = DefaultName);
 
   /** Virtual constructor */

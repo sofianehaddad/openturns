@@ -43,7 +43,7 @@ public:
   explicit Brent(const NumericalScalar absoluteError = ResourceMap::GetAsNumericalScalar( "SolverImplementation-DefaultAbsoluteError" ),
                  const NumericalScalar relativeError = ResourceMap::GetAsNumericalScalar( "SolverImplementation-DefaultRelativeError" ),
                  const NumericalScalar residualError = ResourceMap::GetAsNumericalScalar( "SolverImplementation-DefaultResidualError" ),
-                 const UnsignedLong maximumFunctionEvaluation = ResourceMap::GetAsUnsignedLong( "SolverImplementation-DefaultMaximumFunctionEvaluation" ));
+                 const UnsignedInteger maximumFunctionEvaluation = ResourceMap::GetAsUnsignedInteger( "SolverImplementation-DefaultMaximumFunctionEvaluation" ));
 
 
   /* Copy constructor */

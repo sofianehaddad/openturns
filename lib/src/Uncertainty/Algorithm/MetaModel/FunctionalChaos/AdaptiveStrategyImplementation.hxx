@@ -61,15 +61,15 @@ public:
 
   /** Constructor from an orthogonal basis */
   AdaptiveStrategyImplementation(const OrthogonalBasis & basis,
-                                 const UnsignedLong maximumDimension);
+                                 const UnsignedInteger maximumDimension);
 
   /** Virtual constructor */
   virtual AdaptiveStrategyImplementation * clone() const;
 
 
   /** Maximum dimension accessor */
-  void setMaximumDimension(const UnsignedLong maximumDimension);
-  UnsignedLong getMaximumDimension() const;
+  void setMaximumDimension(const UnsignedInteger maximumDimension);
+  UnsignedInteger getMaximumDimension() const;
 
   /** Compute initial basis for the approximation */
   virtual void computeInitialBasis();
@@ -102,7 +102,7 @@ protected:
   OrthogonalBasis basis_;
 
   /** Maximum dimension of the basis to be generated */
-  UnsignedLong maximumDimension_;
+  UnsignedInteger maximumDimension_;
 
   /** The collection of indices of the vectors in the partial basis with respect to the orthogonal basis */
   Indices I_p_;

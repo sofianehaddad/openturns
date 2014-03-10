@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
     LegendreFactory legendre;
     fullprint << "legendre=" << legendre << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
     {
       fullprint << "legendre(" << i << ")=" << legendre.build(i).__str__() << std::endl;
     }

@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     fullprint << "Variance=" << sample.computeVariancePerComponent() << std::endl;
     fullprint << "Skewness=" << sample.computeSkewnessPerComponent() << std::endl;
     fullprint << "Kurtosis=" << sample.computeKurtosisPerComponent() << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
       fullprint << "Centered moment of order " << i << "=" << sample.computeCenteredMomentPerComponent(i) << std::endl;
 
     fullprint << "Marginal 1=" << sample.getMarginal(1) << std::endl;
@@ -80,16 +80,16 @@ int main(int argc, char *argv[])
     //    fullprint << "Quantile(" << prob << ")=" << sample.computeQuantile(prob) << std::endl;
     NumericalPoint pointCDF(sample.getDimension(), 0.25);
     fullprint << "Empirical CDF(" << pointCDF << "=" << sample.computeEmpiricalCDF(pointCDF) << std::endl;
-    UnsignedLong dim(3);
+    UnsignedInteger dim(3);
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.25;
     }
     CorrelationMatrix Rtmp(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
-      for (UnsignedLong j = 0; j < i; j++)
+      for (UnsignedInteger j = 0; j < i; j++)
       {
         Rtmp(i, j) = 6.0 * asin(R(i, j) / 2.0) / M_PI;
       }
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
     fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     NumericalPoint p1(dim, 0.0);
     NumericalPoint p2(dim, 1.0);
     Normal normal(Normal(p1, p2, R));

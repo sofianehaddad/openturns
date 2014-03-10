@@ -43,7 +43,7 @@ FixedStrategy::FixedStrategy()
 
 /* Constructor from an orthogonal basis */
 FixedStrategy::FixedStrategy(const OrthogonalBasis & basis,
-                             const UnsignedLong maximumDimension)
+                             const UnsignedInteger maximumDimension)
   : AdaptiveStrategyImplementation(basis, maximumDimension)
 {
   // Nothing to do
@@ -56,7 +56,7 @@ void FixedStrategy::computeInitialBasis()
   Psi_k_p_ = NumericalMathFunctionCollection(maximumDimension_);
   I_p_ = Indices(maximumDimension_);
   I_p_.fill();
-  for (UnsignedLong i = 0; i < maximumDimension_; ++i) Psi_k_p_[i] = basis_.build(i);
+  for (UnsignedInteger i = 0; i < maximumDimension_; ++i) Psi_k_p_[i] = basis_.build(i);
   addedPsi_k_ranks_ = Indices(maximumDimension_);
   addedPsi_k_ranks_.fill();
   removedPsi_k_ranks_ = Indices(0);

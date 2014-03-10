@@ -42,7 +42,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const String & name):
 }
 
 /* Constructor with parameters */
-LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedLong size,
+LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
     const String & name):
   WeightedExperiment(size, name),
   marginals_(),
@@ -54,7 +54,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedLong size,
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const Distribution & distribution,
-    const UnsignedLong size,
+    const UnsignedInteger size,
     const String & name):
   WeightedExperiment(distribution, size, name),
   marginals_(0),
@@ -65,7 +65,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
 
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
-    const UnsignedLong size,
+    const UnsignedInteger size,
     const String & name):
   WeightedExperiment(size, name),
   marginals_(0),
@@ -96,10 +96,10 @@ String LowDiscrepancyExperiment::__repr__() const
 void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the LowDiscrepancyExperiment can only be used with distributions having an independent copula.";
-  const UnsignedLong dimension(distribution.getDimension());
+  const UnsignedInteger dimension(distribution.getDimension());
   marginals_ = DistributionCollection(dimension);
   // Get the marginal distributions
-  for (UnsignedLong i = 0; i < dimension; ++i) marginals_[i] = distribution.getMarginal(i);
+  for (UnsignedInteger i = 0; i < dimension; ++i) marginals_[i] = distribution.getMarginal(i);
   // initialize the low-discrepancy sequence
   sequence_.initialize(dimension);
   WeightedExperiment::setDistribution(distribution);
@@ -116,9 +116,9 @@ NumericalSample LowDiscrepancyExperiment::generate()
 {
   // In-place transformation to reduce memory consumption
   NumericalSample sample(sequence_.generate(size_));
-  const UnsignedLong dimension(marginals_.getSize());
-  for (UnsignedLong i = 0; i < size_; ++i)
-    for (UnsignedLong j = 0; j < dimension; ++j) sample[i][j] = marginals_[j].computeQuantile(sample[i][j])[0];
+  const UnsignedInteger dimension(marginals_.getSize());
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j) sample[i][j] = marginals_[j].computeQuantile(sample[i][j])[0];
   return sample;
 }
 

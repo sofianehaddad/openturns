@@ -75,7 +75,7 @@ String ComposedCopula::__repr__() const
   oss << "class=" << ComposedCopula::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension();
-  for (UnsignedLong i = 0; i < copulaCollection_.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < copulaCollection_.getSize(); ++i)
     oss << " copula[" << i << "]=" << copulaCollection_[i];
   return oss;
 }
@@ -85,7 +85,7 @@ String ComposedCopula::__str__(const String & offset) const
   OSS oss(false);
   oss << offset << getClassName() << "(";
   String separator("");
-  for (UnsignedLong i = 0; i < copulaCollection_.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < copulaCollection_.getSize(); ++i)
   {
     oss << separator << copulaCollection_[i];
     separator = ", ";
@@ -98,19 +98,19 @@ String ComposedCopula::__str__(const String & offset) const
 void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
 {
   // Check if the collection is not empty
-  const UnsignedLong size(coll.getSize());
+  const UnsignedInteger size(coll.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty";
   copulaCollection_ = coll;
   Description description(0);
-  UnsignedLong dimension(0);
+  UnsignedInteger dimension(0);
   // Compute the dimension, build the description and check the independence
   isIndependent_ = true;
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedLong copulaDimension(coll[i].getDimension());
+    const UnsignedInteger copulaDimension(coll[i].getDimension());
     dimension += copulaDimension;
     const Description copulaDescription(coll[i].getDescription());
-    for (UnsignedLong j = 0; j < copulaDimension; ++j) description.add(copulaDescription[j]);
+    for (UnsignedInteger j = 0; j < copulaDimension; ++j) description.add(copulaDescription[j]);
     isIndependent_ = isIndependent_ && copulaCollection_[i].hasIndependentCopula();
   }
   isAlreadyComputedCovariance_ = false;
@@ -136,15 +136,15 @@ ComposedCopula * ComposedCopula::clone() const
 /* Get one realization of the ComposedCopula */
 NumericalPoint ComposedCopula::getRealization() const
 {
-  const UnsignedLong dimension(getDimension());
-  const UnsignedLong size(copulaCollection_.getSize());
+  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger size(copulaCollection_.getSize());
   NumericalPoint result(dimension);
-  UnsignedLong index(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint realization(copulaCollection_[i].getRealization());
-    const UnsignedLong copulaDimension(copulaCollection_[i].getDimension());
-    for (UnsignedLong j = 0; j < copulaDimension; ++j)
+    const UnsignedInteger copulaDimension(copulaCollection_[i].getDimension());
+    for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       result[index] = realization[j];
       ++index;
@@ -156,24 +156,24 @@ NumericalPoint ComposedCopula::getRealization() const
 /* Get the DDF of the ComposedCopula */
 NumericalPoint ComposedCopula::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   NumericalPoint DDF(getDimension());
-  const UnsignedLong size(copulaCollection_.getSize());
+  const UnsignedInteger size(copulaCollection_.getSize());
   NumericalPoint copulaPDF(size);
   NumericalPointCollection copulaDDF(size);
   NumericalScalar productPDF(1.0);
-  UnsignedLong index(0);
+  UnsignedInteger index(0);
   // First, compute the several elements
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // If one component is outside of the support, the PDF is null
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return NumericalPoint(dimension);
     const Copula copula(copulaCollection_[i]);
-    const UnsignedLong copulaDimension(copula.getDimension());
+    const UnsignedInteger copulaDimension(copula.getDimension());
     NumericalPoint component(copulaDimension);
-    for (UnsignedLong j = 0; j < copulaDimension; ++j)
+    for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       component[j] = point[index];
       ++index;
@@ -184,11 +184,11 @@ NumericalPoint ComposedCopula::computeDDF(const NumericalPoint & point) const
   }
   // Then, compute the DDF
   index = 0;
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint currentDDF(copulaDDF[i] * (productPDF / copulaPDF[i]));
-    const UnsignedLong currentDimension(currentDDF.getDimension());
-    for (UnsignedLong j = 0; j < currentDimension; ++j)
+    const UnsignedInteger currentDimension(currentDDF.getDimension());
+    for (UnsignedInteger j = 0; j < currentDimension; ++j)
     {
       DDF[index] = currentDDF[j];
       ++index;
@@ -201,19 +201,19 @@ NumericalPoint ComposedCopula::computeDDF(const NumericalPoint & point) const
 NumericalScalar ComposedCopula::computePDF(const NumericalPoint & point) const
 {
   /* PDF = PDF_copula1x...xPDF_copula_n */
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const UnsignedLong size(copulaCollection_.getSize());
+  const UnsignedInteger size(copulaCollection_.getSize());
   NumericalScalar productPDF(1.0);
-  UnsignedLong index(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // If one component is outside of the support, the PDF is null
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
-    const UnsignedLong copulaDimension(copulaCollection_[i].getDimension());
+    const UnsignedInteger copulaDimension(copulaCollection_[i].getDimension());
     NumericalPoint component(copulaDimension);
-    for (UnsignedLong j = 0; j < copulaDimension; ++j)
+    for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       component[j] = point[index];
       ++index;
@@ -227,22 +227,22 @@ NumericalScalar ComposedCopula::computePDF(const NumericalPoint & point) const
 NumericalScalar ComposedCopula::computeCDF(const NumericalPoint & point) const
 {
   /* CDF = CDF_copula1x...xCDF_copula_n */
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const UnsignedLong size(copulaCollection_.getSize());
+  const UnsignedInteger size(copulaCollection_.getSize());
   NumericalScalar productCDF(1.0);
-  UnsignedLong index(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // If one component is at the left of the support of its matginal distribution, the CDF is null
     if (point[i] <= 0.0) return 0.0;
     // If the component is inside of the support, update the CDF value
     if (point[i] < 1.0)
     {
-      const UnsignedLong copulaDimension(copulaCollection_[i].getDimension());
+      const UnsignedInteger copulaDimension(copulaCollection_[i].getDimension());
       NumericalPoint component(copulaDimension);
-      for (UnsignedLong j = 0; j < copulaDimension; ++j)
+      for (UnsignedInteger j = 0; j < copulaDimension; ++j)
       {
         component[j] = point[index];
         ++index;
@@ -257,7 +257,7 @@ NumericalScalar ComposedCopula::computeCDF(const NumericalPoint & point) const
 /* Compute the probability content of an interval */
 NumericalScalar ComposedCopula::computeProbability(const Interval & interval) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
@@ -266,15 +266,15 @@ NumericalScalar ComposedCopula::computeProbability(const Interval & interval) co
   if (intersect.isNumericallyEmpty()) return 0.0;
   const NumericalPoint lowerIntersect(intersect.getLowerBound());
   const NumericalPoint upperIntersect(intersect.getUpperBound());
-  const UnsignedLong size(copulaCollection_.getSize());
+  const UnsignedInteger size(copulaCollection_.getSize());
   NumericalScalar value(1.0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Copula copula(copulaCollection_[i]);
-    const UnsignedLong copulaDimension(copula.getDimension());
+    const UnsignedInteger copulaDimension(copula.getDimension());
     NumericalPoint lower(copulaDimension);
     NumericalPoint upper(copulaDimension);
-    for (UnsignedLong j = 0; j < copulaDimension; ++j)
+    for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       lower[j] = lowerIntersect[j];
       upper[j] = upperIntersect[j];
@@ -287,16 +287,16 @@ NumericalScalar ComposedCopula::computeProbability(const Interval & interval) co
 /* Get the Spearman correlation of the distribution */
 CorrelationMatrix ComposedCopula::getSpearmanCorrelation() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   CorrelationMatrix rho(dimension);
-  const UnsignedLong size(copulaCollection_.getSize());
-  UnsignedLong globalIndex(0);
-  for (UnsignedLong n = 0; n < size; ++n)
+  const UnsignedInteger size(copulaCollection_.getSize());
+  UnsignedInteger globalIndex(0);
+  for (UnsignedInteger n = 0; n < size; ++n)
   {
     const CorrelationMatrix localRho(copulaCollection_[n].getSpearmanCorrelation());
-    const UnsignedLong localSize(localRho.getDimension());
-    for (UnsignedLong i = 0; i < localSize; ++i)
-      for (UnsignedLong j = 0; j < i; ++j)
+    const UnsignedInteger localSize(localRho.getDimension());
+    for (UnsignedInteger i = 0; i < localSize; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
         rho(globalIndex + i, globalIndex + j) = localRho(i, j);
     globalIndex += localSize;
   }
@@ -306,16 +306,16 @@ CorrelationMatrix ComposedCopula::getSpearmanCorrelation() const
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix ComposedCopula::getKendallTau() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   CorrelationMatrix tau(dimension);
-  const UnsignedLong size(copulaCollection_.getSize());
-  UnsignedLong globalIndex(0);
-  for (UnsignedLong n = 0; n < size; ++n)
+  const UnsignedInteger size(copulaCollection_.getSize());
+  UnsignedInteger globalIndex(0);
+  for (UnsignedInteger n = 0; n < size; ++n)
   {
     const CorrelationMatrix localTau(copulaCollection_[n].getKendallTau());
-    const UnsignedLong localSize(localTau.getDimension());
-    for (UnsignedLong i = 0; i < localSize; ++i)
-      for (UnsignedLong j = 0; j < i; ++j)
+    const UnsignedInteger localSize(localTau.getDimension());
+    for (UnsignedInteger i = 0; i < localSize; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
         tau(globalIndex + i, globalIndex + j) = localTau(i, j);
     globalIndex += localSize;
   }
@@ -325,7 +325,7 @@ CorrelationMatrix ComposedCopula::getKendallTau() const
 /* Get the PDF gradient of the distribution */
 NumericalPoint ComposedCopula::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   throw NotYetImplementedException(HERE);
@@ -334,7 +334,7 @@ NumericalPoint ComposedCopula::computePDFGradient(const NumericalPoint & point) 
 /* Get the CDF gradient of the distribution */
 NumericalPoint ComposedCopula::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   throw NotYetImplementedException(HERE);
@@ -343,51 +343,51 @@ NumericalPoint ComposedCopula::computeCDFGradient(const NumericalPoint & point) 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ComposedCopula::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return (x < 0.0 ? 0.0 : x > 1.0 ? 0.0 : 1);
   // General case
-  UnsignedLong copulaIndex(0);
-  UnsignedLong partialDimension(copulaCollection_[copulaIndex].getDimension());
+  UnsignedInteger copulaIndex(0);
+  UnsignedInteger partialDimension(copulaCollection_[copulaIndex].getDimension());
   while (partialDimension < conditioningDimension)
   {
     ++copulaIndex;
     partialDimension += copulaCollection_[copulaIndex].getDimension();
   }
   // Extract the relevant part of the conditioning
-  const UnsignedLong conditioningSize(partialDimension - conditioningDimension);
+  const UnsignedInteger conditioningSize(partialDimension - conditioningDimension);
   NumericalPoint conditioningVector(conditioningSize);
-  for (UnsignedLong i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
   return copulaCollection_[copulaIndex].computeConditionalPDF(x, conditioningVector);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ComposedCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return std::min(1.0, std::max(0.0, x));
   // General case
-  UnsignedLong copulaIndex(0);
-  UnsignedLong partialDimension(copulaCollection_[copulaIndex].getDimension());
+  UnsignedInteger copulaIndex(0);
+  UnsignedInteger partialDimension(copulaCollection_[copulaIndex].getDimension());
   while (partialDimension < conditioningDimension)
   {
     ++copulaIndex;
     partialDimension += copulaCollection_[copulaIndex].getDimension();
   }
   // Extract the relevant part of the conditioning
-  const UnsignedLong conditioningSize(partialDimension - conditioningDimension);
+  const UnsignedInteger conditioningSize(partialDimension - conditioningDimension);
   NumericalPoint conditioningVector(conditioningSize);
-  for (UnsignedLong i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
   return copulaCollection_[copulaIndex].computeConditionalCDF(x, conditioningVector);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ComposedCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension == 0) return q;
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if (conditioningDimension == 0) return q;
@@ -395,17 +395,17 @@ NumericalScalar ComposedCopula::computeConditionalQuantile(const NumericalScalar
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   // General case
-  UnsignedLong copulaIndex(0);
-  UnsignedLong partialDimension(copulaCollection_[copulaIndex].getDimension());
+  UnsignedInteger copulaIndex(0);
+  UnsignedInteger partialDimension(copulaCollection_[copulaIndex].getDimension());
   while (partialDimension < conditioningDimension)
   {
     ++copulaIndex;
     partialDimension += copulaCollection_[copulaIndex].getDimension();
   }
   // Extract the relevant part of the conditioning
-  const UnsignedLong conditioningSize(partialDimension - conditioningDimension);
+  const UnsignedInteger conditioningSize(partialDimension - conditioningDimension);
   NumericalPoint conditioningVector(conditioningSize);
-  for (UnsignedLong i = 0; i < conditioningSize; ++i)
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i)
   {
     conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
   }
@@ -423,19 +423,19 @@ NumericalScalar ComposedCopula::computeConditionalQuantile(const NumericalScalar
 */
 ComposedCopula::Implementation ComposedCopula::getMarginal(const Indices & indices) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   CopulaCollection marginalCopulas;
-  const UnsignedLong indicesSize(indices.getSize());
-  const UnsignedLong size(copulaCollection_.getSize());
+  const UnsignedInteger indicesSize(indices.getSize());
+  const UnsignedInteger size(copulaCollection_.getSize());
   // For each copula, see if there is something to extract
-  UnsignedLong currentPosition(0);
-  UnsignedLong currentIndex(indices[currentPosition]);
+  UnsignedInteger currentPosition(0);
+  UnsignedInteger currentIndex(indices[currentPosition]);
   // Lower bound of indices related to the current copula
-  UnsignedLong lowerIndex(0);
+  UnsignedInteger lowerIndex(0);
   // Upper bound of indices related to the current copula plus 1
-  UnsignedLong upperIndex(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger upperIndex(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Copula copula(copulaCollection_[i]);
     // Update index range for the current copula
@@ -469,16 +469,16 @@ ComposedCopula::NumericalPointWithDescriptionCollection ComposedCopula::getParam
   // Put the dependence parameters
   NumericalPointWithDescription point(0);
   Description description(0);
-  const UnsignedLong size(copulaCollection_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(copulaCollection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
     // even if the NumericalPoint are empty
     const NumericalPointWithDescription copulaParameters(copulaCollection_[i].getParametersCollection()[0]);
     const Description parametersDescription(copulaParameters.getDescription());
     const String copulaName(copulaCollection_[i].getName());
-    const UnsignedLong parameterDimension(copulaParameters.getDimension());
-    for (UnsignedLong j = 0; j < parameterDimension; ++j)
+    const UnsignedInteger parameterDimension(copulaParameters.getDimension());
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
     {
       point.add(copulaParameters[j]);
       description.add(OSS() << "copula_" << i << "_" << parametersDescription[j]);
@@ -496,18 +496,18 @@ void ComposedCopula::setParametersCollection(const NumericalPointCollection & pa
   if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
   // Dependence parameters
   const NumericalPoint parameters(parametersCollection[0]);
-  const UnsignedLong parametersDimension(parameters.getDimension());
+  const UnsignedInteger parametersDimension(parameters.getDimension());
   // Index within the given parametersCollection
-  UnsignedLong globalIndex(0);
-  const UnsignedLong size(copulaCollection_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger globalIndex(0);
+  const UnsignedInteger size(copulaCollection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
     // even if the NumericalPoint are empty
-    const UnsignedLong atomParametersDimension(copulaCollection_[i].getParametersCollection()[0].getDimension());
+    const UnsignedInteger atomParametersDimension(copulaCollection_[i].getParametersCollection()[0].getDimension());
     // ith copula parameters
     NumericalPoint point(atomParametersDimension);
-    for (UnsignedLong j = 0; j < atomParametersDimension; ++j)
+    for (UnsignedInteger j = 0; j < atomParametersDimension; ++j)
     {
       if (globalIndex >= parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
       point[j] = parameters[globalIndex];

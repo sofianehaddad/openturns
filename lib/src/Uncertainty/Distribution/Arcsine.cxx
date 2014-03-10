@@ -259,7 +259,7 @@ NumericalPoint Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Arcsine::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Arcsine::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / sqrt(M_PI));

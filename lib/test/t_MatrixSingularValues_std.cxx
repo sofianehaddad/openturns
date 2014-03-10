@@ -28,16 +28,16 @@ using namespace OT;
 using namespace OT::Test;
 
 
-Matrix quadM(UnsignedLong m, UnsignedLong n)
+Matrix quadM(UnsignedInteger m, UnsignedInteger n)
 {
   Matrix res(m, n);
-  for (UnsignedLong i = 0; i < m; ++i)
-    for (UnsignedLong j = 0; j < n; ++j)
+  for (UnsignedInteger i = 0; i < m; ++i)
+    for (UnsignedInteger j = 0; j < n; ++j)
       res(i, j) = pow(i + 1, j + 1);
   return res;
 }
 
-void testM(UnsignedLong m, UnsignedLong n)
+void testM(UnsignedInteger m, UnsignedInteger n)
 {
   OStream fullprint(std::cout);
 
@@ -58,7 +58,7 @@ void testM(UnsignedLong m, UnsignedLong n)
   fullprint << "svd (svd + u, vT full)= " << result1 << std::endl;
 
 //   S = Matrix(m, n);
-//   for (UnsignedLong i = 0; i < std::min(m,n); ++i)
+//   for (UnsignedInteger i = 0; i < std::min(m,n); ++i)
 //     S(i,i) = result1[i];
 //   fullprint << "u*vT= " << ((u*S)*vT).__str__() << std::endl;
 
@@ -66,7 +66,7 @@ void testM(UnsignedLong m, UnsignedLong n)
   fullprint << "svd (svd + u, vT small)= " << result1 << std::endl << "u= " << u.__str__() << std::endl << "vT= " << vT.__str__() << std::endl;
 
 //   S = Matrix(std::min(m,n), std::min(m,n));
-//   for (UnsignedLong i = 0; i < std::min(m,n); ++i)
+//   for (UnsignedInteger i = 0; i < std::min(m,n); ++i)
 //     S(i,i) = result1[i];
 //   fullprint << "u*vT= " << ((u*S)*vT).__str__() << std::endl;
 

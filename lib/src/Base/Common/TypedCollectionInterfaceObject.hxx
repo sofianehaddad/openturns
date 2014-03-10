@@ -60,7 +60,7 @@ public:
 
 #ifndef SWIG
   /** Operator[]() gives access to the elements of the collection */
-  inline ImplementationElementType & operator [] (UnsignedLong i)
+  inline ImplementationElementType & operator [] (UnsignedInteger i)
   {
 #ifdef DEBUG_BOUNDCHECKING
     return this->at(i);
@@ -71,7 +71,7 @@ public:
   }
 
   /** Operator[]() gives access to the elements of the const collection */
-  inline const ImplementationElementType & operator [] (UnsignedLong i) const
+  inline const ImplementationElementType & operator [] (UnsignedInteger i) const
   {
 #ifdef DEBUG_BOUNDCHECKING
     return this->at(i);
@@ -81,7 +81,7 @@ public:
   }
 
   /** Element accessor */
-  inline ImplementationElementType & at(UnsignedLong i)
+  inline ImplementationElementType & at(UnsignedInteger i)
   {
     TypedInterfaceObject<T>::copyOnWrite();
 
@@ -98,7 +98,7 @@ public:
     }
   }
 
-  inline const ImplementationElementType & at(UnsignedLong i) const
+  inline const ImplementationElementType & at(UnsignedInteger i) const
   {
     try
     {
@@ -115,13 +115,13 @@ public:
 #endif
 
   /* Method __getitem__() is for Python */
-  inline const ImplementationElementType & __getitem__(UnsignedLong i) const
+  inline const ImplementationElementType & __getitem__(UnsignedInteger i) const
   {
     return this->at(i);
   }
 
   /* Method __setitem__() is for Python */
-  inline void __setitem__(UnsignedLong i, const ImplementationElementType & val)
+  inline void __setitem__(UnsignedInteger i, const ImplementationElementType & val)
   {
     this->at(i) = val;
   }
@@ -149,20 +149,20 @@ public:
   }
 
   /** Erase the element pointed by position */
-  inline iterator erase(UnsignedLong position)
+  inline iterator erase(UnsignedInteger position)
   {
     return erase(begin() + position);
   }
 #endif
 
   /** Method getSize() returns the number of elements of the collection (viewed as a size) */
-  inline UnsignedLong getSize() const
+  inline UnsignedInteger getSize() const
   {
     return TypedInterfaceObject<T>::getImplementation()->getSize();
   }
 
   /** Method getDimension() returns the number of elements of the collection (viewed as a dimension) */
-  inline UnsignedLong getDimension() const
+  inline UnsignedInteger getDimension() const
   {
     return TypedInterfaceObject<T>::getImplementation()->getDimension();
   }

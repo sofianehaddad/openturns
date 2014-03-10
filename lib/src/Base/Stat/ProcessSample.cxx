@@ -50,7 +50,7 @@ ProcessSample::ProcessSample()
 }
 
 /* Default constructor */
-ProcessSample::ProcessSample(const UnsignedLong size,
+ProcessSample::ProcessSample(const UnsignedInteger size,
                              const Field & field)
   : PersistentObject(),
     mesh_(field.getMesh()),
@@ -60,8 +60,8 @@ ProcessSample::ProcessSample(const UnsignedLong size,
 }
 
 ProcessSample::ProcessSample(const Mesh & mesh,
-                             const UnsignedLong size,
-                             const UnsignedLong dimension)
+                             const UnsignedInteger size,
+                             const UnsignedInteger dimension)
   : PersistentObject(),
     mesh_(mesh),
     data_(NumericalSampleCollection(size, NumericalSample(mesh.getVerticesNumber(), mesh.getDimension())))
@@ -90,7 +90,7 @@ String ProcessSample::__str__(const String & offset) const
   OSS oss(false);
   oss << offset << "[";
   String separator("");
-  for (UnsignedLong i = 0; i < data_.getSize(); ++i, separator = "\n") oss << separator << offset << "field " << i << ":\n" << getField(i).__str__(offset);
+  for (UnsignedInteger i = 0; i < data_.getSize(); ++i, separator = "\n") oss << separator << offset << "field " << i << ":\n" << getField(i).__str__(offset);
   oss << "]";
   return oss;
 }
@@ -108,13 +108,13 @@ void ProcessSample::add(const Field & field)
 
 
 /* Operators accessors */
-Field ProcessSample::getField(const UnsignedLong index) const
+Field ProcessSample::getField(const UnsignedInteger index) const
 {
   if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return Field(mesh_, data_[index]);
 }
 
-void ProcessSample::setField(const UnsignedLong index,
+void ProcessSample::setField(const UnsignedInteger index,
                              const Field & field)
 {
   if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
@@ -122,26 +122,26 @@ void ProcessSample::setField(const UnsignedLong index,
   data_[index] = field.getValues();
 }
 
-NumericalSample & ProcessSample::operator[] (const UnsignedLong index)
+NumericalSample & ProcessSample::operator[] (const UnsignedInteger index)
 {
   if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
-const NumericalSample & ProcessSample::operator[] (const UnsignedLong index) const
+const NumericalSample & ProcessSample::operator[] (const UnsignedInteger index) const
 {
   if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
 /* Method __getitem__() - Python use */
-Field ProcessSample::__getitem__ (const UnsignedLong i) const
+Field ProcessSample::__getitem__ (const UnsignedInteger i) const
 {
   return getField(i);
 }
 
 /* Method __setitem__() is for Python */
-void ProcessSample::__setitem__(const UnsignedLong i, const Field & field)
+void ProcessSample::__setitem__(const UnsignedInteger i, const Field & field)
 {
   setField(i, field);
 }
@@ -159,32 +159,32 @@ Mesh ProcessSample::getMesh() const
 }
 
 /* Dimension accessors */
-UnsignedLong ProcessSample::getDimension() const
+UnsignedInteger ProcessSample::getDimension() const
 {
   if (data_.getSize() == 0) return 0;
   return data_[0].getDimension();
 }
 
 /* Dimension accessors */
-UnsignedLong ProcessSample::getSize() const
+UnsignedInteger ProcessSample::getSize() const
 {
   return data_.getSize();
 }
 
 Field ProcessSample::computeMean() const
 {
-  const UnsignedLong size(getSize());
+  const UnsignedInteger size(getSize());
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
   Field result(mesh_, data_[0]);
-  const UnsignedLong length(data_[0].getSize());
+  const UnsignedInteger length(data_[0].getSize());
   // Aggregate the mean on the fly
-  for (UnsignedLong k = 1; k < size; ++k)
-    for (UnsignedLong t = 0; t < length ; ++t)
+  for (UnsignedInteger k = 1; k < size; ++k)
+    for (UnsignedInteger t = 0; t < length ; ++t)
       result.setValueAtIndex(t, result.getValueAtIndex(t) + data_[k][t]);
   // Normalize the result
   const NumericalScalar factor(1.0 / size);
-  for (UnsignedLong t = 0; t < length ; ++t)
+  for (UnsignedInteger t = 0; t < length ; ++t)
     result.setValueAtIndex(t, result.getValueAtIndex(t) * factor);
   return result;
 }
@@ -199,10 +199,10 @@ NumericalSample ProcessSample::computeTemporalMean() const
 /* Compute the sample of spatial means of each field */
 NumericalSample ProcessSample::computeSpatialMean() const
 {
-  const UnsignedLong size(getSize());
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger size(getSize());
+  const UnsignedInteger dimension(getDimension());
   NumericalSample result(size, dimension);
-  for (UnsignedLong i = 0; i < size; ++i) result[i] = data_[i].computeMean();
+  for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].computeMean();
   return result;
 }
 
@@ -211,18 +211,18 @@ NumericalSample ProcessSample::computeSpatialMean() const
  */
 Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) const
 {
-  const UnsignedLong size(getSize());
+  const UnsignedInteger size(getSize());
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
   // This initialization set the correct time grid into result
-  const UnsignedLong dimension(data_[0].getDimension());
-  const UnsignedLong length(data_[0].getSize());
+  const UnsignedInteger dimension(data_[0].getDimension());
+  const UnsignedInteger length(data_[0].getSize());
   NumericalSample result(length, dimension);
   // Loop over the location indices
-  for (UnsignedLong i = 0; i < length; ++i)
+  for (UnsignedInteger i = 0; i < length; ++i)
   {
     NumericalSample dataI(size, dimension);
-    for (UnsignedLong j = 0; j < size; ++j)
+    for (UnsignedInteger j = 0; j < size; ++j)
       dataI[j] = data_[j][i];
     result[i] = dataI.computeQuantilePerComponent(prob);
   }
@@ -230,16 +230,16 @@ Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) con
 }
 
 /* Draw a marginal of the ProcessSample, ie the collection of all the Field marginals */
-Graph ProcessSample::drawMarginal(const UnsignedLong index) const
+Graph ProcessSample::drawMarginal(const UnsignedInteger index) const
 {
   if (index > getDimension() - 1 ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
 
   // Discretization of the x axis
   const String title(OSS() << getName() << " - " << index << " marginal" );
   Graph graph(title, "Time", "Values", true, "topright");
-  const UnsignedLong size(data_.getSize());
+  const UnsignedInteger size(data_.getSize());
   const Description colors(Drawable::BuildDefaultPalette(size));
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     Drawable drawable(Field(mesh_, data_[i]).drawMarginal(index).getDrawable(0));
     drawable.setColor(colors[i]);

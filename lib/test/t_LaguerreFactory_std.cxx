@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     }
     LaguerreFactory laguerre(2.5);
     fullprint << "laguerre=" << laguerre << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
     {
       fullprint << "laguerre(" << i << ")=" << laguerre.build(i).__str__() << std::endl;
     }

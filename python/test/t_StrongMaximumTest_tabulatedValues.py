@@ -53,7 +53,7 @@ try:
         confidenceLevel[1] = 0.95
         confidenceLevel[2] = 0.99
 
-        pointNumber = UnsignedLongCollection(3)
+        pointNumber = UnsignedIntegerCollection(3)
         pointNumber[0] = 10
         pointNumber[1] = 100
         pointNumber[2] = 1000

@@ -88,7 +88,7 @@ String ProductNumericalMathGradientImplementation::__repr__() const
  */
 Matrix ProductNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   const NumericalScalar leftValue(p_leftEvaluation_->operator()(inP)[0]);
@@ -99,13 +99,13 @@ Matrix ProductNumericalMathGradientImplementation::gradient(const NumericalPoint
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ProductNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger ProductNumericalMathGradientImplementation::getInputDimension() const
 {
   return p_rightEvaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ProductNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger ProductNumericalMathGradientImplementation::getOutputDimension() const
 {
   return p_rightEvaluation_->getOutputDimension();
 }

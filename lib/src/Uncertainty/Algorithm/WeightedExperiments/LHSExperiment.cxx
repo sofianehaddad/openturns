@@ -45,7 +45,7 @@ LHSExperiment::LHSExperiment(const String & name):
 }
 
 /* Constructor with parameters */
-LHSExperiment::LHSExperiment(const UnsignedLong size,
+LHSExperiment::LHSExperiment(const UnsignedInteger size,
                              const String & name):
   WeightedExperiment(size, name),
   shuffle_(0, 0),
@@ -56,7 +56,7 @@ LHSExperiment::LHSExperiment(const UnsignedLong size,
 
 /* Constructor with parameters */
 LHSExperiment::LHSExperiment(const Distribution & distribution,
-                             const UnsignedLong size,
+                             const UnsignedInteger size,
                              const String & name):
   WeightedExperiment(distribution, size, name),
   shuffle_(0, 0),
@@ -86,16 +86,16 @@ String LHSExperiment::__repr__() const
 /* Sample generation */
 NumericalSample LHSExperiment::generate()
 {
-  const UnsignedLong dimension(distribution_.getDimension());
+  const UnsignedInteger dimension(distribution_.getDimension());
   // To insure that the shuffle has been initialized
   shuffle_ = getShuffle();
   NumericalSample sample(size_, dimension);
   DistributionCollection marginals(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i) marginals[i] = distribution_.getMarginal(i);
-  for(UnsignedLong index = 0; index < size_; ++index)
+  for (UnsignedInteger i = 0; i < dimension; ++i) marginals[i] = distribution_.getMarginal(i);
+  for(UnsignedInteger index = 0; index < size_; ++index)
   {
     const NumericalPoint u(RandomGenerator::Generate(dimension));
-    for(UnsignedLong component = 0; component < dimension; ++component)
+    for(UnsignedInteger component = 0; component < dimension; ++component)
     {
       const NumericalScalar xi((shuffle_(component, index) + u[component]) / size_);
       sample[index][component] = marginals[component].computeQuantile(xi)[0];
@@ -105,24 +105,24 @@ NumericalSample LHSExperiment::generate()
 }
 
 /* Shuffle the cells. */
-Matrix LHSExperiment::ComputeShuffle(const UnsignedLong dimension,
-                                     const UnsignedLong totalSize)
+Matrix LHSExperiment::ComputeShuffle(const UnsignedInteger dimension,
+                                     const UnsignedInteger totalSize)
 {
   // Preallocate the shuffle
   Matrix result(dimension, totalSize);
   // Initialize the cells shuffle to the identity
-  for (UnsignedLong j = 0; j < totalSize; ++j)
-    for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger j = 0; j < totalSize; ++j)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
       result(i, j) = j;
   // Perform the shuffle. We use the same algorithm than the one used in the STL or in GSL
-  for (UnsignedLong index = 0; index < totalSize - 1; ++index)
+  for (UnsignedInteger index = 0; index < totalSize - 1; ++index)
   {
     // For each component of the current realization, compute its new position
-    const RandomGenerator::UnsignedLongCollection u(RandomGenerator::IntegerGenerate(dimension, totalSize - index));
+    const RandomGenerator::UnsignedIntegerCollection u(RandomGenerator::IntegerGenerate(dimension, totalSize - index));
     // Then swap the corresponding components
-    for (UnsignedLong component = 0; component < dimension; ++component)
+    for (UnsignedInteger component = 0; component < dimension; ++component)
     {
-      const UnsignedLong newPosition(index + u[component]);
+      const UnsignedInteger newPosition(index + u[component]);
       const NumericalScalar newValue(result(component, newPosition));
       result(component, newPosition) = result(component, index);
       result(component, index) = newValue;

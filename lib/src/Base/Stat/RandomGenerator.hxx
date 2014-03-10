@@ -45,10 +45,10 @@ class RandomGenerator
 {
 public:
 
-  typedef Collection<UnsignedLong> UnsignedLongCollection;
+  typedef Collection<UnsignedInteger> UnsignedIntegerCollection;
 
   /** Seed accessor */
-  static void SetSeed(const UnsignedLong seed);
+  static void SetSeed(const UnsignedInteger seed);
 
   /** State accessor */
   static void SetState(const RandomGeneratorState & state);
@@ -57,12 +57,12 @@ public:
   /** Generate a pseudo-random number uniformly distributed over [0, 1[ */
   static NumericalScalar Generate();
   /** Generate a pseudo-random integer uniformly distributed over [[0,...,n-1]] */
-  static UnsignedLong IntegerGenerate(const UnsignedLong n);
+  static UnsignedInteger IntegerGenerate(const UnsignedInteger n);
 
   /** Generate a pseudo-random vector of numbers uniformly distributed over [0, 1[ */
-  static NumericalPoint Generate(const UnsignedLong size);
+  static NumericalPoint Generate(const UnsignedInteger size);
   /** Generate a pseudo-random vector of integers uniformly distributed over [[0,...,n-1]] */
-  static UnsignedLongCollection IntegerGenerate(const UnsignedLong size, const UnsignedLong n);
+  static UnsignedIntegerCollection IntegerGenerate(const UnsignedInteger size, const UnsignedInteger n);
 
 private:
   /** Default constructor */

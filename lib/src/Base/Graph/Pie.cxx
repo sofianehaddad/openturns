@@ -160,13 +160,13 @@ String Pie::draw() const
   oss << "pie(dataOT[,1],"
       << "center=c(" << center_[0] << "," << center_[1]
       << "),radius=" << radius_;
-  UnsignedLong size(labels_.getSize());
+  UnsignedInteger size(labels_.getSize());
   // If there is any label defined
   if (size > 0)
   {
     oss << ",labels=c(\"";
     String separator("");
-    for(UnsignedLong i = 0; i < size; ++i, separator = "\",\"") oss << separator << (data_[i][0] >= labelThreshold ? labels_[i] : "");
+    for(UnsignedInteger i = 0; i < size; ++i, separator = "\",\"") oss << separator << (data_[i][0] >= labelThreshold ? labels_[i] : "");
     oss << "\")";
   }
   size = palette_.getSize();
@@ -175,7 +175,7 @@ String Pie::draw() const
   {
     oss << ",col=c(\"";
     String separator("");
-    for(UnsignedLong i = 0; i < size; ++i, separator = "\",\"") oss << separator << palette_[i];
+    for(UnsignedInteger i = 0; i < size; ++i, separator = "\",\"") oss << separator << palette_[i];
     oss << "\")";
   }
   oss << ")";
@@ -200,7 +200,7 @@ Bool Pie::IsValidColorPalette(const Description & palette)
 
 void Pie::checkData(const NumericalPoint & data) const
 {
-  const UnsignedLong size(data.getSize());
+  const UnsignedInteger size(data.getSize());
   // Check if there is any data to display
   if (size == 0)
   {
@@ -209,7 +209,7 @@ void Pie::checkData(const NumericalPoint & data) const
 
   // Then, check the positivity of the data
   NumericalScalar max(0.0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar x(data[i]);
     if (x < 0.0)
@@ -237,11 +237,11 @@ void Pie::buildDefaultPalette()
 /* Build default labels */
 void Pie::buildDefaultLabels()
 {
-  const UnsignedLong size(data_.getSize());
+  const UnsignedInteger size(data_.getSize());
   labels_ = Description(size);
   NumericalScalar sum(0.0);
-  for (UnsignedLong i = 0; i < size; ++i) sum += data_[i][0];
-  for (UnsignedLong i = 0; i < size; ++i) labels_[i] = String(OSS() << "L" << i << " " << 0.1 * round(1000.0 * data_[i][0] / sum) << "%");
+  for (UnsignedInteger i = 0; i < size; ++i) sum += data_[i][0];
+  for (UnsignedInteger i = 0; i < size; ++i) labels_[i] = String(OSS() << "L" << i << " " << 0.1 * round(1000.0 * data_[i][0] / sum) << "%");
 }
 
 /* Method save() stores the object through the StorageManager */

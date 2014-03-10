@@ -48,8 +48,8 @@ static Factory<NumericalMathEvaluationImplementationCache> RegisteredFactory_Cac
 
 /* These methods are implemented here for the needs of Cache */
 /* We should be careful because they may interfere with other definitions placed elsewhere */
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<UnsignedLong>);
-static Factory<PersistentCollection<UnsignedLong> > RegisteredFactory_alt1("PersistentCollection<UnsignedLong>");
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<UnsignedInteger>);
+static Factory<PersistentCollection<UnsignedInteger> > RegisteredFactory_alt1("PersistentCollection<UnsignedInteger>");
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Unsigned64BitsInteger>);
 static Factory<PersistentCollection<Unsigned64BitsInteger> > RegisteredFactory_alt1b("PersistentCollection<Unsigned64BitsInteger>");
@@ -127,7 +127,7 @@ Description NumericalMathEvaluationImplementation::getDescription() const
 {
   Description description(getInputDescription());
   Description outputDescription(getOutputDescription());
-  for (UnsignedLong i = 0; i < getOutputDimension(); ++i) description.add(outputDescription[i]);
+  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(outputDescription[i]);
   return description;
 }
 
@@ -168,14 +168,14 @@ Bool NumericalMathEvaluationImplementation::isActualImplementation() const
 /* Operator () */
 NumericalSample NumericalMathEvaluationImplementation::operator() (const NumericalSample & inSample) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
 
-  const UnsignedLong size(inSample.getSize());
+  const UnsignedInteger size(inSample.getSize());
   NumericalSample outSample(size, getOutputDimension());
   // Simple loop over the evaluation operator based on point
   // The calls number is updated by these calls
-  for (UnsignedLong i = 0; i < size; ++i) outSample[i] = operator()(inSample[i]);
+  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = operator()(inSample[i]);
   outSample.setDescription(getOutputDescription());
   return outSample;
 }
@@ -184,7 +184,7 @@ NumericalSample NumericalMathEvaluationImplementation::operator() (const Numeric
 /* Operator () */
 Field NumericalMathEvaluationImplementation::operator() (const Field & inField) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inField.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given time series has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inField.getDimension();
   return Field(inField.getMesh(), operator()(inField.getValues()));
 }
@@ -206,7 +206,7 @@ Bool NumericalMathEvaluationImplementation::isCacheEnabled() const
   return p_cache_->isEnabled();
 }
 
-UnsignedLong NumericalMathEvaluationImplementation::getCacheHits() const
+UnsignedInteger NumericalMathEvaluationImplementation::getCacheHits() const
 {
   return p_cache_->getHits();
 }
@@ -214,8 +214,8 @@ UnsignedLong NumericalMathEvaluationImplementation::getCacheHits() const
 void NumericalMathEvaluationImplementation::addCacheContent(const NumericalSample& inSample, const NumericalSample& outSample)
 {
   p_cache_->enable();
-  const UnsignedLong size = inSample.getSize();
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  const UnsignedInteger size = inSample.getSize();
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     p_cache_->add( inSample[i], outSample[i] );
   }
@@ -229,7 +229,7 @@ NumericalSample NumericalMathEvaluationImplementation::getCacheInput() const
   if ( ! cacheEnabled )
     disableCache();
   NumericalSample inSample(0, getInputDimension());
-  for ( UnsignedLong i = 0; i < keyColl.getSize(); ++ i ) inSample.add( keyColl[i] );
+  for ( UnsignedInteger i = 0; i < keyColl.getSize(); ++ i ) inSample.add( keyColl[i] );
   return inSample;
 }
 
@@ -241,7 +241,7 @@ NumericalSample NumericalMathEvaluationImplementation::getCacheOutput() const
   if ( ! cacheEnabled )
     disableCache();
   NumericalSample outSample(0, getOutputDimension());
-  for ( UnsignedLong i = 0; i < valuesColl.getSize(); ++ i )
+  for ( UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i )
   {
     outSample.add( valuesColl[i] );
   }
@@ -309,19 +309,19 @@ NumericalPoint NumericalMathEvaluationImplementation::operator() (const Numerica
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger NumericalMathEvaluationImplementation::getInputDimension() const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger NumericalMathEvaluationImplementation::getOutputDimension() const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /* Get the i-th marginal function */
-NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImplementation::getMarginal(const UnsignedLong i) const
+NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
@@ -335,17 +335,17 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
   // If X1,...,XN are the descriptions of the input of this function, it is a function from R^n to R^p
   // with formula Yk = Xindices[k] for k=1,...,p
   // Build non-ambigous names for the inputs. We cannot simply use the output description, as it must be valid muParser identifiers
-  const UnsignedLong inputDimension(getOutputDimension());
-  const UnsignedLong outputDimension(indices.getSize());
+  const UnsignedInteger inputDimension(getOutputDimension());
+  const UnsignedInteger outputDimension(indices.getSize());
 #ifdef OPENTURNS_HAVE_MUPARSER
   Description input(inputDimension);
-  for (UnsignedLong index = 0; index < inputDimension; ++index)
+  for (UnsignedInteger index = 0; index < inputDimension; ++index)
     input[index] = OSS() << "x" << index;
   // Extract the components
   Description output(outputDimension);
   Description formulas(outputDimension);
   Description currentOutputDescription(getOutputDescription());
-  for (UnsignedLong index = 0; index < outputDimension; ++index)
+  for (UnsignedInteger index = 0; index < outputDimension; ++index)
   {
     output[index] = currentOutputDescription[indices[index]];
     formulas[index] = input[indices[index]];
@@ -354,7 +354,7 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
 #else
   NumericalPoint center(inputDimension);
   Matrix linear(inputDimension, outputDimension);
-  for ( UnsignedLong index = 0; index < outputDimension; ++ index )
+  for ( UnsignedInteger index = 0; index < outputDimension; ++ index )
     linear(indices[index], index) = 1.0;
   NumericalPoint constant(outputDimension);
   const LinearNumericalMathEvaluationImplementation left(center, constant, linear);
@@ -368,26 +368,26 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
 }
 
 /* Get the number of calls to operator() */
-UnsignedLong NumericalMathEvaluationImplementation::getCallsNumber() const
+UnsignedInteger NumericalMathEvaluationImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }
 
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-Graph NumericalMathEvaluationImplementation::draw(const UnsignedLong inputMarginal,
-    const UnsignedLong outputMarginal,
+Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger inputMarginal,
+    const UnsignedInteger outputMarginal,
     const NumericalPoint & centralPoint,
     const NumericalScalar xMin,
     const NumericalScalar xMax,
-    const UnsignedLong pointNumber) const
+    const UnsignedInteger pointNumber) const
 {
   if (getInputDimension() < 1) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1";
   if (inputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
   if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
   NumericalSample inputData(pointNumber, centralPoint);
   const NumericalScalar dx((xMax - xMin) / (pointNumber - 1.0));
-  for (UnsignedLong i = 0; i < pointNumber; ++i)
+  for (UnsignedInteger i = 0; i < pointNumber; ++i)
     inputData[i][inputMarginal] = xMin + i * dx;
   // Evaluate the function over all its input in one call in order to benefit from potential parallelism
   const NumericalSample outputData((*this)(inputData));
@@ -409,9 +409,9 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedLong inputMargin
 }
 
 /* Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
-Graph NumericalMathEvaluationImplementation::draw(const UnsignedLong firstInputMarginal,
-    const UnsignedLong secondInputMarginal,
-    const UnsignedLong outputMarginal,
+Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
+    const UnsignedInteger secondInputMarginal,
+    const UnsignedInteger outputMarginal,
     const NumericalPoint & centralPoint,
     const NumericalPoint & xMin,
     const NumericalPoint & xMax,
@@ -444,9 +444,9 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedLong firstInputM
   xy.scale(scaling);
   xy.translate(origin);
   // Prepare the input sample
-  const UnsignedLong sizeXY(xy.getSize());
+  const UnsignedInteger sizeXY(xy.getSize());
   NumericalSample inputSample(sizeXY, centralPoint);
-  for (UnsignedLong i = 0; i < sizeXY; ++i)
+  for (UnsignedInteger i = 0; i < sizeXY; ++i)
   {
     inputSample[i][firstInputMarginal]  = xy[i][0];
     inputSample[i][secondInputMarginal] = xy[i][1];
@@ -468,7 +468,7 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedLong firstInputM
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
 Graph NumericalMathEvaluationImplementation::draw(const NumericalScalar xMin,
     const NumericalScalar xMax,
-    const UnsignedLong pointNumber) const
+    const UnsignedInteger pointNumber) const
 {
   if (getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
   if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
@@ -486,11 +486,11 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalPoint & xMin,
 }
 
 /* Build a default description */
-Description NumericalMathEvaluationImplementation::BuildDefaultDescription(const UnsignedLong dimension,
+Description NumericalMathEvaluationImplementation::BuildDefaultDescription(const UnsignedInteger dimension,
     const String & prefix)
 {
   Description description(dimension);
-  for (UnsignedLong k = 0; k < dimension; ++k) description[k] =  String(OSS() << prefix << k);
+  for (UnsignedInteger k = 0; k < dimension; ++k) description[k] =  String(OSS() << prefix << k);
   return description;
 }
 

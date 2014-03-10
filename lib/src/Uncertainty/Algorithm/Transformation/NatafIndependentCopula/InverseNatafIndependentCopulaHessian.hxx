@@ -46,7 +46,7 @@ public:
   InverseNatafIndependentCopulaHessian();
 
   /** Parameter constructor */
-  explicit InverseNatafIndependentCopulaHessian(const UnsignedLong dimension);
+  explicit InverseNatafIndependentCopulaHessian(const UnsignedInteger dimension);
 
 
   /** Virtual constructor */
@@ -56,10 +56,10 @@ public:
   SymmetricTensor hessian(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -74,7 +74,7 @@ protected:
 
 
 private:
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
 }; /* InverseNatafIndependentCopulaHessian */
 

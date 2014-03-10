@@ -77,17 +77,17 @@ String AggregatedNumericalMathEvaluationImplementation::__str__(const String & o
 /* Evaluation operator */
 NumericalPoint AggregatedNumericalMathEvaluationImplementation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
-  const UnsignedLong size(functionsCollection_.getSize());
+  const UnsignedInteger size(functionsCollection_.getSize());
   NumericalPoint result(outputDimension_);
-  UnsignedLong outputIndex(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger outputIndex(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint atomValue(functionsCollection_[i](inP));
-    const UnsignedLong atomDimension(atomValue.getDimension());
-    for (UnsignedLong j = 0; j < atomDimension; ++j)
+    const UnsignedInteger atomDimension(atomValue.getDimension());
+    for (UnsignedInteger j = 0; j < atomDimension; ++j)
     {
       result[outputIndex] = atomValue[j];
       ++outputIndex;
@@ -105,19 +105,19 @@ NumericalPoint AggregatedNumericalMathEvaluationImplementation::operator () (con
 
 NumericalSample AggregatedNumericalMathEvaluationImplementation::operator () (const NumericalSample & inS) const
 {
-  const UnsignedLong inputDimension = getInputDimension();
+  const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   ++ callsNumber_;
-  const UnsignedLong collectionSize = functionsCollection_.getSize();
-  const UnsignedLong size = inS.getSize();
+  const UnsignedInteger collectionSize = functionsCollection_.getSize();
+  const UnsignedInteger size = inS.getSize();
   NumericalSample result(size, outputDimension_);
-  UnsignedLong outputIndex = 0;
-  for ( UnsignedLong k = 0; k < collectionSize; ++ k )
+  UnsignedInteger outputIndex = 0;
+  for ( UnsignedInteger k = 0; k < collectionSize; ++ k )
   {
     const NumericalSample atomValue(functionsCollection_[k](inS));
-    const UnsignedLong atomDimension = atomValue.getDimension();
-    for ( UnsignedLong i = 0; i < size; ++ i )
-      for ( UnsignedLong j = 0; j < atomDimension; ++ j )
+    const UnsignedInteger atomDimension = atomValue.getDimension();
+    for ( UnsignedInteger i = 0; i < size; ++ i )
+      for ( UnsignedInteger j = 0; j < atomDimension; ++ j )
         result[i][outputIndex + j] = atomValue[i][j];
     outputIndex += atomDimension;
   }
@@ -139,22 +139,22 @@ AggregatedNumericalMathEvaluationImplementation::NumericalMathFunctionCollection
 
 void AggregatedNumericalMathEvaluationImplementation::setFunctionsCollection(const NumericalMathFunctionCollection & functionsCollection)
 {
-  const UnsignedLong size(functionsCollection.getSize());
+  const UnsignedInteger size(functionsCollection.getSize());
   // Check for empty functions collection
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function from an empty collection of functions.";
   // Check for coherent input and output dimensions of the functions
-  UnsignedLong inputDimension(functionsCollection[0].getInputDimension());
+  UnsignedInteger inputDimension(functionsCollection[0].getInputDimension());
   outputDimension_ = functionsCollection[0].getOutputDimension();
   Description description(functionsCollection[0].getDescription());
   if (outputDimension_ == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
-  for (UnsignedLong i = 1; i < size; ++i)
+  for (UnsignedInteger i = 1; i < size; ++i)
   {
     if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given functions have incompatible input dimension.";
-    const UnsignedLong atomOutputDimension(functionsCollection[i].getOutputDimension());
+    const UnsignedInteger atomOutputDimension(functionsCollection[i].getOutputDimension());
     if (atomOutputDimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
     outputDimension_ += atomOutputDimension;
     const Description outputDescription(functionsCollection[i].getOutputDescription());
-    for (UnsignedLong j = 0; j < atomOutputDimension; ++j)
+    for (UnsignedInteger j = 0; j < atomOutputDimension; ++j)
       description.add(outputDescription[j]);
   }
   functionsCollection_ = functionsCollection;
@@ -162,7 +162,7 @@ void AggregatedNumericalMathEvaluationImplementation::setFunctionsCollection(con
 }
 
 /* Get the i-th marginal function */
-AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumericalMathEvaluationImplementation::getMarginal(const UnsignedLong i) const
+AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumericalMathEvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
   return getMarginal(Indices(1, i));
 }
@@ -170,19 +170,19 @@ AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumeri
 /* Get the function corresponding to indices components */
 AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and  must be different";
   NumericalMathFunctionCollection marginalFunctions;
-  const UnsignedLong indicesSize(indices.getSize());
-  const UnsignedLong size(functionsCollection_.getSize());
+  const UnsignedInteger indicesSize(indices.getSize());
+  const UnsignedInteger size(functionsCollection_.getSize());
   // For each copula, see if there is something to extract
-  UnsignedLong currentPosition(0);
-  UnsignedLong currentIndex(indices[currentPosition]);
+  UnsignedInteger currentPosition(0);
+  UnsignedInteger currentIndex(indices[currentPosition]);
   // Lower bound of indices related to the current copula
-  UnsignedLong lowerIndex(0);
+  UnsignedInteger lowerIndex(0);
   // Upper bound of indices related to the current copula plus 1
-  UnsignedLong upperIndex(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger upperIndex(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalMathFunction function(functionsCollection_[i]);
     // Update index range for the current function
@@ -209,13 +209,13 @@ AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumeri
 }
 
 /* Input dimension accessor */
-UnsignedLong AggregatedNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger AggregatedNumericalMathEvaluationImplementation::getInputDimension() const
 {
   return functionsCollection_[0].getInputDimension();
 }
 
 /* Output dimension accessor */
-UnsignedLong AggregatedNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger AggregatedNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   return outputDimension_;
 }
@@ -225,16 +225,16 @@ UnsignedLong AggregatedNumericalMathEvaluationImplementation::getOutputDimension
 Matrix AggregatedNumericalMathEvaluationImplementation::parametersGradient(const NumericalPoint & inP) const
 {
   Matrix result(getParameters().getDimension(), getOutputDimension());
-  const UnsignedLong size(functionsCollection_.getSize());
-  UnsignedLong rowShift(0);
-  UnsignedLong columnShift(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(functionsCollection_.getSize());
+  UnsignedInteger rowShift(0);
+  UnsignedInteger columnShift(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Matrix currentGradient(functionsCollection_[i].parametersGradient(functionsCollection_[i].getParameters()));
-    const UnsignedLong currentRowDim(currentGradient.getNbRows());
-    const UnsignedLong currentColumnDim(currentGradient.getNbColumns());
-    for (UnsignedLong j = 0; j < currentRowDim; ++j)
-      for (UnsignedLong k = 0; k < currentColumnDim; ++k)
+    const UnsignedInteger currentRowDim(currentGradient.getNbRows());
+    const UnsignedInteger currentColumnDim(currentGradient.getNbColumns());
+    for (UnsignedInteger j = 0; j < currentRowDim; ++j)
+      for (UnsignedInteger k = 0; k < currentColumnDim; ++k)
         result(rowShift + j, columnShift + k) = currentGradient(j, k);
     rowShift += currentRowDim;
     columnShift += currentColumnDim;
@@ -247,13 +247,13 @@ NumericalPointWithDescription AggregatedNumericalMathEvaluationImplementation::g
 {
   NumericalPointWithDescription parametersValues(0);
   Description parametersDescription(0);
-  const UnsignedLong size(functionsCollection_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(functionsCollection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPointWithDescription currentParameters(functionsCollection_[i].getParameters());
     const Description currentDescription(currentParameters.getDescription());
-    const UnsignedLong dimension(currentParameters.getDimension());
-    for (UnsignedLong j = 0; j < dimension; ++j)
+    const UnsignedInteger dimension(currentParameters.getDimension());
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       parametersValues.add(currentParameters[j]);
       parametersDescription.add(currentDescription[j]);

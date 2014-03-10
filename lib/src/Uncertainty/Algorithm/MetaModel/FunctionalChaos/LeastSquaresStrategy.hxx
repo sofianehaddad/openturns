@@ -87,7 +87,7 @@ public:
                            const Indices & addedRanks,
                            const Indices & conservedRanks,
                            const Indices & removedRanks,
-                           const UnsignedLong marginalIndex = 0);
+                           const UnsignedInteger marginalIndex = 0);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

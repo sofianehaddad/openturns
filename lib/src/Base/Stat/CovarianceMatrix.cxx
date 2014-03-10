@@ -37,18 +37,18 @@ CovarianceMatrix::CovarianceMatrix()
 }
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-CovarianceMatrix::CovarianceMatrix(const UnsignedLong dim)
+CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim)
   : SymmetricMatrix(dim)
 {
   // Initialize the correlation matrix to the identity matrix
-  for(UnsignedLong i = 0; i < dim; ++i) operator()(i, i) = 1.0;
+  for(UnsignedInteger i = 0; i < dim; ++i) operator()(i, i) = 1.0;
 }
 
 /* Constructor from external collection */
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-CovarianceMatrix::CovarianceMatrix(const UnsignedLong dim,
+CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim,
                                    const Collection<NumericalScalar> &elementsValues)
   : SymmetricMatrix(dim, elementsValues)
 {

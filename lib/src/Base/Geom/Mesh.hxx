@@ -51,7 +51,7 @@ public:
   typedef PersistentCollection< Indices > IndicesPersistentCollection;
 
   /** Default constructor */
-  explicit Mesh(const UnsignedLong dimension = 1);
+  explicit Mesh(const UnsignedInteger dimension = 1);
 
   /** Parameters constructor */
   Mesh(const NumericalSample & vertices,
@@ -67,13 +67,13 @@ public:
   Description getDescription() const;
 
   /** Get the number of vertices */
-  UnsignedLong getVerticesNumber() const;
+  UnsignedInteger getVerticesNumber() const;
 
   /** Get the number of simplices */
-  UnsignedLong getSimplicesNumber() const;
+  UnsignedInteger getSimplicesNumber() const;
 
   /** Get the index of the nearest vertex */
-  UnsignedLong getNearestVertexIndex(const NumericalPoint & point) const;
+  UnsignedInteger getNearestVertexIndex(const NumericalPoint & point) const;
 
   /** Comparison operator */
   Bool operator == (const Mesh & rhs) const;
@@ -88,15 +88,15 @@ public:
 public:
   /** Check if the given point is in the given simplex */
   Bool checkPointInSimplex(const NumericalPoint & point,
-                           const UnsignedLong index) const;
+                           const UnsignedInteger index) const;
 
   /** Vertices accessor */
   NumericalSample getVertices() const;
   void setVertices(const NumericalSample & vertices);
 
   /** Vertex accessor */
-  NumericalPoint getVertex(const UnsignedLong index) const;
-  void setVertex(const UnsignedLong index,
+  NumericalPoint getVertex(const UnsignedInteger index) const;
+  void setVertex(const UnsignedInteger index,
                  const NumericalPoint & vertex);
 
   /** Simplices accessor */
@@ -104,10 +104,10 @@ public:
   void setSimplices(const IndicesCollection & simplices);
 
   /** Simplex accessor */
-  Indices getSimplex(const UnsignedLong index) const;
+  Indices getSimplex(const UnsignedInteger index) const;
 
   /** Compute the volume of a given simplex */
-  NumericalScalar computeSimplexVolume(const UnsignedLong index) const;
+  NumericalScalar computeSimplexVolume(const UnsignedInteger index) const;
 
   /** Tells if the mesh is regular */
   Bool isRegular() const;
@@ -141,7 +141,7 @@ public:
 protected:
 
   // Build the affine matrix associated with a given simplex
-  SquareMatrix buildSimplexMatrix(const UnsignedLong index) const;
+  SquareMatrix buildSimplexMatrix(const UnsignedInteger index) const;
 
   // Compute the total volume of the mesh
   void computeVolume() const;

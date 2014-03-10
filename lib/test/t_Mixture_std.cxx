@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
       Mixture distribution(atoms);
       Mixture::NumericalPointWithDescriptionCollection parameters(distribution.getParametersCollection());
       fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
       // get weights used
       NumericalPoint weights(distribution.getWeights());
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
       distribution.setWeights(weights);
       fullprint << "New weights=" << distribution.getWeights() << std::endl;
     }
-    UnsignedLong dimension(3);
+    UnsignedInteger dimension(3);
     NumericalPoint meanPoint(dimension, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dimension);
-    for (UnsignedLong i = 1; i < dimension; i++)
+    for (UnsignedInteger i = 1; i < dimension; i++)
     {
       R(i, i - 1) = 0.5;
     }
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 1000;
+    UnsignedInteger size = 1000;
     NumericalSample oneSample = distribution.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     if (distribution.getDimension() == 1)
     {
       size = 100;
-      for (UnsignedLong i = 0; i < 2; ++i)
+      for (UnsignedInteger i = 0; i < 2; ++i)
       {
         fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
         size *= 10;
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     NumericalPoint DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     NumericalPoint ddfFD(dimension);
-    for (UnsignedLong i = 0; i < dimension; i++)
+    for (UnsignedInteger i = 0; i < dimension; i++)
     {
       NumericalPoint left(point);
       left[i] += eps;

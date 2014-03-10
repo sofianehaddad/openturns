@@ -72,7 +72,7 @@ public:
 #endif
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** SpectralModel and CovarianceModel accessor */
   SpectralModel getSpectralModel() const;

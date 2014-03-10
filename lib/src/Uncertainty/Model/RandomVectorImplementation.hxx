@@ -72,13 +72,13 @@ public:
   virtual Bool isComposite() const;
 
   /** Dimension accessor */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Realization accessor */
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(const UnsignedLong size) const;
+  virtual NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
   virtual NumericalPoint getMean() const;
@@ -87,7 +87,7 @@ public:
   virtual CovarianceMatrix getCovariance() const;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  virtual Implementation getMarginal(const UnsignedLong i) const;
+  virtual Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
   virtual Implementation getMarginal(const Indices & indices) const;

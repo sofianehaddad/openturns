@@ -83,7 +83,7 @@ String ComposedNumericalMathHessianImplementation::__repr__() const
 /* Method hessian() returns the symmetric tensor of the second gradient of the function at point */
 SymmetricTensor ComposedNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   // Hessian of the composed function fog, g:R^n->R^p, f:R^p->R^q so fog:R^n->R^q
@@ -93,25 +93,25 @@ SymmetricTensor ComposedNumericalMathHessianImplementation::hessian(const Numeri
   const Matrix p_leftGradientIn(p_leftGradient_->gradient(p_rightIn));
   const SymmetricTensor p_leftHessianIn(p_leftHessian_->hessian(p_rightIn));
   // Get the several dimensions
-  const UnsignedLong outputDimension(getOutputDimension());
-  const UnsignedLong innerDimension(p_rightIn.getDimension());
+  const UnsignedInteger outputDimension(getOutputDimension());
+  const UnsignedInteger innerDimension(p_rightIn.getDimension());
   SymmetricTensor result(inputDimension, outputDimension);
   /* We unroll the formula:
    *  D2(h)(x) = D2(f)(g(x))D(g)(x)D(g)(x)+D(f)(g(x))D2(g)(x)
    *  after transposition to convert jacobian and hessian into
    *  the associated gradients
    */
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
-    for (UnsignedLong j = 0; j <= i; ++j)
+    for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      for (UnsignedLong k = 0; k < outputDimension; ++k)
+      for (UnsignedInteger k = 0; k < outputDimension; ++k)
       {
         result(i, j, k) = 0.0;
-        for (UnsignedLong m = 0; m < innerDimension; ++m)
+        for (UnsignedInteger m = 0; m < innerDimension; ++m)
         {
           result(i, j, k) += p_leftGradientIn(m, k) * p_rightHessianIn(i, j, m);
-          for (UnsignedLong n = 0; n < p_rightIn.getDimension(); ++n)
+          for (UnsignedInteger n = 0; n < p_rightIn.getDimension(); ++n)
           {
             result(i, j, k) += p_leftHessianIn(m, n, k) * p_rightGradientIn(i, m) * p_rightGradientIn(j, n);
           } // n
@@ -123,13 +123,13 @@ SymmetricTensor ComposedNumericalMathHessianImplementation::hessian(const Numeri
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ComposedNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger ComposedNumericalMathHessianImplementation::getInputDimension() const
 {
   return p_rightHessian_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ComposedNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger ComposedNumericalMathHessianImplementation::getOutputDimension() const
 {
   return p_leftHessian_->getOutputDimension();
 }

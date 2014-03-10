@@ -37,18 +37,18 @@ int main(int argc, char *argv[])
 
     const NumericalScalar Tmin(0.0);
     const NumericalScalar deltaT(0.1);
-    const UnsignedLong N(11);
+    const UnsignedInteger N(11);
 
     /* Initialization of the RegularGrid timeGrid1*/
     RegularGrid timeGrid(Tmin, deltaT, N);
 
     /* Functional basis */
-    UnsignedLong basisDimension(10);
+    UnsignedInteger basisDimension(10);
     Basis basis(basisDimension);
     Collection<Distribution> coefficients(basisDimension);
-    UnsignedLong oldPrecision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
     PlatformInfo::SetNumericalPrecision(20);
-    for (UnsignedLong i = 0; i < basisDimension; ++i)
+    for (UnsignedInteger i = 0; i < basisDimension; ++i)
     {
       basis[i] = NumericalMathFunction("x", String(OSS() << "sin(" << i << "*x)"));
       coefficients[i] = Normal(0.0, (1.0 + i));
@@ -69,9 +69,9 @@ int main(int argc, char *argv[])
     fullprint << "timeSerie = " << timeSerie << std::endl;
 
     // Some steps further
-    UnsignedLong stepNumber = 4;
+    UnsignedInteger stepNumber = 4;
     fullprint << "One future=" << process.getFuture(stepNumber) << std::endl;
-    UnsignedLong size = 3;
+    UnsignedInteger size = 3;
     fullprint << "Some futures=" << process.getFuture(stepNumber, size) << std::endl;
 
   }

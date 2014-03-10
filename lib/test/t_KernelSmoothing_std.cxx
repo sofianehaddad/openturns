@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   setRandomGenerator();
   try
   {
-    UnsignedLong dim(2);
+    UnsignedInteger dim(2);
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -42,13 +42,13 @@ int main(int argc, char *argv[])
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.5;
     }
     // Instanciate one distribution object
     Normal distribution(meanPoint, sigma, R);
-    UnsignedLong discretization(300);
+    UnsignedInteger discretization(300);
     NumericalSample sample(distribution.getSample(discretization));
     Collection<Distribution> kernels;
     kernels.add(Normal());
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     kernels.add(Logistic());
     kernels.add(Beta(2.0, 4.0, -1.0, 1.0));
     kernels.add(Beta(3.0, 6.0, -1.0, 1.0));
-    for (UnsignedLong i = 0; i < kernels.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < kernels.getSize(); ++i)
     {
       Distribution kernel(kernels[i]);
       fullprint << "kernel=" << kernel.getName() << std::endl;
@@ -85,21 +85,21 @@ int main(int argc, char *argv[])
     Collection<NumericalSample> sampleCollection(2);
     sampleCollection[0] = distributionCollection[0].getSample(discretization);
     sampleCollection[1] = distributionCollection[1].getSample(discretization);
-    Collection<UnsignedLong> bounded(2);
+    Collection<UnsignedInteger> bounded(2);
     bounded[0] = 0;
     bounded[1] = 1;
-    for (UnsignedLong i = 0; i < kernels.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < kernels.getSize(); ++i)
     {
       Distribution kernel(kernels[i]);
       fullprint << "kernel=" << kernel.getName() << std::endl;
       KernelSmoothing smoother(kernel);
-      for (UnsignedLong j = 0; j < 2; ++j)
+      for (UnsignedInteger j = 0; j < 2; ++j)
       {
         NumericalScalar hSilverman(smoother.computeSilvermanBandwidth(sampleCollection[j])[0]);
         NumericalScalar hPlugin(smoother.computePluginBandwidth(sampleCollection[j])[0]);
         NumericalScalar hMixed(smoother.computeMixedBandwidth(sampleCollection[j])[0]);
         fullprint << "Silverman's bandwidth=" << hSilverman << " plugin bandwidth=" << hPlugin << " mixed bandwidth=" << hMixed << std::endl;
-        for (UnsignedLong k = 0; k < 2; ++k)
+        for (UnsignedInteger k = 0; k < 2; ++k)
         {
           Distribution smoothed(smoother.build(sampleCollection[j], bounded[k]));
           fullprint << "Bounded underlying distribution? " << (j == 0 ? "False" : "True") << " bounded reconstruction? " << (k == 0 ? "False" : "True") << std::endl;

@@ -38,12 +38,12 @@ int main(int argc, char *argv[])
     /** Instance creation */
     NumericalMathFunction external("external_code_threads");
 
-    UnsignedLong size(20);
-    UnsignedLong dimension(external.getInputDimension());
+    UnsignedInteger size(20);
+    UnsignedInteger dimension(external.getInputDimension());
     NumericalSample sample(size, dimension);
-    for (UnsignedLong i = 0; i < size; i++)
+    for (UnsignedInteger i = 0; i < size; i++)
     {
-      for (UnsignedLong j = 0; j < dimension; j++)
+      for (UnsignedInteger j = 0; j < dimension; j++)
       {
         sample[i][j] = NumericalScalar(i + j) / (size + dimension);
       }

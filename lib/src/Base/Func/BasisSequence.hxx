@@ -54,16 +54,16 @@ public:
   BasisSequence(const BasisSequenceImplementation & implementation);
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Returns the master basis */
   Basis getMasterBasis() const;
 
   /** Sub-basis accessor */
-  Basis getBasis(const UnsignedLong index) const;
+  Basis getBasis(const UnsignedInteger index) const;
 
   /** Indices accessor */
-  Indices getIndices(const UnsignedLong index) const;
+  Indices getIndices(const UnsignedInteger index) const;
 
   /** Converter to Basis collection */
   operator PersistentCollection< Indices > () const;

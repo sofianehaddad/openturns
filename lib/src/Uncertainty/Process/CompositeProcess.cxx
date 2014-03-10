@@ -119,7 +119,7 @@ Field CompositeProcess::getRealization() const
 }
 
 /* Compute the next steps of a random walk */
-TimeSeries CompositeProcess::getFuture(const UnsignedLong stepNumber) const
+TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
 {
   /* TimeGrid of the process */
   RegularGrid timeGrid;
@@ -139,7 +139,7 @@ TimeSeries CompositeProcess::getFuture(const UnsignedLong stepNumber) const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-CompositeProcess::Implementation CompositeProcess::getMarginalProcess(const UnsignedLong i) const
+CompositeProcess::Implementation CompositeProcess::getMarginalProcess(const UnsignedInteger i) const
 {
   return new CompositeProcess(function_.getMarginal(i), Pointer<ProcessImplementation>(p_antecedent_->getMarginalProcess(i)));
 }

@@ -130,7 +130,7 @@ ChebychevAlgorithm * ChebychevAlgorithm::clone() const
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getRecurrenceCoefficients(const UnsignedLong n) const
+ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
@@ -156,11 +156,11 @@ ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getRecurrenceCoefficients(c
 }
 
 /* Return the order-th raw moment of the underlying measure */
-NumericalScalar ChebychevAlgorithm::getStandardMoment(const UnsignedLong order) const
+NumericalScalar ChebychevAlgorithm::getStandardMoment(const UnsignedInteger order) const
 {
   // We know that the raw moments will be accessed in a particular pattern: the moments not already
   // computed will always be accessed in a successive increasing order
-  const UnsignedLong maxOrder(standardMoments_.getSize());
+  const UnsignedInteger maxOrder(standardMoments_.getSize());
   if (order > maxOrder) throw InvalidArgumentException(HERE) << "Error: cannot access to the raw moments in arbitrary order.";
   if (order == maxOrder)
     standardMoments_.add(measure_.getStandardMoment(order)[0]);
@@ -169,11 +169,11 @@ NumericalScalar ChebychevAlgorithm::getStandardMoment(const UnsignedLong order) 
 
 /* Return the order-th modified moment, i.e. the weighted integral of the order-th
    reference polynomial with respect to the underlying measure */
-NumericalScalar ChebychevAlgorithm::getModifiedMoment(const UnsignedLong order) const
+NumericalScalar ChebychevAlgorithm::getModifiedMoment(const UnsignedInteger order) const
 {
   // We know that the modified moments will be accessed in a particular pattern: the moments not already
   // computed will always be accessed in a successive increasing order
-  const UnsignedLong maxOrder(modifiedMoments_.getSize());
+  const UnsignedInteger maxOrder(modifiedMoments_.getSize());
   if (order > maxOrder) throw InvalidArgumentException(HERE) << "Error: cannot access to the modified moments in arbitrary order.";
   if (order == maxOrder)
   {
@@ -197,7 +197,7 @@ NumericalScalar ChebychevAlgorithm::getModifiedMoment(const UnsignedLong order) 
     NumericalScalar modifiedMoment(referenceCoefficients[0] * getStandardMoment(0));
     // Use of Kahan Summation Formula for a stable evaluation of the modified moments
     NumericalScalar c(0.0);
-    for (UnsignedLong i = 1; i <= order; ++i)
+    for (UnsignedInteger i = 1; i <= order; ++i)
     {
       const NumericalScalar y(referenceCoefficients[i] * getStandardMoment(i) - c);
       const NumericalScalar t(modifiedMoment + y);
@@ -216,7 +216,7 @@ NumericalScalar ChebychevAlgorithm::getModifiedMoment(const UnsignedLong order) 
     for the given measure and Qk the k-th monic orthogonal polynomial of
     the reference factory */
 NumericalScalar ChebychevAlgorithm::getMixedMoment(const int j,
-    const UnsignedLong k) const
+    const UnsignedInteger k) const
 {
   // Initialization values
   if (j == -1) return 0.0;
@@ -224,7 +224,7 @@ NumericalScalar ChebychevAlgorithm::getMixedMoment(const int j,
   // Orthogonality
   if (j > static_cast<int>(k)) return 0.0;
   // General case
-  const UnsignedLong key(k + (j + k) * (j + k + 1) / 2);
+  const UnsignedInteger key(k + (j + k) * (j + k + 1) / 2);
   if (mixedMoments_.find(key) != mixedMoments_.end()) return mixedMoments_[key];
   const Coefficients alphaBeta(getMonicRecurrenceCoefficients(j - 1));
   const Coefficients aB(getReferenceMonicRecurrenceCoefficients(k));
@@ -237,9 +237,9 @@ NumericalScalar ChebychevAlgorithm::getMixedMoment(const int j,
 
 /** Recurrence coefficients (alphak, betak) of the monic orthogonal polynomials
     Pk+1(x) = (x - alphak) * Pk(x) - betak * Pk-1(x) */
-ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getMonicRecurrenceCoefficients(const UnsignedLong k) const
+ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getMonicRecurrenceCoefficients(const UnsignedInteger k) const
 {
-  const UnsignedLong size(monicRecurrenceCoefficients_.getSize());
+  const UnsignedInteger size(monicRecurrenceCoefficients_.getSize());
   if (k < size) return monicRecurrenceCoefficients_[k];
   if (k > size) throw InvalidArgumentException(HERE) << "Error: cannot access to the monic recurrence coefficients in arbitrary order.";
   Coefficients alphaBeta(2, 0.0);
@@ -268,9 +268,9 @@ ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getMonicRecurrenceCoefficie
 
 /** Recurrence coefficients (ak, bk) of the monic reference polynomials
     Qk+1(x) = (x - ak) * Qk(x) - bk * Qk-1(x) */
-ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getReferenceMonicRecurrenceCoefficients(const UnsignedLong k) const
+ChebychevAlgorithm::Coefficients ChebychevAlgorithm::getReferenceMonicRecurrenceCoefficients(const UnsignedInteger k) const
 {
-  const UnsignedLong size(referenceMonicRecurrenceCoefficients_.getSize());
+  const UnsignedInteger size(referenceMonicRecurrenceCoefficients_.getSize());
   if (k < size) return referenceMonicRecurrenceCoefficients_[k];
   if (k > size) throw InvalidArgumentException(HERE) << "Error: cannot access to the reference monic recurrence coefficients in arbitrary order.";
   Coefficients aB(2, 0.0);

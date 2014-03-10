@@ -108,12 +108,12 @@ Bool FunctionalBasisProcess::isNormal() const
 Field FunctionalBasisProcess::getRealization() const
 {
   state_ = distribution_.getRealization();
-  const UnsignedLong timeGridSize(mesh_.getVerticesNumber());
-  const UnsignedLong basisSize(basis_.getSize());
+  const UnsignedInteger timeGridSize(mesh_.getVerticesNumber());
+  const UnsignedInteger basisSize(basis_.getSize());
   // Loop over the time stamps
   NumericalSample result(timeGridSize, NumericalPoint(dimension_, 0.0));
   // Loop over the basis
-  for (UnsignedLong j = 0; j < basisSize; ++j)
+  for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
     NumericalSample currentBasisContribution(basis_[j](mesh_.getVertices()));
     currentBasisContribution *= NumericalPoint(dimension_, state_[j]);
@@ -131,7 +131,7 @@ NumericalMathFunction FunctionalBasisProcess::getContinuousRealization() const
 }
 
 /* Compute the next steps of the process */
-TimeSeries FunctionalBasisProcess::getFuture(const UnsignedLong stepNumber) const
+TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) const
 {
   /* TimeGrid of the process */
   RegularGrid timeGrid;
@@ -147,20 +147,20 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedLong stepNumber) cons
   /* TimeGrid associated with the possible future */
   const NumericalScalar timeStep(timeGrid.getStep());
   const RegularGrid futureTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  const UnsignedLong basisSize(basis_.getSize());
+  const UnsignedInteger basisSize(basis_.getSize());
   // Loop over the time stamps
   NumericalSample result(stepNumber, NumericalPoint(dimension_, 0.0));
-  for (UnsignedLong i = 0; i  < stepNumber; ++i)
+  for (UnsignedInteger i = 0; i  < stepNumber; ++i)
   {
     const NumericalPoint t(1, futureTimeGrid.getValue(i));
     // Loop over the basis using the previous state
-    for (UnsignedLong j = 0; j < basisSize; ++j) result[i] += basis_[j](t) * state_[j];
+    for (UnsignedInteger j = 0; j < basisSize; ++j) result[i] += basis_[j](t) * state_[j];
   }
   return TimeSeries(futureTimeGrid, result);
 }
 
 /* Get the marginal process corresponding to the i-th marginal component */
-FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginalProcess(const UnsignedLong i) const
+FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginalProcess(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
   return getMarginalProcess(Indices(1, i));
@@ -173,9 +173,9 @@ FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginalProces
   // First the marginal distribution
   Distribution marginalDistribution(distribution_.getMarginal(indices));
   // Second the marginal basis
-  const UnsignedLong basisSize(basis_.getSize());
+  const UnsignedInteger basisSize(basis_.getSize());
   Basis marginalBasis(basisSize);
-  for (UnsignedLong i = 0; i < basisSize; ++i) marginalBasis[i] = basis_[i].getMarginal(indices);
+  for (UnsignedInteger i = 0; i < basisSize; ++i) marginalBasis[i] = basis_[i].getMarginal(indices);
   // Return the associated FunctionalBasisProcess
   return FunctionalBasisProcess(marginalDistribution, marginalBasis, mesh_).clone();
 }
@@ -203,7 +203,7 @@ Basis FunctionalBasisProcess::getBasis() const
 /* Basis accessor */
 void FunctionalBasisProcess::setBasis(const Basis & basis)
 {
-  const UnsignedLong size(basis.getSize());
+  const UnsignedInteger size(basis.getSize());
   // Check if the basis is not empty
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given basis is empty.";
   // Check the basis against the distribution
@@ -211,7 +211,7 @@ void FunctionalBasisProcess::setBasis(const Basis & basis)
   // Check if the functions in the basis are from R to R^n for the same n
   dimension_ = basis[0].getOutputDimension();
   const UnsignedInteger inputDimension(mesh_.getDimension());
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Check the input dimension
     if (basis[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the function at index=" << i << " has an input dimension=" << basis[i].getInputDimension() << " which is not equal to " << inputDimension << ".";

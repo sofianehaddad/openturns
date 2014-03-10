@@ -61,8 +61,8 @@ MCMC::MCMC( const Distribution & prior,
   // when not provided, set the model to the identity
   , model_(NumericalMathFunction::NumericalMathFunctionCollection(observations.getSize(), LinearNumericalMathFunction(NumericalPoint(initialState.getDimension()), NumericalPoint(initialState.getDimension()), IdentityMatrix(initialState.getDimension()))))
 
-  , burnIn_(ResourceMap::GetAsUnsignedLong("MCMC-DefaultBurnIn"))
-  , thinning_(ResourceMap::GetAsUnsignedLong("MCMC-DefaultThinning"))
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultBurnIn"))
+  , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
 {
   setPrior(prior);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
@@ -84,8 +84,8 @@ MCMC::MCMC( const Distribution & prior,
   , currentState_(initialState)
   , conditional_(conditional)
   , model_(model)
-  , burnIn_(ResourceMap::GetAsUnsignedLong("MCMC-DefaultBurnIn"))
-  , thinning_(ResourceMap::GetAsUnsignedLong("MCMC-DefaultThinning"))
+  , burnIn_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultBurnIn"))
+  , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
 {
   setPrior(prior);
   if (model.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
@@ -115,7 +115,7 @@ MCMC* MCMC::clone() const
 }
 
 
-UnsignedLong MCMC::getDimension() const
+UnsignedInteger MCMC::getDimension() const
 {
   return prior_.getDimension();
 }
@@ -130,12 +130,12 @@ NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
   // retrieve model data if available
   const NumericalPoint z( model_(xi) );
 
-  const UnsignedLong size = observations_.getSize();
-  const UnsignedLong p = conditional_.getParametersNumber();
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  const UnsignedInteger size = observations_.getSize();
+  const UnsignedInteger p = conditional_.getParametersNumber();
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     NumericalPoint zi(p);
-    for ( UnsignedLong j = 0; j < p; ++ j )
+    for ( UnsignedInteger j = 0; j < p; ++ j )
     {
       zi[j] = z[i * p + j];
     }
@@ -186,25 +186,25 @@ NumericalSample MCMC::getObservations() const
 }
 
 
-void MCMC::setBurnIn(UnsignedLong burnIn)
+void MCMC::setBurnIn(UnsignedInteger burnIn)
 {
   burnIn_ = burnIn;
 }
 
 
-UnsignedLong MCMC::getBurnIn() const
+UnsignedInteger MCMC::getBurnIn() const
 {
   return burnIn_;
 }
 
 
-void MCMC::setThinning(UnsignedLong thinning)
+void MCMC::setThinning(UnsignedInteger thinning)
 {
   thinning_ = thinning;
 }
 
 
-UnsignedLong MCMC::getThinning() const
+UnsignedInteger MCMC::getThinning() const
 {
   return thinning_;
 }

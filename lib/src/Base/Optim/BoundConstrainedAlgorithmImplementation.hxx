@@ -93,8 +93,8 @@ public:
   void setResult(const Result & result);
 
   /** Maximum iterations number accessor */
-  UnsignedLong getMaximumEvaluationsNumber() const;
-  void setMaximumEvaluationsNumber(const UnsignedLong maximumEvaluationsNumber);
+  UnsignedInteger getMaximumEvaluationsNumber() const;
+  void setMaximumEvaluationsNumber(const UnsignedInteger maximumEvaluationsNumber);
 
   /** Maximum absolute error accessor */
   NumericalScalar getMaximumAbsoluteError() const;
@@ -126,7 +126,7 @@ private:
   Interval boundConstraints_;
   NumericalPoint startingPoint_;
   OptimizationProblem optimization_;
-  UnsignedLong    maximumEvaluationsNumber_; /**< Number of outermost iterations (in case of nested iterations) */
+  UnsignedInteger    maximumEvaluationsNumber_; /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   NumericalScalar maximumObjectiveError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */

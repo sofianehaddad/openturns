@@ -45,12 +45,12 @@ public:
   /** Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
   static NumericalScalar PearsonCorrelation(const NumericalSample & inputSample,
       const NumericalSample & outputSample,
-      const UnsignedLong index = 0);
+      const UnsignedInteger index = 0);
 
   /** Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
   static NumericalScalar SpearmanCorrelation(const NumericalSample & inputSample,
       const NumericalSample & outputSample,
-      const UnsignedLong index = 0);
+      const UnsignedInteger index = 0);
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
   static NumericalPoint SRC(const NumericalSample & inputSample,

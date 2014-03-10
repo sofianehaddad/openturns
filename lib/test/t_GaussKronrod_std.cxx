@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
       // Default parameters
       GaussKronrod algo;
       GaussKronrodRule::GaussKronrodPair rules[5] = {GaussKronrodRule::G3K7, GaussKronrodRule::G7K15, GaussKronrodRule::G11K23, GaussKronrodRule::G15K31, GaussKronrodRule::G25K51};
-      for (UnsignedLong i = 0; i < 5; ++i)
+      for (UnsignedInteger i = 0; i < 5; ++i)
       {
         algo.setRule(rules[i]);
         fullprint << "Algo=" << algo << std::endl;
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
       NumericalScalar b(4.5);
       GaussKronrod algo;
       GaussKronrodRule::GaussKronrodPair rules[5] = {GaussKronrodRule::G3K7, GaussKronrodRule::G7K15, GaussKronrodRule::G11K23, GaussKronrodRule::G15K31, GaussKronrodRule::G25K51};
-      for (UnsignedLong i = 0; i < 5; ++i)
+      for (UnsignedInteger i = 0; i < 5; ++i)
       {
         algo.setRule(rules[i]);
         fullprint << "Algo=" << algo << std::endl;

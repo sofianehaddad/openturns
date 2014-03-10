@@ -99,7 +99,7 @@ public:
   /** Compute the PDF over a regular grid */
   NumericalSample computePDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
-                             const UnsignedLong pointNumber,
+                             const UnsignedInteger pointNumber,
                              NumericalSample & grid) const;
 
 protected:
@@ -111,7 +111,7 @@ private:
                                         const Bool tail = false) const;
 
   /** Compute the characteristic function of 1D distributions by difference to a reference Normal distribution with the same mean and the same standard deviation in a regular pattern with cache */
-  NumericalComplex computeDeltaCharacteristicFunction(const UnsignedLong index) const;
+  NumericalComplex computeDeltaCharacteristicFunction(const UnsignedInteger index) const;
 
 public:
   /** Get the CDF of the RandomMixture */
@@ -123,7 +123,7 @@ public:
   /** Compute the CDF over a regular grid */
   NumericalSample computeCDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
-                             const UnsignedLong pointNumber,
+                             const UnsignedInteger pointNumber,
                              NumericalSample & grid) const;
 
   /** Get the probability content of an interval */
@@ -133,7 +133,7 @@ public:
   using DistributionImplementation::computeQuantile;
   NumericalSample computeQuantile(const NumericalScalar qMin,
                                   const NumericalScalar qMax,
-                                  const UnsignedLong pointNumber,
+                                  const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -162,16 +162,16 @@ public:
   NumericalScalar getDispersionIndicator() const;
 
   /** BlockMin accessor */
-  void setBlockMin(const UnsignedLong blockMin);
-  UnsignedLong getBlockMin() const;
+  void setBlockMin(const UnsignedInteger blockMin);
+  UnsignedInteger getBlockMin() const;
 
   /** BlockMax accessor */
-  void setBlockMax(const UnsignedLong blockMax);
-  UnsignedLong getBlockMax() const;
+  void setBlockMax(const UnsignedInteger blockMax);
+  UnsignedInteger getBlockMax() const;
 
   /** MaxSize accessor */
-  void setMaxSize(const UnsignedLong maxSize);
-  UnsignedLong getMaxSize() const;
+  void setMaxSize(const UnsignedInteger maxSize);
+  UnsignedInteger getMaxSize() const;
 
   /** Alpha accessor */
   void setAlpha(const NumericalScalar alpha);
@@ -194,7 +194,7 @@ public:
   /** Project a RandomMixture distribution over a collection of DistributionFactory by using sampling and Kolmogorov distance. */
   DistributionCollection project(const DistributionFactoryCollection & factoryCollection,
                                  NumericalPoint & kolmogorovNorm,
-                                 const UnsignedLong size = ResourceMap::GetAsUnsignedLong( "RandomMixture-ProjectionDefaultSize" )) const;
+                                 const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize" )) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -222,7 +222,7 @@ private:
       try
       {
         const Distribution candidate(factory_.build(NumericalPointCollection(1, parameters)));
-        for (UnsignedLong i = 0; i < dataX_.getSize(); ++i)
+        for (UnsignedInteger i = 0; i < dataX_.getSize(); ++i)
           norm += pow(candidate.computeCDF(dataX_[i][0]) - dataY_[i][0], 2);
         return NumericalPoint(1, norm);
       }
@@ -306,19 +306,19 @@ private:
   mutable Bool isAlreadyComputedDispersionIndicator_;
 
   /** Minimum number of blocks to consider for PDF and CDF computation */
-  UnsignedLong blockMin_;
+  UnsignedInteger blockMin_;
 
   /** Maximum number of blocks to consider for PDF and CDF computation */
-  UnsignedLong blockMax_;
+  UnsignedInteger blockMax_;
 
   /** Reference bandwidth */
   NumericalScalar referenceBandwidth_;
 
   /** Maximum size of the cache for the CharacteristicFunction values */
-  UnsignedLong maxSize_;
+  UnsignedInteger maxSize_;
 
   /** Index of the top of the cache */
-  mutable UnsignedLong storedSize_;
+  mutable UnsignedInteger storedSize_;
 
   /** Cache for the characteristic function values */
   mutable NumericalComplexPersistentCollection characteristicValuesCache_;

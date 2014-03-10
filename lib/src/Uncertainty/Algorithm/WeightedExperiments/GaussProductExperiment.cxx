@@ -68,7 +68,7 @@ GaussProductExperiment::GaussProductExperiment(const Distribution & distribution
 {
   // The distribution must be set BEFORE the marginal degrees
   setDistribution(distribution);
-  setMarginalDegrees(Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedLong( "GaussProductExperiment-DefaultMarginalDegree" )));
+  setMarginalDegrees(Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree" )));
 }
 
 /* Constructor with parameters */
@@ -106,7 +106,7 @@ String GaussProductExperiment::__repr__() const
 void GaussProductExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the GaussProductExperiment can only be used with distributions having an independent copula.";
-  for (UnsignedLong i = 0; i < distribution.getDimension(); ++i) collection_.add(StandardDistributionPolynomialFactory(distribution.getMarginal(i)));
+  for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i) collection_.add(StandardDistributionPolynomialFactory(distribution.getMarginal(i)));
   WeightedExperiment::setDistribution(distribution);
   isAlreadyComputedNodesAndWeights_ = false;
 }
@@ -121,7 +121,7 @@ NumericalSample GaussProductExperiment::generate()
 /** Marginal degrees accessor */
 void GaussProductExperiment::setMarginalDegrees(const Indices & marginalDegrees)
 {
-  const UnsignedLong dimension(distribution_.getDimension());
+  const UnsignedInteger dimension(distribution_.getDimension());
   if (marginalDegrees.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the marginal degrees number must match the distribution dimension. Here, the degrees are " << marginalDegrees << " and the dimension is " << dimension;
   if (marginalDegrees != marginalDegrees_)
   {
@@ -138,15 +138,15 @@ Indices GaussProductExperiment::getMarginalDegrees() const
 /* Compute the tensor product nodes and weights */
 void GaussProductExperiment::computeNodesAndWeights()
 {
-  const UnsignedLong dimension(distribution_.getDimension());
+  const UnsignedInteger dimension(distribution_.getDimension());
   // Build the integration nodes and weights
   // First, get the marginal nodes and weights
   NumericalPointCollection marginalNodes(dimension);
   NumericalPointCollection marginalWeights(dimension);
   size_ = 1;
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const UnsignedLong dI(marginalDegrees_[i]);
+    const UnsignedInteger dI(marginalDegrees_[i]);
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
     size_ *= dI;
   }
@@ -154,20 +154,20 @@ void GaussProductExperiment::computeNodesAndWeights()
   nodes_ = NumericalSample(size_, dimension);
   weights_ = NumericalPoint(size_, 1.0);
   Indices indices(dimension, 0);
-  for (UnsignedLong linearIndex = 0; linearIndex < size_; ++linearIndex)
+  for (UnsignedInteger linearIndex = 0; linearIndex < size_; ++linearIndex)
   {
-    for (UnsignedLong j = 0; j < dimension; ++j)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const UnsignedLong indiceJ(indices[j]);
+      const UnsignedInteger indiceJ(indices[j]);
       nodes_[linearIndex][j] = marginalNodes[j][indiceJ];
       weights_[linearIndex] *= marginalWeights[j][indiceJ];
     }
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
-    for (UnsignedLong j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalDegrees_[j]);
+    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalDegrees_[j]);
     /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedLong j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalDegrees_[j];
+    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalDegrees_[j];
   } // Loop over the n-D nodes
   isAlreadyComputedNodesAndWeights_ = true;
 }

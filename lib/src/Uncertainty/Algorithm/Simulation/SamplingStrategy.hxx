@@ -54,15 +54,15 @@ public:
   SamplingStrategy(Implementation & p_implementation);
 
   /** Constructor with parameters */
-  explicit SamplingStrategy(const UnsignedLong dimension);
+  explicit SamplingStrategy(const UnsignedInteger dimension);
 
 
   /** Generate a set of directions */
   NumericalSample generate() const;
 
   /** Dimension accessor */
-  void setDimension(const UnsignedLong dimension);
-  UnsignedLong getDimension() const;
+  void setDimension(const UnsignedInteger dimension);
+  UnsignedInteger getDimension() const;
 
   /** String converter */
   String __repr__() const;

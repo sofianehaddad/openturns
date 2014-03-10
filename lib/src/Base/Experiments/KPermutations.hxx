@@ -43,10 +43,10 @@ public:
   /** Default constructor */
   KPermutations();
 
-  explicit KPermutations(const UnsignedLong n);
+  explicit KPermutations(const UnsignedInteger n);
 
-  KPermutations(const UnsignedLong k,
-                const UnsignedLong n);
+  KPermutations(const UnsignedInteger k,
+                const UnsignedInteger n);
 
   /** Virtual constructor */
   virtual KPermutations * clone() const;
@@ -60,21 +60,21 @@ public:
   virtual String __repr__() const;
 
   /** Subset size accessor */
-  void setK(const UnsignedLong k);
+  void setK(const UnsignedInteger k);
 
-  UnsignedLong getK() const;
+  UnsignedInteger getK() const;
 
   /** Set size accessor */
-  void setN(const UnsignedLong n);
+  void setN(const UnsignedInteger n);
 
-  UnsignedLong getN() const;
+  UnsignedInteger getN() const;
 
 private:
   /** Size of the subsets */
-  UnsignedLong k_;
+  UnsignedInteger k_;
 
   /** Size of the set */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
 }; /* class KPermutations */
 

@@ -48,13 +48,13 @@ public:
   DescriptionImplementation();
 
   /** Constructor with size */
-  DescriptionImplementation(const UnsignedLong size);
+  DescriptionImplementation(const UnsignedInteger size);
 
   /** Constructor with default value */
   DescriptionImplementation(const String & value);
 
   /** Constructor with size and default value */
-  DescriptionImplementation(const UnsignedLong size,
+  DescriptionImplementation(const UnsignedInteger size,
                             const String & value);
 
   /** Constructor from a collection */

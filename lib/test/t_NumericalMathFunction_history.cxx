@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
   try
   {
     NumericalMathFunction f("x", "x^2", "y");
-    UnsignedLong size(4);
+    UnsignedInteger size(4);
     NumericalSample input(size, 1);
-    for (UnsignedLong i = 0; i < size; ++i) input[i][0] = i;
+    for (UnsignedInteger i = 0; i < size; ++i) input[i][0] = i;
     NumericalSample output(f(input));
     fullprint << "Is history enabled for f? " << (f.isHistoryEnabled() ? "true" : "false") << std::endl;
     fullprint << "input history=" << f.getInputHistory() << std::endl;

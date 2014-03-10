@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
     GumbelCopula distribution(1.5);
-    UnsignedLong size(1000);
+    UnsignedInteger size(1000);
     NumericalSample sample(distribution.getSample(size));
     GumbelCopulaFactory factory;
     CovarianceMatrix covariance;

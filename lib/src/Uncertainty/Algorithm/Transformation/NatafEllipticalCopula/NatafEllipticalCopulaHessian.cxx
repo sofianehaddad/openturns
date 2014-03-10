@@ -92,17 +92,17 @@ String NatafEllipticalCopulaHessian::__repr__() const
  */
 SymmetricTensor NatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP) const
 {
-  UnsignedLong dimension(getInputDimension());
+  UnsignedInteger dimension(getInputDimension());
   NumericalPoint quantileSecondDerivative(dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   SymmetricTensor result(dimension, dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalPoint q(standardMarginal.computeQuantile(inP[i]));
     NumericalScalar factor(1.0 / standardMarginal.computePDF(q));
     NumericalScalar quantileSecondDerivative(-standardMarginal.computeDDF(q)[0] * factor * factor * factor);
     // inverseCholesky_ is lower triangular
-    for (UnsignedLong j = i; j < dimension; ++j)
+    for (UnsignedInteger j = i; j < dimension; ++j)
     {
       result(i, i, j) = inverseCholesky_(j, i) * quantileSecondDerivative;
     }
@@ -111,13 +111,13 @@ SymmetricTensor NatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NatafEllipticalCopulaHessian::getInputDimension() const
+UnsignedInteger NatafEllipticalCopulaHessian::getInputDimension() const
 {
   return inverseCholesky_.getNbColumns();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NatafEllipticalCopulaHessian::getOutputDimension() const
+UnsignedInteger NatafEllipticalCopulaHessian::getOutputDimension() const
 {
   return inverseCholesky_.getNbRows();
 }

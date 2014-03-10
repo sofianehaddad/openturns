@@ -137,14 +137,14 @@ String ARMA::__str__(const String & offset) const
   OSS oss;
   oss << " ARMA process dimension = " << dimension_ << "\n";
   //  ARMA process
-  for (UnsignedLong d = 0; d < dimension_ ; ++d)
+  for (UnsignedInteger d = 0; d < dimension_ ; ++d)
   {
     // Writing d-th the marginal process
     oss << "X_{" << d << ",t}" ;
     // decomposition by number of elements
-    for (UnsignedLong i = 0; i < p_ ; i++)
+    for (UnsignedInteger i = 0; i < p_ ; i++)
     {
-      for (UnsignedLong dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
+      for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
       {
         const NumericalScalar ai(ARCoefficients_[i](d, dimensionComponent));
         if (ai > 0) oss << " + " <<  ai << " X_{" << dimensionComponent << ",t-" << i + 1 << "}";
@@ -155,9 +155,9 @@ String ARMA::__str__(const String & offset) const
     // with convention \epsilon_{t} + \sum_{i=1}^{q} \beta_{k} * \epsilon_{t-k}
     oss  << " = "  << "E_{" << d << ",t}";
     // q - 1 first components
-    for (UnsignedLong i = 0; i < q_  ; ++i)
+    for (UnsignedInteger i = 0; i < q_  ; ++i)
     {
-      for (UnsignedLong dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
+      for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
       {
         const NumericalScalar ai(MACoefficients_[i](d, dimensionComponent));
         if (ai > 0) oss << " + " <<  ai << " E_{" << dimensionComponent << ",t-" << i + 1 << "}";
@@ -185,7 +185,7 @@ Bool ARMA::isStationary() const
 }
 
 
-UnsignedLong ARMA::computeNThermalization(const NumericalScalar epsilon) const
+UnsignedInteger ARMA::computeNThermalization(const NumericalScalar epsilon) const
 {
   if (epsilon <= 0.0) throw InvalidArgumentException(HERE) << "Error: epsilon must be positive, here epsilon=" << epsilon;
   // MA processes are always stationary. Just do q_ + 1 steps to forget
@@ -193,11 +193,11 @@ UnsignedLong ARMA::computeNThermalization(const NumericalScalar epsilon) const
   if (p_ == 0) return q_ + 1;
   // Companion matrix - Matrix is of size (dimension * p_)
   SquareMatrix matrix(dimension_ * p_);
-  for (UnsignedLong coefficientIndex = 0; coefficientIndex < p_ ; ++coefficientIndex)
+  for (UnsignedInteger coefficientIndex = 0; coefficientIndex < p_ ; ++coefficientIndex)
   {
-    for  (UnsignedLong rowIndex = 0; rowIndex < dimension_; ++ rowIndex)
+    for  (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++ rowIndex)
     {
-      for (UnsignedLong columnIndex = 0; columnIndex < dimension_; ++ columnIndex)
+      for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++ columnIndex)
       {
         matrix( dimension_ * (p_ - 1) +  rowIndex, coefficientIndex * dimension_ + columnIndex ) = -ARCoefficients_[p_ - 1 - coefficientIndex](rowIndex, columnIndex) ;
       }
@@ -205,7 +205,7 @@ UnsignedLong ARMA::computeNThermalization(const NumericalScalar epsilon) const
   }
 
   // Incorporation into the previous for loop
-  for (UnsignedLong index = 0; index < dimension_ * (p_ - 1); ++index)
+  for (UnsignedInteger index = 0; index < dimension_ * (p_ - 1); ++index)
   {
     matrix(index, dimension_ + index) = 1.0;
   }
@@ -215,14 +215,14 @@ UnsignedLong ARMA::computeNThermalization(const NumericalScalar epsilon) const
 
   // Find the largest eigenvalue module
   NumericalScalar s(abs(eigenValues[0]));
-  for (UnsignedLong i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, abs(eigenValues[i]));
+  for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, abs(eigenValues[i]));
   // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
   if (s >= 1.0) throw InvalidArgumentException(HERE) << "Error: the ARMA process is not stationary with the given coefficients. Here, AR coefficients=" << ARCoefficients_ << " and MA coefficients=" << MACoefficients_ << " with largest eigenvalue s=" << s;
-  return static_cast<UnsignedLong>(ceil( log(epsilon) / log(s) ) );
+  return static_cast<UnsignedInteger>(ceil( log(epsilon) / log(s) ) );
 }
 
 /* Nthermalization get accessor */
-UnsignedLong ARMA::getNThermalization() const
+UnsignedInteger ARMA::getNThermalization() const
 {
   if (!hasComputedNThermalization_)
   {
@@ -234,7 +234,7 @@ UnsignedLong ARMA::getNThermalization() const
 }
 
 /* Nthermalization set accessor */
-void ARMA::setNThermalization(const UnsignedLong size)
+void ARMA::setNThermalization(const UnsignedInteger size)
 {
   nThermalization_ = size;
   hasComputedNThermalization_ = true;
@@ -243,7 +243,7 @@ void ARMA::setNThermalization(const UnsignedLong size)
 
 // Compute the steps next values of the process starting from the current state.
 // The result is the current state extended steps date further
-ARMAState ARMA::computeReccurence(const UnsignedLong stepNumber) const
+ARMAState ARMA::computeReccurence(const UnsignedInteger stepNumber) const
 {
   // We extend the state by stepNumber points
   NumericalSample result(state_.getX());
@@ -255,15 +255,15 @@ ARMAState ARMA::computeReccurence(const UnsignedLong stepNumber) const
   // Consider : X_t = \sum_{i=0}^{p-1} A[i] * X_{t-i-1} + \sum_{i=0}^{q-1} B[i] * \epsilon_{t-i-1} + \epsilon_{t}
   // last observations organization: x[0] -->  X_{-(p-1)}, x[1]-> X_{2-p} ... x[p-1] -> X_{-1}
   // coefficients organization: coeff[0]-> coeff_{t-1}, coeff[1] -> coeff_{t-2}....
-  for (UnsignedLong t = 0; t < stepNumber ; ++t)
+  for (UnsignedInteger t = 0; t < stepNumber ; ++t)
   {
     // Next value
     // initialization using the current noise value
     result[p_ + t] = epsilonValues[q_ + t];
     // AR part computation : \sum_{i=0}^{p-1} A[i] * X_{t-i-1}
-    for(UnsignedLong i = 0; i < p_ ; ++i) result[p_ + t] -= ARCoefficients_[i] * result[(p_ - 1 + t) - i];
+    for(UnsignedInteger i = 0; i < p_ ; ++i) result[p_ + t] -= ARCoefficients_[i] * result[(p_ - 1 + t) - i];
     // MA part computation : \sum_{i=0}^{p-1} B[i] * \epsilon_{t-i-1}
-    for(UnsignedLong i = 0; i < q_ ; ++i) result[p_ + t] += MACoefficients_[i] * epsilonValues[(q_ - 1 + t) - i];
+    for(UnsignedInteger i = 0; i < q_ ; ++i) result[p_ + t] += MACoefficients_[i] * epsilonValues[(q_ - 1 + t) - i];
   }
 
   return ARMAState(result, epsilonValues);
@@ -273,7 +273,7 @@ ARMAState ARMA::computeReccurence(const UnsignedLong stepNumber) const
 void ARMA::thermalize() const
 {
   // Check if the number of iterations nThermalize is known or compute it
-  const UnsignedLong stepNumber(getNThermalization());
+  const UnsignedInteger stepNumber(getNThermalization());
   // Go stepNumber steps further and use the result to update the current state
   setState(computeReccurence(stepNumber));
 }
@@ -285,7 +285,7 @@ Field ARMA::getRealization() const
   thermalize();
 
   // Get the size of the realization
-  const UnsignedLong size(RegularGrid(mesh_).getN());
+  const UnsignedInteger size(RegularGrid(mesh_).getN());
 
   // Go size steps further: newState contains (size + p_) X values and (q_ + size) epsilon values
   const ARMAState newState(computeReccurence(size));
@@ -299,7 +299,7 @@ Field ARMA::getRealization() const
 
 // Prediction of the futur of an ARMA process
 // possible futur changes
-TimeSeries ARMA::getFuture(const UnsignedLong stepNumber) const
+TimeSeries ARMA::getFuture(const UnsignedInteger stepNumber) const
 {
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
@@ -354,7 +354,7 @@ void ARMA::setWhiteNoise(const WhiteNoise & whiteNoise)
 
 
 /* Get the random vector corresponding to the i-th marginal component */
-ARMA::Implementation ARMA::getMarginalProcess(const UnsignedLong i) const
+ARMA::Implementation ARMA::getMarginalProcess(const UnsignedInteger i) const
 {
   throw NotYetImplementedException(HERE);
 }

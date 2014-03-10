@@ -101,13 +101,13 @@ void NearestPointAlgorithm::setResult(const Result & result)
 }
 
 /* Maximum iterations number accessor */
-UnsignedLong NearestPointAlgorithm::getMaximumIterationsNumber() const
+UnsignedInteger NearestPointAlgorithm::getMaximumIterationsNumber() const
 {
   return getImplementation()->getMaximumIterationsNumber();
 }
 
 /* Maximum iterations number accessor */
-void NearestPointAlgorithm::setMaximumIterationsNumber(const UnsignedLong maximumIterationsNumber)
+void NearestPointAlgorithm::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
 {
   copyOnWrite();
   getImplementation()->setMaximumIterationsNumber(maximumIterationsNumber);

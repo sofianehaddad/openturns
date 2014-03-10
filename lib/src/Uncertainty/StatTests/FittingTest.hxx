@@ -76,7 +76,7 @@ public:
   /** Bayesian Information Criterion computation */
   static NumericalScalar BIC(const NumericalSample & sample,
                              const Distribution & distribution,
-                             const UnsignedLong estimatedParameters = 0);
+                             const UnsignedInteger estimatedParameters = 0);
 
   /** Bayesian Information Criterion computation */
   static NumericalScalar BIC(const NumericalSample & sample,
@@ -86,7 +86,7 @@ public:
   static TestResult Kolmogorov(const NumericalSample & sample,
                                const Distribution & distribution,
                                const NumericalScalar level = 0.95,
-                               const UnsignedLong estimatedParameters = 0);
+                               const UnsignedInteger estimatedParameters = 0);
 
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const NumericalSample & sample,
@@ -97,7 +97,7 @@ public:
   static TestResult ChiSquared(const NumericalSample & sample,
                                const Distribution & distribution,
                                const NumericalScalar level = 0.95,
-                               const UnsignedLong estimatedParameters = 0);
+                               const UnsignedInteger estimatedParameters = 0);
 
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const NumericalSample & sample,
@@ -112,7 +112,7 @@ protected:
   static TestResult RunRTest(const NumericalSample & sample,
                              const Distribution & distribution,
                              const NumericalScalar level,
-                             const UnsignedLong estimatedParameters,
+                             const UnsignedInteger estimatedParameters,
                              const String & testName);
 
 private:

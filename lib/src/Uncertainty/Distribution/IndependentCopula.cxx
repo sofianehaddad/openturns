@@ -41,7 +41,7 @@ CLASSNAMEINIT(IndependentCopula);
 static Factory<IndependentCopula> RegisteredFactory("IndependentCopula");
 
 /* Default constructor */
-IndependentCopula::IndependentCopula(const UnsignedLong dimension)
+IndependentCopula::IndependentCopula(const UnsignedInteger dimension)
   : CopulaImplementation("IndependentCopula")
 {
   setDimension(dimension);
@@ -88,7 +88,7 @@ NumericalPoint IndependentCopula::getRealization() const
 /* Get the DDF of the distribution */
 NumericalPoint IndependentCopula::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   return NumericalPoint(dimension, 0.0);
@@ -97,7 +97,7 @@ NumericalPoint IndependentCopula::computeDDF(const NumericalPoint & point) const
 /* Compute the probability content of an interval */
 NumericalScalar IndependentCopula::computeProbability(const Interval & interval) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
@@ -107,7 +107,7 @@ NumericalScalar IndependentCopula::computeProbability(const Interval & interval)
   const NumericalPoint lower(intersect.getLowerBound());
   const NumericalPoint upper(intersect.getUpperBound());
   NumericalScalar value(1.0);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     value *= upper[i] - lower[i];
   }
@@ -117,10 +117,10 @@ NumericalScalar IndependentCopula::computeProbability(const Interval & interval)
 /* Get the PDF of the distribution */
 NumericalScalar IndependentCopula::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     NumericalScalar x(point[i]);
     // If one component is outside of the support, the PDF is null
@@ -133,11 +133,11 @@ NumericalScalar IndependentCopula::computePDF(const NumericalPoint & point) cons
 /* Get the CDF of the distribution */
 NumericalScalar IndependentCopula::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   NumericalScalar value(1.0);
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
   {
     NumericalScalar x(point[i]);
     // If one component is at the left of the support of its matginal distribution, the CDF is null
@@ -170,7 +170,7 @@ CorrelationMatrix IndependentCopula::getKendallTau() const
 /* Get the PDF gradient of the distribution */
 NumericalPoint IndependentCopula::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   return NumericalPoint(0, 0.0);
@@ -179,7 +179,7 @@ NumericalPoint IndependentCopula::computePDFGradient(const NumericalPoint & poin
 /* Get the CDF gradient of the distribution */
 NumericalPoint IndependentCopula::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   return NumericalPoint(0, 0.0);
@@ -199,7 +199,7 @@ NumericalPoint IndependentCopula::computeQuantile(const NumericalScalar prob,
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 IndependentCopula::Implementation IndependentCopula::getMarginal(const Indices & indices) const
 {
-  UnsignedLong dimension(getDimension());
+  UnsignedInteger dimension(getDimension());
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
   // General case
   return new IndependentCopula(indices.getSize());
@@ -208,10 +208,10 @@ IndependentCopula::Implementation IndependentCopula::getMarginal(const Indices &
 /* Compute the covariance of the distribution */
 void IndependentCopula::computeCovariance() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   covariance_ = CovarianceMatrix(dimension);
   const NumericalScalar twelveInverse(1.0 / 12.0);
-  for (UnsignedLong i = 0; i < dimension; i++)
+  for (UnsignedInteger i = 0; i < dimension; i++)
     covariance_(i, i) = twelveInverse;
   isAlreadyComputedCovariance_ = true;
 }
@@ -225,7 +225,7 @@ NumericalScalar IndependentCopula::computeConditionalDDF(const NumericalScalar x
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar IndependentCopula::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   if (x < 0.0) return 0.0;
   if (x < 1.0) return 1.0;
@@ -235,7 +235,7 @@ NumericalScalar IndependentCopula::computeConditionalPDF(const NumericalScalar x
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar IndependentCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if (x < 0.0) return 0.0;
   if (x < 1.0) return x;
@@ -245,7 +245,7 @@ NumericalScalar IndependentCopula::computeConditionalCDF(const NumericalScalar x
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar IndependentCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   return q;

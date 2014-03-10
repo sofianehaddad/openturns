@@ -39,8 +39,8 @@ ComposedNumericalMathEvaluationImplementation::ComposedNumericalMathEvaluationIm
   const Description leftOutput(p_leftFunction->getOutputDescription());
   const Description rightInput(p_rightFunction->getInputDescription());
   Description description(rightInput);
-  const UnsignedLong size(leftOutput.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) description.add(leftOutput[i]);
+  const UnsignedInteger size(leftOutput.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) description.add(leftOutput[i]);
   setDescription(description);
 }
 
@@ -57,7 +57,7 @@ Bool ComposedNumericalMathEvaluationImplementation::operator ==(const ComposedNu
 }
 
 /* Get the i-th marginal function */
-ComposedNumericalMathEvaluationImplementation::Implementation ComposedNumericalMathEvaluationImplementation::getMarginal(const UnsignedLong i) const
+ComposedNumericalMathEvaluationImplementation::Implementation ComposedNumericalMathEvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return new ComposedNumericalMathEvaluationImplementation(p_leftFunction_->getMarginal(i), p_rightFunction_);
@@ -125,22 +125,22 @@ NumericalSample ComposedNumericalMathEvaluationImplementation::operator() (const
 NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::getParameters() const
 {
   const NumericalPointWithDescription rightParameters(p_rightFunction_->getParameters());
-  const UnsignedLong rightDimension(rightParameters.getDimension());
+  const UnsignedInteger rightDimension(rightParameters.getDimension());
   const Description rightDescription(rightParameters.getDescription());
   const NumericalPointWithDescription leftParameters(p_leftFunction_->getParameters());
-  const UnsignedLong leftDimension(leftParameters.getDimension());
+  const UnsignedInteger leftDimension(leftParameters.getDimension());
   const Description leftDescription(leftParameters.getDescription());
-  const UnsignedLong dimension(rightDimension + leftDimension);
+  const UnsignedInteger dimension(rightDimension + leftDimension);
   NumericalPointWithDescription parameters(dimension);
   Description description(dimension);
-  UnsignedLong index(0);
-  for (UnsignedLong i = 0; i < rightDimension; ++i)
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < rightDimension; ++i)
   {
     parameters[index] = rightParameters[i];
     description[index] = rightDescription[i];
     ++index;
   }
-  for (UnsignedLong i = 0; i < leftDimension; ++i)
+  for (UnsignedInteger i = 0; i < leftDimension; ++i)
   {
     parameters[index] = leftParameters[i];
     description[index] = leftDescription[i];
@@ -153,14 +153,14 @@ NumericalPointWithDescription ComposedNumericalMathEvaluationImplementation::get
 void ComposedNumericalMathEvaluationImplementation::setParameters(const NumericalPointWithDescription & parameters)
 {
   NumericalPointWithDescription rightParameters(p_rightFunction_->getParameters());
-  const UnsignedLong rightDimension(rightParameters.getDimension());
+  const UnsignedInteger rightDimension(rightParameters.getDimension());
   NumericalPointWithDescription leftParameters(p_leftFunction_->getParameters());
-  const UnsignedLong leftDimension(leftParameters.getDimension());
+  const UnsignedInteger leftDimension(leftParameters.getDimension());
   const Description description(parameters.getDescription());
   Description rightDescription(rightDimension);
   Description leftDescription(leftDimension);
-  UnsignedLong index(0);
-  for (UnsignedLong i = 0; i < rightDimension; ++i)
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < rightDimension; ++i)
   {
     rightParameters[i] = parameters[index];
     rightDescription[i] = description[index];
@@ -168,7 +168,7 @@ void ComposedNumericalMathEvaluationImplementation::setParameters(const Numerica
   }
   rightParameters.setDescription(rightDescription);
   p_rightFunction_->setParameters(rightParameters);
-  for (UnsignedLong i = 0; i < leftDimension; ++i)
+  for (UnsignedInteger i = 0; i < leftDimension; ++i)
   {
     leftParameters[i] = parameters[index];
     leftDescription[i] = description[index];
@@ -179,13 +179,13 @@ void ComposedNumericalMathEvaluationImplementation::setParameters(const Numerica
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ComposedNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger ComposedNumericalMathEvaluationImplementation::getInputDimension() const
 {
   return p_rightFunction_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ComposedNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger ComposedNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   return p_leftFunction_->getOutputDimension();
 }

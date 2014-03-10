@@ -85,7 +85,7 @@ public:
 
   /** Prediction of the N futur iterations of an ARMA process */
   using ProcessImplementation::getFuture;
-  TimeSeries getFuture(const UnsignedLong stepNumber) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
 
   /** Coefficients accessor : AR & MA */
   ARMACoefficients getARCoefficients() const;
@@ -100,16 +100,16 @@ public:
   void setWhiteNoise(const WhiteNoise & whiteNoise);
 
   /** Computation of nThermalization */
-  UnsignedLong computeNThermalization(const NumericalScalar epsilon) const;
+  UnsignedInteger computeNThermalization(const NumericalScalar epsilon) const;
 
   /** Nthermalization accessor - Visibility is done */
-  UnsignedLong getNThermalization() const;
+  UnsignedInteger getNThermalization() const;
 
   /** Nthermalization accessor - Setting the value */
-  void setNThermalization(const UnsignedLong n);
+  void setNThermalization(const UnsignedInteger n);
 
   /** Get the random vector corresponding to the i-th marginal component */
-  Implementation getMarginalProcess(const UnsignedLong i) const;
+  Implementation getMarginalProcess(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
   Implementation getMarginalProcess(const Indices & indices) const;
@@ -126,7 +126,7 @@ private:
 
   /** Compute the steps next values of the process starting from the current state.
       The result is the current state extended stepNumber steps further */
-  ARMAState computeReccurence(const UnsignedLong stepNumber) const;
+  ARMAState computeReccurence(const UnsignedInteger stepNumber) const;
 
   /** thermalize method */
   void thermalize() const;
@@ -141,10 +141,10 @@ private:
   Distribution noiseDistribution_;
 
   /** Size of AR part */
-  UnsignedLong p_;
+  UnsignedInteger p_;
 
   /** Size of MA part */
-  UnsignedLong q_;
+  UnsignedInteger q_;
 
   /** Mutable  current state of the ARMA process */
   mutable ARMAState state_;
@@ -153,7 +153,7 @@ private:
   mutable Bool hasComputedNThermalization_;
 
   /** Number of iterations for the thermalize method */
-  mutable UnsignedLong nThermalization_;
+  mutable UnsignedInteger nThermalization_;
 
 }; /* class ARMA */
 END_NAMESPACE_OPENTURNS

@@ -78,7 +78,7 @@ TNC * TNC::clone() const
 /* Performs the actual computation by calling the TNC algorithm */
 void TNC::run()
 {
-  const UnsignedLong dimension = getObjectiveFunction().getInputDimension();
+  const UnsignedInteger dimension = getObjectiveFunction().getInputDimension();
   if (dimension == 0) throw InternalException(HERE) << "Error: cannot solve a bound constrained optimization problem with no objective function.";
   NumericalScalar f = 0.0;
   Interval boundConstraints(getBoundConstraints());
@@ -88,7 +88,7 @@ void TNC::run()
   Interval::BoolCollection finiteLow(boundConstraints.getFiniteLowerBound());
   Interval::BoolCollection finiteUp(boundConstraints.getFiniteUpperBound());
   /* Set the infinite bounds to HUGE_VAL (defined in cmath) with the correct signs */
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (!finiteLow[i]) low[i] = -HUGE_VAL;
     if (!finiteUp[i]) up[i] = HUGE_VAL;
@@ -174,8 +174,8 @@ void TNC::run()
    */
   int returnCode = tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndConstraint, (void*) this, &low[0], &up[0], refScale, refOffset, message, specificParameters_.getMaxCGit(), getMaximumEvaluationsNumber(), specificParameters_.getEta(), specificParameters_.getStepmx(), specificParameters_.getAccuracy(), specificParameters_.getFmin(), getMaximumObjectiveError(), getMaximumAbsoluteError(), getMaximumConstraintError(), specificParameters_.getRescale(), &nfeval);
 
-  UnsignedLong size = evaluationInputHistory_.getSize();
-  for ( UnsignedLong i = 1; i < size; ++ i )
+  UnsignedInteger size = evaluationInputHistory_.getSize();
+  for ( UnsignedInteger i = 1; i < size; ++ i )
   {
     NumericalPoint x_m( evaluationInputHistory_[i - 1] );
     x = evaluationInputHistory_[i];
@@ -185,7 +185,7 @@ void TNC::run()
     relativeError = absoluteError / x.norm();
     objectiveError = (y - y_m).norm();
     constraintError = 0.0;
-    for ( UnsignedLong j = 0; j < dimension; ++ j )
+    for ( UnsignedInteger j = 0; j < dimension; ++ j )
     {
       if (finiteLow[j] && (x[j] < low[j]))
       {
@@ -263,10 +263,10 @@ int TNC::ComputeObjectiveAndConstraint(double *x, double *f, double *g, void *st
 
   /* Retreive the objective function */
   NumericalMathFunction objectiveFunction(algorithm->getObjectiveFunction());
-  const UnsignedLong dimension(objectiveFunction.getInputDimension());
+  const UnsignedInteger dimension(objectiveFunction.getInputDimension());
   /* Convert the input vector in OpenTURNS format */
   NumericalPoint inPoint(dimension);
-  for( UnsignedLong i = 0; i < dimension; ++ i ) inPoint[i] = x[i];
+  for( UnsignedInteger i = 0; i < dimension; ++ i ) inPoint[i] = x[i];
   /* Change the sign of f if it is a maximization problem */
   const NumericalScalar sign(algorithm->getOptimizationProblem() == Result::MINIMIZATION ? 1.0 : -1.0);
   Matrix objectiveGradient;
@@ -279,7 +279,7 @@ int TNC::ComputeObjectiveAndConstraint(double *x, double *f, double *g, void *st
   {
     return 1;
   }
-  for ( UnsignedLong i = 0; i < dimension; ++ i ) g[i] = sign * objectiveGradient(i, 0);
+  for ( UnsignedInteger i = 0; i < dimension; ++ i ) g[i] = sign * objectiveGradient(i, 0);
 
   algorithm->evaluationInputHistory_.add(inPoint);
   algorithm->evaluationOutputHistory_.add(NumericalPoint(1, *f));

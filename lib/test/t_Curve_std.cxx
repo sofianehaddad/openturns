@@ -36,14 +36,14 @@ int main(int argc, char *argv[])
   {
 
     // Generate the data for the curves to be drawn
-    UnsignedLong size = 50;
+    UnsignedInteger size = 50;
     NumericalPoint cursor(2);
 
     NumericalSample data1(size, 2); //curve y = 2x for x in [-2;5]
     NumericalSample data2(size, 2); //curve y = x*x for x in [-1;1]
 
     NumericalScalar tmp;
-    for(UnsignedLong i = 0; i < size; i++)
+    for(UnsignedInteger i = 0; i < size; i++)
     {
       tmp = 7.*i / size + 2;
       cursor[0] = tmp;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
     // Add it to the graph and draw everything
     myGraph.add(myCurve2);
-    for (UnsignedLong i = 0; i < 4; ++i)
+    for (UnsignedInteger i = 0; i < 4; ++i)
     {
       myGraph.setLogScale(static_cast<GraphImplementation::LogScale>(i));
       myGraph.draw(String(OSS() << "Graph_Curve_b_OT_" << i), 640, 480);

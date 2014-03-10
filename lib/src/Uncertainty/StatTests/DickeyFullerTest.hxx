@@ -114,13 +114,13 @@ private:
   TimeSeries timeSeries_;
 
   /** Size of underlying part */
-  UnsignedLong T_;
+  UnsignedInteger T_;
 
   /** Boolean verbose */
   Bool verbose_;
 
   /** Last model evaluated. Values are 1 (AR) to 3 (trend model) */
-  UnsignedLong lastModel_;
+  UnsignedInteger lastModel_;
 
   /** rho value and the variance associated to the estimator */
   NumericalScalar rho_;

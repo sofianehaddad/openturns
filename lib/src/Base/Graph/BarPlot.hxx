@@ -56,7 +56,7 @@ public:
           const String & color,
           const String & fillStyle,
           const String & lineStyle,
-          const UnsignedLong lineWidth,
+          const UnsignedInteger lineWidth,
           const String & legend = "");
 
   /** Constructor with old parameters */

@@ -34,11 +34,11 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong dim(4);
+    UnsignedInteger dim(4);
     NumericalPoint optimizer(dim, 1.0);
     NumericalScalar optimalValue(5.0);
     BoundConstrainedAlgorithmImplementationResult::OptimizationProblem optimization(BoundConstrainedAlgorithmImplementationResult::MINIMIZATION);
-    UnsignedLong evaluationsNumber(10);
+    UnsignedInteger evaluationsNumber(10);
     NumericalScalar absoluteError(1e-6);
     NumericalScalar relativeError(1e-7);
     NumericalScalar objectiveError(1e-8);

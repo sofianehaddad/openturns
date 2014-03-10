@@ -49,8 +49,8 @@ ComplexMatrixImplementation::ComplexMatrixImplementation()
 /* Constructor with size (rowDim and colDim) */
 /* The ComplexMatrixImplementation is made up of a collection of rowDim*colDim elements */
 /* The ComplexMatrixImplementation is viewed as a set of column vectors read one after another */
-ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim)
+ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim)
   : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
     nbRows_(rowDim),
     nbColumns_(colDim)
@@ -59,28 +59,28 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedLong rowD
 }
 
 /* Constructor from external collection */
-ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim,
+ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim,
     const Collection<NumericalComplex> & elementsValues)
   : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
     nbRows_(rowDim),
     nbColumns_(colDim)
 {
-  const UnsignedLong matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
-  for(UnsignedLong i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
+  const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
+  for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
 
 /* Constructor from external collection */
-ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim,
+ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim,
     const Collection<NumericalScalar> & elementsValues)
   : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
     nbRows_(rowDim),
     nbColumns_(colDim)
 {
-  const UnsignedLong matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
+  const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
   //  Implicit cast from NumericalScalar into NumericalComplex
-  for(UnsignedLong i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
+  for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
 
 
@@ -90,8 +90,8 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const MatrixImplementat
     nbColumns_(matrix.getNbColumns())
 {
   // Copy from matrix
-  const UnsignedLong matrixSize(nbRows_ * nbColumns_);
-  for(UnsignedLong i = 0; i < matrixSize; ++i) operator[](i) = matrix[i];
+  const UnsignedInteger matrixSize(nbRows_ * nbColumns_);
+  for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = matrix[i];
 }
 
 /* Virtual constructor */
@@ -104,8 +104,8 @@ ComplexMatrixImplementation * ComplexMatrixImplementation::clone() const
 ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalScalar threshold) const
 {
   ComplexMatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
       const NumericalComplex value(this->operator[](convertPosition(i, j)));
       NumericalScalar realPart(std::real(value));
@@ -121,8 +121,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
 ComplexMatrixImplementation ComplexMatrixImplementation::cleanHerm(const NumericalScalar threshold) const
 {
   ComplexMatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = j; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = j; i < nbRows_; ++i)
     {
       const NumericalComplex value(this->operator[](convertPosition(i, j)));
       NumericalScalar realPart(std::real(value));
@@ -153,24 +153,24 @@ String ComplexMatrixImplementation::__str__(const String & offset) const
   if (nbRows_ == 1)
   {
     oss << offset << "(";
-    for (UnsignedLong j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
       oss << (j > 0 ? " " : "") << operator()(0, j);
     oss << ")" << Os::GetEndOfLine();
     return oss;
   }
   // Array for the widths of the different components
-  Collection<UnsignedLong> widthColumns(nbColumns_, 0);
+  Collection<UnsignedInteger> widthColumns(nbColumns_, 0);
   // First loop across the values to determine the optimal width for printing
-  for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger i = 0; i < nbRows_; ++i)
   {
-    for (UnsignedLong j = 0; j < nbColumns_; ++j)
-      widthColumns[j] = std::max(widthColumns[j], static_cast<UnsignedLong>(String(OSS() << operator()(i, j)).length()));
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+      widthColumns[j] = std::max(widthColumns[j], static_cast<UnsignedInteger>(String(OSS() << operator()(i, j)).length()));
   }
   // Second loop
-  for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger i = 0; i < nbRows_; ++i)
   {
     oss << (i == 0 ? "/" : (i == nbRows_ - 1 ? "\\" : "|"));
-    for (UnsignedLong j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
       oss << (j > 0 ? " " : "") << std::setw(widthColumns[j]) << operator()(i, j);
     if (i == 0) oss << "\\" << Os::GetEndOfLine();
     else if (i == nbRows_ - 1) oss << "/";
@@ -182,8 +182,8 @@ String ComplexMatrixImplementation::__str__(const String & offset) const
 /* Operator () gives access to the elements of theComplexMatrixImplementation (to modify these elements) */
 /* The element of theComplexMatrixImplementation is designated by its row number i and its column number j */
 /* the first element of theComplexMatrixImplementation is m(0,0) */
-NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   if ((i >= nbRows_) || (j >= nbColumns_)) throw InvalidDimensionException(HERE);
 
@@ -192,8 +192,8 @@ NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedLong 
 
 /* Operator () gives access to the elements of theComplexMatrixImplementation (read only) */
 /* The element of theComplexMatrixImplementation is designated by its row number i and its column number j */
-const NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedLong i,
-    const UnsignedLong j)  const
+const NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
+    const UnsignedInteger j)  const
 {
   if ((i >= nbRows_) || (j >= nbColumns_)) throw InvalidDimensionException(HERE);
 
@@ -202,19 +202,19 @@ const NumericalComplex & ComplexMatrixImplementation::operator () (const Unsigne
 
 
 /* Get the dimensions of the ComplexMatrixImplementation : number of rows */
-const UnsignedLong ComplexMatrixImplementation::getNbRows() const
+const UnsignedInteger ComplexMatrixImplementation::getNbRows() const
 {
   return nbRows_;
 }
 
 /* Get the dimensions of the ComplexMatrixImplementation : number of columns */
-const UnsignedLong ComplexMatrixImplementation::getNbColumns() const
+const UnsignedInteger ComplexMatrixImplementation::getNbColumns() const
 {
   return nbColumns_;
 }
 
 /* Get the dimensions of the ComplexMatrixImplementation : dimension (square matrix : nbRows_) */
-const UnsignedLong ComplexMatrixImplementation::getDimension() const
+const UnsignedInteger ComplexMatrixImplementation::getDimension() const
 {
   return nbRows_;
 }
@@ -224,8 +224,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::transpose () const
 {
   ComplexMatrixImplementation trans(nbColumns_, nbRows_);
   // The source matrix is accessed columnwise in the natural order
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
       trans(j, i) = operator()(i, j);
   return trans;
 }
@@ -237,8 +237,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::transposeHerm () const
 {
   ComplexMatrixImplementation result(nbColumns_, nbRows_);
   // The lower triangle of the source matrix is accessed columnwise in the natural order
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = j; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = j; i < nbRows_; ++i)
       result(i, j) = std::conj(operator()(i, j));
   return result;
 }
@@ -248,8 +248,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::conjugate () const
 {
   ComplexMatrixImplementation result(nbRows_, nbColumns_);
   // The source matrix is accessed columnwise in the natural order
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
       result(i, j) = std::conj(operator()(i, j));
   return result;
 }
@@ -264,8 +264,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::conjugateHerm () const
 ComplexMatrixImplementation ComplexMatrixImplementation::conjugateTranspose () const
 {
   ComplexMatrixImplementation result(nbColumns_, nbRows_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
       result(j, i) = std::conj(operator()(i, j));
   return result;
 }
@@ -275,8 +275,8 @@ void ComplexMatrixImplementation::hermitianize() const
 {
   ComplexMatrixImplementation *refThis(const_cast<ComplexMatrixImplementation *>(this));
   // The lower triangle of the source matrix is accessed columnwise in the natural order
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = j + 1; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
       refThis->operator[](convertPosition(j, i)) = std::conj(operator[](convertPosition(i, j)));
 }
 
@@ -285,8 +285,8 @@ void ComplexMatrixImplementation::hermitianize() const
 MatrixImplementation ComplexMatrixImplementation::realRect() const
 {
   MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
       result(i, j) = (*this)(i, j).real();
   return result;
 }
@@ -294,8 +294,8 @@ MatrixImplementation ComplexMatrixImplementation::realRect() const
 MatrixImplementation ComplexMatrixImplementation::realSym() const
 {
   MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = j; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = j; i < nbRows_; ++i)
       result(i, j) = (*this)(i, j).real();
   return result;
 }
@@ -304,8 +304,8 @@ MatrixImplementation ComplexMatrixImplementation::realSym() const
 MatrixImplementation ComplexMatrixImplementation::imagRect() const
 {
   MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = 0; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = 0; i < nbRows_; ++i)
       result(i, j) = (*this)(i, j).imag();
   return result;
 }
@@ -313,8 +313,8 @@ MatrixImplementation ComplexMatrixImplementation::imagRect() const
 MatrixImplementation ComplexMatrixImplementation::imagSym() const
 {
   MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedLong j = 0; j < nbColumns_; ++j)
-    for (UnsignedLong i = j; i < nbRows_; ++i)
+  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+    for (UnsignedInteger i = j; i < nbRows_; ++i)
       result(i, j) = (*this)(i, j).imag();
   return result;
 }
@@ -331,8 +331,8 @@ const Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
 {
   if ( nbRows_ == nbColumns_ )
   {
-    for ( UnsignedLong j = 1; j < nbColumns_; ++ j )
-      for ( UnsignedLong i = 0; i < j; ++ i )
+    for ( UnsignedInteger j = 1; j < nbColumns_; ++ j )
+      for ( UnsignedInteger i = 0; i < j; ++ i )
         if ( std::abs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0. )
           return false;
     return true;
@@ -530,16 +530,16 @@ ComplexMatrixImplementation ComplexMatrixImplementation::triangularProd(const Co
 }
 
 /* Integer power, general matrix */
-ComplexMatrixImplementation ComplexMatrixImplementation::genPower(const UnsignedLong n) const
+ComplexMatrixImplementation ComplexMatrixImplementation::genPower(const UnsignedInteger n) const
 {
   Bool first(true);
-  UnsignedLong exponent(n);
+  UnsignedInteger exponent(n);
   ComplexMatrixImplementation y;
   ComplexMatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedLong t(exponent % 2);
+    const UnsignedInteger t(exponent % 2);
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -562,16 +562,16 @@ ComplexMatrixImplementation ComplexMatrixImplementation::genPower(const Unsigned
 }
 
 /* Integer power, symmetric matrix */
-ComplexMatrixImplementation ComplexMatrixImplementation::symPower(const UnsignedLong n) const
+ComplexMatrixImplementation ComplexMatrixImplementation::symPower(const UnsignedInteger n) const
 {
   Bool first(true);
-  UnsignedLong exponent(n);
+  UnsignedInteger exponent(n);
   ComplexMatrixImplementation y;
   ComplexMatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedLong t(exponent % 2);
+    const UnsignedInteger t(exponent % 2);
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -594,16 +594,16 @@ ComplexMatrixImplementation ComplexMatrixImplementation::symPower(const Unsigned
 }
 
 /* Integer power, hermitian matrix */
-ComplexMatrixImplementation ComplexMatrixImplementation::hermPower(const UnsignedLong n) const
+ComplexMatrixImplementation ComplexMatrixImplementation::hermPower(const UnsignedInteger n) const
 {
   Bool first(true);
-  UnsignedLong exponent(n);
+  UnsignedInteger exponent(n);
   ComplexMatrixImplementation y;
   ComplexMatrixImplementation z(*this);
   while (exponent > 0)
   {
     // t is the right bit of exponent
-    const UnsignedLong t(exponent % 2);
+    const UnsignedInteger t(exponent % 2);
     // remove last bit from exponent
     exponent /= 2;
     // if right bit is 1
@@ -653,7 +653,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplexCollection prod(nbRows_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
   NumericalComplexCollection copyPoint(nbRows_);
-  for (UnsignedLong i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
+  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char trans('N');
   int m_(nbRows_);
   int n_(nbColumns_);
@@ -675,7 +675,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplexCollection prod(nbRows_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
   NumericalComplexCollection copyPoint(nbRows_);
-  for (UnsignedLong i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
+  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char trans('N');
   int m_(nbRows_);
   int n_(nbColumns_);
@@ -715,7 +715,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
   NumericalComplexCollection copyPoint(nbRows_);
-  for (UnsignedLong i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
+  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char uplo('L');
   int n(nbRows_);
   int one(1);
@@ -735,7 +735,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
   NumericalComplexCollection copyPoint(nbRows_);
-  for (UnsignedLong i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
+  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char uplo('L');
   int n(nbRows_);
   int one(1);
@@ -797,7 +797,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   int one(1);
 
   NumericalComplexCollection x(nbRows_);
-  for (UnsignedLong i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
+  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
   ZTRMV_F77(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
@@ -825,7 +825,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   int one(1);
 
   NumericalComplexCollection x(nbRows_);
-  for (UnsignedLong i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
+  for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
   ZTRMV_F77(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
@@ -836,8 +836,8 @@ Bool ComplexMatrixImplementation::isHermitian() const
 {
   if ( nbRows_ == nbColumns_ )
   {
-    for ( UnsignedLong i = 1; i < nbRows_; ++ i )
-      for ( UnsignedLong j = 0; j < i; ++ j )
+    for ( UnsignedInteger i = 1; i < nbRows_; ++ i )
+      for ( UnsignedInteger j = 0; j < i; ++ j )
         if ( operator[](convertPosition(i, j)) != std::conj(operator[](convertPosition(j, i))) )
           return false;
     return true;
@@ -884,8 +884,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
     ComplexMatrixImplementation A(*this);
     ZPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
-    for (UnsignedLong j = 0; j < (UnsignedLong)(n); ++j)
-      for (UnsignedLong i = 0; i < (UnsignedLong)(j); ++i)
+    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+      for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
         A(i, j) = NumericalComplex(0.0, 0.0);
     // Check return code from Lapack
     if(info != 0)
@@ -896,8 +896,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
   {
     ZPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
-    for (UnsignedLong j = 0; j < (UnsignedLong)(n); ++j)
-      for (UnsignedLong i = 0; i < (UnsignedLong)(j); ++i)
+    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+      for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
         (*this)(i, j) = NumericalComplex(0.0, 0.0);
     // Check return code from Lapack
     if(info != 0)
@@ -948,15 +948,15 @@ const NumericalComplex* ComplexMatrixImplementation::__baseaddress__() const
 }
 
 
-UnsignedLong ComplexMatrixImplementation::__elementsize__() const
+UnsignedInteger ComplexMatrixImplementation::__elementsize__() const
 {
   return sizeof(NumericalComplex);
 }
 
 
-UnsignedLong ComplexMatrixImplementation::__stride__(UnsignedLong dim) const
+UnsignedInteger ComplexMatrixImplementation::__stride__(UnsignedInteger dim) const
 {
-  UnsignedLong stride = __elementsize__();
+  UnsignedInteger stride = __elementsize__();
   if (dim > 0)
     stride *= nbRows_;
   return stride;

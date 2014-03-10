@@ -105,8 +105,8 @@ int main(int argc, char *argv[])
   for (int i = 0; i < nbThreads; ++i)
     pthread_join( Threads[i], 0 );
 
-  // const UnsignedLong expectedLength = 4 * N;
-  // UnsignedLong actualLength = Log::GetInstance().getSize();
+  // const UnsignedInteger expectedLength = 4 * N;
+  // UnsignedInteger actualLength = Log::GetInstance().getSize();
 
   // if (actualLength != expectedLength) rc = ExitCode::Error;
 

@@ -62,31 +62,31 @@ DualLinearCombinationHessianImplementation * DualLinearCombinationHessianImpleme
 /* Hessian method */
 SymmetricTensor DualLinearCombinationHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
-  const UnsignedLong outputDimension(getOutputDimension());
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger outputDimension(getOutputDimension());
   SymmetricTensor result(inputDimension, outputDimension);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const SymmetricTensor hessianI(evaluation_.functionsCollection_[i].hessian(inP));
     const NumericalPoint coefficientI(evaluation_.coefficients_[i]);
-    for (UnsignedLong j = 0; j < inputDimension; ++j)
-      for (UnsignedLong k = 0; k <= j; ++k)
-        for (UnsignedLong n = 0; n < outputDimension; ++n)
+    for (UnsignedInteger j = 0; j < inputDimension; ++j)
+      for (UnsignedInteger k = 0; k <= j; ++k)
+        for (UnsignedInteger n = 0; n < outputDimension; ++n)
           result(j, k, n) += hessianI(j, k, 0) * coefficientI[n];
   }
   return result;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong DualLinearCombinationHessianImplementation::getInputDimension() const
+UnsignedInteger DualLinearCombinationHessianImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong DualLinearCombinationHessianImplementation::getOutputDimension() const
+UnsignedInteger DualLinearCombinationHessianImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }

@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  const UnsignedLong dimension = 3;
+  const UnsignedInteger dimension = 3;
   Description input;
   Description output[dimension];
-  for ( UnsignedLong j = 0; j < dimension; ++ j )
+  for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
     OSS oss;
     oss << "x" << j;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   Collection<NumericalMathFunction> coll;
   Indices cumulBasis;
   Indices partialBasis[dimension];
-  for ( UnsignedLong j = 0; j < dimension; ++ j )
+  for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
     NumericalMathFunction ei(input, output[j], output[j]);
     coll.add(ei);
@@ -55,12 +55,12 @@ int main(int argc, char *argv[])
 
   Basis masterBasis(coll);
   BasisSequence seq(masterBasis);
-  for ( UnsignedLong j = 0; j < dimension; ++ j )
+  for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
     seq.add(partialBasis[j]);
   }
   fullprint << "sequence = " << seq << std::endl;
-  for ( UnsignedLong j = 0; j < dimension; ++ j )
+  for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
     fullprint << "indices of subBasis[" << j << "] = " << seq[j] << std::endl;
   }

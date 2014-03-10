@@ -172,15 +172,15 @@ namePython< _PyInt_ >()
 }
 
 template <>
-struct traitsPythonType< UnsignedLong >
+struct traitsPythonType< UnsignedInteger >
 {
   typedef _PyInt_ Type;
 };
 
 template <>
 inline
-UnsignedLong
-convert< _PyInt_, UnsignedLong >(PyObject * pyObj)
+UnsignedInteger
+convert< _PyInt_, UnsignedInteger >(PyObject * pyObj)
 {
   return PyLong_AsUnsignedLong( pyObj );
 }
@@ -188,7 +188,7 @@ convert< _PyInt_, UnsignedLong >(PyObject * pyObj)
 template <>
 inline
 PyObject *
-convert< UnsignedLong, _PyInt_ >(UnsignedLong n)
+convert< UnsignedInteger, _PyInt_ >(UnsignedInteger n)
 {
   return PyLong_FromUnsignedLong( n );
 }
@@ -417,8 +417,8 @@ isAPythonSequenceOf(PyObject * pyObj)
 
   if ( ok )
   {
-    const UnsignedLong size = PySequence_Size( pyObj );
-    for( UnsignedLong i = 0; ok && (i < size); ++i )
+    const UnsignedInteger size = PySequence_Size( pyObj );
+    for( UnsignedInteger i = 0; ok && (i < size); ++i )
     {
       ScopedPyObjectPointer elt(PySequence_ITEM( pyObj, i ));
       int elt_ok = isAPython<PYTHON_Type>( elt.get() );
@@ -471,8 +471,8 @@ canConvertCollectionObjectFromPySequence(PyObject * pyObj)
 
   ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
 
-  const UnsignedLong size = PySequence_Fast_GET_SIZE( newPyObj.get() );
-  for(UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size = PySequence_Fast_GET_SIZE( newPyObj.get() );
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     PyObject * elt = PySequence_Fast_GET_ITEM( newPyObj.get(), i );
     if (!canConvert< typename traitsPythonType< T >::Type, T >( elt ))
@@ -495,14 +495,14 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
   check<_PySequence_>( pyObj );
   ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
 
-  const UnsignedLong size = PySequence_Fast_GET_SIZE( newPyObj.get() );
+  const UnsignedInteger size = PySequence_Fast_GET_SIZE( newPyObj.get() );
   if ((sz != 0) && (sz != (int)size))
   {
     throw InvalidArgumentException(HERE) << "Sequence object has incorrect size " << size << ". Must be " << sz << ".";
   }
   Collection<T> * p_coll = new Collection< T >( size );
 
-  for(UnsignedLong i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     PyObject * elt = PySequence_Fast_GET_ITEM( newPyObj.get(), i );
     try
@@ -545,9 +545,9 @@ inline
 PyObject *
 convert< NumericalPoint, _PySequence_ >(NumericalPoint inP)
 {
-  UnsignedLong dimension = inP.getDimension();
+  UnsignedInteger dimension = inP.getDimension();
   PyObject * point = PyTuple_New( dimension );
-  for ( UnsignedLong i = 0; i < dimension; ++ i )
+  for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
     PyTuple_SetItem( point, i, convert< NumericalScalar, _PyFloat_ >( inP[i] ) );
   }
@@ -588,18 +588,18 @@ convert< _PySequence_, NumericalSample >(PyObject * pyObj)
 }
 
 template <>
-struct traitsPythonType< Collection< UnsignedLong > >
+struct traitsPythonType< Collection< UnsignedInteger > >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-Collection< UnsignedLong >
-convert< _PySequence_, Collection<UnsignedLong> >(PyObject * pyObj)
+Collection< UnsignedInteger >
+convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
 {
-  Pointer<Collection<UnsignedLong> > ptr = buildCollectionFromPySequence<UnsignedLong>( pyObj );
-  return Collection<UnsignedLong>( ptr->begin(), ptr->end() );
+  Pointer<Collection<UnsignedInteger> > ptr = buildCollectionFromPySequence<UnsignedInteger>( pyObj );
+  return Collection<UnsignedInteger>( ptr->begin(), ptr->end() );
 }
 
 
@@ -614,7 +614,7 @@ inline
 Indices
 convert< _PySequence_, Indices >(PyObject * pyObj)
 {
-  Pointer<Collection<UnsignedLong> > ptr = buildCollectionFromPySequence<UnsignedLong>( pyObj );
+  Pointer<Collection<UnsignedInteger> > ptr = buildCollectionFromPySequence<UnsignedInteger>( pyObj );
   return Indices( ptr->begin(), ptr->end() );
 }
 
@@ -676,17 +676,17 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
       Indices shape( checkAndConvert< _PySequence_, Indices >( shapeObj.get() ) );
       if ( shape.getSize() == 2 )
       {
-        UnsignedLong nbRows = shape[0];
-        UnsignedLong nbColumns = shape[1];
+        UnsignedInteger nbRows = shape[0];
+        UnsignedInteger nbColumns = shape[1];
         ScopedPyObjectPointer askObj(PyTuple_New(2));
         ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
         MatrixImplementation *p_implementation = new MatrixImplementation( nbRows, nbColumns );
-        for ( UnsignedLong i = 0; i < nbRows; ++ i )
+        for ( UnsignedInteger i = 0; i < nbRows; ++ i )
         {
-          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedLong, _PyInt_ >(i) );
-          for ( UnsignedLong j = 0; j < nbColumns; ++ j )
+          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
+          for ( UnsignedInteger j = 0; j < nbColumns; ++ j )
           {
-            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedLong, _PyInt_ >(j) );
+            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
             ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL ));
             if ( elt.get() )
             {
@@ -712,11 +712,11 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
   // else try to convert from a sequence of sequences
   Pointer< Collection< NumericalPoint > > ptr = buildCollectionFromPySequence< NumericalPoint >( pyObj );
   NumericalSample sample( *ptr );
-  UnsignedLong nbRows = sample.getSize();
-  UnsignedLong nbColumns = sample.getDimension();
+  UnsignedInteger nbRows = sample.getSize();
+  UnsignedInteger nbColumns = sample.getDimension();
   MatrixImplementation *p_implementation = new MatrixImplementation( nbRows, nbColumns );
-  for ( UnsignedLong i = 0; i < nbRows; ++ i )
-    for ( UnsignedLong j = 0; j < nbColumns; ++ j )
+  for ( UnsignedInteger i = 0; i < nbRows; ++ i )
+    for ( UnsignedInteger j = 0; j < nbColumns; ++ j )
       p_implementation->operator()( i, j ) = sample[i][j];
   return p_implementation;
 }
@@ -817,13 +817,13 @@ TensorImplementation*
 convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
 {
   Pointer< Collection< NumericalSample > > ptr = buildCollectionFromPySequence< NumericalSample >( pyObj );
-  UnsignedLong nbRows = ptr->getSize();
-  UnsignedLong nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
-  UnsignedLong nbSheets = ptr->getSize() > 0 ? (*ptr)[0].getDimension() : 0;
+  UnsignedInteger nbRows = ptr->getSize();
+  UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
+  UnsignedInteger nbSheets = ptr->getSize() > 0 ? (*ptr)[0].getDimension() : 0;
   TensorImplementation *p_implementation = new TensorImplementation( nbRows, nbColumns, nbSheets );
-  for ( UnsignedLong i = 0; i < nbRows; ++ i )
-    for ( UnsignedLong j = 0; j < nbColumns; ++ j )
-      for ( UnsignedLong k = 0; k < nbSheets; ++ k )
+  for ( UnsignedInteger i = 0; i < nbRows; ++ i )
+    for ( UnsignedInteger j = 0; j < nbColumns; ++ j )
+      for ( UnsignedInteger k = 0; k < nbSheets; ++ k )
         p_implementation->operator()( i, j, k ) = (*ptr)[i][j][k];
   return p_implementation;
 }
@@ -876,17 +876,17 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
       Indices shape( checkAndConvert< _PySequence_, Indices >( shapeObj.get() ) );
       if ( shape.getSize() == 2 )
       {
-        UnsignedLong nbRows = shape[0];
-        UnsignedLong nbColumns = shape[1];
+        UnsignedInteger nbRows = shape[0];
+        UnsignedInteger nbColumns = shape[1];
         ScopedPyObjectPointer askObj(PyTuple_New(2));
         ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
         ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns );
-        for ( UnsignedLong i = 0; i < nbRows; ++ i )
+        for ( UnsignedInteger i = 0; i < nbRows; ++ i )
         {
-          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedLong, _PyInt_ >(i) );
-          for ( UnsignedLong j = 0; j < nbColumns; ++ j )
+          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
+          for ( UnsignedInteger j = 0; j < nbColumns; ++ j )
           {
-            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedLong, _PyInt_ >(j) );
+            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
             ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL ));
             if ( elt.get() )
             {
@@ -911,11 +911,11 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
 
   // else try to convert from a sequence of sequences
   Pointer< Collection< Collection< NumericalComplex > > > ptr = buildCollectionFromPySequence< Collection< NumericalComplex > >( pyObj );
-  UnsignedLong nbRows = ptr->getSize();
-  UnsignedLong nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
+  UnsignedInteger nbRows = ptr->getSize();
+  UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
   ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns );
-  for ( UnsignedLong i = 0; i < nbRows; ++ i )
-    for ( UnsignedLong j = 0; j < nbColumns; ++ j )
+  for ( UnsignedInteger i = 0; i < nbRows; ++ i )
+    for ( UnsignedInteger j = 0; j < nbColumns; ++ j )
       p_implementation->operator()( i, j ) = (*ptr)[i][j];
   return p_implementation;
 }

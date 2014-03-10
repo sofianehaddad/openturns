@@ -44,17 +44,17 @@ SensitivityAnalysis::SensitivityAnalysis(const NumericalSample & inputSample1,
   if (inputSample1_.getDimension() != model_.getInputDimension()) throw InvalidDimensionException(HERE) << "Input samples must have the same dimension as the model";
 
   // initialize blockSize
-  const UnsignedLong size( inputSample1_.getSize() );
+  const UnsignedInteger size( inputSample1_.getSize() );
   if (size == 0) throw InvalidArgumentException(HERE) << "Input sample is empty";
-  blockSize_ = std::min( size, ResourceMap::GetAsUnsignedLong( "SensitivityAnalysis-DefaultBlockSize" ) );
+  blockSize_ = std::min( size, ResourceMap::GetAsUnsignedInteger( "SensitivityAnalysis-DefaultBlockSize" ) );
 }
 
 /* Compute all the Sobol indices */
-void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
+void SensitivityAnalysis::computeSobolIndices(const UnsignedInteger order) const
 {
-  const UnsignedLong inputDimension( inputSample1_.getDimension() );
-  const UnsignedLong outputDimension( model_.getOutputDimension() );
-  const UnsignedLong size( inputSample1_.getSize() );
+  const UnsignedInteger inputDimension( inputSample1_.getDimension() );
+  const UnsignedInteger outputDimension( model_.getOutputDimension() );
+  const UnsignedInteger size( inputSample1_.getSize() );
 
   // allocate indices
   firstOrderIndice_ = NumericalSample( outputDimension, inputDimension );
@@ -62,28 +62,28 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
   if (order >= 2) secondOrderIndice_ = SymmetricTensor( inputDimension, outputDimension );
 
   // this avoids to store huge input samples while allowing for multi-threading
-  const UnsignedLong maximumOuterSampling( static_cast<UnsignedLong>( ceil( 1.0 * size / blockSize_ ) ) );
-  const UnsignedLong modulo ( size % blockSize_ );
-  const UnsignedLong lastBlockSize( modulo == 0 ? blockSize_ : modulo );
+  const UnsignedInteger maximumOuterSampling( static_cast<UnsignedInteger>( ceil( 1.0 * size / blockSize_ ) ) );
+  const UnsignedInteger modulo ( size % blockSize_ );
+  const UnsignedInteger lastBlockSize( modulo == 0 ? blockSize_ : modulo );
 
   // 2*N evaluations
   const NumericalSample outputSample1( model_(inputSample1_) );
   const NumericalSample outputSample2( model_(inputSample2_) );
 
   NumericalPoint sample1SquareMean( outputSample1.computeMean() );// mean over one sample, used for total order indices
-  for ( UnsignedLong j = 0; j < outputDimension; ++ j ) sample1SquareMean[j] *=  sample1SquareMean[j];
+  for ( UnsignedInteger j = 0; j < outputDimension; ++ j ) sample1SquareMean[j] *=  sample1SquareMean[j];
   NumericalPoint crossSquareMean( outputDimension, 0.0 );// cross-mean over both samples, used for 1st order indices
-  for ( UnsignedLong i = 0; i < size; ++ i)
-    for ( UnsignedLong j = 0; j < outputDimension; ++ j )
+  for ( UnsignedInteger i = 0; i < size; ++ i)
+    for ( UnsignedInteger j = 0; j < outputDimension; ++ j )
       crossSquareMean[j] += outputSample1[i][j] * outputSample2[i][j] / size;
 
   const NumericalPoint sample1Variance( outputSample1.computeVariancePerComponent() );
 
   // for each block ...
-  for ( UnsignedLong outerSampling = 0; outerSampling < maximumOuterSampling; ++ outerSampling )
+  for ( UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++ outerSampling )
   {
     // the last block can be smaller
-    const UnsignedLong effectiveBlockSize( outerSampling < ( maximumOuterSampling - 1 ) ? blockSize_ : lastBlockSize );
+    const UnsignedInteger effectiveBlockSize( outerSampling < ( maximumOuterSampling - 1 ) ? blockSize_ : lastBlockSize );
 
     // k*N evaluations
     NumericalSample scrambledAllOutputBlock1( 0, outputDimension );
@@ -91,10 +91,10 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
     // k*N evaluations ( only 2nd order )
     NumericalSample scrambledAllOutputBlock2( 0, outputDimension );
 
-    for ( UnsignedLong k1 = 0; k1 < inputDimension; ++ k1 )
+    for ( UnsignedInteger k1 = 0; k1 < inputDimension; ++ k1 )
     {
       NumericalSample scrambledInputBlock1( effectiveBlockSize, inputDimension );
-      for ( UnsignedLong blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex )
+      for ( UnsignedInteger blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex )
       {
         scrambledInputBlock1[blockIndex] = inputSample1_[outerSampling * blockSize_ + blockIndex];
         scrambledInputBlock1[blockIndex][k1] = inputSample2_[outerSampling * blockSize_ + blockIndex][k1];
@@ -105,7 +105,7 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
       if ( order >= 2 )
       {
         NumericalSample scrambledInputBlock2( effectiveBlockSize , inputDimension );
-        for ( UnsignedLong blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex )
+        for ( UnsignedInteger blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex )
         {
           scrambledInputBlock2[blockIndex] = inputSample2_[outerSampling * blockSize_ + blockIndex];
           scrambledInputBlock2[blockIndex][k1] = inputSample1_[outerSampling * blockSize_ + blockIndex][k1];
@@ -114,16 +114,16 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
         scrambledAllOutputBlock2.add( scrambledOutputBlock2 );
       }
 
-      for ( UnsignedLong j = 0; j < outputDimension; ++ j )
+      for ( UnsignedInteger j = 0; j < outputDimension; ++ j )
       {
-        for ( UnsignedLong blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex )
+        for ( UnsignedInteger blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex )
         {
           // this is the core idea of the Saltelli 2002 algorithm
           firstOrderIndice_[j][k1] += scrambledOutputBlock1[blockIndex][j] * outputSample2[outerSampling * blockSize_ + blockIndex][j] / ( size - 1 );
           totalOrderIndice_[j][k1] += scrambledOutputBlock1[blockIndex][j] * outputSample1[outerSampling * blockSize_ + blockIndex][j] / ( size - 1 );
           if ( order >= 2 )
           {
-            for ( UnsignedLong k2 = 0; k2 < k1; ++ k2 )
+            for ( UnsignedInteger k2 = 0; k2 < k1; ++ k2 )
             {
               // here we could also get the closed second order effects with the same trick as above without any further computation
               secondOrderIndice_(k1, k2, j) += scrambledAllOutputBlock1[k1 * effectiveBlockSize + blockIndex][j] * scrambledAllOutputBlock2[k2 * effectiveBlockSize + blockIndex][j] / (size - 1);
@@ -136,9 +136,9 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
   }
 
   // normalize indices
-  for ( UnsignedLong j = 0; j < outputDimension; ++ j )
+  for ( UnsignedInteger j = 0; j < outputDimension; ++ j )
   {
-    for ( UnsignedLong k = 0; k < inputDimension; ++ k )
+    for ( UnsignedInteger k = 0; k < inputDimension; ++ k )
     {
       const NumericalScalar FOIjk(firstOrderIndice_[j][k]);
       const NumericalScalar CSMj(crossSquareMean[j]);
@@ -152,9 +152,9 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
     }
     if (order >= 2)
     {
-      for ( UnsignedLong k1 = 0; k1 < inputDimension; ++ k1 )
+      for ( UnsignedInteger k1 = 0; k1 < inputDimension; ++ k1 )
       {
-        for ( UnsignedLong k2 = 0; k2 < k1; ++ k2 )
+        for ( UnsignedInteger k2 = 0; k2 < k1; ++ k2 )
         {
           secondOrderIndice_(k1, k2, j) = (secondOrderIndice_(k1, k2, j) - crossSquareMean[j]) / sample1Variance[j] - firstOrderIndice_[j][k1] - firstOrderIndice_[j][k2];
           if ((secondOrderIndice_(k1, k2, j) < 0.0) || (secondOrderIndice_(k1, k2, j) > 1.0)) LOGWARN(OSS() << "The estimated second order Sobol index (" << k1 << ", " << k2 << ") is not in the range [0, 1]. You may increase the sampling size.");
@@ -168,7 +168,7 @@ void SensitivityAnalysis::computeSobolIndices(const UnsignedLong order) const
 
 
 /* First Order indices accessor */
-NumericalPoint SensitivityAnalysis::getFirstOrderIndices(const UnsignedLong marginalIndex) const
+NumericalPoint SensitivityAnalysis::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (alreadyComputedOrder_ < 1) computeSobolIndices( 1 );
   if (marginalIndex >= firstOrderIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << firstOrderIndice_.getSize();
@@ -176,7 +176,7 @@ NumericalPoint SensitivityAnalysis::getFirstOrderIndices(const UnsignedLong marg
 }
 
 /* Second order indices accessor */
-SymmetricMatrix SensitivityAnalysis::getSecondOrderIndices(const UnsignedLong marginalIndex) const
+SymmetricMatrix SensitivityAnalysis::getSecondOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (alreadyComputedOrder_ < 2) computeSobolIndices( 2 );
   if (marginalIndex >= secondOrderIndice_.getNbSheets()) throw InvalidArgumentException(HERE) << "Output dimension is " << secondOrderIndice_.getNbSheets();
@@ -184,7 +184,7 @@ SymmetricMatrix SensitivityAnalysis::getSecondOrderIndices(const UnsignedLong ma
 }
 
 /* Total Order indices accessor */
-NumericalPoint SensitivityAnalysis::getTotalOrderIndices(const UnsignedLong marginalIndex) const
+NumericalPoint SensitivityAnalysis::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (alreadyComputedOrder_ < 1) computeSobolIndices( 1 );
   if (marginalIndex >= totalOrderIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << totalOrderIndice_.getSize();
@@ -192,12 +192,12 @@ NumericalPoint SensitivityAnalysis::getTotalOrderIndices(const UnsignedLong marg
 }
 
 /* Block size accessor */
-void SensitivityAnalysis::setBlockSize(const UnsignedLong blockSize)
+void SensitivityAnalysis::setBlockSize(const UnsignedInteger blockSize)
 {
   blockSize_ = blockSize;
 }
 
-UnsignedLong SensitivityAnalysis::getBlockSize() const
+UnsignedInteger SensitivityAnalysis::getBlockSize() const
 {
   return blockSize_;
 }
@@ -215,15 +215,15 @@ Graph SensitivityAnalysis::DrawImportanceFactors(const NumericalPoint & values,
     const String & title)
 {
   /* build data for the pie */
-  const UnsignedLong dimension(values.getDimension());
+  const UnsignedInteger dimension(values.getDimension());
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on empty data.";
   if ((names.getSize() != 0) && (names.getSize() != dimension)) throw InvalidArgumentException(HERE) << "Error: the names size must match the value dimension.";
   NumericalScalar l1Norm(0.0);
-  for (UnsignedLong i = 0; i < dimension; ++i) l1Norm += fabs(values[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) l1Norm += fabs(values[i]);
   if (l1Norm == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on null data.";
   NumericalPoint data(dimension);
   /* Normalization */
-  for (UnsignedLong i = 0; i < dimension; ++i) data[i] = values[i] / l1Norm;
+  for (UnsignedInteger i = 0; i < dimension; ++i) data[i] = values[i] / l1Norm;
   /* we build the pie */
   Pie importanceFactorsPie(data);
 
@@ -235,9 +235,9 @@ Graph SensitivityAnalysis::DrawImportanceFactors(const NumericalPoint & values,
   if (description.getSize() != dimension)
   {
     description = Description(dimension);
-    for (UnsignedLong i = 0; i < dimension; ++i) description[i] = String(OSS() << "Component " << i);
+    for (UnsignedInteger i = 0; i < dimension; ++i) description[i] = String(OSS() << "Component " << i);
   }
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     OSS oss(false);
     oss << description[i] << " : " << std::fixed;

@@ -57,12 +57,12 @@ public:
   TimeSeries();
 
   /** Standard constructor */
-  TimeSeries(const UnsignedLong n,
-             const UnsignedLong dim);
+  TimeSeries(const UnsignedInteger n,
+             const UnsignedInteger dim);
 
   /** Constructor from a TimeGrid and a dimension */
   TimeSeries(const RegularGrid & tg,
-             const UnsignedLong dim);
+             const UnsignedInteger dim);
 
   /** Constructor from a TimeGrid and a sample */
   TimeSeries(const RegularGrid & tg,
@@ -103,7 +103,7 @@ public:
   TimeSeries & add(const TimeSeries & continuer);
 
   /** Draw a marginal of the timeSerie */
-  Graph drawMarginal(const UnsignedLong index = 0) const;
+  Graph drawMarginal(const UnsignedInteger index = 0) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -120,7 +120,7 @@ private:
   NumericalScalar timeStep_;
 
   /** The number of timestamps of the underlying regular time grid */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
 }; /* class TimeSeries */
 

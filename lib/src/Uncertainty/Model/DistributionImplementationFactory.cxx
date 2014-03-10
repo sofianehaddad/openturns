@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(DistributionImplementationFactory);
 
 /* Default constructor */
-DistributionImplementationFactory::DistributionImplementationFactory(const UnsignedLong bootstrapSize,
+DistributionImplementationFactory::DistributionImplementationFactory(const UnsignedInteger bootstrapSize,
     const String & name)
   : PersistentObject(name)
   , bootstrapSize_(bootstrapSize)
@@ -84,9 +84,9 @@ DistributionImplementationFactory::Implementation DistributionImplementationFact
   BootstrapExperiment bootstrap(sample);
   /* Build the distribution based on the given sample */
   DistributionImplementationFactory::Implementation distribution(build(sample));
-  const UnsignedLong bootstrapSize(ResourceMap::GetAsUnsignedLong("DistributionImplementationFactory-DefaultBootstrapSize"));
+  const UnsignedInteger bootstrapSize(ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"));
   NumericalSample parametersSample(bootstrapSize, ParametersAsNumericalPoint(distribution->getParametersCollection()));
-  for (UnsignedLong i = 1; i < bootstrapSize; ++i)
+  for (UnsignedInteger i = 1; i < bootstrapSize; ++i)
   {
     /* Draw a bootstrap sample */
     const NumericalSample bootstrapSample(bootstrap.generate());
@@ -137,8 +137,8 @@ NumericalPoint DistributionImplementationFactory::runRFactory(const NumericalSam
   cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
   cmdFile << "cat(";
   const Description parametersDescription(distribution.getParametersCollection()[0].getDescription());
-  const UnsignedLong parametersNumber(parametersDescription.getSize());
-  for (UnsignedLong i = 0; i < parametersNumber; ++i) cmdFile << "res$" << parametersDescription[i] << ", ";
+  const UnsignedInteger parametersNumber(parametersDescription.getSize());
+  for (UnsignedInteger i = 0; i < parametersNumber; ++i) cmdFile << "res$" << parametersDescription[i] << ", ";
   cmdFile << "sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;
   cmdFile.close();
@@ -151,7 +151,7 @@ NumericalPoint DistributionImplementationFactory::runRFactory(const NumericalSam
   // Parse result file
   std::ifstream resultFile(resultFileName.c_str(), std::ios::in);
   NumericalPoint parametersValue(parametersNumber);
-  for (UnsignedLong i = 0; i < parametersNumber; ++i) resultFile >> parametersValue[i];
+  for (UnsignedInteger i = 0; i < parametersNumber; ++i) resultFile >> parametersValue[i];
   if (remove(dataFileName.c_str()) == -1) LOGWARN(OSS() << "Warning: cannot delete file " << dataFileName);
   if (remove(resultFileName.c_str()) == -1) LOGWARN(OSS() << "Warning: cannot delete file " << resultFileName);
   if (remove(commandFileName.c_str()) == -1) LOGWARN(OSS() << "Warning: cannot delete file " << commandFileName);
@@ -161,46 +161,46 @@ NumericalPoint DistributionImplementationFactory::runRFactory(const NumericalSam
 /* Convert a NumericalPointWithDescriptionCollection into a NumericalPointCollection */
 DistributionImplementationFactory::NumericalPointCollection DistributionImplementationFactory::RemoveDescriptionFromCollection(const NumericalPointWithDescriptionCollection & coll)
 {
-  const UnsignedLong size(coll.getSize());
+  const UnsignedInteger size(coll.getSize());
   NumericalPointCollection newColl(size);
-  for (UnsignedLong i = 0; i < size; ++i) newColl[i] = coll[i];
+  for (UnsignedInteger i = 0; i < size; ++i) newColl[i] = coll[i];
   return newColl;
 }
 
 /* Convert a NumericalPointCollection into a NumericalPointWithDescriptionCollection */
 DistributionImplementationFactory::NumericalPointWithDescriptionCollection DistributionImplementationFactory::AddDescriptionToCollection(const NumericalPointCollection & coll)
 {
-  const UnsignedLong size(coll.getSize());
+  const UnsignedInteger size(coll.getSize());
   NumericalPointWithDescriptionCollection newColl(size);
-  for (UnsignedLong i = 0; i < size; ++i) newColl[i] = coll[i];
+  for (UnsignedInteger i = 0; i < size; ++i) newColl[i] = coll[i];
   return newColl;
 }
 
 /* Convert a parameters collection into a NumericalPoint */
 NumericalPoint DistributionImplementationFactory::ParametersAsNumericalPoint(const NumericalPointWithDescriptionCollection & parameters)
 {
-  const UnsignedLong size(parameters.getSize());
+  const UnsignedInteger size(parameters.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot convert an empty collection of parameters.";
   // Early exit if dimension 1
   if (size == 1) return parameters[0];
   // Concatenate the parameters
   NumericalPoint allParameters(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint marginalParameters(parameters[i]);
-    const UnsignedLong marginalSize(marginalParameters.getSize());
-    for (UnsignedLong j = 0; j < marginalSize; ++j) allParameters.add(marginalParameters[j]);
+    const UnsignedInteger marginalSize(marginalParameters.getSize());
+    for (UnsignedInteger j = 0; j < marginalSize; ++j) allParameters.add(marginalParameters[j]);
   }
   return allParameters;
 }
 
 /* Bootstrap size accessor */
-UnsignedLong DistributionImplementationFactory::getBootstrapSize() const
+UnsignedInteger DistributionImplementationFactory::getBootstrapSize() const
 {
   return bootstrapSize_;
 }
 
-void DistributionImplementationFactory::setBootstrapSize(const UnsignedLong bootstrapSize)
+void DistributionImplementationFactory::setBootstrapSize(const UnsignedInteger bootstrapSize)
 {
   if (bootstrapSize == 0) throw InvalidArgumentException(HERE) << "Error: the bootstrap size must be > 0.";
   bootstrapSize_ = bootstrapSize;

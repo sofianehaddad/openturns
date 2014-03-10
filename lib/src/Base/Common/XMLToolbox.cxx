@@ -392,9 +392,9 @@ String XML::GetNodeName(const Node & node)
 
 
 
-UnsignedLong XML::GetNodeLineNumber(const Node & node)
+UnsignedInteger XML::GetNodeLineNumber(const Node & node)
 {
-  UnsignedLong lineno = 0;
+  UnsignedInteger lineno = 0;
   if (node) lineno = xmlGetLineNo(node);
   return lineno;
 }

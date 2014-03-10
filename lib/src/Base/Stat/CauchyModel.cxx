@@ -97,7 +97,7 @@ CauchyModel::CauchyModel(const NumericalPoint & scale,
   if (spatialCovariance.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial covariance has a dimension different from the scales and amplitudes.";
   setScale(scale);
   NumericalPoint amplitude(dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
     amplitude[i] = sqrt(spatialCovariance(i, i));
   // Check that the amplitudes are valid
   setAmplitude(amplitude);
@@ -106,8 +106,8 @@ CauchyModel::CauchyModel(const NumericalPoint & scale,
   if (!isDiagonal_)
   {
     spatialCorrelation_ = CorrelationMatrix(dimension_);
-    for (UnsignedLong i = 0; i < dimension_; ++i)
-      for (UnsignedLong j = 0; j < i; ++j)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
         spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
   } // !isDiagonal
 }
@@ -123,11 +123,11 @@ HermitianMatrix CauchyModel::operator() (const NumericalScalar frequency) const
 {
   const NumericalScalar scaledFrequencySquared(pow(2.0 * M_PI * fabs(frequency), 2));
   HermitianMatrix spectralDensityMatrix(dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
     spectralDensityMatrix(i, i) = 2.0 * amplitude_[i] * amplitude_[i] * scale_[i] / (scale_[i] * scale_[i] + scaledFrequencySquared);
   if (!isDiagonal_)
-    for (UnsignedLong j = 0; j < dimension_ ; ++j)
-      for (UnsignedLong i = j + 1; i < dimension_ ; ++i)
+    for (UnsignedInteger j = 0; j < dimension_ ; ++j)
+      for (UnsignedInteger i = j + 1; i < dimension_ ; ++i)
         spectralDensityMatrix(i, j) = amplitude_[i] * spatialCorrelation_(i, j) * amplitude_[j] * (scale_[i] + scale_[j]) / (pow(0.5 * (scale_[i] + scale_[j]), 2.0) + scaledFrequencySquared);
 
   return spectralDensityMatrix;
@@ -167,7 +167,7 @@ NumericalPoint CauchyModel::getAmplitude() const
 
 void CauchyModel::setAmplitude(const NumericalPoint & amplitude)
 {
-  for (UnsignedLong index = 0; index < dimension_; ++index)
+  for (UnsignedInteger index = 0; index < dimension_; ++index)
     if (amplitude[index] <= 0)
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of amplitude is non positive" ;
   amplitude_ = amplitude;
@@ -181,7 +181,7 @@ NumericalPoint CauchyModel::getScale() const
 
 void CauchyModel::setScale(const NumericalPoint & scale)
 {
-  for (UnsignedLong index = 0; index < dimension_; ++index)
+  for (UnsignedInteger index = 0; index < dimension_; ++index)
     if (scale[index] <= 0)
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of scale is non positive" ;
   scale_ = scale;

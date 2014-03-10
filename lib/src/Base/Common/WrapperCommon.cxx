@@ -1800,7 +1800,7 @@ extern long wrapper_runInsulatedCommand(const char * temporaryDir,
   {
     struct timeval tv;
     tv.tv_sec  = 0;
-    tv.tv_usec = ResourceMap::GetAsUnsignedLong("slow-filesystem-wait-time");
+    tv.tv_usec = ResourceMap::GetAsUnsignedInteger("slow-filesystem-wait-time");
     FSLOCK( rc = access( cmd2, R_OK ); myerrno = errno; );
     while ( (retries-- > 0) && (rc == -1) )
     {
@@ -1843,7 +1843,7 @@ extern long wrapper_runInsulatedCommand(const char * temporaryDir,
   retries = wrapper_getRunCommandRetries( p_exchangedData );
   {
     const long MICROSECONDS = 1000 * 1000;
-    long waitfor = ResourceMap::GetAsUnsignedLong("slow-filesystem-error-recovery");
+    long waitfor = ResourceMap::GetAsUnsignedInteger("slow-filesystem-error-recovery");
     struct timeval tv;
     tv.tv_sec  = waitfor / MICROSECONDS;
     tv.tv_usec = waitfor % MICROSECONDS;

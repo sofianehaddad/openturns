@@ -61,13 +61,13 @@ public:
   ComplexMatrixImplementation();
 
   /** Constructor with size (rowDim and colDim) */
-  ComplexMatrixImplementation(const UnsignedLong rowDim,
-                              const UnsignedLong colDim);
+  ComplexMatrixImplementation(const UnsignedInteger rowDim,
+                              const UnsignedInteger colDim);
 
   /** Constructor from range of external collection */
   template <class InputIterator>
-  ComplexMatrixImplementation(const UnsignedLong rowDim,
-                              const UnsignedLong colDim,
+  ComplexMatrixImplementation(const UnsignedInteger rowDim,
+                              const UnsignedInteger colDim,
                               const InputIterator first,
                               const InputIterator last);
 
@@ -75,8 +75,8 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  ComplexMatrixImplementation(const UnsignedLong rowDim,
-                              const UnsignedLong colDim,
+  ComplexMatrixImplementation(const UnsignedInteger rowDim,
+                              const UnsignedInteger colDim,
                               const Collection<NumericalComplex> & elementsValues);
 
 
@@ -84,8 +84,8 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  ComplexMatrixImplementation(const UnsignedLong rowDim,
-                              const UnsignedLong colDim,
+  ComplexMatrixImplementation(const UnsignedInteger rowDim,
+                              const UnsignedInteger colDim,
                               const Collection<NumericalScalar> & elementsValues);
 
   /** Constructor from MatrixImplementation */
@@ -105,21 +105,21 @@ public:
 
   /** Operator () gives access to the elements of the ComplexMatrixImplementation (to modify these elements) */
   /** The element of the ComplexMatrixImplementation is designated by its row number i and its column number j */
-  NumericalComplex & operator () (const UnsignedLong i,
-                                  const UnsignedLong j);
+  NumericalComplex & operator () (const UnsignedInteger i,
+                                  const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the ComplexMatrixImplementation (read only) */
   /** The element of the ComplexMatrixImplementation is designated by its row number i and its column number j */
-  const NumericalComplex & operator () (const UnsignedLong i,
-                                        const UnsignedLong j) const;
+  const NumericalComplex & operator () (const UnsignedInteger i,
+                                        const UnsignedInteger j) const;
 
   /** Get the dimensions of the ComplexMatrixImplementation */
   /** Number of rows */
-  const UnsignedLong getNbRows() const;
+  const UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedLong getNbColumns() const;
+  const UnsignedInteger getNbColumns() const;
   /** Dimension (for square matrices only */
-  const UnsignedLong getDimension() const;
+  const UnsignedInteger getDimension() const;
 
   /** ComplexMatrixImplementation transpose */
   ComplexMatrixImplementation transpose () const;
@@ -172,9 +172,9 @@ public:
       const char uplo = 'L') const;
 
   /** ComplexMatrixImplementation integer power */
-  ComplexMatrixImplementation genPower(const UnsignedLong n) const;
-  ComplexMatrixImplementation symPower(const UnsignedLong n) const;
-  ComplexMatrixImplementation hermPower(const UnsignedLong n) const;
+  ComplexMatrixImplementation genPower(const UnsignedInteger n) const;
+  ComplexMatrixImplementation symPower(const UnsignedInteger n) const;
+  ComplexMatrixImplementation hermPower(const UnsignedInteger n) const;
 
   /** Multiplications with a NumericalComplexCollection (must have consistent dimensions) */
   NumericalComplexCollection genVectProd (const NumericalComplexCollection & pt) const;
@@ -227,31 +227,31 @@ public:
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
   const NumericalComplex * __baseaddress__ () const;
-  UnsignedLong __elementsize__ () const;
-  UnsignedLong __stride__ (UnsignedLong dim) const;
+  UnsignedInteger __elementsize__ () const;
+  UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 protected:
 
   /** ComplexMatrixImplementation Dimensions */
-  UnsignedLong nbRows_;
-  UnsignedLong nbColumns_;
+  UnsignedInteger nbRows_;
+  UnsignedInteger nbColumns_;
 
   /** Position conversion function : the indices i & j are used to compute the actual position of the element in the collection */
-  inline UnsignedLong convertPosition (const UnsignedLong i,
-                                       const UnsignedLong j) const;
+  inline UnsignedInteger convertPosition (const UnsignedInteger i,
+                                       const UnsignedInteger j) const;
 
 }; /* class ComplexMatrixImplementation */
 
-inline UnsignedLong ComplexMatrixImplementation::convertPosition (const UnsignedLong i,
-    const UnsignedLong j) const
+inline UnsignedInteger ComplexMatrixImplementation::convertPosition (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
   return i + nbRows_ * j ;
 }
 
 /** Constructor from range of external collection */
 template <class InputIterator>
-ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim,
+ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim,
     const InputIterator first,
     const InputIterator last)
   : PersistentCollection<NumericalComplex>(rowDim * colDim, 0.0),

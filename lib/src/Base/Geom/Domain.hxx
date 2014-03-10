@@ -70,7 +70,7 @@ public:
   NumericalScalar getVolume() const;
 
   /** Dimension accessors */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
 }; /* class Domain */
 

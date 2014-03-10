@@ -118,7 +118,7 @@ void LeastSquaresStrategy::computeCoefficients(const NumericalMathFunction & fun
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
-    const UnsignedLong marginalIndex)
+    const UnsignedInteger marginalIndex)
 {
   // Check if the marginal index is not compatible with the function output dimension
   if (marginalIndex >= function.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the marginal index is too large with respect to the function output dimension.";

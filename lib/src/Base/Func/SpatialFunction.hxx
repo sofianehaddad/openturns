@@ -74,7 +74,7 @@ public:
   Field operator() (const Field & inTS) const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   Implementation getMarginal(const Indices & indices) const;

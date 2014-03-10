@@ -249,7 +249,7 @@ void LogUniform::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint LogUniform::getStandardMoment(const UnsignedLong n) const
+NumericalPoint LogUniform::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   return NumericalPoint(1, (pow(b_, n) - pow(a_, n)) / (n * (bLog_ - aLog_)));

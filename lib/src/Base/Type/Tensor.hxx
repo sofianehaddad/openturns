@@ -55,22 +55,22 @@ public:
   Tensor();
 
   /** Constructor with size (rowDim, colDim, sheetDim) */
-  Tensor(const UnsignedLong rowDim,
-         const UnsignedLong colDim,
-         const UnsignedLong sheetDim);
+  Tensor(const UnsignedInteger rowDim,
+         const UnsignedInteger colDim,
+         const UnsignedInteger sheetDim);
 
   /** Constructor from range of external collection */
   template <class InputIterator>
-  Tensor(const UnsignedLong rowDim,
-         const UnsignedLong colDim,
-         const UnsignedLong sheetDim,
+  Tensor(const UnsignedInteger rowDim,
+         const UnsignedInteger colDim,
+         const UnsignedInteger sheetDim,
          InputIterator first,
          InputIterator last);
 
   /** Constructor from external collection */
-  Tensor(const UnsignedLong rowDim,
-         const UnsignedLong colDim,
-         const UnsignedLong sheetDim,
+  Tensor(const UnsignedInteger rowDim,
+         const UnsignedInteger colDim,
+         const UnsignedInteger sheetDim,
          const NumericalScalarCollection & elementsValues);
 
   /** Constructor with implementation */
@@ -85,31 +85,31 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j,
-                                 const UnsignedLong k);
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j,
+                                 const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j,
-                                       const UnsignedLong k) const;
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j,
+                                       const UnsignedInteger k) const;
 #endif
 
   /** getSheet returns the sheet specified by its sheet number k */
-  Matrix getSheet(const UnsignedLong k) const;
+  Matrix getSheet(const UnsignedInteger k) const;
 
   /** setSheet sets matrix m as the sheet specified by its sheet number k  */
-  void setSheet(const UnsignedLong k,
+  void setSheet(const UnsignedInteger k,
                 const Matrix & m);
 
   /** Get the dimensions of the tensor */
   /** Number of rows */
-  const UnsignedLong getNbRows() const;
+  const UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedLong getNbColumns() const;
+  const UnsignedInteger getNbColumns() const;
   /** Number of sheets */
-  const UnsignedLong getNbSheets() const;
+  const UnsignedInteger getNbSheets() const;
 
   /** Comparison operators */
   Bool operator == (const Tensor & rhs) const;
@@ -120,8 +120,8 @@ public:
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
   const NumericalScalar * __baseaddress__ () const;
-  UnsignedLong __elementsize__ () const;
-  UnsignedLong __stride__ (UnsignedLong dim) const;
+  UnsignedInteger __elementsize__ () const;
+  UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 protected:
 
@@ -131,9 +131,9 @@ protected:
 
 /** Constructor with size (rowDim, colDim, sheetDim) */
 template <class InputIterator>
-Tensor::Tensor(const UnsignedLong rowDim,
-               const UnsignedLong colDim,
-               const UnsignedLong sheetDim,
+Tensor::Tensor(const UnsignedInteger rowDim,
+               const UnsignedInteger colDim,
+               const UnsignedInteger sheetDim,
                InputIterator first,
                InputIterator last)
   : TypedInterfaceObject<TensorImplementation>(new TensorImplementation(rowDim, colDim, sheetDim, first, last))

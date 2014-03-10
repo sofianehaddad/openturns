@@ -70,13 +70,13 @@ public:
   Matrix(const MatrixImplementation & i);
 
   /** Constructor with size (rowDim and colDim) */
-  Matrix(const UnsignedLong rowDim,
-         const UnsignedLong colDim);
+  Matrix(const UnsignedInteger rowDim,
+         const UnsignedInteger colDim);
 
   /** Constructor from range of external collection */
   template <class InputIterator>
-  Matrix(const UnsignedLong rowDim,
-         const UnsignedLong colDim,
+  Matrix(const UnsignedInteger rowDim,
+         const UnsignedInteger colDim,
          const InputIterator first,
          const InputIterator last);
 
@@ -84,8 +84,8 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  Matrix(const UnsignedLong rowDim,
-         const UnsignedLong colDim,
+  Matrix(const UnsignedInteger rowDim,
+         const UnsignedInteger colDim,
          const NumericalScalarCollection & elementsValues);
 
   /** Set small elements to zero */
@@ -98,28 +98,28 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j);
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j) const;
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j) const;
 #endif
 
   /** Get the dimensions of the matrix */
   /** Number of rows */
-  const UnsignedLong getNbRows() const;
+  const UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedLong getNbColumns() const;
+  const UnsignedInteger getNbColumns() const;
 
   /** Matrix transpose */
   Matrix transpose () const;
 
   /** Row extraction */
-  const Matrix getRow(const UnsignedLong rowIndex) const;
+  const Matrix getRow(const UnsignedInteger rowIndex) const;
   /** Column extration */
-  const Matrix getColumn(const UnsignedLong columnIndex) const;
+  const Matrix getColumn(const UnsignedInteger columnIndex) const;
 
   /** Matrix additions (must have the same dimensions) */
   Matrix operator + (const Matrix & m) const;
@@ -169,8 +169,8 @@ public:
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
   const NumericalScalar * __baseaddress__ () const;
-  UnsignedLong __elementsize__ () const;
-  UnsignedLong __stride__ (UnsignedLong dim) const;
+  UnsignedInteger __elementsize__ () const;
+  UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 }; /* class Matrix */
 
@@ -184,8 +184,8 @@ inline Matrix operator * (const NumericalScalar s,
 
 /** Constructor from range of external collection */
 template <class InputIterator>
-Matrix::Matrix(const UnsignedLong rowDim,
-               const UnsignedLong colDim,
+Matrix::Matrix(const UnsignedInteger rowDim,
+               const UnsignedInteger colDim,
                const InputIterator first,
                const InputIterator last)
   : TypedInterfaceObject<MatrixImplementation>(new MatrixImplementation(rowDim, colDim, first, last))

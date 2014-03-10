@@ -40,20 +40,20 @@ int main(int argc, char *argv[])
       // pBeta
       NumericalScalar p1Min(0.2);
       NumericalScalar p1Max(5.0);
-      UnsignedLong n1(5);
+      UnsignedInteger n1(5);
       NumericalScalar p2Min(0.2);
       NumericalScalar p2Max(5.0);
-      UnsignedLong n2(5);
+      UnsignedInteger n2(5);
       NumericalScalar xMin(0.1);
       NumericalScalar xMax(0.9);
-      UnsignedLong nX(5);
-      for (UnsignedLong i1 = 0; i1 < n1; ++i1)
+      UnsignedInteger nX(5);
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         NumericalScalar p1(p1Min + (p1Max - p1Min) * i1 / (n1 - 1));
-        for (UnsignedLong i2 = 0; i2 < n2; ++i2)
+        for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
           NumericalScalar p2(p2Min + (p2Max - p2Min) * i2 / (n2 - 1));
-          for (UnsignedLong iX = 0; iX < nX; ++iX)
+          for (UnsignedInteger iX = 0; iX < nX; ++iX)
           {
             NumericalScalar x(xMin + (xMax - xMin) * iX / (nX - 1));
             fullprint << "pBeta(" << p1 << ", " << p2 << ", " << x << ")=" << DistFunc::pBeta(p1, p2, x) << ", complementary=" << DistFunc::pBeta(p1, p2, x, true) << std::endl;
@@ -65,20 +65,20 @@ int main(int argc, char *argv[])
       // qBeta
       NumericalScalar p1Min(0.2);
       NumericalScalar p1Max(5.0);
-      UnsignedLong n1(5);
+      UnsignedInteger n1(5);
       NumericalScalar p2Min(0.2);
       NumericalScalar p2Max(5.0);
-      UnsignedLong n2(5);
+      UnsignedInteger n2(5);
       NumericalScalar qMin(0.1);
       NumericalScalar qMax(0.9);
-      UnsignedLong nQ(5);
-      for (UnsignedLong i1 = 0; i1 < n1; ++i1)
+      UnsignedInteger nQ(5);
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         NumericalScalar p1(p1Min + (p1Max - p1Min) * i1 / (n1 - 1));
-        for (UnsignedLong i2 = 0; i2 < n2; ++i2)
+        for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
           NumericalScalar p2(p2Min + (p2Max - p2Min) * i2 / (n2 - 1));
-          for (UnsignedLong iQ = 0; iQ < nQ; ++iQ)
+          for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
           {
             NumericalScalar q(qMin + (qMax - qMin) * iQ / (nQ - 1));
             fullprint << "qBeta(" << p1 << ", " << p2 << ", " << q << ")=" << DistFunc::qBeta(p1, p2, q) << ", complementary=" << DistFunc::qBeta(p1, p2, q, true) << std::endl;
@@ -90,18 +90,18 @@ int main(int argc, char *argv[])
       // rBeta
       NumericalScalar p1Min(0.2);
       NumericalScalar p1Max(5.0);
-      UnsignedLong n1(5);
+      UnsignedInteger n1(5);
       NumericalScalar p2Min(0.2);
       NumericalScalar p2Max(5.0);
-      UnsignedLong n2(5);
-      UnsignedLong nR(5);
-      for (UnsignedLong i1 = 0; i1 < n1; ++i1)
+      UnsignedInteger n2(5);
+      UnsignedInteger nR(5);
+      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         NumericalScalar p1(p1Min + (p1Max - p1Min) * i1 / (n1 - 1));
-        for (UnsignedLong i2 = 0; i2 < n2; ++i2)
+        for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
           NumericalScalar p2(p2Min + (p2Max - p2Min) * i2 / (n2 - 1));
-          for (UnsignedLong iR = 0; iR < nR; ++iR)
+          for (UnsignedInteger iR = 0; iR < nR; ++iR)
           {
             fullprint << "rBeta(" << p1 << ", " << p2 << ")=" << DistFunc::rBeta(p1, p2) << std::endl;
           }

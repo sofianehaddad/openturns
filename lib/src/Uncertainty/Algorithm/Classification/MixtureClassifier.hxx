@@ -53,18 +53,18 @@ public:
   virtual String __repr__() const;
 
   /** Associate a point with a class */
-  virtual UnsignedLong classify(const NumericalPoint & inP) const;
+  virtual UnsignedInteger classify(const NumericalPoint & inP) const;
 
   /** Grade a point as if it were associated to a class */
   virtual NumericalScalar grade(const NumericalPoint & inP,
-                                const UnsignedLong outC) const;
+                                const UnsignedInteger outC) const;
 
   /** Mixture accessors */
   Mixture getMixture() const;
   void setMixture(const Mixture & mixture);
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

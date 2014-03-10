@@ -57,7 +57,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

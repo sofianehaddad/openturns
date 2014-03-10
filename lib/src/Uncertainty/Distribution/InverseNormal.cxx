@@ -197,13 +197,13 @@ NumericalPoint InverseNormal::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint InverseNormal::getStandardMoment(const UnsignedLong n) const
+NumericalPoint InverseNormal::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   NumericalScalar moment(1.0);
   NumericalScalar rho(0.5 * mu_ / lambda_);
   NumericalScalar product(1.0);
-  for (UnsignedLong k = 1; k < n; ++k)
+  for (UnsignedInteger k = 1; k < n; ++k)
   {
     product *= (n - k) * (n + k - 1) * rho / k;
     moment += product;

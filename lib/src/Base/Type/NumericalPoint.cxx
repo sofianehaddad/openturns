@@ -45,7 +45,7 @@ NumericalPoint::NumericalPoint()
 }
 
 /* Constructor with size */
-NumericalPoint::NumericalPoint(const UnsignedLong size,
+NumericalPoint::NumericalPoint(const UnsignedInteger size,
                                const NumericalScalar value)
   : PersistentCollection<NumericalScalar>(size, value)
 {
@@ -79,13 +79,13 @@ NumericalPoint * NumericalPoint::clone() const
 
 
 /* Coordinate accessor */
-NumericalScalar & NumericalPoint::operator[](const UnsignedLong index)
+NumericalScalar & NumericalPoint::operator[](const UnsignedInteger index)
 {
   return PersistentCollection<NumericalScalar>::operator[](index);
 }
 
 /* Coordinate accessor */
-const NumericalScalar & NumericalPoint::operator[](const UnsignedLong index) const
+const NumericalScalar & NumericalPoint::operator[](const UnsignedInteger index) const
 {
   return PersistentCollection<NumericalScalar>::operator[](index);
 }
@@ -123,7 +123,7 @@ NumericalPoint::iterator NumericalPoint::erase(iterator position)
 }
 
 /* Erase the element pointed by position */
-NumericalPoint::iterator NumericalPoint::erase(UnsignedLong position)
+NumericalPoint::iterator NumericalPoint::erase(UnsignedInteger position)
 {
   return PersistentCollection<NumericalScalar>::erase(begin() + position);
 }
@@ -158,7 +158,7 @@ NumericalPoint & NumericalPoint::operator +=(const NumericalPoint & other)
         << "; RHS dimension = "
         << other.getDimension();
 
-  for (UnsignedLong i = 0; i < getDimension(); ++i) operator[](i) += other[i];
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) operator[](i) += other[i];
   return *this;
 }
 
@@ -192,7 +192,7 @@ NumericalPoint & NumericalPoint::operator -=(const NumericalPoint & other)
         << "; RHS dimension = " <<
         other.getDimension();
 
-  for (UnsignedLong i = 0; i < getDimension(); ++i) (*this)[i] -= other[i];
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) (*this)[i] -= other[i];
   return *this;
 }
 
@@ -204,7 +204,7 @@ NumericalPoint operator *(const NumericalPoint & point,
 {
   // We create a NumericalPoint of the same dimension as both points for holding the result
   NumericalPoint result(point.getDimension());
-  for (UnsignedLong i = 0; i < point.getDimension(); ++i) result[i] = point[i] * scalar;
+  for (UnsignedInteger i = 0; i < point.getDimension(); ++i) result[i] = point[i] * scalar;
   return result;
 }
 
@@ -217,7 +217,7 @@ NumericalPoint operator *(const NumericalScalar scalar,
 /*  In-place product operator */
 NumericalPoint & NumericalPoint::operator *=(const NumericalScalar scalar)
 {
-  for (UnsignedLong i = 0; i < getDimension(); ++i) (*this)[i] *= scalar;
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) (*this)[i] *= scalar;
   return *this;
 }
 
@@ -228,7 +228,7 @@ NumericalPoint operator /(const NumericalPoint & point,
   if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   // We create a NumericalPoint of the same dimension as both points for holding the result
   NumericalPoint result(point.getDimension());
-  for (UnsignedLong i = 0; i < point.getDimension(); ++i) result[i] = point[i] / scalar;
+  for (UnsignedInteger i = 0; i < point.getDimension(); ++i) result[i] = point[i] / scalar;
   return result;
 }
 
@@ -236,7 +236,7 @@ NumericalPoint operator /(const NumericalPoint & point,
 NumericalPoint & NumericalPoint::operator /=(const NumericalScalar scalar)
 {
   if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
-  for (UnsignedLong i = 0; i < getDimension(); ++i) (*this)[i] /= scalar;
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) (*this)[i] /= scalar;
   return *this;
 }
 
@@ -253,7 +253,7 @@ NumericalScalar dot(const NumericalPoint & lhs,
         << rhs.getDimension();
 
   NumericalScalar dotProduct(0.);
-  for (UnsignedLong i = 0; i < lhs.getDimension(); ++i) dotProduct += lhs[i] * rhs[i];
+  for (UnsignedInteger i = 0; i < lhs.getDimension(); ++i) dotProduct += lhs[i] * rhs[i];
   return dotProduct;
 }
 
@@ -286,7 +286,7 @@ NumericalScalar NumericalPoint::norm() const
 NumericalScalar NumericalPoint::norm1() const
 {
   NumericalScalar result(0.0);
-  for (UnsignedLong i = 0; i < getDimension(); ++i) result += fabs((*this)[i]);
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) result += fabs((*this)[i]);
   return result;
 }
 
@@ -316,7 +316,7 @@ NumericalPoint NumericalPoint::normalizeSquare() const
   const NumericalScalar theNormSquare(normSquare());
   if (theNormSquare == 0.0) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
   NumericalPoint result(getDimension());
-  for (UnsignedLong i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;
   return result;
 }
 

@@ -604,9 +604,9 @@ struct WrapperExchangedData * WrapperData::getNewWrapperExchangedDataForCInterfa
   p_exchangedData->platform_->integerRegexpShortcut_     = ResourceMap::GetAsNewCharArray("integer-regexp-shortcut");
   p_exchangedData->platform_->separatorRegexpShortcut_   = ResourceMap::GetAsNewCharArray("separator-regexp-shortcut");
 
-  p_exchangedData->platform_->nbCpus_             = ResourceMap::GetAsUnsignedLong("parallel-threads");
-  p_exchangedData->platform_->outputFilesTimeout_ = ResourceMap::GetAsUnsignedLong("output-files-timeout");
-  p_exchangedData->platform_->retries_            = ResourceMap::GetAsUnsignedLong("run-command-retries");
+  p_exchangedData->platform_->nbCpus_             = ResourceMap::GetAsUnsignedInteger("parallel-threads");
+  p_exchangedData->platform_->outputFilesTimeout_ = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
+  p_exchangedData->platform_->retries_            = ResourceMap::GetAsUnsignedInteger("run-command-retries");
   p_exchangedData->platform_->command_path_       = 0; // malloc() here because command_path_ allocated in C
 
   // Initialize the embedded mutex

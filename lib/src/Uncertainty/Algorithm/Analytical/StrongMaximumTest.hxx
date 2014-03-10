@@ -59,7 +59,7 @@ public:
                     const NumericalPoint & standardSpaceDesignPoint,
                     const NumericalScalar importanceLevel,
                     const NumericalScalar accuracyLevel,
-                    const UnsignedLong pointNumber);
+                    const UnsignedInteger pointNumber);
 
 
   /** Virtual constructor */
@@ -84,7 +84,7 @@ public:
   NumericalScalar  getDesignPointVicinity() const;
 
   /** PointNumber accessor */
-  UnsignedLong getPointNumber() const;
+  UnsignedInteger getPointNumber() const;
 
   /** DeltaEpsilon accessor */
   NumericalScalar getDeltaEpsilon() const;
@@ -136,7 +136,7 @@ private:
   void setConfidenceLevel( const NumericalScalar confidenceLevel);
 
   /** PointNumber accessor */
-  void setPointNumber(const UnsignedLong pointNumber);
+  void setPointNumber(const UnsignedInteger pointNumber);
 
   /** ImportanceLevel accessor */
   void setImportanceLevel(const NumericalScalar importanceLevel);
@@ -159,8 +159,8 @@ private:
 
   /** the function that samples the sphere (radius) with N points */
   NumericalSample sampleSphere(const NumericalScalar radius,
-                               const UnsignedLong dimension,
-                               const UnsignedLong pointNumber) const;
+                               const UnsignedInteger dimension,
+                               const UnsignedInteger pointNumber) const;
 
   /**  the function that evaluates the HyperSphereSurfaceRatio (see documentation) */
   NumericalScalar computeHyperSphereSurfaceRatio();
@@ -177,7 +177,7 @@ private:
   NumericalScalar accuracyLevel_;
   NumericalScalar confidenceLevel_;
   NumericalScalar designPointVicinity_; // cosinus of the cone around the standard design point
-  UnsignedLong pointNumber_;
+  UnsignedInteger pointNumber_;
   NumericalScalar deltaEpsilon_;
   NumericalSample nearDesignPointVerifyingEventPoints_;
   NumericalSample nearDesignPointVerifyingEventValues_;

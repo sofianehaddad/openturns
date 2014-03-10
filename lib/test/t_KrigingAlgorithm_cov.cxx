@@ -36,11 +36,11 @@ void test_model(const CovarianceModel & myModel)
 
   fullprint << "myModel = " << myModel << std::endl;
 
-  const UnsignedLong dimension = myModel.getDimension();
+  const UnsignedInteger dimension = myModel.getDimension();
 
   NumericalPoint x1(dimension);
   NumericalPoint x2(dimension);
-  for (UnsignedLong j = 0; j < dimension; ++ j)
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     x1[j] = 8.0 * (0.5 - j);
     x2[j] = -1.0 * (3.0 - 2.0 * j);
@@ -53,7 +53,7 @@ void test_model(const CovarianceModel & myModel)
 
   NumericalScalar eps = 1e-5;
   NumericalPoint gradfd(dimension);
-  for (UnsignedLong j = 0; j < dimension; ++ j)
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     NumericalPoint x1_d(x1);
     x1_d[j] += eps;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
   try
   {
     // Default dimension parameter to evaluate the model
-    const UnsignedLong dimension = 2;
+    const UnsignedInteger dimension = 2;
 
 
     {

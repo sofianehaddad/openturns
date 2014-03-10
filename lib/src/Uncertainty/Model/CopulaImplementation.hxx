@@ -71,7 +71,7 @@ public:
   /** Get the i-th marginal copula */
   using ContinuousDistribution::getMarginal;
 #ifndef SWIG
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 #endif
 
   /** Get the copula */
@@ -130,7 +130,7 @@ private:
     }
 
     const DistributionImplementation * p_distribution_;
-    const UnsignedLong dimension_;
+    const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
 
 

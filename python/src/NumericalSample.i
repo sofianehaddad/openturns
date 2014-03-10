@@ -96,8 +96,8 @@ PyObject * __getitem__(PyObject * args) const {
   PyObject * obj2 = 0 ;
   
   // argument values
-  OT::UnsignedLong arg2 = 0;
-  OT::UnsignedLong arg3 = 0;
+  OT::UnsignedInteger arg2 = 0;
+  OT::UnsignedInteger arg3 = 0;
   
   if (!PyArg_ParseTuple(args,(char *)"OO:NumericalSample___getitem__",&obj1,&obj2)) SWIG_fail;
 
@@ -117,9 +117,9 @@ PyObject * __getitem__(PyObject * args) const {
     int ecode2 = 0 ;
     ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NumericalSample___getitem__" "', argument " "2"" of type '" "OT::UnsignedLong""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NumericalSample___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
     }
-    arg2 = static_cast< OT::UnsignedLong >(val2);
+    arg2 = static_cast< OT::UnsignedInteger >(val2);
   }
 
   // convert second list argument
@@ -133,9 +133,9 @@ PyObject * __getitem__(PyObject * args) const {
     int ecode3 = 0 ;
     ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
     if (!SWIG_IsOK(ecode3)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NumericalSample___getitem__" "', argument " "3"" of type '" "OT::UnsignedLong""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NumericalSample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
     }
-    arg3 = static_cast< OT::UnsignedLong >(val3);
+    arg3 = static_cast< OT::UnsignedInteger >(val3);
   }
 
   // handle arguments
@@ -227,8 +227,8 @@ void __setitem__(PyObject * args, PyObject * valObj) {
   PyObject * obj2 = 0 ;
 
   // argument values
-  OT::UnsignedLong arg2 = 0;
-  OT::UnsignedLong arg3 = 0;
+  OT::UnsignedInteger arg2 = 0;
+  OT::UnsignedInteger arg3 = 0;
   
   if (!PyArg_ParseTuple(args,(char *)"OO:NumericalSample___getitem__",&obj1,&obj2)) SWIG_fail;
 
@@ -248,9 +248,9 @@ void __setitem__(PyObject * args, PyObject * valObj) {
     int ecode2 = 0 ;
     ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
     if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NumericalSample___setitem__" "', argument " "2"" of type '" "OT::UnsignedLong""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NumericalSample___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
     }
-    arg2 = static_cast< OT::UnsignedLong >(val2);
+    arg2 = static_cast< OT::UnsignedInteger >(val2);
   }
 
   // convert second list argument
@@ -264,9 +264,9 @@ void __setitem__(PyObject * args, PyObject * valObj) {
     int ecode3 = 0 ;
     ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
     if (!SWIG_IsOK(ecode3)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NumericalSample___setitem__" "', argument " "3"" of type '" "OT::UnsignedLong""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "NumericalSample___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
     }
-    arg3 = static_cast< OT::UnsignedLong >(val3);
+    arg3 = static_cast< OT::UnsignedInteger >(val3);
   }
 
   // handle arguments
@@ -347,15 +347,15 @@ NumericalSample(PyObject * pyObj)
   return new OT::NumericalSample( OT::convert< OT::_PySequence_, OT::NumericalSample>(pyObj) );  
 }
 
-NumericalSample(PyObject * pyObj, UnsignedLong dimension)
+NumericalSample(PyObject * pyObj, UnsignedInteger dimension)
 {
   OT::NumericalPoint point( OT::convert< OT::_PySequence_, OT::NumericalPoint >(pyObj) );
-  OT::UnsignedLong pointSize = point.getDimension();
-  OT::UnsignedLong size = (pointSize + dimension - 1) / dimension;
+  OT::UnsignedInteger pointSize = point.getDimension();
+  OT::UnsignedInteger size = (pointSize + dimension - 1) / dimension;
   OT::NumericalSample sample(size, dimension);
-  OT::UnsignedLong k = 0;
-  for ( OT::UnsignedLong i = 0; i < size; ++ i ) {
-    for ( OT::UnsignedLong j = 0; j < dimension; ++ j ) {
+  OT::UnsignedInteger k = 0;
+  for ( OT::UnsignedInteger i = 0; i < size; ++ i ) {
+    for ( OT::UnsignedInteger j = 0; j < dimension; ++ j ) {
       if ( k < pointSize ) {
         sample[i][j] = point[k];
         ++ k;

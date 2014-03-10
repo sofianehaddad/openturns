@@ -37,7 +37,7 @@ CorrelationMatrix::CorrelationMatrix()
 }
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-CorrelationMatrix::CorrelationMatrix(const UnsignedLong dim)
+CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim)
   : CovarianceMatrix(dim)
 {
   // Nothing to do
@@ -47,7 +47,7 @@ CorrelationMatrix::CorrelationMatrix(const UnsignedLong dim)
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-CorrelationMatrix::CorrelationMatrix(const UnsignedLong dim,
+CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim,
                                      const Collection<NumericalScalar> &elementsValues)
   : CovarianceMatrix(dim, elementsValues)
 {

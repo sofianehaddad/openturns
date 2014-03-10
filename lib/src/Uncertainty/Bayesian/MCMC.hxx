@@ -89,18 +89,18 @@ public:
   NumericalSample getObservations() const;
 
   /// Burning accessor
-  void setBurnIn(UnsignedLong burnIn);
-  UnsignedLong getBurnIn() const;
+  void setBurnIn(UnsignedInteger burnIn);
+  UnsignedInteger getBurnIn() const;
 
   /// Thinning accessor
-  void setThinning(UnsignedLong thinning);
-  UnsignedLong getThinning() const;
+  void setThinning(UnsignedInteger thinning);
+  UnsignedInteger getThinning() const;
 
   /** Virtual constructor */
   virtual MCMC * clone() const;
 
   /** Dimension accessor */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -119,8 +119,8 @@ private:
   NumericalMathFunction model_;
   NumericalSample observations_;
 
-  UnsignedLong burnIn_; // number of first samples discarded to reach stationary regime
-  UnsignedLong thinning_; // number of samples skipped at each generation
+  UnsignedInteger burnIn_; // number of first samples discarded to reach stationary regime
+  UnsignedInteger thinning_; // number of samples skipped at each generation
 
 
 }; /* class MCMC */

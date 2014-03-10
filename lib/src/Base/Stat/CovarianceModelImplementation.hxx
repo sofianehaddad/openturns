@@ -51,14 +51,14 @@ public:
   explicit CovarianceModelImplementation(const String & name = DefaultName);
 
   /** Constructor with dimension parameter */
-  explicit CovarianceModelImplementation(const UnsignedLong dimension,
+  explicit CovarianceModelImplementation(const UnsignedInteger dimension,
                                          const String & name = DefaultName);
 
   /** Virtual copy constructor */
   virtual CovarianceModelImplementation * clone() const;
 
   /** Dimension accessor */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Computation of the covariance matrix */
   /** @deprecated */
@@ -123,7 +123,7 @@ public:
 protected:
 
   /** dimension parameter */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
 } ; /* class CovarianceModelImplementation */
 

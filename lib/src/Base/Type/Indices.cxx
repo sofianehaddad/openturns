@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @file  Indices.cxx
- *  @brief Set of indices defined as a Collection of UnsignedLong class
+ *  @brief Set of indices defined as a Collection of UnsignedInteger class
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -27,7 +27,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /* Check that no value is repeated and no value exceed the given bound */
-Bool Indices::check(const UnsignedLong bound) const
+Bool Indices::check(const UnsignedInteger bound) const
 {
   // Check if the values are all different
   Indices copy(*this);
@@ -40,12 +40,12 @@ Bool Indices::check(const UnsignedLong bound) const
 }
 
 /* Fill the indices with a linear progression, starting from start value by step stepsize */
-void Indices::fill(const UnsignedLong initialValue,
-                   const UnsignedLong stepSize)
+void Indices::fill(const UnsignedInteger initialValue,
+                   const UnsignedInteger stepSize)
 {
-  const UnsignedLong size(getSize());
-  UnsignedLong value(initialValue);
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(getSize());
+  UnsignedInteger value(initialValue);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     operator[](i) = value;
     value += stepSize;

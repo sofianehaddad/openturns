@@ -57,14 +57,14 @@ struct BurrFactoryParameterConstraint
   {
     const NumericalScalar c(parameter[0]);
     if (c <= 0.0) throw InvalidArgumentException(HERE) << "Error: the c parameter must be positive.";
-    const UnsignedLong size(sample_.getSize());
+    const UnsignedInteger size(sample_.getSize());
     /* \sum_{i=1}^N \log(1 + x_i^c) */
     NumericalScalar sumLogXC(0.0);
     /* \sum_{i=1}^N \frac{\log(x_i)}{1+x_i^c} */
     NumericalScalar sumRatio(0.0);
     /* \sum_{i=1}^N \frac{x_i^c\log(x_i)}{1+x_i^c} */
     NumericalScalar sumScaledRatio(0.0);
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       const NumericalScalar x(sample_[i][0]);
       const NumericalScalar xC(pow(x , c));
@@ -104,7 +104,7 @@ BurrFactory::Implementation BurrFactory::build() const
 
 Burr BurrFactory::buildAsBurr(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Burr distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
@@ -126,12 +126,12 @@ Burr BurrFactory::buildAsBurr(const NumericalSample & sample) const
     fB = f(NumericalPoint(1, b))[0];
   }
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsNumericalScalar( "BurrFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedLong( "BurrFactory-MaximumIteration" ));
+  Brent solver(ResourceMap::GetAsNumericalScalar( "BurrFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "BurrFactory-MaximumIteration" ));
   // C estimate
   const NumericalScalar c(solver.solve(f, 0.0, a, b, fA, fB));
   // Corresponding k estimate
   NumericalScalar sumLogXC(0.0);
-  for (UnsignedLong i = 0; i < size; ++i) sumLogXC += log1p(pow(sample[i][0], c));
+  for (UnsignedInteger i = 0; i < size; ++i) sumLogXC += log1p(pow(sample[i][0], c));
   const NumericalScalar k(size / sumLogXC);
   Burr result(c, k);
   result.setDescription(sample.getDescription());

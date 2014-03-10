@@ -74,7 +74,7 @@ Cobyla * Cobyla::clone() const
  */
 void Cobyla::run()
 {
-  UnsignedLong dimension = getStartingPoint().getDimension();
+  UnsignedInteger dimension = getStartingPoint().getDimension();
   int n = dimension;
   int m = 2;
   NumericalPoint x(getStartingPoint());
@@ -120,9 +120,9 @@ void Cobyla::run()
   result_.update(x, maxFun / x.getDimension());
 
   NumericalScalar levelValue = getLevelValue();
-  UnsignedLong size = evaluationInputHistory_.getSize();
+  UnsignedInteger size = evaluationInputHistory_.getSize();
 
-  for ( UnsignedLong i = 1; i < size; ++ i )
+  for ( UnsignedInteger i = 1; i < size; ++ i )
   {
     NumericalPoint inPM( evaluationInputHistory_[i - 1] );
     NumericalPoint inP( evaluationInputHistory_[i] );
@@ -184,8 +184,8 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   Cobyla *algorithm = static_cast<Cobyla *>(state);
 
   /* Convert the input vector in OpenTURNS format */
-  NumericalPoint inPoint((UnsignedLong)n);
-  for(UnsignedLong index = 0; index < (UnsignedLong)(n); ++index) inPoint[index] = x[index];
+  NumericalPoint inPoint((UnsignedInteger)n);
+  for(UnsignedInteger index = 0; index < (UnsignedInteger)(n); ++index) inPoint[index] = x[index];
   /* Compute the level function at inPoint */
   *f = 0.5 * inPoint.normSquare();
   /* Compute the constraints at inPoint */

@@ -340,7 +340,7 @@ NumericalPoint Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Trapezoidal::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Trapezoidal::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   const NumericalScalar beta(1.0 - 2.0 * (d_ - b_) / (d_ - a_));

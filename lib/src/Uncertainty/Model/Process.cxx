@@ -111,12 +111,12 @@ Bool Process::isComposite() const
 /* Here is the interface that all derived class may implement */
 
 /* Dimension accessor */
-UnsignedLong Process::getMeshDimension() const
+UnsignedInteger Process::getMeshDimension() const
 {
   return getImplementation()->getMeshDimension();
 }
 
-UnsignedLong Process::getDimension() const
+UnsignedInteger Process::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -159,24 +159,24 @@ void Process::setMesh(const Mesh & mesh)
   return getImplementation()->setMesh(mesh);
 }
 
-ProcessSample Process::getSample(const UnsignedLong size) const
+ProcessSample Process::getSample(const UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
 }
 
-TimeSeries Process::getFuture(const UnsignedLong stepNumber) const
+TimeSeries Process::getFuture(const UnsignedInteger stepNumber) const
 {
   return getImplementation()->getFuture(stepNumber);
 }
 
-ProcessSample Process::getFuture(const UnsignedLong stepNumber,
-                                 const UnsignedLong size) const
+ProcessSample Process::getFuture(const UnsignedInteger stepNumber,
+                                 const UnsignedInteger size) const
 {
   return getImplementation()->getFuture(stepNumber, size);
 }
 
 /* Get the process corresponding to the i-th marginal component */
-Process Process::getMarginalProcess(const UnsignedLong i) const
+Process Process::getMarginalProcess(const UnsignedInteger i) const
 {
   return *(getImplementation()->getMarginalProcess(i));
 }

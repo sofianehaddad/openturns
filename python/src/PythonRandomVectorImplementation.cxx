@@ -64,7 +64,7 @@ PythonRandomVectorImplementation::PythonRandomVectorImplementation(PyObject * py
 
   setName( checkAndConvert< _PyString_, String >(name.get()) );
 
-  const UnsignedLong dimension  = getDimension();
+  const UnsignedInteger dimension  = getDimension();
   Description description(dimension);
   ScopedPyObjectPointer desc(PyObject_CallMethod ( pyObj_,
                              const_cast<char *>( "getDescription" ),
@@ -75,7 +75,7 @@ PythonRandomVectorImplementation::PythonRandomVectorImplementation(PyObject * py
   {
     description = convert< _PySequence_, Description >( desc.get() );
   }
-  else for (UnsignedLong i = 0; i < dimension; ++i) description[i] = (OSS() << "x" << i);
+  else for (UnsignedInteger i = 0; i < dimension; ++i) description[i] = (OSS() << "x" << i);
   setDescription(description);
 }
 
@@ -129,7 +129,7 @@ String PythonRandomVectorImplementation::__str__(const String & offset) const
 
 
 /* Accessor for input point dimension */
-UnsignedLong PythonRandomVectorImplementation::getDimension() const
+UnsignedInteger PythonRandomVectorImplementation::getDimension() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getDimension" ),
@@ -139,7 +139,7 @@ UnsignedLong PythonRandomVectorImplementation::getDimension() const
     handleException();
   }
 
-  UnsignedLong dim = convert< _PyInt_, UnsignedLong >( result.get() );
+  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >( result.get() );
   return dim;
 }
 
@@ -158,14 +158,14 @@ NumericalPoint PythonRandomVectorImplementation::getRealization() const
 
 
 /* Numerical sample accessor */
-NumericalSample PythonRandomVectorImplementation::getSample(const UnsignedLong size) const
+NumericalSample PythonRandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
   NumericalSample sample;
 
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getSample") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getSample" ));
-    ScopedPyObjectPointer sizeArg(convert< UnsignedLong, _PyInt_ >(size));
+    ScopedPyObjectPointer sizeArg(convert< UnsignedInteger, _PyInt_ >(size));
     ScopedPyObjectPointer result(PyObject_CallMethodObjArgs( pyObj_,
                                  methodName.get(),
                                  sizeArg.get(), NULL ));

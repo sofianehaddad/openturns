@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
   OStream fullprint(std::cout);
 
-  UnsignedLong size = 100;
+  UnsignedInteger size = 100;
 
 
   Uniform xuniform(0.9, 1.1);

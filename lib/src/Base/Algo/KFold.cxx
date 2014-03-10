@@ -39,7 +39,7 @@ static Factory<KFold> RegisteredFactory("KFold");
 
 
 /* Default constructor */
-KFold::KFold( const UnsignedLong k )
+KFold::KFold( const UnsignedInteger k )
   : FittingAlgorithmImplementation()
 {
   setK( k );
@@ -62,8 +62,8 @@ NumericalScalar KFold::run(const NumericalSample & x,
                            const NumericalSample & y,
                            const Basis & basis) const
 {
-  const UnsignedLong dimension( x.getDimension() );
-  const UnsignedLong sampleSize( x.getSize() );
+  const UnsignedInteger dimension( x.getDimension() );
+  const UnsignedInteger sampleSize( x.getSize() );
   const NumericalScalar variance( y.computeVariancePerComponent()[0] );
 
   if ( y.getDimension() != 1 ) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
@@ -74,11 +74,11 @@ NumericalScalar KFold::run(const NumericalSample & x,
   NumericalScalar quadraticResidual(0.0);
 
   // the size of a subsample
-  const UnsignedLong testSize( sampleSize / k_ );
+  const UnsignedInteger testSize( sampleSize / k_ );
 
   // We build the test sample by selecting one over k points of the given samples up to the test size, with a varying initial index
   // i is the initial index
-  for ( UnsignedLong i = 0; i < k_; ++ i )
+  for ( UnsignedInteger i = 0; i < k_; ++ i )
   {
 
     // build training/test samples
@@ -87,7 +87,7 @@ NumericalScalar KFold::run(const NumericalSample & x,
     NumericalSample xTest( 0, dimension );
     NumericalSample yTest( 0, 1 );
 
-    for ( UnsignedLong j = 0; j < ( k_ * testSize ); ++ j )
+    for ( UnsignedInteger j = 0; j < ( k_ * testSize ); ++ j )
     {
       if ( (j % k_) != i )
       {
@@ -110,7 +110,7 @@ NumericalScalar KFold::run(const NumericalSample & x,
     NumericalMathFunction metamodelTrain( basis, coefficientsTrain );
     NumericalSample yHatTest(metamodelTrain(xTest));
     // The empirical error is the normalized L2 error
-    for ( UnsignedLong j = 0; j < testSize; ++ j ) quadraticResidual += pow( yTest[j][0] - yHatTest[j][0], 2.0 );
+    for ( UnsignedInteger j = 0; j < testSize; ++ j ) quadraticResidual += pow( yTest[j][0] - yHatTest[j][0], 2.0 );
   }
 
   const NumericalScalar empiricalError( quadraticResidual / ( testSize * k_ ) );
@@ -136,7 +136,7 @@ void KFold::load(Advocate & adv)
 
 
 /* P accessor */
-void KFold::setK(const UnsignedLong k)
+void KFold::setK(const UnsignedInteger k)
 {
   if ( k < 1 )
     throw InvalidArgumentException( HERE ) << "KFold k parameter should be > 0";
@@ -144,7 +144,7 @@ void KFold::setK(const UnsignedLong k)
 }
 
 
-UnsignedLong KFold::getK() const
+UnsignedInteger KFold::getK() const
 {
   return k_;
 }

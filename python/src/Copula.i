@@ -40,7 +40,7 @@ namespace OT {
       check<_PySequence_>( pyObj );
       ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
 
-      const UnsignedLong size = PySequence_Fast_GET_SIZE( newPyObj.get() );
+      const UnsignedInteger size = PySequence_Fast_GET_SIZE( newPyObj.get() );
       if (size != 2) {
         throw OT::InvalidArgumentException(HERE) << "Sequence object has incorrect size " << size << ". Must be 2.";
       }

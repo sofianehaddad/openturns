@@ -62,7 +62,7 @@ public:
   HermitianMatrix();
 
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
-  explicit HermitianMatrix(const UnsignedLong dimension);
+  explicit HermitianMatrix(const UnsignedInteger dimension);
 
   /** Constructor with implementation */
   HermitianMatrix(const Implementation & i);
@@ -73,7 +73,7 @@ public:
 
 
   /** Get the dimension of the matrix */
-  const UnsignedLong getDimension() const;
+  const UnsignedInteger getDimension() const;
 
   /** HermitianMatrix transpose */
   HermitianMatrix transpose () const;
@@ -93,13 +93,13 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalComplex & operator () (const UnsignedLong i,
-                                  const UnsignedLong j) ;
+  NumericalComplex & operator () (const UnsignedInteger i,
+                                  const UnsignedInteger j) ;
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalComplex operator () (const UnsignedLong i,
-                                      const UnsignedLong j) const;
+  const NumericalComplex operator () (const UnsignedInteger i,
+                                      const UnsignedInteger j) const;
 #endif
 
   /** Check if the internal representation is really hermitian */
@@ -156,7 +156,7 @@ public:
   using SquareComplexMatrix::operator *;
 
   /** HermitianMatrix integer power */
-  HermitianMatrix power(const UnsignedLong n) const;
+  HermitianMatrix power(const UnsignedInteger n) const;
 
   /** Division by a NumericalComplex*/
   HermitianMatrix operator / (const NumericalComplex s) const;

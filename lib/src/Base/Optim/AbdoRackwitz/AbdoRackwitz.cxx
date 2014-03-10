@@ -126,7 +126,7 @@ void AbdoRackwitz::run()
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
   Bool convergence(false);
-  UnsignedLong iterationNumber = 0;
+  UnsignedInteger iterationNumber = 0;
   NumericalScalar absoluteError(-1.0);
   NumericalScalar constraintError(-1.0);
   NumericalScalar relativeError(-1.0);

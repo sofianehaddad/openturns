@@ -62,7 +62,7 @@ public:
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedLong n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** String converter */
   String __repr__() const;

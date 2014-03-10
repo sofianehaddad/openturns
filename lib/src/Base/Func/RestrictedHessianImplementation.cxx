@@ -92,26 +92,26 @@ SymmetricTensor RestrictedHessianImplementation::hessian(const NumericalPoint & 
 {
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   NumericalPoint point(referencePoint_);
-  const UnsignedLong inputDimension(getInputDimension());
-  for (UnsignedLong i = 0; i < inputDimension; ++i) point[restrictionIndices_[i]] = inP[i];
+  const UnsignedInteger inputDimension(getInputDimension());
+  for (UnsignedInteger i = 0; i < inputDimension; ++i) point[restrictionIndices_[i]] = inP[i];
   const SymmetricTensor fullHessian(p_hessian_->hessian(point));
-  const UnsignedLong outputDimension(getOutputDimension());
+  const UnsignedInteger outputDimension(getOutputDimension());
   SymmetricTensor hessian(inputDimension, outputDimension);
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
-    for (UnsignedLong j = 0; j <= i; ++j)
-      for (UnsignedLong k = 0; k < outputDimension; ++k)
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      for (UnsignedInteger k = 0; k < outputDimension; ++k)
         hessian(i, j, k) = fullHessian(restrictionIndices_[i], restrictionIndices_[j], k);
   return hessian;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong RestrictedHessianImplementation::getInputDimension() const
+UnsignedInteger RestrictedHessianImplementation::getInputDimension() const
 {
   return restrictionIndices_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong RestrictedHessianImplementation::getOutputDimension() const
+UnsignedInteger RestrictedHessianImplementation::getOutputDimension() const
 {
   return p_hessian_->getOutputDimension();
 }

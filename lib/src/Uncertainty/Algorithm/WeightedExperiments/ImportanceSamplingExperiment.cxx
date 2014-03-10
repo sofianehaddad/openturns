@@ -41,7 +41,7 @@ ImportanceSamplingExperiment::ImportanceSamplingExperiment(const String & name):
 
 /* Constructor with parameters */
 ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & importanceDistribution,
-    const UnsignedLong size,
+    const UnsignedInteger size,
     const String & name):
   WeightedExperiment(size, name),
   importanceDistribution_(importanceDistribution)
@@ -52,7 +52,7 @@ ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & 
 /* Constructor with parameters */
 ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & distribution,
     const Distribution & importanceDistribution,
-    const UnsignedLong size,
+    const UnsignedInteger size,
     const String & name):
   WeightedExperiment(distribution, size, name),
   importanceDistribution_(importanceDistribution)
@@ -90,7 +90,7 @@ NumericalSample ImportanceSamplingExperiment::generate(NumericalPoint & weights)
 {
   NumericalSample result(size_, distribution_.getDimension());
   weights_ = NumericalPoint(size_);
-  for (UnsignedLong i = 0; i < size_; ++i)
+  for (UnsignedInteger i = 0; i < size_; ++i)
   {
     result[i] = importanceDistribution_.getRealization();
     weights_[i] = distribution_.computePDF(result[i]) / importanceDistribution_.computePDF(result[i]);

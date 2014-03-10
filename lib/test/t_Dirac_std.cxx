@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10000;
+      UnsignedInteger size = 10000;
       NumericalSample oneSample = distribution.getSample( size );
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
@@ -141,12 +141,12 @@ int main(int argc, char *argv[])
       fullprint << "kendall=" << kendall << std::endl;
       Dirac::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
     }
     // N-D tests
     {
-      UnsignedLong dim = 4;
+      UnsignedInteger dim = 4;
       Dirac distribution(NumericalPoint(dim, 2.3));
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
@@ -162,13 +162,13 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10000;
+      UnsignedInteger size = 10000;
       NumericalSample oneSample = distribution.getSample( size );
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
       CovarianceMatrix sampleCovariance(oneSample.computeCovariance());
-      for (UnsignedLong i = 0; i < dim; ++i)
-        for (UnsignedLong j = 0; j <= i; ++j)
+      for (UnsignedInteger i = 0; i < dim; ++i)
+        for (UnsignedInteger j = 0; j <= i; ++j)
           if (fabs(sampleCovariance(i, j)) < 1.0e-16) sampleCovariance(i, j) = 0.0;
       fullprint << "covariance=" << sampleCovariance << std::endl;
 
@@ -223,7 +223,7 @@ int main(int argc, char *argv[])
       fullprint << "kendall=" << kendall << std::endl;
       Dirac::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
     }
   }

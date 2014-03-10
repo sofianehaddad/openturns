@@ -46,17 +46,17 @@ int main(int argc, char *argv[])
 
     // Generate the data for the curver to be drawn
     NumericalPoint discretization(2);
-    UnsignedLong nX(75);
-    UnsignedLong nY(75);
+    UnsignedInteger nX(75);
+    UnsignedInteger nY(75);
     discretization[0] = nX;
     discretization[1] = nY;
     NumericalSample inputData(Box(discretization).generate());
     inputData.scale(NumericalPoint(2, 10.0));
     inputData.translate(NumericalPoint(2, -5.0));
     NumericalSample data(f(inputData));
-    UnsignedLong size(7);
+    UnsignedInteger size(7);
     NumericalPoint levels(size);
-    for (UnsignedLong i = 0; i < size; i++)
+    for (UnsignedInteger i = 0; i < size; i++)
     {
       levels[i] = (0.5 + i) / size;
     }

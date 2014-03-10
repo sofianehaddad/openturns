@@ -39,19 +39,19 @@ class SobolSequence :
 
 public:
   // this implementation supports dimensions up to 40
-  static const UnsignedLong MaximumNumberOfDimension;
+  static const UnsignedInteger MaximumNumberOfDimension;
 
   // this implementation has a cycle of 2^62 = ~5e18, thanks to the use of 64 bits integers (Unsigned64BitsInteger)
-  static const UnsignedLong MaximumBase2Logarithm;
+  static const UnsignedInteger MaximumBase2Logarithm;
 
   // this value is 2^-MaximumBase2Logarithm, precomputed to speed up generation
   static const NumericalScalar Epsilon;
 
   // maximum number of columns in InitialBase array = 8
-  static const UnsignedLong MaximumInitialDegree;
+  static const UnsignedInteger MaximumInitialDegree;
 
   // numbers used to generate the coefficients of directionNumber_[][] each row corresponds to a component (dimension)
-  static const UnsignedLong InitialBase[];
+  static const UnsignedInteger InitialBase[];
 
   // a primitive polynomial used to generate the sequence
   static const Unsigned64BitsInteger PrimitivePolynomial[];
@@ -59,13 +59,13 @@ public:
 public:
 
   /** Constructor with parameters */
-  explicit SobolSequence(const UnsignedLong dimension = 1);
+  explicit SobolSequence(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
   virtual SobolSequence * clone() const;
 
   /** Initialize the sequence */
-  void initialize(const UnsignedLong dimension);
+  void initialize(const UnsignedInteger dimension);
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
@@ -90,10 +90,10 @@ protected:
 
 private:
   /** return 2^n */
-  static Unsigned64BitsInteger inline power2(const UnsignedLong n);
+  static Unsigned64BitsInteger inline power2(const UnsignedInteger n);
 
   /** Returns the position of the lowest '0' in the binary representation of an unsigned integer */
-  static UnsignedLong computePositionOfLowest0Bit(const Unsigned64BitsInteger number);
+  static UnsignedInteger computePositionOfLowest0Bit(const Unsigned64BitsInteger number);
 
 }; /* class SobolSequence */
 

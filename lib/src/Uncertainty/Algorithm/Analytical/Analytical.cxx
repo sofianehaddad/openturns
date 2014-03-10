@@ -45,7 +45,7 @@ Analytical::Analytical(const NearestPointAlgorithm & nearestPointAlgorithm,
     event_(event),
     physicalStartingPoint_(physicalStartingPoint)
 {
-  const UnsignedLong dimension = event.getImplementation()->getFunction().getInputDimension();
+  const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
   if (physicalStartingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
   result_ = AnalyticalResult(event_.getImplementation()->getAntecedent()->getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
 }

@@ -42,7 +42,7 @@ class MinCopula
 public:
 
   /** Default constructor */
-  MinCopula(const UnsignedLong dim = 1);
+  MinCopula(const UnsignedInteger dim = 1);
 
   /** Comparison operator */
   Bool operator ==(const MinCopula & other) const;

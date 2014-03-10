@@ -65,13 +65,13 @@ public:
   MatrixImplementation();
 
   /** Constructor with size (rowDim and colDim) */
-  MatrixImplementation(const UnsignedLong rowDim,
-                       const UnsignedLong colDim);
+  MatrixImplementation(const UnsignedInteger rowDim,
+                       const UnsignedInteger colDim);
 
   /** Constructor from range of external collection */
   template <class InputIterator>
-  MatrixImplementation(const UnsignedLong rowDim,
-                       const UnsignedLong colDim,
+  MatrixImplementation(const UnsignedInteger rowDim,
+                       const UnsignedInteger colDim,
                        const InputIterator first,
                        const InputIterator last);
 
@@ -79,8 +79,8 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  MatrixImplementation(const UnsignedLong rowDim,
-                       const UnsignedLong colDim,
+  MatrixImplementation(const UnsignedInteger rowDim,
+                       const UnsignedInteger colDim,
                        const NumericalScalarCollection & elementsValues);
 
   /** Virtual constructor */
@@ -92,31 +92,31 @@ public:
 
   /** Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j);
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the MatrixImplementation (read only) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j) const;
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j) const;
 
   /** Get the dimensions of the MatrixImplementation */
   /** Number of rows */
-  const UnsignedLong getNbRows() const;
+  const UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedLong getNbColumns() const;
+  const UnsignedInteger getNbColumns() const;
   /** Dimension (for square matrices only */
-  const UnsignedLong getDimension() const;
+  const UnsignedInteger getDimension() const;
 
   /** MatrixImplementation transpose */
   MatrixImplementation transpose () const;
 
   /** Row extraction */
-  const MatrixImplementation getRow(const UnsignedLong rowIndex) const;
-  const MatrixImplementation getRowSym(const UnsignedLong rowIndex) const;
+  const MatrixImplementation getRow(const UnsignedInteger rowIndex) const;
+  const MatrixImplementation getRowSym(const UnsignedInteger rowIndex) const;
   /** Column extration */
-  const MatrixImplementation getColumn(const UnsignedLong columnIndex) const;
-  const MatrixImplementation getColumnSym(const UnsignedLong columnIndex) const;
+  const MatrixImplementation getColumn(const UnsignedInteger columnIndex) const;
+  const MatrixImplementation getColumnSym(const UnsignedInteger columnIndex) const;
 
   /** MatrixImplementation addition (must have the same dimensions) */
   MatrixImplementation operator + (const MatrixImplementation & matrix) const;
@@ -130,8 +130,8 @@ public:
                                 const char symSide) const;
 
   /** MatrixImplementation integer power */
-  MatrixImplementation genPower(const UnsignedLong n) const;
-  MatrixImplementation symPower(const UnsignedLong n) const;
+  MatrixImplementation genPower(const UnsignedInteger n) const;
+  MatrixImplementation symPower(const UnsignedInteger n) const;
 
   /** Multiplications with a NumericalPoint (must have consistent dimensions) */
   NumericalPoint genVectProd (const NumericalPoint & pt) const;
@@ -256,33 +256,33 @@ public:
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
   const NumericalScalar * __baseaddress__ () const;
-  UnsignedLong __elementsize__ () const;
-  UnsignedLong __stride__ (UnsignedLong dim) const;
+  UnsignedInteger __elementsize__ () const;
+  UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 protected:
 
   /** MatrixImplementation Dimensions */
-  UnsignedLong nbRows_;
-  UnsignedLong nbColumns_;
+  UnsignedInteger nbRows_;
+  UnsignedInteger nbColumns_;
 
   /** Position conversion function : the indices i & j are used to compute the actual position of the element in the collection */
-  inline UnsignedLong convertPosition (const UnsignedLong i,
-                                       const UnsignedLong j) const;
+  inline UnsignedInteger convertPosition (const UnsignedInteger i,
+                                       const UnsignedInteger j) const;
 
 
 
 }; /* class MatrixImplementation */
 
-inline UnsignedLong MatrixImplementation::convertPosition (const UnsignedLong i,
-    const UnsignedLong j) const
+inline UnsignedInteger MatrixImplementation::convertPosition (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
   return i + nbRows_ * j ;
 }
 
 /** Constructor from range of external collection */
 template <class InputIterator>
-MatrixImplementation::MatrixImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim,
+MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim,
     const InputIterator first,
     const InputIterator last)
   : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),

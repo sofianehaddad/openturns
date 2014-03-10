@@ -97,19 +97,19 @@ String AnalyticalNumericalMathEvaluationImplementation::__str__(const String & o
   OSS oss(false);
   oss << offset;
   if (hasVisibleName()) oss << getName() << " :";
-  const UnsignedLong outputDimension(getOutputDimension());
+  const UnsignedInteger outputDimension(getOutputDimension());
   if (getOutputDimension() > 1)
   {
     oss << "\n";
     // First, find the maximum length of the output variable names
-    UnsignedLong length(0);
-    for (UnsignedLong i = 0; i < getOutputDimension(); ++i)
+    UnsignedInteger length(0);
+    for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
     {
-      const UnsignedLong l(outputVariablesNames_[i].length());
+      const UnsignedInteger l(outputVariablesNames_[i].length());
       if (l > length) length = l;
     }
     oss << "\n";
-    for (UnsignedLong i = 0; i < getOutputDimension(); ++i)
+    for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
     {
       oss << offset << "| " << std::setw(length) << outputVariablesNames_[i] << " = " << formulas_[i] << "\n";
     }
@@ -117,7 +117,7 @@ String AnalyticalNumericalMathEvaluationImplementation::__str__(const String & o
   else
   {
     oss << formulas_[0];
-    for (UnsignedLong i = 1; i < outputDimension; ++i) oss << ", " << formulas_[i];
+    for (UnsignedInteger i = 1; i < outputDimension; ++i) oss << ", " << formulas_[i];
   }
   return oss;
 }
@@ -127,23 +127,23 @@ String AnalyticalNumericalMathEvaluationImplementation::__str__(const String & o
    Initializing is necessary when the arguments size is different between two calls to operator().
    inputSize is the number of values of each input variables.
    So, if operator() method has a NumericalPoint as argument, inputSize is 1*/
-void AnalyticalNumericalMathEvaluationImplementation::initialize(UnsignedLong inputSize) const
+void AnalyticalNumericalMathEvaluationImplementation::initialize(UnsignedInteger inputSize) const
 {
   if (inputSize > inputVariables_.getDimension()) isInitialized_ = false;
   if (isInitialized_) return;
-  const UnsignedLong inputDimension(inputVariablesNames_.getSize());
-  const UnsignedLong outputSize(outputVariablesNames_.getSize());
+  const UnsignedInteger inputDimension(inputVariablesNames_.getSize());
+  const UnsignedInteger outputSize(outputVariablesNames_.getSize());
   try
   {
     // inputVariables_ is the transposed sample (resp. NumericalPoint) of the operator() method sample
     // (resp. NumericalPoint) argument.
     inputVariables_ = NumericalSample(inputDimension, inputSize);
     // For each parser of a formula, do
-    for (UnsignedLong outputVariableIndex = 0; outputVariableIndex < outputSize; ++outputVariableIndex)
+    for (UnsignedInteger outputVariableIndex = 0; outputVariableIndex < outputSize; ++outputVariableIndex)
     {
       // First, define all the variable names and associate them
       // to the corresponding component of the input vector
-      for(UnsignedLong inputVariableIndex = 0; inputVariableIndex < inputDimension; ++inputVariableIndex)
+      for(UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputDimension; ++inputVariableIndex)
       {
         // DefineVar defines all the values given to variables
         parsers_[outputVariableIndex].DefineVar(inputVariablesNames_[inputVariableIndex].c_str(), &inputVariables_[inputVariableIndex][0]);
@@ -151,7 +151,7 @@ void AnalyticalNumericalMathEvaluationImplementation::initialize(UnsignedLong in
     }
 
     // For each parser of a formula, do
-    for (UnsignedLong outputVariableIndex = 0; outputVariableIndex < outputSize; ++outputVariableIndex)
+    for (UnsignedInteger outputVariableIndex = 0; outputVariableIndex < outputSize; ++outputVariableIndex)
     {
       // Second, define the several formulas
       parsers_[outputVariableIndex].SetExpr(formulas_[outputVariableIndex].c_str());
@@ -172,11 +172,11 @@ NumericalPoint AnalyticalNumericalMathEvaluationImplementation::operator() (cons
   NumericalPoint result(getOutputDimension());
   ++ callsNumber_;
 
-  for (UnsignedLong i = 0; i < inP.getDimension(); ++i) inputVariables_[i][0] = inP[i];
+  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i) inputVariables_[i][0] = inP[i];
 
   try
   {
-    for (UnsignedLong index = 0; index < result.getDimension(); ++index) result[index] = parsers_[index].Eval();
+    for (UnsignedInteger index = 0; index < result.getDimension(); ++index) result[index] = parsers_[index].Eval();
   }
   catch(mu::Parser::exception_type & ex)
   {
@@ -193,22 +193,22 @@ NumericalPoint AnalyticalNumericalMathEvaluationImplementation::operator() (cons
 /* Operator () */
 NumericalSample AnalyticalNumericalMathEvaluationImplementation::operator() (const NumericalSample & inS) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  const UnsignedLong size(inS.getSize());
+  const UnsignedInteger size(inS.getSize());
   NumericalSample outSample(size, getOutputDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER2
   initialize(size);
   callsNumber_ += size;
-  for(UnsignedLong inputVariableIndex = 0; inputVariableIndex < inputDimension; ++inputVariableIndex)
+  for(UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputDimension; ++inputVariableIndex)
   {
-    for (UnsignedLong i = 0; i < size; ++i) inputVariables_[inputVariableIndex][i] = inS[i][inputVariableIndex];
+    for (UnsignedInteger i = 0; i < size; ++i) inputVariables_[inputVariableIndex][i] = inS[i][inputVariableIndex];
   }
   NumericalPoint evalResult(size);
-  for (UnsignedLong outputVariableIndex = 0; outputVariableIndex < getOutputDimension(); ++outputVariableIndex)
+  for (UnsignedInteger outputVariableIndex = 0; outputVariableIndex < getOutputDimension(); ++outputVariableIndex)
   {
     parsers_[outputVariableIndex].Eval(&evalResult[0], size);
-    for (UnsignedLong i = 0; i < size; ++i) outSample[i][outputVariableIndex] = evalResult[i];
+    for (UnsignedInteger i = 0; i < size; ++i) outSample[i][outputVariableIndex] = evalResult[i];
   }
   if (isHistoryEnabled_)
   {
@@ -216,26 +216,26 @@ NumericalSample AnalyticalNumericalMathEvaluationImplementation::operator() (con
     outputStrategy_.store(outSample);
   }
 #else
-  for (UnsignedLong i = 0; i < size; ++i) outSample[i] = operator()(inS[i]);
+  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = operator()(inS[i]);
 #endif
   outSample.setDescription(getOutputDescription());
   return outSample;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong AnalyticalNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger AnalyticalNumericalMathEvaluationImplementation::getInputDimension() const
 {
   return inputVariablesNames_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong AnalyticalNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger AnalyticalNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   return outputVariablesNames_.getSize();
 }
 
 /* Get the i-th marginal function */
-AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumericalMathEvaluationImplementation::getMarginal(const UnsignedLong i) const
+AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumericalMathEvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return new AnalyticalNumericalMathEvaluationImplementation(inputVariablesNames_, Description(1, outputVariablesNames_[i]), Description(1, formulas_[i]));
@@ -245,12 +245,12 @@ AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumeri
 AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and  must be different";
-  const UnsignedLong size(indices.getSize());
+  const UnsignedInteger size(indices.getSize());
   Description marginalOutputVariablesNames(size);
   Description marginalFormulas(size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedLong j(indices[i]);
+    const UnsignedInteger j(indices[i]);
     marginalOutputVariablesNames[i] = outputVariablesNames_[j];
     marginalFormulas[i] = formulas_[j];
   }

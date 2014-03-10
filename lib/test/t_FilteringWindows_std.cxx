@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
     fullprint << "myHammingFilter = " << myHammingFilter << std::endl;
 
     /* Evaluation of values between t=0 and t=1 using a step = 0.01 */
-    const UnsignedLong    steps(100);
+    const UnsignedInteger    steps(100);
     const NumericalScalar tMin(0.0);
     const NumericalScalar tMax(1.0);
     const NumericalScalar tStep((tMax - tMin) / steps);
 
-    for (UnsignedLong i = 0; i < steps + 1; ++i )
+    for (UnsignedInteger i = 0; i < steps + 1; ++i )
     {
       const NumericalScalar t(tMin + i * tStep);
       fullprint << "t = " << t

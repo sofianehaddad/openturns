@@ -52,8 +52,8 @@ public:
   ARMAFactoryImplementation(const String & name = DefaultName);
 
   /** Parameter constructor */
-  ARMAFactoryImplementation(const UnsignedLong p,
-                            const UnsignedLong q,
+  ARMAFactoryImplementation(const UnsignedInteger p,
+                            const UnsignedInteger q,
                             const Bool invertible = true,
                             const String & name = DefaultName);
 
@@ -72,11 +72,11 @@ public:
 
   /** P accessor */
   Indices getP() const;
-  UnsignedLong getCurrentP() const;
+  UnsignedInteger getCurrentP() const;
 
   /** Q accessor */
   Indices getQ() const;
-  UnsignedLong getCurrentQ() const;
+  UnsignedInteger getCurrentQ() const;
 
   /** Invertibility accessor */
   Bool getInvertible() const;
@@ -102,19 +102,19 @@ protected:
 
   /** P accessor */
   void setP(const Indices & ARIndices);
-  void setCurrentP(const UnsignedLong p) const;
+  void setCurrentP(const UnsignedInteger p) const;
 
   /** Q accessor */
   void setQ(const Indices & MAIndices);
-  void setCurrentQ(const UnsignedLong q) const;
+  void setCurrentQ(const UnsignedInteger q) const;
 
   /** AR size */
   Indices p_;
-  mutable UnsignedLong currentP_;
+  mutable UnsignedInteger currentP_;
 
   /** MA size */
   Indices q_;
-  mutable UnsignedLong currentQ_;
+  mutable UnsignedInteger currentQ_;
 
   /** Invertibility constraint */
   Bool invertible_;

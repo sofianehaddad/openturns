@@ -161,7 +161,7 @@ NumericalScalar Gumbel::computeComplementaryCDF(const NumericalPoint & point) co
   {
     NumericalScalar value(expX);
     NumericalScalar coeff(expX);
-    for (UnsignedLong i = 2; i < 10; ++i)
+    for (UnsignedInteger i = 2; i < 10; ++i)
     {
       coeff *= -expX / static_cast<NumericalScalar>(i);
       value += coeff;

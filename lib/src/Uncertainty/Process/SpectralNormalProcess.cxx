@@ -89,7 +89,7 @@ SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel
 /* Standard constructor  */
 SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
     const NumericalScalar maximalFrequency,
-    const UnsignedLong nFrequency,
+    const UnsignedInteger nFrequency,
     const String & name)
   : ProcessImplementation(name)
   , spectralModel_(model.getSpectralModel())
@@ -112,7 +112,7 @@ SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
 SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel,
     const NumericalScalar maximalFrequency,
-    const UnsignedLong nFrequency,
+    const UnsignedInteger nFrequency,
     const String & name)
 
   : ProcessImplementation(name)
@@ -140,20 +140,20 @@ SpectralNormalProcess * SpectralNormalProcess::clone() const
 }
 
 /** Get the Cholesky factor of the kth DSP matrix from cache or computed on the fly */
-TriangularComplexMatrix SpectralNormalProcess::getCholeskyFactor(const UnsignedLong k) const
+TriangularComplexMatrix SpectralNormalProcess::getCholeskyFactor(const UnsignedInteger k) const
 {
   // The value is in the cache
   if (k < choleskyFactorsCache_.getSize()) return choleskyFactorsCache_[k];
   // Compute the needed factor
   TriangularComplexMatrix factor(computeCholeskyFactor(k));
   // There are still room to store the factor
-  if (k < ResourceMap::GetAsUnsignedLong("SpectralNormalProcess-CholeskyCacheSize")) choleskyFactorsCache_.add(factor);
+  if (k < ResourceMap::GetAsUnsignedInteger("SpectralNormalProcess-CholeskyCacheSize")) choleskyFactorsCache_.add(factor);
   else LOGWARN(OSS() << "Warning! The cache for cholesky factors is full. Expect a big performance penalty. Increase the cache size using the ResourceMap key \"SpectralNormalProcess-CholeskyCacheSize\" if you have enough memory.");
   return factor;
 }
 
 /** Compute the needed Cholesky factor using regularization */
-TriangularComplexMatrix SpectralNormalProcess::computeCholeskyFactor(const UnsignedLong k) const
+TriangularComplexMatrix SpectralNormalProcess::computeCholeskyFactor(const UnsignedInteger k) const
 {
   // Convert the index into a frequency
   // The index k corresponds to the kth positive discretization point in the frequency domain [-f_max, f_max] discretized using the center of the regular partition into 2N cells of the interval.
@@ -180,7 +180,7 @@ TriangularComplexMatrix SpectralNormalProcess::computeCholeskyFactor(const Unsig
     catch (InternalException & ex)
     {
       cumulatedScaling += scaling;
-      for (UnsignedLong  index = 0; index < dimension_; ++index) spectralDensityMatrix(index, index) += scaling;
+      for (UnsignedInteger  index = 0; index < dimension_; ++index) spectralDensityMatrix(index, index) += scaling;
       scaling *= 2.0;
     }
     // No reasonable regularization succeeded
@@ -228,7 +228,7 @@ NumericalScalar SpectralNormalProcess::getMaximalFrequency() const
 }
 
 /* Number of frequency steps accessor */
-UnsignedLong SpectralNormalProcess::getNFrequency() const
+UnsignedInteger SpectralNormalProcess::getNFrequency() const
 {
   return nFrequency_;
 }
@@ -262,7 +262,7 @@ void SpectralNormalProcess::setTimeGrid(const RegularGrid & tg)
   if (tg != RegularGrid(mesh_))
   {
     // The time grid must contains an even number of points
-    const UnsignedLong nT(tg.getN());
+    const UnsignedInteger nT(tg.getN());
     if (nT % 2 != 0) throw InvalidArgumentException(HERE) << "Error: only time grids with an even (or better a power of two) number of points are allowed. You may use the AdaptGrid method.";
     // Fix the new timeGrid
     mesh_ = tg;
@@ -291,7 +291,7 @@ void SpectralNormalProcess::computeAlpha()
   // a sqrt(2) factor is needed to switch from Box Muller transform to normal complex random variable
   const NumericalScalar factor(2.0 * nFrequency_ * sqrt(frequencyStep_));
   const NumericalScalar beta(-M_PI * (1.0 - 1.0 / (2.0 * nFrequency_)));
-  for (UnsignedLong index = 0; index < 2 * nFrequency_; ++index)
+  for (UnsignedInteger index = 0; index < 2 * nFrequency_; ++index)
   {
     const NumericalScalar theta(beta * index);
     alpha_[index] = factor * NumericalComplex(cos(theta), sin(theta));
@@ -302,12 +302,12 @@ void SpectralNormalProcess::computeAlpha()
 Field SpectralNormalProcess::getRealization() const
 {
   // Build the big collection of size dimension * number of frequencies
-  const UnsignedLong twoNF(2 * nFrequency_);
+  const UnsignedInteger twoNF(2 * nFrequency_);
   NumericalComplexCollection arrayCollection(dimension_ * twoNF);
   // Loop over the frequencies
   // Gaussian vector
   // Loop over half of the frequency range
-  for (UnsignedLong k = 0; k < nFrequency_; ++k)
+  for (UnsignedInteger k = 0; k < nFrequency_; ++k)
   {
     const TriangularComplexMatrix choleskyFactor(getCholeskyFactor(k));
     // Use matrix/vector product to optimize the loop
@@ -318,7 +318,7 @@ Field SpectralNormalProcess::getRealization() const
     // and R(-f).z = conjugate(R(f).conjugate(z))
     // If z ~ N(0, 1) in C, then conjugate(z) ~ N(0, 1) in C, so there is no need to conjugate z
     // Complex gaussian realization
-    for (UnsignedLong i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       // Care! Getting a realization of a random gaussian should be done using two intermediate variables
       // NumericalComplex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
@@ -332,7 +332,7 @@ Field SpectralNormalProcess::getRealization() const
     // Use an efficient matrix/vector product here
     NumericalComplexCollection resultLeft(choleskyFactor * left);
     NumericalComplexCollection resultRight(choleskyFactor * right);
-    for (UnsignedLong i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       arrayCollection[i * twoNF + nFrequency_ - 1 - k] = conj(resultLeft[i]);
       arrayCollection[i * twoNF + nFrequency_     + k] = resultRight[i];
@@ -340,10 +340,10 @@ Field SpectralNormalProcess::getRealization() const
   } // Loop over the frequencies
   // From the big collection, build the inverse FFT by blocks
   NumericalSample sampleValues(twoNF , dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const NumericalComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));
-    for (UnsignedLong k = 0; k < twoNF; ++k) sampleValues[k][i] = std::real(inverseFFTResult[k] * alpha_[k]);
+    for (UnsignedInteger k = 0; k < twoNF; ++k) sampleValues[k][i] = std::real(inverseFFTResult[k] * alpha_[k]);
   }
   return Field(mesh_, sampleValues);
 }
@@ -365,7 +365,7 @@ RegularGrid SpectralNormalProcess::AdaptGrid(const RegularGrid & grid)
 {
   const NumericalScalar start(grid.getStart());
   const NumericalScalar end(grid.getEnd());
-  UnsignedLong powerOfTwo(SpecFunc::NextPowerOfTwo(grid.getN()));
+  UnsignedInteger powerOfTwo(SpecFunc::NextPowerOfTwo(grid.getN()));
   return RegularGrid(start, (end - start) / powerOfTwo, powerOfTwo);
 }
 

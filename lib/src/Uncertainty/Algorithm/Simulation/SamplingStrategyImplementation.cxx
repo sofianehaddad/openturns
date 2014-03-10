@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(SamplingStrategyImplementation);
 
 /* Constructor with parameters */
-SamplingStrategyImplementation::SamplingStrategyImplementation(const UnsignedLong dimension)
+SamplingStrategyImplementation::SamplingStrategyImplementation(const UnsignedInteger dimension)
   : PersistentObject(),
     dimension_(dimension)
 {
@@ -57,13 +57,13 @@ NumericalSample SamplingStrategyImplementation::generate() const
 }
 
 /* Generate a uniform random unit vector */
-NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedLong dimension) const
+NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
 {
   NumericalPoint direction(dimension);
   NumericalScalar norm(0.0);
   do
   {
-    for (UnsignedLong i = 0; i < dimension; ++i) direction[i] = DistFunc::rNormal();
+    for (UnsignedInteger i = 0; i < dimension; ++i) direction[i] = DistFunc::rNormal();
     norm = direction.norm();
   }
   while (norm == 0.0);
@@ -77,12 +77,12 @@ NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization()
 }
 
 /* Dimension accessor */
-void SamplingStrategyImplementation::setDimension(const UnsignedLong dimension)
+void SamplingStrategyImplementation::setDimension(const UnsignedInteger dimension)
 {
   dimension_ = dimension;
 }
 
-UnsignedLong SamplingStrategyImplementation::getDimension() const
+UnsignedInteger SamplingStrategyImplementation::getDimension() const
 {
   return dimension_;
 }

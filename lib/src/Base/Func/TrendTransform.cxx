@@ -102,7 +102,7 @@ Field TrendTransform::operator() (const Field & inFld) const
   if (inFld.getDimension() != p_evaluation_->getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with dimension=" << p_evaluation_->getOutputDimension() << ", got dimension=" << inFld.getDimension();
   NumericalSample outputSample((*p_evaluation_)(inFld.getMesh().getVertices()));
   // finally as the function adds a trend, result
-  for (UnsignedLong k = 0; k < outputSample.getSize(); ++k) outputSample[k] = inFld.getValueAtIndex(k) + outputSample[k];
+  for (UnsignedInteger k = 0; k < outputSample.getSize(); ++k) outputSample[k] = inFld.getValueAtIndex(k) + outputSample[k];
   ++callsNumber_;
   return Field(inFld.getMesh(), outputSample);
 }

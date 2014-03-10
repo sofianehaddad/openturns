@@ -68,7 +68,7 @@ String EventProcess::__repr__() const
 }
 
 /* Dimension accessor */
-UnsignedLong EventProcess::getDimension() const
+UnsignedInteger EventProcess::getDimension() const
 {
   return 1;
 }
@@ -88,7 +88,7 @@ Process EventProcess::getProcess() const
 /* check that a values of a field are/are not in the domain */
 Bool EventProcess::checkTimeSerieValuesInDomain(const Field & fld) const
 {
-  for (UnsignedLong i = 0; i < fld.getSize(); ++i) if (domain_.contains(fld.getValueAtIndex(i))) return true;
+  for (UnsignedInteger i = 0; i < fld.getSize(); ++i) if (domain_.contains(fld.getValueAtIndex(i))) return true;
   return false;
 }
 

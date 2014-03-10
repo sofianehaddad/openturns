@@ -107,7 +107,7 @@ NumericalPoint InverseBoxCoxEvaluationImplementation::operator() (const Numerica
 
   // There is no check of positive variables
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
-  for (UnsignedLong index = 0; index < inP.getDimension(); ++index)
+  for (UnsignedInteger index = 0; index < inP.getDimension(); ++index)
   {
     // Applying the Box-Cox function
     const NumericalScalar lambda_i(lambda_[index]);
@@ -130,13 +130,13 @@ NumericalPoint InverseBoxCoxEvaluationImplementation::operator() (const Numerica
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseBoxCoxEvaluationImplementation::getInputDimension() const
+UnsignedInteger InverseBoxCoxEvaluationImplementation::getInputDimension() const
 {
   return lambda_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseBoxCoxEvaluationImplementation::getOutputDimension() const
+UnsignedInteger InverseBoxCoxEvaluationImplementation::getOutputDimension() const
 {
   return lambda_.getDimension();
 }

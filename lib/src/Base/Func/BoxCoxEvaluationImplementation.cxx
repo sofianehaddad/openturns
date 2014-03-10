@@ -107,7 +107,7 @@ NumericalPoint BoxCoxEvaluationImplementation::operator() (const NumericalPoint 
 
   // There is no check of positive variables
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
-  for (UnsignedLong index = 0; index < inP.getDimension(); ++index)
+  for (UnsignedInteger index = 0; index < inP.getDimension(); ++index)
   {
     const NumericalScalar x(inP[index] + shift_[index]);
     if (x <= 0.0)
@@ -128,13 +128,13 @@ NumericalPoint BoxCoxEvaluationImplementation::operator() (const NumericalPoint 
 }
 
 /* Accessor for input point dimension */
-UnsignedLong BoxCoxEvaluationImplementation::getInputDimension() const
+UnsignedInteger BoxCoxEvaluationImplementation::getInputDimension() const
 {
   return lambda_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong BoxCoxEvaluationImplementation::getOutputDimension() const
+UnsignedInteger BoxCoxEvaluationImplementation::getOutputDimension() const
 {
   return lambda_.getDimension();
 }

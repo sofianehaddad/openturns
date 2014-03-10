@@ -51,7 +51,7 @@ public:
   OrthogonalBasis(const OrthogonalFunctionFactory & implementation);
 
   /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedLong index) const;
+  NumericalMathFunction build(const UnsignedInteger index) const;
 
   /** Return the measure upon which the basis is orthogonal */
   Distribution getMeasure() const;

@@ -77,7 +77,7 @@ public:
   NumericalScalar getWeight() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -88,7 +88,7 @@ public:
   virtual NumericalPoint getRealization() const;
 
   /** Get a numerical sample whose elements follow the distributionImplementation */
-  virtual NumericalSample getSample(const UnsignedLong size) const;
+  virtual NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distributionImplementation */
   virtual NumericalScalar computeDDF(const NumericalScalar scalar) const;
@@ -119,7 +119,7 @@ public:
   /** Compute the PDF of 1D distributions over a regular grid */
   virtual NumericalSample computePDF(const NumericalScalar xMin,
                                      const NumericalScalar xMax,
-                                     const UnsignedLong pointNumber,
+                                     const UnsignedInteger pointNumber,
                                      NumericalSample & grid) const;
 
   /** Compute the PDF of nD distributions over a regular grid */
@@ -156,7 +156,7 @@ public:
   /** Compute the CDF of 1D distributions over a regular grid */
   virtual NumericalSample computeCDF(const NumericalScalar xMin,
                                      const NumericalScalar xMax,
-                                     const UnsignedLong pointNumber,
+                                     const UnsignedInteger pointNumber,
                                      NumericalSample & grid) const;
 
   /** Compute the CDF of nD distributions over a regular grid */
@@ -167,7 +167,7 @@ public:
 
   virtual NumericalSample computeComplementaryCDF(const NumericalScalar xMin,
       const NumericalScalar xMax,
-      const UnsignedLong pointNumber,
+      const UnsignedInteger pointNumber,
       NumericalSample & grid) const;
 
   /** Get the probability content of an interval */
@@ -209,12 +209,12 @@ public:
   /** Compute the quantile over a regular grid */
   virtual NumericalSample computeQuantile(const NumericalScalar qMin,
                                           const NumericalScalar qMax,
-                                          const UnsignedLong pointNumber,
+                                          const UnsignedInteger pointNumber,
                                           const Bool tail = false) const;
 
   virtual NumericalSample computeQuantile(const NumericalScalar qMin,
                                           const NumericalScalar qMax,
-                                          const UnsignedLong pointNumber,
+                                          const UnsignedInteger pointNumber,
                                           NumericalSample & grid,
                                           const Bool tail = false) const;
 
@@ -245,13 +245,13 @@ public:
   virtual NumericalPoint getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  virtual NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  virtual NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the raw moments of the distribution */
-  virtual NumericalPoint getMoment(const UnsignedLong n) const;
+  virtual NumericalPoint getMoment(const UnsignedInteger n) const;
 
   /** Get the centered moments of the distribution */
-  virtual NumericalPoint getCenteredMoment(const UnsignedLong n) const;
+  virtual NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
 
   /** Get the covariance of the distribution */
   virtual CovarianceMatrix getCovariance() const;
@@ -322,7 +322,7 @@ public:
       const Bool tail = false) const;
 
   /** Get the i-th marginal distribution */
-  virtual Implementation getMarginal(const UnsignedLong i) const;
+  virtual Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   virtual Implementation getMarginal(const Indices & indices) const;
@@ -359,8 +359,8 @@ public:
   virtual Implementation getStandardRepresentative() const;
 
   /** integrationNodesNumber accessors */
-  UnsignedLong getIntegrationNodesNumber() const;
-  void setIntegrationNodesNumber(const UnsignedLong integrationNodesNumber) const;
+  UnsignedInteger getIntegrationNodesNumber() const;
+  void setIntegrationNodesNumber(const UnsignedInteger integrationNodesNumber) const;
 
   /** Gauss nodes and weights accessor */
   NumericalSample getGaussNodesAndWeights() const;
@@ -372,15 +372,15 @@ public:
   /** Draw the PDF of the distribution when its dimension is 1 */
   virtual Graph drawPDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
-  virtual Graph drawPDF(const UnsignedLong pointNumber) const;
+  virtual Graph drawPDF(const UnsignedInteger pointNumber) const;
 
   /** Draw the PDF of a 1D marginal */
-  virtual Graph drawMarginal1DPDF(const UnsignedLong marginalIndex,
+  virtual Graph drawMarginal1DPDF(const UnsignedInteger marginalIndex,
                                   const NumericalScalar xMin,
                                   const NumericalScalar xMax,
-                                  const UnsignedLong pointNumber) const;
+                                  const UnsignedInteger pointNumber) const;
 
   /** Draw the PDF of the distribution when its dimension is 2 */
   virtual Graph drawPDF(const NumericalPoint & xMin,
@@ -394,8 +394,8 @@ public:
 
 
   /** Draw the PDF of a 2D marginal */
-  virtual Graph drawMarginal2DPDF(const UnsignedLong firstMarginal,
-                                  const UnsignedLong secondMarginal,
+  virtual Graph drawMarginal2DPDF(const UnsignedInteger firstMarginal,
+                                  const UnsignedInteger secondMarginal,
                                   const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
                                   const Indices & pointNumber) const;
@@ -406,9 +406,9 @@ public:
   /** Draw the CDF of the distribution when its dimension is 1 */
   virtual Graph drawCDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
-  virtual Graph drawCDF(const UnsignedLong pointNumber) const;
+  virtual Graph drawCDF(const UnsignedInteger pointNumber) const;
 
 
   /** Draw the CDF of the distribution when its dimension is 2 */
@@ -423,32 +423,32 @@ public:
 
 
   /** Draw the CDF of a 1D marginal */
-  virtual Graph drawMarginal1DCDF(const UnsignedLong marginalIndex,
+  virtual Graph drawMarginal1DCDF(const UnsignedInteger marginalIndex,
                                   const NumericalScalar xMin,
                                   const NumericalScalar xMax,
-                                  const UnsignedLong pointNumber) const;
+                                  const UnsignedInteger pointNumber) const;
 
   /** Draw the CDF of a 2D marginal */
-  virtual Graph drawMarginal2DCDF(const UnsignedLong firstMarginal,
-                                  const UnsignedLong secondMarginal,
+  virtual Graph drawMarginal2DCDF(const UnsignedInteger firstMarginal,
+                                  const UnsignedInteger secondMarginal,
                                   const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
                                   const Indices & pointNumber) const;
 
   /** Draw the quantile of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawQuantile(const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
   virtual Graph drawQuantile(const NumericalScalar qMin,
                              const NumericalScalar qMax,
-                             const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 protected:
   virtual Graph drawQuantile1D(const NumericalScalar qMin,
                                const NumericalScalar qMax,
-                               const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
   virtual Graph drawQuantile2D(const NumericalScalar qMin,
                                const NumericalScalar qMax,
-                               const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 public:
 
   /** Parameters value and description accessor */
@@ -458,7 +458,7 @@ public:
   virtual void setParametersCollection(const NumericalPoint & parameters);
 
   /** Total number of parameters */
-  virtual UnsignedLong getParametersNumber() const;
+  virtual UnsignedInteger getParametersNumber() const;
 
   /** Description accessor */
   void setDescription(const Description & description);
@@ -487,12 +487,12 @@ protected:
   /** Draw the PDF of a discrete distribution */
   virtual Graph drawDiscretePDF(const NumericalScalar xMin,
                                 const NumericalScalar xMax,
-                                const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                                const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
   /** Draw the CDF of a discrete distribution */
   Graph drawDiscreteCDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedLong pointNumber) const;
+                        const UnsignedInteger pointNumber) const;
 
   /** Compute the PDF and CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
       Used to speed-up the computeConditionalQuantile() method */
@@ -511,9 +511,9 @@ protected:
       const NumericalScalar xMin) const;
 
   /** Compute the characteristic function of 1D distributions in a regular pattern with cache */
-  virtual NumericalComplex computeCharacteristicFunction(const UnsignedLong index,
+  virtual NumericalComplex computeCharacteristicFunction(const UnsignedInteger index,
       const NumericalScalar step) const;
-  virtual NumericalComplex computeLogCharacteristicFunction(const UnsignedLong index,
+  virtual NumericalComplex computeLogCharacteristicFunction(const UnsignedInteger index,
       const NumericalScalar step) const;
   virtual NumericalComplex computeCharacteristicFunction(const Indices & indices,
       const NumericalPoint & step) const;
@@ -530,13 +530,13 @@ protected:
   virtual void computeCovarianceGeneral() const;
 
   /** Compute the shifted moments of the distribution */
-  virtual NumericalPoint computeShiftedMoment(const UnsignedLong n,
+  virtual NumericalPoint computeShiftedMoment(const UnsignedInteger n,
       const NumericalPoint & shift) const;
-  virtual NumericalPoint computeShiftedMomentContinuous(const UnsignedLong n,
+  virtual NumericalPoint computeShiftedMomentContinuous(const UnsignedInteger n,
       const NumericalPoint & shift) const;
-  virtual NumericalPoint computeShiftedMomentDiscrete(const UnsignedLong n,
+  virtual NumericalPoint computeShiftedMomentDiscrete(const UnsignedInteger n,
       const NumericalPoint & shift) const;
-  virtual NumericalPoint computeShiftedMomentGeneral(const UnsignedLong n,
+  virtual NumericalPoint computeShiftedMomentGeneral(const UnsignedInteger n,
       const NumericalPoint & shift) const;
 
 
@@ -544,7 +544,7 @@ protected:
   virtual void computeGaussNodesAndWeights() const;
 
   /** Dimension accessor */
-  void setDimension(UnsignedLong dim);
+  void setDimension(UnsignedInteger dim);
 
   /** Quantile computation for dimension=1 */
   virtual NumericalScalar computeScalarQuantile(const NumericalScalar prob,
@@ -559,14 +559,14 @@ protected:
   virtual void computeStandardDistribution() const;
 
   /** Interpolate the PDF and CDF for smooth continuous distributions */
-  virtual Collection<PiecewiseHermiteEvaluationImplementation> interpolatePDFCDF(const UnsignedLong n);
+  virtual Collection<PiecewiseHermiteEvaluationImplementation> interpolatePDFCDF(const UnsignedInteger n);
 
   mutable NumericalPoint mean_;
   mutable CovarianceMatrix covariance_;
   mutable NumericalSample gaussNodesAndWeights_;
 
   /** The integration nodes number for covariance computation */
-  mutable UnsignedLong integrationNodesNumber_;
+  mutable UnsignedInteger integrationNodesNumber_;
 
   /** Flags to avoid redundant computations */
   mutable Bool isAlreadyComputedMean_;
@@ -577,7 +577,7 @@ protected:
   mutable NumericalScalar pdfEpsilon_;
   mutable NumericalScalar cdfEpsilon_;
   mutable NumericalScalar quantileEpsilon_;
-  mutable UnsignedLong quantileIterations_;
+  mutable UnsignedInteger quantileIterations_;
 
   /** Standard distribution */
   mutable Bool isAlreadyComputedStandardDistribution_;
@@ -657,18 +657,18 @@ protected:
     NumericalPoint diagonalToSpace(const NumericalScalar tau) const
     {
       NumericalPoint x(dimension_);
-      for (UnsignedLong i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau)[0];
+      for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau)[0];
       LOGDEBUG(OSS() << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
     }
 
     const Collection< Implementation > marginals_;
     const DistributionImplementation * p_distribution_;
-    const UnsignedLong dimension_;
+    const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
 
   /** The dimension of the distributionImplementation */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** The weight used ONLY by Mixture */
   NumericalScalar weight_;

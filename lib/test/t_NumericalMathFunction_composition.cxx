@@ -84,11 +84,11 @@ int main(int argc, char *argv[])
     fullprint << "D(left(right(x)))=" << composed.gradient(x) << std::endl;
     SymmetricTensor result(composed.hessian(x));
     fullprint << "DD(left(right(x)))=" << std::endl;
-    for(UnsignedLong k = 0; k < result.getNbSheets(); k++)
+    for(UnsignedInteger k = 0; k < result.getNbSheets(); k++)
     {
-      for(UnsignedLong j = 0; j < result.getNbColumns(); j++)
+      for(UnsignedInteger j = 0; j < result.getNbColumns(); j++)
       {
-        for(UnsignedLong i = 0; i < result.getNbRows(); i++)
+        for(UnsignedInteger i = 0; i < result.getNbRows(); i++)
         {
           fullprint << std::setw(14) << std::scientific << std::right << result(i, j, k);
         }
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
       }
       fullprint << std::endl;
     }
-    for (UnsignedLong i = 0; i < composed.getOutputDimension(); ++i)
+    for (UnsignedInteger i = 0; i < composed.getOutputDimension(); ++i)
     {
       fullprint << "Marginal " << i << "=" << composed.getMarginal(i) << std::endl;
     }

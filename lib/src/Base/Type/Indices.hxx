@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @file  Indices.hxx
- *  @brief Set of indices defined as a Collection of UnsignedLong class
+ *  @brief Set of indices defined as a Collection of UnsignedInteger class
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -35,10 +35,10 @@ BEGIN_NAMESPACE_OPENTURNS
  * A class that holds a collection of indices
  */
 class Indices :
-  public PersistentCollection<UnsignedLong>
+  public PersistentCollection<UnsignedInteger>
 {
 public:
-  typedef PersistentCollection<UnsignedLong>   InternalType;
+  typedef PersistentCollection<UnsignedInteger>   InternalType;
 
   /** Default constructor */
   Indices()
@@ -48,14 +48,14 @@ public:
   }
 
   /** Constructor that pre-allocate size elements */
-  explicit Indices(const UnsignedLong size) : InternalType(size)
+  explicit Indices(const UnsignedInteger size) : InternalType(size)
   {
     // Nothing to do
   }
 
   /** Constructor that pre-allocate size elements with value */
-  Indices(const UnsignedLong size,
-          const UnsignedLong value) : InternalType(size, value)
+  Indices(const UnsignedInteger size,
+          const UnsignedInteger value) : InternalType(size, value)
   {
     // Nothing to do
   }
@@ -73,11 +73,11 @@ public:
   ~Indices() throw() {}
 
   /** Check that no value is repeated and no value exceed the given bound */
-  Bool check(const UnsignedLong bound) const;
+  Bool check(const UnsignedInteger bound) const;
 
   /** Fill the indices with a linear progression, starting from start value by step stepsize */
-  void fill(const UnsignedLong initialValue = 0,
-            const UnsignedLong stepSize = 1);
+  void fill(const UnsignedInteger initialValue = 0,
+            const UnsignedInteger stepSize = 1);
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
   virtual String __repr__() const;

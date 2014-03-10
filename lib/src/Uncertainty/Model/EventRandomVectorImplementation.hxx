@@ -66,7 +66,7 @@ public:
   String __repr__() const;
 
   /** Dimension accessor */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** Operator accessor */
   ComparisonOperator getOperator() const;
@@ -80,7 +80,7 @@ public:
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(UnsignedLong size) const;
+  virtual NumericalSample getSample(UnsignedInteger size) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

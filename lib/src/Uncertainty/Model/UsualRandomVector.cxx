@@ -59,7 +59,7 @@ String UsualRandomVector::__repr__() const
 
 
 /* Dimension accessor */
-UnsignedLong UsualRandomVector::getDimension() const
+UnsignedInteger UsualRandomVector::getDimension() const
 {
   return distribution_.getDimension();
 }
@@ -71,7 +71,7 @@ NumericalPoint UsualRandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample UsualRandomVector::getSample(const UnsignedLong size) const
+NumericalSample UsualRandomVector::getSample(const UnsignedInteger size) const
 {
   return distribution_.getSample(size);
 }
@@ -89,7 +89,7 @@ CovarianceMatrix UsualRandomVector::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-UsualRandomVector::Implementation UsualRandomVector::getMarginal(const UnsignedLong i) const
+UsualRandomVector::Implementation UsualRandomVector::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal random vector must be in the range [0, dim-1]";
   return new UsualRandomVector(distribution_.getMarginal(i));

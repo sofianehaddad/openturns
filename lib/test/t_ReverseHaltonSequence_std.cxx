@@ -44,11 +44,11 @@ int main(int argc, char *argv[])
     fullprint << reverseHaltonSample << std::endl;
 
     // Create another ReverseHalton' sequence of dimension 2 to estimate Pi in [0; 1)^2
-    UnsignedLong dimension(2);
+    UnsignedInteger dimension(2);
     sequence = ReverseHaltonSequence(dimension);
-    UnsignedLong pointInsideCircle(0);
-    UnsignedLong sampleSize(1000);
-    for(UnsignedLong i = 0; i < sampleSize; ++i)
+    UnsignedInteger pointInsideCircle(0);
+    UnsignedInteger sampleSize(1000);
+    for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
       NumericalPoint reverseHaltonPoint(sequence.generate());
       fullprint << reverseHaltonPoint << std::endl;

@@ -56,7 +56,7 @@ SamplingStrategy::SamplingStrategy(const SamplingStrategyImplementation & implem
 }
 
 /* Constructor with parameters */
-SamplingStrategy::SamplingStrategy(const UnsignedLong dimension)
+SamplingStrategy::SamplingStrategy(const UnsignedInteger dimension)
   : TypedInterfaceObject<SamplingStrategyImplementation>(new RandomDirection(dimension))
 {
   // Nothing to do
@@ -69,13 +69,13 @@ NumericalSample SamplingStrategy::generate() const
 }
 
 /* Dimension accessor */
-void SamplingStrategy::setDimension(const UnsignedLong dimension)
+void SamplingStrategy::setDimension(const UnsignedInteger dimension)
 {
   copyOnWrite();
   getImplementation()->setDimension(dimension);
 }
 
-UnsignedLong SamplingStrategy::getDimension() const
+UnsignedInteger SamplingStrategy::getDimension() const
 {
   return getImplementation()->getDimension();
 }

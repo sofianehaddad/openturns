@@ -73,12 +73,12 @@ public:
   /** Accessor for input point dimension
    * @return The size of the point passed to the gradient method
    */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension
    * @return The size of the point returned by the function whose gradient is computed
    */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the epsilon */
   virtual NumericalPoint getEpsilon() const;

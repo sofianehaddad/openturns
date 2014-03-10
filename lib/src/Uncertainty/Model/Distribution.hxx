@@ -79,7 +79,7 @@ public:
   NumericalScalar getWeight() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -87,7 +87,7 @@ public:
   NumericalPoint getRealization() const;
 
   /** Get a numerical sample whose elements follow the distribution */
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution */
   NumericalScalar computeDDF(const NumericalScalar scalar) const;
@@ -106,7 +106,7 @@ public:
   /** Compute the PDF of 1D distributions over a regular grid */
   NumericalSample computePDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
-                             const UnsignedLong pointNumber) const;
+                             const UnsignedInteger pointNumber) const;
 
   /** Get the CDF of the distribution */
   NumericalScalar computeCDF(const NumericalScalar scalar) const;
@@ -124,11 +124,11 @@ public:
   /** Compute the CDF of 1D distributions over a regular grid */
   NumericalSample computeCDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
-                             const UnsignedLong pointNumber) const;
+                             const UnsignedInteger pointNumber) const;
 
   NumericalSample computeComplementaryCDF(const NumericalScalar xMin,
                                           const NumericalScalar xMax,
-                                          const UnsignedLong pointNumber) const;
+                                          const UnsignedInteger pointNumber) const;
 
   /** Get the probability content of an interval */
   NumericalScalar computeProbability(const Interval & interval) const;
@@ -158,7 +158,7 @@ public:
   /** Compute the quantile over a regular grid */
   NumericalSample computeQuantile(const NumericalScalar qMin,
                                   const NumericalScalar qMax,
-                                  const UnsignedLong pointNumber,
+                                  const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
 
   /** Get the mathematical and numerical range of the distribution.
@@ -180,13 +180,13 @@ public:
   SquareMatrix getCholesky() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the raw moments of the distribution */
-  NumericalPoint getMoment(const UnsignedLong n) const;
+  NumericalPoint getMoment(const UnsignedInteger n) const;
 
   /** Get the centered moments about the mean of the distribution */
-  NumericalPoint getCenteredMoment(const UnsignedLong n) const;
+  NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
 
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
   SquareMatrix getInverseCholesky() const;
@@ -245,7 +245,7 @@ public:
   NumericalSample getSupport() const;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedLong i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Distribution getMarginal(const Indices & indices) const;
@@ -287,14 +287,14 @@ public:
   /** Draw the PDF of the distribution when its dimension is 1 */
   virtual Graph drawPDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
-  virtual Graph drawPDF(const UnsignedLong pointNumber) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
+  virtual Graph drawPDF(const UnsignedInteger pointNumber) const;
 
   /** Draw the PDF of a 1D marginal */
-  virtual Graph drawMarginal1DPDF(const UnsignedLong marginalIndex,
+  virtual Graph drawMarginal1DPDF(const UnsignedInteger marginalIndex,
                                   const NumericalScalar xMin,
                                   const NumericalScalar xMax,
-                                  const UnsignedLong pointNumber) const;
+                                  const UnsignedInteger pointNumber) const;
 
   /** Draw the PDF of the distribution when its dimension is 2 */
   virtual Graph drawPDF(const NumericalPoint & xMin,
@@ -305,8 +305,8 @@ public:
   virtual Graph drawPDF(const Indices & pointNumber) const;
 
   /** Draw the PDF of a 2D marginal */
-  virtual Graph drawMarginal2DPDF(const UnsignedLong firstMarginal,
-                                  const UnsignedLong secondMarginal,
+  virtual Graph drawMarginal2DPDF(const UnsignedInteger firstMarginal,
+                                  const UnsignedInteger secondMarginal,
                                   const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
                                   const Indices & pointNumber) const;
@@ -317,9 +317,9 @@ public:
   /** Draw the CDF of the distribution when its dimension is 1 */
   virtual Graph drawCDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
-  virtual Graph drawCDF(const UnsignedLong pointNumber) const;
+  virtual Graph drawCDF(const UnsignedInteger pointNumber) const;
 
   /** Draw the CDF of the distribution when its dimension is 2 */
   virtual Graph drawCDF(const NumericalPoint & xMin,
@@ -330,24 +330,24 @@ public:
   virtual Graph drawCDF(const Indices & pointNumber) const;
 
   /** Draw the CDF of a 1D marginal */
-  virtual Graph drawMarginal1DCDF(const UnsignedLong marginalIndex,
+  virtual Graph drawMarginal1DCDF(const UnsignedInteger marginalIndex,
                                   const NumericalScalar xMin,
                                   const NumericalScalar xMax,
-                                  const UnsignedLong pointNumber) const;
+                                  const UnsignedInteger pointNumber) const;
 
   /** Draw the CDF of a 2D marginal */
-  virtual Graph drawMarginal2DCDF(const UnsignedLong firstMarginal,
-                                  const UnsignedLong secondMarginal,
+  virtual Graph drawMarginal2DCDF(const UnsignedInteger firstMarginal,
+                                  const UnsignedInteger secondMarginal,
                                   const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
                                   const Indices & pointNumber) const;
 
   /** Draw the quantile of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawQuantile(const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
   virtual Graph drawQuantile(const NumericalScalar qMin,
                              const NumericalScalar qMax,
-                             const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
@@ -356,7 +356,7 @@ public:
   void setParametersCollection(const NumericalPoint & parameters);
 
   /** Parameters number */
-  UnsignedLong getParametersNumber() const;
+  UnsignedInteger getParametersNumber() const;
 
   /** Description accessor */
   void setDescription(const Description & description);

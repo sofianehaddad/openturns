@@ -46,8 +46,8 @@ class Contour : public DrawableImplementation
 public:
 
   /** Default constructor */
-  Contour(const UnsignedLong dimX,
-          const UnsignedLong dimY,
+  Contour(const UnsignedInteger dimX,
+          const UnsignedInteger dimY,
           const NumericalSample & data,
           const String & legend = "");
 
@@ -102,7 +102,7 @@ public:
 
   /** Build default levels using quantiles associated with regularly spaced probability levels
    */
-  void buildDefaultLevels(const UnsignedLong number = ResourceMap::GetAsUnsignedLong( "Contour-DefaultLevelsNumber" ));
+  void buildDefaultLevels(const UnsignedInteger number = ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ));
 
   /** Build default labels by taking the level values */
   void buildDefaultLabels();

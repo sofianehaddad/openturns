@@ -88,7 +88,7 @@ public:
   NumericalPoint getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /* Interface specific to InverseNormal */
   void setLambdaMu(const NumericalScalar lambda,

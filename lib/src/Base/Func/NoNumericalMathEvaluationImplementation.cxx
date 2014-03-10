@@ -77,7 +77,7 @@ Bool NoNumericalMathEvaluationImplementation::isActualImplementation() const
 /* Operator () */
 NumericalPoint NoNumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   const NumericalPoint result;
@@ -90,13 +90,13 @@ NumericalPoint NoNumericalMathEvaluationImplementation::operator() (const Numeri
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NoNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger NoNumericalMathEvaluationImplementation::getInputDimension() const
 {
   return 0;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NoNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger NoNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   return 0;
 }

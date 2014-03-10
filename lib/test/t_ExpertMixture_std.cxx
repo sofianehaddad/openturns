@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     fullprint << "Mixture of experts=" << moe << std::endl;
 
     // Evaluate the mixture of experts on some points
-    for (UnsignedLong i = 0; i < 5; ++i)
+    for (UnsignedInteger i = 0; i < 5; ++i)
     {
       NumericalPoint p(1, -0.3 + 0.8 * i / 4.0);
       fullprint << "moe(" << p[0] << ")=" << moe(p) << std::endl;

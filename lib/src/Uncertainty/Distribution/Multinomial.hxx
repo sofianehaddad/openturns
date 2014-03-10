@@ -45,7 +45,7 @@ public:
 
 
   /** Parameters constructor */
-  Multinomial(const UnsignedLong n,
+  Multinomial(const UnsignedInteger n,
               const NumericalPoint & p);
 
 
@@ -88,7 +88,7 @@ public:
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;
@@ -108,8 +108,8 @@ public:
   NumericalPoint getP() const;
 
   /** N accessor */
-  void setN(const UnsignedLong n);
-  UnsignedLong getN() const;
+  void setN(const UnsignedInteger n);
+  UnsignedInteger getN() const;
 
   /** SmallA accessor */
   void setSmallA(const NumericalScalar smallA);
@@ -153,7 +153,7 @@ private:
   void computeCovariance() const;
 
   /** The range of the output */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
   /** The vector of probabilities of the Multinomial distribution */
   NumericalPoint p_;

@@ -41,7 +41,7 @@ NumericalPointWithDescription::NumericalPointWithDescription()
 }
 
 /* Constructor with size */
-NumericalPointWithDescription::NumericalPointWithDescription(const UnsignedLong size,
+NumericalPointWithDescription::NumericalPointWithDescription(const UnsignedInteger size,
     const NumericalScalar value)
   : NumericalPoint(size, value)
   , description_(size)
@@ -111,10 +111,10 @@ public:
 
 String NumericalPointWithDescription::__str__(const String & offset) const
 {
-  const UnsignedLong size = getSize();
+  const UnsignedInteger size = getSize();
   const Description desc = getDescription();
   std::vector<KeyValuePair> assoc(size);
-  for (UnsignedLong i = 0; i < size; ++i) assoc[i] = KeyValuePair( desc[i], (*this)[i] );
+  for (UnsignedInteger i = 0; i < size; ++i) assoc[i] = KeyValuePair( desc[i], (*this)[i] );
 
   OSS oss(false);
   oss << "[";

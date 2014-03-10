@@ -97,18 +97,18 @@ String AnalyticalNumericalMathGradientImplementation::__str__(const String & off
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(evaluation_.getInputVariablesNames());
       const Description outputVariablesNames(evaluation_.getOutputVariablesNames());
-      UnsignedLong length(0);
-      const UnsignedLong iMax(getInputDimension());
-      const UnsignedLong jMax(getOutputDimension());
-      for (UnsignedLong i = 0; i < iMax; ++i)
+      UnsignedInteger length(0);
+      const UnsignedInteger iMax(getInputDimension());
+      const UnsignedInteger jMax(getOutputDimension());
+      for (UnsignedInteger i = 0; i < iMax; ++i)
       {
-        const UnsignedLong lengthI(inputVariablesNames[i].length());
-        for (UnsignedLong j = 0; j < jMax; ++j)
-          length = std::max(length, lengthI + static_cast<UnsignedLong>(outputVariablesNames[j].length()) + 8);
+        const UnsignedInteger lengthI(inputVariablesNames[i].length());
+        for (UnsignedInteger j = 0; j < jMax; ++j)
+          length = std::max(length, lengthI + static_cast<UnsignedInteger>(outputVariablesNames[j].length()) + 8);
       }
-      for (UnsignedLong j = 0; j < jMax; ++j)
+      for (UnsignedInteger j = 0; j < jMax; ++j)
       {
-        for (UnsignedLong i = 0; i < iMax; ++i)
+        for (UnsignedInteger i = 0; i < iMax; ++i)
         {
           oss << offset << "| " << std::setw(length) << ("d(" + outputVariablesNames[j] + ") / d(" + inputVariablesNames[i] + ")") << " = " << getFormula(i, j) << Os::GetEndOfLine();
         }
@@ -131,20 +131,20 @@ void AnalyticalNumericalMathGradientImplementation::initialize() const
   try
   {
     isAnalytical_ = false;
-    const UnsignedLong inputSize(evaluation_.inputVariablesNames_.getSize());
-    const UnsignedLong outputSize(evaluation_.outputVariablesNames_.getSize());
-    const UnsignedLong gradientSize(inputSize * outputSize);
+    const UnsignedInteger inputSize(evaluation_.inputVariablesNames_.getSize());
+    const UnsignedInteger outputSize(evaluation_.outputVariablesNames_.getSize());
+    const UnsignedInteger gradientSize(inputSize * outputSize);
     parsers_ = ParserCollection(gradientSize);
     inputVariables_ = NumericalScalarCollection(inputSize);
     // For each element of the gradient, do
-    UnsignedLong gradientIndex(0);
-    for (UnsignedLong columnIndex = 0; columnIndex < outputSize; ++columnIndex)
+    UnsignedInteger gradientIndex(0);
+    for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
     {
       // Parse the current formula with Ev3
       int nerr(0);
       Ev3::ExpressionParser ev3Parser;
       // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
-      for (UnsignedLong inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
+      for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
       Ev3::Expression ev3Expression;
       try
       {
@@ -156,11 +156,11 @@ void AnalyticalNumericalMathGradientImplementation::initialize() const
       }
       if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << evaluation_.formulas_[columnIndex] << " with Ev3. No analytical gradient.";
       //                Ev3::Simplify(&ev3Expression);
-      for (UnsignedLong rowIndex = 0; rowIndex < inputSize; ++rowIndex)
+      for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
       {
         // First, define all the variable names and associate them
         // to the corresponding component of the input vector
-        for(UnsignedLong inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) parsers_[gradientIndex].DefineVar(evaluation_.inputVariablesNames_[inputVariableIndex].c_str(), &inputVariables_[inputVariableIndex]);
+        for(UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) parsers_[gradientIndex].DefineVar(evaluation_.inputVariablesNames_[inputVariableIndex].c_str(), &inputVariables_[inputVariableIndex]);
         // Second, define the formula
         try
         {
@@ -190,20 +190,20 @@ void AnalyticalNumericalMathGradientImplementation::initialize() const
 /* Gradient */
 Matrix AnalyticalNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The gradient does not have an analytical expression.";
-  for (UnsignedLong i = 0; i < inP.getDimension(); ++i) inputVariables_[i] = inP[i];
-  const UnsignedLong outputDimension(getOutputDimension());
+  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i) inputVariables_[i] = inP[i];
+  const UnsignedInteger outputDimension(getOutputDimension());
   Matrix out(inputDimension, outputDimension);
   ++callsNumber_;
   try
   {
-    UnsignedLong parserIndex(0);
-    for (UnsignedLong columnIndex = 0; columnIndex < outputDimension; ++columnIndex)
+    UnsignedInteger parserIndex(0);
+    for (UnsignedInteger columnIndex = 0; columnIndex < outputDimension; ++columnIndex)
     {
-      for (UnsignedLong rowIndex = 0; rowIndex < inputDimension; ++rowIndex)
+      for (UnsignedInteger rowIndex = 0; rowIndex < inputDimension; ++rowIndex)
       {
         out(rowIndex, columnIndex) = parsers_[parserIndex].Eval();
         ++parserIndex;
@@ -218,29 +218,29 @@ Matrix AnalyticalNumericalMathGradientImplementation::gradient(const NumericalPo
 }
 
 /* Accessor for input point dimension */
-UnsignedLong AnalyticalNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger AnalyticalNumericalMathGradientImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong AnalyticalNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger AnalyticalNumericalMathGradientImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }
 
 /* Accessor to a specific formula */
-String AnalyticalNumericalMathGradientImplementation::getFormula(const UnsignedLong i,
-    const UnsignedLong j) const
+String AnalyticalNumericalMathGradientImplementation::getFormula(const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if ((i >= inputDimension) || (j >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";
   if (!isInitialized_) initialize();
   return parsers_[i + j * inputDimension].GetExpr();
 }
 
 /* Get the i-th marginal function */
-AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumericalMathGradientImplementation::getMarginal(const UnsignedLong i) const
+AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumericalMathGradientImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal gradient must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
@@ -250,12 +250,12 @@ AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumerica
 AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumericalMathGradientImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal gradient must be in the range [0, dim-1] and  must be different";
-  const UnsignedLong marginalDimension(indices.getSize());
+  const UnsignedInteger marginalDimension(indices.getSize());
   Description marginalFormulas(marginalDimension);
   Description marginalOutputNames(marginalDimension);
   Description outputNames(evaluation_.getOutputVariablesNames());
   Description formulas(evaluation_.getFormulas());
-  for (UnsignedLong i = 0; i < marginalDimension; ++i)
+  for (UnsignedInteger i = 0; i < marginalDimension; ++i)
   {
     marginalFormulas[i] = formulas[indices[i]];
     marginalOutputNames[i] = outputNames[indices[i]];

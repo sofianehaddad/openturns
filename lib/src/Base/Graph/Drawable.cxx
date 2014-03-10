@@ -136,13 +136,13 @@ String Drawable::getEdgeColor() const
 }
 
 /* Accessor for line width */
-UnsignedLong Drawable::getLineWidth() const
+UnsignedInteger Drawable::getLineWidth() const
 {
   return getImplementation()->getLineWidth();
 }
 
 /* Accessor for line width */
-void Drawable::setLineWidth(const UnsignedLong lineWidth)
+void Drawable::setLineWidth(const UnsignedInteger lineWidth)
 {
   copyOnWrite();
   getImplementation()->setLineWidth(lineWidth);
@@ -287,7 +287,7 @@ void Drawable::clean() const
 }
 
 /* Get R point code from key */
-UnsignedLong Drawable::getPointCode(const String key) const
+UnsignedInteger Drawable::getPointCode(const String key) const
 {
   return getImplementation()->getPointCode(key);
 }
@@ -323,18 +323,18 @@ String Drawable::ConvertFromName(const String & name)
 }
 
 /* Convert an RGB triplet to a valid hexadecimal code */
-String Drawable::ConvertFromRGB(const UnsignedLong red,
-                                const UnsignedLong green,
-                                const UnsignedLong blue)
+String Drawable::ConvertFromRGB(const UnsignedInteger red,
+                                const UnsignedInteger green,
+                                const UnsignedInteger blue)
 {
   return DrawableImplementation::ConvertFromRGB(red, green, blue);
 }
 
 /* Convert an RGBA quadruplet to a valid hexadecimal code */
-String Drawable::ConvertFromRGBA(const UnsignedLong red,
-                                 const UnsignedLong green,
-                                 const UnsignedLong blue,
-                                 const UnsignedLong alpha)
+String Drawable::ConvertFromRGBA(const UnsignedInteger red,
+                                 const UnsignedInteger green,
+                                 const UnsignedInteger blue,
+                                 const UnsignedInteger alpha)
 {
   return DrawableImplementation::ConvertFromRGBA(red, green, blue, alpha);
 }
@@ -383,7 +383,7 @@ String Drawable::ConvertFromHSVA(const NumericalScalar hue,
 
 /* Build default palette
    Cycle through the hue wheel with 10 nuances and increasing darkness */
-Description Drawable::BuildDefaultPalette(const UnsignedLong size)
+Description Drawable::BuildDefaultPalette(const UnsignedInteger size)
 {
   return DrawableImplementation::BuildDefaultPalette(size);
 }

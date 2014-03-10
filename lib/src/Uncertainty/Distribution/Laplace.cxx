@@ -216,7 +216,7 @@ NumericalPoint Laplace::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Laplace::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Laplace::getStandardMoment(const UnsignedInteger n) const
 {
   if ((n % 2) == 1) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, SpecFunc::Gamma(n + 1));

@@ -47,7 +47,7 @@ public:
   KrawtchoukFactory();
 
   /** Parameter constructor: (n, p) is the order of the Krawtchouk polynomial, associated with the Binomial(n, p) distribution */
-  KrawtchoukFactory(const UnsignedLong n,
+  KrawtchoukFactory(const UnsignedInteger n,
                     const NumericalScalar p);
 
   /** Virtual constructor */
@@ -55,10 +55,10 @@ public:
 
   /** Calculate the coefficients of recurrence a0n, a1n, a2n such that
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedLong n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** N accessor */
-  UnsignedLong getN() const;
+  UnsignedInteger getN() const;
 
   /** P accessor */
   NumericalScalar getP() const;
@@ -74,7 +74,7 @@ public:
 
 private:
   /* First parameter of the Krawtchouk polynomial */
-  UnsignedLong n_;
+  UnsignedInteger n_;
   /* Second parameter of the Krawtchouk polynomial */
   NumericalScalar p_;
 

@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   {
     /* Generate a Normal sample */
     Normal normal(1);
-    UnsignedLong size(100);
+    UnsignedInteger size(100);
     NumericalSample sample(normal.getSample(size));
     Graph sampleCDF(VisualTest::DrawEmpiricalCDF(sample, sample.getMin()[0] - 1.0, sample.getMax()[0] + 1.0));
     sampleCDF.draw("sampleCDF", 640, 480);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
   /* Histogram tests */
   {
     Normal normal(1);
-    UnsignedLong size(100);
+    UnsignedInteger size(100);
     NumericalSample sample(normal.getSample(size));
     Graph sampleHist(VisualTest::DrawHistogram(sample, 10));
     sampleHist.draw("sampleHist", 640, 480);
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 
   /* QQPlot tests */
   {
-    UnsignedLong size(100);
+    UnsignedInteger size(100);
     Normal normal(1);
     NumericalSample sample(normal.getSample(size));
     NumericalSample sample2(Gamma(3.0, 4.0, 0.0).getSample(size));
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
   /* HenryLine test */
   {
-    UnsignedLong size(100);
+    UnsignedInteger size(100);
     Normal normal(1);
     NumericalSample sample(normal.getSample(size));
     Graph henryPlot(VisualTest::DrawHenryLine(sample));
@@ -96,15 +96,15 @@ int main(int argc, char *argv[])
 
   /* Clouds tests */
   {
-    UnsignedLong dimension(2);
+    UnsignedInteger dimension(2);
     CorrelationMatrix R(dimension);
     R(0, 1) = 0.8;
     Normal distribution(NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R);
-    UnsignedLong size(100);
+    UnsignedInteger size(100);
     NumericalSample sample2D(distribution.getSample(size));
     NumericalSample firstSample(size, 1);
     NumericalSample secondSample(size, 1);
-    for (UnsignedLong i = 0; i < size; i++)
+    for (UnsignedInteger i = 0; i < size; i++)
     {
       firstSample[i][0] = sample2D[i][0];
       secondSample[i][0] = sample2D[i][1];
@@ -123,15 +123,15 @@ int main(int argc, char *argv[])
 
   /* LinearModel tests */
   {
-    UnsignedLong dimension(2);
+    UnsignedInteger dimension(2);
     CorrelationMatrix R(dimension);
     R(0, 1) = 0.8;
     Normal distribution(NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R);
-    UnsignedLong size(100);
+    UnsignedInteger size(100);
     NumericalSample sample2D(distribution.getSample(size));
     NumericalSample firstSample(size, 1);
     NumericalSample secondSample(size, 1);
-    for (UnsignedLong i = 0; i < size; i++)
+    for (UnsignedInteger i = 0; i < size; i++)
     {
       firstSample[i][0] = sample2D[i][0];
       secondSample[i][0] = sample2D[i][1];
@@ -151,14 +151,14 @@ int main(int argc, char *argv[])
 
   /* CobWeb tests */
   {
-    UnsignedLong size(100);
-    UnsignedLong inputDimension(6);
+    UnsignedInteger size(100);
+    UnsignedInteger inputDimension(6);
     NumericalSample inputSample(Normal(inputDimension).getSample(size));
     Description inputVar(inputDimension);
-    for (UnsignedLong i = 0; i < inputDimension; ++i) inputVar[i] = (OSS() << "X" << i);
+    for (UnsignedInteger i = 0; i < inputDimension; ++i) inputVar[i] = (OSS() << "X" << i);
     Description formula(1);
     OSS oss;
-    for (UnsignedLong i = 0; i < inputDimension; ++i) oss << (i > 0 ? "+" : "") << "cos(" << i + 1 << "*" << inputVar[i] << ")";
+    for (UnsignedInteger i = 0; i < inputDimension; ++i) oss << (i > 0 ? "+" : "") << "cos(" << i + 1 << "*" << inputVar[i] << ")";
     formula[0] = oss;
     Description outputVar(1);
     outputVar[0] = "y";
@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
 
   /* KendallPlot tests */
   {
-    UnsignedLong size(100);
+    UnsignedInteger size(100);
     FrankCopula copula1(1.5);
     GumbelCopula copula2(4.5);
     NumericalSample sample1(copula1.getSample(size));

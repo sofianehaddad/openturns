@@ -201,7 +201,7 @@ ProjectionStrategy FunctionalChaosAlgorithm::getProjectionStrategy() const
 /* Computes the functional chaos */
 void FunctionalChaosAlgorithm::run()
 {
-  const UnsignedLong outputDimension(model_.getOutputDimension());
+  const UnsignedInteger outputDimension(model_.getOutputDimension());
   // First, compute all the parts that are independent of the marginal output
   // Create the isoprobabilistic transformation
   // If we call Z a random vector which probability distribution is measure and X a random vector which probability distribution is distribution_, and T the isoprobabilistic transformation, we have:
@@ -218,11 +218,11 @@ void FunctionalChaosAlgorithm::run()
   // Has the distribution an independent copula? Simply use marginal transformations
   if (distribution_.hasIndependentCopula())
   {
-    const UnsignedLong dimension(distribution_.getDimension());
+    const UnsignedInteger dimension(distribution_.getDimension());
     // We use empty collections to avoid the construction of default distributions
     DistributionCollection marginalX(0);
     DistributionCollection marginalZ(0);
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       marginalX.add(distribution_.getMarginal(i));
       marginalZ.add(measure.getMarginal(i));
@@ -278,8 +278,8 @@ void FunctionalChaosAlgorithm::run()
   // missing, we have to take care of the different sparsity patterns
   NumericalPoint residuals(outputDimension);
   NumericalPoint relativeErrors(outputDimension);
-  std::map<UnsignedLong, NumericalPoint> coefficientsMap;
-  for (UnsignedLong outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
+  std::map<UnsignedInteger, NumericalPoint> coefficientsMap;
+  for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
   {
     Indices marginalIndices;
     NumericalPoint marginalAlpha_k;
@@ -289,14 +289,14 @@ void FunctionalChaosAlgorithm::run()
     runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
     residuals[outputIndex] = marginalResidual;
     relativeErrors[outputIndex] = marginalRelativeError;
-    for (UnsignedLong j = 0; j < marginalIndices.getSize(); ++j)
+    for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
     {
       // Deal only with non-zero coefficients
       const NumericalScalar marginalAlpha_kj(marginalAlpha_k[j]);
       if (marginalAlpha_kj != 0.0)
       {
         // Current index in the decomposition of the current marginal output
-        const UnsignedLong index(marginalIndices[j]);
+        const UnsignedInteger index(marginalIndices[j]);
         // If the current index is not in the map, create it
         if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = NumericalPoint(outputDimension, 0.0);
         // Add the current scalar coefficient to the corresponding component of the vectorial coefficient
@@ -305,7 +305,7 @@ void FunctionalChaosAlgorithm::run()
     } // Loop over the marginal indices
   } // Loop over the output dimension
   // At this point, the map contains all the associations (index, vector coefficient). It remains to present these data into the proper form and to build the associated partial basis
-  std::map<UnsignedLong, NumericalPoint>::iterator iter;
+  std::map<UnsignedInteger, NumericalPoint>::iterator iter;
   // Full set of indices
   Indices I_k(0);
   // Full set of vectorial coefficients
@@ -314,7 +314,7 @@ void FunctionalChaosAlgorithm::run()
   NumericalMathFunctionCollection Psi_k(0);
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
   {
-    const UnsignedLong i(iter->first);
+    const UnsignedInteger i(iter->first);
     const NumericalPoint currentcoefficient(iter->second);
     I_k.add(i);
     alpha_k.add(currentcoefficient);
@@ -330,7 +330,7 @@ void FunctionalChaosAlgorithm::run()
 }
 
 /* Marginal computation */
-void FunctionalChaosAlgorithm::runMarginal(const UnsignedLong marginalIndex,
+void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     Indices & indices,
     NumericalPoint & coefficients,
     NumericalScalar & residual,

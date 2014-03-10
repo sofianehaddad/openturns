@@ -62,10 +62,10 @@ public:
   virtual void setParameters(const NumericalPointWithDescription & parameters);
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

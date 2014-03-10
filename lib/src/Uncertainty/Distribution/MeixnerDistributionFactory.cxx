@@ -60,7 +60,7 @@ MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build() c
 
 MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalSample & sample) const
 {
-  UnsignedLong size(sample.getSize());
+  UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a MeixnerDistribution distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a MeixnerDistribution distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar gamma1(sample.computeSkewnessPerComponent()[0]);

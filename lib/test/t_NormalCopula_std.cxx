@@ -36,10 +36,10 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedLong dim(3);
+    UnsignedInteger dim(3);
 
     CorrelationMatrix R = IdentityMatrix(dim);
-    for(UnsignedLong i = 0; i < dim - 1; i++)
+    for(UnsignedInteger i = 0; i < dim - 1; i++)
     {
       R(i, i + 1) = 0.25;
     }
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     NumericalSample oneSample = copula.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
     // Extract the marginals
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       Copula margin(copula.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
     // Creation of the correlation matrix from a Spearman correlation matrix
     CorrelationMatrix spearman(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       spearman(i, i - 1) = 0.25;
     }

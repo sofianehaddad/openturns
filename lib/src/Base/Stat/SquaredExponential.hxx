@@ -46,9 +46,9 @@ public:
   typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
 
   /** Default constructor */
-  explicit SquaredExponential(const UnsignedLong & dimension = 0);
+  explicit SquaredExponential(const UnsignedInteger & dimension = 0);
 
-  SquaredExponential(const UnsignedLong & dimension,
+  SquaredExponential(const UnsignedInteger & dimension,
                      const NumericalScalar theta);
 
   /** Virtual copy constructor */

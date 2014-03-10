@@ -47,12 +47,12 @@ public:
   explicit LHSExperiment(const String & name = DefaultName);
 
   /** Parameters constructor */
-  explicit LHSExperiment(const UnsignedLong size,
+  explicit LHSExperiment(const UnsignedInteger size,
                          const String & name = DefaultName);
 
   /** Parameters constructor */
   LHSExperiment(const Distribution & distribution,
-                const UnsignedLong size,
+                const UnsignedInteger size,
                 const String & name = DefaultName);
 
   /** Virtual constructor */
@@ -68,8 +68,8 @@ public:
   NumericalSample generate();
 
   /** Shuffle the cells. */
-  static Matrix ComputeShuffle(const UnsignedLong dimension,
-                               const UnsignedLong totalSize);
+  static Matrix ComputeShuffle(const UnsignedInteger dimension,
+                               const UnsignedInteger totalSize);
 
   /** Shuffle accessor */
   virtual Matrix getShuffle() const;

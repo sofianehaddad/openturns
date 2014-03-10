@@ -60,10 +60,10 @@ public:
   NumericalPoint operator() (const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the 1D function */
   NumericalMathFunction getFunction() const;

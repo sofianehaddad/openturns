@@ -35,17 +35,17 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong dim(3);
+    UnsignedInteger dim(3);
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
-      for (UnsignedLong j = 0; j < i; j++)
+      for (UnsignedInteger j = 0; j < i; j++)
       {
         R(i, j) = 0.5 * (1.0 + i) / dim;
       }
     }
     NormalCopula distribution(R);
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));
     NormalCopulaFactory factory;
     CovarianceMatrix covariance;

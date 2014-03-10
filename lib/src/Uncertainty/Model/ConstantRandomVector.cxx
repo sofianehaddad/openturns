@@ -76,7 +76,7 @@ String ConstantRandomVector::__repr__() const
 
 
 /* Dimension accessor */
-UnsignedLong ConstantRandomVector::getDimension() const
+UnsignedInteger ConstantRandomVector::getDimension() const
 {
   return point_.getDimension();
 }
@@ -88,7 +88,7 @@ NumericalPoint ConstantRandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample ConstantRandomVector::getSample(const UnsignedLong size) const
+NumericalSample ConstantRandomVector::getSample(const UnsignedInteger size) const
 {
   return NumericalSample(size, point_);
 }
@@ -102,14 +102,14 @@ NumericalPoint ConstantRandomVector::getMean() const
 /* Covariance accessor */
 CovarianceMatrix ConstantRandomVector::getCovariance() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   CovarianceMatrix covariance(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i) covariance(i, i) = 0.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i) covariance(i, i) = 0.0;
   return covariance;
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const UnsignedLong i) const
+ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal random vector must be in the range [0, dim-1]";
   return new ConstantRandomVector(NumericalPoint(1, point_[i]));
@@ -119,9 +119,9 @@ ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const Uns
 ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and  must be different";
-  const UnsignedLong marginalDimension(indices.getSize());
+  const UnsignedInteger marginalDimension(indices.getSize());
   NumericalPoint marginalPoint(marginalDimension);
-  for (UnsignedLong i = 0; i < marginalDimension; ++i) marginalPoint[i] = point_[indices[i]];
+  for (UnsignedInteger i = 0; i < marginalDimension; ++i) marginalPoint[i] = point_[indices[i]];
   return new ConstantRandomVector(marginalPoint);
 }
 

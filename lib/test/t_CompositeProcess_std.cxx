@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     /* Time grid creation */
     NumericalScalar Tmin(0.0);
     NumericalScalar deltaT(0.1);
-    UnsignedLong steps(11);
+    UnsignedInteger steps(11);
 
     /* Initialization of the time grid timeGrid1*/
     RegularGrid timeGrid(Tmin, deltaT, steps);

@@ -27,12 +27,12 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedLong digits)
+String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
   NumericalScalar eps(pow(0.1, digits));
-  for (UnsignedLong i = 0; i < point.getDimension(); i++)
+  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((fabs(point[i]) < eps) ? fabs(point[i]) : point[i]);
   }

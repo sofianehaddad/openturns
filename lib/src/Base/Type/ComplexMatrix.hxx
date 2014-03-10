@@ -70,13 +70,13 @@ public:
   ComplexMatrix(const ComplexMatrixImplementation & i);
 
   /** Constructor with size (rowDim and colDim) */
-  ComplexMatrix(const UnsignedLong rowDim,
-                const UnsignedLong colDim);
+  ComplexMatrix(const UnsignedInteger rowDim,
+                const UnsignedInteger colDim);
 
   /** Constructor from range of external collection */
   template <class InputIterator>
-  ComplexMatrix(const UnsignedLong rowDim,
-                const UnsignedLong colDim,
+  ComplexMatrix(const UnsignedInteger rowDim,
+                const UnsignedInteger colDim,
                 const InputIterator first,
                 const InputIterator last);
 
@@ -84,8 +84,8 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  ComplexMatrix(const UnsignedLong rowDim,
-                const UnsignedLong colDim,
+  ComplexMatrix(const UnsignedInteger rowDim,
+                const UnsignedInteger colDim,
                 const NumericalComplexCollection & elementsValues);
 
 
@@ -93,8 +93,8 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  ComplexMatrix(const UnsignedLong rowDim,
-                const UnsignedLong colDim,
+  ComplexMatrix(const UnsignedInteger rowDim,
+                const UnsignedInteger colDim,
                 const NumericalScalarCollection & elementsValues);
 
 
@@ -108,20 +108,20 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalComplex & operator () (const UnsignedLong i,
-                                  const UnsignedLong j);
+  NumericalComplex & operator () (const UnsignedInteger i,
+                                  const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalComplex & operator () (const UnsignedLong i,
-                                        const UnsignedLong j) const;
+  const NumericalComplex & operator () (const UnsignedInteger i,
+                                        const UnsignedInteger j) const;
 #endif
 
   /** Get the dimensions of the matrix */
   /** Number of rows */
-  const UnsignedLong getNbRows() const;
+  const UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedLong getNbColumns() const;
+  const UnsignedInteger getNbColumns() const;
 
   /** ComplexMatrix transpose */
   ComplexMatrix transpose () const;
@@ -192,8 +192,8 @@ public:
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
   const NumericalComplex * __baseaddress__ () const;
-  UnsignedLong __elementsize__ () const;
-  UnsignedLong __stride__ (UnsignedLong dim) const;
+  UnsignedInteger __elementsize__ () const;
+  UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 }; /* class ComplexMatrix */
 
@@ -207,8 +207,8 @@ inline ComplexMatrix operator * (const NumericalComplex s,
 
 /** Constructor from range of external collection */
 template <class InputIterator>
-ComplexMatrix::ComplexMatrix(const UnsignedLong rowDim,
-                             const UnsignedLong colDim,
+ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
+                             const UnsignedInteger colDim,
                              const InputIterator first,
                              const InputIterator last)
   : TypedInterfaceObject<ComplexMatrixImplementation>(new ComplexMatrixImplementation(rowDim, colDim, first, last))

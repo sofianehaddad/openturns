@@ -62,10 +62,10 @@ struct NegativeBinomialFactoryParameterConstraint
   {
     const NumericalScalar r(parameter[0]);
     if (r <= 0.0) throw InvalidArgumentException(HERE) << "Error: the r parameter must be positive.";
-    const UnsignedLong size(sample_.getSize());
+    const UnsignedInteger size(sample_.getSize());
     /* \sum_{i=1}^N \psi(x_i + r) */
     NumericalScalar sumPsi(0.0);
-    for (UnsignedLong i = 0; i < size; ++i) sumPsi += SpecFunc::Psi(sample_[i][0] + r);
+    for (UnsignedInteger i = 0; i < size; ++i) sumPsi += SpecFunc::Psi(sample_[i][0] + r);
     const NumericalScalar value(sumPsi + size * (log(r / (r + mean_)) - SpecFunc::Psi(r)));
     return NumericalPoint(1, value);
   }
@@ -93,13 +93,13 @@ NegativeBinomialFactory::Implementation NegativeBinomialFactory::build() const
 
 NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mean(0.0);
   NumericalScalar var(0.0);
   const NumericalScalar supportEpsilon(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x(sample[i][0]);
     const int iX(static_cast<int>(round(x)));
@@ -133,7 +133,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
     fB = f(NumericalPoint(1, b))[0];
   }
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedLong("NegativeBinomialFactory-MaximumIteration"));
+  Brent solver(ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
   // R estimate
   const NumericalScalar r(solver.solve(f, 0.0, a, b, fA, fB));
   // Corresponding p estimate

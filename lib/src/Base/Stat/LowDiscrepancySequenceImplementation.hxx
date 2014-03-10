@@ -48,22 +48,22 @@ public:
 
 
   /** Constructor with parameters */
-  explicit LowDiscrepancySequenceImplementation(const UnsignedLong dimension = 1);
+  explicit LowDiscrepancySequenceImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
   virtual LowDiscrepancySequenceImplementation * clone() const;
 
   /** initialize the sequence */
-  virtual void initialize(const UnsignedLong dimension);
+  virtual void initialize(const UnsignedInteger dimension);
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1) */
   virtual NumericalPoint generate();
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-  virtual NumericalSample generate(const UnsignedLong size);
+  virtual NumericalSample generate(const UnsignedInteger size);
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
   static NumericalScalar ComputeStarDiscrepancy(const NumericalSample & sample);
@@ -90,13 +90,13 @@ protected:
   static Unsigned64BitsIntegerCollection GetPrimeNumbers(const Indices & indices);
 
   /** Compute the n first prime numbers */
-  static Unsigned64BitsIntegerCollection ComputeFirstPrimeNumbers(const UnsignedLong n);
+  static Unsigned64BitsIntegerCollection ComputeFirstPrimeNumbers(const UnsignedInteger n);
 
   /** Compute the least prime number greater or equal to n */
-  static Unsigned64BitsInteger ComputeNextPrimeNumber(const UnsignedLong n);
+  static Unsigned64BitsInteger ComputeNextPrimeNumber(const UnsignedInteger n);
 
   /** Dimension parameter */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
 } ; /* class LowDiscrepancySequenceImplementation */
 

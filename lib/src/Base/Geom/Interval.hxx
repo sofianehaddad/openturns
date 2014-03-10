@@ -43,12 +43,12 @@ class Interval
   CLASSNAME;
 
 public:
-  typedef Collection<UnsignedLong>           BoolCollection;
-  typedef PersistentCollection<UnsignedLong> BoolPersistentCollection;
+  typedef Collection<UnsignedInteger>           BoolCollection;
+  typedef PersistentCollection<UnsignedInteger> BoolPersistentCollection;
 
 
   /** Default constructor */
-  explicit Interval(const UnsignedLong dimension = 1);
+  explicit Interval(const UnsignedInteger dimension = 1);
 
   /** Parameters constructor, simplified for 1D case */
   Interval(const NumericalScalar lowerBound,

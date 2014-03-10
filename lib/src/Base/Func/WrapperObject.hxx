@@ -62,7 +62,7 @@ class WrapperObject
 public:
 
   // For test
-  //static const UnsignedLong NBCPUS_;
+  //static const UnsignedInteger NBCPUS_;
 
 
   enum ObjectType
@@ -160,13 +160,13 @@ public:
    * @param p_state An hidden opaque pointer that points to the storage allocated by the wrapper as an internal state.
    * @throw WrapperInternalException
    */
-  UnsignedLong getInNumericalPointDimension(void * p_state) const;
+  UnsignedInteger getInNumericalPointDimension(void * p_state) const;
 
   /** Returns the dimension of the output point.
    * @param p_state An hidden opaque pointer that points to the storage allocated by the wrapper as an internal state.
    * @throw WrapperInternalException
    */
-  UnsignedLong getOutNumericalPointDimension(void * p_state) const;
+  UnsignedInteger getOutNumericalPointDimension(void * p_state) const;
 
   /** Returns the description of the input and output variables of the functions.
    * @return The description of the input and output variables of the functions.

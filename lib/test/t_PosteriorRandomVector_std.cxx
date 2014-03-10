@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
   {
 
     // observations
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     Normal realDist(31., 1.2);
 
     NumericalSample data(realDist.getSample(size));
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     std::cout << "randomVector=" << randomVector << std::endl;
 
     // get the dimension
-    UnsignedLong dimension = randomVector.getDimension();
+    UnsignedInteger dimension = randomVector.getDimension();
     std::cout << "dimension=" << dimension << std::endl;
 
     // get a realization

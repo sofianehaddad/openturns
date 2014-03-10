@@ -374,8 +374,8 @@ void assert_almost_equal(NumericalScalar a, NumericalScalar b, NumericalScalar r
 
 void assert_almost_equal(const NumericalPoint & a, const NumericalPoint & b, NumericalScalar rtol = 1.0e-5, NumericalScalar atol = 1.0e-8)
 {
-  const UnsignedLong dimension = a.getDimension();
-  for (UnsignedLong j = 0; j < dimension; ++ j )
+  const UnsignedInteger dimension = a.getDimension();
+  for (UnsignedInteger j = 0; j < dimension; ++ j )
   {
     assert_almost_equal(a[j], b[j], rtol, atol);
   }
@@ -384,11 +384,11 @@ void assert_almost_equal(const NumericalPoint & a, const NumericalPoint & b, Num
 
 void assert_almost_equal(const NumericalSample & a, const NumericalSample & b, NumericalScalar rtol = 1.0e-5, NumericalScalar atol = 1.0e-8)
 {
-  const UnsignedLong size = a.getSize();
-  const UnsignedLong dimension = a.getDimension();
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  const UnsignedInteger size = a.getSize();
+  const UnsignedInteger dimension = a.getDimension();
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
-    for (UnsignedLong j = 0; j < dimension; ++ j )
+    for (UnsignedInteger j = 0; j < dimension; ++ j )
     {
       assert_almost_equal(a[i][j], b[i][j], rtol, atol);
     }

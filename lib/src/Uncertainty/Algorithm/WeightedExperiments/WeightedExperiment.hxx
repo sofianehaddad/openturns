@@ -49,12 +49,12 @@ public:
   explicit WeightedExperiment(const String & name = DefaultName);
 
   /** Parameters constructor */
-  explicit WeightedExperiment(const UnsignedLong size,
+  explicit WeightedExperiment(const UnsignedInteger size,
                               const String & name = DefaultName);
 
   /** Parameters constructor */
   WeightedExperiment(const Distribution & distribution,
-                     const UnsignedLong size,
+                     const UnsignedInteger size,
                      const String & name = DefaultName);
 
   /** Virtual constructor */
@@ -68,8 +68,8 @@ public:
   virtual Distribution getDistribution() const;
 
   /** Size accessor */
-  virtual void setSize(const UnsignedLong size);
-  virtual UnsignedLong getSize() const;
+  virtual void setSize(const UnsignedInteger size);
+  virtual UnsignedInteger getSize() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -87,7 +87,7 @@ protected:
   /** Distribution that defines the weights of the experiment */
   Distribution distribution_;
   /** The size of the sample to be generated */
-  UnsignedLong size_;
+  UnsignedInteger size_;
   /** The weights associated with the sample for numerical integration */
   NumericalPoint weights_;
 

@@ -34,11 +34,11 @@ NumericalScalar prec = 1.0;
 
 NumericalMathFunction buildPoly(const NumericalPoint &p)
 {
-  const UnsignedLong d = p.getDimension();
+  const UnsignedInteger d = p.getDimension();
   NumericalPoint center(d);
   NumericalPoint constant(2);
   Matrix linear(2, d);
-  for ( UnsignedLong j = 0; j < d; ++ j )
+  for ( UnsignedInteger j = 0; j < d; ++ j )
   {
     linear(0, j) = p[j]; // z=p1*x1+p2*x2+p3*x3
   }
@@ -56,11 +56,11 @@ int main(int argc, char *argv[])
   {
 
     // observations
-    UnsignedLong chainDim = 3;
-    UnsignedLong obsDim = 1;
-    //UnsignedLong outputDim = 1;
+    UnsignedInteger chainDim = 3;
+    UnsignedInteger obsDim = 1;
+    //UnsignedInteger outputDim = 1;
 
-    UnsignedLong obsSize = 10;
+    UnsignedInteger obsSize = 10;
 
     NumericalSample y_obs(obsSize, obsDim);
     y_obs[0][0] = -9.50794871493506;
@@ -76,9 +76,9 @@ int main(int argc, char *argv[])
     std::cout << "y_obs=" << y_obs << std::endl;
 
     NumericalSample p(obsSize, chainDim);
-    for (UnsignedLong i = 0; i < obsSize; ++ i)
+    for (UnsignedInteger i = 0; i < obsSize; ++ i)
     {
-      for (UnsignedLong j = 0; j < chainDim; ++ j)
+      for (UnsignedInteger j = 0; j < chainDim; ++ j)
       {
         p[i][j] = pow(-2 + 5.*i / 9., j);
       }
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     std::cout << "p=" << p << std::endl;
 
     NumericalMathFunction::NumericalMathFunctionCollection modelCollection;
-    for (UnsignedLong i = 0; i < obsSize; ++ i)
+    for (UnsignedInteger i = 0; i < obsSize; ++ i)
     {
       modelCollection.add(buildPoly(p[i]));
     }
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
     // proposal distribution
     DistributionCollection proposalColl;
-    for (UnsignedLong i = 0; i < chainDim; ++ i)
+    for (UnsignedInteger i = 0; i < chainDim; ++ i)
     {
       proposalColl.add(Uniform(-1., 1.));
     }
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     NumericalPoint sigma0(chainDim, 10.);// sigma0= (10.,10.,10.)
     CorrelationMatrix Q0(chainDim);// precision matrix
     CorrelationMatrix Q0_inv(chainDim);// covariance matrix
-    for ( UnsignedLong i = 0; i < chainDim; ++ i )
+    for ( UnsignedInteger i = 0; i < chainDim; ++ i )
     {
       Q0_inv (i, i) = sigma0[i] * sigma0[i];
       Q0(i, i) = 1.0 / Q0_inv (i, i);
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
     std::cout << "y1=" << realization << std::endl;
 
     // try to generate a sample
-    UnsignedLong sampleSize = 1000;
+    UnsignedInteger sampleSize = 1000;
     NumericalSample sample(sampler.getSample(sampleSize));
 
     NumericalPoint x_mu(sample.computeMean());
@@ -147,32 +147,32 @@ int main(int argc, char *argv[])
     // compute covariance
     CovarianceMatrix x_cov(sample.computeCovariance());
     Matrix P(obsSize, chainDim);
-    for (UnsignedLong i = 0; i < obsSize; ++ i)
+    for (UnsignedInteger i = 0; i < obsSize; ++ i)
     {
-      for (UnsignedLong j = 0; j < chainDim; ++ j)
+      for (UnsignedInteger j = 0; j < chainDim; ++ j)
       {
         P(i, j) = p[i][j];
       }
     }
     Matrix Qn(P.transpose()*P + Q0);
     SquareMatrix Qn_inv(chainDim);
-    for ( UnsignedLong j = 0; j < chainDim; ++j )
+    for ( UnsignedInteger j = 0; j < chainDim; ++j )
     {
       NumericalPoint I_j(chainDim);
       I_j[j] = 1.0;
       NumericalPoint Qn_inv_j(Qn.solveLinearSystem(I_j));
-      for ( UnsignedLong i = 0; i < chainDim; ++i )
+      for ( UnsignedInteger i = 0; i < chainDim; ++i )
       {
         Qn_inv(i, j) = Qn_inv_j[i];
       }
     }
     NumericalPoint sigma_exp(chainDim);
-    for ( UnsignedLong i = 0; i < chainDim; ++i )
+    for ( UnsignedInteger i = 0; i < chainDim; ++i )
     {
       sigma_exp[i] = sqrt(Qn_inv(i, i));
     }
     NumericalPoint y_vec(obsSize);
-    for ( UnsignedLong i = 0; i < obsSize; ++i )
+    for ( UnsignedInteger i = 0; i < obsSize; ++i )
     {
       y_vec[i] = y_obs[i][0];
     }

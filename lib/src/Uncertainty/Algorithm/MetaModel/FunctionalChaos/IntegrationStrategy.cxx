@@ -105,7 +105,7 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
-    const UnsignedLong marginalIndex)
+    const UnsignedInteger marginalIndex)
 {
   // Check if the marginal index is not compatible with the function output dimension
   if (marginalIndex >= function.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the marginal index is too large with respect to the function output dimension.";
@@ -119,29 +119,29 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   }
   // First, copy the coefficients that are common with the previous partial basis
   NumericalPoint alpha(0);
-  const UnsignedLong conservedSize(conservedRanks.getSize());
-  for (UnsignedLong i = 0; i < conservedSize; ++i)
+  const UnsignedInteger conservedSize(conservedRanks.getSize());
+  for (UnsignedInteger i = 0; i < conservedSize; ++i)
     alpha.add(alpha_k_p_[conservedRanks[i]]);
   // We have to compute the coefficients associated to the added indices
-  const UnsignedLong addedSize(addedRanks.getSize());
-  const UnsignedLong sampleSize(inputSample_.getSize());
-  for (UnsignedLong i = 0; i < addedSize; ++i)
+  const UnsignedInteger addedSize(addedRanks.getSize());
+  const UnsignedInteger sampleSize(inputSample_.getSize());
+  for (UnsignedInteger i = 0; i < addedSize; ++i)
   {
-    const UnsignedLong indexAdded(addedRanks[i]);
+    const UnsignedInteger indexAdded(addedRanks[i]);
     NumericalScalar value(0.0);
     // The integral is approximated by a weighted sum of f * Phi
-    for (UnsignedLong j = 0; j < sampleSize; ++j) value += weights_[j] * outputSample_[j][marginalIndex] * partialBasis[indexAdded](inputSample_[j])[0];
+    for (UnsignedInteger j = 0; j < sampleSize; ++j) value += weights_[j] * outputSample_[j][marginalIndex] * partialBasis[indexAdded](inputSample_[j])[0];
     alpha.add(value);
   }
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model
   residual_p_ = 0.0;
-  const UnsignedLong basisDimension(partialBasis.getSize());
-  for (UnsignedLong i = 0; i < sampleSize; ++i)
+  const UnsignedInteger basisDimension(partialBasis.getSize());
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     NumericalScalar value(0.0);
     // Evaluate the meta model on the current integration point
-    for (UnsignedLong j = 0; j < basisDimension; ++j) value += alpha_k_p_[j] * partialBasis[j](inputSample_[i])[0];
+    for (UnsignedInteger j = 0; j < basisDimension; ++j) value += alpha_k_p_[j] * partialBasis[j](inputSample_[i])[0];
     // Accumulate the squared residual
     residual_p_ += pow(outputSample_[i][marginalIndex] - value, 2);
   }

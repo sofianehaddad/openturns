@@ -55,23 +55,23 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   expressions_(inputDistributionCollection.getSize())
 {
   Description description;
-  const UnsignedLong size(inputDistributionCollection.getSize());
+  const UnsignedInteger size(inputDistributionCollection.getSize());
   // Check that the collections of input and output distributions have the same size
   if (outputDistributionCollection_.getSize() != size) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using collections of input and output distributions of different size";
   // First, check that the distributions are all 1D
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (inputDistributionCollection_[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using distributions with dimension > 1.";
     if (outputDistributionCollection_[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using distributions with dimension > 1.";
   }
   // Second, build the description of the transformation
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     OSS oss;
     oss << "x" << i;
     description.add(oss);
   }
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     OSS oss;
     oss << "y" << i;
@@ -81,7 +81,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   if (simplify)
   {
     // Third, look for possible simplifications
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Distribution inputDistribution(inputDistributionCollection[i]);
       const Distribution outputDistribution(outputDistributionCollection[i]);
@@ -250,7 +250,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
 
 /* Parameter constructor */
 MarginalTransformationEvaluation::MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
-    const UnsignedLong direction):
+    const UnsignedInteger direction):
   NumericalMathEvaluationImplementation(),
   inputDistributionCollection_(0),
   outputDistributionCollection_(0),
@@ -278,15 +278,15 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   direction_ = direction;
   // Get all the parameters
   // The notion of parameters is used only for transformation from or to a standard space, so we have to extract the parameters of either the input distributions or the output distribution depending on the direction
-  const UnsignedLong size(distributionCollection.getSize());
+  const UnsignedInteger size(distributionCollection.getSize());
   NumericalPointWithDescription parameters(0);
   Description parametersDescription(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // The marginal distribution is 1D, so the collection of parameters is of size 1
     NumericalPointWithDescription marginalParameters(distributionCollection[i].getParametersCollection()[0]);
-    const UnsignedLong marginalParametersSize(marginalParameters.getSize());
-    for (UnsignedLong j = 0; j < marginalParametersSize; ++j)
+    const UnsignedInteger marginalParametersSize(marginalParameters.getSize());
+    for (UnsignedInteger j = 0; j < marginalParametersSize; ++j)
     {
       parameters.add(marginalParameters[j]);
       parametersDescription.add(marginalParameters.getDescription()[j]);
@@ -305,11 +305,11 @@ MarginalTransformationEvaluation * MarginalTransformationEvaluation::clone() con
 /* Evaluation */
 NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   NumericalPoint result(dimension);
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
   const NumericalScalar tailThreshold(ResourceMap::GetAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" ));
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (simplifications_[i]) result[i] = expressions_[i](NumericalPoint(1, inP[i]))[0];
     else
@@ -372,10 +372,10 @@ NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoi
 Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint & inP) const
 {
   const NumericalPoint parameters(getParameters());
-  const UnsignedLong parametersDimension(parameters.getDimension());
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger parametersDimension(parameters.getDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   Matrix result(parametersDimension, inputDimension);
-  UnsignedLong rowIndex(0);
+  UnsignedInteger rowIndex(0);
   switch (direction_)
   {
     case FROM:
@@ -383,7 +383,7 @@ Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint
        * Here, we suppose that pq is empty, so dQ/dpq = 0
        * For each row, store (dF/dpf)(x, pf) / pdf(Q(F(x, pf)))
        */
-      for (UnsignedLong j = 0; j < inputDimension; ++j)
+      for (UnsignedInteger j = 0; j < inputDimension; ++j)
       {
         const NumericalPoint x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
@@ -394,8 +394,8 @@ Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint
           try
           {
             const NumericalPoint normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
-            const UnsignedLong marginalParametersDimension(normalizedCDFGradient.getDimension());
-            for (UnsignedLong i = 0; i < marginalParametersDimension; ++i)
+            const UnsignedInteger marginalParametersDimension(normalizedCDFGradient.getDimension());
+            for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
               result(rowIndex, j) = normalizedCDFGradient[i];
               ++rowIndex;
@@ -413,7 +413,7 @@ Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint
        * Here, we suppose that pf is empty, so dF/dpf = 0
        * For each row, store -(dcdf/dpq)(Q(F(x), pq), pq) / pdf(Q(F(x), pq), pq)
        */
-      for (UnsignedLong j = 0; j < inputDimension; ++j)
+      for (UnsignedInteger j = 0; j < inputDimension; ++j)
       {
         const NumericalPoint x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
@@ -425,8 +425,8 @@ Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint
           try
           {
             const NumericalPoint normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
-            const UnsignedLong marginalParametersDimension(normalizedCDFGradient.getDimension());
-            for (UnsignedLong i = 0; i < marginalParametersDimension; ++i)
+            const UnsignedInteger marginalParametersDimension(normalizedCDFGradient.getDimension());
+            for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
               result(rowIndex, j) = normalizedCDFGradient[i];
               ++rowIndex;
@@ -446,13 +446,13 @@ Matrix MarginalTransformationEvaluation::parametersGradient(const NumericalPoint
 }
 
 /* Accessor for input point dimension */
-UnsignedLong MarginalTransformationEvaluation::getInputDimension() const
+UnsignedInteger MarginalTransformationEvaluation::getInputDimension() const
 {
   return inputDistributionCollection_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong MarginalTransformationEvaluation::getOutputDimension() const
+UnsignedInteger MarginalTransformationEvaluation::getOutputDimension() const
 {
   return inputDistributionCollection_.getSize();
 }
@@ -463,7 +463,7 @@ void MarginalTransformationEvaluation::setDirection(const TranformationDirection
   direction_ = direction;
 }
 
-UnsignedLong MarginalTransformationEvaluation::getDirection() const
+UnsignedInteger MarginalTransformationEvaluation::getDirection() const
 {
   return direction_;
 }
@@ -491,7 +491,7 @@ MarginalTransformationEvaluation::DistributionCollection MarginalTransformationE
 }
 
 /* Simplifications accessor */
-Collection<UnsignedLong> MarginalTransformationEvaluation::getSimplifications() const
+Collection<UnsignedInteger> MarginalTransformationEvaluation::getSimplifications() const
 {
   return simplifications_;
 }
@@ -522,13 +522,13 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
   if (hasVisibleName()) oss << offset << "Marginal transformation " << getName() << " :\n";
   const Description inputDescription(getInputDescription());
   const Description outputDescription(getOutputDescription());
-  UnsignedLong length(0);
-  for (UnsignedLong i = 0; i < inputDistributionCollection_.getSize(); ++i)
+  UnsignedInteger length(0);
+  for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)
   {
-    const UnsignedLong l(outputDescription[i].length());
+    const UnsignedInteger l(outputDescription[i].length());
     if (l > length) length = l;
   }
-  for (UnsignedLong i = 0; i < inputDistributionCollection_.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)
   {
     oss << offset;
     if (inputDistributionCollection_.getSize() > 1) oss << "| " << std::setw(length) << outputDescription[i] << " = ";

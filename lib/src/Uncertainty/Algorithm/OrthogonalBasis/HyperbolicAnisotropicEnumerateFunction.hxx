@@ -52,7 +52,7 @@ public:
   HyperbolicAnisotropicEnumerateFunction();
 
   /** Parameter constructor */
-  HyperbolicAnisotropicEnumerateFunction(const UnsignedLong dimension,
+  HyperbolicAnisotropicEnumerateFunction(const UnsignedInteger dimension,
                                          const NumericalScalar q = ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Parameter constructor */
@@ -66,19 +66,19 @@ public:
   virtual String __repr__() const;
 
   /** The bijective association between an integer and a set of indices */
-  virtual Indices operator() (const UnsignedLong index) const;
+  virtual Indices operator() (const UnsignedInteger index) const;
 
   /** The inverse of the association */
-  virtual UnsignedLong inverse(const Indices & indices) const;
+  virtual UnsignedInteger inverse(const Indices & indices) const;
 
   /** The cardinal of the given strata */
-  virtual UnsignedLong getStrataCardinal(const UnsignedLong strataIndex) const;
+  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const;
 
   /** The cardinal of the cumulated strata above or equal to the given strata */
-  virtual UnsignedLong getStrataCumulatedCardinal(const UnsignedLong strataIndex) const;
+  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const;
 
   /** The index of the strata of degree max < degree */
-  virtual UnsignedLong getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const;
+  virtual UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
 
   /** Q accessor */
   void setQ(const NumericalScalar q);
@@ -102,7 +102,7 @@ protected:
   NumericalScalar qNorm(const Indices & indices) const;
 
   /** Returns the maximum degree of the indice set */
-  UnsignedLong computeDegree(const Indices & indices) const;
+  UnsignedInteger computeDegree(const Indices & indices) const;
 
 private:
 

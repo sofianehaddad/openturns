@@ -66,7 +66,7 @@ JacobiFactory * JacobiFactory::clone() const
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const UnsignedLong n) const
+JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)

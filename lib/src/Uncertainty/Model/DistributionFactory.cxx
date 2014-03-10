@@ -161,7 +161,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetMulti
 }
 
 /* Default constructor */
-DistributionFactory::DistributionFactory(const UnsignedLong bootstrapSize,
+DistributionFactory::DistributionFactory(const UnsignedInteger bootstrapSize,
     const String & name)
   : TypedInterfaceObject<DistributionImplementationFactory>(new DistributionImplementationFactory(bootstrapSize, name))
 {

@@ -51,7 +51,7 @@ AdaptiveStrategyImplementation::AdaptiveStrategyImplementation()
 
 /* Constructor from an orthogonal basis */
 AdaptiveStrategyImplementation::AdaptiveStrategyImplementation(const OrthogonalBasis & basis,
-    const UnsignedLong maximumDimension)
+    const UnsignedInteger maximumDimension)
   : PersistentObject(),
     basis_(basis),
     maximumDimension_(maximumDimension),
@@ -88,12 +88,12 @@ OrthogonalBasis AdaptiveStrategyImplementation::getBasis() const
 
 
 /* Maximum dimension accessor */
-void AdaptiveStrategyImplementation::setMaximumDimension(const UnsignedLong maximumDimension)
+void AdaptiveStrategyImplementation::setMaximumDimension(const UnsignedInteger maximumDimension)
 {
   maximumDimension_ = maximumDimension;
 }
 
-UnsignedLong AdaptiveStrategyImplementation::getMaximumDimension() const
+UnsignedInteger AdaptiveStrategyImplementation::getMaximumDimension() const
 {
   return maximumDimension_;
 }

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     RandomGenerator::SetSeed(0);
 
     /* Matrices of the process */
-    const UnsignedLong dim(2);
+    const UnsignedInteger dim(2);
     SquareMatrix squareMatrix1(dim);
     squareMatrix1(0, 0) = 0.2 ;
     squareMatrix1(1, 0) = 0.3 ;
@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
     squareMatrix2(1, 1) = 0.5;
 
     /* ARMA(p, q) */
-    const UnsignedLong p(1);
-    const UnsignedLong q(1);
+    const UnsignedInteger p(1);
+    const UnsignedInteger q(1);
 
     /* ARMACoefficients with default constructor */
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     /* Time grid creation and White Noise */
     NumericalScalar Tmin(0.0);
     NumericalScalar deltaT(0.1);
-    UnsignedLong steps(11);
+    UnsignedInteger steps(11);
 
     /* Initialization of the time grid timeGrid1*/
     RegularGrid timeGrid(Tmin, deltaT, steps);
@@ -101,16 +101,16 @@ int main(int argc, char *argv[])
     NumericalSample xValues(p, dim);
     NumericalSample epsilonValues(q, dim);
 
-    for(UnsignedLong j = 0 ; j < dim ; ++j)
+    for(UnsignedInteger j = 0 ; j < dim ; ++j)
     {
       // Fill the AR-part (the last p-coefficients X_{-1}, X{-2},..., X_{-p})
-      for(UnsignedLong i = 0 ; i < p ; ++i)
+      for(UnsignedInteger i = 0 ; i < p ; ++i)
       {
         xValues[i][j] = RandomGenerator::Generate();
       }
 
       // Fill the MA-part (the last p-coefficients \epsilon_{-1}, \epsilon_{-2},..., \epsilon_{-p})
-      for(UnsignedLong i = 0 ; i < q ; ++i)
+      for(UnsignedInteger i = 0 ; i < q ; ++i)
       {
         epsilonValues[i][j] = RandomGenerator::Generate();
       }
@@ -133,9 +133,9 @@ int main(int argc, char *argv[])
     fullprint << "One realization=" << process2.getRealization() << std::endl;
 
     // Some steps further
-    UnsignedLong stepNumber = 4;
+    UnsignedInteger stepNumber = 4;
     fullprint << "One future=" << process2.getFuture(stepNumber) << std::endl;
-    UnsignedLong size = 3;
+    UnsignedInteger size = 3;
     fullprint << "Some futures=" << process2.getFuture(stepNumber, size) << std::endl;
 
   }

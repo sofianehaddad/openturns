@@ -36,22 +36,22 @@ int main(int argc, char *argv[])
   {
 
     /* dimension n=2  */
-    Collection<UnsignedLong> dimension(3);
+    Collection<UnsignedInteger> dimension(3);
     dimension[0] = 2;
     dimension[1] = 5;
     dimension[2] = 10;
 
 
-    for (UnsignedLong indexDimension = 0; indexDimension < dimension.getSize(); indexDimension++)
+    for (UnsignedInteger indexDimension = 0; indexDimension < dimension.getSize(); indexDimension++)
     {
-      UnsignedLong dim(dimension[indexDimension]);
+      UnsignedInteger dim(dimension[indexDimension]);
       OSS oss;
       oss << "TestStrongMaximumTestDimension" << dim ;
       fullprint << "dimension = " << dim << std::endl;
 
       /* We create a numerical math function */
       Description inputVar(dim);
-      for (UnsignedLong i = 0; i < dim; ++i)
+      for (UnsignedInteger i = 0; i < dim; ++i)
       {
         OSS oss;
         oss << "x" << i + 1;
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
       confidenceLevel[1] = 0.95;
       confidenceLevel[2] = 0.99;
 
-      Collection<UnsignedLong> pointNumber(3);
+      Collection<UnsignedInteger> pointNumber(3);
       pointNumber[0] = 10;
       pointNumber[1] = 100;
       pointNumber[2] = 1000;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
                 << std::endl;
 
       /* loop on beta */
-      for (UnsignedLong indexBeta = 0; indexBeta < beta.getDimension(); indexBeta++)
+      for (UnsignedInteger indexBeta = 0; indexBeta < beta.getDimension(); indexBeta++)
       {
 
         /* We create the design point */
@@ -120,15 +120,15 @@ int main(int argc, char *argv[])
         designPoint[0] = beta[indexBeta];
 
         /* loop on the importance level epsilon */
-        for (UnsignedLong indexImportanceLevel = 0; indexImportanceLevel < importanceLevel.getDimension(); indexImportanceLevel++)
+        for (UnsignedInteger indexImportanceLevel = 0; indexImportanceLevel < importanceLevel.getDimension(); indexImportanceLevel++)
         {
 
           /* loop on the accuracy level tau */
-          for (UnsignedLong indexAccuracyLevel = 0; indexAccuracyLevel < accuracyLevel.getDimension(); indexAccuracyLevel++)
+          for (UnsignedInteger indexAccuracyLevel = 0; indexAccuracyLevel < accuracyLevel.getDimension(); indexAccuracyLevel++)
           {
 
             /* loop on the confidence level (1-q) */
-            for (UnsignedLong indexConfidenceLevel = 0; indexConfidenceLevel < confidenceLevel.getDimension(); indexConfidenceLevel++)
+            for (UnsignedInteger indexConfidenceLevel = 0; indexConfidenceLevel < confidenceLevel.getDimension(); indexConfidenceLevel++)
             {
               /* we calculate the corresponding deltaEpsilon and pointNumber N */
               StrongMaximumTest myTest(myStandardEvent, designPoint, importanceLevel[indexImportanceLevel], accuracyLevel[indexAccuracyLevel], confidenceLevel[indexConfidenceLevel]);
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
                 << std::endl;
 
       /* loop on beta */
-      for (UnsignedLong indexBeta = 0; indexBeta < beta.getDimension(); indexBeta++)
+      for (UnsignedInteger indexBeta = 0; indexBeta < beta.getDimension(); indexBeta++)
       {
 
         /* We create the design point */
@@ -170,15 +170,15 @@ int main(int argc, char *argv[])
         designPoint[0] = beta[indexBeta];
 
         /* loop on the importance level epsilon */
-        for (UnsignedLong indexImportanceLevel = 0; indexImportanceLevel < importanceLevel.getDimension(); indexImportanceLevel++)
+        for (UnsignedInteger indexImportanceLevel = 0; indexImportanceLevel < importanceLevel.getDimension(); indexImportanceLevel++)
         {
 
           /* loop on the accuracy level tau */
-          for (UnsignedLong indexAccuracyLevel = 0; indexAccuracyLevel < accuracyLevel.getDimension(); indexAccuracyLevel++)
+          for (UnsignedInteger indexAccuracyLevel = 0; indexAccuracyLevel < accuracyLevel.getDimension(); indexAccuracyLevel++)
           {
 
             /* loop on the pointNumber N */
-            for (UnsignedLong indexPointNumber = 0; indexPointNumber < pointNumber.getSize(); indexPointNumber++)
+            for (UnsignedInteger indexPointNumber = 0; indexPointNumber < pointNumber.getSize(); indexPointNumber++)
             {
               /* we calculate the corresponding deltaEpsilon and confidenceLevel */
               StrongMaximumTest myTest(myStandardEvent, designPoint, importanceLevel[indexImportanceLevel], accuracyLevel[indexAccuracyLevel], pointNumber[indexPointNumber]);

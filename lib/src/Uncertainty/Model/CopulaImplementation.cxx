@@ -65,10 +65,10 @@ String CopulaImplementation::__repr__() const
 
 NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (dimension == 1) return computeComplementaryCDF(point);
   Bool allOutside(true);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (point[i] >= 1.0) return 0.0;
     allOutside &= (point[i] <= 0.0);
@@ -77,16 +77,16 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoi
   // Use Poincaré's formula
   NumericalScalar value(1.0 + (1 - 2 * (dimension % 2)) * computeCDF(point));
   // We know the explicit value of the 1D marginal distributions
-  for (UnsignedLong i = 0; i < dimension; ++i) value -= point[i];
+  for (UnsignedInteger i = 0; i < dimension; ++i) value -= point[i];
   NumericalScalar sign(1.0);
-  for (UnsignedLong i = 2; i < dimension - 1; ++i)
+  for (UnsignedInteger i = 2; i < dimension - 1; ++i)
   {
     NumericalScalar contribution(0.0);
     Combinations::IndicesCollection indices(Combinations(i, dimension).generate());
     NumericalPoint subPoint(i);
-    for (UnsignedLong j = 0; j < indices.getSize(); ++j)
+    for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
     {
-      for (UnsignedLong k = 0; k < i; ++k) subPoint[k] = point[indices[j][k]];
+      for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[indices[j][k]];
       contribution += getMarginal(indices[j])->computeCDF(subPoint);
     }
     value += sign * contribution;
@@ -99,7 +99,7 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoi
 NumericalPoint CopulaImplementation::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   // Special case for bording values
   const NumericalScalar q(tail ? 1.0 - prob : prob);
   if (q <= 0.0) return NumericalPoint(dimension, 0.0);
@@ -145,21 +145,21 @@ CorrelationMatrix CopulaImplementation::getSpearmanCorrelation() const
 /* Get the Kendall concordance of the copula */
 CorrelationMatrix CopulaImplementation::getKendallTau() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   CorrelationMatrix tau(dimension);
   if (hasIndependentCopula()) return tau;
   if (hasEllipticalCopula())
   {
     const CorrelationMatrix shape(getShapeMatrix());
-    for (UnsignedLong i = 0; i < dimension; ++i)
-      for(UnsignedLong j = 0; j < i; ++j)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for(UnsignedInteger j = 0; j < i; ++j)
         tau(i, j) = asin(shape(i, j)) * (2.0 / M_PI);
     return tau;
   }
   // Compute the weights and nodes of the 1D gauss quadrature over [-1, 1]
   NumericalSample nodesAndWeights(getGaussNodesAndWeights());
   // Convert the nodes and weights for the interval [0, 1]
-  for (UnsignedLong i = 0; i < integrationNodesNumber_; ++i)
+  for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
   {
     nodesAndWeights[0][i] = 0.5 * (nodesAndWeights[0][i] + 1.0);
     nodesAndWeights[1][i] *= 0.5;
@@ -169,10 +169,10 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
   // We first loop over the coefficients because the most expansive task is to get the 2D marginal copulas
   // First, build the 2D sample of integration nodes
   NumericalSample nodes(integrationNodesNumber_ * integrationNodesNumber_, 2);
-  UnsignedLong index(0);
-  for(UnsignedLong rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
+  UnsignedInteger index(0);
+  for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
   {
-    for(UnsignedLong columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
+    for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
     {
       nodes[index][0] = nodesAndWeights[0][rowNodeIndex];
       nodes[index][1] = nodesAndWeights[0][columnNodeIndex];
@@ -180,10 +180,10 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
     } // columnNodeIndex
   } // rowNodeIndex
   Indices indices(2);
-  for(UnsignedLong rowIndex = 0; rowIndex < dimension; ++rowIndex)
+  for(UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
   {
     indices[0] = rowIndex;
-    for(UnsignedLong columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+    for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
     {
       indices[1] = columnIndex;
       // For the usual case of a bidimensional copula, no need to extract marginal distributions
@@ -197,10 +197,10 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
         NumericalScalar value(0.0);
         // Then we loop over the integration points
         index = 0;
-        for(UnsignedLong rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
+        for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
         {
           const NumericalScalar weightI(nodesAndWeights[1][rowNodeIndex]);
-          for(UnsignedLong columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
+          for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
           {
             const NumericalScalar weightJ(nodesAndWeights[1][columnNodeIndex]);
             value += weightI * weightJ * sampleCDF[index][0] * samplePDF[index][0];
@@ -230,14 +230,14 @@ NumericalPoint CopulaImplementation::getKurtosis() const
 /* Compute the covariance of the copula */
 void CopulaImplementation::computeCovariance() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   // We need this to initialize the covariance matrix in two cases:
   // + this is the first call to this routine (which could be checked by testing the dimension of the copula and the dimension of the matrix
   // + the copula has changed from a non-independent one to the independent copula
   covariance_ = CovarianceMatrix(dimension);
   // First the diagonal terms, which are the marginal covariances
   // Uniform marginals, the diagonal is 1/12
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     // 0.08333333333333333333333333 = 1 / 12
     covariance_(i, i) = 0.08333333333333333333333333;
@@ -248,7 +248,7 @@ void CopulaImplementation::computeCovariance() const
     // Compute the weights and nodes off the 1D gauss quadrature over [-1, 1]
     NumericalSample nodesAndWeights(getGaussNodesAndWeights());
     // Convert the nodes and weights for the interval [0, 1]
-    for (UnsignedLong i = 0; i < integrationNodesNumber_; ++i)
+    for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
     {
       nodesAndWeights[0][i] = 0.5 * (nodesAndWeights[0][i] + 1.0);
       nodesAndWeights[1][i] *= 0.5;
@@ -257,10 +257,10 @@ void CopulaImplementation::computeCovariance() const
     // We simply use a product gauss quadrature
     // We first loop over the coeeficients because the most expensive task is to get the 2D marginal copulas
     Indices indices(2);
-    for(UnsignedLong rowIndex = 0; rowIndex < dimension; ++rowIndex)
+    for(UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
     {
       indices[0] = rowIndex;
-      for(UnsignedLong columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+      for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
       {
         indices[1] = columnIndex;
         // For the usual case of a bidimensional copula, no need to extract marginal distributions
@@ -270,11 +270,11 @@ void CopulaImplementation::computeCovariance() const
         {
           NumericalScalar covarianceIJ(0.0);
           // Then we loop over the integration points
-          for(UnsignedLong rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
+          for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
           {
             const NumericalScalar nodeI(nodesAndWeights[0][rowNodeIndex]);
             const NumericalScalar weightI(nodesAndWeights[1][rowNodeIndex]);
-            for(UnsignedLong columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
+            for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
             {
               const NumericalScalar nodeJ(nodesAndWeights[0][columnNodeIndex]);
               const NumericalScalar weightJ(nodesAndWeights[1][columnNodeIndex]);
@@ -293,7 +293,7 @@ void CopulaImplementation::computeCovariance() const
 } // computeCovariance
 
 /* Get the i-th marginal distribution */
-CopulaImplementation::Implementation CopulaImplementation::getMarginal(const UnsignedLong i) const
+CopulaImplementation::Implementation CopulaImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   return new IndependentCopula(1);

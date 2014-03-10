@@ -113,7 +113,7 @@ NumericalMathFunction WhiteNoise::getContinuousRealization() const
 }
 
 /* Compute the next steps of a random walk */
-TimeSeries WhiteNoise::getFuture(const UnsignedLong stepNumber) const
+TimeSeries WhiteNoise::getFuture(const UnsignedInteger stepNumber) const
 {
   /* TimeGrid of the process */
   RegularGrid timeGrid;
@@ -133,7 +133,7 @@ TimeSeries WhiteNoise::getFuture(const UnsignedLong stepNumber) const
 }
 
 /* Get the marginal process corresponding to the i-th marginal component */
-WhiteNoise::Implementation WhiteNoise::getMarginalProcess(const UnsignedLong i) const
+WhiteNoise::Implementation WhiteNoise::getMarginalProcess(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
   return WhiteNoise(distribution_.getMarginal(i), mesh_).clone();

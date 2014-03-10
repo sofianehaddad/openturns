@@ -54,7 +54,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
     throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
 
   /* Check if any epsilon component is exactly zero */
-  for (UnsignedLong i = 0; i < epsilon.getDimension(); i++)
+  for (UnsignedInteger i = 0; i < epsilon.getDimension(); i++)
     if (epsilon[i] == 0.0) throw InvalidArgumentException(HERE) << "At least one of the components of epsilon is equal to 0.0, namely component " << i;
 }
 
@@ -82,7 +82,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
   if (epsilon.getDimension() != p_evaluation->getInputDimension()) throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
 
   //Check if any epsilon component is exactly zero
-  for (UnsignedLong i = 0; i < epsilon.getDimension(); i++)
+  for (UnsignedInteger i = 0; i < epsilon.getDimension(); i++)
     if (epsilon[i] == 0.0) throw InvalidArgumentException(HERE) << "At least one of the components of epsilon is equal to 0.0, namely component " << i;
 }
 
@@ -123,13 +123,13 @@ FiniteDifferenceHessian::EvaluationImplementation FiniteDifferenceHessian::getEv
 }
 
 /* Accessor for input point dimension */
-UnsignedLong FiniteDifferenceHessian::getInputDimension() const
+UnsignedInteger FiniteDifferenceHessian::getInputDimension() const
 {
   return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong FiniteDifferenceHessian::getOutputDimension() const
+UnsignedInteger FiniteDifferenceHessian::getOutputDimension() const
 {
   return p_evaluation_->getOutputDimension();
 }

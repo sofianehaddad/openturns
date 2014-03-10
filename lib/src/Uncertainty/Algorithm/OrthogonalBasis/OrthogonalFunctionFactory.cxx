@@ -52,7 +52,7 @@ OrthogonalFunctionFactory * OrthogonalFunctionFactory::clone() const
 
 
 /* Build the NumericalMathFunction of the given index */
-NumericalMathFunction OrthogonalFunctionFactory::build(const UnsignedLong index) const
+NumericalMathFunction OrthogonalFunctionFactory::build(const UnsignedInteger index) const
 {
   throw NotYetImplementedException(HERE);
 }

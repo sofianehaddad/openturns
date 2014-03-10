@@ -102,21 +102,21 @@ int main(int argc, char *argv[])
   distributionCollection.add(userdefined);
   discreteDistributionCollection.add(userdefined);
 
-  UnsignedLong size(10000);
+  UnsignedInteger size(10000);
 
-  UnsignedLong continuousDistributionNumber(continuousDistributionCollection.getSize());
-  UnsignedLong discreteDistributionNumber(discreteDistributionCollection.getSize());
-  UnsignedLong distributionNumber(continuousDistributionNumber + discreteDistributionNumber);
+  UnsignedInteger continuousDistributionNumber(continuousDistributionCollection.getSize());
+  UnsignedInteger discreteDistributionNumber(discreteDistributionCollection.getSize());
+  UnsignedInteger distributionNumber(continuousDistributionNumber + discreteDistributionNumber);
   Collection<NumericalSample> sampleCollection(distributionNumber);
   Collection<NumericalSample> continuousSampleCollection(continuousDistributionNumber);
   Collection<NumericalSample> discreteSampleCollection(discreteDistributionNumber);
-  for (UnsignedLong i = 0; i < continuousDistributionNumber; i++)
+  for (UnsignedInteger i = 0; i < continuousDistributionNumber; i++)
   {
     continuousSampleCollection[i] = continuousDistributionCollection[i].getSample(size);
     continuousSampleCollection[i].setName(continuousDistributionCollection[i].getName());
     sampleCollection[i] = continuousSampleCollection[i];
   }
-  for (UnsignedLong i = 0; i < discreteDistributionNumber; i++)
+  for (UnsignedInteger i = 0; i < discreteDistributionNumber; i++)
   {
     discreteSampleCollection[i] = discreteDistributionCollection[i].getSample(size);
     discreteSampleCollection[i].setName(discreteDistributionCollection[i].getName());
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
   }
   // Test the normality of several samples using the Anderson Darling test
   NumericalPoint andersonDarlingResult(distributionNumber);
-  for (UnsignedLong i = 0; i < distributionNumber; i++)
+  for (UnsignedInteger i = 0; i < distributionNumber; i++)
   {
     TestResult result(NormalityTest::AndersonDarlingNormal(sampleCollection[i]));
     andersonDarlingResult[i] = result.getBinaryQualityMeasure();
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
   fullprint << "andersonDarlingResult=" << andersonDarlingResult << std::endl;
   // Test the normality of several samples using the Cramer Von Mises test
   NumericalPoint cramerVonMisesResult(distributionNumber);
-  for (UnsignedLong i = 0; i < distributionNumber; i++)
+  for (UnsignedInteger i = 0; i < distributionNumber; i++)
   {
     TestResult result(NormalityTest::CramerVonMisesNormal(sampleCollection[i]));
     cramerVonMisesResult[i] = result.getBinaryQualityMeasure();

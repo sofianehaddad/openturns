@@ -61,22 +61,22 @@ LinearCombinationGradientImplementation * LinearCombinationGradientImplementatio
 /* Gradient method */
 Matrix LinearCombinationGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
   Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
-  for (UnsignedLong i = 0; i < size; ++i) result = result + evaluation_.coefficients_[i] * evaluation_.functionsCollection_[i].gradient(inP);
+  for (UnsignedInteger i = 0; i < size; ++i) result = result + evaluation_.coefficients_[i] * evaluation_.functionsCollection_[i].gradient(inP);
   return result;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong LinearCombinationGradientImplementation::getInputDimension() const
+UnsignedInteger LinearCombinationGradientImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong LinearCombinationGradientImplementation::getOutputDimension() const
+UnsignedInteger LinearCombinationGradientImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }
@@ -92,8 +92,8 @@ String LinearCombinationGradientImplementation::__str__(const String & offset) c
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << evaluation_.coefficients_[i] << ")*" << evaluation_.functionsCollection_[i].getGradientImplementation()->__str__();
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << evaluation_.coefficients_[i] << ")*" << evaluation_.functionsCollection_[i].getGradientImplementation()->__str__();
   return oss;
 }
 

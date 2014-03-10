@@ -224,7 +224,7 @@ void Burr::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Burr::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Burr::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, exp(SpecFunc::LogGamma(k_ - n / c_) + SpecFunc::LogGamma(n / c_ + 1.0) - SpecFunc::LogGamma(k_)));
 }

@@ -108,7 +108,7 @@ private:
   CalibrationStrategyPersistentCollection calibrationStrategy_;
 
   /// number of samples
-  mutable UnsignedLong samplesNumber_;
+  mutable UnsignedInteger samplesNumber_;
 
   /// number of samples accepted
   mutable Indices acceptedNumber_;

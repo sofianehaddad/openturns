@@ -225,7 +225,7 @@ void Exponential::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Exponential::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Exponential::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, SpecFunc::Gamma(n + 1));
 }

@@ -67,7 +67,7 @@ WrapperFile::WrapperFile()
   : PersistentObject(),
     descriptionFilePath_(),
     data_(),
-    version_(ResourceMap::GetAsUnsignedLong( "WrapperFile-version" ))
+    version_(ResourceMap::GetAsUnsignedInteger( "WrapperFile-version" ))
 {
   // Nothing to do
 }
@@ -77,7 +77,7 @@ WrapperFile::WrapperFile(const FileName & pathToFile)
   : PersistentObject(),
     descriptionFilePath_(pathToFile),
     data_(),
-    version_(ResourceMap::GetAsUnsignedLong( "WrapperFile-version" ))
+    version_(ResourceMap::GetAsUnsignedInteger( "WrapperFile-version" ))
 {
   init();
   LOGINFO(OSS() << "Working on wrapper description file " << pathToFile);

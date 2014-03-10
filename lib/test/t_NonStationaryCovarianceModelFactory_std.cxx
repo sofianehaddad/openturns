@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
   {
     // Dimension of the input model
     // Size of the TimeGrid
-    UnsignedLong size(10);
-    UnsignedLong dimension(1);
+    UnsignedInteger size(10);
+    UnsignedInteger dimension(1);
     RegularGrid timeGrid(0.0, 0.1, size);
     NumericalPoint amplitude(dimension, 1.0);
     NumericalPoint scale(dimension, 1.0);
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     TemporalNormalProcess myProcess(model, timeGrid);
 
     // Create a Process sample of size N
-    UnsignedLong N(10000);
+    UnsignedInteger N(10000);
     ProcessSample sample(myProcess.getSample(N));
 
     // Factory initiate - No arguments
@@ -60,10 +60,10 @@ int main(int argc, char *argv[])
 
     // Get the frequency grid of the model
     RegularGrid myTimeGrid(myCovarianceModel.getTimeGrid());
-    for (UnsignedLong i = 0 ; i < size ; ++i)
+    for (UnsignedInteger i = 0 ; i < size ; ++i)
     {
       const NumericalScalar t(timeGrid.getValue(i));
-      for (UnsignedLong j = 0 ; j < size ; ++j)
+      for (UnsignedInteger j = 0 ; j < size ; ++j)
       {
         const NumericalScalar s(timeGrid.getValue(j));
         const NumericalScalar estimatedValue(myCovarianceModel(t, s)(0, 0));

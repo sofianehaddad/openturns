@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
     Rice distribution(0.5, 1.5);
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));
     RiceFactory factory;
     CovarianceMatrix covariance;

@@ -51,9 +51,9 @@ Graph VisualTest::DrawEmpiricalCDF(const NumericalSample & sample,
 
 /* Draw the Histogram of the Sample when its dimension is 1 */
 Graph VisualTest::DrawHistogram(const NumericalSample & sample,
-                                const UnsignedLong binNumber)
+                                const UnsignedInteger binNumber)
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an Histogram based on an empty sample.";
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an Histogram with 0 bar";
@@ -89,15 +89,15 @@ Graph VisualTest::DrawHistogram(const NumericalSample & sample,
     {
       h = (max - min) / (binNumber - 1);
       min -= 0.5 * h;
-      for (UnsignedLong i = 0; i < binNumber; ++i) data[i][0] = h;
-      for (UnsignedLong i = 0; i < size; ++i)
+      for (UnsignedInteger i = 0; i < binNumber; ++i) data[i][0] = h;
+      for (UnsignedInteger i = 0; i < size; ++i)
       {
-        const UnsignedLong index(static_cast< UnsignedLong >((sample[i][0] - min) / h));
+        const UnsignedInteger index(static_cast< UnsignedInteger >((sample[i][0] - min) / h));
         ++data[index][1];
       }
     }
     const NumericalScalar inverseArea(1.0 / (h * size));
-    for (UnsignedLong i = 0; i < binNumber; ++i) data[i][1] *= inverseArea;
+    for (UnsignedInteger i = 0; i < binNumber; ++i) data[i][1] *= inverseArea;
   }
   // Create an empty graph
   Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
@@ -116,7 +116,7 @@ Graph VisualTest::DrawHistogram(const NumericalSample & sample)
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
-  UnsignedLong nBars(1);
+  UnsignedInteger nBars(1);
   if (std == 0.0)
   {
     LOGWARN("You are drawing an Histogram for a sample with constant realizations, which is questionable.");
@@ -124,7 +124,7 @@ Graph VisualTest::DrawHistogram(const NumericalSample & sample)
   else
   {
     const NumericalScalar hOpt(std * pow(24.0 * sqrt(M_PI) / sample.getSize(), 1.0 / 3.0));
-    nBars = (UnsignedLong)(ceil((sample.getMax()[0] - sample.getMin()[0]) / hOpt + 0.5));
+    nBars = (UnsignedInteger)(ceil((sample.getMax()[0] - sample.getMin()[0]) / hOpt + 0.5));
   }
   return DrawHistogram(sample, nBars);
 }
@@ -132,13 +132,13 @@ Graph VisualTest::DrawHistogram(const NumericalSample & sample)
 /* Draw the QQplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawQQplot(const NumericalSample & sample1,
                              const NumericalSample & sample2,
-                             const UnsignedLong pointNumber)
+                             const UnsignedInteger pointNumber)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample2.getDimension();
   NumericalSample data(pointNumber, 2);
   const NumericalScalar step(1.0 / pointNumber);
-  for (UnsignedLong i = 0; i < pointNumber; ++i)
+  for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
     const NumericalScalar q((i + 0.5) * step);
     data[i][0] = sample1.computeQuantilePerComponent(q)[0];
@@ -182,11 +182,11 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample,
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << dist.getDimension();
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   const NumericalSample sortedSample(sample.sort(0));
   NumericalSample data(size, 2);
   const NumericalScalar step(1.0 / size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = sortedSample[i][0];
     data[i][1] = dist.computeQuantile((i + 0.5) * step)[0];
@@ -229,13 +229,13 @@ Graph VisualTest::DrawHenryLine(const NumericalSample & sample)
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry line only if dimension equals 1, here dimension=" << sample.getDimension();
 
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   const Normal dist;
 
   const NumericalSample sortedSample(sample.sort(0));
   NumericalSample data(size, 2);
   const NumericalScalar step(1.0 / size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = sortedSample[i][0];
     data[i][1] = dist.computeQuantile((i + 0.5) * step)[0];
@@ -316,9 +316,9 @@ Graph VisualTest::DrawLinearModel(const NumericalSample & sample1,
   const NumericalSample y(linearModel.getPredicted(sample1));
   OSS oss;
   oss << sample1.getName() << " LinearModel visualTest";
-  const UnsignedLong size(sample1.getSize());
+  const UnsignedInteger size(sample1.getSize());
   NumericalSample sample2D(size, 2);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalPoint point(2);
     point[0] = sample1[i][0];
@@ -348,9 +348,9 @@ Graph VisualTest::DrawLinearModelResidual(const NumericalSample & sample1,
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
   const NumericalSample y(linearModel.getResidual(sample1, sample2));
-  const UnsignedLong size(sample1.getSize());
+  const UnsignedInteger size(sample1.getSize());
   NumericalSample data(size - 1, 2);
-  for (UnsignedLong i = 0; i < size - 1; ++i)
+  for (UnsignedInteger i = 0; i < size - 1; ++i)
   {
     data[i][0] = y[i][0];
     data[i][1] = y[i + 1][0];
@@ -373,43 +373,43 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
                              const String & color,
                              const Bool quantileScale)
 {
-  const UnsignedLong size(inputSample.getSize());
+  const UnsignedInteger size(inputSample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the input sample is empty.";
   if (size != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   if (outputSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the output sample dimension must be 1.";
   if (minValue > maxValue) throw InvalidArgumentException(HERE) << "Error: minValue cannot be greater than maxValue.";
   // If based on quantiles, rank the values
-  UnsignedLong minRank;
-  UnsignedLong maxRank;
+  UnsignedInteger minRank;
+  UnsignedInteger maxRank;
   if (!quantileScale)
   {
     const NumericalScalar minCDF(outputSample.computeEmpiricalCDF(NumericalPoint(1, minValue)));
     const NumericalScalar maxCDF(outputSample.computeEmpiricalCDF(NumericalPoint(1, maxValue)));
-    minRank = static_cast<UnsignedLong>(round(size * minCDF));
-    maxRank = static_cast<UnsignedLong>(round(size * maxCDF));
+    minRank = static_cast<UnsignedInteger>(round(size * minCDF));
+    maxRank = static_cast<UnsignedInteger>(round(size * maxCDF));
   }
   else
   {
     if ((minValue < 0.0) || (maxValue > 1.0) || (minValue > maxValue))  throw InvalidArgumentException(HERE) << "Error: we must have 0 <= minValue <= maxValue <= 1 when using quantile scale.";
-    minRank = static_cast<UnsignedLong>(size * minValue);
-    maxRank = static_cast<UnsignedLong>(size * maxValue);
+    minRank = static_cast<UnsignedInteger>(size * minValue);
+    maxRank = static_cast<UnsignedInteger>(size * maxValue);
   }
-  const UnsignedLong inputDimension(inputSample.getDimension());
+  const UnsignedInteger inputDimension(inputSample.getDimension());
   const NumericalSample rankedInput(inputSample.rank());
   const NumericalSample rankedOutput(outputSample.rank());
   // Create the graph
   Graph cobWeb(String(OSS() << "Cobweb graph - " << outputSample.getDescription() << " vs " << inputSample.getDescription()), "", "", false, "topright");
   // First discriminate the filaments: draw the background filaments and memorize the selected ones
   Indices selectedFilaments(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedLong currentRank(static_cast<UnsignedLong>(rankedOutput[i][0]));
+    const UnsignedInteger currentRank(static_cast<UnsignedInteger>(rankedOutput[i][0]));
     if ((currentRank >= minRank) && (currentRank <= maxRank))
       selectedFilaments.add(i);
     else
     {
       NumericalSample data(inputDimension + 1, 1);
-      for (UnsignedLong j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[i][j];
+      for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[i][j];
       data[inputDimension][0] = rankedOutput[i][0];
       Curve filament(data);
       filament.setColor("grey");
@@ -417,11 +417,11 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
     }
   }
   // Draw the selected filaments
-  const UnsignedLong selectedSize(selectedFilaments.getSize());
-  for (UnsignedLong i = 0; i < selectedSize; ++i)
+  const UnsignedInteger selectedSize(selectedFilaments.getSize());
+  for (UnsignedInteger i = 0; i < selectedSize; ++i)
   {
     NumericalSample data(inputDimension + 1, 1);
-    for (UnsignedLong j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[selectedFilaments[i]][j];
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[selectedFilaments[i]][j];
     data[inputDimension][0] = rankedOutput[selectedFilaments[i]][0];
     Curve filament(data);
     filament.setColor(color);
@@ -429,7 +429,7 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
   }
   // Draw the vertical lines associated with the input variables
   const Description palette(Curve::BuildDefaultPalette(inputDimension));
-  for (UnsignedLong i = 0; i < inputDimension + 1; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     NumericalSample data(2, 2);
     NumericalPoint point(2);
@@ -512,20 +512,20 @@ Graph VisualTest::DrawKendallPlot(const NumericalSample & firstSample,
 /* Compute the Kendall plot empirical statistic associated with a bidimensional sample */
 NumericalSample VisualTest::ComputeKendallPlotEmpiricalStatistics(const NumericalSample & sample)
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   NumericalSample result(size, 1);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint pointI(sample[i]);
     const NumericalScalar uI(pointI[0]);
     const NumericalScalar vI(pointI[1]);
-    UnsignedLong cardinal(0);
-    for (UnsignedLong j = 0; j < i; ++j)
+    UnsignedInteger cardinal(0);
+    for (UnsignedInteger j = 0; j < i; ++j)
     {
       const NumericalPoint pointJ(sample[j]);
       cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
     }
-    for (UnsignedLong j = i + 1; j < size; ++j)
+    for (UnsignedInteger j = i + 1; j < size; ++j)
     {
       const NumericalPoint pointJ(sample[j]);
       cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
@@ -537,15 +537,15 @@ NumericalSample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Numerica
 
 /* Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
 NumericalSample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
-    const UnsignedLong size)
+    const UnsignedInteger size)
 {
   if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
-  const UnsignedLong maximumIteration(ResourceMap::GetAsUnsignedLong( "VisualTest-KendallPlot-MonteCarloSize" ));
+  const UnsignedInteger maximumIteration(ResourceMap::GetAsUnsignedInteger( "VisualTest-KendallPlot-MonteCarloSize" ));
   NumericalSample result(size, 1);
-  for (UnsignedLong i = 0; i < maximumIteration; ++i)
+  for (UnsignedInteger i = 0; i < maximumIteration; ++i)
   {
     const NumericalSample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(copula.getSample(size)));
-    for (UnsignedLong j = 0; j < size; ++j) result[j] = (result[j] * i + empiricalStatistics[j]) / (i + 1);
+    for (UnsignedInteger j = 0; j < size; ++j) result[j] = (result[j] * i + empiricalStatistics[j]) / (i + 1);
   }
   return result;
 }

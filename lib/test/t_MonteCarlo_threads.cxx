@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     /* We create a numerical math function */
     NumericalMathFunction myFunction("poutre_fullspeed");
 
-    UnsignedLong dim(myFunction.getInputDimension());
+    UnsignedInteger dim(myFunction.getInputDimension());
     /* We create a normal distribution point of dimension 1 */
     NumericalPoint mean(dim, 0.0);
     mean[0] = 50.0; // E

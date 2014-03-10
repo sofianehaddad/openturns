@@ -38,7 +38,7 @@ NearestPointAlgorithmImplementation::NearestPointAlgorithmImplementation() :
   levelFunction_(NumericalMathFunction()),
   startingPoint_(NumericalPoint(0)),
   levelValue_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultLevelValue" )),
-  maximumIterationsNumber_(ResourceMap::GetAsUnsignedLong( "NearestPointAlgorithmImplementation-DefaultMaximumIteration" )),
+  maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "NearestPointAlgorithmImplementation-DefaultMaximumIteration" )),
   maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumAbsoluteError" )),
   maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumRelativeError" )),
   maximumResidualError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumResidualError" )),
@@ -58,7 +58,7 @@ NearestPointAlgorithmImplementation::NearestPointAlgorithmImplementation(const N
   levelFunction_(levelFunction),
   startingPoint_(NumericalPoint(levelFunction.getInputDimension(), 0.0)),
   levelValue_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultLevelValue" )),
-  maximumIterationsNumber_(ResourceMap::GetAsUnsignedLong( "NearestPointAlgorithmImplementation-DefaultMaximumIteration" )),
+  maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "NearestPointAlgorithmImplementation-DefaultMaximumIteration" )),
   maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumAbsoluteError" )),
   maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumRelativeError" )),
   maximumResidualError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumResidualError" )),
@@ -105,13 +105,13 @@ void NearestPointAlgorithmImplementation::setResult(const Result & result)
 }
 
 /* Maximum iterations number accessor */
-UnsignedLong NearestPointAlgorithmImplementation::getMaximumIterationsNumber() const
+UnsignedInteger NearestPointAlgorithmImplementation::getMaximumIterationsNumber() const
 {
   return maximumIterationsNumber_;
 }
 
 /* Maximum iterations number accessor */
-void NearestPointAlgorithmImplementation::setMaximumIterationsNumber(const UnsignedLong maximumIterationsNumber)
+void NearestPointAlgorithmImplementation::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
 {
   maximumIterationsNumber_ = maximumIterationsNumber;
 }

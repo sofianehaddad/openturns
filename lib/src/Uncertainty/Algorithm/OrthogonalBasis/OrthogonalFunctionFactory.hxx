@@ -50,7 +50,7 @@ public:
   OrthogonalFunctionFactory();
 
   /** Build the NumericalMathFunction of the given index */
-  virtual NumericalMathFunction build(const UnsignedLong index) const;
+  virtual NumericalMathFunction build(const UnsignedInteger index) const;
 
 
   /** Return the measure upon which the basis is orthogonal */

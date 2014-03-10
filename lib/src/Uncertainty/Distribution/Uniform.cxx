@@ -100,7 +100,7 @@ NumericalPoint Uniform::getRealization() const
 }
 
 /* Get a sample of the distribution */
-NumericalSample Uniform::getSample(const UnsignedLong size) const
+NumericalSample Uniform::getSample(const UnsignedInteger size) const
 {
   NumericalSampleImplementation result(size, 1);
   result.setData(RandomGenerator::Generate(size));
@@ -247,7 +247,7 @@ void Uniform::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Uniform::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Uniform::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, 1.0 / (n + 1));

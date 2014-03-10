@@ -7,12 +7,12 @@ TESTPREAMBLE()
 try:
 
     # We try to use the Collection as a Python object (sequence)
-    ulc1 = UnsignedLongCollection((1, 2, 3, 4, 5))
-    ulc2 = UnsignedLongCollection([1, 2, 3, 4, 5])
+    ulc1 = UnsignedIntegerCollection((1, 2, 3, 4, 5))
+    ulc2 = UnsignedIntegerCollection([1, 2, 3, 4, 5])
     t = (1, 2, 3, 4, 5)
     l = [1, 2, 3, 4, 5]
-    ulc3 = UnsignedLongCollection(t)
-    ulc4 = UnsignedLongCollection(l)
+    ulc3 = UnsignedIntegerCollection(t)
+    ulc4 = UnsignedIntegerCollection(l)
 
     ulc1[2] = 100
     print ulc1
@@ -21,7 +21,7 @@ try:
         print ul
 
     # Large collection, to see its length
-    ul5 = UnsignedLongCollection(range(12))
+    ul5 = UnsignedIntegerCollection(range(12))
     print ul5
 
     del ul5[6]

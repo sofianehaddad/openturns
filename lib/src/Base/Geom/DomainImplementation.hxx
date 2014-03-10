@@ -43,7 +43,7 @@ public:
   typedef Pointer<DomainImplementation> Implementation;
 
   /** Default constructor */
-  explicit DomainImplementation(const UnsignedLong dimension = 1);
+  explicit DomainImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor method */
   virtual DomainImplementation * clone() const;
@@ -71,7 +71,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Dimension accessors */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -84,7 +84,7 @@ protected:
   virtual void computeVolume() const;
 
   /** The dimension of the DomainImplementation */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   // The global volume
   mutable NumericalScalar volume_;

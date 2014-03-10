@@ -66,7 +66,7 @@ CovarianceModel::CovarianceModel(CovarianceModelImplementation * p_implementatio
 }
 
 /* Dimension accessor */
-UnsignedLong CovarianceModel::getDimension() const
+UnsignedInteger CovarianceModel::getDimension() const
 {
   return getImplementation()->getDimension();
 }

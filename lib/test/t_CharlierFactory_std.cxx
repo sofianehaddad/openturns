@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
     CharlierFactory charlier(2.5);
     fullprint << "charlier=" << charlier << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
     {
       fullprint << "charlier(" << i << ")=" << charlier.build(i).__str__() << std::endl;
     }

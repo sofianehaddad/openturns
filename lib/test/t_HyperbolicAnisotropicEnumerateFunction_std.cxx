@@ -38,21 +38,21 @@ int main(int argc, char *argv[])
     fullprint << "Default q : " << ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ") << std::endl << std::endl;
 
     // first verify consistency with LinearEnumerateFunction
-    UnsignedLong size = 10;
-    UnsignedLong stratas = 5;
-    for (UnsignedLong dimension = 1; dimension < 4; ++ dimension)
+    UnsignedInteger size = 10;
+    UnsignedInteger stratas = 5;
+    for (UnsignedInteger dimension = 1; dimension < 4; ++ dimension)
     {
       HyperbolicAnisotropicEnumerateFunction f( dimension, 1.0 );
       LinearEnumerateFunction g(dimension);
       fullprint << "First " << size << " values for dimension " << dimension << std::endl;
-      for (UnsignedLong index = 0; index < size; ++index)
+      for (UnsignedInteger index = 0; index < size; ++index)
       {
         if (f(index) != g(index))
           throw InternalException(HERE) << "Results are different";
         fullprint << "index=" << index << " " << f(index) << std::endl;
       }
       Indices strataCardinal;
-      for ( UnsignedLong index = 0; index < stratas; ++ index )
+      for ( UnsignedInteger index = 0; index < stratas; ++ index )
       {
         strataCardinal.add( f.getStrataCardinal(index) );
       }
@@ -66,19 +66,19 @@ int main(int argc, char *argv[])
     qValues.add(0.5);
     qValues.add(0.25);
 
-    for (UnsignedLong dimension = 2; dimension < 5; ++ dimension)
+    for (UnsignedInteger dimension = 2; dimension < 5; ++ dimension)
     {
-      for (UnsignedLong j = 0; j < qValues.getDimension(); ++ j)
+      for (UnsignedInteger j = 0; j < qValues.getDimension(); ++ j)
       {
         NumericalScalar q(qValues[j]);
         fullprint << "First " << size << " values dimension=" << dimension << " q=" << q << std::endl;
         HyperbolicAnisotropicEnumerateFunction f( dimension,  q);
-        for (UnsignedLong index = 0; index < size; ++index)
+        for (UnsignedInteger index = 0; index < size; ++index)
         {
           fullprint << "index=" << index << " " << f(index) << std::endl;
         }
         Indices strataCardinal;
-        for ( UnsignedLong index = 0; index < stratas; ++ index )
+        for ( UnsignedInteger index = 0; index < stratas; ++ index )
         {
           strataCardinal.add( f.getStrataCardinal(index) );
         }

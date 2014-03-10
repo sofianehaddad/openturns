@@ -49,7 +49,7 @@ BarPlot::BarPlot(const NumericalSample & data,
                  const String & color,
                  const String & fillStyle,
                  const String & lineStyle,
-                 const UnsignedLong lineWidth,
+                 const UnsignedInteger lineWidth,
                  const String & legend)
   : DrawableImplementation(data, legend)
   , origin_(origin)
@@ -111,8 +111,8 @@ BarPlot::BoundingBox BarPlot::getBoundingBox() const
   const NumericalPoint min(data_.getMin());
   boundingBox[0] = origin_;
   boundingBox[1] = origin_;
-  const UnsignedLong size(data_.getSize());
-  for(UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(data_.getSize());
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     boundingBox[1] += data_[i][0];
   }

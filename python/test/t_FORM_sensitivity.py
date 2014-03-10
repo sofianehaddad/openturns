@@ -116,7 +116,6 @@ try:
 
         # Event Probability Sensitivity
         eventProbabilitySensitivity = result.getEventProbabilitySensitivity()
-        #    UnsignedLong digits(5)
         print "eventProbabilitySensitivity = ", repr(eventProbabilitySensitivity)
 
 except:

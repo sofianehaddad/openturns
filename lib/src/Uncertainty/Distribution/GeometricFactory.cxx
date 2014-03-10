@@ -64,9 +64,9 @@ Geometric GeometricFactory::buildAsGeometric(const NumericalSample & sample) con
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Geometric distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Geometric distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // Check if all the components of the sample are integers > 0
-  UnsignedLong size(sample.getSize());
+  UnsignedInteger size(sample.getSize());
   NumericalScalar sum(0.0);
-  for (UnsignedLong i = 0; i < size; i++)
+  for (UnsignedInteger i = 0; i < size; i++)
   {
     NumericalScalar x(sample[i][0]);
     if ((x != trunc(x)) || (x < 1.0)) throw InvalidArgumentException(HERE) << "Error: can build a Geometric distribution only from a sample with integer components >= 1, here sample[" << i << "][0]=" << x;

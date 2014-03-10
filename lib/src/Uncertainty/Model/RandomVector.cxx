@@ -184,7 +184,7 @@ Bool RandomVector::isComposite() const
 /* Here is the interface that all derived class may implement */
 
 /* Dimension accessor */
-UnsignedLong RandomVector::getDimension() const
+UnsignedInteger RandomVector::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -196,7 +196,7 @@ NumericalPoint RandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample RandomVector::getSample(UnsignedLong size) const
+NumericalSample RandomVector::getSample(UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
 }
@@ -214,7 +214,7 @@ CovarianceMatrix RandomVector::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-RandomVector RandomVector::getMarginal(const UnsignedLong i) const
+RandomVector RandomVector::getMarginal(const UnsignedInteger i) const
 {
   return *(getImplementation()->getMarginal(i));
 }

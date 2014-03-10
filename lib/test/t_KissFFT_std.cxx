@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
   {
 
     // for fft, the best implementation is given for N = 2^p
-    const UnsignedLong size(16);
+    const UnsignedInteger size(16);
 
     // collection for test
     NumericalComplexCollection collection(size);
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     // Fill the data with artificial values
 
     // Create a complex gaussian sample
-    for (UnsignedLong index = 0; index < size; ++index)
+    for (UnsignedInteger index = 0; index < size; ++index)
     {
       const NumericalScalar realPart( 0.1 * (1.0 + index) / size );
       const NumericalScalar imagPart( 0.3 * (1.0 + index) / size );

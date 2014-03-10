@@ -52,7 +52,7 @@ Field::Field(const Implementation & implementation)
 
 /* Constructor from a TimeGrid and a dimension */
 Field::Field(const Mesh & mesh,
-             const UnsignedLong dim)
+             const UnsignedInteger dim)
   : TypedInterfaceObject<FieldImplementation>(new FieldImplementation(mesh, dim))
 {
   // Nothing to do
@@ -73,19 +73,19 @@ Bool Field::operator ==(const Field & other) const
 }
 
 /* Individual value accessor */
-NSI_point Field::operator[](const UnsignedLong index)
+NSI_point Field::operator[](const UnsignedInteger index)
 {
   copyOnWrite();
   return getImplementation()->operator[](index);
 }
 
-NSI_const_point Field::operator[](const UnsignedLong index) const
+NSI_const_point Field::operator[](const UnsignedInteger index) const
 {
   return getImplementation()->operator[](index);
 }
 
-NumericalScalar & Field::operator () (const UnsignedLong i,
-                                      const UnsignedLong j)
+NumericalScalar & Field::operator () (const UnsignedInteger i,
+                                      const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
@@ -96,8 +96,8 @@ NumericalScalar & Field::operator () (const UnsignedLong i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & Field::operator () (const UnsignedLong i,
-    const UnsignedLong j) const
+const NumericalScalar & Field::operator () (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(i, j);
@@ -107,21 +107,21 @@ const NumericalScalar & Field::operator () (const UnsignedLong i,
 }
 
 
-NSI_point Field::at (const UnsignedLong index)
+NSI_point Field::at (const UnsignedInteger index)
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   copyOnWrite();
   return (*getImplementation())[index];
 }
 
-NSI_const_point Field::at (const UnsignedLong index) const
+NSI_const_point Field::at (const UnsignedInteger index) const
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*getImplementation())[index];
 }
 
-NumericalScalar & Field::at (const UnsignedLong i,
-                             const UnsignedLong j)
+NumericalScalar & Field::at (const UnsignedInteger i,
+                             const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
@@ -129,8 +129,8 @@ NumericalScalar & Field::at (const UnsignedLong i,
   return (*getImplementation())[i][j];
 }
 
-const NumericalScalar & Field::at (const UnsignedLong i,
-                                   const UnsignedLong j) const
+const NumericalScalar & Field::at (const UnsignedInteger i,
+                                   const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
@@ -138,12 +138,12 @@ const NumericalScalar & Field::at (const UnsignedLong i,
 }
 
 /* Values accessor */
-NumericalPoint Field::getValueAtIndex(const UnsignedLong index) const
+NumericalPoint Field::getValueAtIndex(const UnsignedInteger index) const
 {
   return getImplementation()->getValueAtIndex(index);
 }
 
-void Field::setValueAtIndex(const UnsignedLong index,
+void Field::setValueAtIndex(const UnsignedInteger index,
                             const NumericalPoint & val)
 {
   copyOnWrite();
@@ -172,12 +172,12 @@ RegularGrid Field::getTimeGrid() const
   return getImplementation()->getTimeGrid();
 }
 
-NumericalPoint Field::__getitem__ (const UnsignedLong index) const
+NumericalPoint Field::__getitem__ (const UnsignedInteger index) const
 {
   return this->getValueAtIndex(index);
 }
 
-void Field::__setitem__ (const UnsignedLong index,
+void Field::__setitem__ (const UnsignedInteger index,
                          const NumericalPoint & val)
 {
   copyOnWrite();
@@ -185,7 +185,7 @@ void Field::__setitem__ (const UnsignedLong index,
 }
 
 /* Method __len__() is for Python */
-UnsignedLong Field::__len__() const
+UnsignedInteger Field::__len__() const
 {
   return getSize();
 }
@@ -223,18 +223,18 @@ Description Field::getDescription() const
 
 
 /* Size accessor */
-UnsignedLong Field::getSize() const
+UnsignedInteger Field::getSize() const
 {
   return getImplementation()->getSize();
 }
 
 /* Dimension accessor */
-UnsignedLong Field::getMeshDimension() const
+UnsignedInteger Field::getMeshDimension() const
 {
   return getImplementation()->getMeshDimension();
 }
 
-UnsignedLong Field::getDimension() const
+UnsignedInteger Field::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -264,7 +264,7 @@ NumericalPoint Field::getTemporalMean() const
 }
 
 /* Draw a marginal of the field */
-Graph Field::drawMarginal(const UnsignedLong index,
+Graph Field::drawMarginal(const UnsignedInteger index,
                           const Bool interpolate) const
 {
   return getImplementation()->drawMarginal(index, interpolate);

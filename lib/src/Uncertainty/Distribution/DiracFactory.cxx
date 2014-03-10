@@ -61,12 +61,12 @@ DiracFactory::Implementation DiracFactory::build() const
 
 Dirac DiracFactory::buildAsDirac(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from an empty sample";
   NumericalPoint point(sample[0]);
   // Check that all the points are equal up to the discrete distribution support precision
   const NumericalScalar supportEpsilon(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
-  for (UnsignedLong i = 1; i < size; ++i) if ((point - sample[i]).norm() > supportEpsilon) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from a sample containing different points";
+  for (UnsignedInteger i = 1; i < size; ++i) if ((point - sample[i]).norm() > supportEpsilon) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from a sample containing different points";
   Dirac result(point);
   result.setDescription(sample.getDescription());
   return result;

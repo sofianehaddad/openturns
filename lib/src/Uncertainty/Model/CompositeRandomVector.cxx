@@ -98,7 +98,7 @@ Bool CompositeRandomVector::isComposite() const
 
 
 /* Dimension accessor */
-UnsignedLong CompositeRandomVector::getDimension() const
+UnsignedInteger CompositeRandomVector::getDimension() const
 {
   return function_.getOutputDimension();
 }
@@ -110,7 +110,7 @@ NumericalPoint CompositeRandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample CompositeRandomVector::getSample(const UnsignedLong size) const
+NumericalSample CompositeRandomVector::getSample(const UnsignedInteger size) const
 {
   return function_(p_antecedent_->getSample(size));
 }
@@ -133,7 +133,7 @@ CovarianceMatrix CompositeRandomVector::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-CompositeRandomVector::Implementation CompositeRandomVector::getMarginal(const UnsignedLong i) const
+CompositeRandomVector::Implementation CompositeRandomVector::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal random vector must be in the range [0, dim-1]";
   return new CompositeRandomVector(function_.getMarginal(i), p_antecedent_);

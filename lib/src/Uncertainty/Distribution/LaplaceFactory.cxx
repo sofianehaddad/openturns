@@ -61,10 +61,10 @@ Laplace LaplaceFactory::buildAsLaplace(const NumericalSample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Laplace distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   const NumericalScalar mu(sample.computeMedianPerComponent()[0]);
   NumericalScalar tau(0.0);
-  for (UnsignedLong i = 0; i < size; ++i) tau += fabs(sample[i][0] - mu);
+  for (UnsignedInteger i = 0; i < size; ++i) tau += fabs(sample[i][0] - mu);
   if (tau == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution with infinite lambda.";
   Laplace result(size / tau, mu);
   result.setDescription(sample.getDescription());

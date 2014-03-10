@@ -51,7 +51,7 @@ public:
   Compact();
 
   /** Constructor with parameters */
-  explicit Compact(const UnsignedLong halfMaximumSize);
+  explicit Compact(const UnsignedInteger halfMaximumSize);
 
   /** Virtual constructor */
   virtual Compact * clone() const;
@@ -64,10 +64,10 @@ public:
   NumericalSample getSample() const;
 
   /** HalfMaximumSize accessor */
-  UnsignedLong getHalfMaximumSize() const;
+  UnsignedInteger getHalfMaximumSize() const;
 
   /** Index accessor */
-  UnsignedLong getIndex() const;
+  UnsignedInteger getIndex() const;
 
   /** String converter */
   String __repr__() const;
@@ -81,16 +81,16 @@ protected:
 
 private:
   // Maximum number of points to be hitorized
-  UnsignedLong halfMaximumSize_;
+  UnsignedInteger halfMaximumSize_;
 
   // Index where the next point will be stored
-  UnsignedLong index_;;
+  UnsignedInteger index_;;
 
   // Storage step
-  UnsignedLong step_;
+  UnsignedInteger step_;
 
   // Throwing counter
-  UnsignedLong throwingCounter_;
+  UnsignedInteger throwingCounter_;
 
 } ; /* class Compact */
 

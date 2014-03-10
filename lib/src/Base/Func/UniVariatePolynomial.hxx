@@ -87,7 +87,7 @@ public:
   UniVariatePolynomial operator * (const UniVariatePolynomial & uniVariatePolynomial) const;
 
   /** Multiply the polynomial by (x to the power deg) */
-  UniVariatePolynomial incrementDegree (const UnsignedLong degree = 1) const;
+  UniVariatePolynomial incrementDegree (const UnsignedInteger degree = 1) const;
 
   /** Realize the summation of two polynomials of any degree */
   UniVariatePolynomial operator + (const UniVariatePolynomial & uniVariatePolynomial) const;
@@ -100,7 +100,7 @@ public:
   Coefficients  getCoefficients() const;
 
   /** Get the degree of the polynomial */
-  UnsignedLong getDegree() const;
+  UnsignedInteger getDegree() const;
 
   /** Root of the polynomial of degree n as the eigenvalues of the associated matrix */
   NumericalComplexCollection getRoots() const;
@@ -108,7 +108,7 @@ public:
   /** Method to draw the graph of the polynomial between given bounds */
   Graph draw(const NumericalScalar xMin,
              const NumericalScalar xMax,
-             const UnsignedLong pointNumber) const;
+             const UnsignedInteger pointNumber) const;
 
 } ; /* class UniVariatePolynomial */
 

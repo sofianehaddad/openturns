@@ -45,13 +45,13 @@ public:
   Description();
 
   /** Constructor with size */
-  explicit Description(const UnsignedLong size);
+  explicit Description(const UnsignedInteger size);
 
   /** Constructor with value */
   explicit Description(const String & value);
 
   /** Constructor with size and default value */
-  Description(const UnsignedLong size,
+  Description(const UnsignedInteger size,
               const String & value);
 
   /** Constructor from a collection */

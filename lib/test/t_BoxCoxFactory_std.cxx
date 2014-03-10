@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   try
   {
     // TimeGrid parameters
-    const UnsignedLong n(101);
+    const UnsignedInteger n(101);
     const NumericalScalar timeStart(0.0);
     const NumericalScalar timeStep(0.1);
     RegularGrid timeGrid(timeStart, timeStep, n);

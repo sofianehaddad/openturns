@@ -44,7 +44,7 @@ public:
   Binomial();
 
   /** Parameters constructor */
-  Binomial(const UnsignedLong n,
+  Binomial(const UnsignedInteger n,
            const NumericalScalar p);
 
   /** Comparison operator */
@@ -111,8 +111,8 @@ public:
   NumericalScalar getP() const;
 
   /** N accessor */
-  void setN(const UnsignedLong n);
-  UnsignedLong getN() const;
+  void setN(const UnsignedInteger n);
+  UnsignedInteger getN() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -138,7 +138,7 @@ private:
   void computeRange();
 
   /** The maximum value of the Binomial distribution */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
   /** The probability parameter of the Binomial distribution */
   NumericalScalar p_;

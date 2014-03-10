@@ -46,8 +46,8 @@ public:
   explicit WhittleFactory(const String & name = DefaultName);
 
   /** Default constructor */
-  WhittleFactory(const UnsignedLong p,
-                 const UnsignedLong q,
+  WhittleFactory(const UnsignedInteger p,
+                 const UnsignedInteger q,
                  const Bool invertible = true,
                  const String & name = DefaultName);
 
@@ -133,7 +133,7 @@ private :
   mutable RegularGrid timeGrid_;
 
   /** Number of frequecies - Used to pass data to be used in computeLogLikeliHood */
-  mutable UnsignedLong m_;
+  mutable UnsignedInteger m_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable NumericalPoint spectralDensity_;

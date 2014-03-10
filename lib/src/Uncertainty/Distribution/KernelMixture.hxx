@@ -106,7 +106,7 @@ public:
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;

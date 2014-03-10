@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
       coll1.add(Uniform());
       ComposedDistribution d1(coll1);
       ConditionalDistribution distribution(d1, d2);
-      UnsignedLong dim(distribution.getDimension());
+      UnsignedInteger dim(distribution.getDimension());
       fullprint << "distribution=" << distribution << std::endl;
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
       fullprint << "Mean " << distribution.getMean() << std::endl;
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10;
+      UnsignedInteger size = 10;
       NumericalSample oneSample = distribution.getSample( size );
       fullprint << "oneSample=" << oneSample << std::endl;
 
@@ -122,11 +122,11 @@ int main(int argc, char *argv[])
       atoms.add( Uniform( 1.0, 2.0) );
       conditioningDistributionCollection.add(ComposedDistribution(atoms));
     }
-    for (UnsignedLong i = 0; i < conditioningDistributionCollection.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < conditioningDistributionCollection.getSize(); ++i)
     {
       fullprint << "conditioning distribution=" << conditioningDistributionCollection[i].__str__() << std::endl;
       ConditionalDistribution distribution(conditionedDistribution, conditioningDistributionCollection[i]);
-      UnsignedLong dim(distribution.getDimension());
+      UnsignedInteger dim(distribution.getDimension());
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
       fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10;
+      UnsignedInteger size = 10;
       NumericalSample oneSample = distribution.getSample( size );
       fullprint << "oneSample=" << oneSample << std::endl;
 
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
       fullprint << "Quantile=" << quantile << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       // Extract the marginals
-      for (UnsignedLong i = 0; i < dim; i++)
+      for (UnsignedInteger i = 0; i < dim; i++)
       {
         Distribution margin(distribution.getMarginal(i));
         fullprint << "margin=" << margin << std::endl;

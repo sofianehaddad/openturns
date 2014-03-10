@@ -74,16 +74,27 @@ public:
   /** Get a value in the map */
   static String Get(String key);
   static Bool GetAsBool(String key);
-  static UnsignedLong GetAsUnsignedLong(String key);
+  static UnsignedInteger GetAsUnsignedInteger(String key);
   static NumericalScalar GetAsNumericalScalar(String key);
   static char * GetAsNewCharArray(String key);
 
+  /** Set a value in the map 
+   * @deprecated
+   */
+  static UnsignedInteger GetAsUnsignedLong(String key);
+  
+  
   /** Set a value in the map */
   static void Set(String key, String value);
   static void SetAsBool(String key, Bool value);
-  static void SetAsUnsignedLong(String key, UnsignedLong value);
+  static void SetAsUnsignedInteger(String key, UnsignedInteger value);
   static void SetAsNumericalScalar(String key, NumericalScalar value);
 
+  /** Set a value in the map 
+   * @deprecated
+   */
+  static void SetAsUnsignedLong(String key, UnsignedInteger value);
+  
   /** @copydoc Object::__repr__() const */
   String __repr__() const;
 
@@ -105,7 +116,7 @@ protected:
    * @param key The name under which the value is stored in the ResourceMap
    * @return The value if the value is integer castable, zero otherwise
    */
-  UnsignedLong getAsUnsignedLong(String key) const;
+  UnsignedInteger getAsUnsignedInteger(String key) const;
 
   /** Method for retrieving information from the resource map
    * @param key The name under which the value is stored in the ResourceMap
@@ -135,7 +146,7 @@ protected:
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as an integer
    */
-  void setAsUnsignedLong(String key, UnsignedLong value);
+  void setAsUnsignedInteger(String key, UnsignedInteger value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap

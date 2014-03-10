@@ -147,7 +147,7 @@ NumericalScalar RegularizedIncompleteBetaInverse(const NumericalScalar a,
   NumericalScalar betaLower(tail ? 1.0 : 0.0);
   NumericalScalar upper(1.0);
   const Bool lowerLessThanX(betaLower < x);
-  for (UnsignedLong k = 0; k < SpecFunc::MaximumIteration; ++k)
+  for (UnsignedInteger k = 0; k < SpecFunc::MaximumIteration; ++k)
   {
     if (fabs(upper - lower) <= SpecFunc::Precision) break;
     const NumericalScalar middle(0.5 * (lower + upper));
@@ -388,11 +388,11 @@ NumericalScalar BUP(const NumericalScalar a,
                     const NumericalScalar b,
                     const NumericalScalar x,
                     const NumericalScalar y,
-                    const UnsignedLong n)
+                    const UnsignedInteger n)
 {
   NumericalScalar value(1.0);
   NumericalScalar term(a * x * (1.0 - b) / (1.0 + a));
-  for (UnsignedLong k = 1; k <= SpecFunc::MaximumIteration; ++k)
+  for (UnsignedInteger k = 1; k <= SpecFunc::MaximumIteration; ++k)
   {
     value += term;
     if (fabs(term) <= value * SpecFunc::Precision) break;
@@ -426,9 +426,9 @@ NumericalScalar RegularizedIncompleteBetaContinuedFraction(const NumericalScalar
   NumericalScalar d(1.0 - aPb * x / aP1);
   if (fabs(d) < epsilon) d = epsilon;
   NumericalScalar value(c / d);
-  for (UnsignedLong k = 1; k <= SpecFunc::MaximumIteration; ++k)
+  for (UnsignedInteger k = 1; k <= SpecFunc::MaximumIteration; ++k)
   {
-    const UnsignedLong k2(2 * k);
+    const UnsignedInteger k2(2 * k);
     NumericalScalar aK(k * (k - b) * x / ((aM1 + k2) * (a + k2)));
     d = 1.0 - aK / d;
     if (fabs(d) < epsilon) d = epsilon;

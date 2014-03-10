@@ -66,7 +66,7 @@ public:
   Curve(const NumericalSample & data,
         const String & color,
         const String & lineStyle,
-        const UnsignedLong lineWidth = 1,
+        const UnsignedInteger lineWidth = 1,
         const String & legend = "");
 
   /** String converter */

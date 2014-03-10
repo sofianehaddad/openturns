@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     RandomGenerator::SetSeed(0);
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong defaultDimension(3);
+    const UnsignedInteger defaultDimension(3);
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     /* checking the copy-cast*/
     SecondOrderModel mySecondOrderModel(myModel);
 
-    const UnsignedLong points(8);
+    const UnsignedInteger points(8);
     const NumericalScalar tMin(0.0);
     const NumericalScalar tStep(1.0 / (points - 1));
 

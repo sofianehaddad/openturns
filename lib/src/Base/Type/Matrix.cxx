@@ -43,8 +43,8 @@ Matrix::Matrix()
 /* Constructor with size (rowDim and colDim) */
 /* The matrix is made up of a collection of rowDim*colDim elements */
 /* The matrix is viewed as a set of column vectors read one after another */
-Matrix::Matrix(const UnsignedLong rowDim,
-               const UnsignedLong colDim)
+Matrix::Matrix(const UnsignedInteger rowDim,
+               const UnsignedInteger colDim)
   : TypedInterfaceObject<MatrixImplementation>(new MatrixImplementation(rowDim, colDim))
 {
   // Nothing to do
@@ -54,8 +54,8 @@ Matrix::Matrix(const UnsignedLong rowDim,
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-Matrix::Matrix(const UnsignedLong rowDim,
-               const UnsignedLong colDim,
+Matrix::Matrix(const UnsignedInteger rowDim,
+               const UnsignedInteger colDim,
                const Collection<NumericalScalar> & elementsValues)
   : TypedInterfaceObject<MatrixImplementation>(new MatrixImplementation(rowDim, colDim, elementsValues))
 {
@@ -97,13 +97,13 @@ Matrix Matrix::clean(const NumericalScalar threshold) const
 }
 
 /* Get the dimensions of the matrix : number of rows */
-const UnsignedLong Matrix::getNbRows() const
+const UnsignedInteger Matrix::getNbRows() const
 {
   return getImplementation()->getNbRows();
 }
 
 /* Get the dimensions of the matrix : number of columns */
-const UnsignedLong Matrix::getNbColumns() const
+const UnsignedInteger Matrix::getNbColumns() const
 {
   return getImplementation()->getNbColumns();
 }
@@ -111,8 +111,8 @@ const UnsignedLong Matrix::getNbColumns() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalScalar & Matrix::operator() (const UnsignedLong i,
-                                      const UnsignedLong j)
+NumericalScalar & Matrix::operator() (const UnsignedInteger i,
+                                      const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);
@@ -120,8 +120,8 @@ NumericalScalar & Matrix::operator() (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & Matrix::operator() (const UnsignedLong i,
-    const UnsignedLong j) const
+const NumericalScalar & Matrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
   return (*getImplementation())(i, j);
 }
@@ -134,13 +134,13 @@ Matrix Matrix::transpose () const
 }
 
 /* Row extraction */
-const Matrix Matrix::getRow(const UnsignedLong rowIndex) const
+const Matrix Matrix::getRow(const UnsignedInteger rowIndex) const
 {
   return Implementation(getImplementation()->getRow(rowIndex).clone());
 }
 
 /* Column extration */
-const Matrix Matrix::getColumn(const UnsignedLong columnIndex) const
+const Matrix Matrix::getColumn(const UnsignedInteger columnIndex) const
 {
   return Implementation(getImplementation()->getColumn(columnIndex).clone());
 }
@@ -260,13 +260,13 @@ const NumericalScalar* Matrix::__baseaddress__() const
 }
 
 
-UnsignedLong Matrix::__elementsize__() const
+UnsignedInteger Matrix::__elementsize__() const
 {
   return getImplementation()->__elementsize__();
 }
 
 
-UnsignedLong Matrix::__stride__(UnsignedLong dim) const
+UnsignedInteger Matrix::__stride__(UnsignedInteger dim) const
 {
   return getImplementation()->__stride__(dim);
 }

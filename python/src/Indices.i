@@ -29,8 +29,8 @@ namespace OT {
 
   Indices(PyObject * pyObj) { return new OT::Indices( OT::convert<OT::_PySequence_,OT::Indices>(pyObj) ); }
   
-  OT_COLLECTION_GETITEM(OT::Indices, OT::UnsignedLong)
-  OT_COLLECTION_SETITEM(OT::Indices, OT::UnsignedLong)
+  OT_COLLECTION_GETITEM(OT::Indices, OT::UnsignedInteger)
+  OT_COLLECTION_SETITEM(OT::Indices, OT::UnsignedInteger)
 
   Bool __eq__(const Indices & other) { return (*self) == other; }
 

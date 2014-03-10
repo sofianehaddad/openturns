@@ -57,7 +57,7 @@ ClassifierImplementation * ClassifierImplementation::clone() const
 
 
 /* Classify a sample */
-UnsignedLong ClassifierImplementation::classify(const NumericalPoint & inP) const
+UnsignedInteger ClassifierImplementation::classify(const NumericalPoint & inP) const
 {
   throw NotYetImplementedException(HERE) << "ClassifierImplementation::classify";
   return 0;
@@ -66,9 +66,9 @@ UnsignedLong ClassifierImplementation::classify(const NumericalPoint & inP) cons
 /* Classify a sample */
 Indices ClassifierImplementation::classify(const NumericalSample & inS) const
 {
-  const UnsignedLong size(inS.getSize());
+  const UnsignedInteger size(inS.getSize());
   Indices prediction(size);
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     prediction[i] = classify(inS[i]);
   }
@@ -76,7 +76,7 @@ Indices ClassifierImplementation::classify(const NumericalSample & inS) const
 }
 
 /* Grade a point */
-NumericalScalar ClassifierImplementation::grade(const NumericalPoint & inP, UnsignedLong hClass) const
+NumericalScalar ClassifierImplementation::grade(const NumericalPoint & inP, UnsignedInteger hClass) const
 {
   throw NotYetImplementedException(HERE) << "ClassifierImplementation::grade";
   return 0.0;
@@ -85,11 +85,11 @@ NumericalScalar ClassifierImplementation::grade(const NumericalPoint & inP, Unsi
 /* Grade a sample */
 NumericalPoint ClassifierImplementation::grade(const NumericalSample & inS, const Indices & hClass) const
 {
-  const UnsignedLong size(inS.getSize());
+  const UnsignedInteger size(inS.getSize());
   if ( size != hClass.getSize() )
     throw InvalidDimensionException(HERE) << "Input sample dimension (=" << size << ") and classes dimension (=" << hClass.getSize() << ") do not match.";
   NumericalPoint grades(size);
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     grades[i] = grade(inS[i], hClass[i]);
   }
@@ -123,7 +123,7 @@ Bool ClassifierImplementation::getVerbose() const
 }
 
 /* Input space dimension accessor */
-UnsignedLong ClassifierImplementation::getDimension() const
+UnsignedInteger ClassifierImplementation::getDimension() const
 {
   return inputSample_.getDimension();
 }

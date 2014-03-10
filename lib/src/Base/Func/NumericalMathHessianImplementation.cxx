@@ -116,25 +116,25 @@ SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger NumericalMathHessianImplementation::getInputDimension() const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger NumericalMathHessianImplementation::getOutputDimension() const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /* Get the number of calls to operator() */
-UnsignedLong NumericalMathHessianImplementation::getCallsNumber() const
+UnsignedInteger NumericalMathHessianImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }
 
 /* Get the i-th marginal function */
-NumericalMathHessianImplementation::Implementation NumericalMathHessianImplementation::getMarginal(const UnsignedLong i) const
+NumericalMathHessianImplementation::Implementation NumericalMathHessianImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
@@ -150,14 +150,14 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
   // As we don't have access to f and Df here but only to D2f, we build an arbitrary cheap evaluation with the proper dimension in order to reuse the
   // generic implementation of the chain rule for the hessians. We choose to build a null function using an analytical function.
   // Fake f
-  const UnsignedLong inputDimension = getInputDimension();
-  const UnsignedLong outputDimension = getOutputDimension();
+  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
 #ifdef OPENTURNS_HAVE_MUPARSER
   Description input(inputDimension);
-  for (UnsignedLong index = 0; index < inputDimension; ++index)
+  for (UnsignedInteger index = 0; index < inputDimension; ++index)
     input[index] = OSS() << "x" << index;
   Description output(outputDimension);
-  for (UnsignedLong index = 0; index < outputDimension; ++index)
+  for (UnsignedInteger index = 0; index < outputDimension; ++index)
     output[index] = OSS() << "y" << index;
   const Description formulas(outputDimension, "0.0");
   const AnalyticalNumericalMathEvaluationImplementation right(input, output, formulas);
@@ -170,9 +170,9 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
   // Fake DF
   const ConstantNumericalMathGradientImplementation rightGradient(Matrix(inputDimension, outputDimension));
   // Dg = A
-  const UnsignedLong marginalOutputDimension(indices.getSize());
+  const UnsignedInteger marginalOutputDimension(indices.getSize());
   Matrix gradientExtraction(outputDimension, marginalOutputDimension);
-  for (UnsignedLong i = 0; i < marginalOutputDimension; ++i)
+  for (UnsignedInteger i = 0; i < marginalOutputDimension; ++i)
     gradientExtraction(indices[i], i) = 1.0;
   const ConstantNumericalMathGradientImplementation leftGradient(gradientExtraction);
   // D2g = 0

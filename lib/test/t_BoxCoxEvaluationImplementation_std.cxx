@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    const UnsignedLong dimension(3);
+    const UnsignedInteger dimension(3);
 
     // Lambda
     NumericalPoint lambda(dimension);
@@ -55,9 +55,9 @@ int main(int argc, char *argv[])
       fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
       // Creation of a NumericalSample
-      const UnsignedLong size(10);
+      const UnsignedInteger size(10);
       NumericalSample inSample(size, dimension);
-      for (UnsignedLong index = 0 ; index < size; ++index)
+      for (UnsignedInteger index = 0 ; index < size; ++index)
       {
         inSample[index] = NumericalPoint(dimension, index + 1);
       }
@@ -83,9 +83,9 @@ int main(int argc, char *argv[])
       fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
       // Creation of a NumericalSample
-      const UnsignedLong size(10);
+      const UnsignedInteger size(10);
       NumericalSample inSample(size, dimension);
-      for (UnsignedLong index = 0 ; index < size; ++index)
+      for (UnsignedInteger index = 0 ; index < size; ++index)
       {
         inSample[index] = NumericalPoint(dimension, index + 1);
       }

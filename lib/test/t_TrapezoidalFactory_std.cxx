@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
     Trapezoidal distribution( 1.0, 2.3, 4.5, 5.0 );
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));
     TrapezoidalFactory factory;
     Distribution estimatedDistribution(factory.build(sample));

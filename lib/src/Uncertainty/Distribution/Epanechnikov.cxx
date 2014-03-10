@@ -174,7 +174,7 @@ NumericalPoint Epanechnikov::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Epanechnikov::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Epanechnikov::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, 3.0 / (3.0 + n * (4.0 + n)));

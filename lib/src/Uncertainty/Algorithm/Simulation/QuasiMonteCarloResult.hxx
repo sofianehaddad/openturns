@@ -50,8 +50,8 @@ public:
   QuasiMonteCarloResult(const Event & event,
                         const NumericalScalar probabilityEstimate,
                         const NumericalScalar varianceEstimate,
-                        const UnsignedLong outerSampling,
-                        const UnsignedLong blockSize);
+                        const UnsignedInteger outerSampling,
+                        const UnsignedInteger blockSize);
 
   /** Virtual constructor */
   virtual QuasiMonteCarloResult * clone() const;

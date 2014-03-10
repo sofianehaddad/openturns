@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  UnsignedLong size(100);
-  UnsignedLong dim(10);
+  UnsignedInteger size(100);
+  UnsignedInteger dim(10);
   CorrelationMatrix R(dim);
-  for (UnsignedLong i = 0; i < dim; i++)
+  for (UnsignedInteger i = 0; i < dim; i++)
   {
-    for (UnsignedLong j = 0; j < i; j++)
+    for (UnsignedInteger j = 0; j < i; j++)
     {
       R(i, j) = (i + j + 1.0) / (2.0 * dim);
     }
@@ -49,17 +49,17 @@ int main(int argc, char *argv[])
   NumericalSample sample(distribution.getSample(size));
   NumericalSample sampleX(size, dim - 1);
   NumericalSample sampleY(size, 1);
-  for (UnsignedLong i = 0; i < size; i++)
+  for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleY[i][0] = sample[i][0];
-    for (UnsignedLong j = 1; j < dim; j++)
+    for (UnsignedInteger j = 1; j < dim; j++)
     {
       sampleX[i][j - 1] = sample[i][j];
     }
   }
 
   Indices selection(5);
-  for (UnsignedLong i = 0; i < 5; i++)
+  for (UnsignedInteger i = 0; i < 5; i++)
   {
     selection[i] = i;
   }
@@ -67,13 +67,13 @@ int main(int argc, char *argv[])
   Indices selection2(1, 0);
 
   NumericalSample sampleX0(size, 1);
-  for (UnsignedLong i = 0; i < size; i++)
+  for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleX0[i][0] = sampleX[i][0];
   }
 
   NumericalSample sampleZ(size, 1);
-  for (UnsignedLong i = 0; i < size; i++)
+  for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleZ[i][0] = sampleY[i][0] * sampleY[i][0];
   }

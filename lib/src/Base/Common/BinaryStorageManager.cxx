@@ -233,7 +233,7 @@ const StorageManager::InternalObject & BinaryStorageManager::getState() const
 
 
 /* Query the manager if the version is correct */
-Bool BinaryStorageManager::canManageVersion(UnsignedLong version) const
+Bool BinaryStorageManager::canManageVersion(UnsignedInteger version) const
 {
   return BinaryStorageManager::SupportedVersions.contains(version);
 }
@@ -657,7 +657,7 @@ void AttributeReader(TAG tag,
 //       static inline
 //       void IndexedValueWriter(TAG tag,
 //                            Pointer<StorageManager::InternalObject> & p_obj,
-//                            UnsignedLong index,
+//                            UnsignedInteger index,
 //                            _Tp value)
 //       {
 //      assert(p_obj);
@@ -677,7 +677,7 @@ void AttributeReader(TAG tag,
 //       inline
 //       void IndexedValueWriter<BIN_STMGR::numericalcomplex_tag,NumericalComplex>(BIN_STMGR::numericalcomplex_tag tag,
 //                                                                   Pointer<StorageManager::InternalObject> & p_obj,
-//                                                                   UnsignedLong index,
+//                                                                   UnsignedInteger index,
 //                                                                   NumericalComplex value)
 //       {
 //      assert(p_obj);
@@ -706,7 +706,7 @@ void AttributeReader(TAG tag,
 //       static inline
 //       void IndexedValueReader(TAG tag,
 //                            Pointer<StorageManager::InternalObject> & p_obj,
-//                            UnsignedLong index,
+//                            UnsignedInteger index,
 //                            _Tp & value)
 //       {
 //      assert(p_obj);
@@ -714,7 +714,7 @@ void AttributeReader(TAG tag,
 
 //      XML::Node node;
 //      while ( node = XML::FindNextElementByName( state.current_, tag.Get() ) ) {
-//        UnsignedLong idx;
+//        UnsignedInteger idx;
 //        fromStringConverter( XML::GetAttributeByName(node, BIN_STMGR::index_attribute::Get()), idx );
 //        state.next();
 //        if (idx == index) {
@@ -807,7 +807,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     Bool value)
 {
   writeToFile( filefd_, value );
@@ -815,7 +815,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     Bool & value)
 {
   readFromFile( filefd_, value );
@@ -824,13 +824,13 @@ void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
 
 
 
-/************ Type = UnsignedLong ************/
+/************ Type = UnsignedInteger ************/
 
 
 /* Add an attribute to an internal object */
 void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
                                         const String & name,
-                                        UnsignedLong value)
+                                        UnsignedInteger value)
 {
   writeToFile( filefd_, name );
   writeToFile( filefd_, value );
@@ -839,7 +839,7 @@ void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 /* Read an attribute */
 void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
     const String & name,
-    UnsignedLong & value)
+    UnsignedInteger & value)
 {
   off64_t pos = lseek64( filefd_, 0, SEEK_CUR );
   String token;
@@ -851,16 +851,16 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
-    UnsignedLong value)
+    UnsignedInteger index,
+    UnsignedInteger value)
 {
   writeToFile( filefd_, value );
 }
 
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
-    UnsignedLong & value)
+    UnsignedInteger index,
+    UnsignedInteger & value)
 {
   readFromFile( filefd_, value );
 }
@@ -895,7 +895,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     NumericalScalar value)
 {
   writeToFile( filefd_, value );
@@ -903,7 +903,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     NumericalScalar & value)
 {
   readFromFile( filefd_, value );
@@ -939,7 +939,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     NumericalComplex value)
 {
   writeToFile( filefd_, value );
@@ -947,7 +947,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     NumericalComplex & value)
 {
   readFromFile( filefd_, value );
@@ -983,7 +983,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     const String & value)
 {
   writeToFile( filefd_, value );
@@ -991,7 +991,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     String & value)
 {
   readFromFile( filefd_, value );
@@ -1033,7 +1033,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     const InterfaceObject & value)
 {
   value.save( *this );
@@ -1046,7 +1046,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     InterfaceObject & value)
 {
   //      Id shadowedId;
@@ -1096,7 +1096,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     const PersistentObject & value)
 {
   value.save( *this );
@@ -1109,7 +1109,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     PersistentObject & value)
 {
   //      Id shadowedId;

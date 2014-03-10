@@ -20,7 +20,7 @@
       {
         check<_PySequence_>( pyObj );
 
-        const UnsignedLong size = PySequence_Fast_GET_SIZE( pyObj );
+        const UnsignedInteger size = PySequence_Fast_GET_SIZE( pyObj );
         if (size != 2) {
           throw OT::InvalidArgumentException(HERE) << "Sequence object has incorrect size " << size << ". Must be 2.";
         }

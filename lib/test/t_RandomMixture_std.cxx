@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
     // Create a collection of test-cases and the associated references
-    UnsignedLong numberOfTests(3);
+    UnsignedInteger numberOfTests(3);
     Collection< Collection< Distribution > > testCases(numberOfTests);
     Collection< Distribution > references(numberOfTests);
     testCases[0] = Collection<Distribution>(2);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     references[2] = Gamma(3.0, 1.0, 0.0);
     fullprint << "testCases=" << testCases << std::endl;
     fullprint << "references=" << references << std::endl;
-    for (UnsignedLong testIndex = 0; testIndex < testCases.getSize(); ++testIndex)
+    for (UnsignedInteger testIndex = 0; testIndex < testCases.getSize(); ++testIndex)
     {
       // Instanciate one distribution object
       RandomMixture distribution(testCases[testIndex]);
@@ -76,14 +76,14 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10000;
+      UnsignedInteger size = 10000;
       NumericalSample oneSample = distribution.getSample( size );
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
       fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
 #if 0
       size = 100;
-      for (UnsignedLong i = 0; i < 2; ++i)
+      for (UnsignedInteger i = 0; i < 2; ++i)
       {
         fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
         size *= 10;
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
       RandomMixture::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
       /*    distribution.setIntegrationNodesNumber(6);
-            for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;*/
+            for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;*/
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
       // Specific to this distribution
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
     RandomMixture distribution(coll, weights);
     fullprint << "distribution=" << distribution << std::endl;
     fullprint << "distribution=" << distribution.__str__() << std::endl;
-    for (UnsignedLong i = 0; i < 30; ++i)
+    for (UnsignedInteger i = 0; i < 30; ++i)
     {
       NumericalScalar x(-12.0 + i);
       fullprint << "pdf(" << x << ")=" << distribution.computePDF(x) << std::endl;

@@ -63,7 +63,7 @@ public:
   GaussKronrodPair getPair() const;
 
   /** Order accessor */
-  UnsignedLong getOrder() const;
+  UnsignedInteger getOrder() const;
 
   /** Zero Gauss weight accessor */
   NumericalScalar getZeroGaussWeight() const;
@@ -88,7 +88,7 @@ private:
   GaussKronrodPair pair_;
 
   /** Order of the rule */
-  UnsignedLong order_;
+  UnsignedInteger order_;
 
   /** Gauss weight of node 0.0 */
   NumericalScalar zeroGaussWeight_;

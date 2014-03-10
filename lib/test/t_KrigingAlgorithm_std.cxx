@@ -26,12 +26,12 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedLong digits)
+String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
   NumericalScalar eps(pow(0.1, digits));
-  for (UnsignedLong i = 0; i < point.getDimension(); i++)
+  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::scientific << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((fabs(point[i]) < eps) ? fabs(point[i]) : point[i]);
   }
@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
   {
 
     {
-      UnsignedLong sampleSize = 6;
-      UnsignedLong dimension = 1;
+      UnsignedInteger sampleSize = 6;
+      UnsignedInteger dimension = 1;
 
       // Create the function to estimate
       Description input(dimension);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
       NumericalSample X(sampleSize, dimension);
       NumericalSample X2(sampleSize, dimension);
-      for ( UnsignedLong i = 0; i < sampleSize; ++ i )
+      for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
       {
         X[i][0] = 3.0 + i;
         X2[i][0] = 2.5 + i;
@@ -95,8 +95,8 @@ int main(int argc, char *argv[])
     }
 
     {
-      UnsignedLong dimension = 2;
-      UnsignedLong sampleSize = 8;
+      UnsignedInteger dimension = 2;
+      UnsignedInteger sampleSize = 8;
       // Create the function to estimate
       Description input(dimension);
       input[0] = "x0";
@@ -170,8 +170,8 @@ int main(int argc, char *argv[])
     }
 
     {
-      UnsignedLong inputDimension = 3;
-      UnsignedLong outputDimension = 2;
+      UnsignedInteger inputDimension = 3;
+      UnsignedInteger outputDimension = 2;
 
       // Reference analytical values
       NumericalPoint kappa(inputDimension);
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
       outputVariables[1] = "y1";
       Description formula(outputDimension);
       formula[0] = "1.0";
-      for (UnsignedLong i = 0; i < inputDimension; ++i)
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
       {
         kappa[i] = 0.5 * i;
         inputVariables[i] = (OSS() << "xi" << i);
@@ -196,10 +196,10 @@ int main(int argc, char *argv[])
 
       // Create the input distribution
       Collection<Distribution> marginals(inputDimension);
-      for (UnsignedLong i = 0; i < inputDimension; ++i) marginals[i] = Uniform(0.0, 1.0);
+      for (UnsignedInteger i = 0; i < inputDimension; ++i) marginals[i] = Uniform(0.0, 1.0);
       ComposedDistribution distribution(marginals);
 
-      UnsignedLong samplingSize = 250;
+      UnsignedInteger samplingSize = 250;
       NumericalSample X(distribution.getSample(samplingSize));
       NumericalSample Y(model(X));
 

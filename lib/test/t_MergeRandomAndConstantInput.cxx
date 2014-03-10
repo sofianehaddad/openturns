@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     input[3] = "I";
     NumericalMathFunction externalCode(input, Description(1, "d"), Description(1, "F*L^3/(3*E*I)"));
 
-    UnsignedLong dim(externalCode.getInputDimension());
+    UnsignedInteger dim(externalCode.getInputDimension());
 
     /** The external code will be connected to 2 independent random variables X0 and X1 and one deterministic variable X2 with the following scheme:
         X2->p0
@@ -57,8 +57,8 @@ int main(int argc, char *argv[])
         [1 0]     [ 0]
         Here we build the linear function x -> A.x + b
     */
-    UnsignedLong stochasticDimension(2);
-    // UnsignedLong deterministicDimension(1);
+    UnsignedInteger stochasticDimension(2);
+    // UnsignedInteger deterministicDimension(1);
     Matrix A(dim, stochasticDimension);
     A(1, 0) = 1;
     A(2, 1) = 1;

@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
     fullprint << "sample3=" << sample3 << std::endl;
 
     // We find the new point into the sample
-    UnsignedLong pos = sample3.find(anotherNewPoint);
+    UnsignedInteger pos = sample3.find(anotherNewPoint);
     //fullprint << "pos=" << pos << std::endl;
     if (pos != 5)
     {
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
       throw TestFailed(oss);
     }
 
-    //for(UnsignedLong i=0; i<sample3.getSize(); ++i)
+    //for(UnsignedInteger i=0; i<sample3.getSize(); ++i)
     //  fullprint << "sample3[" << i << "]=" << sample3[i] << std::endl;
 
     // We erase the new point from the sample

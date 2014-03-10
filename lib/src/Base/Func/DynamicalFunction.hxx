@@ -84,16 +84,16 @@ public:
   ProcessSample operator() (const ProcessSample & inPS) const;
 
   /** Get the i-th marginal function */
-  DynamicalFunction getMarginal(const UnsignedLong i) const;
+  DynamicalFunction getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   DynamicalFunction getMarginal(const Indices & indices) const;
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */
   Description getInputDescription() const;
@@ -102,7 +102,7 @@ public:
   Description getOutputDescription() const;
 
   /** Number of calls to the evaluation */
-  UnsignedLong getCallsNumber() const;
+  UnsignedInteger getCallsNumber() const;
 
 }; /* class DynamicalFunction */
 

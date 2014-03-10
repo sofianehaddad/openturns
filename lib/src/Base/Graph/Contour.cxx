@@ -35,15 +35,15 @@ CLASSNAMEINIT(Contour);
 static Factory<Contour> RegisteredFactory("Contour");
 
 /* Default constructor */
-Contour::Contour(const UnsignedLong dimX,
-                 const UnsignedLong dimY,
+Contour::Contour(const UnsignedInteger dimX,
+                 const UnsignedInteger dimY,
                  const NumericalSample & data,
                  const String & legend)
   : DrawableImplementation(data, legend)
   , x_(NumericalSample(dimX, 1))
   , y_(NumericalSample(dimY, 1))
-  , levels_(NumericalPoint(ResourceMap::GetAsUnsignedLong( "Contour-DefaultLevelsNumber" )))
-  , labels_(ResourceMap::GetAsUnsignedLong( "Contour-DefaultLevelsNumber" ))
+  , levels_(NumericalPoint(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" )))
+  , labels_(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ))
   , drawLabels_(true)
 {
   if (dimX < 2) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2";
@@ -52,9 +52,9 @@ Contour::Contour(const UnsignedLong dimX,
   // Check data validity
   setData(data);
   // By default, x is assumed to be equally spaced in [0, 1]
-  for (UnsignedLong i = 0; i < dimX; ++i) x_[i][0] = NumericalScalar(i) / (dimX - 1.0);
+  for (UnsignedInteger i = 0; i < dimX; ++i) x_[i][0] = NumericalScalar(i) / (dimX - 1.0);
   // By default, y is assumed to be equally spaced in [0, 1]
-  for (UnsignedLong i = 0; i < dimY; ++i) y_[i][0] = NumericalScalar(i) / (dimY - 1.0);
+  for (UnsignedInteger i = 0; i < dimY; ++i) y_[i][0] = NumericalScalar(i) / (dimY - 1.0);
   // Build the levels
   buildDefaultLevels();
   // Build the labels
@@ -186,7 +186,7 @@ String Contour::draw() const
   oss << DrawableImplementation::draw() << "\n";
   // The specific R command for drawing
   // Here we store the discretizations of the axes
-  if (x_.getDimension() * x_.getSize() > ResourceMap::GetAsUnsignedLong("DrawableImplementation-DataThreshold"))
+  if (x_.getDimension() * x_.getSize() > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
   {
     xFileName_ = x_.storeToTemporaryFile();
     yFileName_ = y_.storeToTemporaryFile();
@@ -200,14 +200,14 @@ String Contour::draw() const
   }
   oss << "dataOT <- matrix(dataOT, length(x), length(y))\n"
       << "levels=c(";
-  const UnsignedLong length(levels_.getSize() - 1);
-  for(UnsignedLong i = 0; i < length; ++i)
+  const UnsignedInteger length(levels_.getSize() - 1);
+  for(UnsignedInteger i = 0; i < length; ++i)
   {
     oss << levels_[i] << ",";
   }
   oss << levels_[length] << ")\n"
       << "labels=c(\"";
-  for(UnsignedLong i = 0; i < length; ++i)
+  for(UnsignedInteger i = 0; i < length; ++i)
   {
     oss << labels_[i] << "\",\"";
   }
@@ -240,21 +240,21 @@ void Contour::checkData(const NumericalSample & data) const
 
 /* Build default levels using quantiles associated with regularly spaced probability levels
  */
-void Contour::buildDefaultLevels(const UnsignedLong number)
+void Contour::buildDefaultLevels(const UnsignedInteger number)
 {
   // Use the empirical quantiles
   const NumericalSample sortedData(data_.sort());
-  const UnsignedLong size(data_.getSize());
+  const UnsignedInteger size(data_.getSize());
   levels_ = NumericalPoint(number);
-  for (UnsignedLong i = 0; i < number; ++i) levels_[i] = sortedData[static_cast<UnsignedLong>(size * (i + 0.5) / number)][0];
+  for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData[static_cast<UnsignedInteger>(size * (i + 0.5) / number)][0];
 }
 
 /* Build default labels by taking the level values */
 void Contour::buildDefaultLabels()
 {
-  const UnsignedLong number(levels_.getDimension());
+  const UnsignedInteger number(levels_.getDimension());
   labels_ = Description(number);
-  for (UnsignedLong i = 0; i < number; ++i) labels_[i] = OSS() << levels_[i];
+  for (UnsignedInteger i = 0; i < number; ++i) labels_[i] = OSS() << levels_[i];
 }
 
 /* Method save() stores the object through the StorageManager */

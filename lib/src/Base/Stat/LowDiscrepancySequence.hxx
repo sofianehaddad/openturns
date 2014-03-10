@@ -45,7 +45,7 @@ public:
   LowDiscrepancySequence();
 
   /** Constructor with parameters*/
-  explicit LowDiscrepancySequence(const UnsignedLong dimension);
+  explicit LowDiscrepancySequence(const UnsignedInteger dimension);
 
   /** Constructor with parameters */
   LowDiscrepancySequence(const LowDiscrepancySequenceImplementation & implementation);
@@ -54,16 +54,16 @@ public:
   LowDiscrepancySequence(Implementation & p_implementation);
 
   /** Initialize the sequence */
-  void initialize(const UnsignedLong dimension);
+  void initialize(const UnsignedInteger dimension);
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1) */
   NumericalPoint generate();
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-  NumericalSample generate(const UnsignedLong size);
+  NumericalSample generate(const UnsignedInteger size);
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
   NumericalScalar computeStarDiscrepancy(const NumericalSample & sample) const;

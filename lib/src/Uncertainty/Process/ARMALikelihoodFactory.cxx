@@ -66,9 +66,9 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const String & name)
 }
 
 /* Standard constructor */
-ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedLong p,
-    const UnsignedLong q,
-    const UnsignedLong dimension,
+ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
+    const UnsignedInteger q,
+    const UnsignedInteger dimension,
     const Bool invertible,
     const String & name)
   : ARMAFactoryImplementation(p, q, invertible, name)
@@ -104,7 +104,7 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedLong p,
 /* Parameter constructor */
 ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
     const Indices & q,
-    const UnsignedLong dimension,
+    const UnsignedInteger dimension,
     const Bool invertible,
     const String & name)
   : ARMAFactoryImplementation(p, q, invertible, name)
@@ -159,12 +159,12 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
   // The first (p + q) * dimension * dimension elements correspond to the block phi and theta (blockPhiTThetaTMatrix_)
   // the next dimension * (dimension + 1) /2 correspond to the covariance matrix)
   // final scalar corresponds to sigma2
-  UnsignedLong currentIndex(0);
-  for (UnsignedLong k = 0; k < currentP_; ++k)
+  UnsignedInteger currentIndex(0);
+  for (UnsignedInteger k = 0; k < currentP_; ++k)
   {
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         // \phi_{k}(i,j)
         blockPhiTThetaTMatrix_(k * dimension_ + j, i) = beta[currentIndex];
@@ -172,11 +172,11 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
       }
     }
   }
-  for (UnsignedLong k = 0; k < currentQ_; ++k)
+  for (UnsignedInteger k = 0; k < currentQ_; ++k)
   {
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         // \theta_{k}(i,j)
         blockPhiTThetaTMatrix_((k  + currentP_) * dimension_ + j, i) = beta[currentIndex];
@@ -185,9 +185,9 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
     }
   }
 
-  for (UnsignedLong j = 0; j < dimension_; ++j)
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    for (UnsignedLong i = j; i < dimension_; ++i)
+    for (UnsignedInteger i = j; i < dimension_; ++i)
     {
       // cov(i,j)
       covarianceMatrix_(i, j) = beta[currentIndex];
@@ -201,9 +201,9 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
   covarianceMatrixCholesky_ = covarianceMatrix_.computeCholesky();
   covarianceMatrixCholeskyInverse_ = SquareMatrix(dimension_);
   NumericalPoint rhs(dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
       rhs[j] = 0.0;
       covarianceMatrixCholeskyInverse_(j, i) = 0.0;
@@ -211,16 +211,16 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
     rhs[i] = 1.0;
     // Solve the linear system
     rhs[0] /= covarianceMatrixCholesky_(0, 0);
-    for (UnsignedLong k = 1; k < dimension_; ++k)
+    for (UnsignedInteger k = 1; k < dimension_; ++k)
     {
       NumericalScalar value(0.0);
-      for (UnsignedLong l = 0; l < k; ++l)
+      for (UnsignedInteger l = 0; l < k; ++l)
       {
         value += covarianceMatrixCholesky_(k, l) * rhs[l];
       }
       rhs[k] = (rhs[k] - value) / covarianceMatrixCholesky_(k, k);
     }
-    for (UnsignedLong j = i; j < dimension_; ++j)
+    for (UnsignedInteger j = i; j < dimension_; ++j)
     {
       covarianceMatrixCholeskyInverse_(j, i) = rhs[j];
     }
@@ -253,10 +253,10 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
   SquareMatrix matrix_L(cov_I_MTHTHM.computeCholesky());
   // Step (i): Solve L \lambda = M^{T} h = vector_h
   vector_h[0] /= matrix_L(0, 0);
-  for (UnsignedLong i = 1; i < currentG_ * dimension_; ++i)
+  for (UnsignedInteger i = 1; i < currentG_ * dimension_; ++i)
   {
     NumericalScalar value(0.0);
-    for (UnsignedLong j = 0; j < i; ++j)
+    for (UnsignedInteger j = 0; j < i; ++j)
     {
       value += matrix_L(i, j) * vector_h[j];
     }
@@ -264,10 +264,10 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
   }
   // Step (j): Compute \eta^{T} \eta - \lambda^{T} \lambda
   NumericalScalar norm1(0.0);
-  const UnsignedLong size(w_.getSize());
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  const UnsignedInteger size(w_.getSize());
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    for (UnsignedLong j = 0; j < size; ++j)
+    for (UnsignedInteger j = 0; j < size; ++j)
     {
       norm1 += eta(i, j) * eta(i, j);
     }
@@ -278,7 +278,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
 
   // Step (k): compute the exact log-likelihood
   NumericalScalar determinantL(1.0);
-  for (UnsignedLong i = 0; i < currentG_ * dimension_; ++i)
+  for (UnsignedInteger i = 0; i < currentG_ * dimension_; ++i)
   {
     determinantL *= matrix_L(i, i);
   }
@@ -302,27 +302,27 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
 {
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-RootEpsilon"));
   NumericalPoint theta(n);
-  for (UnsignedLong k = 0; k < static_cast<UnsignedLong>(n); ++k) theta[k] = x[k];
+  for (UnsignedInteger k = 0; k < static_cast<UnsignedInteger>(n); ++k) theta[k] = x[k];
 
   ARMALikelihoodFactory * factory = static_cast<ARMALikelihoodFactory *>(state);
   *f = - factory->computeLogLikelihood( theta );
 
-  const UnsignedLong p(factory->getCurrentP());
-  const UnsignedLong q(factory->getCurrentQ());
-  const UnsignedLong dimension(factory->dimension_);
-  UnsignedLong constraintIndex(0);
-  UnsignedLong currentIndex(0);
+  const UnsignedInteger p(factory->getCurrentP());
+  const UnsignedInteger q(factory->getCurrentQ());
+  const UnsignedInteger dimension(factory->dimension_);
+  UnsignedInteger constraintIndex(0);
+  UnsignedInteger currentIndex(0);
 
   // If not pure MA, check the eigenValues of the AR polynom
   if (p > 0)
   {
     // Companion matrix - Matrix is of size (dimension * p_)
     SquareMatrix matrix(dimension * p);
-    for (UnsignedLong coefficientIndex = 0; coefficientIndex < p ; ++coefficientIndex)
+    for (UnsignedInteger coefficientIndex = 0; coefficientIndex < p ; ++coefficientIndex)
     {
-      for  (UnsignedLong rowIndex = 0; rowIndex < dimension; ++ rowIndex)
+      for  (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++ rowIndex)
       {
-        for (UnsignedLong columnIndex = 0; columnIndex < dimension; ++ columnIndex)
+        for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++ columnIndex)
         {
           matrix( dimension * (p - 1) +  rowIndex, coefficientIndex * dimension + columnIndex ) = x[currentIndex] ;
           ++currentIndex;
@@ -331,7 +331,7 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
     }
 
     // Incorporation into the previous for loop
-    for (UnsignedLong index = 0; index < dimension * (p - 1); ++index)
+    for (UnsignedInteger index = 0; index < dimension * (p - 1); ++index)
     {
       matrix(index, dimension + index) = 1.0;
     }
@@ -341,7 +341,7 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
 
     // Find the largest eigenvalue module
     NumericalScalar s(std::norm(eigenValues[0]));
-    for (UnsignedLong i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
+    for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
     // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
 
     con[constraintIndex] = 1.0 - std::sqrt(s) - epsilon;
@@ -352,11 +352,11 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
   {
     // Companion matrix - Matrix is of size (dimension * p_)
     SquareMatrix matrix(dimension * q);
-    for (UnsignedLong coefficientIndex = 0; coefficientIndex < q ; ++coefficientIndex)
+    for (UnsignedInteger coefficientIndex = 0; coefficientIndex < q ; ++coefficientIndex)
     {
-      for  (UnsignedLong rowIndex = 0; rowIndex < dimension; ++ rowIndex)
+      for  (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++ rowIndex)
       {
-        for (UnsignedLong columnIndex = 0; columnIndex < dimension; ++ columnIndex)
+        for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++ columnIndex)
         {
           matrix( dimension * (q - 1) +  rowIndex, coefficientIndex * dimension + columnIndex ) = x[currentIndex];
           ++currentIndex;
@@ -365,7 +365,7 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
     }
 
     // Incorporation into the previous for loop
-    for (UnsignedLong index = 0; index < dimension * (q - 1); ++index)
+    for (UnsignedInteger index = 0; index < dimension * (q - 1); ++index)
     {
       matrix(index, dimension + index) = 1.0;
     }
@@ -375,7 +375,7 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
 
     // Find the largest eigenvalue module
     NumericalScalar s(std::norm(eigenValues[0]));
-    for (UnsignedLong i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
+    for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
     // If the largest eigenvalue is not in the interior of the unit circle, criteria is not respected
     con[constraintIndex] = 1.0 - std::sqrt(s) - epsilon;
     ++constraintIndex;
@@ -383,9 +383,9 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
 
   // Check the positive character of the matrix
   CovarianceMatrix covarianceMatrix(dimension);
-  for (UnsignedLong j = 0; j < dimension; ++j)
+  for (UnsignedInteger j = 0; j < dimension; ++j)
   {
-    for (UnsignedLong i = j; i < dimension; ++i)
+    for (UnsignedInteger i = j; i < dimension; ++i)
     {
       covarianceMatrix(i, j) = x[currentIndex];
       currentIndex += 1;
@@ -396,7 +396,7 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
 
   // Find the largest eigenvalue module
   NumericalScalar s(eigenValues[0]);
-  for (UnsignedLong i = 1; i < eigenValues.getSize() ; ++i) s = std::min(s, eigenValues[i]);
+  for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::min(s, eigenValues[i]);
   // Constrain is that the min eigenvalue upper than 0
   con[constraintIndex] = s - epsilon;
 
@@ -407,9 +407,9 @@ int ARMALikelihoodFactory::ComputeObjectiveAndConstraint(int n,
 int modifiedCholeskyDecomposition(SquareMatrix &matrix,
                                   NumericalScalar epsilon)
 {
-  const UnsignedLong n(matrix.getDimension());
+  const UnsignedInteger n(matrix.getDimension());
   NumericalScalar maxSqrtDiag(std::sqrt(std::abs(matrix(0, 0))));
-  for (UnsignedLong j = 1; j < n; ++j)
+  for (UnsignedInteger j = 1; j < n; ++j)
   {
     maxSqrtDiag = std::max(maxSqrtDiag, std::sqrt(std::abs(matrix(j, j))));
   }
@@ -422,10 +422,10 @@ int modifiedCholeskyDecomposition(SquareMatrix &matrix,
   }
 
   const NumericalScalar minValue(maxSqrtDiag * std::sqrt(epsilon));
-  for (UnsignedLong j = 0; j < n; ++j)
+  for (UnsignedInteger j = 0; j < n; ++j)
   {
     NumericalScalar value(matrix(j, j));
-    for (UnsignedLong i = 0; i < j; ++i)
+    for (UnsignedInteger i = 0; i < j; ++i)
     {
       value -= matrix(j, i) * matrix(j, i);
     }
@@ -433,10 +433,10 @@ int modifiedCholeskyDecomposition(SquareMatrix &matrix,
     matrix(j, j) = value;
 
     NumericalScalar minJ(0.0);
-    for (UnsignedLong i = j + 1; i < n; ++i)
+    for (UnsignedInteger i = j + 1; i < n; ++i)
     {
       value = matrix(j, i);
-      for (UnsignedLong k = 0; k < j; ++k)
+      for (UnsignedInteger k = 0; k < j; ++k)
       {
         value -= matrix(i, k) * matrix(j, k);
       }
@@ -460,14 +460,14 @@ int modifiedCholeskyDecomposition(SquareMatrix &matrix,
       if (minJ < minValue) minJ = minValue;
       matrix(j, j) = minJ;
     }
-    for (UnsignedLong i = j + 1; i < n; ++i)
+    for (UnsignedInteger i = j + 1; i < n; ++i)
     {
       matrix(i, j) /= matrix(j, j);
     }
   }
-  for (UnsignedLong j = 1; j < n; ++j)
+  for (UnsignedInteger j = 1; j < n; ++j)
   {
-    for (UnsignedLong i = 0; i < j; ++i)
+    for (UnsignedInteger i = 0; i < j; ++i)
     {
       matrix(i, j) = 0.0;
     }
@@ -515,7 +515,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 
   // passing time series to log likelihood function
   w_ = timeSeries;
-  const UnsignedLong dimension(w_.getDimension());
+  const UnsignedInteger dimension(w_.getDimension());
   if (dimension != dimension_)
     throw InvalidDimensionException(HERE) << "Error : expected time series of dimension " << dimension_
                                           << " here time series is of dimension " << dimension;
@@ -537,12 +537,12 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 
   // Current parameters vector \beta
   NumericalPoint beta(n);
-  UnsignedLong currentIndex(0);
-  for (UnsignedLong k = 0; k < currentP_; ++k)
+  UnsignedInteger currentIndex(0);
+  for (UnsignedInteger k = 0; k < currentP_; ++k)
   {
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         beta[currentIndex] = blockPhiTThetaTMatrix_(k * dimension_ + j, i);
         currentIndex += 1;
@@ -550,11 +550,11 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
     }
   }
 
-  for (UnsignedLong k = 0; k < currentQ_; ++k)
+  for (UnsignedInteger k = 0; k < currentQ_; ++k)
   {
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         beta[currentIndex] = blockPhiTThetaTMatrix_((k  + currentP_) * dimension_ + j, i);
         currentIndex += 1;
@@ -562,9 +562,9 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
     }
   }
 
-  for (UnsignedLong j = 0; j < dimension_; ++j)
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    for (UnsignedLong i = j; i < dimension_; ++i)
+    for (UnsignedInteger i = j; i < dimension_; ++i)
     {
       // Openturns conventions about ARMA are different from those in Mauricio's papers.
       // Moreover in order to improve matrix-matrix computation, transpose matrices are
@@ -584,7 +584,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   // maxfun ==> on input, the maximum number of function evaluations on output, the number of function evaluations done
   NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg"));
   NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
-  int maxFun(static_cast<int>(ResourceMap::GetAsUnsignedLong("ARMALikelihoodFactory-DefaultMaxFun")));
+  int maxFun(static_cast<int>(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun")));
 
   // verbosity level
   cobyla_message message( verbose_ ? COBYLA_MSG_INFO : COBYLA_MSG_NONE );
@@ -596,12 +596,12 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   // Return result
   currentIndex = 0;
   ARMACoefficients phi(currentP_, dimension_);
-  for (UnsignedLong k = 0; k < currentP_; ++k)
+  for (UnsignedInteger k = 0; k < currentP_; ++k)
   {
     SquareMatrix phi_k(dimension_);
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         phi_k(i, j) =  - beta[currentIndex];
         ++currentIndex;
@@ -611,12 +611,12 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   }
 
   ARMACoefficients theta(currentQ_, dimension_);
-  for (UnsignedLong k = 0; k < currentQ_; ++k)
+  for (UnsignedInteger k = 0; k < currentQ_; ++k)
   {
     SquareMatrix theta_k(dimension_);
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         theta_k(i, j) =  - beta[currentIndex];
         ++currentIndex;
@@ -626,9 +626,9 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   }
 
   CovarianceMatrix cov(dimension_);
-  for (UnsignedLong j = 0; j < dimension_; ++j)
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    for (UnsignedLong i = j; i < dimension_; ++i)
+    for (UnsignedInteger i = j; i < dimension_; ++i)
     {
       cov(i, j) = beta[currentIndex];
       ++currentIndex;
@@ -636,9 +636,9 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   }
 
   sigma2_ = beta[currentIndex];
-  for (UnsignedLong j = 0; j < dimension_; ++j)
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    for (UnsignedLong i = j; i < dimension_; ++i)
+    for (UnsignedInteger i = j; i < dimension_; ++i)
     {
       cov(i, j) *= sigma2_;
       ++currentIndex;
@@ -665,11 +665,11 @@ void ARMALikelihoodFactory::setInitialARCoefficients(const ARMACoefficients & ph
   if (phi.getSize() != currentP_)
     throw InvalidDimensionException(HERE) << "Error; size of the AR coefficients is not coherent";
 
-  for (UnsignedLong k = 0; k < currentP_; ++k)
+  for (UnsignedInteger k = 0; k < currentP_; ++k)
   {
-    for (UnsignedLong i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      for (UnsignedLong j = 0; j < dimension_; ++j)
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
       {
         // Openturns conventions about ARMA are different from those in Mauricio's papers.
         // Moreover in order to improve matrix-matrix computation, transpose matrices are
@@ -688,7 +688,7 @@ void ARMALikelihoodFactory::defaultInitialize() const
   WhittleFactory factory(currentP_, currentQ_);
   const NumericalSample values(w_.getSample());
   const RegularGrid timeGrid(w_.getTimeGrid());
-  for (UnsignedLong d = 0; d < dimension_; ++d)
+  for (UnsignedInteger d = 0; d < dimension_; ++d)
   {
     // Univariate estimate
     const TimeSeries marginal_d(timeGrid, values.getMarginal(d));
@@ -699,13 +699,13 @@ void ARMALikelihoodFactory::defaultInitialize() const
     const ARMACoefficients arCoefficients(marginalARMAModel.getARCoefficients());
     const ARMACoefficients maCoefficients(marginalARMAModel.getMACoefficients());
     // fill the coefficients
-    for (UnsignedLong k = 0; k < currentP_; ++k)
+    for (UnsignedInteger k = 0; k < currentP_; ++k)
     {
       const NumericalScalar value(arCoefficients[k](0, 0));
       blockPhiTThetaTMatrix_(k * dimension_ + d, d) = -value;
     }
 
-    for (UnsignedLong k = 0; k < currentQ_; ++k)
+    for (UnsignedInteger k = 0; k < currentQ_; ++k)
     {
       const NumericalScalar value(maCoefficients[k](0, 0));
       blockPhiTThetaTMatrix_((currentP_ + k) * dimension_ + d, d) = -value;
@@ -725,11 +725,11 @@ void ARMALikelihoodFactory::setInitialMACoefficients(const ARMACoefficients & th
   if (theta.getSize() != currentQ_)
     throw InvalidDimensionException(HERE) << "Error; size of the MA coefficients is not coherent";
 
-  for (UnsignedLong k = 0; k < currentQ_; ++k)
+  for (UnsignedInteger k = 0; k < currentQ_; ++k)
   {
-    for (UnsignedLong i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      for (UnsignedLong j = 0; j < dimension_; ++j)
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
       {
         // Openturns conventions about ARMA are different from those in Mauricio's papers
         // Moreover in order to improve matrix-matrix computation, transpose matrices are
@@ -765,12 +765,12 @@ ARMACoefficients ARMALikelihoodFactory::getInitialARCoefficients() const
   // Moreover in order to improve matrix-matrix computation, transpose matrices are
   // stored in blockPhiTThetaTMatrix_.
   ARMACoefficients phi(currentP_, dimension_);
-  for (UnsignedLong k = 0; k < currentP_; ++k)
+  for (UnsignedInteger k = 0; k < currentP_; ++k)
   {
     SquareMatrix phi_k(phi[k]);
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         phi_k(i, j) =  - blockPhiTThetaTMatrix_(k * dimension_ + j, i);
       }
@@ -786,12 +786,12 @@ ARMACoefficients ARMALikelihoodFactory::getInitialMACoefficients() const
   // Moreover in order to improve matrix-matrix computation, transpose matrices are
   // stored in blockPhiTThetaTMatrix_.
   ARMACoefficients theta(currentQ_, dimension_);
-  for (UnsignedLong k = 0; k < currentQ_; ++k)
+  for (UnsignedInteger k = 0; k < currentQ_; ++k)
   {
     SquareMatrix theta_k(dimension_);
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         theta_k(i, j) = - blockPhiTThetaTMatrix_((currentP_ + k) * dimension_ + j, i);
       }
@@ -817,14 +817,14 @@ void ARMALikelihoodFactory::computeCrossCovarianceMatrix() const
   // Allocate size for cross covariance matrix
   // \Lambda_{0}, \Lambda_{-1},..., \Lambda_{1-q}
   // If q = 0 or 1, the only matrix to compute is \Lambda_0
-  const UnsignedLong one(1);
-  const UnsignedLong size(std::max(one, currentQ_));
+  const UnsignedInteger one(1);
+  const UnsignedInteger size(std::max(one, currentQ_));
   crossCovariance_ = Matrix(dimension_, dimension_ * size);
 
   // \Lambda_0 is \Sigma
-  for (UnsignedLong j = 0; j < dimension_; ++j)
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
-    for (UnsignedLong i = j; i < dimension_; ++i)
+    for (UnsignedInteger i = j; i < dimension_; ++i)
     {
       crossCovariance_(i, j) = covarianceMatrix_(i, j);
       crossCovariance_(j, i) = covarianceMatrix_(i, j);
@@ -835,26 +835,26 @@ void ARMALikelihoodFactory::computeCrossCovarianceMatrix() const
   // for k = 1,2,...,q-1
   if (currentQ_ > 1)
   {
-    for (UnsignedLong k = 1; k <= currentQ_ - 1; ++k)
+    for (UnsignedInteger k = 1; k <= currentQ_ - 1; ++k)
     {
       // Convention : \phi_{l} = 0 for l > p
       // So we compute \phi_{l} * \Lambda_{l-k} only for l <= k and l <= p
-      const UnsignedLong lMax(std::min(k, currentP_));
+      const UnsignedInteger lMax(std::min(k, currentP_));
 
-      for (UnsignedLong j = 0; j < dimension_; ++j)
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
       {
-        for (UnsignedLong i = 0; i < dimension_; ++i)
+        for (UnsignedInteger i = 0; i < dimension_; ++i)
         {
           //  - \theta_{k} * \Sigma in the article
           NumericalScalar value(0.0);
-          for (UnsignedLong h = 0; h < dimension_; ++h)
+          for (UnsignedInteger h = 0; h < dimension_; ++h)
           {
             value -= blockPhiTThetaTMatrix_((currentP_ + k - 1) * dimension_ + h, i) * covarianceMatrix_(h, j);
           }
           // + \sum_{l=1}^{k} \phi_{l} * \Lambda_{l-k}
-          for (UnsignedLong l = 1; l <= lMax; ++l)
+          for (UnsignedInteger l = 1; l <= lMax; ++l)
           {
-            for (UnsignedLong h = 0; h < dimension_; ++h)
+            for (UnsignedInteger h = 0; h < dimension_; ++h)
             {
               value += blockPhiTThetaTMatrix_((l - 1) * dimension_ + h, i) * crossCovariance_(h, (k - l) * dimension_ + j);
             }
@@ -881,8 +881,8 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
   // The previous equations are rewritten as system of the form A v = b with v = vec(\Gamma_0,....,Gamma_{p-1})
   // From a theoretical point of view, since W0 is symmetric, only the m(m+1)/2 first elements are useful (m = dimension for simplification)
   // Memory allocation
-  const UnsignedLong one(1);
-  const UnsignedLong size(std::max(one, currentP_));
+  const UnsignedInteger one(1);
+  const UnsignedInteger size(std::max(one, currentP_));
   // Initializing the autocovariance matrix
   autoCovariance_ = Matrix(dimension_, size * dimension_);
 
@@ -895,9 +895,9 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
   if (currentP_ == 0)
   {
     // Assembling \Gamma_{0}
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i <= j; ++i)
+      for (UnsignedInteger i = 0; i <= j; ++i)
       {
         autoCovariance_(i, j) = W0(i, j);
         // Using the symetry
@@ -908,31 +908,31 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
   else
   {
     // Memory allocate for the rhs and matA matrices
-    const UnsignedLong one(1);
-    const UnsignedLong max1P(std::max(one, currentP_));
-    const UnsignedLong size(dimension_ * dimension_ * (max1P - 1) + dimension_ * (dimension_ + 1) / 2);
+    const UnsignedInteger one(1);
+    const UnsignedInteger max1P(std::max(one, currentP_));
+    const UnsignedInteger size(dimension_ * dimension_ * (max1P - 1) + dimension_ * (dimension_ + 1) / 2);
     SquareMatrix matA(size);
     NumericalPoint rhs(size);
 
     // Fill the first dimension_ * (dimension_ + 1) / 2 rows
-    for (UnsignedLong j = 0; j < dimension_; ++j)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
     {
-      for (UnsignedLong i = 0; i <= j; ++i)
+      for (UnsignedInteger i = 0; i <= j; ++i)
       {
         // Row index differ from the expression of the article since indice start from 0
-        const UnsignedLong rowIndex(j * (j + 1) / 2 + i);
+        const UnsignedInteger rowIndex(j * (j + 1) / 2 + i);
 
         // Fill the first dimension_ * (dimension_ + 1) / 2 columns
-        for (UnsignedLong l = 0; l < dimension_; ++l)
+        for (UnsignedInteger l = 0; l < dimension_; ++l)
         {
-          for (UnsignedLong k = 0; k <= l ; ++k)
+          for (UnsignedInteger k = 0; k <= l ; ++k)
           {
-            const UnsignedLong columnIndex(l * (l + 1) / 2 + k);
+            const UnsignedInteger columnIndex(l * (l + 1) / 2 + k);
             NumericalScalar value(0.0);
             if (k == l)
             {
               // Computation of - \sum_{r=1}^{p} \phi_{r}(i, k) \phi_{r}(j, l)
-              for (UnsignedLong r = 1; r <= currentP_; ++r)
+              for (UnsignedInteger r = 1; r <= currentP_; ++r)
               {
                 value -= blockPhiTThetaTMatrix_((r - 1) * dimension_ + k, i) * blockPhiTThetaTMatrix_((r - 1) * dimension_ + l, j);
               }
@@ -940,7 +940,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
             else
             {
               // Computation of - \sum_{r=1}^{p} \phi_{r}(i, k) \phi_{r}(j, l) + \phi_{r}(i, l) \phi_{r}(j, k)
-              for (UnsignedLong r = 1; r <= currentP_; ++r)
+              for (UnsignedInteger r = 1; r <= currentP_; ++r)
               {
                 value -= blockPhiTThetaTMatrix_((r - 1) * dimension_ + k, i) * blockPhiTThetaTMatrix_((r - 1) * dimension_ + l, j) ;
                 value -= blockPhiTThetaTMatrix_((r - 1) * dimension_ + l, i) * blockPhiTThetaTMatrix_((r - 1) * dimension_ + k, j) ;
@@ -951,16 +951,16 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
         }
 
         // Fill the remaining dimension_ * dimension_ * (currentP_ - 1) columns
-        for (UnsignedLong s = 1; s < currentP_; ++s)
+        for (UnsignedInteger s = 1; s < currentP_; ++s)
         {
-          for (UnsignedLong l = 0; l < dimension_; ++l)
+          for (UnsignedInteger l = 0; l < dimension_; ++l)
           {
-            const UnsignedLong columnIndex(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (s - 1) + dimension_ * l);
-            for (UnsignedLong k = 0; k < dimension_; ++k)
+            const UnsignedInteger columnIndex(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (s - 1) + dimension_ * l);
+            for (UnsignedInteger k = 0; k < dimension_; ++k)
             {
               NumericalScalar value(0.0);
               // Computation of - \sum_{r=1}^{p-s} \phi_{r+s}(i, k) \phi_{r}(j, l) + \phi_{r+s}(j, k) \phi_{r}(i, l)
-              for (UnsignedLong r = 1; r <= currentP_ - s; ++r)
+              for (UnsignedInteger r = 1; r <= currentP_ - s; ++r)
               {
                 value -= blockPhiTThetaTMatrix_((r + s - 1) * dimension_ + k, i) * blockPhiTThetaTMatrix_((r - 1) * dimension_ + l, j);
                 value -= blockPhiTThetaTMatrix_((r + s - 1) * dimension_ + k, j) * blockPhiTThetaTMatrix_((r - 1) * dimension_ + l, i);
@@ -976,31 +976,31 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
     }
 
     // compute the remaining dimension_ * dimension_ * (currentP_ - 1) rows
-    for (UnsignedLong s = 1; s < currentP_; ++s)
+    for (UnsignedInteger s = 1; s < currentP_; ++s)
     {
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
-        for (UnsignedLong j = 0; j < dimension_; ++j)
+        for (UnsignedInteger j = 0; j < dimension_; ++j)
         {
-          const UnsignedLong rowIndex(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (s - 1) + dimension_ * i + j);
+          const UnsignedInteger rowIndex(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (s - 1) + dimension_ * i + j);
 
           // compute the first dimension_ * (dimension_ + 1) / 2 columns
           // Get the value : -\phi_{s}(i, l)
-          UnsignedLong columnIndex(j * (j + 1) / 2);
-          for (UnsignedLong l = 0; l <= j; ++l)
+          UnsignedInteger columnIndex(j * (j + 1) / 2);
+          for (UnsignedInteger l = 0; l <= j; ++l)
           {
             matA(rowIndex, columnIndex + l) = - blockPhiTThetaTMatrix_((s - 1) * dimension_ + l, i);
           }
-          for (UnsignedLong l = j + 1; l < dimension_; ++l)
+          for (UnsignedInteger l = j + 1; l < dimension_; ++l)
           {
             matA(rowIndex, l * (l + 1) / 2 + j) = - blockPhiTThetaTMatrix_((s - 1) * dimension_ + l, i);
           }
 
           // compute the remaining dimension_ * dimension_ * (currentP_ - 1) columns
-          for (UnsignedLong r = 1; r < currentP_; ++r)
+          for (UnsignedInteger r = 1; r < currentP_; ++r)
           {
-            UnsignedLong columnIndex(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (r - 1));
-            for (UnsignedLong l = 0; l < dimension_; ++l)
+            UnsignedInteger columnIndex(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (r - 1));
+            for (UnsignedInteger l = 0; l < dimension_; ++l)
             {
               if (r + s <= currentP_)
                 matA(rowIndex, columnIndex + dimension_ * j + l) = - blockPhiTThetaTMatrix_((r + s - 1) * dimension_ + l, i);
@@ -1013,10 +1013,10 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
 
           // compute the right-hand-side
           // Ws = -\sum_{h=s}^{q} \Lambda_{s-h} \theta_{h}^{T}
-          for (UnsignedLong h = s; h <= currentQ_; ++h)
+          for (UnsignedInteger h = s; h <= currentQ_; ++h)
           {
             NumericalScalar value(0.0);
-            for (UnsignedLong k = 0; k < dimension_; ++k)
+            for (UnsignedInteger k = 0; k < dimension_; ++k)
             {
               value += crossCovariance_(j, (h - s) * dimension_ + k) * blockPhiTThetaTMatrix_((h + currentP_ - 1) * dimension_ + k, i);
             }
@@ -1030,11 +1030,11 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
     const NumericalPoint x(matA.solveLinearSystem(rhs));
     // Now we assemble the autocovariance matrices
     // Assembling \Gamma_{0}
-    for (UnsignedLong i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      for (UnsignedLong j = i; j < dimension_; ++j)
+      for (UnsignedInteger j = i; j < dimension_; ++j)
       {
-        const UnsignedLong index(j * (j + 1) / 2 + i);
+        const UnsignedInteger index(j * (j + 1) / 2 + i);
         autoCovariance_(i, j) = x[index];
         // Using the symmetry
         autoCovariance_(j, i) = x[index];
@@ -1042,13 +1042,13 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
     }
 
     // Assembling Gamma_{k}, k=1,...,p-1
-    for (UnsignedLong k = 1; k < currentP_; ++k)
+    for (UnsignedInteger k = 1; k < currentP_; ++k)
     {
-      for (UnsignedLong j = 0; j < dimension_; ++j)
+      for (UnsignedInteger j = 0; j < dimension_; ++j)
       {
-        for (UnsignedLong i = 0; i < dimension_; ++i)
+        for (UnsignedInteger i = 0; i < dimension_; ++i)
         {
-          const UnsignedLong index(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (k - 1) + dimension_ * j + i);
+          const UnsignedInteger index(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (k - 1) + dimension_ * j + i);
           autoCovariance_(i,  k * dimension_ + j) = x[index];
         }
       }
@@ -1068,16 +1068,16 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
   SquareMatrix wzero(dimension_);
   SquareMatrix matrixB(dimension_);
   SquareMatrix productPhiLambdaT(dimension_);
-  for (UnsignedLong i = 1; i <= currentP_; ++i)
+  for (UnsignedInteger i = 1; i <= currentP_; ++i)
   {
-    for (UnsignedLong j = i; j <= currentQ_; ++j)
+    for (UnsignedInteger j = i; j <= currentQ_; ++j)
     {
-      for (UnsignedLong rowIndex = 0; rowIndex < dimension_; ++rowIndex)
+      for (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
       {
-        for (UnsignedLong columnIndex = 0; columnIndex < dimension_; ++columnIndex)
+        for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++columnIndex)
         {
           NumericalScalar value(0.0);
-          for(UnsignedLong k = 0; k < dimension_; ++k)
+          for(UnsignedInteger k = 0; k < dimension_; ++k)
           {
             value += blockPhiTThetaTMatrix_((i - 1) * dimension_ + k, rowIndex) * crossCovariance_(k, (j - i) * dimension_ + columnIndex);
           }
@@ -1085,12 +1085,12 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
         }
       }
 
-      for (UnsignedLong columnIndex = 0; columnIndex < dimension_; ++columnIndex)
+      for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++columnIndex)
       {
-        for (UnsignedLong rowIndex = 0; rowIndex < dimension_; ++rowIndex)
+        for (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
         {
           NumericalScalar value(0.0);
-          for(UnsignedLong k = 0; k < dimension_; ++k)
+          for(UnsignedInteger k = 0; k < dimension_; ++k)
           {
             value += productPhiLambdaT(k, rowIndex) * blockPhiTThetaTMatrix_((j - 1 + currentP_) * dimension_ + k, columnIndex);
           }
@@ -1103,24 +1103,24 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
   // Now compute \Sigma  - (B + B^{T})
   // As the final matrix is symmetric, we fill only the upper part
   // The lower part is never used
-  for (UnsignedLong columnIndex = 0; columnIndex < dimension_; ++columnIndex)
+  for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++columnIndex)
   {
-    for (UnsignedLong rowIndex = 0; rowIndex <= columnIndex; ++rowIndex)
+    for (UnsignedInteger rowIndex = 0; rowIndex <= columnIndex; ++rowIndex)
     {
       wzero(rowIndex, columnIndex) = covarianceMatrix_(rowIndex, columnIndex) - matrixB(rowIndex, columnIndex) - matrixB(columnIndex, rowIndex);
     }
   }
 
   // Computation of \sum_{j=1}^{q} \theta_{j} * \Sigma * \theta_{j}^{T}
-  for (UnsignedLong j = 1; j <= currentQ_; ++j)
+  for (UnsignedInteger j = 1; j <= currentQ_; ++j)
   {
     // Reuse matrixB to store intermediate result \theta_{j} * \Sigma
-    for (UnsignedLong columnIndex = 0; columnIndex < dimension_; ++columnIndex)
+    for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++columnIndex)
     {
-      for (UnsignedLong rowIndex = 0; rowIndex < dimension_; ++rowIndex)
+      for (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
       {
         NumericalScalar value(0.0);
-        for(UnsignedLong k = 0; k < dimension_; ++k)
+        for(UnsignedInteger k = 0; k < dimension_; ++k)
         {
           value += blockPhiTThetaTMatrix_((j - 1 + currentP_) * dimension_ + k, rowIndex) * covarianceMatrix_(k, columnIndex);
         }
@@ -1128,12 +1128,12 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
       }
     }
 
-    for (UnsignedLong columnIndex = 0; columnIndex < dimension_; ++columnIndex)
+    for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++columnIndex)
     {
-      for (UnsignedLong rowIndex = 0; rowIndex <= columnIndex; ++rowIndex)
+      for (UnsignedInteger rowIndex = 0; rowIndex <= columnIndex; ++rowIndex)
       {
         NumericalScalar value(0.0);
-        for(UnsignedLong k = 0; k < dimension_; ++k)
+        for(UnsignedInteger k = 0; k < dimension_; ++k)
         {
           value += matrixB(rowIndex, k) * blockPhiTThetaTMatrix_((j - 1 + currentP_) * dimension_ + k, columnIndex);
         }
@@ -1153,29 +1153,29 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
 SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
 {
   Matrix omegaV1T((currentP_ + currentQ_) * dimension_, currentG_ * dimension_);
-  for (UnsignedLong i = 1; i <= currentP_; ++i)
+  for (UnsignedInteger i = 1; i <= currentP_; ++i)
   {
-    for (UnsignedLong j = 1; j <= currentG_; ++j)
+    for (UnsignedInteger j = 1; j <= currentG_; ++j)
     {
       // (Omega * V1^{T})_{ij} = \sum_{k=j-i}^{p-i} \Gamma_{k}\phi_{p-k-i+j}^{T}
       //                           - \sum_{k=j-i}^{q-i} \Lambda_{q-p-k}\theta_{q-k-i+j}^{T}
       for (int k = j - i; k + i <= currentP_ ; ++k)
       {
-        for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+        for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
         {
-          for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+          for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
             NumericalScalar value(0.0);
             if (k >= 0)
             {
-              for(UnsignedLong kk = 0; kk < dimension_; ++kk)
+              for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
               {
                 value += autoCovariance_(ii, k * dimension_ + kk) * blockPhiTThetaTMatrix_((currentP_ - k - i + j - 1) * dimension_ + kk, jj);
               }
             }
             else
             {
-              for(UnsignedLong kk = 0; kk < dimension_; ++kk)
+              for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
               {
                 value += autoCovariance_(kk, (-k) * dimension_ + ii) * blockPhiTThetaTMatrix_((currentP_ - k - i + j - 1) * dimension_ + kk, jj);
               }
@@ -1186,12 +1186,12 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
       }
       for (int k = j - i; k + i <= currentQ_ && k + currentP_ <= currentQ_; ++k)
       {
-        for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+        for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
         {
-          for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+          for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
             NumericalScalar value(0.0);
-            for(UnsignedLong kk = 0; kk < dimension_; ++kk)
+            for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += crossCovariance_(ii, (currentQ_ - currentP_ - k) * dimension_ + kk) * blockPhiTThetaTMatrix_((currentP_ + currentQ_ - k - i + j - 1) * dimension_ + kk, jj);
             }
@@ -1201,20 +1201,20 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
       }
     }
   }
-  for (UnsignedLong i = currentP_ + 1; i <= currentP_ + currentQ_; ++i)
+  for (UnsignedInteger i = currentP_ + 1; i <= currentP_ + currentQ_; ++i)
   {
-    for (UnsignedLong j = 1; j <= currentG_; ++j)
+    for (UnsignedInteger j = 1; j <= currentG_; ++j)
     {
       // (Omega * V1^{T})_{ij} = \sum_{k=p+j-i}^{2p-i} \Lambda_{q-p+k}^{T}\phi_{2p-k-i+j}^{T} - \Sigma \theta_{q+p-i+j}^{T}
       for (int k = currentP_ + j - i; k + i <= 2 * currentP_ ; ++k)
       {
         if (currentP_ > k + currentQ_) continue;
-        for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+        for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
         {
-          for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+          for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
             NumericalScalar value(0.0);
-            for(UnsignedLong kk = 0; kk < dimension_; ++kk)
+            for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += crossCovariance_(kk, (currentQ_ - currentP_ + k) * dimension_ + ii) * blockPhiTThetaTMatrix_((2 * currentP_ - k - i + j - 1) * dimension_ + kk, jj);
             }
@@ -1224,12 +1224,12 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
       }
       if ((currentP_ + j <= i) )
       {
-        for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+        for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
         {
-          for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+          for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
             NumericalScalar value(0.0);
-            for(UnsignedLong kk = 0; kk < dimension_; ++kk)
+            for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += covarianceMatrix_(ii, kk) * blockPhiTThetaTMatrix_((2 * currentP_ + currentQ_ - i + j - 1) * dimension_ + kk, jj);
             }
@@ -1243,18 +1243,18 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
   //                           - \sum_{k=0}^{q-i} \theta_{q-k} E_{k+p+i,j}
   SquareMatrix V1_Omega_V1T(dimension_ * currentG_);
 
-  for (UnsignedLong i = 1; i <= currentG_; ++i)
+  for (UnsignedInteger i = 1; i <= currentG_; ++i)
   {
-    for (UnsignedLong j = i; j <= currentG_; ++j)
+    for (UnsignedInteger j = i; j <= currentG_; ++j)
     {
       for (int k = 0; k + i <= currentP_ ; ++k)
       {
-        for (UnsignedLong ii = 0; ii < dimension_; ++ii)
+        for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
-          for(UnsignedLong jj = ((i == j) ? ii : 0); jj < dimension_; ++jj)
+          for(UnsignedInteger jj = ((i == j) ? ii : 0); jj < dimension_; ++jj)
           {
             NumericalScalar value(0.0);
-            for(UnsignedLong kk = 0; kk < dimension_; ++kk)
+            for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += blockPhiTThetaTMatrix_((currentP_ - k - 1) * dimension_ + kk, ii) * omegaV1T((k + i - 1) * dimension_ + kk, (j - 1) * dimension_ + jj);
             }
@@ -1264,12 +1264,12 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
       }
       for (int k = 0; k + i <= currentQ_ ; ++k)
       {
-        for (UnsignedLong ii = 0; ii < dimension_; ++ii)
+        for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
-          for(UnsignedLong jj = ((i == j) ? ii : 0); jj < dimension_; ++jj)
+          for(UnsignedInteger jj = ((i == j) ? ii : 0); jj < dimension_; ++jj)
           {
             NumericalScalar value(0.0);
-            for(UnsignedLong kk = 0; kk < dimension_; ++kk)
+            for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += blockPhiTThetaTMatrix_((currentP_ + currentQ_ - k - 1) * dimension_ + kk, ii) * omegaV1T((k + currentP_ + i - 1) * dimension_ + kk, (j - 1) * dimension_ + jj);
             }
@@ -1302,24 +1302,24 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
  */
 Matrix ARMALikelihoodFactory::computeRXi() const
 {
-  UnsignedLong size(w_.getSize());
+  UnsignedInteger size(w_.getSize());
   Matrix xi(dimension_, size * dimension_);
 
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     xi(i, i) = 1.0;
   }
 
-  for (UnsignedLong k = 1; k < size; ++k)
+  for (UnsignedInteger k = 1; k < size; ++k)
   {
-    for (UnsignedLong j = 1; j <= currentQ_ && j <= k; ++j)
+    for (UnsignedInteger j = 1; j <= currentQ_ && j <= k; ++j)
     {
-      for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+      for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
       {
-        for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+        for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
           NumericalScalar value(0.0);
-          for(UnsignedLong h = 0; h < dimension_; ++h)
+          for(UnsignedInteger h = 0; h < dimension_; ++h)
           {
             value += blockPhiTThetaTMatrix_((currentP_ + j - 1) * dimension_ + h, ii) * xi(h, (k - j) * dimension_ + jj);
           }
@@ -1341,20 +1341,20 @@ Matrix ARMALikelihoodFactory::computeRXi() const
  */
 Matrix ARMALikelihoodFactory::computeEta() const
 {
-  UnsignedLong size(w_.getSize());
+  UnsignedInteger size(w_.getSize());
   Matrix a0(dimension_, size);
 
-  for (UnsignedLong i = 1; i <= size; ++i)
+  for (UnsignedInteger i = 1; i <= size; ++i)
   {
     // Compute \sum_{j=1}^{p} \phi_{j} w_{i-j}
     NumericalPoint phiW(dimension_);
-    for (UnsignedLong j = 1; j <= currentP_ && j < i; ++j)
+    for (UnsignedInteger j = 1; j <= currentP_ && j < i; ++j)
     {
       NumericalPoint point(w_.getValueAtIndex(i - j - 1));
-      for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+      for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
       {
         NumericalScalar value(0.0);
-        for(UnsignedLong h = 0; h < dimension_; ++h)
+        for(UnsignedInteger h = 0; h < dimension_; ++h)
         {
           value += blockPhiTThetaTMatrix_((j - 1) * dimension_ + h, ii) * point[h];
         }
@@ -1363,12 +1363,12 @@ Matrix ARMALikelihoodFactory::computeEta() const
     }
     // Compute \sum_{j=1}^{q} \theta_{j} a0_{i-j}
     NumericalPoint thetaA0(dimension_);
-    for (UnsignedLong j = 1; j <= currentQ_ && j < i; ++j)
+    for (UnsignedInteger j = 1; j <= currentQ_ && j < i; ++j)
     {
-      for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+      for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
       {
         NumericalScalar value(0.0);
-        for(UnsignedLong h = 0; h < dimension_; ++h)
+        for(UnsignedInteger h = 0; h < dimension_; ++h)
         {
           value += blockPhiTThetaTMatrix_((currentP_ + j - 1) * dimension_ + h, ii) * a0(h, i - j - 1);
         }
@@ -1377,9 +1377,9 @@ Matrix ARMALikelihoodFactory::computeEta() const
     }
     // Compute a0_{i} = w_{i} - phiW + thetaA0;
     NumericalPoint point(w_.getValueAtIndex(i - 1));
-    for(UnsignedLong ii = 0; ii < dimension_; ++ii)
+    for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
     {
-      for(UnsignedLong h = 0; h < dimension_; ++h)
+      for(UnsignedInteger h = 0; h < dimension_; ++h)
       {
         a0(h, i - 1) = point[h] - phiW[h] + thetaA0[h];
       }
@@ -1400,18 +1400,18 @@ NumericalPoint ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
     const Matrix & eta,
     const Matrix & matV1_Omega_V1TCholesky) const
 {
-  UnsignedLong size(w_.getSize());
+  UnsignedInteger size(w_.getSize());
   NumericalPoint vector_h(dimension_ * currentG_);
 
   // size condition in the loop is due to possible truncation
-  for (UnsignedLong j = 1; j <= currentG_ && j <= size; ++j)
+  for (UnsignedInteger j = 1; j <= currentG_ && j <= size; ++j)
   {
-    for (UnsignedLong i = 0; i <= size - j; ++i)
+    for (UnsignedInteger i = 0; i <= size - j; ++i)
     {
-      for(UnsignedLong jj = 0; jj < dimension_; ++jj)
+      for(UnsignedInteger jj = 0; jj < dimension_; ++jj)
       {
         NumericalScalar value(0.0);
-        for(UnsignedLong k = 0; k < dimension_; ++k)
+        for(UnsignedInteger k = 0; k < dimension_; ++k)
         {
           value += rxi(k, i * dimension_ + jj) * eta(k, i + j - 1);
         }
@@ -1422,10 +1422,10 @@ NumericalPoint ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
 
   // Premultiply vector_h by M^{T}
   NumericalPoint vector_MTh(dimension_ * currentG_);
-  for (UnsignedLong i = 0; i < dimension_ * currentG_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_ * currentG_; ++i)
   {
     NumericalScalar value(0.0);
-    for (UnsignedLong k = 0; k < dimension_ * currentG_; ++k)
+    for (UnsignedInteger k = 0; k < dimension_ * currentG_; ++k)
     {
       value += matV1_Omega_V1TCholesky(k, i) * vector_h[k];
     }
@@ -1443,17 +1443,17 @@ NumericalPoint ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
  */
 SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
 {
-  UnsignedLong size(w_.getSize());
+  UnsignedInteger size(w_.getSize());
   SymmetricMatrix matrix_HTH(dimension_ * currentG_);
   // First block
-  for (UnsignedLong k = 0; k < size; ++k)
+  for (UnsignedInteger k = 0; k < size; ++k)
   {
-    for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+    for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
     {
-      for (UnsignedLong ii = jj; ii < dimension_; ++ii)
+      for (UnsignedInteger ii = jj; ii < dimension_; ++ii)
       {
         NumericalScalar value(0.0);
-        for (UnsignedLong kk = 0; kk < dimension_; ++kk)
+        for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
         {
           value += rxi(kk, k * dimension_ + ii) * rxi(kk, k * dimension_ + jj);
         }
@@ -1463,16 +1463,16 @@ SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
   }
   // Other blocks on the first column
   // size condition in the loop is due to possible truncation of rxi
-  for (UnsignedLong i = 2; i <= currentG_ && i <= size; ++i)
+  for (UnsignedInteger i = 2; i <= currentG_ && i <= size; ++i)
   {
-    for (UnsignedLong k = 0; k <= size - i; ++k)
+    for (UnsignedInteger k = 0; k <= size - i; ++k)
     {
-      for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+      for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
       {
-        for (UnsignedLong ii = 0; ii < dimension_; ++ii)
+        for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
           NumericalScalar value(0.0);
-          for (UnsignedLong kk = 0; kk < dimension_; ++kk)
+          for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
           {
             value += rxi(kk, k * dimension_ + ii) * rxi(kk, (k + i - 1) * dimension_ + jj);
           }
@@ -1483,14 +1483,14 @@ SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
   }
   // Other diagonal blocks
   // size condition in the loop is due to possible truncation of rxi
-  for (UnsignedLong i = 2; i <= currentG_ && i <= size + 1; ++i)
+  for (UnsignedInteger i = 2; i <= currentG_ && i <= size + 1; ++i)
   {
-    for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+    for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
     {
-      for (UnsignedLong ii = jj; ii < dimension_; ++ii)
+      for (UnsignedInteger ii = jj; ii < dimension_; ++ii)
       {
         NumericalScalar value(0.0);
-        for (UnsignedLong kk = 0; kk < dimension_; ++kk)
+        for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
         {
           value += rxi(kk, (size - i + 1) * dimension_ + ii) * rxi(kk, (size - i + 1) * dimension_ + jj);
         }
@@ -1501,16 +1501,16 @@ SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
   }
   // Other subdiagonal blocks
   // size condition in the loop is due to possible truncation of rxi
-  for (UnsignedLong i = 2; i <= currentG_ && i <= size + 1; ++i)
+  for (UnsignedInteger i = 2; i <= currentG_ && i <= size + 1; ++i)
   {
-    for (UnsignedLong j = 2; j < i; ++j)
+    for (UnsignedInteger j = 2; j < i; ++j)
     {
-      for (UnsignedLong jj = 0; jj < dimension_; ++jj)
+      for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
       {
-        for (UnsignedLong ii = 0; ii < dimension_; ++ii)
+        for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
           NumericalScalar value(0.0);
-          for (UnsignedLong kk = 0; kk < dimension_; ++kk)
+          for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
           {
             value += rxi(kk, (size - i + 1) * dimension_ + ii) * rxi(kk, (size - j + 1) * dimension_ + jj);
           }
@@ -1534,9 +1534,9 @@ CovarianceMatrix ARMALikelihoodFactory::computeI_MTHTHM(const SymmetricMatrix & 
   // Compute M^{T} H^{T} H
   Matrix matrix_MTHTH(matV1_Omega_V1TCholesky.transpose() * matrix_HTH);
   Matrix matrix_MTHTHM(matrix_MTHTH * matV1_Omega_V1TCholesky);
-  for (UnsignedLong j = 0; j < dimension_ * currentG_; ++j)
+  for (UnsignedInteger j = 0; j < dimension_ * currentG_; ++j)
   {
-    for (UnsignedLong i = j; i < dimension_ * currentG_; ++i)
+    for (UnsignedInteger i = j; i < dimension_ * currentG_; ++i)
     {
       matrixI_MTHTHM(i, j) += matrix_MTHTHM(i, j);
     }

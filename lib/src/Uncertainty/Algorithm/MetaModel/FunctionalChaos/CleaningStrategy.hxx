@@ -45,13 +45,13 @@ public:
 
   /** Constructor from an orthogonal basis */
   CleaningStrategy(const OrthogonalBasis & basis,
-                   const UnsignedLong maximumDimension,
+                   const UnsignedInteger maximumDimension,
                    const Bool verbose = false);
 
   /** Constructor from an orthogonal basis */
   CleaningStrategy(const OrthogonalBasis & basis,
-                   const UnsignedLong maximumDimension,
-                   const UnsignedLong maximumSize,
+                   const UnsignedInteger maximumDimension,
+                   const UnsignedInteger maximumSize,
                    const NumericalScalar significanceFactor,
                    const Bool verbose = false);
 
@@ -70,11 +70,11 @@ public:
   virtual String __repr__() const;
 
   /** Current vector index accessor */
-  UnsignedLong getCurrentVectorIndex() const;
+  UnsignedInteger getCurrentVectorIndex() const;
 
   /** Maximum size accessor */
-  UnsignedLong getMaximumSize() const;
-  void setMaximumSize(const UnsignedLong maximumSize);
+  UnsignedInteger getMaximumSize() const;
+  void setMaximumSize(const UnsignedInteger maximumSize);
 
   /** Significance factor */
   NumericalScalar getSignificanceFactor() const;
@@ -100,10 +100,10 @@ protected:
 
 private:
   // Index of the next vector to be generated
-  UnsignedLong currentVectorIndex_;
+  UnsignedInteger currentVectorIndex_;
 
   // Maximum size of the curent basis
-  UnsignedLong maximumSize_;
+  UnsignedInteger maximumSize_;
 
   // Relative significance factor of a vector
   NumericalScalar significanceFactor_;

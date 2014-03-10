@@ -32,12 +32,12 @@ typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilis
 
 SymmetricTensor clean(SymmetricTensor in)
 {
-  UnsignedLong rowDim(in.getNbRows());
-  UnsignedLong colDim(in.getNbColumns());
-  UnsignedLong sheetDim(in.getNbSheets());
-  for(UnsignedLong i = 0; i < rowDim; i++)
-    for(UnsignedLong j = 0; j < colDim; j++)
-      for (UnsignedLong k = 0; k < sheetDim; k++)
+  UnsignedInteger rowDim(in.getNbRows());
+  UnsignedInteger colDim(in.getNbColumns());
+  UnsignedInteger sheetDim(in.getNbSheets());
+  for(UnsignedInteger i = 0; i < rowDim; i++)
+    for(UnsignedInteger j = 0; j < colDim; j++)
+      for (UnsignedInteger k = 0; k < sheetDim; k++)
       {
         in(i, j, k) = 1.e-4 * round(1.e4 * in(i, j, k));
         if (fabs(in(i, j, k)) < 1.e-4) in(i, j, k) = 0.0;
@@ -59,20 +59,20 @@ int main(int argc, char *argv[])
     aCollection.add(Uniform(-1.0, 2.0));
     aCollection.add(Gamma(2.0, 2.0, 0.0));
 
-    UnsignedLong dim(aCollection.getSize());
+    UnsignedInteger dim(aCollection.getSize());
 
     // Create a copula
     CorrelationMatrix RCopula(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
-      for (UnsignedLong j = 0; j < i; j++)
+      for (UnsignedInteger j = 0; j < i; j++)
       {
         RCopula(i, j) = (i + j + 1.0) / (2.0 * dim);
       }
     }
     ComposedDistribution distribution(aCollection, NormalCopula(RCopula));
     // Test for sampling
-    UnsignedLong size = 10000;
+    UnsignedInteger size = 10000;
     NumericalSample sample = distribution.getSample( size );
     fullprint << "sample first=" << sample[0] << " last=" << sample[size - 1] << std::endl;
     // Should be close to [0.5, 1, 0.544439]

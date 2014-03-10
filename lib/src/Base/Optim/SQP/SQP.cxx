@@ -127,7 +127,7 @@ void SQP::run()
   //system and direction initialization :
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
-  const UnsignedLong dimension(currentPoint_.getDimension());
+  const UnsignedInteger dimension(currentPoint_.getDimension());
   currentSystemMatrix_ = SymmetricMatrix(dimension + 1);
   currentSecondMember_ = NumericalPoint(dimension + 1);
   currentDirection_ = NumericalPoint(dimension);
@@ -143,7 +143,7 @@ void SQP::run()
 
 
   Bool convergence(false);
-  UnsignedLong iterationNumber = 0;
+  UnsignedInteger iterationNumber = 0;
   NumericalScalar absoluteError(-1.0);
   NumericalScalar constraintError(-1.0);
   NumericalScalar relativeError(-1.0);
@@ -174,9 +174,9 @@ void SQP::run()
 
     //compute System matrix for evaluation of the direction
 
-    for ( UnsignedLong i = 0; i < currentPoint_.getDimension(); ++i )
+    for ( UnsignedInteger i = 0; i < currentPoint_.getDimension(); ++i )
     {
-      for ( UnsignedLong j = 0; j < i + 1; ++j )
+      for ( UnsignedInteger j = 0; j < i + 1; ++j )
       {
         currentSystemMatrix_ ( i, j ) = currentLambda_ * currentHessian_ ( i, j );
       }
@@ -188,7 +188,7 @@ void SQP::run()
 
     //compute System second member
 
-    for ( UnsignedLong i = 0; i < currentPoint_.getDimension(); ++i )
+    for ( UnsignedInteger i = 0; i < currentPoint_.getDimension(); ++i )
     {
       currentSecondMember_[i] = - currentPoint_[i];
     }
@@ -198,7 +198,7 @@ void SQP::run()
     //solve the linear system
     const NumericalPoint Solution ( currentSystemMatrix_.solveLinearSystem ( currentSecondMember_ ) );
 
-    for ( UnsignedLong i = 0; i < currentPoint_.getDimension(); ++i )
+    for ( UnsignedInteger i = 0; i < currentPoint_.getDimension(); ++i )
     {
       currentDirection_[i] = Solution[i];
     }

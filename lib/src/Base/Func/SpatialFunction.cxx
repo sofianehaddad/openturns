@@ -107,7 +107,7 @@ Field SpatialFunction::operator() (const Field & inTS) const
 }
 
 /* Get the i-th marginal function */
-SpatialFunction::Implementation SpatialFunction::getMarginal(const UnsignedLong i) const
+SpatialFunction::Implementation SpatialFunction::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return new SpatialFunction(p_evaluation_->getMarginal(i));

@@ -95,7 +95,7 @@ ExponentialModel::ExponentialModel(const NumericalPoint & scale,
   if (spatialCovariance.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial covariance has a dimension different from the scales and amplitudes.";
   setScale(scale);
   NumericalPoint amplitude(dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
     amplitude[i] = sqrt(spatialCovariance(i, i));
   // Check that the amplitudes are valid
   setAmplitude(amplitude);
@@ -104,8 +104,8 @@ ExponentialModel::ExponentialModel(const NumericalPoint & scale,
   if (!isDiagonal_)
   {
     spatialCorrelation_ = CorrelationMatrix(dimension_);
-    for (UnsignedLong i = 0; i < dimension_; ++i)
-      for (UnsignedLong j = 0; j < i; ++j)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
         spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
   } // !isDiagonal
 }
@@ -127,14 +127,14 @@ CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
   // Absolute value of tau
   const NumericalScalar absTau(tau.norm());
   NumericalPoint exponentialTerms(dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     exponentialTerms[i] = amplitude_[i] * exp(-0.5 * scale_[i] * absTau);
     covarianceMatrix(i, i) = exponentialTerms[i] * exponentialTerms[i];
   }
   if (!isDiagonal_)
-    for (UnsignedLong i = 0; i < dimension_ ; ++i)
-      for (UnsignedLong j = 0; j < i ; ++j)
+    for (UnsignedInteger i = 0; i < dimension_ ; ++i)
+      for (UnsignedInteger j = 0; j < i ; ++j)
         covarianceMatrix(i, j) = exponentialTerms[i] * spatialCorrelation_(i, j) * exponentialTerms[j];
 
   return covarianceMatrix;
@@ -143,8 +143,8 @@ CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) const
 {
-  const UnsignedLong size(timeGrid.getN());
-  const UnsignedLong fullSize(size * dimension_);
+  const UnsignedInteger size(timeGrid.getN());
+  const UnsignedInteger fullSize(size * dimension_);
   const NumericalScalar timeStep(timeGrid.getStep());
 
   CovarianceMatrix cov(fullSize);
@@ -157,28 +157,28 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
   const CovarianceMatrix covTau0( operator()( 0.0 ) );
 
   // Loop over the main diagonal block
-  for (UnsignedLong block = 0; block < size; ++block)
+  for (UnsignedInteger block = 0; block < size; ++block)
     // Copy of the lower triangle only
-    for (UnsignedLong i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       // The diagonal part
       cov( block * dimension_ + i,
            block * dimension_ + i ) = covTau0(i, i);
       // The lower off-diagonal part if needed
       if (!isDiagonal_)
-        for (UnsignedLong j = 0; j < i; ++j)
+        for (UnsignedInteger j = 0; j < i; ++j)
           cov( block * dimension_ + i,
                block * dimension_ + j ) = covTau0(i, j);
     } // Lower triangle
   // Loop over the remaining diagonal blocks
-  for (UnsignedLong diag = 1; diag < size; ++diag)
+  for (UnsignedInteger diag = 1; diag < size; ++diag)
   {
     const CovarianceMatrix covTau( operator()( diag * timeStep ) );
 
     // Loop over the main block diagonal
-    for (UnsignedLong block = 0; block < size - diag; ++block)
+    for (UnsignedInteger block = 0; block < size - diag; ++block)
       // Copy of the full block
-      for (UnsignedLong i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         // The diagonal part
         cov( block          * dimension_ + i,
@@ -186,10 +186,10 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
         // The off-diagonal part if needed
         if (!isDiagonal_)
         {
-          for (UnsignedLong j = 0; j < i; ++j)
+          for (UnsignedInteger j = 0; j < i; ++j)
             cov( block          * dimension_ + i,
                  (block + diag) * dimension_ + j ) = covTau(i, j);
-          for (UnsignedLong j = i + 1; j < dimension_; ++j)
+          for (UnsignedInteger j = i + 1; j < dimension_; ++j)
             cov( block          * dimension_ + i,
                  (block + diag) * dimension_ + j ) = covTau(i, j);
         } // Off-diagonal
@@ -251,7 +251,7 @@ NumericalPoint ExponentialModel::getAmplitude() const
 
 void ExponentialModel::setAmplitude(const NumericalPoint & amplitude)
 {
-  for (UnsignedLong index = 0; index < dimension_; ++index)
+  for (UnsignedInteger index = 0; index < dimension_; ++index)
     if (amplitude[index] <= 0)
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of amplitude is non positive" ;
   amplitude_ = amplitude;
@@ -265,7 +265,7 @@ NumericalPoint ExponentialModel::getScale() const
 
 void ExponentialModel::setScale(const NumericalPoint & scale)
 {
-  for (UnsignedLong index = 0; index < dimension_; ++index)
+  for (UnsignedInteger index = 0; index < dimension_; ++index)
     if (scale[index] <= 0)
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of scale is non positive" ;
   scale_ = scale;

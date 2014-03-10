@@ -34,11 +34,11 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong maxPoint(101);
+    UnsignedInteger maxPoint(101);
     NumericalScalar xMin(-2.0 * M_PI);
     NumericalScalar xMax(2.0 * M_PI);
     NumericalSample data(maxPoint, 2);
-    for (UnsignedLong i = 0; i < maxPoint; ++i)
+    for (UnsignedInteger i = 0; i < maxPoint; ++i)
     {
       NumericalScalar x(xMin + (xMax - xMin) * i / (maxPoint - 1.0));
       data[i][0] = x;

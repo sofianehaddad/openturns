@@ -37,9 +37,9 @@ NumericalScalar clean(NumericalScalar in)
 
 HermitianMatrix clean(HermitianMatrix in)
 {
-  UnsignedLong dim(in.getDimension());
-  for(UnsignedLong i = 0; i < dim; i++)
-    for(UnsignedLong j = 0; j <= i; j++)
+  UnsignedInteger dim(in.getDimension());
+  for(UnsignedInteger i = 0; i < dim; i++)
+    for(UnsignedInteger j = 0; j <= i; j++)
     {
       NumericalScalar realIJ = clean(real(in(i, j)));
       NumericalScalar imagIJ = clean(imag(in(i, j)));
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong dimension(2);
+    const UnsignedInteger dimension(2);
 
     /* Amplitude values */
     NumericalPoint amplitude(dimension);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     NumericalPoint scale(dimension);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
-    for (UnsignedLong index = 0 ; index < dimension; ++index)
+    for (UnsignedInteger index = 0 ; index < dimension; ++index)
     {
       // constant amplitude
       amplitude[index] = 1.0 ;
@@ -80,10 +80,10 @@ int main(int argc, char *argv[])
     /* Sample a CauchyModel */
     CauchyModel referenceModel(amplitude, scale, spatialCorrelation);
 
-    UnsignedLong size(5);
+    UnsignedInteger size(5);
     UserDefinedSpectralModel::HermitianMatrixCollection dspCollection(size);
     RegularGrid frequencyGrid(0.0, 2.0 / size, size);
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
       dspCollection[i] = referenceModel(frequencyGrid.getValue(i));
 
     /* Create a UserDefinedSpectralModel */
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
     /* Sample the UserDefinedSpectralModel */
     RegularGrid samplingGrid(-0.4, 1.0 / (3.0 * size), 5 * size);
-    for (UnsignedLong i = 0; i < samplingGrid.getN(); ++i)
+    for (UnsignedInteger i = 0; i < samplingGrid.getN(); ++i)
     {
       NumericalScalar frequency(samplingGrid.getValue(i));
       fullprint << "frequency=" << clean(frequency) << ", myModel=\n" << clean(myModel(frequency)) << ", referenceModel=\n" << clean(referenceModel(frequency)) << std::endl;

@@ -94,7 +94,7 @@ NumericalPoint FarlieGumbelMorgensternCopula::getRealization() const
 /* Get the DDF of the distribution */
 NumericalPoint FarlieGumbelMorgensternCopula::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -113,7 +113,7 @@ NumericalPoint FarlieGumbelMorgensternCopula::computeDDF(const NumericalPoint & 
 /* Get the PDF of the distribution */
 NumericalScalar FarlieGumbelMorgensternCopula::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -129,7 +129,7 @@ NumericalScalar FarlieGumbelMorgensternCopula::computePDF(const NumericalPoint &
 /* Get the CDF of the distribution */
 NumericalScalar FarlieGumbelMorgensternCopula::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -165,7 +165,7 @@ CorrelationMatrix FarlieGumbelMorgensternCopula::getKendallTau() const
 /* Get the PDFGradient of the distribution */
 NumericalPoint FarlieGumbelMorgensternCopula::computePDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -181,7 +181,7 @@ NumericalPoint FarlieGumbelMorgensternCopula::computePDFGradient(const Numerical
 /* Get the CDFGradient of the distribution */
 NumericalPoint FarlieGumbelMorgensternCopula::computeCDFGradient(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u(point[0]);
@@ -197,7 +197,7 @@ NumericalPoint FarlieGumbelMorgensternCopula::computeCDFGradient(const Numerical
 NumericalScalar FarlieGumbelMorgensternCopula::computeConditionalCDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
@@ -211,7 +211,7 @@ NumericalScalar FarlieGumbelMorgensternCopula::computeConditionalCDF(const Numer
 NumericalScalar FarlieGumbelMorgensternCopula::computeConditionalQuantile(const NumericalScalar q,
     const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for no conditioning or independent copula
@@ -273,7 +273,7 @@ FarlieGumbelMorgensternCopula::Implementation FarlieGumbelMorgensternCopula::get
 {
   if (!indices.check(1)) throw InvalidArgumentException(HERE) << "The indices of an archimedean copula  must be in the range [0, 1] and  must be different";
   // General case
-  const UnsignedLong outputDimension(indices.getSize());
+  const UnsignedInteger outputDimension(indices.getSize());
   // Only one indice is needed, call the specialized method
   if (outputDimension == 1) return getMarginal(indices[0]);
   // The indices correspond to all the components, with a possible transposition of the two components.

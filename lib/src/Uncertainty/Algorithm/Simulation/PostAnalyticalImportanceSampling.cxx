@@ -52,7 +52,7 @@ PostAnalyticalImportanceSampling * PostAnalyticalImportanceSampling::clone() con
 /* Compute the block sample */
 NumericalSample PostAnalyticalImportanceSampling::computeBlockSample()
 {
-  const UnsignedLong blockSize(getBlockSize());
+  const UnsignedInteger blockSize(getBlockSize());
   const NumericalPoint standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   // Get the threshold and the reliability index
   const NumericalScalar threshold(event_.getThreshold());
@@ -64,7 +64,7 @@ NumericalSample PostAnalyticalImportanceSampling::computeBlockSample()
   NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   // realizedEventSample = NumericalSample(blockSize_, inputSample.getDimension());
   // Then, modify in place this sample to take into account the change in the input distribution
-  for (UnsignedLong i = 0; i < blockSize; ++i)
+  for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
     const Bool isRealized(getEvent().getOperator()(blockSample[i][0], threshold));
     // If the event has occured

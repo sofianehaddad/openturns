@@ -156,7 +156,7 @@ String ComposedNumericalMathFunction::__repr__() const
  */
 Matrix ComposedNumericalMathFunction::parametersGradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // y = G(x, pg)
   const NumericalPoint y(p_rightFunction_->operator()(inP));
@@ -169,21 +169,21 @@ Matrix ComposedNumericalMathFunction::parametersGradient(const NumericalPoint & 
   // (dF/dy)(G(x, pg), pf) . (dG/dpg)(x, pg)
   const Matrix upper(rightGradientP * leftGradientY);
   // Build the full gradient
-  const UnsignedLong rightParametersDimension(upper.getNbRows());
-  const UnsignedLong leftParametersDimension(leftGradientP.getNbRows());
+  const UnsignedInteger rightParametersDimension(upper.getNbRows());
+  const UnsignedInteger leftParametersDimension(leftGradientP.getNbRows());
   Matrix gradient(rightParametersDimension + leftParametersDimension, inputDimension);
-  UnsignedLong rowIndex(0);
+  UnsignedInteger rowIndex(0);
   // Gradient according to left parameters
-  for (UnsignedLong i = 0; i < rightParametersDimension; ++i)
+  for (UnsignedInteger i = 0; i < rightParametersDimension; ++i)
   {
-    for (UnsignedLong j = 0; j < inputDimension; ++j)
+    for (UnsignedInteger j = 0; j < inputDimension; ++j)
       gradient(rowIndex, j) = upper(i, j);
     ++rowIndex;
   }
   // Gradient according to right parameters
-  for (UnsignedLong i = 0; i < leftParametersDimension; ++i)
+  for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
   {
-    for (UnsignedLong j = 0; j < inputDimension; ++j)
+    for (UnsignedInteger j = 0; j < inputDimension; ++j)
       gradient(rowIndex, j) = leftGradientP(i, j);
     ++rowIndex;
   }

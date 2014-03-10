@@ -68,10 +68,10 @@ public:
   virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the constant term */
   SymmetricTensor getConstant() const;

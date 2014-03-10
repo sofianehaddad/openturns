@@ -255,7 +255,7 @@ public:
    * Use_count returns the number of shared pointers that
    * share the pointed-to object
    */
-  inline UnsignedLong use_count() const
+  inline UnsignedInteger use_count() const
   {
     return ptr_.use_count();
   }

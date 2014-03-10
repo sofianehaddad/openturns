@@ -92,25 +92,25 @@ Matrix RestrictedGradientImplementation::gradient(const NumericalPoint & inP) co
 {
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
   NumericalPoint point(referencePoint_);
-  const UnsignedLong inputDimension(getInputDimension());
-  for (UnsignedLong i = 0; i < inputDimension; ++i) point[restrictionIndices_[i]] = inP[i];
+  const UnsignedInteger inputDimension(getInputDimension());
+  for (UnsignedInteger i = 0; i < inputDimension; ++i) point[restrictionIndices_[i]] = inP[i];
   const Matrix fullGradient(p_gradient_->gradient(point));
-  const UnsignedLong outputDimension(getOutputDimension());
+  const UnsignedInteger outputDimension(getOutputDimension());
   Matrix gradient(inputDimension, outputDimension);
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
-    for (UnsignedLong j = 0; j < outputDimension; ++j)
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
       gradient(i, j) = fullGradient(restrictionIndices_[i], j);
   return gradient;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong RestrictedGradientImplementation::getInputDimension() const
+UnsignedInteger RestrictedGradientImplementation::getInputDimension() const
 {
   return restrictionIndices_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong RestrictedGradientImplementation::getOutputDimension() const
+UnsignedInteger RestrictedGradientImplementation::getOutputDimension() const
 {
   return p_gradient_->getOutputDimension();
 }

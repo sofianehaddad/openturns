@@ -67,13 +67,13 @@ public:
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralNormalProcess(const SecondOrderModel & model,
                         const NumericalScalar maximalFrequency,
-                        const UnsignedLong nFrequency,
+                        const UnsignedInteger nFrequency,
                         const String & name = DefaultName);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralNormalProcess(const SpectralModel & spectralModel,
                         const NumericalScalar maximalFrequency,
-                        const UnsignedLong nFrequency,
+                        const UnsignedInteger nFrequency,
                         const String & name = DefaultName);
 
   /** Virtual constructor */
@@ -95,7 +95,7 @@ public:
   NumericalScalar getMaximalFrequency() const;
 
   /** Number of frequency steps accessor */
-  UnsignedLong getNFrequency() const;
+  UnsignedInteger getNFrequency() const;
 
   /** Frequency step accessor */
   NumericalScalar getFrequencyStep() const;
@@ -137,10 +137,10 @@ protected:
   void computeAlpha();
 
   /** Get the Cholesky factor of the kth DSP matrix from cache or computed on the fly */
-  TriangularComplexMatrix getCholeskyFactor(const UnsignedLong k) const;
+  TriangularComplexMatrix getCholeskyFactor(const UnsignedInteger k) const;
 
   /** Compute the Cholesky factor of the kth DSP matrix */
-  TriangularComplexMatrix computeCholeskyFactor(const UnsignedLong k) const;
+  TriangularComplexMatrix computeCholeskyFactor(const UnsignedInteger k) const;
 
 private:
 
@@ -151,7 +151,7 @@ private:
   NumericalScalar maximalFrequency_;
 
   /** Number of frequencies on the positive axis */
-  UnsignedLong nFrequency_;
+  UnsignedInteger nFrequency_;
 
   /** Frequency step */
   NumericalScalar frequencyStep_;
@@ -160,7 +160,7 @@ private:
   mutable TriangularComplexMatrixPersistentCollection choleskyFactorsCache_;
 
   /** Cache size */
-  mutable UnsignedLong cacheSize_;
+  mutable UnsignedInteger cacheSize_;
 
   /** alpha vector - scale factor */
   PersistentNumericalComplexCollection alpha_;

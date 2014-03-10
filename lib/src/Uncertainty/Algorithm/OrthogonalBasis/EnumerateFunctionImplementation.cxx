@@ -33,7 +33,7 @@ CLASSNAMEINIT(EnumerateFunctionImplementation);
 static Factory<EnumerateFunctionImplementation> RegisteredFactory("EnumerateFunctionImplementation");
 
 /* Parameter constructor */
-EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedLong dimension)
+EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedInteger dimension)
   : PersistentObject()
   , dimension_(dimension)
 {
@@ -55,48 +55,48 @@ String EnumerateFunctionImplementation::__repr__() const
 }
 
 /* The cardinal of indices of degree max <= maximumDegree */
-UnsignedLong EnumerateFunctionImplementation::getMaximumDegreeCardinal(const UnsignedLong maximumDegree) const
+UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const
 {
   return getStrataCumulatedCardinal(getMaximumDegreeStrataIndex(maximumDegree));
 }
 
 /* Evaluation operator */
-Indices EnumerateFunctionImplementation::operator() (const UnsignedLong index) const
+Indices EnumerateFunctionImplementation::operator() (const UnsignedInteger index) const
 {
   throw NotYetImplementedException( HERE );
 }
 
 /* The inverse of the association */
-UnsignedLong EnumerateFunctionImplementation::inverse(const Indices & indices) const
+UnsignedInteger EnumerateFunctionImplementation::inverse(const Indices & indices) const
 {
   throw NotYetImplementedException( HERE );
 }
 
 /* The cardinal of the given strata */
-UnsignedLong EnumerateFunctionImplementation::getStrataCardinal(const UnsignedLong strateIndex) const
+UnsignedInteger EnumerateFunctionImplementation::getStrataCardinal(const UnsignedInteger strateIndex) const
 {
   throw NotYetImplementedException( HERE );
 }
 
 /* The cardinal of the cumulated strata above or equal to the given strate */
-UnsignedLong EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedLong strateIndex) const
+UnsignedInteger EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger strateIndex) const
 {
   throw NotYetImplementedException( HERE );
 }
 
 /* The index of the strata of degree max <= maximumDegree */
-UnsignedLong EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const
+UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
 {
   throw NotYetImplementedException( HERE );
 }
 
 /* Dimension accessor */
-void EnumerateFunctionImplementation::setDimension(const UnsignedLong dimension)
+void EnumerateFunctionImplementation::setDimension(const UnsignedInteger dimension)
 {
   dimension_ = dimension;
 }
 
-UnsignedLong EnumerateFunctionImplementation::getDimension() const
+UnsignedInteger EnumerateFunctionImplementation::getDimension() const
 {
   return dimension_;
 }

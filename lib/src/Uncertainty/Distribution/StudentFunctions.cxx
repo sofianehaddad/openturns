@@ -336,13 +336,13 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   const NumericalScalar wg0(rule.getZeroGaussWeight());
   const NumericalPoint wg(rule.getOtherGaussWeights());
   const NumericalPoint xg(rule.getOtherKronrodNodes());
-  const UnsignedLong iMax(8);
+  const UnsignedInteger iMax(8);
   const NumericalScalar dLowerBound((mode - lowerBound) / iMax);
   const NumericalScalar wLowerBound(0.5 * dLowerBound);
   const NumericalScalar dUpperBound((mode - upperBound) / iMax);
   const NumericalScalar wUpperBound(0.5 * dUpperBound);
   const NumericalScalar omega(nu / (2.0 * xSquare));
-  for (UnsignedLong i = 0; i < iMax; ++i)
+  for (UnsignedInteger i = 0; i < iMax; ++i)
   {
     // Ith interval at the left of the mode
     const NumericalScalar ci(lowerBound + (i + 0.5) * dLowerBound);
@@ -350,7 +350,7 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
     // Ith interval at the right of the mode
     const NumericalScalar xii(upperBound + (i + 0.5) * dUpperBound);
     NumericalScalar contributionRight(wg0 * DistFunc::pGamma(halfNu, omega * pow(xii + delta, 2), useChiSquareTail) * exp(-0.5 * xii * xii) * SpecFunc::ISQRT2PI);
-    for (UnsignedLong j = 0; j < xg.getSize() / 2; ++j)
+    for (UnsignedInteger j = 0; j < xg.getSize() / 2; ++j)
     {
       const NumericalScalar zetaj(xg[2 * j + 1]);
       // Contribution of the left interval
@@ -379,7 +379,7 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
     const NumericalScalar x,
     const Bool tail,
     const NumericalScalar precision,
-    const UnsignedLong maximumIteration)
+    const UnsignedInteger maximumIteration)
 {
   // Check nu
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
@@ -405,11 +405,11 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
   const NumericalScalar halfDelta2(0.5 * del * del);
   const NumericalScalar logHalfDelta2(log(halfDelta2));
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
-  const UnsignedLong k(std::max(1UL, static_cast<UnsignedLong>(floor(halfDelta2))));
+  const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfDelta2))));
   // Index of the forward iterations
-  UnsignedLong kForward(k);
+  UnsignedInteger kForward(k);
   // Index of the backward iterations
-  UnsignedLong kBackward(k);
+  UnsignedInteger kBackward(k);
   LOGDEBUG(OSS() << "kForward=" << kForward << "kBackward=" << kBackward);
   // Terms and factors of the summation.
   // The initialization corresponds to the terme of index k.
@@ -477,10 +477,10 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
     contributionBackward = pBackward * betaPBackward + qBackward * betaQBackward; \
     value += contributionBackward;
 
-  // Here, i is an UnsignedLong as it is only a loop counter
-  UnsignedLong i(1);
+  // Here, i is an UnsignedInteger as it is only a loop counter
+  UnsignedInteger i(1);
 
-  const UnsignedLong imax(std::min(k, maximumIteration));
+  const UnsignedInteger imax(std::min(k, maximumIteration));
   while((error > 0.0) && (i <= imax))
   {
     FORWARD_ITERATION;
@@ -542,7 +542,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
     const NumericalScalar delta,
     const NumericalScalar x,
     const NumericalScalar precision,
-    const UnsignedLong maximumIteration)
+    const UnsignedInteger maximumIteration)
 {
   // Check nu
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
@@ -576,7 +576,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
   // Start at even index that maximize the coefficient in the sum
   const NumericalScalar halfDelta2(0.5 * delta * delta);
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
-  const UnsignedLong k(std::max(1UL, static_cast<UnsignedLong>(floor(halfDelta2))));
+  const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfDelta2))));
   // Loop forward and backward starting from k
   // Initialization
   const NumericalScalar kLogZ(k * log(z));
@@ -586,8 +586,8 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
   NumericalScalar pBackwardOdd(pForwardOdd);
   NumericalScalar value(pForwardOdd + pForwardEven);
   NumericalScalar error(SpecFunc::MaxNumericalScalar);
-  UnsignedLong kForward(k);
-  UnsignedLong kBackward(k);
+  UnsignedInteger kForward(k);
+  UnsignedInteger kBackward(k);
 #define FORWARD_ITERATION                                               \
     pForwardOdd *= (halfNu + kForward + 1) * z / (2 * (kForward + 1) * (2 * kForward + 3)); \
     pForwardEven *= (halfNup1_2 + kForward) * z / (2 * (kForward + 1) * (2 * kForward + 1)); \
@@ -597,9 +597,9 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
     pBackwardEven *= 2 * kBackward * (2 * kBackward - 1) / (z * (halfNup1_2 + kBackward - 1)); \
     value += pBackwardOdd + pBackwardEven;
 
-  // Here, i is an UnsignedLong as it is only a loop counter
-  UnsignedLong i(1);
-  const UnsignedLong imax(std::min(k, maximumIteration));
+  // Here, i is an UnsignedInteger as it is only a loop counter
+  UnsignedInteger i(1);
+  const UnsignedInteger imax(std::min(k, maximumIteration));
   //        while((error > precision * (fabs(value) + precision)) && (i <= imax))
   while((error > 0.0) && (i <= imax))
   {

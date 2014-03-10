@@ -190,7 +190,7 @@ NumericalPoint Bernoulli::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Bernoulli::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Bernoulli::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 0.0);
   return NumericalPoint(1, p_);
@@ -208,10 +208,10 @@ void Bernoulli::computeCovariance() const
 NumericalSample Bernoulli::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedLong kMin(static_cast< UnsignedLong > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
-  const UnsignedLong kMax(static_cast< UnsignedLong > (std::min(floor(interval.getUpperBound()[0]), 1.0)));
+  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
+  const UnsignedInteger kMax(static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), 1.0)));
   NumericalSample result(0, 1);
-  for (UnsignedLong k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
+  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
   return result;
 }
 

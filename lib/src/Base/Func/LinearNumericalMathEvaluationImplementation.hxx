@@ -72,10 +72,10 @@ public:
   virtual NumericalSample operator() (const NumericalSample & inS) const;
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the center */
   NumericalPoint getCenter() const;

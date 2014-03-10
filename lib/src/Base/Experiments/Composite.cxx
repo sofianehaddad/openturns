@@ -47,7 +47,7 @@ Composite::Composite(const NumericalPoint & center,
 }
 
 /* Constructor with parameters */
-Composite::Composite(const UnsignedLong dimension,
+Composite::Composite(const UnsignedInteger dimension,
                      const NumericalPoint & levels,
                      const String & name)
   : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels, name)
@@ -65,13 +65,13 @@ Composite * Composite::clone() const
 NumericalSample Composite::generate()
 {
   /* Dimension of the realizations */
-  const UnsignedLong dimension(center_.getDimension());
+  const UnsignedInteger dimension(center_.getDimension());
   /* Hypercube number of vertices */
-  const UnsignedLong verticesNumber((UnsignedLong)round(pow(2, dimension)));
+  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2, dimension)));
   /* Number of levels to be generated */
-  const UnsignedLong levelNumber(levels_.getDimension());
+  const UnsignedInteger levelNumber(levels_.getDimension());
   /* Size of the sample to be generated: 1 + number of levels x (2 x dimension + 2^dimension) */
-  UnsignedLong size(1 + levelNumber * (2 * dimension + verticesNumber));
+  UnsignedInteger size(1 + levelNumber * (2 * dimension + verticesNumber));
   /* A composite plane is made of an axial plane and a factorial plane with the same levels */
   /* First the axial plane */
   Axial axial(center_, levels_);
@@ -82,15 +82,15 @@ NumericalSample Composite::generate()
   /* We create the composite plane by copying the factorial plane (larger than the axial plane) then we append all the elements of the axial plane excepted its first one, which is the center of the plane and thus already present in the factorial plane */
   NumericalSample compositePlane(size, center_);
   compositePlane.setName("Composite plane");
-  UnsignedLong index(0);
+  UnsignedInteger index(0);
   size = factorialPlane.getSize();
-  for(UnsignedLong factorialIndex = 0; factorialIndex < size; factorialIndex++)
+  for(UnsignedInteger factorialIndex = 0; factorialIndex < size; factorialIndex++)
   {
     compositePlane[index] = factorialPlane[factorialIndex];
     index++;
   }
   size = axialPlane.getSize();
-  for(UnsignedLong axialIndex = 1; axialIndex < size; axialIndex++)
+  for(UnsignedInteger axialIndex = 1; axialIndex < size; axialIndex++)
   {
     compositePlane[index] = axialPlane[axialIndex];
     index++;

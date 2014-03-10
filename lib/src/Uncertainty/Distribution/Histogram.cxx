@@ -71,11 +71,11 @@ Histogram::Histogram(const NumericalScalar first,
   , cumulatedWidth_(0)
 {
   // Convert the width and height into an Histogram pairs collection
-  const UnsignedLong size(width.getSize());
+  const UnsignedInteger size(width.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given width has a size of 0.";
   if (size != height.getSize()) throw InvalidArgumentException(HERE) << "Error: the width and the height must have the same size.";
   HistogramPairCollection collection(size);
-  for (UnsignedLong i = 0; i < size; ++i) collection[i] = HistogramPair(width[i], height[i]);
+  for (UnsignedInteger i = 0; i < size; ++i) collection[i] = HistogramPair(width[i], height[i]);
   // This call set also the range.
   setPairCollection(collection);
   setDimension( 1 );
@@ -104,7 +104,7 @@ String Histogram::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset << getClassName() << "(origin = " << first_;
-  for (UnsignedLong i = 0; i < collection_.getSize(); ++i) oss << ", {w" << i << " = " << collection_[i].getWidth() << ", h" << i << " = " << collection_[i].getHeight() << "}";
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i) oss << ", {w" << i << " = " << collection_[i].getWidth() << ", h" << i << " = " << collection_[i].getHeight() << "}";
   oss << ")";
   return oss;
 }
@@ -118,7 +118,7 @@ Histogram * Histogram::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Histogram::computeRange()
 {
-  const UnsignedLong size(cumulatedWidth_.getSize());
+  const UnsignedInteger size(cumulatedWidth_.getSize());
   if (size == 0) return;
   setRange(Interval(first_, first_ + cumulatedWidth_[size - 1]));
 }
@@ -145,11 +145,11 @@ NumericalScalar Histogram::computePDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalScalar x(point[0] - first_);
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   if ((x <= 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
   NumericalScalar lower(0.0);
   // We shift x bin by bin until x falls in the current bin.
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     x -= lower;
     lower = collection_[i].getWidth();
@@ -166,13 +166,13 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalScalar x(point[0] - first_);
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   if (x <= 0.0) return 0.0;
   if (x >= cumulatedWidth_[size - 1]) return 1.0;
   NumericalScalar lower(0.0);
   NumericalScalar cdf(0.0);
   // We shift x bin by bin until x falls in the current bin. We aggregate the contribution of all the bins and make a proportional contribution for the last bin.
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     x -= lower;
     lower = collection_[i].getWidth();
@@ -208,11 +208,11 @@ NumericalScalar Histogram::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   const NumericalScalar p(tail ? 1.0 - prob : prob);
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   // Research of the containing bin
-  UnsignedLong index(UnsignedLong(p * size));
+  UnsignedInteger  index(p * size);
   NumericalScalar currentProba(cumulatedSurface_[index]);
-  UnsignedLong currentIndex(index);
+  UnsignedInteger currentIndex(index);
   // Basic search: upper bound. The loop must end because cumulatedSurface_[size - 1] = 1.0 and prob < 1.0
   while (p >= currentProba)
   {
@@ -242,9 +242,9 @@ NumericalScalar Histogram::computeScalarQuantile(const NumericalScalar prob,
 void Histogram::computeMean() const
 {
   NumericalScalar mean(first_);
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   NumericalScalar lower(0.0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar width(collection_[i].getWidth());
     NumericalScalar upper(lower + width);
@@ -259,11 +259,11 @@ void Histogram::computeMean() const
 void Histogram::computeCovariance() const
 {
   NumericalScalar value(0.0);
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   covariance_ = CovarianceMatrix(1);
   // Since variance is invariant by translation, we center the data for numerical stability
   NumericalScalar lower(first_ - getMean()[0]);
-  for (UnsignedLong i = 0; i < size; i++)
+  for (UnsignedInteger i = 0; i < size; i++)
   {
     const NumericalScalar width(collection_[i].getWidth());
     NumericalScalar upper(lower + width);
@@ -275,14 +275,14 @@ void Histogram::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Histogram::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Histogram::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   NumericalScalar value(0.0);
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   NumericalScalar xPrec(-1.0);
   const NumericalScalar factor(2.0 / cumulatedWidth_[size - 1]);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x(xPrec + collection_[i].getWidth() * factor);
     value += (pow(x, n + 1) - pow(xPrec, n + 1)) * collection_[i].getHeight();
@@ -295,11 +295,11 @@ NumericalPoint Histogram::getStandardMoment(const UnsignedLong n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Histogram::Implementation Histogram::getStandardRepresentative() const
 {
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   HistogramPairCollection collection(size);
   const NumericalScalar first(-1.0);
   const NumericalScalar factor(2.0 / cumulatedWidth_[size - 1]);
-  for (UnsignedLong i = 0; i < size; ++i) collection[i] = HistogramPair(factor * collection_[i].getWidth(), collection_[i].getHeight() / factor);
+  for (UnsignedInteger i = 0; i < size; ++i) collection[i] = HistogramPair(factor * collection_[i].getWidth(), collection_[i].getHeight() / factor);
   return Histogram(first, collection).clone();
 }
 
@@ -307,12 +307,12 @@ Histogram::Implementation Histogram::getStandardRepresentative() const
 Histogram::NumericalPointWithDescriptionCollection Histogram::getParametersCollection() const
 {
   NumericalPointWithDescriptionCollection parameters(1);
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   NumericalPointWithDescription point(1 + 2 * size);
   Description description(1 + 2 * size);
   point[0] = first_;
   description[0] = "first";
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     point[2 * i + 1] = collection_[i].getWidth();
     point[2 * i + 2] = collection_[i].getHeight();
@@ -360,11 +360,11 @@ NumericalScalar Histogram::getFirst() const
 void Histogram::setPairCollection(const HistogramPairCollection & collection)
 {
   NumericalScalar surface(0.0);
-  const UnsignedLong size(collection.getSize());
+  const UnsignedInteger size(collection.getSize());
   cumulatedWidth_ = NumericalPoint(size);
   cumulatedSurface_ = NumericalPoint(size);
   // first, check that all the heights and widths are >=0
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar height(collection[i].getHeight());
     if (height < 0.0) throw InvalidArgumentException(HERE) << "Error: all the heights must be >= 0, here values=" << collection;
@@ -379,7 +379,7 @@ void Histogram::setPairCollection(const HistogramPairCollection & collection)
   // Normalization
   collection_ = HistogramPairCollection(size);
   NumericalScalar normalizationFactor(1.0 / surface);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     collection_[i] = HistogramPair(collection[i].getWidth(), collection[i].getHeight() * normalizationFactor);
     cumulatedSurface_[i] *= normalizationFactor;
@@ -397,7 +397,7 @@ Histogram::HistogramPairCollection Histogram::getPairCollection() const
 /** Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF() const
 {
-  const UnsignedLong lastIndex(cumulatedWidth_.getSize() - 1);
+  const UnsignedInteger lastIndex(cumulatedWidth_.getSize() - 1);
   // Must prefix explicitely by the class name in order to avoid conflict with the methods in the upper class
   return Histogram::drawPDF(first_ - 0.5 * collection_[0].getWidth(), first_ + cumulatedWidth_[lastIndex] + 0.5 * collection_[lastIndex].getWidth());
 }
@@ -405,13 +405,13 @@ Graph Histogram::drawPDF() const
 /** Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF(const NumericalScalar xMin,
                          const NumericalScalar xMax,
-                         const UnsignedLong pointNumber) const
+                         const UnsignedInteger pointNumber) const
 {
   if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "PDF", true, "topright");
-  const UnsignedLong size(collection_.getSize());
+  const UnsignedInteger size(collection_.getSize());
   // Check for the border cases
   // If the histogram is completely at the right or at the left of the plot range,
   // just draw an horizontal line
@@ -426,7 +426,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
     return graphPDF;
   }
   // Find the index of the left bar to draw
-  UnsignedLong indexLeft(0);
+  UnsignedInteger indexLeft(0);
   while (first_ + cumulatedWidth_[indexLeft] < xMin) ++indexLeft;
   // Another special case: the plot range covers only partially a unique bar
   if (first_ + cumulatedWidth_[indexLeft] >= xMax)
@@ -440,8 +440,8 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
     return graphPDF;
   }
   // Find the index of the right bar to draw
-  UnsignedLong indexRight(indexLeft);
-  UnsignedLong shiftFull(0);
+  UnsignedInteger indexRight(indexLeft);
+  UnsignedInteger shiftFull(0);
   NumericalSample dataFull(0, 2);
   while ((indexRight < size) && (first_ + cumulatedWidth_[indexRight] < xMax)) ++indexRight;
   // The graph is made of full bars for the class indices between indexLeft and indexRight
@@ -474,7 +474,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // Central part of the graph
   NumericalScalar startX(first_);
   if (indexLeft + shiftFull > 0) startX += cumulatedWidth_[indexLeft + shiftFull];
-  for (UnsignedLong i = indexLeft + shiftFull; i < indexRight; ++i)
+  for (UnsignedInteger i = indexLeft + shiftFull; i < indexRight; ++i)
   {
     NumericalSample data(4, 2);
     data[0][0] = startX;

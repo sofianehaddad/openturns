@@ -63,8 +63,8 @@ public:
 
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
-  void setDimension(const UnsignedLong dimension);
+  UnsignedInteger getDimension() const;
+  void setDimension(const UnsignedInteger dimension);
 
   /** Computation of the spectral density function */
   /** @deprecated */

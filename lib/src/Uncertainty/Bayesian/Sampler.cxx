@@ -46,7 +46,7 @@ Sampler::Sampler(const SamplerImplementation & op)
 }
 
 
-UnsignedLong Sampler::getDimension() const
+UnsignedInteger Sampler::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -60,7 +60,7 @@ NumericalPoint Sampler::getRealization() const
 
 
 /* Returns several realizations */
-NumericalSample Sampler::getSample(const UnsignedLong size) const
+NumericalSample Sampler::getSample(const UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
 }

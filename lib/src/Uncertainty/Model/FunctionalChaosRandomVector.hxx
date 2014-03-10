@@ -71,15 +71,15 @@ public:
 
   /** Sobol index accessor */
   NumericalScalar getSobolIndex(const Indices & variableIndices,
-                                const UnsignedLong marginalIndex = 0) const;
-  NumericalScalar getSobolIndex(const UnsignedLong variableIndex,
-                                const UnsignedLong marginalIndex = 0) const;
+                                const UnsignedInteger marginalIndex = 0) const;
+  NumericalScalar getSobolIndex(const UnsignedInteger variableIndex,
+                                const UnsignedInteger marginalIndex = 0) const;
 
   /** Sobol total index accessor */
   NumericalScalar getSobolTotalIndex(const Indices & variableIndices,
-                                     const UnsignedLong marginalIndex = 0) const;
-  NumericalScalar getSobolTotalIndex(const UnsignedLong variableIndex,
-                                     const UnsignedLong marginalIndex = 0) const;
+                                     const UnsignedInteger marginalIndex = 0) const;
+  NumericalScalar getSobolTotalIndex(const UnsignedInteger variableIndex,
+                                     const UnsignedInteger marginalIndex = 0) const;
 
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaoResult() const;

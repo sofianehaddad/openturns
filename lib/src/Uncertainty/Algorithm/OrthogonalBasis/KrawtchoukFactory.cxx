@@ -47,7 +47,7 @@ KrawtchoukFactory::KrawtchoukFactory()
 
 
 /* Parameter constructor: (n, p) is the order of the Krawtchouk polynomial, associated with the Binomial(n, p) distribution */
-KrawtchoukFactory::KrawtchoukFactory(const UnsignedLong n,
+KrawtchoukFactory::KrawtchoukFactory(const UnsignedInteger n,
                                      const NumericalScalar p)
   : OrthogonalUniVariatePolynomialFactory(Binomial(n, p)),
     n_(n),
@@ -66,7 +66,7 @@ KrawtchoukFactory * KrawtchoukFactory::clone() const
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-KrawtchoukFactory::Coefficients KrawtchoukFactory::getRecurrenceCoefficients(const UnsignedLong n) const
+KrawtchoukFactory::Coefficients KrawtchoukFactory::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
   if (n > n_) throw InvalidArgumentException(HERE) << "Error: cannot build a Krawtchouk polynomial of index greater than its first parameter n. Here, n=" << n << " and you try to build the " << n << "th polynomial.";
   Coefficients recurrenceCoefficients(3, 0.0);
@@ -87,7 +87,7 @@ KrawtchoukFactory::Coefficients KrawtchoukFactory::getRecurrenceCoefficients(con
 }
 
 /* N accessor */
-UnsignedLong KrawtchoukFactory::getN() const
+UnsignedInteger KrawtchoukFactory::getN() const
 {
   return n_;
 }

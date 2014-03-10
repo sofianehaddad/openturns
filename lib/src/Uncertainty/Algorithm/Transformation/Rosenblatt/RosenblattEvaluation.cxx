@@ -47,8 +47,8 @@ RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution):
   distribution_(distribution)
 {
   Description description(distribution.getDescription());
-  const UnsignedLong size(description.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(description.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     OSS oss;
     oss << "y" << i;
@@ -66,11 +66,11 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 /* Evaluation */
 NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension(getOutputDimension());
+  const UnsignedInteger dimension(getOutputDimension());
   NumericalPoint result(dimension);
   NumericalPoint y(0);
   // Apply Phi^{-1} o conditional CDF over the components
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     result[i] = DistFunc::qNormal(distribution_.computeConditionalCDF(inP[i], y));
     y.add(inP[i]);
@@ -91,13 +91,13 @@ Matrix RosenblattEvaluation::parametersGradient(const NumericalPoint & inP) cons
 }
 
 /* Accessor for input point dimension */
-UnsignedLong RosenblattEvaluation::getInputDimension() const
+UnsignedInteger RosenblattEvaluation::getInputDimension() const
 {
   return distribution_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong RosenblattEvaluation::getOutputDimension() const
+UnsignedInteger RosenblattEvaluation::getOutputDimension() const
 {
   return distribution_.getDimension();
 }

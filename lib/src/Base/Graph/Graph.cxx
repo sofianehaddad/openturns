@@ -97,7 +97,7 @@ void Graph::add(const DrawableCollection & drawableCollection)
 }
 
 /* Erase a drawable instance from the collection of drawables contained in GraphImplementation */
-void Graph::erase(const UnsignedLong i)
+void Graph::erase(const UnsignedInteger i)
 {
   copyOnWrite();
   getImplementation()->erase(i);
@@ -115,13 +115,13 @@ void Graph::setDrawables(const DrawableCollection & drawableCollection)
   getImplementation()->setDrawables(drawableCollection);
 }
 /* Individual drawable accessor */
-Drawable Graph::getDrawable(const UnsignedLong index) const
+Drawable Graph::getDrawable(const UnsignedInteger index) const
 {
   return getImplementation()->getDrawable(index);
 }
 
 void Graph::setDrawable(const Drawable & drawable,
-                        const UnsignedLong index)
+                        const UnsignedInteger index)
 {
   copyOnWrite();
   getImplementation()->setDrawable(drawable, index);

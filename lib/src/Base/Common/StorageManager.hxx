@@ -104,7 +104,7 @@ public:
    * name is never used in another way than for user
    * information. This name has no meaning to the platform.
    */
-  explicit StorageManager(UnsignedLong defaultVersion = 1);
+  explicit StorageManager(UnsignedInteger defaultVersion = 1);
 
   /**
    * Virtual constructor
@@ -134,13 +134,13 @@ public:
   void setStudy(Study * p_study);
 
   /** Returns the version of the study that the manager can read/write */
-  UnsignedLong getDefaultStudyVersion() const;
+  UnsignedInteger getDefaultStudyVersion() const;
 
   /** Study version accessor */
-  UnsignedLong getStudyVersion() const;
+  UnsignedInteger getStudyVersion() const;
 
   /** Study version accessor */
-  void setStudyVersion(UnsignedLong version);
+  void setStudyVersion(UnsignedInteger version);
 
 
   /** Do some administrative tasks before saving/reloading
@@ -194,7 +194,7 @@ public:
    * @internal
    */
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedLong value);
+  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value);
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger value);
 #endif
@@ -207,22 +207,22 @@ public:
   /* Add an indexed value to an internal object
    * @internal
    */
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Bool value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, UnsignedLong value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value);
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Unsigned64BitsInteger value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger value);
 #endif
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalScalar value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalComplex value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const String & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const InterfaceObject & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const PersistentObject & value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const PersistentObject & value);
 
   /* Read an attribute
    * @internal
    */
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedLong & value);
+  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value);
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger & value);
 #endif
@@ -235,16 +235,16 @@ public:
   /* Read an indexed value
    * @internal
    */
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Bool & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, UnsignedLong & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value);
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Unsigned64BitsInteger & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger & value);
 #endif
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalScalar & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalComplex & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, String & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, InterfaceObject & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, PersistentObject & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, PersistentObject & value);
 #endif
 
   /** Returns true if an object is already saved
@@ -263,7 +263,7 @@ protected:
   void cleanSavedObjects() const;
 
   /** Query the manager if the version is correct */
-  virtual Bool canManageVersion(UnsignedLong version) const;
+  virtual Bool canManageVersion(UnsignedInteger version) const;
 
   /** Return the current state of the storage manager (for those having one) */
   virtual const InternalObject & getState() const;
@@ -282,10 +282,10 @@ private:
   Study * p_study_;
 
   /** The default version of the study */
-  const UnsignedLong defaultVersion_;
+  const UnsignedInteger defaultVersion_;
 
   /** The version of the study actually used */
-  UnsignedLong version_;
+  UnsignedInteger version_;
 
   /** The map that tells if objects wera already saved */
   mutable std::map<Id, Bool> savedObjects_;

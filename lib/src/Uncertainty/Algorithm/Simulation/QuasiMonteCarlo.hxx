@@ -69,7 +69,7 @@ private:
 
 protected:
   /** Antecedent dimension */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** Sequence used to generate the low discrepancy points */
   LowDiscrepancySequence lowDiscrepancySequence_;

@@ -99,14 +99,14 @@ String CenteredFiniteDifferenceHessian::__str__(const String & offset) const
 /* Hessian () */
 SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(inP.getDimension());
+  const UnsignedInteger inputDimension(inP.getDimension());
   NumericalPoint step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim^2+1 points. */
   NumericalSample gridPoints(2 * inputDimension * inputDimension + 1, inP);
-  UnsignedLong index(0);
-  for(UnsignedLong i = 1; i < inputDimension; ++i)
-    for(UnsignedLong j = 0; j < i; ++j)
+  UnsignedInteger index(0);
+  for(UnsignedInteger i = 1; i < inputDimension; ++i)
+    for(UnsignedInteger j = 0; j < i; ++j)
     {
       gridPoints[index][i] += step[i];
       gridPoints[index][j] += step[j];
@@ -121,7 +121,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & 
       gridPoints[index][j] += step[j];
       ++index;
     } // For j
-  for(UnsignedLong i = 0; i < inputDimension; ++i)
+  for(UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     /* Special case for the diagonal terms, in order to avoid computing twice
      *  f(x) = f(x + e_i - e_i) = f(x - e_i + e_i) */
@@ -135,25 +135,25 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & 
   /* Get the center value */
   NumericalPoint center(gridValues[gridValues.getSize() - 1]);
   /* Compute the hessian */
-  UnsignedLong outputDimension(p_evaluation_->getOutputDimension());
+  UnsignedInteger outputDimension(p_evaluation_->getOutputDimension());
   SymmetricTensor result(inputDimension, outputDimension);
-  UnsignedLong diagonalOffset(2 * inputDimension * (inputDimension - 1));
+  UnsignedInteger diagonalOffset(2 * inputDimension * (inputDimension - 1));
   NumericalScalar scale;
-  UnsignedLong offDiagonalOffset(0);
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
+  UnsignedInteger offDiagonalOffset(0);
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     // Diagonal term
     /* result(i, i, k) = (f_k(x + 2 * e_i) - 2 * f_k(x) + f_k(x + 2 * e_i)) / (4 * e_i * e_i) */
     scale = 1.0 / (4.0 * step[i] * step[i]);
-    for (UnsignedLong k = 0; k < outputDimension; ++k)
+    for (UnsignedInteger k = 0; k < outputDimension; ++k)
     {
       result(i, i, k) = scale * (gridValues[diagonalOffset + 2 * i][k] - 2.0 * center[k] + gridValues[diagonalOffset + 2 * i + 1][k]);
     } // k
     // Compute only the upper part of each sheet, as the hessian is symmetric
-    for (UnsignedLong j = 0; j < i; ++j)
+    for (UnsignedInteger j = 0; j < i; ++j)
     {
       scale = 1.0 / (4.0 * step[i] * step[j]);
-      for (UnsignedLong k = 0; k < outputDimension; ++k)
+      for (UnsignedInteger k = 0; k < outputDimension; ++k)
         /* result(i, j, k) = (f_k(x + e_i + e_j) - f_k(x + e_i - e_j) + f_k(x - e_i - e_j) - f_k(x - e_i + e_j)) / (4 * e_i * e_j) ~ d2f_k / dx_idx_j */
         result(i, j, k) = scale * (gridValues[offDiagonalOffset + 4 * j][k] - gridValues[offDiagonalOffset + 4 * j + 1][k] + gridValues[offDiagonalOffset + 4 * j + 2][k] - gridValues[offDiagonalOffset + 4 * j + 3][k]);
     } // j

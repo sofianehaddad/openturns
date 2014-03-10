@@ -46,7 +46,7 @@ public:
   InverseNatafEllipticalDistributionHessian();
 
   /** Parameter constructor */
-  InverseNatafEllipticalDistributionHessian(const UnsignedLong dimension);
+  InverseNatafEllipticalDistributionHessian(const UnsignedInteger dimension);
 
   /** Virtual constructor */
   virtual InverseNatafEllipticalDistributionHessian * clone() const;

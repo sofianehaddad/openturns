@@ -56,7 +56,7 @@ RandomizedQuasiMonteCarlo::RandomizedQuasiMonteCarlo(const Event & event,
 {
   if (!event.getImplementation()->getAntecedent()->getDistribution().hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use the RandomizedQuasiMonteCarlo algorithm with an input distribution whose components are not independent.";
   // retrieve the marginal laws
-  for (UnsignedLong index = 0; index < dimension_; ++index) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
+  for (UnsignedInteger index = 0; index < dimension_; ++index) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
 
   // initialize the low-discrepancy sequence
   lowDiscrepancySequence_.initialize(dimension_);
@@ -74,16 +74,16 @@ RandomizedQuasiMonteCarlo * RandomizedQuasiMonteCarlo::clone() const
 NumericalSample RandomizedQuasiMonteCarlo::computeBlockSample()
 {
   // Size of a block
-  const UnsignedLong blockSize(getBlockSize());
+  const UnsignedInteger blockSize(getBlockSize());
 
   // allocate the input sample
   NumericalSample inputSample(lowDiscrepancySequence_.generate(blockSize));
 
   // for each point of the sample
-  for(UnsignedLong index = 0; index < blockSize; ++index)
+  for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
     // for each component
-    for(UnsignedLong component = 0; component < dimension_; ++component)
+    for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
       // use marginal laws to compute quantile from the low-discrepancy value to build the input sample
       // with a cyclic scrambling of the low discrepancy point as in R. Cranley and T.N.L. Patterson, "Randomization of number theoretic methods for multiple integration.", SIAM Journal of Numerical Analysis, 13:904-914, 1976.
@@ -94,7 +94,7 @@ NumericalSample RandomizedQuasiMonteCarlo::computeBlockSample()
 
   // Then, evaluate the function on this sample
   NumericalSample blockSample(event_.getImplementation()->getFunction()(inputSample));
-  for (UnsignedLong i = 0; i < blockSize_; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
+  for (UnsignedInteger i = 0; i < blockSize_; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
   return blockSample;
 }
 

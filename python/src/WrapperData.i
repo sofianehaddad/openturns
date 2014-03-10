@@ -9,7 +9,7 @@
 
 %typemap(in) WrapperListElementType {
   if (OT::isAPython< OT::_PyInt_ >($input)) {
-    $1 = static_cast<$1_ltype>(OT::convert< OT::_PyInt_, OT::UnsignedLong >($input));
+    $1 = static_cast<$1_ltype>(OT::convert< OT::_PyInt_, OT::UnsignedInteger >($input));
   }
   else if (OT::isAPython< OT::_PyString_ >($input)) {
     OT::String name(OT::convert< OT::_PyString_, OT::String >($input));
@@ -30,7 +30,7 @@
 
 %typemap(in) WrapperLocationType {
   if (OT::isAPython< OT::_PyInt_ >($input)) {
-    $1 = static_cast<$1_ltype>(OT::convert< OT::_PyInt_, OT::UnsignedLong >($input));
+    $1 = static_cast<$1_ltype>(OT::convert< OT::_PyInt_, OT::UnsignedInteger >($input));
   }
   else if (OT::isAPython< OT::_PyString_ >($input)) {
     OT::String name(OT::convert< OT::_PyString_, OT::String >($input));
@@ -51,7 +51,7 @@
 
 %typemap(in) WrapperProvided {
   if (OT::isAPython< OT::_PyInt_ >($input)) {
-    $1 = static_cast<$1_ltype>(OT::convert< OT::_PyInt_, OT::UnsignedLong >($input));
+    $1 = static_cast<$1_ltype>(OT::convert< OT::_PyInt_, OT::UnsignedInteger >($input));
   }
   else if (OT::isAPython< OT::_PyString_ >($input)) {
     OT::String name(OT::convert< OT::_PyString_, OT::String >($input));
@@ -71,7 +71,7 @@
 }
 
 %typemap(out) WrapperListElementType, WrapperLocationType, WrapperProvided {
-  $result = OT::convert< OT::UnsignedLong, OT::_PyInt_ >($1);
+  $result = OT::convert< OT::UnsignedInteger, OT::_PyInt_ >($1);
  }
 
 %include WrapperInterface.h

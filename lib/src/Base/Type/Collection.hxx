@@ -112,14 +112,14 @@ public:
   }
 
   /** Constructor that pre-allocate size elements */
-  Collection(const UnsignedLong size)
+  Collection(const UnsignedInteger size)
     : coll__(size)
   {
     // Nothing to do
   }
 
   /** Constructor that pre-allocate size elements with value */
-  Collection(const UnsignedLong size,
+  Collection(const UnsignedInteger size,
              const T & value)
     : coll__(size, value)
   {
@@ -185,14 +185,14 @@ public:
 #ifndef SWIG
   /** Operator[]() gives access to the elements of the collection */
   inline
-  virtual T & operator [] (UnsignedLong i)
+  virtual T & operator [] (UnsignedInteger i)
   {
     return coll__[i];
   }
 
   /** Operator[]() gives access to the elements of the const collection */
   inline
-  virtual const T & operator [] (UnsignedLong i) const
+  virtual const T & operator [] (UnsignedInteger i) const
   {
     return coll__[i];
   }
@@ -200,7 +200,7 @@ public:
 
   /* Method __len__() is for Python */
   inline
-  UnsignedLong __len__() const
+  UnsignedInteger __len__() const
   {
     return coll__.size();
   }
@@ -216,20 +216,20 @@ public:
   inline
   Bool __contains__(T val) const
   {
-    for (UnsignedLong i = 0; i < coll__.size(); ++i) if ( coll__[i] == val ) return true;
+    for (UnsignedInteger i = 0; i < coll__.size(); ++i) if ( coll__[i] == val ) return true;
     return false;
   }
 
   /* Method __getitem__() is for Python */
   inline
-  T __getitem__(const UnsignedLong i) const
+  T __getitem__(const UnsignedInteger i) const
   {
     return coll__.at(i);
   }
 
   /* Method __setitem__() is for Python */
   inline
-  virtual void __setitem__(const UnsignedLong i,
+  virtual void __setitem__(const UnsignedInteger i,
                            const T & val)
   {
     coll__.at(i) = val;
@@ -237,7 +237,7 @@ public:
 
   /* Method __delitem__() is for Python */
   inline
-  virtual void __delitem__(const UnsignedLong i)
+  virtual void __delitem__(const UnsignedInteger i)
   {
     if (i < coll__.size())
       coll__.erase( coll__.begin() + i );
@@ -247,14 +247,14 @@ public:
 
   /** At() gives access to the elements of the collection but throws an exception if bounds are overcome */
   inline
-  virtual T & at(const UnsignedLong i)
+  virtual T & at(const UnsignedInteger i)
   {
     return coll__.at(i);
   }
 
   /** At() gives access to the elements of the const collection but throws an exception if bounds are overcome */
   inline
-  virtual const T & at(const UnsignedLong i) const
+  virtual const T & at(const UnsignedInteger i) const
   {
     return coll__.at(i);
   }
@@ -275,14 +275,14 @@ public:
 
   /** Method getSize() returns the number of elements of the collection */
   inline
-  UnsignedLong getSize() const
+  UnsignedInteger getSize() const
   {
     return coll__.size();
   }
 
   /** Method resize() changes the size of the Collection. If the new size is smaller than the older one, the last elements are thrown away, else the new elements are setted to the default value of the element type */
   inline
-  virtual void resize(const UnsignedLong newSize)
+  virtual void resize(const UnsignedInteger newSize)
   {
     coll__.resize(newSize);
   }
@@ -369,7 +369,7 @@ public:
   {
     OSS oss;
     oss << toString(false);
-    if (getSize() >= ResourceMap::GetAsUnsignedLong("Collection-size-visible-in-str-from"))
+    if (getSize() >= ResourceMap::GetAsUnsignedInteger("Collection-size-visible-in-str-from"))
       oss << "#" << getSize();
     return oss;
   }

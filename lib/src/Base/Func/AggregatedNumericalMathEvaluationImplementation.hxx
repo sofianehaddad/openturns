@@ -70,16 +70,16 @@ public:
   void setFunctionsCollection(const NumericalMathFunctionCollection & functionsCollection);
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   Implementation getMarginal(const Indices & indices) const;
 
   /** Input dimension accessor */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Output dimension accessor */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Gradient according to the marginal parameters */
   Matrix parametersGradient(const NumericalPoint & inP) const;
@@ -104,7 +104,7 @@ private:
   NumericalMathFunctionPersistentCollection functionsCollection_;
 
   // The output dimension
-  UnsignedLong outputDimension_;
+  UnsignedInteger outputDimension_;
 
 } ; /* class AggregatedNumericalMathEvaluationImplementation */
 

@@ -44,7 +44,7 @@ LinearEnumerateFunction::LinearEnumerateFunction()
 }
 
 /* Parameter constructor */
-LinearEnumerateFunction::LinearEnumerateFunction(const UnsignedLong dimension)
+LinearEnumerateFunction::LinearEnumerateFunction(const UnsignedInteger dimension)
   : EnumerateFunctionImplementation(dimension)
 {
   // Nothing to do
@@ -67,19 +67,19 @@ String LinearEnumerateFunction::__repr__() const
 
 
 /* Find the smallest n such that Binomial(n, n + dimension) > index and also returns the value of Binomial(n - 1, n - 1 + dimension) */
-UnsignedLong LinearEnumerateFunction::findBinomialCoefficient(const UnsignedLong index,
-    const UnsignedLong dimension,
-    UnsignedLong & binomialCoefficient) const
+UnsignedInteger LinearEnumerateFunction::findBinomialCoefficient(const UnsignedInteger index,
+    const UnsignedInteger dimension,
+    UnsignedInteger & binomialCoefficient) const
 {
-  UnsignedLong n(0);
+  UnsignedInteger n(0);
   binomialCoefficient = 1;
   // Use floating point arithmetic to avoid overflow
   NumericalScalar newBinomialCoefficient(1.0);
   // Special treatment to avoid roundoff error during conversion
-  while(static_cast<UnsignedLong>(round(newBinomialCoefficient)) <= index)
+  while(static_cast<UnsignedInteger>(round(newBinomialCoefficient)) <= index)
   {
     ++n;
-    binomialCoefficient = static_cast<UnsignedLong>(round(newBinomialCoefficient));
+    binomialCoefficient = static_cast<UnsignedInteger>(round(newBinomialCoefficient));
     // Using integer arithmetic, the computation should have been implemented this way to avoid truncation:
     // newBinomialCoefficient = (newBinomialCoefficient * (n + dimension)) / n;
     // but for large n it should lead to an overflow.
@@ -96,16 +96,16 @@ UnsignedLong LinearEnumerateFunction::findBinomialCoefficient(const UnsignedLong
    I = Binomial(n_1, d) + ... + Binomial(n_{d-1}, 1)
    where Binomial(n_1, d_1) is
 */
-Indices LinearEnumerateFunction::operator() (const UnsignedLong index) const
+Indices LinearEnumerateFunction::operator() (const UnsignedInteger index) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   Indices result(dimension, 0);
   if (index == 0) return result;
-  UnsignedLong binomialCoefficient(0);
-  UnsignedLong degree(findBinomialCoefficient(index, dimension, binomialCoefficient));
+  UnsignedInteger binomialCoefficient(0);
+  UnsignedInteger degree(findBinomialCoefficient(index, dimension, binomialCoefficient));
   // Loop over the dimension of the remaining polynomial
-  UnsignedLong currentIndex(index);
-  for (UnsignedLong i = 0; i < dimension - 1; ++i)
+  UnsignedInteger currentIndex(index);
+  for (UnsignedInteger i = 0; i < dimension - 1; ++i)
   {
     // Early exit if the remaining polynomial is constant
     if (currentIndex <= binomialCoefficient)
@@ -114,7 +114,7 @@ Indices LinearEnumerateFunction::operator() (const UnsignedLong index) const
       return result;
     }
     currentIndex -= binomialCoefficient;
-    const UnsignedLong remainingDegree(findBinomialCoefficient(currentIndex, dimension - i - 1, binomialCoefficient));
+    const UnsignedInteger remainingDegree(findBinomialCoefficient(currentIndex, dimension - i - 1, binomialCoefficient));
     result[i] = degree - remainingDegree;
     degree = remainingDegree;
   }
@@ -123,18 +123,18 @@ Indices LinearEnumerateFunction::operator() (const UnsignedLong index) const
 }
 
 /* The inverse of the association */
-UnsignedLong LinearEnumerateFunction::inverse(const Indices & indices) const
+UnsignedInteger LinearEnumerateFunction::inverse(const Indices & indices) const
 {
-  const UnsignedLong dimension(getDimension());
-  const UnsignedLong size(indices.getSize());
+  const UnsignedInteger dimension(getDimension());
+  const UnsignedInteger size(indices.getSize());
   if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension.";
   // Quick return for dimension == 1 case
   if (size == 1) return indices[0];
-  UnsignedLong totalDegree(0);
-  for (UnsignedLong i = 0; i < size; ++i) totalDegree += indices[i];
-  UnsignedLong result(0);
+  UnsignedInteger totalDegree(0);
+  for (UnsignedInteger i = 0; i < size; ++i) totalDegree += indices[i];
+  UnsignedInteger result(0);
   // Loop over the marginal degrees
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Early return if nothing is left
     if (totalDegree == 0) return result;
@@ -149,24 +149,24 @@ UnsignedLong LinearEnumerateFunction::inverse(const Indices & indices) const
  * = C(strataIndex, dimension - 1 + strataIndex)
  * = (dimension - 1 + strataIndex) ! / (dimension - 1)!.strataIndex!)
  */
-UnsignedLong LinearEnumerateFunction::getStrataCardinal(const UnsignedLong strataIndex) const
+UnsignedInteger LinearEnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
-  const UnsignedLong dimension(getDimension());
-  return static_cast<UnsignedLong>(round(exp(SpecFunc::LnGamma(dimension + strataIndex) - SpecFunc::LnGamma(dimension) - SpecFunc::LnGamma(strataIndex + 1))));
+  const UnsignedInteger dimension(getDimension());
+  return static_cast<UnsignedInteger>(round(exp(SpecFunc::LnGamma(dimension + strataIndex) - SpecFunc::LnGamma(dimension) - SpecFunc::LnGamma(strataIndex + 1))));
 }
 
 /* The cardinal of the cumulated strata less or equal to the given strata
  * = C(strataIndex, dimension + strataIndex)
  * = (dimension + strataIndex)! / (dimension!.strataIndex!)
  */
-UnsignedLong LinearEnumerateFunction::getStrataCumulatedCardinal(const UnsignedLong strataIndex) const
+UnsignedInteger LinearEnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
-  const UnsignedLong dimension(getDimension());
-  return static_cast<UnsignedLong>(round(exp(SpecFunc::LnGamma(dimension + strataIndex + 1) - SpecFunc::LnGamma(dimension + 1) - SpecFunc::LnGamma(strataIndex + 1))));
+  const UnsignedInteger dimension(getDimension());
+  return static_cast<UnsignedInteger>(round(exp(SpecFunc::LnGamma(dimension + strataIndex + 1) - SpecFunc::LnGamma(dimension + 1) - SpecFunc::LnGamma(strataIndex + 1))));
 }
 
 /* The index of the strata of degree max < degree */
-UnsignedLong LinearEnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const
+UnsignedInteger LinearEnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
 {
   return maximumDegree;
 }

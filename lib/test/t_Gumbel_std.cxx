@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10000;
+    UnsignedInteger size = 10000;
     NumericalSample oneSample = distribution.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
     fullprint << "kendall=" << kendall << std::endl;
     Gumbel::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
-    for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
     // Specific to this distribution

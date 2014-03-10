@@ -72,7 +72,7 @@ protected:
   NumericalSample computeBlockSample();
 
   /** Second antecedent dimension */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** Cells shuffle */
   Matrix shuffle_;

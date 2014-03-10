@@ -54,7 +54,7 @@ public:
   BoundConstrainedAlgorithmImplementationResult(const NumericalPoint & optimizer,
       const NumericalScalar optimalValue,
       const OptimizationProblem optimization,
-      const UnsignedLong evaluationsNumber,
+      const UnsignedInteger evaluationsNumber,
       const NumericalScalar absoluteError,
       const NumericalScalar relativeError,
       const NumericalScalar objectiveError,
@@ -74,7 +74,7 @@ public:
   OptimizationProblem getOptimizationProblem() const;
 
   /** Iterations number accessor */
-  UnsignedLong getEvaluationsNumber() const;
+  UnsignedInteger getEvaluationsNumber() const;
 
   /** Absolute error accessor */
   NumericalScalar getAbsoluteError() const;
@@ -103,7 +103,7 @@ protected:
   void setOptimizer(const NumericalPoint & optimizer);
 
   /** Iterations number accessor */
-  void setEvaluationsNumber(const UnsignedLong evaluationsNumber);
+  void setEvaluationsNumber(const UnsignedInteger evaluationsNumber);
 
   /** Optimal value accessor */
   void setOptimalValue(const NumericalScalar optimalValue);
@@ -128,7 +128,7 @@ private:
   NumericalPoint  optimizer_;
   NumericalScalar optimalValue_;
   OptimizationProblem optimization_;
-  UnsignedLong    evaluationsNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
+  UnsignedInteger    evaluationsNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   NumericalScalar objectiveError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */

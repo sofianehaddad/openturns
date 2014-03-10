@@ -46,7 +46,7 @@ SequentialStrategy::SequentialStrategy()
 
 /* Constructor from an orthogonal basis */
 SequentialStrategy::SequentialStrategy(const OrthogonalBasis & basis,
-                                       const UnsignedLong maximumDimension,
+                                       const UnsignedInteger maximumDimension,
                                        const Bool verbose)
   : AdaptiveStrategyImplementation(basis, maximumDimension),
     currentVectorIndex_(0),

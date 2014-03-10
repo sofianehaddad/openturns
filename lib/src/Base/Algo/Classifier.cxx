@@ -58,7 +58,7 @@ Classifier::Classifier(const NumericalSample & inS, const Indices & outC)
 }
 
 /* Classify a point */
-UnsignedLong Classifier::classify(const NumericalPoint & inP) const
+UnsignedInteger Classifier::classify(const NumericalPoint & inP) const
 {
   return getImplementation()->classify(inP);
 }
@@ -70,7 +70,7 @@ Indices Classifier::classify(const NumericalSample & inS) const
 }
 
 /* Grade a point */
-NumericalScalar Classifier::grade(const NumericalPoint & inP, UnsignedLong hClass) const
+NumericalScalar Classifier::grade(const NumericalPoint & inP, UnsignedInteger hClass) const
 {
   return getImplementation()->grade(inP, hClass);
 }
@@ -94,7 +94,7 @@ Bool Classifier::getVerbose() const
 }
 
 /* Input space dimension */
-UnsignedLong Classifier::getDimension() const
+UnsignedInteger Classifier::getDimension() const
 {
   return getImplementation()->getDimension();
 }

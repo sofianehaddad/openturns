@@ -34,7 +34,7 @@ static Factory<DomainImplementation> RegisteredFactory("DomainImplementation");
 
 
 /* Default constructor */
-DomainImplementation::DomainImplementation(UnsignedLong dimension)
+DomainImplementation::DomainImplementation(UnsignedInteger dimension)
   : PersistentObject()
   , dimension_(dimension)
   , volume_(0.0)
@@ -107,7 +107,7 @@ void DomainImplementation::computeVolume() const
 }
 
 /* Get the dimension of the domain*/
-UnsignedLong DomainImplementation::getDimension() const
+UnsignedInteger DomainImplementation::getDimension() const
 {
   return dimension_;
 }

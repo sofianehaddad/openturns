@@ -55,8 +55,8 @@ ProductPolynomialEvaluationImplementation::ProductPolynomialEvaluationImplementa
 {
   // Nothing to do
   Description description(0);
-  for (UnsignedLong i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedLong i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
   setDescription(description);
 }
 
@@ -79,17 +79,17 @@ String ProductPolynomialEvaluationImplementation::__str__(const String & offset)
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedLong size(polynomials_.getSize());
+  const UnsignedInteger size(polynomials_.getSize());
   if (size == 0) return oss;
   const Description description(getInputDescription());
   if (size == 1) return (oss << polynomials_[0].__str__(description[0], ""));
   Bool allScalar(true);
   NumericalScalar scalarValue(1.0);
   Bool onlyOneNotScalar(false);
-  UnsignedLong indexNotScalar(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger indexNotScalar(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedLong degree(polynomials_[i].getDegree());
+    const UnsignedInteger degree(polynomials_[i].getDegree());
     const Bool isScalar(degree == 0);
     // Only one non-scalar so far, and the current one is not scalar
     if (onlyOneNotScalar && !isScalar) onlyOneNotScalar = false;
@@ -113,9 +113,9 @@ String ProductPolynomialEvaluationImplementation::__str__(const String & offset)
     Bool first(scalarValueString == "1");
     // There is a non-unit factor
     if (!first) oss << scalarValue;
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedLong degree(polynomials_[i].getDegree());
+      const UnsignedInteger degree(polynomials_[i].getDegree());
       // All the degree 0 factors have already been taken into account
       if (degree > 0)
       {
@@ -132,10 +132,10 @@ String ProductPolynomialEvaluationImplementation::__str__(const String & offset)
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
 NumericalPoint ProductPolynomialEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  const UnsignedLong inDimension(inP.getDimension());
+  const UnsignedInteger inDimension(inP.getDimension());
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   NumericalScalar productEvaluation(1.0) ;
-  for (UnsignedLong i = 0; i < inDimension; ++i) productEvaluation *= polynomials_[i](inP[i]);
+  for (UnsignedInteger i = 0; i < inDimension; ++i) productEvaluation *= polynomials_[i](inP[i]);
   const NumericalPoint result(1, productEvaluation);
   if (isHistoryEnabled_)
   {
@@ -146,13 +146,13 @@ NumericalPoint ProductPolynomialEvaluationImplementation::operator() (const Nume
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ProductPolynomialEvaluationImplementation::getInputDimension() const
+UnsignedInteger ProductPolynomialEvaluationImplementation::getInputDimension() const
 {
   return polynomials_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ProductPolynomialEvaluationImplementation::getOutputDimension() const
+UnsignedInteger ProductPolynomialEvaluationImplementation::getOutputDimension() const
 {
   return 1;
 }

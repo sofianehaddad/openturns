@@ -80,20 +80,20 @@ Bool NoNumericalMathHessianImplementation::isActualImplementation() const
 /* Hessian method */
 SymmetricTensor NoNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   return SymmetricTensor();
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NoNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger NoNumericalMathHessianImplementation::getInputDimension() const
 {
   return 0;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NoNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger NoNumericalMathHessianImplementation::getOutputDimension() const
 {
   return 0;
 }

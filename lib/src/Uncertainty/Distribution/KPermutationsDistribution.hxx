@@ -45,8 +45,8 @@ public:
 
 
   /** Parameters constructor */
-  KPermutationsDistribution(const UnsignedLong k,
-                            const UnsignedLong n);
+  KPermutationsDistribution(const UnsignedInteger k,
+                            const UnsignedInteger n);
 
 
   /** Comparison operator */
@@ -78,7 +78,7 @@ public:
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;
@@ -93,12 +93,12 @@ public:
   /* Interface specific to KPermutationsDistribution */
 
   /** K accessor */
-  void setK(const UnsignedLong k);
-  UnsignedLong getK() const;
+  void setK(const UnsignedInteger k);
+  UnsignedInteger getK() const;
 
   /** N accessor */
-  void setN(const UnsignedLong n);
-  UnsignedLong getN() const;
+  void setN(const UnsignedInteger n);
+  UnsignedInteger getN() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -125,10 +125,10 @@ private:
   void computeCovariance() const;
 
   /** Size of the permutations */
-  UnsignedLong k_;
+  UnsignedInteger k_;
 
   /** Size of the base set */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
   /** Log PDF value */
   NumericalScalar logPDFValue_;

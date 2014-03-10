@@ -160,7 +160,7 @@ void AnalyticalResult::setIsStandardPointOriginInFailureSpace(const Bool isStand
 /* ImportanceFactors evaluation */
 void AnalyticalResult::computeImportanceFactors() const
 {
-  const UnsignedLong dimension(standardSpaceDesignPoint_.getDimension());
+  const UnsignedInteger dimension(standardSpaceDesignPoint_.getDimension());
   importanceFactors_ = NumericalPoint(dimension, -1.0);
   /* First, check that the importance factors are well-defined */
   if (standardSpaceDesignPoint_.norm() > 0.0)
@@ -175,7 +175,7 @@ void AnalyticalResult::computeImportanceFactors() const
     /* if Generalised Nataf Transformation : Z = E1^(-1)o F_{Xi}(Xi*) */
     /* if Rosenblatt  Transformation : Z = Phi^(-1)o F_{Xi}(Xi*) */
     // for each marginals */
-    for (UnsignedLong marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
+    for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
     {
       const NumericalScalar y(inputDistribution.getMarginal(marginalIndex).computeCDF(NumericalPoint(1, physicalSpaceDesignPoint_[marginalIndex])));
       importanceFactors_[marginalIndex] = standardMarginalDistribution.computeQuantile(y)[0];
@@ -193,7 +193,7 @@ void AnalyticalResult::computeImportanceFactors() const
 /* Classical ImportanceFactors evaluation */
 void AnalyticalResult::computeClassicalImportanceFactors() const
 {
-  const UnsignedLong dimension(standardSpaceDesignPoint_.getDimension());
+  const UnsignedInteger dimension(standardSpaceDesignPoint_.getDimension());
   classicalImportanceFactors_ = NumericalPoint(dimension, -1.0);
   /* First, check that the importance factors are well-defined */
   const NumericalScalar beta2(standardSpaceDesignPoint_.normSquare());
@@ -218,13 +218,13 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
   // Quadrature rule
   NumericalPoint weights;
   const NumericalPoint nodes(p_standardDistribution->getGaussNodesAndWeights(weights));
-  const UnsignedLong nodesSize(nodes.getSize());
+  const UnsignedInteger nodesSize(nodes.getSize());
   NumericalScalar sum(0.0);
   const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-DefaultQuantileEpsilon" ));
   do
   {
     // Integrate over a unit length segment [a, a+1]
-    for (UnsignedLong k = 0; k < nodesSize; ++k) sum += weights[k] * p_standardDistribution->computeRadialDistributionCDF(a + 0.5 * (1.0 + nodes[k]), true);
+    for (UnsignedInteger k = 0; k < nodesSize; ++k) sum += weights[k] * p_standardDistribution->computeRadialDistributionCDF(a + 0.5 * (1.0 + nodes[k]), true);
     sum *= 0.5;
     scaling += sum;
     a += 1.0;
@@ -321,14 +321,14 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   if (setIso.getDimension() > 0) isoProbabilisticGradient = inverseIsoProbabilisticTransformation.parametersGradient(standardSpaceDesignPoint_) * (physicalGradientMatrix * NumericalPoint(1, 1.0));
   /* associate to each element of Set1 the gradient value */
   /* hasoferReliabilityIndexSensitivity is the collection Set1 + one other collection wich is Set2 */
-  const UnsignedLong set1Size(set1.getSize());
-  const UnsignedLong size(set1Size + (isSet2Empty ? 0 : 1));
+  const UnsignedInteger set1Size(set1.getSize());
+  const UnsignedInteger size(set1Size + (isSet2Empty ? 0 : 1));
   hasoferReliabilityIndexSensitivity_ = Sensitivity(size);
 
-  for (UnsignedLong sensitivityIndex = 0; sensitivityIndex < set1Size; ++sensitivityIndex)
+  for (UnsignedInteger sensitivityIndex = 0; sensitivityIndex < set1Size; ++sensitivityIndex)
   {
     const NumericalPointWithDescription currentParameters(set1[sensitivityIndex]);
-    const UnsignedLong currentDimension(currentParameters.getDimension());
+    const UnsignedInteger currentDimension(currentParameters.getDimension());
     NumericalPointWithDescription currentSensitivity(currentDimension);
     const Description currentDescription(currentParameters.getDescription());
     // the currentSensitivity gets the description and the name from set1
@@ -336,9 +336,9 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
     const String currentName(currentParameters.getName());
     currentSensitivity.setName(currentName);
     const Description isoDescription(setIso.getDescription());
-    for (UnsignedLong currentIndex = 0; currentIndex < currentDimension; ++currentIndex)
+    for (UnsignedInteger currentIndex = 0; currentIndex < currentDimension; ++currentIndex)
     {
-      const UnsignedLong position(computePosition(currentName, currentDescription[currentIndex], isoDescription));
+      const UnsignedInteger position(computePosition(currentName, currentDescription[currentIndex], isoDescription));
       /* if currentParameters[currentIndex] is into setIso, then we get the sensitivity value in the corresponding isoProbabilisticGradient */
       if (position < setIso.getDimension()) currentSensitivity[currentIndex] = gradientToSensitivity * isoProbabilisticGradient[position];
       /* else the  sensitivity value is null */
@@ -357,11 +357,11 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
 
 
 /* Returns the position of the given (value, name) into the NumericalPoint or the dimension of the NumericalPoint if failed */
-UnsignedLong AnalyticalResult::computePosition(const String & marginalName, const String & marginalParameterName, const Description & parameterSetNames) const
+UnsignedInteger AnalyticalResult::computePosition(const String & marginalName, const String & marginalParameterName, const Description & parameterSetNames) const
 {
-  const UnsignedLong dimension(parameterSetNames.getSize());
+  const UnsignedInteger dimension(parameterSetNames.getSize());
   const String fullName(OSS() << marginalName << "_" << marginalParameterName);
-  for (UnsignedLong index = 0; index < dimension; ++index) if ( parameterSetNames[index] == fullName ) return index;
+  for (UnsignedInteger index = 0; index < dimension; ++index) if ( parameterSetNames[index] == fullName ) return index;
   return dimension;
 }
 
@@ -372,12 +372,12 @@ AnalyticalResult::GraphCollection AnalyticalResult::drawHasoferReliabilityIndexS
   GraphCollection hasoferReliabilityIndexSensitivityGraphCollection(0);
   // To ensure that the hasoferReliabilityIndexSensitivity_ are up to date
   if (! isAlreadyComputedHasoferReliabilityIndexSensitivity_) computeHasoferReliabilityIndexSensitivity();
-  const UnsignedLong dimension(standardSpaceDesignPoint_.getDimension());
-  const UnsignedLong size(hasoferReliabilityIndexSensitivity_.getSize());
+  const UnsignedInteger dimension(standardSpaceDesignPoint_.getDimension());
+  const UnsignedInteger size(hasoferReliabilityIndexSensitivity_.getSize());
   // The first graph shows the sensitivities with respect to the marginal parameters if there exist
   // in the cas where the distribution or some marginals are defined by user, it may not have parameters : we create a empty sensitivity graph
   Sensitivity marginalSensitivity(dimension);
-  for(UnsignedLong i = 0; i < dimension; ++i) marginalSensitivity[i] = hasoferReliabilityIndexSensitivity_[i];
+  for(UnsignedInteger i = 0; i < dimension; ++i) marginalSensitivity[i] = hasoferReliabilityIndexSensitivity_[i];
   Graph hasoferReliabilityIndexSensitivityGraphMarginal(drawSensitivity(marginalSensitivity, width));
   OSS oss1;
   oss1 << "Hasofer Reliability Index Sensitivities - Marginal parameters - " << limitStateVariable_.getName();
@@ -387,7 +387,7 @@ AnalyticalResult::GraphCollection AnalyticalResult::drawHasoferReliabilityIndexS
   if (size > dimension)
   {
     Sensitivity otherSensitivity(size - dimension);
-    for(UnsignedLong i = dimension; i < size; ++i) otherSensitivity[i - dimension] = hasoferReliabilityIndexSensitivity_[i];
+    for(UnsignedInteger i = dimension; i < size; ++i) otherSensitivity[i - dimension] = hasoferReliabilityIndexSensitivity_[i];
     Graph hasoferReliabilityIndexSensitivityGraphOther(drawSensitivity(otherSensitivity, width));
     OSS oss2;
     oss2 << "Hasofer Reliability Index Sensitivities - Other parameters - " << limitStateVariable_.getName();
@@ -410,13 +410,13 @@ Graph AnalyticalResult::drawSensitivity(const Sensitivity & sensitivity,
   BarPlot sensitivityBarPlot(NumericalSample(0, 2), shift, "");
 
   // Create the barplots
-  const UnsignedLong sensitivitySize(sensitivity.getSize());
+  const UnsignedInteger sensitivitySize(sensitivity.getSize());
   const Description colors(BarPlot::BuildDefaultPalette(sensitivitySize));
-  for (UnsignedLong collectionIndex = 0; collectionIndex < sensitivitySize; ++collectionIndex)
+  for (UnsignedInteger collectionIndex = 0; collectionIndex < sensitivitySize; ++collectionIndex)
   {
     NumericalSample data(sensitivity[collectionIndex].getDimension(), 2);
-    const UnsignedLong dataSize(data.getSize());
-    for (UnsignedLong sensitivityIndex = 0; sensitivityIndex < dataSize; ++sensitivityIndex)
+    const UnsignedInteger dataSize(data.getSize());
+    for (UnsignedInteger sensitivityIndex = 0; sensitivityIndex < dataSize; ++sensitivityIndex)
     {
       data[sensitivityIndex][0] = width;
       data[sensitivityIndex][1] = sensitivity[collectionIndex][sensitivityIndex];

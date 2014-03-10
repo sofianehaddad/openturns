@@ -73,8 +73,8 @@ NumericalSample::NumericalSample()
 }
 
 /* Constructor with size and dimension */
-NumericalSample::NumericalSample(const UnsignedLong size,
-                                 const UnsignedLong dim)
+NumericalSample::NumericalSample(const UnsignedInteger size,
+                                 const UnsignedInteger dim)
   : TypedInterfaceObject<NumericalSampleImplementation>(new NumericalSampleImplementation(size, dim))
 {
   // Nothing to do
@@ -95,7 +95,7 @@ NumericalSample::NumericalSample(const Implementation & implementation)
 }
 
 /* Constructor from a NumericalPoint (all elements are equal to the NumericalPoint) */
-NumericalSample::NumericalSample(const UnsignedLong size,
+NumericalSample::NumericalSample(const UnsignedInteger size,
                                  const NumericalPoint & point)
   : TypedInterfaceObject<NumericalSampleImplementation>(new NumericalSampleImplementation(size, point))
 {
@@ -123,7 +123,7 @@ Bool NumericalSample::operator ==(const NumericalSample & other) const
 }
 
 
-NSI_point NumericalSample::operator [] (const UnsignedLong index)
+NSI_point NumericalSample::operator [] (const UnsignedInteger index)
 {
 #ifdef DEBUG_BOUNDCHECKING
   copyOnWrite();
@@ -134,7 +134,7 @@ NSI_point NumericalSample::operator [] (const UnsignedLong index)
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-NSI_const_point NumericalSample::operator [] (const UnsignedLong index) const
+NSI_const_point NumericalSample::operator [] (const UnsignedInteger index) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(index);
@@ -144,8 +144,8 @@ NSI_const_point NumericalSample::operator [] (const UnsignedLong index) const
 }
 
 
-NumericalScalar & NumericalSample::operator () (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalScalar & NumericalSample::operator () (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
@@ -156,8 +156,8 @@ NumericalScalar & NumericalSample::operator () (const UnsignedLong i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & NumericalSample::operator () (const UnsignedLong i,
-    const UnsignedLong j) const
+const NumericalScalar & NumericalSample::operator () (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(i, j);
@@ -167,21 +167,21 @@ const NumericalScalar & NumericalSample::operator () (const UnsignedLong i,
 }
 
 
-NSI_point NumericalSample::at (const UnsignedLong index)
+NSI_point NumericalSample::at (const UnsignedInteger index)
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   copyOnWrite();
   return (*getImplementation())[index];
 }
 
-NSI_const_point NumericalSample::at (const UnsignedLong index) const
+NSI_const_point NumericalSample::at (const UnsignedInteger index) const
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*getImplementation())[index];
 }
 
-NumericalScalar & NumericalSample::at (const UnsignedLong i,
-                                       const UnsignedLong j)
+NumericalScalar & NumericalSample::at (const UnsignedInteger i,
+                                       const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
@@ -189,20 +189,20 @@ NumericalScalar & NumericalSample::at (const UnsignedLong i,
   return (*getImplementation())[i][j];
 }
 
-const NumericalScalar & NumericalSample::at (const UnsignedLong i,
-    const UnsignedLong j) const
+const NumericalScalar & NumericalSample::at (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
   return (*getImplementation())[i][j];
 }
 
-const NumericalPoint NumericalSample::__getitem__ (const UnsignedLong index) const
+const NumericalPoint NumericalSample::__getitem__ (const UnsignedInteger index) const
 {
   return this->at(index);
 }
 
-void NumericalSample::__setitem__ (const UnsignedLong index,
+void NumericalSample::__setitem__ (const UnsignedInteger index,
                                    const NumericalPoint & val)
 {
   copyOnWrite();
@@ -214,7 +214,7 @@ const NumericalScalar * NumericalSample::__baseaddress__ () const
   return getImplementation()->__baseaddress__();
 }
 
-UnsignedLong NumericalSample::__elementsize__ () const
+UnsignedInteger NumericalSample::__elementsize__ () const
 {
   return getImplementation()->__elementsize__();
 }
@@ -222,7 +222,7 @@ UnsignedLong NumericalSample::__elementsize__ () const
 
 
 /* Method __len__() is for Python */
-UnsignedLong NumericalSample::__len__() const
+UnsignedInteger NumericalSample::__len__() const
 {
   return getSize();
 }
@@ -267,14 +267,14 @@ Description NumericalSample::getDescription() const
 
 
 /* Dimension accessor */
-UnsignedLong NumericalSample::getDimension() const
+UnsignedInteger NumericalSample::getDimension() const
 {
   return getImplementation()->getDimension();
 }
 
 
 /* Size accessor */
-UnsignedLong NumericalSample::getSize() const
+UnsignedInteger NumericalSample::getSize() const
 {
   return getImplementation()->getSize();
 }
@@ -324,15 +324,15 @@ void NumericalSample::stack(const NumericalSample & sample)
 }
 
 
-void NumericalSample::erase(const UnsignedLong first,
-                            const UnsignedLong last)
+void NumericalSample::erase(const UnsignedInteger first,
+                            const UnsignedInteger last)
 {
   copyOnWrite();
   getImplementation()->erase(first, last);
 }
 
 
-void NumericalSample::erase(const UnsignedLong index)
+void NumericalSample::erase(const UnsignedInteger index)
 {
   copyOnWrite();
   getImplementation()->erase(index, index + 1);
@@ -355,11 +355,11 @@ void NumericalSample::clear()
  * and returns the remainder as new sample. This method tries its best not for doubling
  * memory usage.
  */
-NumericalSample NumericalSample::split(const UnsignedLong index)
+NumericalSample NumericalSample::split(const UnsignedInteger index)
 {
   copyOnWrite();
   // We first save the size of the original sample
-  UnsignedLong theSize = getSize();
+  UnsignedInteger theSize = getSize();
 
   // We first check that the index is in the sample's range
   if (index > theSize) throw OutOfBoundException(HERE) << "Index over size. Index=" << index << " size=" << theSize;
@@ -511,7 +511,7 @@ NumericalPoint NumericalSample::computeKurtosisPerComponent() const
 /*
  * Gives the centered moment of order k of the sample (by component)
  */
-NumericalPoint NumericalSample::computeCenteredMomentPerComponent(const UnsignedLong k) const
+NumericalPoint NumericalSample::computeCenteredMomentPerComponent(const UnsignedInteger k) const
 {
   return getImplementation()->computeCenteredMomentPerComponent(k);
 }
@@ -519,7 +519,7 @@ NumericalPoint NumericalSample::computeCenteredMomentPerComponent(const Unsigned
 /*
  * Gives the raw moment of order k of the sample (by component)
  */
-NumericalPoint NumericalSample::computeRawMomentPerComponent(const UnsignedLong k) const
+NumericalPoint NumericalSample::computeRawMomentPerComponent(const UnsignedInteger k) const
 {
   return getImplementation()->computeRawMomentPerComponent(k);
 }
@@ -553,7 +553,7 @@ NumericalScalar NumericalSample::computeEmpiricalCDF(const NumericalPoint & poin
  * Get the position of a point in the sample.
  * Returns size+1 if the point does not belong to the sample.
  */
-UnsignedLong NumericalSample::find(const NumericalPoint & point) const
+UnsignedInteger NumericalSample::find(const NumericalPoint & point) const
 {
   return std::find(getImplementation()->begin(),  getImplementation()->end(), point) - getImplementation()->begin();
 }
@@ -693,7 +693,7 @@ NumericalSample NumericalSample::rank() const
 }
 
 /* Ranked component */
-NumericalSample NumericalSample::rank(const UnsignedLong index) const
+NumericalSample NumericalSample::rank(const UnsignedInteger index) const
 {
   return getImplementation()->rank(index);
 }
@@ -705,19 +705,19 @@ NumericalSample NumericalSample::sort() const
 }
 
 /* Sorted component */
-NumericalSample NumericalSample::sort(const UnsignedLong index) const
+NumericalSample NumericalSample::sort(const UnsignedInteger index) const
 {
   return getImplementation()->sort(index);
 }
 
 /* Sorted component */
-NumericalSample NumericalSample::sortAccordingToAComponent(const UnsignedLong index) const
+NumericalSample NumericalSample::sortAccordingToAComponent(const UnsignedInteger index) const
 {
   return getImplementation()->sortAccordingToAComponent(index);
 }
 
 /* Get the i-th marginal sample */
-NumericalSample NumericalSample::getMarginal(const UnsignedLong index) const
+NumericalSample NumericalSample::getMarginal(const UnsignedInteger index) const
 {
   return getImplementation()->getMarginal(index);
 }

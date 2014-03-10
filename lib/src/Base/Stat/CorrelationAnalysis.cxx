@@ -37,14 +37,14 @@ CorrelationAnalysis::CorrelationAnalysis() {}
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
 NumericalScalar CorrelationAnalysis::PearsonCorrelation(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
-    const UnsignedLong index)
+    const UnsignedInteger index)
 {
   if (index >= inputSample.getDimension()) throw InvalidArgumentException(HERE) << "Error: given index out of bound";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedLong size(inputSample.getSize());
+  const UnsignedInteger size(inputSample.getSize());
   NumericalSample pairedSample(size, 2);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     pairedSample[i][0] = inputSample[i][index];
     pairedSample[i][1] = outputSample[i][0];
@@ -55,7 +55,7 @@ NumericalScalar CorrelationAnalysis::PearsonCorrelation(const NumericalSample & 
 /* Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
 NumericalScalar CorrelationAnalysis::SpearmanCorrelation(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
-    const UnsignedLong index)
+    const UnsignedInteger index)
 {
   if (index >= inputSample.getDimension()) throw InvalidArgumentException(HERE) << "Error: given index out of bound";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
@@ -69,13 +69,13 @@ NumericalPoint CorrelationAnalysis::SRC(const NumericalSample & inputSample,
 {
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedLong dimension(inputSample.getDimension());
+  const UnsignedInteger dimension(inputSample.getDimension());
   LinearLeastSquares regressionAlgorithm(inputSample, outputSample);
   regressionAlgorithm.run();
   const NumericalPoint linear(regressionAlgorithm.getLinear() * NumericalPoint(1, 1.0));
   const NumericalScalar varOutput(outputSample.computeVariancePerComponent()[0]);
   NumericalPoint src(inputSample.computeVariancePerComponent());
-  for (UnsignedLong i = 0; i < dimension; ++i) src[i] *= linear[i] * linear[i] / varOutput;
+  for (UnsignedInteger i = 0; i < dimension; ++i) src[i] *= linear[i] * linear[i] / varOutput;
   return src;
 }
 
@@ -86,19 +86,19 @@ NumericalPoint CorrelationAnalysis::PCC(const NumericalSample & inputSample,
   if (inputSample.getDimension() < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedLong dimension(inputSample.getDimension());
-  const UnsignedLong size(inputSample.getSize());
+  const UnsignedInteger dimension(inputSample.getDimension());
+  const UnsignedInteger size(inputSample.getSize());
   NumericalPoint pcc(dimension);
   // For each component i, perform an analysis on the truncated input sample where Xi has been removed
   NumericalSample truncatedInput(size, dimension - 1);
   NumericalSample remainingInput(size, 1);
-  for (UnsignedLong index = 0; index < dimension; ++index)
+  for (UnsignedInteger index = 0; index < dimension; ++index)
   {
     // Build the truncated sample
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedLong j = 0; j < index; ++j) truncatedInput[i][j] = inputSample[i][j];
-      for (UnsignedLong j = index + 1; j < dimension; ++j) truncatedInput[i][j - 1] = inputSample[i][j];
+      for (UnsignedInteger j = 0; j < index; ++j) truncatedInput[i][j] = inputSample[i][j];
+      for (UnsignedInteger j = index + 1; j < dimension; ++j) truncatedInput[i][j - 1] = inputSample[i][j];
       remainingInput[i][0] = inputSample[i][index];
     }
     // Build the linear models

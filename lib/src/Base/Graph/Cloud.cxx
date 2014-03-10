@@ -45,9 +45,9 @@ Cloud::Cloud(const NumericalComplexCollection & data,
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
   // Convert the complex numbers into a NumericalSample
-  const UnsignedLong size(data.getSize());
+  const UnsignedInteger size(data.getSize());
   NumericalSample sample(size, 2);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     sample[i][0] = data[i].real();
     sample[i][1] = data[i].imag();
@@ -62,11 +62,11 @@ Cloud::Cloud(const NumericalSample & dataX,
              const String & legend):
   DrawableImplementation(NumericalSample(0, 2), legend)
 {
-  const UnsignedLong size(dataX.getSize());
+  const UnsignedInteger size(dataX.getSize());
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Cloud based on two numerical samples with different size.";
   if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Cloud based on two numerical samples of dimension greater than 1.";
   NumericalSample dataFull(size, 2);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i][0];
     dataFull[i][1] = dataY[i][0];
@@ -80,10 +80,10 @@ Cloud::Cloud(const NumericalPoint & dataX,
              const String & legend):
   DrawableImplementation(NumericalSample(0, 2), legend)
 {
-  const UnsignedLong size(dataX.getDimension());
+  const UnsignedInteger size(dataX.getDimension());
   if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Cloud based on two numerical points with different dimension.";
   NumericalSample dataFull(size, 2);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i];
     dataFull[i][1] = dataY[i];

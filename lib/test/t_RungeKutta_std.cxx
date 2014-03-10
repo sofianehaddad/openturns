@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     NumericalPoint initialState(2);
     initialState[0] =  1.0;
     initialState[1] = -1.0;
-    UnsignedLong nt(100);
+    UnsignedInteger nt(100);
     NumericalPoint timeGrid(nt);
-    for (UnsignedLong i = 0; i < nt; ++i)
+    for (UnsignedInteger i = 0; i < nt; ++i)
     {
       timeGrid[i] = pow(i, 2.0) / pow(nt - 1.0, 2.0);
     }

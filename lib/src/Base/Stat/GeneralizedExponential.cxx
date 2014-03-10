@@ -31,14 +31,14 @@ static Factory<GeneralizedExponential> RegisteredFactory("GeneralizedExponential
 
 
 /* Constructor with parameters */
-GeneralizedExponential::GeneralizedExponential(const UnsignedLong & dimension)
+GeneralizedExponential::GeneralizedExponential(const UnsignedInteger & dimension)
   : CovarianceModelImplementation(dimension)
   , theta_(ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta"))
   , p_(1.0)
 {
 }
 
-GeneralizedExponential::GeneralizedExponential(const UnsignedLong & dimension,
+GeneralizedExponential::GeneralizedExponential(const UnsignedInteger & dimension,
     const NumericalScalar theta,
     const NumericalScalar p)
   : CovarianceModelImplementation(dimension)
@@ -67,10 +67,10 @@ CovarianceMatrix GeneralizedExponential::operator() (const NumericalPoint & s,
 SymmetricTensor GeneralizedExponential::partialGradient(const NumericalPoint & s,
     const NumericalPoint & t) const
 {
-  UnsignedLong dimension = getDimension();
+  UnsignedInteger dimension = getDimension();
   SymmetricTensor gradient(1, dimension);
   const NumericalScalar d = (s - t).norm1();
-  for (UnsignedLong j = 0; j < dimension; ++ j)
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const NumericalScalar sign = (s[j] - t[j] >= 0.) ? 1. : -1.;
     gradient(0, 0, j) = -theta_ * p_ * pow(d, p_ - 1.) * sign * exp(-theta_ * pow(d, p_));

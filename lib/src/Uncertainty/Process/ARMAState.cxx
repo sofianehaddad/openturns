@@ -72,18 +72,18 @@ String ARMAState::__str__(const String & offset) const
   // are needed to compute the current value
   oss << offset;
   String separator("");
-  const UnsignedLong xSize(x_.getSize());
-  for (UnsignedLong i = 0; i < xSize; ++i, separator = "\n")
+  const UnsignedInteger xSize(x_.getSize());
+  for (UnsignedInteger i = 0; i < xSize; ++i, separator = "\n")
   {
-    const UnsignedLong index(xSize - i);
+    const UnsignedInteger index(xSize - i);
     oss << separator << "X(t-" << index << ")" << std::setw(String(OSS() << xSize).size() - String(OSS() << index).size() + 3) << " = " << x_[i];
   }
   // The epsilon part of the state stores the q past values of the noise
   // that are needed to compute the current value
-  const UnsignedLong epsilonSize(epsilon_.getSize());
-  for (UnsignedLong i = 0; i < epsilonSize; ++i)
+  const UnsignedInteger epsilonSize(epsilon_.getSize());
+  for (UnsignedInteger i = 0; i < epsilonSize; ++i)
   {
-    const UnsignedLong index(epsilonSize - i);
+    const UnsignedInteger index(epsilonSize - i);
     oss << separator << "epsilon(t-" << index << ")" << std::setw(String(OSS() << epsilonSize).size() - String(OSS() << index).size() + 3) << " = " << epsilon_[i];
   }
   return oss;
@@ -109,7 +109,7 @@ NumericalSample ARMAState::getEpsilon() const
   return epsilon_;
 }
 
-UnsignedLong ARMAState::getDimension() const
+UnsignedInteger ARMAState::getDimension() const
 {
   return x_.getDimension();
 }

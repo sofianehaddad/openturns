@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
     NumericalMathFunction EtatLimite(inputFunction, outputFunction, formulas);
 
-    UnsignedLong dim = EtatLimite.getInputDimension();
+    UnsignedInteger dim = EtatLimite.getInputDimension();
     fullprint << dim << std::endl;
 
     //   #########################################################################################################;
@@ -246,23 +246,23 @@ int main(int argc, char *argv[])
     fullprint <<  "event probability =" << PfC << std::endl;
     fullprint <<  "generalized reliability index =" << Beta_generalizedC << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < u_starC.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < u_starC.getDimension(); i++)
       fullprint << "standard space design point =" << u_starC[i] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < x_starC.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < x_starC.getDimension(); i++)
       fullprint << "physical space design point =" << x_starC[i] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint << "is standard point origin in failure space? " << PtC << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < gammaC.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < gammaC.getDimension(); i++)
       fullprint << "importance factors =" << gammaC[i] << std::endl;
-    for (UnsignedLong i = 0; i < gammaCC.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < gammaCC.getDimension(); i++)
       fullprint << "importance factors (classical)=" << gammaCC[i] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint <<  "Hasofer reliability index =" << beta_hasoferC << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < SensitivityAR.getSize(); ++i)
-      for (UnsignedLong j = 0; j < SensitivityAR[i].getDimension(); ++j)
+    for (UnsignedInteger i = 0; i < SensitivityAR.getSize(); ++i)
+      for (UnsignedInteger j = 0; j < SensitivityAR[i].getDimension(); ++j)
         fullprint <<  "Pf sensitivity =" << i << j << SensitivityC[i][j] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint <<  "" << std::endl;
@@ -272,23 +272,23 @@ int main(int argc, char *argv[])
     fullprint <<  "event probability =" << PfAR << std::endl;
     fullprint <<  "generalized reliability index =" << Beta_generalizedAR << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < u_starAR.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < u_starAR.getDimension(); i++)
       fullprint << "standard space design point =" << u_starAR[i] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < x_starAR.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < x_starAR.getDimension(); i++)
       fullprint << "physical space design point =" << x_starAR[i] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint << "is standard point origin in failure space? " << PtAR << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < gammaAR.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < gammaAR.getDimension(); i++)
       fullprint << "importance factors =" << gammaAR[i] << std::endl;
-    for (UnsignedLong i = 0; i < gammaCAR.getDimension(); i++)
+    for (UnsignedInteger i = 0; i < gammaCAR.getDimension(); i++)
       fullprint << "importance factors (classical)=" << gammaCAR[i] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint <<  "Hasofer reliability index =" << beta_hasoferAR << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
-    for (UnsignedLong i = 0; i < SensitivityAR.getSize(); ++i)
-      for (UnsignedLong j = 0; j < SensitivityAR[i].getDimension(); ++j)
+    for (UnsignedInteger i = 0; i < SensitivityAR.getSize(); ++i)
+      for (UnsignedInteger j = 0; j < SensitivityAR[i].getDimension(); ++j)
         fullprint <<  "Pf sensitivity =" << i << j << SensitivityAR[i][j] << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint <<  "" << std::endl;

@@ -93,12 +93,12 @@ String CenteredFiniteDifferenceGradient::__str__(const String & offset) const
 /* Gradient () */
 Matrix CenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(inP.getDimension());
+  const UnsignedInteger inputDimension(inP.getDimension());
   NumericalPoint step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim points. */
   NumericalSample gridPoints(2 * inputDimension, inP);
-  for(UnsignedLong i = 0; i < inputDimension; ++i)
+  for(UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     gridPoints[2 * i][i] += step[i];
     gridPoints[2 * i + 1][i] -= step[i];
@@ -107,8 +107,8 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) co
   NumericalSample gridValues(p_evaluation_->operator()(gridPoints));
   /* Compute the gradient */
   Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
-  for (UnsignedLong i = 0; i < result.getNbRows(); ++i)
-    for (UnsignedLong j = 0; j < result.getNbColumns(); ++j)
+  for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
+    for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
       /* result(i, j) = (f_j(x + e_i) - f_j(x - e_i)) / (2 * e_i) ~ df_j / dx_i */
       result(i, j) = (gridValues[2 * i][j] - gridValues[2 * i + 1][j]) / (2.0 * step[i]);
   return result;

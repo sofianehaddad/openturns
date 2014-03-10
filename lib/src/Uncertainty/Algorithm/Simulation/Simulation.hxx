@@ -62,8 +62,8 @@ public:
   SimulationResult getResult() const;
 
   /** Maximum sample size accessor */
-  void setMaximumOuterSampling(const UnsignedLong maximumOuterSampling);
-  UnsignedLong getMaximumOuterSampling() const;
+  void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
+  UnsignedInteger getMaximumOuterSampling() const;
 
   /** Maximum coefficient of variation accessor */
   void setMaximumCoefficientOfVariation(const NumericalScalar maximumCoefficientOfVariation);
@@ -74,8 +74,8 @@ public:
   NumericalScalar getMaximumStandardDeviation() const;
 
   /** Block size accessor */
-  void setBlockSize(const UnsignedLong blockSize);
-  UnsignedLong getBlockSize() const;
+  void setBlockSize(const UnsignedInteger blockSize);
+  UnsignedInteger getBlockSize() const;
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
@@ -118,7 +118,7 @@ protected:
   HistoryStrategy convergenceStrategy_;
 
   // Size of the atomic blocks of computation
-  UnsignedLong blockSize_;
+  UnsignedInteger blockSize_;
 
   // The event we are computing the probability of
   Event event_;
@@ -129,7 +129,7 @@ protected:
 private:
 
   // Maximum number of outer iteration allowed
-  UnsignedLong maximumOuterSampling_;
+  UnsignedInteger maximumOuterSampling_;
 
   // Maximum coefficient of variation allowed for convergence
   NumericalScalar maximumCoefficientOfVariation_;

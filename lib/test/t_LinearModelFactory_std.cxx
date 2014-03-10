@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
   LinearModelFactory lmfact;
 
   /* lm build */
-  UnsignedLong size(20);
+  UnsignedInteger size(20);
   NumericalSample oneSample(size, 1);
   NumericalSample twoSample(size, 1);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     oneSample[i][0] = 7.0 * sin(-3.5 + (6.5 * i) / (size - 1.0)) + 2.0;
     twoSample[i][0] = -2.0 * oneSample[i][0] + 3.0 + 0.05 * sin(oneSample[i][0]);

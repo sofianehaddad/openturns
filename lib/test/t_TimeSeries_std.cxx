@@ -52,17 +52,17 @@ int main(int argc, char *argv[])
     // Test some extra functionnalities
     checkNameFeature<TestObject>();
 
-    const UnsignedLong DIM = 2;
+    const UnsignedInteger DIM = 2;
 
     // We create an empty TimeSeries
     TimeSeries ts1(0, DIM);
     ts1.setName("Ts1");
 
     // We populate the empty ts
-    for (UnsignedLong p = 0; p < 3; ++p)
+    for (UnsignedInteger p = 0; p < 3; ++p)
     {
       NumericalPoint pt(DIM);
-      for (UnsignedLong i = 0; i < DIM; ++i) pt[i] = 10. * (p + 1) + i;
+      for (UnsignedInteger i = 0; i < DIM; ++i) pt[i] = 10. * (p + 1) + i;
       ts1.add( pt );
     }
     fullprint << "ts1=" << ts1 << std::endl;
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     // We set the third element to a valid new element
     NumericalPoint newPoint(DIM + 1);
-    for (UnsignedLong i = 0; i < DIM; ++i) newPoint[i + 1] = 1000. * (i + 1);
+    for (UnsignedInteger i = 0; i < DIM; ++i) newPoint[i + 1] = 1000. * (i + 1);
     ts1[2] = newPoint;
     fullprint << "ts1=" << ts1 << std::endl;
 

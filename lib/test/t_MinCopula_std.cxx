@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedLong dim(3);
+    UnsignedInteger dim(3);
 
     MinCopula copula(dim);
     copula.setName("a min copula");
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     NumericalSample oneSample = copula.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
     // Extract the marginals
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       Copula margin(copula.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;

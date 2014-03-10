@@ -46,7 +46,7 @@ Factorial::Factorial(const NumericalPoint & center,
 }
 
 /* Constructor with parameters */
-Factorial::Factorial(const UnsignedLong dimension,
+Factorial::Factorial(const UnsignedInteger dimension,
                      const NumericalPoint & levels,
                      const String & name)
   : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels, name)
@@ -64,26 +64,26 @@ Factorial * Factorial::clone() const
 NumericalSample Factorial::generate()
 {
   /* Dimension of the realizations */
-  const UnsignedLong dimension(center_.getDimension());
+  const UnsignedInteger dimension(center_.getDimension());
   /* Hypercube number of vertices */
-  const UnsignedLong verticesNumber((UnsignedLong)round(pow(2, dimension)));
+  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2, dimension)));
   /* Number of levels to be generated */
-  const UnsignedLong levelNumber(levels_.getDimension());
+  const UnsignedInteger levelNumber(levels_.getDimension());
   /* Size of the sample to be generated: 1 + number of levels x 2^dimension */
-  const UnsignedLong size(1 + levelNumber * verticesNumber);
+  const UnsignedInteger size(1 + levelNumber * verticesNumber);
   NumericalSample factorialPlane(size, center_);
   factorialPlane.setName("Factorial plane");
-  UnsignedLong index(1);
+  UnsignedInteger index(1);
   /* For each level of the factorial plane */
-  for(UnsignedLong levelIndex = 0; levelIndex < levelNumber; ++levelIndex)
+  for(UnsignedInteger levelIndex = 0; levelIndex < levelNumber; ++levelIndex)
   {
     const NumericalScalar levelValue(levels_[levelIndex]);
     /* For each vertex of the current level */
-    for(UnsignedLong vertex = 0; vertex < verticesNumber; ++vertex)
+    for(UnsignedInteger vertex = 0; vertex < verticesNumber; ++vertex)
     {
       /* Compute the coordinates of the current vertex */
-      UnsignedLong binaryIndex(vertex);
-      for(UnsignedLong coordinate = 0; coordinate < dimension; ++coordinate)
+      UnsignedInteger binaryIndex(vertex);
+      for(UnsignedInteger coordinate = 0; coordinate < dimension; ++coordinate)
       {
         /* If the current bit of binaryIndex is 1, set the coordinate to center[coordinate]+levelValue, else set it to center[coordinate]-levelValue */
         factorialPlane[index][coordinate] += (2.0 * (binaryIndex % 2) - 1.0) * levelValue;

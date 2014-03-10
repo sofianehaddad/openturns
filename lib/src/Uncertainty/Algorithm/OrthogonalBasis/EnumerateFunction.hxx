@@ -53,10 +53,10 @@ public:
   EnumerateFunction(Implementation & p_implementation);
 
   /** Parameter constructor */
-  EnumerateFunction(const UnsignedLong dimension = 1);
+  EnumerateFunction(const UnsignedInteger dimension = 1);
 
   /** Parameter constructor */
-  EnumerateFunction(const UnsignedLong dimension,
+  EnumerateFunction(const UnsignedInteger dimension,
                     const NumericalScalar q);
 
   /** Parameter constructor */
@@ -68,26 +68,26 @@ public:
   String __str__(const String & offset = "") const;
 
   /** The bijective association between an integer and a set of indices */
-  Indices operator() (const UnsignedLong index) const;
+  Indices operator() (const UnsignedInteger index) const;
 
   /** The inverse of the association */
-  UnsignedLong inverse(const Indices & indices) const;
+  UnsignedInteger inverse(const Indices & indices) const;
 
   /** The cardinal of the given strata */
-  UnsignedLong getStrataCardinal(const UnsignedLong strataIndex) const;
+  UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const;
 
   /** The cardinal of the cumulated strata above or equal to the given strata */
-  UnsignedLong getStrataCumulatedCardinal(const UnsignedLong strataIndex) const;
+  UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const;
 
   /** The index of the strata of degree max <= maximumDegree */
-  UnsignedLong getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const;
+  UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
 
   /** The cardinal of indices of degree max <= maximumDegree */
-  UnsignedLong getMaximumDegreeCardinal(const UnsignedLong maximumDegree) const;
+  UnsignedInteger getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const;
 
   /** Dimension accessor */
-  void setDimension(const UnsignedLong dimension);
-  UnsignedLong getDimension() const;
+  void setDimension(const UnsignedInteger dimension);
+  UnsignedInteger getDimension() const;
 
 protected:
 

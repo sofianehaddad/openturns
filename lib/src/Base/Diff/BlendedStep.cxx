@@ -72,10 +72,10 @@ BlendedStep * BlendedStep::clone() const
 /* Compute step */
 NumericalPoint BlendedStep::operator()(const NumericalPoint & inP) const
 {
-  const UnsignedLong dimension( epsilon_.getDimension() );
+  const UnsignedInteger dimension( epsilon_.getDimension() );
   if (dimension != inP.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension eps:" << dimension << " x:" << inP.getDimension();
   NumericalPoint result( epsilon_ );
-  for (UnsignedLong i = 0; i < dimension; ++ i)
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     result[i] *= ( fabs( inP[i] ) + eta_[i] );
     if (result[i] < SpecFunc::MinNumericalScalar ) throw InvalidArgumentException(HERE) << "Nul step for component " << i << ": eps=" << epsilon_[i] << " x=" << inP[i];
@@ -98,9 +98,9 @@ void BlendedStep::load(Advocate & adv)
 /* Eta accessor */
 void BlendedStep::setEta(const NumericalPoint & eta)
 {
-  const UnsignedLong dimension( epsilon_.getDimension() );
+  const UnsignedInteger dimension( epsilon_.getDimension() );
   if (eta.getDimension() != epsilon_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension: eta dimension doesn't match epsilon dimension";
-  for( UnsignedLong i = 0; i < dimension; ++ i )
+  for( UnsignedInteger i = 0; i < dimension; ++ i )
   {
     if ( eta[i] < 0.0 ) throw InvalidArgumentException(HERE) << "Negative eta component " << i;
   }

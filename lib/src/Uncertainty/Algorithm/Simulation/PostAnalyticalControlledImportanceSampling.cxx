@@ -52,7 +52,7 @@ PostAnalyticalControlledImportanceSampling * PostAnalyticalControlledImportanceS
 /* Compute the block sample */
 NumericalSample PostAnalyticalControlledImportanceSampling::computeBlockSample()
 {
-  const UnsignedLong blockSize(getBlockSize());
+  const UnsignedInteger blockSize(getBlockSize());
   const NumericalPoint standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   const Bool originFailure(analyticalResult_.getIsStandardPointOriginInFailureSpace());
   // Get the threshold and the reliability index
@@ -68,7 +68,7 @@ NumericalSample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   // Then, evaluate the function on this sample
   NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   // Then, modify in place this sample to take into account the change in the input distribution
-  for (UnsignedLong i = 0; i < blockSize; ++i)
+  for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
     const NumericalPoint realization(inputSample[i]);
     Bool failureControl(dot(realization, standardSpaceDesignPoint) > betaSquare);

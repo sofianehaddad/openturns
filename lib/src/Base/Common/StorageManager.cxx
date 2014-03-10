@@ -55,7 +55,7 @@ const StorageManager::InternalObject & StorageManager::getState() const
 
 
 /* Default constructor */
-StorageManager::StorageManager(UnsignedLong defaultVersion)
+StorageManager::StorageManager(UnsignedInteger defaultVersion)
   : Object(),
     p_study_(0),
     defaultVersion_(defaultVersion),
@@ -148,7 +148,7 @@ void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String 
 
 
 /* Add an attribute to an internal object */
-void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedLong value)
+void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value)
 {
   // Nothing to do
 }
@@ -199,52 +199,52 @@ void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String 
 
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Bool value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value)
 {
   // Nothing to do
 }
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, UnsignedLong value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value)
 {
   // Nothing to do
 }
 
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Unsigned64BitsInteger value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger value)
 {
   // Nothing to do
 }
 #endif
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalScalar value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar value)
 {
   // Nothing to do
 }
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalComplex value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex value)
 {
   // Nothing to do
 }
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const String & value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value)
 {
   // Nothing to do
 }
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const InterfaceObject & value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value)
 {
   // Nothing to do
   value.save( *this );
 }
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, const PersistentObject & value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const PersistentObject & value)
 {
   // Nothing to do
   value.save( *this );
@@ -261,7 +261,7 @@ void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String
 }
 
 /* Read an attribute */
-void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedLong & value)
+void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value)
 {
   // Nothing to do
 }
@@ -307,51 +307,51 @@ void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String
 
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Bool & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value)
 {
   // Nothing to do
 }
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, UnsignedLong & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value)
 {
   // Nothing to do
 }
 
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, Unsigned64BitsInteger & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger & value)
 {
   // Nothing to do
 }
 #endif
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalScalar & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar & value)
 {
   // Nothing to do
 }
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, NumericalComplex & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex & value)
 {
   // Nothing to do
 }
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, String & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value)
 {
   // Nothing to do
 }
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, InterfaceObject & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value)
 {
   // Nothing to do
 }
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedLong index, PersistentObject & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, PersistentObject & value)
 {
   // Nothing to do
 }
@@ -420,24 +420,24 @@ void StorageManager::setStudy(Study * p_study)
 
 
 /* Returns the version of the study that the manager can read/write */
-UnsignedLong StorageManager::getDefaultStudyVersion() const
+UnsignedInteger StorageManager::getDefaultStudyVersion() const
 {
   return defaultVersion_;
 }
 
 /* Query the manager if the version is correct */
-Bool StorageManager::canManageVersion(UnsignedLong version) const
+Bool StorageManager::canManageVersion(UnsignedInteger version) const
 {
   return (version == defaultVersion_);
 }
 
 /* Study version accessor */
-UnsignedLong StorageManager::getStudyVersion() const
+UnsignedInteger StorageManager::getStudyVersion() const
 {
   return version_;
 }
 
-void StorageManager::setStudyVersion(UnsignedLong version)
+void StorageManager::setStudyVersion(UnsignedInteger version)
 {
   if (canManageVersion(version)) version_ = version;
   else throw InvalidArgumentException(HERE) << "Study version " << version << " is NOT supported";

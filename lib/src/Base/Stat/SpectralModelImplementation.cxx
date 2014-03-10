@@ -47,13 +47,13 @@ SpectralModelImplementation * SpectralModelImplementation::clone() const
 }
 
 /* Dimension accessor */
-UnsignedLong SpectralModelImplementation::getDimension() const
+UnsignedInteger SpectralModelImplementation::getDimension() const
 {
   return dimension_;
 }
 
 /* Dimension accessor */
-void SpectralModelImplementation::setDimension(const UnsignedLong dimension)
+void SpectralModelImplementation::setDimension(const UnsignedInteger dimension)
 {
   dimension_ = dimension;
 }

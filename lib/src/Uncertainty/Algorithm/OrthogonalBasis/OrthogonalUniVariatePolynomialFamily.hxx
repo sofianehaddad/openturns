@@ -55,13 +55,13 @@ public:
   virtual String __repr__() const;
 
   /** The method to get the polynomial of any degree. */
-  OrthogonalUniVariatePolynomial build(const UnsignedLong degree) const;
+  OrthogonalUniVariatePolynomial build(const UnsignedInteger degree) const;
 
   /** Roots of the polynomial of degree n as the eigenvalues of the associated matrix */
-  NumericalPoint getRoots(const UnsignedLong n) const;
+  NumericalPoint getRoots(const UnsignedInteger n) const;
 
   /** Nodes and weights of the polynomial of degree n as the eigenvalues of the associated matrix, to build quadrature rules */
-  NumericalPoint getNodesAndWeights(const UnsignedLong n,
+  NumericalPoint getNodesAndWeights(const UnsignedInteger n,
                                     NumericalPoint & weights) const;
 
   /** Measure accessor */
@@ -69,7 +69,7 @@ public:
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedLong n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
 protected:
 

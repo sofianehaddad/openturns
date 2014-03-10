@@ -61,30 +61,30 @@ DualLinearCombinationGradientImplementation * DualLinearCombinationGradientImple
 /* Gradient method */
 Matrix DualLinearCombinationGradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
-  const UnsignedLong outputDimension(getOutputDimension());
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger outputDimension(getOutputDimension());
   Matrix result(inputDimension, outputDimension);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Matrix gradientI(evaluation_.functionsCollection_[i].gradient(inP));
     const NumericalPoint coefficientI(evaluation_.coefficients_[i]);
-    for (UnsignedLong j = 0; j < inputDimension; ++j)
-      for (UnsignedLong k = 0; k < outputDimension; ++k)
+    for (UnsignedInteger j = 0; j < inputDimension; ++j)
+      for (UnsignedInteger k = 0; k < outputDimension; ++k)
         result(j, k) += gradientI(j, 0) * coefficientI[k];
   }
   return result;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong DualLinearCombinationGradientImplementation::getInputDimension() const
+UnsignedInteger DualLinearCombinationGradientImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong DualLinearCombinationGradientImplementation::getOutputDimension() const
+UnsignedInteger DualLinearCombinationGradientImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }

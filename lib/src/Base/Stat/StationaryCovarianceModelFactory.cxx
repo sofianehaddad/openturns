@@ -79,35 +79,35 @@ String StationaryCovarianceModelFactory::__str__(const String & offset) const
 UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel) const
 {
   // We get the dimension of the model
-  const UnsignedLong dimension(mySpectralModel.getDimension());
+  const UnsignedInteger dimension(mySpectralModel.getDimension());
   // From the spectral model, we want to evaluate the autocovariance function
   // We first get the frequency grid : the grid contains only positive frequencies
   const RegularGrid frequencyGrid(mySpectralModel.getFrequencyGrid());
-  const UnsignedLong N(frequencyGrid.getN());
+  const UnsignedInteger N(frequencyGrid.getN());
   const NumericalScalar df(frequencyGrid.getStep());
   const NumericalScalar maximalFrequency(frequencyGrid.getValue(N - 1) + 0.5 * df);
   // We use the integrale of the spectral density through the frequencies, i.e.
   // \int_{\Omega_c} S(f) exp(i2\pi f h) df  ==> the algorithm works on frequencies
   // The used algorithm imposes both positive and negative ones
   // Some transformations are needed
-  const UnsignedLong size(2 * N);
+  const UnsignedInteger size(2 * N);
   // Care!!! Check the expression of dt - The time grid should corresponds to the frequency grid
   const NumericalScalar dt(0.5 / maximalFrequency);
 
   // As we need Fourier transformations, we need to have a structure which enables to stock elements
   // For d = dimension, we need dimension * 0.5 * (dimension + 1) transformations
-  const UnsignedLong numberOfFFT(dimension * (dimension + 1) / 2);
+  const UnsignedInteger numberOfFFT(dimension * (dimension + 1) / 2);
   ComplexMatrix matrix(size, numberOfFFT);
-  for (UnsignedLong k = 0; k < size; ++k)
+  for (UnsignedInteger k = 0; k < size; ++k)
   {
-    UnsignedLong columnIndex(0);
+    UnsignedInteger columnIndex(0);
     // Computation is done for the current frequency value
     // The frequency is computed thanks to the formula (2k +1 -size) *0.5 * df with k=0,.,..,size-1
     const NumericalScalar currentFrequency((2.0 * k + 1 - size) * 0.5 * df);
     const HermitianMatrix spectralDensity(mySpectralModel(currentFrequency));
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      for (UnsignedLong j = 0; j <= i; ++j)
+      for (UnsignedInteger j = 0; j <= i; ++j)
       {
         const NumericalScalar theta((size - 1.0) * k * M_PI / size);
         const NumericalComplex alpha(cos(theta), -1.0 * sin(theta));
@@ -122,7 +122,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   // We first compute a temporal factor delta(m) = df * N * exp(-\pi * i * (2m + 1 - N) * (N-1) / 2N)
   // The formula of this last one may be found in the UseCaseGuide
   Collection<NumericalComplex> delta(size);
-  for (UnsignedLong m = 0; m < size; ++m)
+  for (UnsignedInteger m = 0; m < size; ++m)
   {
     const NumericalScalar theta((size - 1.0) / size * 0.5 * M_PI * (2.0 * m + 1.0 - size));
     const NumericalComplex alpha(cos(theta), -1.0 * sin(theta));
@@ -131,12 +131,12 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
 
   // We use the same FFT as the spectral factory
   FFT fftAlgorithm(spectralFactory_.getFFTAlgorithm());
-  for (UnsignedLong columnIndex = 0; columnIndex < numberOfFFT; ++columnIndex)
+  for (UnsignedInteger columnIndex = 0; columnIndex < numberOfFFT; ++columnIndex)
   {
     // FFT applications
     const Collection<NumericalComplex> marginal(fftAlgorithm.inverseTransform(*matrix.getImplementation(), columnIndex * size, size));
     // We save result in the same matrix
-    for (UnsignedLong rowIndex = 0; rowIndex < size; ++rowIndex)
+    for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
     {
       matrix(rowIndex, columnIndex) = marginal[rowIndex] * delta[rowIndex];
     }
@@ -145,14 +145,14 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   // We rewrite the elements in the adequate structure
   RegularGrid timeGrid(0.5 * dt, dt, N);
   CovarianceMatrixCollection collection(N);
-  for (UnsignedLong currentIndex = 0; currentIndex < N; ++currentIndex)
+  for (UnsignedInteger currentIndex = 0; currentIndex < N; ++currentIndex)
   {
-    const UnsignedLong index(currentIndex + N);
+    const UnsignedInteger index(currentIndex + N);
     CovarianceMatrix covariance(dimension);
-    UnsignedLong columnIndex(0);
-    for (UnsignedLong i = 0; i < dimension; ++i)
+    UnsignedInteger columnIndex(0);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      for (UnsignedLong j = 0; j <= i; ++j)
+      for (UnsignedInteger j = 0; j <= i; ++j)
       {
         covariance(i, j) = std::real(matrix(index, columnIndex));
         columnIndex += 1;

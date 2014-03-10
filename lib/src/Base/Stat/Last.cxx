@@ -42,7 +42,7 @@ static Factory<Last> RegisteredFactory("Last");
 /*Constructor with parameters */
 Last::Last()
   : HistoryStrategyImplementation(),
-    maximumSize_(ResourceMap::GetAsUnsignedLong( "Last-DefaultMaximumSize" )),
+    maximumSize_(ResourceMap::GetAsUnsignedInteger( "Last-DefaultMaximumSize" )),
     index_(0),
     hasWrapped_(false)
 {
@@ -50,7 +50,7 @@ Last::Last()
 }
 
 /*Constructor with parameters */
-Last::Last(const UnsignedLong maximumSize)
+Last::Last(const UnsignedInteger maximumSize)
   : HistoryStrategyImplementation(),
     maximumSize_(maximumSize),
     index_(0),
@@ -93,27 +93,27 @@ NumericalSample Last::getSample() const
   if (!hasWrapped_)
   {
     NumericalSample outSample(index_, sample_.getDimension());
-    for (UnsignedLong i = 0; i < index_; ++i) outSample[i] = sample_[i];
+    for (UnsignedInteger i = 0; i < index_; ++i) outSample[i] = sample_[i];
     return outSample;
   }
   // Perform a permutation of the elements:
   NumericalSample outSample(maximumSize_, sample_.getDimension());
-  for (UnsignedLong i = 0; i < maximumSize_; ++i)
+  for (UnsignedInteger i = 0; i < maximumSize_; ++i)
   {
-    UnsignedLong circularIndex((index_ + i) % maximumSize_);
+    UnsignedInteger circularIndex((index_ + i) % maximumSize_);
     outSample[i] = sample_[circularIndex];
   }
   return outSample;
 }
 
 /*MaximumSize accessor */
-UnsignedLong Last::getMaximumSize() const
+UnsignedInteger Last::getMaximumSize() const
 {
   return maximumSize_;
 }
 
 /*Index accessor */
-UnsignedLong Last::getIndex() const
+UnsignedInteger Last::getIndex() const
 {
   return index_;
 }

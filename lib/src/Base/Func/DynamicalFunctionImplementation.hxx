@@ -71,10 +71,10 @@ public:
   virtual ProcessSample operator() (const ProcessSample & inPS) const;
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */
   virtual void setInputDescription(const Description & inputDescription);
@@ -85,13 +85,13 @@ public:
   virtual Description getOutputDescription() const;
 
   /** Get the i-th marginal function */
-  virtual Implementation getMarginal(const UnsignedLong i) const;
+  virtual Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   virtual Implementation getMarginal(const Indices & indices) const;
 
   /** Number of calls to the dynamical function */
-  virtual UnsignedLong getCallsNumber() const;
+  virtual UnsignedInteger getCallsNumber() const;
 
   /** Compute the output mesh based on a given input mesh */
   virtual Mesh computeOutputMesh(const Mesh & mesh) const;
@@ -111,7 +111,7 @@ protected:
   Description outputDescription_;
 
   /** Counter for the number of calls */
-  mutable UnsignedLong callsNumber_;
+  mutable UnsignedInteger callsNumber_;
 
 }; /* class DynamicalFunctionImplementation */
 

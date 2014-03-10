@@ -258,7 +258,7 @@ void ChiSquare::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint ChiSquare::getStandardMoment(const UnsignedLong n) const
+NumericalPoint ChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
 }

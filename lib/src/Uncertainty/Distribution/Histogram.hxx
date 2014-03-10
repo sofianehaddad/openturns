@@ -95,7 +95,7 @@ public:
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;
@@ -120,7 +120,7 @@ public:
   /** Draw the PDF of the Histogram using a specific presentation */
   virtual Graph drawPDF(const NumericalScalar xMin,
                         const NumericalScalar xMax,
-                        const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

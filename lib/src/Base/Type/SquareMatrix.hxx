@@ -59,11 +59,11 @@ public:
   SquareMatrix();
 
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
-  explicit SquareMatrix(const UnsignedLong dim);
+  explicit SquareMatrix(const UnsignedInteger dim);
 #if 0
   /** Constructor from range of external collection */
   template <class InputIterator>
-  SquareMatrix(const UnsignedLong dim,
+  SquareMatrix(const UnsignedInteger dim,
                InputIterator first,
                InputIterator last);
 #endif
@@ -71,7 +71,7 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  SquareMatrix(const UnsignedLong dim,
+  SquareMatrix(const UnsignedInteger dim,
                const NumericalScalarCollection & elementsValues);
 
 
@@ -79,7 +79,7 @@ public:
   String __repr__() const;
 
   /** Get the dimension of the matrix */
-  const UnsignedLong getDimension() const;
+  const UnsignedInteger getDimension() const;
 
   /** SquareMatrix transpose */
   SquareMatrix transpose () const;
@@ -98,7 +98,7 @@ public:
   SquareMatrix operator * (const IdentityMatrix & m) const;
 
   /** SquareMatrix integer power */
-  SquareMatrix power(const UnsignedLong n) const;
+  SquareMatrix power(const UnsignedInteger n) const;
 
   /** Multiplication with a NumericalPoint (must have consistent dimensions) */
   NumericalPoint operator * (const NumericalPoint & p) const;

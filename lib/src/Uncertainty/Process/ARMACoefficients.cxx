@@ -35,8 +35,8 @@ CLASSNAMEINIT(ARMACoefficients);
 static Factory<ARMACoefficients> RegisteredFactory("ARMACoefficients");
 
 /* Default constructor */
-ARMACoefficients::ARMACoefficients(const UnsignedLong & size,
-                                   const UnsignedLong & dimension)
+ARMACoefficients::ARMACoefficients(const UnsignedInteger & size,
+                                   const UnsignedInteger & dimension)
   : PersistentCollection<SquareMatrix>(size, SquareMatrix(dimension) )
   , dimension_(dimension)
 {
@@ -49,11 +49,11 @@ ARMACoefficients::ARMACoefficients(const SquareMatrixCollection & collection)
   : PersistentCollection<SquareMatrix>(0)
 {
   // Adding elements one by one and checking coherance of dimension
-  const UnsignedLong collectionSize(collection.getSize());
+  const UnsignedInteger collectionSize(collection.getSize());
   if (collectionSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an ARMACoefficients object based on an empty collection of matrices.";
   dimension_ = collection[0].getDimension();
   add(collection[0]);
-  for (UnsignedLong i = 1; i < collectionSize; ++i)
+  for (UnsignedInteger i = 1; i < collectionSize; ++i)
     if (collection[i].getDimension() == dimension_)
       add(collection[i]);
 }
@@ -63,7 +63,7 @@ ARMACoefficients::ARMACoefficients(const NumericalPoint & scalarCoefficients)
   : PersistentCollection<SquareMatrix>(scalarCoefficients.getSize(), SquareMatrix(1))
 {
   dimension_ = 1;
-  for (UnsignedLong i = 0 ; i < getSize() ; ++i ) (*this)[i](0, 0) = scalarCoefficients[i];
+  for (UnsignedInteger i = 0 ; i < getSize() ; ++i ) (*this)[i](0, 0) = scalarCoefficients[i];
 }
 
 /* constructor using polynomial */
@@ -72,7 +72,7 @@ ARMACoefficients::ARMACoefficients(const UniVariatePolynomial & polynomial)
 {
   dimension_ = 1;
   const NumericalPoint coefficients(polynomial.getCoefficients());
-  for (UnsignedLong i = 0 ; i < getSize() ; ++i ) (*this)[i](0, 0) = coefficients[i];
+  for (UnsignedInteger i = 0 ; i < getSize() ; ++i ) (*this)[i](0, 0) = coefficients[i];
 }
 
 /* Virtual constructor  - clone*/
@@ -86,19 +86,19 @@ String ARMACoefficients::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << ARMACoefficients::GetClassName();
-  for (UnsignedLong i = 0; i < getSize(); ++i) oss << ", shift=" << i << ", value=" << (*this)[i];
+  for (UnsignedInteger i = 0; i < getSize(); ++i) oss << ", shift=" << i << ", value=" << (*this)[i];
   return oss;
 }
 
 String ARMACoefficients::__str__(const String & offset) const
 {
   OSS oss(false);
-  for (UnsignedLong i = 0; i < getSize(); ++i) oss << offset << "shift = " << i << "\n" << offset << (*this)[i].__str__(offset) << "\n";
+  for (UnsignedInteger i = 0; i < getSize(); ++i) oss << offset << "shift = " << i << "\n" << offset << (*this)[i].__str__(offset) << "\n";
   return oss;
 }
 
 /* Dimension accessor */
-UnsignedLong  ARMACoefficients::getDimension() const
+UnsignedInteger  ARMACoefficients::getDimension() const
 {
   return dimension_;
 }

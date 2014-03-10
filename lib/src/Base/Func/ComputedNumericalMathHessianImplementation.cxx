@@ -131,7 +131,7 @@ void * ComputedNumericalMathHessianImplementation::getState() const
 SymmetricTensor
 ComputedNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   try
   {
@@ -152,9 +152,9 @@ ComputedNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) 
 
 
 /* Accessor for input point dimension */
-UnsignedLong ComputedNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger ComputedNumericalMathHessianImplementation::getInputDimension() const
 {
-  UnsignedLong inputDimension = 0;
+  UnsignedInteger inputDimension = 0;
 
   try
   {
@@ -171,9 +171,9 @@ UnsignedLong ComputedNumericalMathHessianImplementation::getInputDimension() con
 
 
 /* Accessor for output point dimension */
-UnsignedLong ComputedNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger ComputedNumericalMathHessianImplementation::getOutputDimension() const
 {
-  UnsignedLong outputDimension = 0;
+  UnsignedInteger outputDimension = 0;
 
   try
   {

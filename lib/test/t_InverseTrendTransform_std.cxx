@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     /* Create a TimeSeries */
     RegularGrid tg(0.0, 0.1, 11);
     NumericalSample data(tg.getN(), 2);
-    for (UnsignedLong i = 0; i < data.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < data.getSize(); ++i)
     {
       const NumericalScalar instant(tg.getStart() + i * tg.getStep());
       data(i, 0) = i + 1 + sin(instant);

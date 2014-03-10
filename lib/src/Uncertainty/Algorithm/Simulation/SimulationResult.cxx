@@ -43,8 +43,8 @@ SimulationResult::SimulationResult()
 SimulationResult::SimulationResult(const Event & event,
                                    const NumericalScalar probabilityEstimate,
                                    const NumericalScalar varianceEstimate,
-                                   const UnsignedLong outerSampling,
-                                   const UnsignedLong blockSize)
+                                   const UnsignedInteger outerSampling,
+                                   const UnsignedInteger blockSize)
   : TypedInterfaceObject<SimulationResultImplementation>(new SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize))
 {
   // Nothing to do
@@ -113,12 +113,12 @@ NumericalPoint SimulationResult::getMeanPointInEventDomain() const
 }
 
 /* Outer sampling accessor */
-UnsignedLong SimulationResult::getOuterSampling() const
+UnsignedInteger SimulationResult::getOuterSampling() const
 {
   return getImplementation()->getOuterSampling();
 }
 
-void SimulationResult::setOuterSampling(const UnsignedLong outerSampling)
+void SimulationResult::setOuterSampling(const UnsignedInteger outerSampling)
 {
   copyOnWrite();
   getImplementation()->setOuterSampling(outerSampling);
@@ -137,12 +137,12 @@ NumericalScalar SimulationResult::getConfidenceLength(const NumericalScalar leve
 }
 
 /* Block size accessor */
-UnsignedLong SimulationResult::getBlockSize() const
+UnsignedInteger SimulationResult::getBlockSize() const
 {
   return getImplementation()->getBlockSize();
 }
 
-void SimulationResult::setBlockSize(const UnsignedLong blockSize)
+void SimulationResult::setBlockSize(const UnsignedInteger blockSize)
 {
   copyOnWrite();
   getImplementation()->setBlockSize(blockSize);

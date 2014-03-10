@@ -280,7 +280,7 @@ void Beta::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Beta::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Beta::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   // Here we have to convert n to a signed type else -n will produce an overflow

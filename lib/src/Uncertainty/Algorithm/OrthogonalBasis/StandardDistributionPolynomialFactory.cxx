@@ -86,7 +86,7 @@ StandardDistributionPolynomialFactory * StandardDistributionPolynomialFactory::c
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-StandardDistributionPolynomialFactory::Coefficients StandardDistributionPolynomialFactory::getRecurrenceCoefficients(const UnsignedLong n) const
+StandardDistributionPolynomialFactory::Coefficients StandardDistributionPolynomialFactory::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
   if (hasSpecificFamily_) return specificFamily_.getRecurrenceCoefficients(n);
   return orthonormalizationAlgorithm_.getRecurrenceCoefficients(n);
@@ -140,7 +140,7 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   if (measureType == "Binomial")
   {
     const NumericalPoint parameters(measure_.getParametersCollection()[0]);
-    specificFamily_ = KrawtchoukFactory(static_cast<UnsignedLong>(parameters[0]), parameters[1]);
+    specificFamily_ = KrawtchoukFactory(static_cast<UnsignedInteger>(parameters[0]), parameters[1]);
     hasSpecificFamily_ = true;
     return;
   }

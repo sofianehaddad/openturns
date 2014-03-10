@@ -83,24 +83,24 @@ CovarianceMatrix StationaryCovarianceModel::discretizeCovariance(const RegularGr
 
 CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeGrid) const
 {
-  const UnsignedLong size(timeGrid.getN());
+  const UnsignedInteger size(timeGrid.getN());
   const NumericalScalar timeStep(timeGrid.getStep());
-  const UnsignedLong fullSize(size * dimension_);
+  const UnsignedInteger fullSize(size * dimension_);
   CovarianceMatrix covarianceMatrix(fullSize);
 
   // Fill-in the matrix by blocks
-  for (UnsignedLong rowIndex = 0; rowIndex < size; ++rowIndex)
+  for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
   {
     // Only the lower part has to be filled-in
-    for (UnsignedLong columnIndex = 0; columnIndex < rowIndex; ++columnIndex)
+    for (UnsignedInteger columnIndex = 0; columnIndex < rowIndex; ++columnIndex)
     {
       const CovarianceMatrix localCovarianceMatrix(operator()( rowIndex * timeStep,  columnIndex * timeStep) );
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
       // not copied on a symmetric position
-      for (UnsignedLong rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
+      for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
       {
-        for (UnsignedLong columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
+        for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
         {
           covarianceMatrix(columnIndex + columnIndexLocal * size, rowIndex + rowIndexLocal * size ) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
         } // column index within the block

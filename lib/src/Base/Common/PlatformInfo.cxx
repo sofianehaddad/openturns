@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-UnsignedLong PlatformInfo::Precision_ = 6;
+UnsignedInteger PlatformInfo::Precision_ = 6;
 
 PlatformInfo::PlatformInfo()
 {
@@ -73,7 +73,7 @@ String PlatformInfo::GetConfigureCommandLine()
   return ConfigureArgs;
 }
 
-UnsignedLong PlatformInfo::GetNumericalPrecision()
+UnsignedInteger PlatformInfo::GetNumericalPrecision()
 {
   return PlatformInfo::Precision_;
 }

@@ -52,11 +52,11 @@ TrapezoidalFactory * TrapezoidalFactory::clone() const
 NumericalScalar TrapezoidalFactory::computeLogLikelihood(const NumericalPoint & x) const
 {
   NumericalScalar result(0.0);
-  const UnsignedLong size(sample_.getSize());
+  const UnsignedInteger size(sample_.getSize());
   NumericalPointCollection coll;
   coll.add(x);
   const Trapezoidal distribution(buildAsTrapezoidal( coll ));
-  for (UnsignedLong i = 0; i < size; ++ i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const NumericalScalar pdf(distribution.computePDF(sample_[i]));
     if ( pdf > 0.0 ) result += log(pdf);
@@ -114,7 +114,7 @@ TrapezoidalFactory::Implementation TrapezoidalFactory::build() const
 
 Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0)
     throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution from an empty sample";
 
@@ -139,7 +139,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
 
   NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar( "TrapezoidalFactory-RhoBeg" ));
   NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar( "TrapezoidalFactory-RhoEnd" ));
-  int maxFun(ResourceMap::GetAsUnsignedLong( "TrapezoidalFactory-MaximumIteration" ));
+  int maxFun(ResourceMap::GetAsUnsignedInteger( "TrapezoidalFactory-MaximumIteration" ));
   cobyla_message message( COBYLA_MSG_NONE );
 
   // use attributes to pass the data

@@ -119,12 +119,12 @@ void BoundConstrainedAlgorithm::setResult(const Result & result)
 }
 
 /* Maximum iterations number accessor */
-UnsignedLong BoundConstrainedAlgorithm::getMaximumEvaluationsNumber() const
+UnsignedInteger BoundConstrainedAlgorithm::getMaximumEvaluationsNumber() const
 {
   return getImplementation()->getMaximumEvaluationsNumber();
 }
 
-void BoundConstrainedAlgorithm::setMaximumEvaluationsNumber(const UnsignedLong maximumEvaluationsNumber)
+void BoundConstrainedAlgorithm::setMaximumEvaluationsNumber(const UnsignedInteger maximumEvaluationsNumber)
 {
   copyOnWrite();
   getImplementation()->setMaximumEvaluationsNumber(maximumEvaluationsNumber);

@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedLong dimension(2);
+    const UnsignedInteger dimension(2);
     // Function
     NumericalMathFunction f("t", "sin(t)");
 
@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
     fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
     // Creation of a NumericalSample
-    const UnsignedLong size(10);
+    const UnsignedInteger size(10);
     NumericalSample inSample(size, dimension);
-    for (UnsignedLong index = 0 ; index < size; ++index)
+    for (UnsignedInteger index = 0 ; index < size; ++index)
     {
       inSample[index] = NumericalPoint(dimension, index + 1);
     }

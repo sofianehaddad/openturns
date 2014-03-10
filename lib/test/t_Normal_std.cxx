@@ -35,8 +35,8 @@ NumericalScalar clean(NumericalScalar in)
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedLong dim(in.getDimension());
-  for(UnsignedLong i = 0; i < dim; i++)
+  UnsignedInteger dim(in.getDimension());
+  for(UnsignedInteger i = 0; i < dim; i++)
     if (fabs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
 }
@@ -49,23 +49,23 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    for (UnsignedLong dim = 1; dim <= 4; dim++)
+    for (UnsignedInteger dim = 1; dim <= 4; dim++)
     {
       fullprint << "\n*** Case " << dim << " ***\n" << std::endl;
       NumericalPoint meanPoint(dim, 0.0);
       NumericalPoint sigma(dim);
-      for (UnsignedLong i = 0; i < dim; i++)
+      for (UnsignedInteger i = 0; i < dim; i++)
       {
         sigma[i] = i + 1.0;
       }
       CorrelationMatrix R(dim);
-      for (UnsignedLong i = 1; i < dim; i++)
+      for (UnsignedInteger i = 1; i < dim; i++)
       {
         R(i, i - 1) = 0.5;
       }
       Normal distribution(meanPoint, sigma, R);
       Description description(dim);
-      for (UnsignedLong j = 1; j <= dim; j++)
+      for (UnsignedInteger j = 1; j <= dim; j++)
       {
         OSS oss;
         oss << "Marginal " << j;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
       distribution.setDescription(description);
       fullprint << std::setprecision(5);
       fullprint << "Parameters collection=" << distribution.getParametersCollection() << std::endl;
-      for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10000;
+      UnsignedInteger size = 10000;
       NumericalSample oneSample(distribution.getSample( size ));
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
       if (distribution.getDimension() == 1)
       {
         size = 100;
-        for (UnsignedLong i = 0; i < 2; ++i)
+        for (UnsignedInteger i = 0; i < 2; ++i)
         {
           RandomGenerator::SetSeed(1);
           fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
       NumericalPoint PDFgr = distribution.computePDFGradient( point );
       fullprint << "pdf gradient     =" << clean(PDFgr) << std::endl;
       NumericalPoint PDFgrFD(2 * dim);
-      for (UnsignedLong i = 0; i < dim; i++)
+      for (UnsignedInteger i = 0; i < dim; i++)
       {
         meanPoint[i] += eps;
         Normal distributionLeft(meanPoint, sigma, R);
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
         PDFgrFD[i] = (distributionLeft.computePDF(point) - distributionRight.computePDF(point)) / (2.0 * eps);
         meanPoint[i] += eps;
       }
-      for (UnsignedLong i = 0; i < dim; i++)
+      for (UnsignedInteger i = 0; i < dim; i++)
       {
         sigma[i] += eps;
         Normal distributionLeft(meanPoint, sigma, R);
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
       fullprint << "kendall=" << kendall << std::endl;
       Normal::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
       // Specific to this distribution
@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
       NumericalScalar radius(2.0);
       fullprint << "Radial CDF(" << radius << ")=" << distribution.computeRadialDistributionCDF(radius) << std::endl;
       // Extract the marginals
-      for (UnsignedLong i = 0; i < dim; i++)
+      for (UnsignedInteger i = 0; i < dim; i++)
       {
         Distribution margin(distribution.getMarginal(i));
         fullprint << "margin=" << margin << std::endl;

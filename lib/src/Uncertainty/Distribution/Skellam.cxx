@@ -39,7 +39,7 @@ Skellam::Skellam()
   : DiscreteDistribution("Skellam")
   , lambda1_(1.0)
   , lambda2_(1.0)
-  , maximumIteration_(ResourceMap::GetAsUnsignedLong("DistFunc-MaximumIteration"))
+  , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
   // We set the dimension of the Skellam distribution
   setDimension( 1 );
@@ -52,7 +52,7 @@ Skellam::Skellam(const NumericalScalar lambda1,
   : DiscreteDistribution("Skellam")
   , lambda1_(0.0)
   , lambda2_(0.0)
-  , maximumIteration_(ResourceMap::GetAsUnsignedLong("DistFunc-MaximumIteration"))
+  , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
   // We set the dimension of the Skellam distribution
   setDimension( 1 );
@@ -287,12 +287,12 @@ NumericalScalar Skellam::getLambda2() const
 }
 
 /* Maximum iterations accessor */
-void Skellam::setMaximumIteration(const UnsignedLong maximumIteration)
+void Skellam::setMaximumIteration(const UnsignedInteger maximumIteration)
 {
   maximumIteration_ = maximumIteration;
 }
 
-UnsignedLong Skellam::getMaximumIteration() const
+UnsignedInteger Skellam::getMaximumIteration() const
 {
   return maximumIteration_;
 }

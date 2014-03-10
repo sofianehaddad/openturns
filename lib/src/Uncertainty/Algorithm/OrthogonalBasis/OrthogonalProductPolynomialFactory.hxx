@@ -65,7 +65,7 @@ public:
                                      const EnumerateFunction & phi);
 
   /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedLong index) const;
+  NumericalMathFunction build(const UnsignedInteger index) const;
 
   /** Return the enumerate function that translate unidimensional indices nto multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;

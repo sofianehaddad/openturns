@@ -52,7 +52,7 @@ BasisSequence::BasisSequence(const BasisSequenceImplementation & implementation)
 }
 
 /* Dimension accessor */
-UnsignedLong BasisSequence::getDimension() const
+UnsignedInteger BasisSequence::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -64,13 +64,13 @@ Basis BasisSequence::getMasterBasis() const
 }
 
 /* Sub-basis accessor */
-Basis BasisSequence::getBasis(const UnsignedLong index) const
+Basis BasisSequence::getBasis(const UnsignedInteger index) const
 {
   return getImplementation()->getBasis( index );
 }
 
 /* Indices accessor */
-Indices BasisSequence::getIndices(const UnsignedLong index) const
+Indices BasisSequence::getIndices(const UnsignedInteger index) const
 {
   return getImplementation()->getIndices( index );
 }

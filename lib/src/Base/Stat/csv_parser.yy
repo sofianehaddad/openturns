@@ -29,7 +29,7 @@
 %parse-param {yyscan_t yyscanner}
 %parse-param {FILE * theFile}
 %parse-param {OT::NumericalSampleImplementation &impl}
-%parse-param {OT::UnsignedLong & theDimension}
+%parse-param {OT::UnsignedInteger & theDimension}
 %parse-param {const char * theSeparator}
 %lex-param   {yyscan_t yyscanner}
 %lex-param   {FILE * theFile}
@@ -72,7 +72,7 @@ typedef void*                 yyscan_t;
 #include "Log.hxx"
 
 int yylex                     (YYSTYPE *lvalp, yyscan_t yyscanner, FILE * theFile, const char * theSeparator);
-int yyerror                   (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::NumericalSampleImplementation &impl, OT::UnsignedLong & theDimension, const char * theSeparator, const char *s);
+int yyerror                   (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::NumericalSampleImplementation &impl, OT::UnsignedInteger & theDimension, const char * theSeparator, const char *s);
 int csvget_lineno             (yyscan_t yyscanner);
 
 
@@ -87,7 +87,7 @@ void clearPoint(OT::CSVParserState & theState, yyscan_t yyscanner)
 {
   theState.Point = OT::NumericalPoint();
 }
-void printPoint(OT::CSVParserState & theState, yyscan_t yyscanner, OT::NumericalSampleImplementation &impl, OT::UnsignedLong & theDimension)
+void printPoint(OT::CSVParserState & theState, yyscan_t yyscanner, OT::NumericalSampleImplementation &impl, OT::UnsignedInteger & theDimension)
 {
   LOGDEBUG(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << ": Point=" << theState.Point.__repr__());
 
@@ -102,7 +102,7 @@ void clearHeader(OT::CSVParserState & theState, yyscan_t yyscanner)
 {
   theState.Header = OT::Description();
 }
-void printHeader(OT::CSVParserState & theState, yyscan_t yyscanner, OT::NumericalSampleImplementation &impl, OT::UnsignedLong & theDimension)
+void printHeader(OT::CSVParserState & theState, yyscan_t yyscanner, OT::NumericalSampleImplementation &impl, OT::UnsignedInteger & theDimension)
 {
   LOGDEBUG(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << ": Header=" << theState.Header.__repr__());
 
@@ -177,7 +177,7 @@ endOfFile: /* Empty */
 
 %%
 
-int yyerror(OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::NumericalSampleImplementation &impl, OT::UnsignedLong & theDimension, const char * theSeparator, const char *s) {
+int yyerror(OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::NumericalSampleImplementation &impl, OT::UnsignedInteger & theDimension, const char * theSeparator, const char *s) {
   LOGINFO(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << " is ignored: " << s);
   theState.errors = true;
   return 0;

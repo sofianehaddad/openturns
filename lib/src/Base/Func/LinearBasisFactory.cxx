@@ -34,7 +34,7 @@ CLASSNAMEINIT(LinearBasisFactory);
 static Factory<LinearBasisFactory> RegisteredFactory("LinearBasisFactory");
 
 /* Default constructor */
-LinearBasisFactory::LinearBasisFactory (const UnsignedLong inputDimension)
+LinearBasisFactory::LinearBasisFactory (const UnsignedInteger inputDimension)
   : BasisFactory()
   , inputDimension_(inputDimension)
 {
@@ -63,7 +63,7 @@ Basis LinearBasisFactory::build() const
   basis.add(LinearNumericalMathFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 1.0), Matrix(1, inputDimension_)));
 
   // linear term
-  for ( UnsignedLong i = 0; i < inputDimension_; ++ i )
+  for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
   {
     Matrix linear(1, inputDimension_);
     linear(0, i) = 1.0;

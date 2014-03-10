@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     std::cout << "Value at " << inPoint << "=" << myFunction(inPoint) << std::endl;
     std::cout << "Gradient at " << inPoint << "=" << myFunction.gradient(inPoint) << std::endl;
     std::cout << "Hessian at " << inPoint << "=" << myFunction.hessian(inPoint) << std::endl;
-    for (UnsignedLong i = 0; i < myFunction.getOutputDimension(); ++i)
+    for (UnsignedInteger i = 0; i < myFunction.getOutputDimension(); ++i)
     {
       std::cout << "Marginal " << i << "=" << myFunction.getMarginal(i) << std::endl;
     }

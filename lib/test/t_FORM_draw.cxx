@@ -27,12 +27,12 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedLong digits)
+String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
   NumericalScalar eps(pow(0.1, digits));
-  for (UnsignedLong i = 0; i < point.getDimension(); i++)
+  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((fabs(point[i]) < eps) ? fabs(point[i]) : point[i]);
   }
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     fullprint << "formulas=" << formulas << std::endl;
     NumericalMathFunction myFunction(inputFunc, outputFunc, formulas);
 
-    UnsignedLong dim(myFunction.getInputDimension());
+    UnsignedInteger dim(myFunction.getInputDimension());
     /* We create a normal distribution point of dimension 1 */
     NumericalPoint mean(dim, 0.0);
     mean[0] = 5.0; // x0
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 
     /* Stream out the result */
     FORMResult result(myAlgo.getResult());
-    UnsignedLong digits(5);
+    UnsignedInteger digits(5);
     fullprint << "importance factors=" << printNumericalPoint(result.getImportanceFactors(), digits) << std::endl;
     fullprint << "importance factors (classical)=" << printNumericalPoint(result.getImportanceFactors(true), digits) << std::endl;
 

@@ -51,15 +51,15 @@ int main(int argc, char *argv[])
     NumericalMathFunction myFunc(input_r, output_r, formula_r);
 
     /* We create a distribution */
-    UnsignedLong dim(myFunc.getInputDimension());
+    UnsignedInteger dim(myFunc.getInputDimension());
     NumericalPoint meanPoint(dim, 0.2);
     NumericalPoint sigma(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       sigma[i] = 0.1 * (i + 1);
     }
     CorrelationMatrix R = IdentityMatrix(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.25;
     }

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class DistFunc
 {
 public:
-  static const UnsignedLong NumberOfBandNormalZigurrat;
+  static const UnsignedInteger NumberOfBandNormalZigurrat;
   static const NumericalScalar NormalZigguratTail;
   // The array NormalZigguratAbscissa stores the abscissas of the bands:
   // the ith band is [NormalZigguratAbscissa[0], NormalZigguratAbscissa[i+1]] with
@@ -59,10 +59,10 @@ public:
                                const NumericalScalar p2);
   // For the Binomial distribution
 private:
-  static NumericalScalar fcBinomial(const UnsignedLong k);
+  static NumericalScalar fcBinomial(const UnsignedInteger k);
 
 public:
-  static UnsignedLong rBinomial(const UnsignedLong n,
+  static UnsignedInteger rBinomial(const UnsignedInteger n,
                                 const NumericalScalar p);
   // For Gamma distribution
   static NumericalScalar pGamma(const NumericalScalar k,
@@ -73,7 +73,7 @@ public:
                                 const Bool tail = false);
   static NumericalScalar rGamma(const NumericalScalar k);
   // For Kolmogorov distribution
-  static NumericalScalar pKolmogorov(const UnsignedLong n,
+  static NumericalScalar pKolmogorov(const UnsignedInteger n,
                                      const NumericalScalar x,
                                      const Bool tail = false);
 
@@ -82,13 +82,13 @@ public:
       const NumericalScalar lambda,
       const NumericalScalar x,
       const NumericalScalar precision = ResourceMap::GetAsNumericalScalar("DistFunc-Precision"),
-      const UnsignedLong maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
+      const UnsignedInteger maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
   static NumericalScalar pNonCentralChiSquare(const NumericalScalar nu,
       const NumericalScalar lambda,
       const NumericalScalar x,
       const Bool tail = false,
       const NumericalScalar precision = ResourceMap::GetAsNumericalScalar("DistFunc-Precision"),
-      const UnsignedLong maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
+      const UnsignedInteger maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
   static NumericalScalar rNonCentralChiSquare(const NumericalScalar nu,
       const NumericalScalar lambda);
   // For NonCentralStudent distribution
@@ -99,7 +99,7 @@ public:
       const NumericalScalar delta,
       const NumericalScalar x,
       const NumericalScalar precision = ResourceMap::GetAsNumericalScalar("DistFunc-Precision"),
-      const UnsignedLong maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
+      const UnsignedInteger maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
   static NumericalScalar pNonCentralStudent(const NumericalScalar nu,
       const NumericalScalar delta,
       const NumericalScalar x,
@@ -139,7 +139,7 @@ public:
   // For TruncatedNormal distribution
   //      static NumericalScalar rTruncatedNormal(const NumericalScalar a, const NumericalScalar b);
   // Compute the expectation of the min of n independent standard normal random variables
-  static NumericalScalar eZ1(const UnsignedLong n);
+  static NumericalScalar eZ1(const UnsignedInteger n);
 
   // Asymptotic distribution of the DickeyFuller distribution
   static NumericalScalar pDickeyFullerTrend(const NumericalScalar x,

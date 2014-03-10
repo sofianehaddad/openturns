@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  // UnsignedLong pointNumber(251);
+  // UnsignedInteger pointNumber(251);
 
   try
   {

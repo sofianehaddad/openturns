@@ -45,7 +45,7 @@ class NormalCopula
 public:
 
   /** Default constructor */
-  explicit NormalCopula(const UnsignedLong dim = 1);
+  explicit NormalCopula(const UnsignedInteger dim = 1);
 
   /** Default constructor */
   explicit NormalCopula(const CorrelationMatrix & correlation);
@@ -66,9 +66,9 @@ public:
   /** Get one realization of the NormalCopula distribution */
   NumericalPoint getRealization() const;
 protected:
-  NumericalSample getSampleParallel(const UnsignedLong size) const;
+  NumericalSample getSampleParallel(const UnsignedInteger size) const;
 public:
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the NormalCopula distribution */
   using CopulaImplementation::computeDDF;
@@ -153,7 +153,7 @@ private:
   {
     const NumericalSample input_;
     NumericalSample & output_;
-    UnsignedLong dimension_;
+    UnsignedInteger dimension_;
 
     ComputeSamplePolicy( const NumericalSample & input,
                          NumericalSample & output)
@@ -162,10 +162,10 @@ private:
       , dimension_(input.getDimension())
     {}
 
-    inline void operator()( const TBB::BlockedRange<UnsignedLong> & r ) const
+    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
     {
-      for (UnsignedLong i = r.begin(); i != r.end(); ++i)
-        for (UnsignedLong j = 0; j < dimension_; ++j)
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        for (UnsignedInteger j = 0; j < dimension_; ++j)
           output_[i][j] = DistFunc::pNormal(input_[i][j]);
     }
 

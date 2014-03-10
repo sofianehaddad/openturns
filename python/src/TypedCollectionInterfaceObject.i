@@ -95,6 +95,6 @@ OTDefaultCollectionConvertFunctionsMisnamed(Interface,Interface ## Implementatio
 
 namespace OT {  
 %extend TypedCollectionInterfaceObject {
-  void erase(UnsignedLong position) { self->erase(position); }
+  void erase(UnsignedInteger position) { self->erase(position); }
 }
 }

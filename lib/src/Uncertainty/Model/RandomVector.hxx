@@ -99,16 +99,16 @@ public:
   Bool isComposite() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Realization accessor */
   NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  RandomVector getMarginal(const UnsignedLong i) const;
+  RandomVector getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
   RandomVector getMarginal(const Indices & indices) const;

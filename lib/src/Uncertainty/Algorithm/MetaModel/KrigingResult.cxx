@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static Factory<PersistentCollection<UnsignedLong> > RegisteredFactory2("PersistentCollection<UnsignedLong>");
+static Factory<PersistentCollection<UnsignedInteger> > RegisteredFactory2("PersistentCollection<UnsignedInteger>");
 
 CLASSNAMEINIT(KrigingResult);
 static Factory<KrigingResult> RegisteredFactory("KrigingResult");

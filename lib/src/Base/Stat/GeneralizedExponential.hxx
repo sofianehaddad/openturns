@@ -46,9 +46,9 @@ public:
   typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
 
   /** Default constructor */
-  explicit GeneralizedExponential(const UnsignedLong & dimension = 0);
+  explicit GeneralizedExponential(const UnsignedInteger & dimension = 0);
 
-  GeneralizedExponential(const UnsignedLong & dimension,
+  GeneralizedExponential(const UnsignedInteger & dimension,
                          const NumericalScalar theta,
                          const NumericalScalar p);
 

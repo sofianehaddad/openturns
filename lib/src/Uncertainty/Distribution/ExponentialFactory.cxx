@@ -59,7 +59,7 @@ ExponentialFactory::Implementation ExponentialFactory::build() const
 
 Exponential ExponentialFactory::buildAsExponential(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Exponential distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Exponential distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);

@@ -98,7 +98,7 @@ DickeyFullerTest::DickeyFullerTest(const TimeSeries & series,
     throw InvalidDimensionException(HERE) << "Expected time series of dimension 1";
 
   // Build the estimation of parameters rho and \phi_i
-  const UnsignedLong size(series.getSize());
+  const UnsignedInteger size(series.getSize());
   if (size <= 1)
     throw InvalidArgumentException(HERE) << "The size of time series is " << size
                                          << "Impossible to run the test" ;
@@ -120,7 +120,7 @@ void DickeyFullerTest::computeNoConstantCharacteristics_()
   {
     // Computation of \sum_{t=1}^{N} y_{t} y{t-1} and
     // Computation of \sum_{t=1}^{N} y_{t-1} * y{t-1}
-    for (UnsignedLong t = 0; t < T_; ++t)
+    for (UnsignedInteger t = 0; t < T_; ++t)
     {
       const NumericalScalar y_t_minus_one(timeSeries_.getValueAtIndex(t)[0]);
       const NumericalScalar y_t(timeSeries_.getValueAtIndex(t + 1)[0]);
@@ -140,7 +140,7 @@ void DickeyFullerTest::computeDriftCharacteristics_()
   if (!isComputedDriftCharacteristics_)
   {
     NumericalScalar partialSum(0.0);
-    for (UnsignedLong t = 1; t < T_; ++t) partialSum += timeSeries_.getValueAtIndex(t)[0];
+    for (UnsignedInteger t = 1; t < T_; ++t) partialSum += timeSeries_.getValueAtIndex(t)[0];
     sum_yt_minus_one_ = partialSum + timeSeries_.getValueAtIndex(0)[0];
     sum_yt_ = partialSum + timeSeries_.getValueAtIndex(T_)[0];
     isComputedDriftCharacteristics_ = true;
@@ -162,7 +162,7 @@ void DickeyFullerTest::computeTrendCharacteristics_()
   {
     // Computation of \sum_{t=1}^{N} t * y{t-1}
     // and \sum_{t=1}^{N} t * y{t}
-    for (UnsignedLong t = 0; t < T_; ++t)
+    for (UnsignedInteger t = 0; t < T_; ++t)
     {
       const NumericalScalar y_t_minus_one(timeSeries_.getValueAtIndex(t)[0]);
       const NumericalScalar time(timeGrid.getValue(t + 1));
@@ -223,7 +223,7 @@ void DickeyFullerTest::estimateDriftAndLinearTrendModel()
     // Estimate the sum square of residual value
     NumericalScalar error = 0.0;
     const RegularGrid timeGrid_(timeSeries_.getTimeGrid());
-    for (UnsignedLong t = 0; t < T_; ++t)
+    for (UnsignedInteger t = 0; t < T_; ++t)
     {
       const NumericalScalar X(timeSeries_.getValueAtIndex(t)[0]);
       const NumericalScalar Y(timeSeries_.getValueAtIndex(t + 1)[0]);
@@ -276,7 +276,7 @@ void DickeyFullerTest::estimateDriftModel()
     // Estimate the sum square of residual value
     NumericalScalar error = 0.0;
     const RegularGrid timeGrid_(timeSeries_.getTimeGrid());
-    for (UnsignedLong t = 0; t < T_; ++t)
+    for (UnsignedInteger t = 0; t < T_; ++t)
     {
       const NumericalScalar X(timeSeries_.getValueAtIndex(t)[0]);
       const NumericalScalar Y(timeSeries_.getValueAtIndex(t + 1)[0]);
@@ -311,7 +311,7 @@ void DickeyFullerTest::estimateAR1Model()
 
     // Expected error residual
     NumericalScalar error(0.0);
-    for (UnsignedLong t = 0; t < T_; ++t)
+    for (UnsignedInteger t = 0; t < T_; ++t)
     {
       const NumericalScalar X(timeSeries_.getValueAtIndex(t)[0]);
       const NumericalScalar Y(timeSeries_.getValueAtIndex(t + 1)[0]);
@@ -507,7 +507,7 @@ TestResult DickeyFullerTest::testUnitRootAndNoLinearTrendInDriftAndLinearTrendMo
   NumericalScalar SCR3(0.0);
 
   const RegularGrid timeGrid_(timeSeries_.getTimeGrid());
-  for (UnsignedLong t = 0; t < T_; ++t)
+  for (UnsignedInteger t = 0; t < T_; ++t)
   {
     const NumericalScalar deltaX(timeSeries_[t + 1][1] - timeSeries_[t][1]);
     const NumericalScalar epsilon_t(deltaX - c);
@@ -586,7 +586,7 @@ TestResult DickeyFullerTest::testUnitRootAndNoDriftInDriftModel(const NumericalS
   NumericalScalar SCR2c(0.0);
   NumericalScalar SCR2(0.0);
 
-  for (UnsignedLong t = 0; t < T_; ++t)
+  for (UnsignedInteger t = 0; t < T_; ++t)
   {
     const NumericalScalar epsilon_t(timeSeries_[t + 1][1] - timeSeries_[t][1]);
     SCR2c += epsilon_t * epsilon_t;

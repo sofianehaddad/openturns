@@ -44,11 +44,11 @@ int main(int argc, char *argv[])
     CorrelationMatrix R(1);
     R(0, 0) = 1.0;
     // Create a collection of distribution
-    UnsignedLong dimension(2000);
+    UnsignedInteger dimension(2000);
     fullprint << "Creating a composed distribution of dimension " << dimension << std::endl;
     ComposedDistribution::DistributionCollection aCollection(dimension, Normal(meanPoint, sigma, R));
 
-    for (UnsignedLong i = 0; i < dimension; i++)
+    for (UnsignedInteger i = 0; i < dimension; i++)
     {
       aCollection[i] = Normal(meanPoint, sigma, R);
     }
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     fullprint << "Independent copula= " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     NumericalSample anotherSample = distribution.getSample( size );
 
     // Define a point

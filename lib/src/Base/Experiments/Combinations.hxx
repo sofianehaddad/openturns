@@ -43,8 +43,8 @@ public:
   /** Default constructor */
   Combinations();
 
-  explicit Combinations(const UnsignedLong k,
-                        const UnsignedLong n);
+  explicit Combinations(const UnsignedInteger k,
+                        const UnsignedInteger n);
 
   /** Virtual constructor */
   virtual Combinations * clone() const;
@@ -58,21 +58,21 @@ public:
   virtual String __repr__() const;
 
   /** Subset size accessor */
-  void setK(const UnsignedLong k);
+  void setK(const UnsignedInteger k);
 
-  UnsignedLong getK() const;
+  UnsignedInteger getK() const;
 
   /** Set size accessor */
-  void setN(const UnsignedLong n);
+  void setN(const UnsignedInteger n);
 
-  UnsignedLong getN() const;
+  UnsignedInteger getN() const;
 
 private:
   /** Size of the subsets */
-  UnsignedLong k_;
+  UnsignedInteger k_;
 
   /** Size of the set */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
 }; /* class Combinations */
 

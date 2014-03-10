@@ -64,11 +64,11 @@ GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build() const
 GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalSample & sample) const
 {
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from an empty sample";
   NumericalScalar xMin(sample.getMin()[0]);
   if (xMin <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution based on a sample with nonpositive values.";
-  NumericalScalar smallSize(ResourceMap::GetAsUnsignedLong( "GeneralizedParetoFactory-SmallSize" ));
+  NumericalScalar smallSize(ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize" ));
   // The strategy is to use the probability weighted moment method for small size and to switch to the maximum likelihood if the estimator is not defined. For large size, we only use the ML estimator.
   if (size <= smallSize)
   {
@@ -132,7 +132,7 @@ struct GeneralizedParetoFactoryParameterConstraint
   {
     const NumericalSample sortedSample(sample.sort());
     sampleY_ = NumericalSample(size_ - 2, 1);
-    for (UnsignedLong j = 0; j < size_ - 2; ++j)
+    for (UnsignedInteger j = 0; j < size_ - 2; ++j)
       sampleY_[j][0] = (j + 1.0) * log((sortedSample[size_ - 1 - j][0] - sortedSample[0][0]) / (sortedSample[size_ - 2 - j][0] - sortedSample[0][0]));
   };
 
@@ -143,7 +143,7 @@ struct GeneralizedParetoFactoryParameterConstraint
     if (fabs(gamma) < 1.0e-4)
     {
       NumericalScalar exponentialRegressionLogLikelihood(0.0);
-      for (UnsignedLong j = 0; j < size_ - 2; ++j)
+      for (UnsignedInteger j = 0; j < size_ - 2; ++j)
       {
         const NumericalScalar logAlphaJ(log((j + 1.0) / size_));
         const NumericalScalar gammaLogAlphaJ(gamma * logAlphaJ);
@@ -154,7 +154,7 @@ struct GeneralizedParetoFactoryParameterConstraint
     }
     // Large gamma case
     NumericalScalar exponentialRegressionLogLikelihood(0.0);
-    for (UnsignedLong j = 0; j < size_ - 2; ++j)
+    for (UnsignedInteger j = 0; j < size_ - 2; ++j)
     {
       const NumericalScalar alphaJ((1.0 - pow((j + 1.0) / size_, gamma)) / gamma);
       exponentialRegressionLogLikelihood += log(alphaJ) - alphaJ * sampleY_[j][0];
@@ -163,7 +163,7 @@ struct GeneralizedParetoFactoryParameterConstraint
   }
 
   NumericalSample sampleY_;
-  UnsignedLong size_;
+  UnsignedInteger size_;
 };
 
 /* Algorithm associated with the method of exponential regression */
@@ -175,7 +175,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   f.setGradientImplementation(gradient);
   // Solver
   TNC optimizationAlgorithm(f);
-  optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedLong( "GeneralizedParetoFactory-MaximumEvaluationNumber"));
+  optimizationAlgorithm.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-MaximumEvaluationNumber"));
   optimizationAlgorithm.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumAbsoluteError"));
   optimizationAlgorithm.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumRelativeError"));
   optimizationAlgorithm.setMaximumObjectiveError(ResourceMap::GetAsNumericalScalar( "GeneralizedParetoFactory-MaximumObjectiveError"));
@@ -186,8 +186,8 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   const NumericalSample sortedSample(sample.sort());
   // Compute the first probability weighted moment
   NumericalScalar m(0.0);
-  const UnsignedLong size(sample.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
+  const UnsignedInteger size(sample.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
   m /= size * size;
   const NumericalScalar sigma(2.0 * mean * m / (mean - 2.0 * m));
   GeneralizedPareto result(sigma, xi);
@@ -202,8 +202,8 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
   const NumericalSample sortedSample(sample.sort());
   // Compute the first probability weighted moment
   NumericalScalar m(0.0);
-  const UnsignedLong size(sample.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
+  const UnsignedInteger size(sample.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
   m /= size * size;
   const NumericalScalar xi(mean / (mean - 2.0 * m) - 2.0);
   if (xi <= -0.5) throw InternalException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of probability weighted moments when the estimated xi parameter=" << xi << " is less than -0.5";

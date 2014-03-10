@@ -60,14 +60,14 @@ String MixtureClassifier::__repr__() const
          << " mixture=" << mixture_;
 }
 
-UnsignedLong MixtureClassifier::classify(const NumericalPoint& inP) const
+UnsignedInteger MixtureClassifier::classify(const NumericalPoint& inP) const
 {
   if (inP.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the point to classify has dimension=" << inP.getDimension() << " but the classifier expects dimension=" << mixture_.getDimension();
-  const UnsignedLong size(mixture_.getDistributionCollection().getSize());
-  UnsignedLong bestClass(0);
+  const UnsignedInteger size(mixture_.getDistributionCollection().getSize());
+  UnsignedInteger bestClass(0);
   Distribution atom(mixture_.getDistributionCollection()[0]);
   NumericalScalar bestGrade(log(atom.getWeight()) + atom.computeLogPDF( inP ));
-  for ( UnsignedLong classIndex = 1; classIndex < size; ++classIndex )
+  for ( UnsignedInteger classIndex = 1; classIndex < size; ++classIndex )
   {
     atom = mixture_.getDistributionCollection()[classIndex];
     const NumericalScalar grade(log(atom.getWeight()) + atom.computeLogPDF( inP ));
@@ -81,9 +81,9 @@ UnsignedLong MixtureClassifier::classify(const NumericalPoint& inP) const
 }
 
 NumericalScalar MixtureClassifier::grade(const NumericalPoint& inP,
-    const UnsignedLong outC) const
+    const UnsignedInteger outC) const
 {
-  const UnsignedLong size(mixture_.getDistributionCollection().getSize());
+  const UnsignedInteger size(mixture_.getDistributionCollection().getSize());
   if (outC >= size) throw InvalidDimensionException(HERE) << "Class number (=" << outC << ") must be lower than size (=" << size << ").";
   return log(mixture_.getDistributionCollection()[outC].getWeight()) + mixture_.getDistributionCollection()[outC].computeLogPDF( inP );
 }
@@ -100,7 +100,7 @@ void MixtureClassifier::setMixture(const Mixture & mixture)
 }
 
 /* Dimension accessor */
-UnsignedLong MixtureClassifier::getDimension() const
+UnsignedInteger MixtureClassifier::getDimension() const
 {
   return mixture_.getDimension();
 }

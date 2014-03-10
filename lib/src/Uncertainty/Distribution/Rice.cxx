@@ -40,7 +40,7 @@ Rice::Rice()
   : ContinuousDistribution("Rice")
   , sigma_(1.0)
   , nu_(0.0)
-  , maximumIteration_(ResourceMap::GetAsUnsignedLong("DistFunc-MaximumIteration"))
+  , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
   setDimension(1);
   computeRange();
@@ -52,7 +52,7 @@ Rice::Rice(const NumericalScalar sigma,
   : ContinuousDistribution("Rice")
   , sigma_(0.0)
   , nu_(nu)
-  , maximumIteration_(ResourceMap::GetAsUnsignedLong("DistFunc-MaximumIteration"))
+  , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
   setNu(nu);
   // This call sets also the range
@@ -162,7 +162,7 @@ NumericalPoint Rice::getStandardDeviation() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Rice::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Rice::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
   return NumericalPoint(1, pow(2, 0.5 * n) * SpecFunc::Gamma(1.0 + 0.5 * n) * SpecFunc::HyperGeom_1_1(-0.5 * n, 1.0, -0.5 * nu_ * nu_ / (sigma_ * sigma_)));
@@ -245,12 +245,12 @@ NumericalScalar Rice::getNu() const
 }
 
 /* Maximum iterations accessor */
-void Rice::setMaximumIteration(const UnsignedLong maximumIteration)
+void Rice::setMaximumIteration(const UnsignedInteger maximumIteration)
 {
   maximumIteration_ = maximumIteration;
 }
 
-UnsignedLong Rice::getMaximumIteration() const
+UnsignedInteger Rice::getMaximumIteration() const
 {
   return maximumIteration_;
 }

@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong dimension(2);
-    UnsignedLong sampleSize(1000);
+    UnsignedInteger dimension(2);
+    UnsignedInteger sampleSize(1000);
 
     // we create an analytical function
     Description input(dimension);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
     // we create a collection of uniform distributions over [-Pi; Pi[
     DistributionCollection aCollection;
-    for(UnsignedLong i = 0; i < dimension; ++i)
+    for(UnsignedInteger i = 0; i < dimension; ++i)
     {
       aCollection.add(Normal());
     }

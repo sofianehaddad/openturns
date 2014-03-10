@@ -252,7 +252,7 @@ void Weibull::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Weibull::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Weibull::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, SpecFunc::Gamma(1.0 + n / beta_));
 }

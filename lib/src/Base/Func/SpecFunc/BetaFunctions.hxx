@@ -84,7 +84,7 @@ NumericalScalar BUP(const NumericalScalar a,
                     const NumericalScalar b,
                     const NumericalScalar x,
                     const NumericalScalar y,
-                    const UnsignedLong n);
+                    const UnsignedInteger n);
 
 NumericalScalar ALGDIV(const NumericalScalar a,
                        const NumericalScalar b);

@@ -57,7 +57,7 @@ LHS::LHS(const Event & event):
   // Check if the distribution associated to the antecedent of the antecedent of the event has independent components
   //      if(!Event.getAntecedent()->getAntecedent()->getDistribution().hasIndependentComponents()) throw InvalidArgumentExeception(HERE) << "Error the LHS simulation method requires independent components for the event second antecedent";
   // Get the marginals
-  for (UnsignedLong index = 0; index < dimension_; index++) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
+  for (UnsignedInteger index = 0; index < dimension_; index++) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
 }
 
 /* Virtual constructor */
@@ -70,17 +70,17 @@ LHS * LHS::clone() const
 NumericalSample LHS::computeBlockSample()
 {
   // Size of a block
-  const UnsignedLong blockSize(getBlockSize());
+  const UnsignedInteger blockSize(getBlockSize());
   // Compute the total sample size
-  const UnsignedLong totalSize(blockSize * getMaximumOuterSampling());
+  const UnsignedInteger totalSize(blockSize * getMaximumOuterSampling());
   // Compute the total sample base position
-  UnsignedLong basePosition(blockIndex_ * blockSize);
+  UnsignedInteger basePosition(blockIndex_ * blockSize);
   // First, compute the input sub-sample based on the shuffling
   NumericalSample inputSample(blockSize, NumericalPoint(dimension_));
-  for(UnsignedLong index = 0; index < blockSize; ++index)
+  for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
     const NumericalPoint u(RandomGenerator::Generate(dimension_));
-    for(UnsignedLong component = 0; component < dimension_; ++component)
+    for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
       NumericalScalar xi((shuffle_(component, basePosition) + u[component]) / totalSize);
       inputSample[index][component] = marginals_[component].computeQuantile(xi)[0];
@@ -90,7 +90,7 @@ NumericalSample LHS::computeBlockSample()
   }
   // Then, evaluate the function on this sample
   NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
-  for (UnsignedLong i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
+  for (UnsignedInteger i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
   // Update the block index
   ++blockIndex_;
   return blockSample;

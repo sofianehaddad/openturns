@@ -45,16 +45,16 @@ public:
   explicit ARMALikelihoodFactory(const String & name = OT::DefaultName);
 
   /** Default constructor */
-  ARMALikelihoodFactory(const UnsignedLong p,
-                        const UnsignedLong q,
-                        const UnsignedLong dimension,
+  ARMALikelihoodFactory(const UnsignedInteger p,
+                        const UnsignedInteger q,
+                        const UnsignedInteger dimension,
                         const Bool invertible = true,
                         const String & name = OT::DefaultName);
 
   /** Parameter constructor */
   ARMALikelihoodFactory(const Indices & p,
                         const Indices & q,
-                        const UnsignedLong dimension,
+                        const UnsignedInteger dimension,
                         const Bool invertible = true,
                         const String & name = DefaultName);
 
@@ -95,13 +95,13 @@ public:
 private :
 
   /** Parameter g is the maximum of p and q */
-  mutable UnsignedLong currentG_;
+  mutable UnsignedInteger currentG_;
 
   /** TimeSeries used to pass data */
   mutable TimeSeries w_;
 
   /** Dimension parameter - only used to pass data */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** only used to pass data to be used in computeLogLikelihood */
   mutable CovarianceMatrix covarianceMatrix_;

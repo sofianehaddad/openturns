@@ -45,8 +45,8 @@ ARMAFactoryImplementation::ARMAFactoryImplementation(const String & name)
 }
 
 /* Parameter constructor */
-ARMAFactoryImplementation::ARMAFactoryImplementation(const UnsignedLong p,
-    const UnsignedLong q,
+ARMAFactoryImplementation::ARMAFactoryImplementation(const UnsignedInteger p,
+    const UnsignedInteger q,
     const Bool invertible,
     const String & name)
   : PersistentObject(name)
@@ -91,11 +91,11 @@ void ARMAFactoryImplementation::setP(const Indices & ARIndices)
 }
 
 
-UnsignedLong ARMAFactoryImplementation::getCurrentP() const
+UnsignedInteger ARMAFactoryImplementation::getCurrentP() const
 {
   return currentP_;
 }
-void ARMAFactoryImplementation::setCurrentP(const UnsignedLong p) const
+void ARMAFactoryImplementation::setCurrentP(const UnsignedInteger p) const
 {
   currentP_ = p;
 }
@@ -110,11 +110,11 @@ void ARMAFactoryImplementation::setQ(const Indices & MAIndices)
   q_ = MAIndices;
 }
 
-UnsignedLong ARMAFactoryImplementation::getCurrentQ() const
+UnsignedInteger ARMAFactoryImplementation::getCurrentQ() const
 {
   return currentQ_;
 }
-void ARMAFactoryImplementation::setCurrentQ(const UnsignedLong q) const
+void ARMAFactoryImplementation::setCurrentQ(const UnsignedInteger q) const
 {
   currentQ_ = q;
 }

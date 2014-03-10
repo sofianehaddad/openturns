@@ -34,12 +34,12 @@ CLASSNAMEINIT(SobolSequence);
 static Factory<SobolSequence> RegisteredFactory("SobolSequence");
 
 
-const UnsignedLong    SobolSequence::MaximumNumberOfDimension = 40;
-const UnsignedLong    SobolSequence::MaximumBase2Logarithm    = 62;
+const UnsignedInteger    SobolSequence::MaximumNumberOfDimension = 40;
+const UnsignedInteger    SobolSequence::MaximumBase2Logarithm    = 62;
 const NumericalScalar SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
-const UnsignedLong    SobolSequence::MaximumInitialDegree     = 8;
+const UnsignedInteger    SobolSequence::MaximumInitialDegree     = 8;
 
-const UnsignedLong SobolSequence::InitialBase[MaximumNumberOfDimension*MaximumInitialDegree] =
+const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension*MaximumInitialDegree] =
 {
   1,   0,   0,   0,   0,   0,   0,   0,
   1,   0,   0,   0,   0,   0,   0,   0,
@@ -94,7 +94,7 @@ const Unsigned64BitsInteger SobolSequence::PrimitivePolynomial[MaximumNumberOfDi
 
 
 /* Constructor with parameters */
-SobolSequence::SobolSequence(const UnsignedLong dimension) :
+SobolSequence::SobolSequence(const UnsignedInteger dimension) :
   LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
@@ -109,7 +109,7 @@ SobolSequence * SobolSequence::clone() const
 
 
 /* Initialize the sequence */
-void SobolSequence::initialize(const UnsignedLong dimension)
+void SobolSequence::initialize(const UnsignedInteger dimension)
 {
   if((dimension == 0) || (dimension > MaximumNumberOfDimension))
     throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumNumberOfDimension << "].";
@@ -117,19 +117,19 @@ void SobolSequence::initialize(const UnsignedLong dimension)
   // copy initial direction numbers
   base_ = Unsigned64BitsIntegerCollection(dimension_ * MaximumBase2Logarithm, 0);
 
-  for ( UnsignedLong i = 0; i < dimension_; ++ i )
-    for ( UnsignedLong j = 0; j < MaximumInitialDegree; ++ j )
+  for ( UnsignedInteger i = 0; i < dimension_; ++ i )
+    for ( UnsignedInteger j = 0; j < MaximumInitialDegree; ++ j )
       base_[i * MaximumBase2Logarithm + j] = InitialBase[i * MaximumInitialDegree + j];
 
   // initialize row 0 (first dimension)
-  for ( UnsignedLong j = 0; j < MaximumBase2Logarithm; ++ j )
+  for ( UnsignedInteger j = 0; j < MaximumBase2Logarithm; ++ j )
     base_[j] = 1;
 
   // initialize remaining direction numbers, for each dimension <-> rows of base_[][]
-  for ( UnsignedLong i = 1; i < dimension_; ++ i )
+  for ( UnsignedInteger i = 1; i < dimension_; ++ i )
   {
     // number of bits of PrimitivePolynomial[i]
-    UnsignedLong polynomialCoefficientDegree = 0;
+    UnsignedInteger polynomialCoefficientDegree = 0;
     Unsigned64BitsInteger polynomialCoefficient(PrimitivePolynomial[i]);
 
     // get number of bits of the PrimitivePolynomial[i] coefficient (could have used log2)
@@ -140,10 +140,10 @@ void SobolSequence::initialize(const UnsignedLong dimension)
     }
 
     // generate remaining direction numbers
-    for ( UnsignedLong j = polynomialCoefficientDegree; j < MaximumBase2Logarithm; ++ j )
+    for ( UnsignedInteger j = polynomialCoefficientDegree; j < MaximumBase2Logarithm; ++ j )
     {
       base_[i * MaximumBase2Logarithm + j] = base_[i * MaximumBase2Logarithm + j - polynomialCoefficientDegree];
-      for ( UnsignedLong k = 1; k <= polynomialCoefficientDegree; ++ k )
+      for ( UnsignedInteger k = 1; k <= polynomialCoefficientDegree; ++ k )
       {
         if((PrimitivePolynomial[i] & power2(polynomialCoefficientDegree - k)) > 0)
         {
@@ -154,17 +154,17 @@ void SobolSequence::initialize(const UnsignedLong dimension)
   } // i
 
   // multiply columns of directionNumber[][] by appropriate power of 2
-  for ( UnsignedLong j = 0; j < MaximumBase2Logarithm - 1; ++ j )
-    for ( UnsignedLong i = 0; i < dimension_; ++ i )
+  for ( UnsignedInteger j = 0; j < MaximumBase2Logarithm - 1; ++ j )
+    for ( UnsignedInteger i = 0; i < dimension_; ++ i )
       base_[i * MaximumBase2Logarithm + j] *= power2(MaximumBase2Logarithm - j - 1);
 
   // initialize integer coefficients of the sequence : first column of directionNumber[][]
   coefficients_ = Unsigned64BitsIntegerCollection(dimension_);
-  for ( UnsignedLong i = 0; i < dimension_; ++ i )
+  for ( UnsignedInteger i = 0; i < dimension_; ++ i )
     coefficients_[i] = base_[i * MaximumBase2Logarithm];
 
   // set the seed
-  seed_ = ResourceMap::GetAsUnsignedLong( "SobolSequence-InitialSeed" );
+  seed_ = ResourceMap::GetAsUnsignedInteger( "SobolSequence-InitialSeed" );
 }
 
 
@@ -175,10 +175,10 @@ NumericalPoint SobolSequence::generate()
   NumericalPoint sequencePoint(dimension_, Epsilon);
 
   // compute the position of the lowest 0 bit in the binary representation of seed_
-  const UnsignedLong positionOfLowest0BitOfSeed = computePositionOfLowest0Bit(seed_);
+  const UnsignedInteger positionOfLowest0BitOfSeed = computePositionOfLowest0Bit(seed_);
 
   // for each dimension
-  for(UnsignedLong i = 0; i < dimension_; ++ i )
+  for(UnsignedInteger i = 0; i < dimension_; ++ i )
   {
     // compute sequence from integer coefficients
     sequencePoint[i] *= coefficients_[i];
@@ -205,16 +205,16 @@ String SobolSequence::__repr__() const
 
 
 /* return 2^n */
-Unsigned64BitsInteger SobolSequence::power2(const UnsignedLong n)
+Unsigned64BitsInteger SobolSequence::power2(const UnsignedInteger n)
 {
   return (Unsigned64BitsInteger)1 << n;
 }
 
 
 /* returns the position of the lowest '0' in the binary representation of an integer */
-UnsignedLong SobolSequence::computePositionOfLowest0Bit(const Unsigned64BitsInteger number)
+UnsignedInteger SobolSequence::computePositionOfLowest0Bit(const Unsigned64BitsInteger number)
 {
-  UnsignedLong base2Logarithm = 0;
+  UnsignedInteger base2Logarithm = 0;
   while((number & power2(base2Logarithm)) && (base2Logarithm <= MaximumBase2Logarithm))
   {
     ++ base2Logarithm;

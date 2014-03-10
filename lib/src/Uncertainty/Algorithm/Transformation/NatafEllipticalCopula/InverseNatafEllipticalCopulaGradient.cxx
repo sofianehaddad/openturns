@@ -85,16 +85,16 @@ String InverseNatafEllipticalCopulaGradient::__repr__() const
  */
 Matrix InverseNatafEllipticalCopulaGradient::gradient(const NumericalPoint & inP) const
 {
-  UnsignedLong dimension(getInputDimension());
+  UnsignedInteger dimension(getInputDimension());
   // First, correlate the components
   NumericalPoint point(cholesky_ * inP);
   Matrix result(dimension, dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Second, apply the commmon marginal distribution
-  for (UnsignedLong j = 0; j < dimension; ++j)
+  for (UnsignedInteger j = 0; j < dimension; ++j)
   {
     NumericalScalar marginalPDF(standardMarginal.computePDF(NumericalPoint(1, point[j])));
-    for (UnsignedLong i = 0; i <= j; ++i)
+    for (UnsignedInteger i = 0; i <= j; ++i)
     {
       result(i, j) = marginalPDF * cholesky_(j, i);
     }
@@ -103,13 +103,13 @@ Matrix InverseNatafEllipticalCopulaGradient::gradient(const NumericalPoint & inP
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseNatafEllipticalCopulaGradient::getInputDimension() const
+UnsignedInteger InverseNatafEllipticalCopulaGradient::getInputDimension() const
 {
   return cholesky_.getNbColumns();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseNatafEllipticalCopulaGradient::getOutputDimension() const
+UnsignedInteger InverseNatafEllipticalCopulaGradient::getOutputDimension() const
 {
   return cholesky_.getNbRows();
 }

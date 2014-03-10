@@ -57,13 +57,13 @@ LinearNumericalMathEvaluationImplementation::LinearNumericalMathEvaluationImplem
   /* Check if the dimension of the center term is compatible with the linear term */
   if (center.getDimension() != linear.getNbRows()) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term";
   Description description;
-  for (UnsignedLong i = 0; i < center.getDimension(); i++)
+  for (UnsignedInteger i = 0; i < center.getDimension(); i++)
   {
     OSS oss;
     oss << "x" << i;
     description.add(oss);
   }
-  for (UnsignedLong i = 0; i < constant.getDimension(); i++)
+  for (UnsignedInteger i = 0; i < constant.getDimension(); i++)
   {
     OSS oss;
     oss << "y" << i;
@@ -147,13 +147,13 @@ NumericalSample LinearNumericalMathEvaluationImplementation::operator() (const N
 }
 
 /* Accessor for input point dimension */
-UnsignedLong LinearNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger LinearNumericalMathEvaluationImplementation::getInputDimension() const
 {
   return center_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong LinearNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger LinearNumericalMathEvaluationImplementation::getOutputDimension() const
 {
   return constant_.getDimension();
 }

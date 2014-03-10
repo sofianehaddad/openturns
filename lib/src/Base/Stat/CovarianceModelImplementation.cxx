@@ -45,7 +45,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const String & name
 }
 
 /* Constructor with dimension parameter */
-CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedLong dimension,
+CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger dimension,
     const String & name)
   : PersistentObject(name)
   , dimension_(dimension)
@@ -60,7 +60,7 @@ CovarianceModelImplementation * CovarianceModelImplementation::clone() const
 }
 
 /* Dimension accessor */
-UnsignedLong CovarianceModelImplementation::getDimension() const
+UnsignedInteger CovarianceModelImplementation::getDimension() const
 {
   return dimension_;
 }
@@ -144,23 +144,23 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
 CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) const
 {
   const NumericalSample vertices(mesh.getVertices());
-  const UnsignedLong size(vertices.getSize());
-  const UnsignedLong fullSize(size * dimension_);
+  const UnsignedInteger size(vertices.getSize());
+  const UnsignedInteger fullSize(size * dimension_);
   CovarianceMatrix covarianceMatrix(fullSize);
 
   // Fill-in the matrix by blocks
-  for (UnsignedLong rowIndex = 0; rowIndex < size; ++rowIndex)
+  for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
   {
     // Only the lower part has to be filled-in
-    for (UnsignedLong columnIndex = 0; columnIndex < rowIndex; ++columnIndex)
+    for (UnsignedInteger columnIndex = 0; columnIndex < rowIndex; ++columnIndex)
     {
       const CovarianceMatrix localCovarianceMatrix(operator()( vertices[rowIndex],  vertices[columnIndex] ));
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
       // not copied on a symmetric position
-      for (UnsignedLong rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
+      for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
       {
-        for (UnsignedLong columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
+        for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
         {
           covarianceMatrix(columnIndex + columnIndexLocal * size, rowIndex + rowIndexLocal * size ) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
         } // column index within the block

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong dimension(1);
+    const UnsignedInteger dimension(1);
 
     /* Amplitude values */
     NumericalPoint amplitude(dimension, 1.0);

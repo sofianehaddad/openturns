@@ -80,7 +80,7 @@ Bool RandomVectorImplementation::isComposite() const
 }
 
 /* Dimension accessor */
-UnsignedLong RandomVectorImplementation::getDimension() const
+UnsignedInteger RandomVectorImplementation::getDimension() const
 {
   throw NotYetImplementedException(HERE);
 }
@@ -92,10 +92,10 @@ NumericalPoint RandomVectorImplementation::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample RandomVectorImplementation::getSample(const UnsignedLong size) const
+NumericalSample RandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
   NumericalSample result(size, getDimension());
-  for (UnsignedLong i = 0; i < size; ++i) result[i] = getRealization();
+  for (UnsignedInteger i = 0; i < size; ++i) result[i] = getRealization();
   return result;
 }
 
@@ -112,7 +112,7 @@ CovarianceMatrix RandomVectorImplementation::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-RandomVectorImplementation::Implementation RandomVectorImplementation::getMarginal(const UnsignedLong i) const
+RandomVectorImplementation::Implementation RandomVectorImplementation::getMarginal(const UnsignedInteger i) const
 {
   throw NotYetImplementedException(HERE);
 }

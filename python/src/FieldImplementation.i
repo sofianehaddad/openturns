@@ -24,8 +24,8 @@ namespace OT{
 
 	NumericalScalar __getitem__(PyObject * args) const {
 
-          OT::UnsignedLong arg2 ;
-          OT::UnsignedLong arg3 ;
+          OT::UnsignedInteger arg2 ;
+          OT::UnsignedInteger arg3 ;
           unsigned long val2 ;
           int ecode2 = 0 ;
           unsigned long val3 ;
@@ -37,16 +37,16 @@ namespace OT{
 
           ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
           if (!SWIG_IsOK(ecode2)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FieldImplementation___getitem__" "', argument " "2"" of type '" "OT::UnsignedLong""'");
+            SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FieldImplementation___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
           }
-          arg2 = static_cast< OT::UnsignedLong >(val2);
+          arg2 = static_cast< OT::UnsignedInteger >(val2);
 
 
           ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
           if (!SWIG_IsOK(ecode3)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FieldImplementation___getitem__" "', argument " "3"" of type '" "OT::UnsignedLong""'");
+            SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FieldImplementation___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
           }
-          arg3 = static_cast< OT::UnsignedLong >(val3);
+          arg3 = static_cast< OT::UnsignedInteger >(val3);
 
           return (*self).at(arg2, arg3);
 fail:
@@ -57,8 +57,8 @@ fail:
 
 	void __setitem__(PyObject * args, NumericalScalar val) {
 
-          OT::UnsignedLong arg2 ;
-          OT::UnsignedLong arg3 ;
+          OT::UnsignedInteger arg2 ;
+          OT::UnsignedInteger arg3 ;
           unsigned long val2 ;
           int ecode2 = 0 ;
           unsigned long val3 ;
@@ -70,14 +70,14 @@ fail:
 
           ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
           if (!SWIG_IsOK(ecode2)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FieldImplementation___setitem__" "', argument " "2"" of type '" "OT::UnsignedLong""'");
+            SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FieldImplementation___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
           }
-          arg2 = static_cast< OT::UnsignedLong >(val2);
+          arg2 = static_cast< OT::UnsignedInteger >(val2);
           ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
           if (!SWIG_IsOK(ecode3)) {
-            SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FieldImplementation___setitem__" "', argument " "3"" of type '" "OT::UnsignedLong""'");
+            SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FieldImplementation___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
           }
-          arg3 = static_cast< OT::UnsignedLong >(val3);
+          arg3 = static_cast< OT::UnsignedInteger >(val3);
           (*self).at(arg2, arg3) = val;
 fail:
 	  return;

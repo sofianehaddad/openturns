@@ -45,7 +45,7 @@ public:
   explicit SolverImplementation(const NumericalScalar absoluteError = ResourceMap::GetAsNumericalScalar( "SolverImplementation-DefaultAbsoluteError" ),
                                 const NumericalScalar relativeError = ResourceMap::GetAsNumericalScalar( "SolverImplementation-DefaultRelativeError" ),
                                 const NumericalScalar residualError = ResourceMap::GetAsNumericalScalar( "SolverImplementation-DefaultResidualError" ),
-                                const UnsignedLong maximumFunctionEvaluation = ResourceMap::GetAsUnsignedLong( "SolverImplementation-DefaultMaximumFunctionEvaluation" ));
+                                const UnsignedInteger maximumFunctionEvaluation = ResourceMap::GetAsUnsignedInteger( "SolverImplementation-DefaultMaximumFunctionEvaluation" ));
 
 
   /** Virtual constructor */
@@ -84,15 +84,15 @@ public:
   NumericalScalar getResidualError() const;
 
   /** Maximum function evaluation accessor */
-  void setMaximumFunctionEvaluation(const UnsignedLong maximumFunctionEvaluation);
-  UnsignedLong getMaximumFunctionEvaluation() const;
+  void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);
+  UnsignedInteger getMaximumFunctionEvaluation() const;
 
 protected:
 
 
   /** Used function evaluation statistics */
-  mutable UnsignedLong maximumFunctionEvaluation_;
-  mutable UnsignedLong usedFunctionEvaluation_;
+  mutable UnsignedInteger maximumFunctionEvaluation_;
+  mutable UnsignedInteger usedFunctionEvaluation_;
 
 private:
   NumericalScalar absoluteError_;

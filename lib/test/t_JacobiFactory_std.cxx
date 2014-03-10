@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     }
     JacobiFactory jacobi(2.5, 3.5);
     fullprint << "jacobi=" << jacobi << std::endl;
-    for (UnsignedLong i = 0; i < 10; ++i)
+    for (UnsignedInteger i = 0; i < 10; ++i)
     {
       fullprint << "jacobi(" << i << ")=" << jacobi.build(i).__str__() << std::endl;
     }

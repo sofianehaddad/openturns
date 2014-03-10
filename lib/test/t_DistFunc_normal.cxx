@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
       // pNormal
       NumericalScalar xMin(0.1);
       NumericalScalar xMax(0.9);
-      UnsignedLong nX(10);
-      for (UnsignedLong iX = 0; iX < nX; ++iX)
+      UnsignedInteger nX(10);
+      for (UnsignedInteger iX = 0; iX < nX; ++iX)
       {
         NumericalScalar x(xMin + (xMax - xMin) * iX / (nX - 1));
         fullprint << "pNormal(" << x << ")=" << DistFunc::pNormal(x) << ", complementary=" << DistFunc::pNormal(x, true) << std::endl;
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
       // qNormal
       NumericalScalar qMin(0.1);
       NumericalScalar qMax(0.9);
-      UnsignedLong nQ(10);
-      for (UnsignedLong iQ = 0; iQ < nQ; ++iQ)
+      UnsignedInteger nQ(10);
+      for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
       {
         NumericalScalar q(qMin + (qMax - qMin) * iQ / (nQ - 1));
         fullprint << "qNormal(" << q << ")=" << DistFunc::qNormal(q) << ", complementary=" << DistFunc::qNormal(q, true) << std::endl;
@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
     } // qNormal
     {
       // rNormal
-      UnsignedLong nR(10);
-      for (UnsignedLong iR = 0; iR < nR; ++iR)
+      UnsignedInteger nR(10);
+      for (UnsignedInteger iR = 0; iR < nR; ++iR)
       {
         fullprint << "rNormal()=" << DistFunc::rNormal() << std::endl;
       }

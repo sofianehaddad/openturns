@@ -51,7 +51,7 @@ public:
 
   /** Draw the Histogram of the Sample when its dimension is 1 */
   static Graph DrawHistogram(const NumericalSample & sample,
-                             const UnsignedLong BarNumber);
+                             const UnsignedInteger BarNumber);
 
   /** Draw the Histogram of the Sample when its dimension is 1, using the Normal empirical rule */
   static Graph DrawHistogram(const NumericalSample & sample);
@@ -59,7 +59,7 @@ public:
   /** Draw the QQplot of two Samples when its dimension is 1 */
   static Graph DrawQQplot(const NumericalSample & sample1,
                           const NumericalSample & sample2,
-                          const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("DistributionImplementation-DefaultPointNumber"));
+                          const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("DistributionImplementation-DefaultPointNumber"));
 
 
   /** Draw the QQplot of one Sample and one Distribution when its dimension is 1 */
@@ -110,7 +110,7 @@ private:
 
   /** Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
   static NumericalSample ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
-      const UnsignedLong size);
+      const UnsignedInteger size);
 
   VisualTest();
 }; /* class VisualTest */

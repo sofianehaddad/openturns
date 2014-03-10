@@ -86,7 +86,7 @@ void SecondOrderModel::setModels(const CovarianceModel & covarianceModel,
 }
 
 /* Dimension accessor */
-UnsignedLong SecondOrderModel::getDimension() const
+UnsignedInteger SecondOrderModel::getDimension() const
 {
   return getImplementation()->getDimension();
 }

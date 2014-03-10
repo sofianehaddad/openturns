@@ -41,7 +41,7 @@ private:
   /**
    * The numerical precision used to write out scientific numbers
    */
-  static UnsignedLong Precision_;
+  static UnsignedInteger Precision_;
 
 public:
 
@@ -67,7 +67,7 @@ public:
   static String GetConfigureCommandLine();
 
   /** Return the precision used for floating %point output */
-  static UnsignedLong GetNumericalPrecision();
+  static UnsignedInteger GetNumericalPrecision();
 
   /** Define the precision used for floating %point output
    * @param precision A positive integer counting the number of digits shown

@@ -44,7 +44,7 @@ RegularGrid::RegularGrid()
 /* Parameters constructor */
 RegularGrid::RegularGrid(const NumericalScalar start,
                          const NumericalScalar step,
-                         const UnsignedLong n)
+                         const UnsignedInteger n)
   : Mesh()
   , start_(start)
   , step_(step)
@@ -55,10 +55,10 @@ RegularGrid::RegularGrid(const NumericalScalar start,
   {
     // The mesh is the description by extension of the grid
     vertices_ = NumericalSample(n, 1);
-    for (UnsignedLong i = 0; i < n; ++i) vertices_[i][0] = start_ + i * step_;
+    for (UnsignedInteger i = 0; i < n; ++i) vertices_[i][0] = start_ + i * step_;
     // Here we know that n > 0
     simplices_ = IndicesCollection(n - 1);
-    for (UnsignedLong i = 0; i < n - 1; ++i)
+    for (UnsignedInteger i = 0; i < n - 1; ++i)
     {
       Indices element(2);
       element[0] = i;
@@ -111,12 +111,12 @@ NumericalScalar RegularGrid::getStep() const
   return step_;
 }
 
-UnsignedLong RegularGrid::getN() const
+UnsignedInteger RegularGrid::getN() const
 {
   return n_;
 }
 
-NumericalScalar RegularGrid::getValue(const UnsignedLong i) const
+NumericalScalar RegularGrid::getValue(const UnsignedInteger i) const
 {
   if (i >= n_) throw OutOfBoundException(HERE) << "Error: the given index i=" << i << " must be less than the number of ticks n=" << n_;
   return vertices_[i][0];
@@ -134,13 +134,13 @@ Bool RegularGrid::isRegular() const
 }
 
 /* Get the index of the nearest vertex */
-UnsignedLong RegularGrid::getNearestVertexIndex(const NumericalPoint & point) const
+UnsignedInteger RegularGrid::getNearestVertexIndex(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension 1, got a point of dimension " << point.getDimension();
   const NumericalScalar x(point[0]);
   if (x <= start_) return 0;
   if (x >= start_ + (n_ - 1) * step_) return n_ - 1;
-  return static_cast<UnsignedLong>(round((x - start_) / step_));
+  return static_cast<UnsignedInteger>(round((x - start_) / step_));
 }
 
 /* Tells if the given grid follows the current one */

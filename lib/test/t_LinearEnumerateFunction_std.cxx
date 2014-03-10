@@ -34,12 +34,12 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong size(10);
-    for (UnsignedLong dimension = 1; dimension < 4; ++dimension)
+    UnsignedInteger size(10);
+    for (UnsignedInteger dimension = 1; dimension < 4; ++dimension)
     {
       LinearEnumerateFunction f(dimension);
       fullprint << "First " << size << " values for dimension " << dimension << std::endl;
-      for (UnsignedLong index = 0; index < size; ++index)
+      for (UnsignedInteger index = 0; index < size; ++index)
       {
         Indices multiIndex(f(index));
         fullprint << "index=" << index << ", multi-index=" << multiIndex << ", linear index=" << f.inverse(multiIndex) << std::endl;

@@ -92,24 +92,24 @@ Bool KrigingGradient::isActualImplementation() const
 
 Matrix KrigingGradient::gradient(const NumericalPoint & inP) const
 {
-  const UnsignedLong size = inP.getSize();
-  const UnsignedLong trainingSize = inputSample_.getSize();
+  const UnsignedInteger size = inP.getSize();
+  const UnsignedInteger trainingSize = inputSample_.getSize();
 
-  const UnsignedLong basisSize = basis_.getSize();
+  const UnsignedInteger basisSize = basis_.getSize();
 
   Matrix R(size, trainingSize);
-  for (UnsignedLong i = 0; i < size; ++ i )
+  for (UnsignedInteger i = 0; i < size; ++ i )
   {
-    for (UnsignedLong j = 0; j < trainingSize; ++ j )
+    for (UnsignedInteger j = 0; j < trainingSize; ++ j )
     {
       R(i, j) = covarianceModel_.partialGradient(inP, inputSample_[j])(0, 0, i);
     }
   }
 
   Matrix F(size, basisSize);
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
-    for (UnsignedLong j = 0; j < basisSize; ++ j )
+    for (UnsignedInteger j = 0; j < basisSize; ++ j )
     {
       F(i, j) = basis_[j].gradient(inP)(i, 0);
     }
@@ -120,7 +120,7 @@ Matrix KrigingGradient::gradient(const NumericalPoint & inP) const
   callsNumber_ += size;
 
   Matrix result(size, 1);
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     result(i, 0) = pointResult[i];
   }
@@ -130,13 +130,13 @@ Matrix KrigingGradient::gradient(const NumericalPoint & inP) const
 
 
 /* Accessor for input point dimension */
-UnsignedLong KrigingGradient::getInputDimension() const
+UnsignedInteger KrigingGradient::getInputDimension() const
 {
   return basis_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong KrigingGradient::getOutputDimension() const
+UnsignedInteger KrigingGradient::getOutputDimension() const
 {
   return 1;
 }

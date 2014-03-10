@@ -111,9 +111,9 @@ NumericalMathFunction::NumericalMathFunction(const Description & inputVariablesN
     const Description & formulas)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>()
 {
-  const UnsignedLong size(formulas.getSize());
+  const UnsignedInteger size(formulas.getSize());
   Description outputVariablesNames(size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
     outputVariablesNames[i] = String(OSS() << "y" << i);
   *this = NumericalMathFunction(inputVariablesNames, outputVariablesNames, formulas);
 }
@@ -253,7 +253,7 @@ Bool NumericalMathFunction::isCacheEnabled() const
   return getImplementation()->isCacheEnabled();
 }
 
-UnsignedLong NumericalMathFunction::getCacheHits() const
+UnsignedInteger NumericalMathFunction::getCacheHits() const
 {
   return getImplementation()->getCacheHits();
 }
@@ -465,20 +465,20 @@ SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP) const
 
 
 /* Accessor for input point dimension */
-UnsignedLong NumericalMathFunction::getInputDimension() const
+UnsignedInteger NumericalMathFunction::getInputDimension() const
 {
   return getImplementation()->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NumericalMathFunction::getOutputDimension() const
+UnsignedInteger NumericalMathFunction::getOutputDimension() const
 {
   return getImplementation()->getOutputDimension();
 
 }
 
 /* Get the i-th marginal function */
-NumericalMathFunction NumericalMathFunction::getMarginal(const UnsignedLong i) const
+NumericalMathFunction NumericalMathFunction::getMarginal(const UnsignedInteger i) const
 {
   return *(getImplementation()->getMarginal(i));
 }
@@ -490,43 +490,43 @@ NumericalMathFunction NumericalMathFunction::getMarginal(const Indices & indices
 }
 
 /* Number of calls to the evaluation */
-UnsignedLong NumericalMathFunction::getCallsNumber() const
+UnsignedInteger NumericalMathFunction::getCallsNumber() const
 {
   return getEvaluationCallsNumber();
 }
 
-UnsignedLong NumericalMathFunction::getEvaluationCallsNumber() const
+UnsignedInteger NumericalMathFunction::getEvaluationCallsNumber() const
 {
   return getImplementation()->getEvaluationCallsNumber();
 }
 
 /* Number of calls to the gradient */
-UnsignedLong NumericalMathFunction::getGradientCallsNumber() const
+UnsignedInteger NumericalMathFunction::getGradientCallsNumber() const
 {
   return getImplementation()->getGradientCallsNumber();
 }
 
 /* Number of calls to the hessian */
-UnsignedLong NumericalMathFunction::getHessianCallsNumber() const
+UnsignedInteger NumericalMathFunction::getHessianCallsNumber() const
 {
   return getImplementation()->getHessianCallsNumber();
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-Graph NumericalMathFunction::draw(const UnsignedLong inputMarginal,
-                                  const UnsignedLong outputMarginal,
+Graph NumericalMathFunction::draw(const UnsignedInteger inputMarginal,
+                                  const UnsignedInteger outputMarginal,
                                   const NumericalPoint & centralPoint,
                                   const NumericalScalar xMin,
                                   const NumericalScalar xMax,
-                                  const UnsignedLong pointNumber) const
+                                  const UnsignedInteger pointNumber) const
 {
   return getImplementation()->draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber);
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-Graph NumericalMathFunction::draw(const UnsignedLong firstInputMarginal,
-                                  const UnsignedLong secondInputMarginal,
-                                  const UnsignedLong outputMarginal,
+Graph NumericalMathFunction::draw(const UnsignedInteger firstInputMarginal,
+                                  const UnsignedInteger secondInputMarginal,
+                                  const UnsignedInteger outputMarginal,
                                   const NumericalPoint & centralPoint,
                                   const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
@@ -538,7 +538,7 @@ Graph NumericalMathFunction::draw(const UnsignedLong firstInputMarginal,
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
 Graph NumericalMathFunction::draw(const NumericalScalar xMin,
                                   const NumericalScalar xMax,
-                                  const UnsignedLong pointNumber) const
+                                  const UnsignedInteger pointNumber) const
 {
   return getImplementation()->draw(xMin, xMax, pointNumber);
 }

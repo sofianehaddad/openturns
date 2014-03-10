@@ -300,7 +300,7 @@ GaussKronrodRule::GaussKronrodPair GaussKronrodRule::getPair() const
 }
 
 /* Order accessor */
-UnsignedLong GaussKronrodRule::getOrder() const
+UnsignedInteger GaussKronrodRule::getOrder() const
 {
   return order_;
 }

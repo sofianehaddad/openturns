@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong defaultDimension(1);
+    const UnsignedInteger defaultDimension(1);
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
 
     const NumericalScalar tmin(0.0);
     const NumericalScalar step(0.1);
-    const UnsignedLong n(11);
+    const UnsignedInteger n(11);
 
     RegularGrid myTimeGrid(tmin, step, n);
-    const UnsignedLong size(10000);
+    const UnsignedInteger size(10000);
 
     TemporalNormalProcess myProcess(myModel, myTimeGrid);
     fullprint << "myProcess = " << myProcess << std::endl;

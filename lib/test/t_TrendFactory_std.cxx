@@ -73,13 +73,13 @@ int main(int argc, char *argv[])
 
     // Fourth : we build a time series for estimation
     // it issued from a white noise
-    const UnsignedLong dimension(2);
+    const UnsignedInteger dimension(2);
 
     // Fix the realization as a Normal
     Normal noiseDistribution(NumericalPoint(dimension, 0.), NumericalPoint(dimension, 1.), CorrelationMatrix(dimension));
 
     // TimeGrid parameters
-    const UnsignedLong N(1000);
+    const UnsignedInteger N(1000);
     const NumericalScalar timeStart(0.);
     const NumericalScalar timeStep(0.1);
     RegularGrid timeGrid(timeStart, timeStep, N);

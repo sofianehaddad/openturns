@@ -43,7 +43,7 @@ TriangularComplexMatrix::TriangularComplexMatrix()
 
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-TriangularComplexMatrix::TriangularComplexMatrix(const UnsignedLong dimension,
+TriangularComplexMatrix::TriangularComplexMatrix(const UnsignedInteger dimension,
     Bool isLower)
   : SquareComplexMatrix(dimension),
     isTriangularLower_(isLower)
@@ -77,7 +77,7 @@ String TriangularComplexMatrix::__str__(const String & offset) const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedLong TriangularComplexMatrix::getDimension() const
+const UnsignedInteger TriangularComplexMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -116,8 +116,8 @@ Bool TriangularComplexMatrix::isTriangularLower() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   if (isTriangularLower() && (i < j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is lower. "
@@ -132,8 +132,8 @@ NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)  const
+const NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j) ;
 }

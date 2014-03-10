@@ -55,16 +55,16 @@ public:
 
   /** FFT transformation  with application on a block-part of the collection */
   NumericalComplexCollection transform(const NumericalComplexCollection & collection,
-                                       const UnsignedLong first,
-                                       const UnsignedLong size) const;
+                                       const UnsignedInteger first,
+                                       const UnsignedInteger size) const;
 
   /** FFT inverse transformation */
   NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection) const;
 
   /** FFT inverse transformation with application on a block-part of the collection */
   NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection,
-      const UnsignedLong first,
-      const UnsignedLong size) const;
+      const UnsignedInteger first,
+      const UnsignedInteger size) const;
 
   /** String converter */
   String __repr__() const;

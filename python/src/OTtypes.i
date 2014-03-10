@@ -17,8 +17,8 @@
 #include "PythonWrappingFunctions.hxx"
 %}
 
-%typemap(in) UnsignedLong {
-  $1 = OT::convert< OT::_PyInt_, OT::UnsignedLong >($input);
+%typemap(in) UnsignedInteger {
+  $1 = OT::convert< OT::_PyInt_, OT::UnsignedInteger >($input);
 }
 
 %typemap(in) NumericalScalar {

@@ -83,8 +83,8 @@ public:
   Bool isComposite() const;
 
   /** Dimension accessor */
-  UnsignedLong getMeshDimension() const;
-  UnsignedLong getDimension() const;
+  UnsignedInteger getMeshDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Discrete realization accessor */
   Field getRealization() const;
@@ -101,15 +101,15 @@ public:
   void setMesh (const Mesh & mesh);
 
   /** Process sample accessors */
-  ProcessSample getSample(const UnsignedLong size) const;
+  ProcessSample getSample(const UnsignedInteger size) const;
 
   /** Continuation of the last realization on a given number of steps */
-  TimeSeries getFuture(const UnsignedLong stepNumber) const;
-  ProcessSample getFuture(const UnsignedLong stepNumber,
-                          const UnsignedLong size) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  ProcessSample getFuture(const UnsignedInteger stepNumber,
+                          const UnsignedInteger size) const;
 
   /** Get the process corresponding to the i-th marginal component */
-  Process getMarginalProcess(const UnsignedLong i) const;
+  Process getMarginalProcess(const UnsignedInteger i) const;
 
   /** Get the marginal process corresponding to indices components */
   Process getMarginalProcess(const Indices & indices) const;

@@ -75,7 +75,7 @@ String EventDomainImplementation::__repr__() const
 }
 
 /* Dimension accessor */
-UnsignedLong EventDomainImplementation::getDimension() const
+UnsignedInteger EventDomainImplementation::getDimension() const
 {
   return domain_.getDimension();
 }
@@ -94,13 +94,13 @@ NumericalPoint EventDomainImplementation::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample EventDomainImplementation::getSample(const UnsignedLong size) const
+NumericalSample EventDomainImplementation::getSample(const UnsignedInteger size) const
 {
   // First, compute a sample of the event antecedent
   const NumericalSample returnSample(CompositeRandomVector::getSample(size));
   // Then, we loop over the sample to check each point in sequence
   NumericalSample result(size, 1);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
     result[i][0] = domain_.contains(returnSample[i]);
   result.setName("EventDomainImplementation sample");
   return result;

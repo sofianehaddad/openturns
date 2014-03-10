@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   {
 
     /* Constructor with size */
-    const UnsignedLong dim(2);
+    const UnsignedInteger dim(2);
     SquareMatrix squareMatrix1(dim);
     squareMatrix1(0, 0) = 1.;
     squareMatrix1(1, 0) = 2.;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     SquareMatrix squareMatrix3 = squareMatrix1.operator / (t) ;
 
     /* size : Number of matrix */
-    const UnsignedLong size(3);
+    const UnsignedInteger size(3);
 
     /* ARMACoefficients with default constructor */
     ARMACoefficients coefficients0;

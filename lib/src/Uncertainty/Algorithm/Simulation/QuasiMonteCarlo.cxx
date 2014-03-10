@@ -57,7 +57,7 @@ QuasiMonteCarlo::QuasiMonteCarlo(const Event & event,
 {
   if (!event.getImplementation()->getAntecedent()->getDistribution().hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use the QuasiMonteCarlo algorithm with an input distribution whose components are not independent.";
   // retrieve the marginal laws
-  for (UnsignedLong index = 0; index < dimension_; ++index) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
+  for (UnsignedInteger index = 0; index < dimension_; ++index) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
 
   // initialize the low-discrepancy sequence
   lowDiscrepancySequence_.initialize(dimension_);
@@ -78,23 +78,23 @@ QuasiMonteCarlo * QuasiMonteCarlo::clone() const
 NumericalSample QuasiMonteCarlo::computeBlockSample()
 {
   // Size of a block
-  const UnsignedLong blockSize(getBlockSize());
+  const UnsignedInteger blockSize(getBlockSize());
 
   // allocate the input sample
   NumericalSample inputSample(lowDiscrepancySequence_.generate(blockSize));
 
   // for each point of the sample
-  for(UnsignedLong index = 0; index < blockSize; ++index)
+  for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
     // for each component
-    for(UnsignedLong component = 0; component < dimension_; ++component)
+    for(UnsignedInteger component = 0; component < dimension_; ++component)
       // use marginal laws to compute quantile from the low-discrepancy value to build the input sample
       inputSample[index][component] = marginals_[component].computeQuantile(inputSample[index][component])[0];
   } // For index
 
   // Then, evaluate the function on this sample
   NumericalSample blockSample(event_.getImplementation()->getFunction()(inputSample));
-  for (UnsignedLong i = 0; i < blockSize_; ++i)
+  for (UnsignedInteger i = 0; i < blockSize_; ++i)
   {
     const Bool isRealized(getEvent().getOperator()(blockSample[i][0], event_.getThreshold()));
     if (isRealized) blockSample[i][0] = 1.0;

@@ -52,7 +52,7 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
     const NumericalScalar x,
     const Bool tail = false,
     const NumericalScalar precision = ResourceMap::GetAsNumericalScalar("DistFunc-Precision"),
-    const UnsignedLong maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
+    const UnsignedInteger maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
 
 NumericalScalar NonCentralStudentCDFAlt1(const NumericalScalar nu,
     const NumericalScalar delta,
@@ -68,7 +68,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
     const NumericalScalar delta,
     const NumericalScalar x,
     const NumericalScalar precision = ResourceMap::GetAsNumericalScalar("DistFunc-Precision"),
-    const UnsignedLong maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
+    const UnsignedInteger maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
 
 NumericalScalar NonCentralStudentRealization(const NumericalScalar nu,
     const NumericalScalar delta);

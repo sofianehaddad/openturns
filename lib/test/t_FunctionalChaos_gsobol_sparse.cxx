@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   //   Log::Show( Log::Flags() | Log::INFO );
 
   // Problem parameters
-  UnsignedLong dimension(8);
+  UnsignedInteger dimension(8);
 
   // Reference analytical values
   NumericalScalar covTh(1.0);
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
   outputVariables[0] = "y";
   Description formula(1);
   formula[0] = "1.0";
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     covTh *= 1.0 + 1.0 / (3.0 * pow(1.0 + a[i], 2.0));
     inputVariables[i] = (OSS() << "xi" << i);
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
   // Create the input distribution
   Collection<Distribution> marginalX(dimension);
-  for ( UnsignedLong i = 0; i < dimension; ++ i )
+  for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
     marginalX[i] = Uniform( 0.0, 1.0 );
   }
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
   // Create the orthogonal basis
   Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
-  for ( UnsignedLong i = 0; i < dimension; ++ i )
+  for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
     polynomialCollection[i] = LegendreFactory();
   }
@@ -83,17 +83,17 @@ int main(int argc, char *argv[])
   OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
   // design experiment
-  UnsignedLong samplingSize( 100 );
+  UnsignedInteger samplingSize( 100 );
 
   // build basis
-  UnsignedLong basisSize( 917 );
+  UnsignedInteger basisSize( 917 );
 
   // run algorithm
   Collection<FittingAlgorithm> listFittingAlgorithm;
   listFittingAlgorithm.add(KFold());
   listFittingAlgorithm.add(CorrectedLeaveOneOut());
 
-  for ( UnsignedLong fittingAlgorithmIndex = 0; fittingAlgorithmIndex < listFittingAlgorithm.getSize(); ++ fittingAlgorithmIndex )
+  for ( UnsignedInteger fittingAlgorithmIndex = 0; fittingAlgorithmIndex < listFittingAlgorithm.getSize(); ++ fittingAlgorithmIndex )
   {
     FixedStrategy adaptiveStrategy( productBasis, basisSize );
     FittingAlgorithm fittingAlgorithm( listFittingAlgorithm[fittingAlgorithmIndex] );

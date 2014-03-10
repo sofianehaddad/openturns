@@ -116,19 +116,19 @@ String LeastSquaresMetaModelSelection::__repr__() const
 void LeastSquaresMetaModelSelection::run()
 {
   // compute weighted right hand
-  const UnsignedLong sampleSize( y_.getSize() );
+  const UnsignedInteger sampleSize( y_.getSize() );
   NumericalSample weightedY( sampleSize, 1 );
-  for ( UnsignedLong i = 0; i < sampleSize; ++ i ) weightedY[i][0] = y_[i][0] * sqrt( weight_[i] );
+  for ( UnsignedInteger i = 0; i < sampleSize; ++ i ) weightedY[i][0] = y_[i][0] * sqrt( weight_[i] );
 
   // generate all the sub-basis
   const BasisSequence basisSequence( basisSequenceFactory_.build( x_, weightedY, psi_ ) );
-  const UnsignedLong sequenceSize( basisSequence.getSize() );
+  const UnsignedInteger sequenceSize( basisSequence.getSize() );
 
   // for each sub-basis ...
   NumericalScalar minimumError( std::numeric_limits< NumericalScalar >::max() );
 
-  UnsignedLong optimalBasisIndex(0);
-  for ( UnsignedLong i = 0; i < sequenceSize; ++ i )
+  UnsignedInteger optimalBasisIndex(0);
+  for ( UnsignedInteger i = 0; i < sequenceSize; ++ i )
   {
     // retrieve the i-th basis of the sequence
     const Basis basis( basisSequence.getBasis( i ) );
@@ -154,8 +154,8 @@ void LeastSquaresMetaModelSelection::run()
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
   NumericalPoint optimalCoefficients( psi_.getSize() );
   const Indices optimalBasisIndices( basisSequence[optimalBasisIndex] );
-  UnsignedLong optimalBasisSize( basisSequence[optimalBasisIndex].getSize() );
-  for ( UnsignedLong i = 0; i < optimalBasisSize; ++ i ) optimalCoefficients[ optimalBasisIndices[i] ] = optimalBasisCoefficients[i];
+  UnsignedInteger optimalBasisSize( basisSequence[optimalBasisIndex].getSize() );
+  for ( UnsignedInteger i = 0; i < optimalBasisSize; ++ i ) optimalCoefficients[ optimalBasisIndices[i] ] = optimalBasisCoefficients[i];
 
   setCoefficients( optimalCoefficients );
   setResidual( optimalResidual );

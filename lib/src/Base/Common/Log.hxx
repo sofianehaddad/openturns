@@ -233,7 +233,7 @@ private:
 
   /** Remember the previous message */
   mutable Entry previousMessage_;
-  mutable UnsignedLong count_;
+  mutable UnsignedInteger count_;
   mutable AtomicInt repeat_;
 
   friend struct Log_init; /* friendship for static member initialization */

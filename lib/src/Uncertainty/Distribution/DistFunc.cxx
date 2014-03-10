@@ -45,7 +45,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-const UnsignedLong    DistFunc::NumberOfBandNormalZigurrat = 129;
+const UnsignedInteger    DistFunc::NumberOfBandNormalZigurrat = 129;
 const NumericalScalar DistFunc::NormalZigguratTail = 3.44508288805539135654449538289;
 const NumericalScalar DistFunc::NormalZigguratAbscissa[DistFunc::NumberOfBandNormalZigurrat + 1] =
 {
@@ -272,7 +272,7 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
    Journal of Statistical Computation and Simulation 46, pp. 101-110, 1993
    http://epub.wu.ac.at/1242/
 */
-NumericalScalar DistFunc::fcBinomial(const UnsignedLong k)
+NumericalScalar DistFunc::fcBinomial(const UnsignedInteger k)
 {
   switch (k)
   {
@@ -313,7 +313,7 @@ NumericalScalar DistFunc::fcBinomial(const UnsignedLong k)
   } // switch
 }
 
-UnsignedLong DistFunc::rBinomial(const UnsignedLong n,
+UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
                                  const NumericalScalar p)
 {
   // Quick return for degenerate cases
@@ -331,7 +331,7 @@ UnsignedLong DistFunc::rBinomial(const UnsignedLong n,
     NumericalScalar t(pow(1.0 - q, n));
     NumericalScalar s(t);
     const NumericalScalar u(RandomGenerator::Generate());
-    for (UnsignedLong k = 0; k <= n; ++k)
+    for (UnsignedInteger k = 0; k <= n; ++k)
     {
       if (s >= u) return (complementary ? n - k : k);
       t *= r * (n - k) / (k + 1.0);
@@ -363,7 +363,7 @@ UnsignedLong DistFunc::rBinomial(const UnsignedLong n,
     {
       u = v / vr - 0.43;
       k = floor((2 * a / (0.5 - fabs(u)) + b) * u + c);
-      return (complementary ? static_cast<UnsignedLong>(n - k) : static_cast<UnsignedLong>(k));
+      return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     } // v <= urvr
     if (v >= vr)
     {
@@ -404,20 +404,20 @@ UnsignedLong DistFunc::rBinomial(const UnsignedLong n,
         }
         while (i < m);
       } // m > k
-      if (v <= f) return (complementary ? static_cast<UnsignedLong>(n - k) : static_cast<UnsignedLong>(k));
+      if (v <= f) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
       continue;
     } // km <= 15
     // Squeeze-acceptance or rejection
     v = log(v);
     const NumericalScalar rho(km / npq * (((km / 3.0 + 0.625) * km + 1.0 / 6.0) / npq + 0.5));
     const NumericalScalar t(-km * km / (2.0 * npq));
-    if (v < t - rho) return (complementary ? static_cast<UnsignedLong>(n - k) : static_cast<UnsignedLong>(k));
+    if (v < t - rho) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     if (v > t + rho) continue;
     const NumericalScalar nm(n - m + 1);
-    const NumericalScalar h((m + 0.5) * log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedLong>(m)) + fcBinomial(static_cast<UnsignedLong>(n - m)));
+    const NumericalScalar h((m + 0.5) * log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedInteger>(m)) + fcBinomial(static_cast<UnsignedInteger>(n - m)));
     // Final acceptance-rejection
     const NumericalScalar nk(n - k + 1);
-    if (v <= h + (n + 1) * log(nm / nk) + (k + 0.5) * log(nk * r / (k + 1)) - fcBinomial(static_cast<UnsignedLong>(k)) - fcBinomial(static_cast<UnsignedLong>(n - k))) return (complementary ? static_cast<UnsignedLong>(n - k) : static_cast<UnsignedLong>(k));
+    if (v <= h + (n + 1) * log(nm / nk) + (k + 0.5) * log(nk * r / (k + 1)) - fcBinomial(static_cast<UnsignedInteger>(k)) - fcBinomial(static_cast<UnsignedInteger>(n - k))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
   } // for(;;)
 } // rBinomial
 
@@ -489,7 +489,7 @@ NumericalScalar DistFunc::rGamma(const NumericalScalar k)
    Simard, R. and L'Ecuyer, P. "Computing the Two-Sided Kolmogorov-Smirnov Distribution", Journal of Statistical Software, 2010.
    The implementation is from the first author, initially published under the GPL v3 license but used here with written permission of the author.
 */
-NumericalScalar DistFunc::pKolmogorov(const UnsignedLong n,
+NumericalScalar DistFunc::pKolmogorov(const UnsignedInteger n,
                                       const NumericalScalar x,
                                       const Bool tail)
 {
@@ -521,7 +521,7 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
     const NumericalScalar lambda,
     const NumericalScalar x,
     const NumericalScalar precision,
-    const UnsignedLong maximumIteration)
+    const UnsignedInteger maximumIteration)
 {
   if (nu < 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
   if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
@@ -532,15 +532,15 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
   // Case lambda <> 0
   const NumericalScalar halfLambda(0.5 * lambda);
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
-  const UnsignedLong k(std::max(1UL, static_cast<UnsignedLong>(floor(halfLambda))));
+  const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfLambda))));
   // Loop forward and backward starting from k
   // Initialization
   NumericalScalar pForward(exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * log(lambda)));
   NumericalScalar pBackward(pForward);
   NumericalScalar value(pForward);
   NumericalScalar error(SpecFunc::MaxNumericalScalar);
-  UnsignedLong kForward(k);
-  UnsignedLong kBackward(k);
+  UnsignedInteger kForward(k);
+  UnsignedInteger kBackward(k);
 #define FORWARD_ITERATION                                               \
   pForward *= halfLambda * x / (2.0 * (halfNu + kForward) * (kForward + 1)); \
   value += pForward;
@@ -548,9 +548,9 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
   pBackward *= 2.0 * (halfNu + kBackward - 1) * kBackward / (halfLambda * x); \
   value += pBackward;
 
-  // Here, i is an UnsignedLong as it is only a loop counter
-  UnsignedLong i(1);
-  const UnsignedLong imax(std::min(k, maximumIteration));
+  // Here, i is an UnsignedInteger as it is only a loop counter
+  UnsignedInteger i(1);
+  const UnsignedInteger imax(std::min(k, maximumIteration));
   //        while((error > precision * (fabs(value) + precision)) && (i <= imax))
   while((error > 0.0) && (i <= imax))
   {
@@ -587,7 +587,7 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
     const NumericalScalar x,
     const Bool tail,
     const NumericalScalar precision,
-    const UnsignedLong maximumIteration)
+    const UnsignedInteger maximumIteration)
 {
   if (nu < 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
   if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
@@ -599,7 +599,7 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
   // Case lambda <> 0
   const NumericalScalar halfLambda(0.5 * lambda);
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
-  const UnsignedLong k(std::max(1UL, static_cast<UnsignedLong>(floor(halfLambda))));
+  const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfLambda))));
   // Loop forward and backward starting from k
   // Initialization
   const NumericalScalar logHalfX(log(halfX));
@@ -613,8 +613,8 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
   NumericalScalar pBackward(expBackward * gammaBackward);
   NumericalScalar value(pForward);
   NumericalScalar error(SpecFunc::MaxNumericalScalar);
-  UnsignedLong kForward(k);
-  UnsignedLong kBackward(k);
+  UnsignedInteger kForward(k);
+  UnsignedInteger kBackward(k);
 #define FORWARD_ITERATION                       \
   xForward *= halfX / (halfNu + kForward);      \
   expForward *= halfLambda / (kForward + 1);    \
@@ -628,9 +628,9 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
   pBackward = expBackward * gammaBackward;              \
   value += pBackward;
 
-  // Here, i is an UnsignedLong as it is only a loop counter
-  UnsignedLong i(1);
-  const UnsignedLong imax(std::min(k, maximumIteration));
+  // Here, i is an UnsignedInteger as it is only a loop counter
+  UnsignedInteger i(1);
+  const UnsignedInteger imax(std::min(k, maximumIteration));
   //        while((error > precision * (fabs(value) + precision)) && (i <= imax))
   while((error > 0.0) && (i <= imax))
   {
@@ -713,7 +713,7 @@ NumericalScalar DistFunc::dNonCentralStudentAlt0(const NumericalScalar nu,
     const NumericalScalar delta,
     const NumericalScalar x,
     const NumericalScalar precision,
-    const UnsignedLong maximumIteration)
+    const UnsignedInteger maximumIteration)
 {
   return StudentFunctions::NonCentralStudentPDFAlt0(nu, delta, x, precision, maximumIteration);
 }
@@ -849,7 +849,7 @@ NumericalScalar DistFunc::rNormal()
   for (;;)
   {
     const NumericalScalar u(2.0 * RandomGenerator::Generate() - 1.0);
-    const UnsignedLong index(RandomGenerator::IntegerGenerate(DistFunc::NumberOfBandNormalZigurrat));
+    const UnsignedInteger index(RandomGenerator::IntegerGenerate(DistFunc::NumberOfBandNormalZigurrat));
     /* Are we in a rectangular band of the ziggurat? */
     if (fabs(u) < DistFunc::NormalZigguratRatio[index]) return u * NormalZigguratAbscissa[index + 1];
     /* No, we are either on a wedge or in the upper tail of the Normal distribution */
@@ -977,7 +977,7 @@ NumericalScalar DistFunc::rStudent(const NumericalScalar nu)
 }
 
 /* Compute the expectation of the min of n independent standard normal random variables. Usefull for the modified moment estimator of the LogNormal distribution. */
-NumericalScalar DistFunc::eZ1(const UnsignedLong n)
+NumericalScalar DistFunc::eZ1(const UnsignedInteger n)
 {
   if (n <= 0) throw InvalidArgumentException(HERE) << "Error: n must be strictly positive.";
   static NumericalScalar nodes[128] = {9.8079096926749782026033390e-02, 2.9424096921218469797991561e-01, 4.9041387858718514746809250e-01, 6.8660518909321215660380258e-01, 8.8282227375329345793892660e-01, 1.0790725181825577535496122e+00, 1.2753633242167377696353796e+00, 1.4717021135638638145739759e+00, 1.6680963314844359561817086e+00, 1.8645534505054447383309383e+00, 2.0610809741737079558017920e+00, 2.2576864408541048712667240e+00, 2.4543774275784199432866622e+00, 2.6511615539506562785567740e+00, 2.8480464861148453552909053e+00, 3.0450399407915649134290777e+00, 3.2421496893895821993047513e+00, 3.4393835621992660247489466e+00, 3.6367494526746595077587933e+00, 3.8342553218113771844054655e+00, 4.0319092026277868364264334e+00, 4.2297192047572594302912378e+00, 4.4276935191596217359545187e+00, 4.6258404229603273857896694e+00, 4.8241682844262754351411023e+00, 5.0226855680876531919920886e+00, 5.2214008400156647181628365e+00, 5.4203227732665307412164732e+00, 5.6194601535027128016005275e+00, 5.8188218848029276413744931e+00, 6.0184169956731807988206196e+00, 6.2182546452717651529731537e+00, 6.4183441298619452136612962e+00, 6.6186948895068861733967826e+00, 6.8193165150222935201989526e+00, 7.0202187552032102976570365e+00, 7.2214115243424814429173638e+00, 7.4229049100595452662318140e+00, 7.6247091814594590441665212e+00, 7.8268347976434177117924059e+00, 8.0292924165934915265672000e+00, 8.2320929044559011583234267e+00, 8.4352473452488789318099250e+00, 8.6387670510230462242060088e+00, 8.8426635725042840919313109e+00, 9.0469487102513035219338200e+00, 9.2516345263625515942763530e+00, 9.4567333567697407325779683e+00, 9.6622578241581829095747019e+00, 9.8682208515572746537567071e+00, 1.0074635676647940494041886e+01, 1.0281515866837634049248891e+01, 1.0488875335157653191251042e+01, 1.0696728357042088900345860e+01, 1.0905089588052741961530773e+01, 1.1113974082619858662822321e+01, 1.1323397313874613884362823e+01, 1.1533375194655972686401645e+01, 1.1743924099781963641404176e+01, 1.1955060889683582572281695e+01, 1.2166802935508609351446676e+01, 1.2379168145812671465813240e+01, 1.2592174994966049877127273e+01, 1.2805842553417136659329113e+01, 1.3020190519967281793289524e+01, 1.3235239256227193956928362e+01, 1.3451009823442300506862860e+01, 1.3667524021893770835767368e+01, 1.3884804433103548556990800e+01, 1.4102874465096049669738234e+01, 1.4321758400996546516308293e+01, 1.4541481451277113257067713e+01, 1.4762069809995873134112522e+01, 1.4983550715414763026069010e+01, 1.5205952515425821882539839e+01, 1.5429304738266944762150950e+01, 1.5653638169066098815394345e+01, 1.5878984932819323859862773e+01, 1.6105378584483803337592983e+01, 1.6332854206954513949199624e+01, 1.6561448517793378857450989e+01, 1.6791199985695774874822891e+01, 1.7022148957813457866272315e+01, 1.7254337799208822083094216e+01, 1.7487811045896949980107817e+01, 1.7722615573144060013318108e+01, 1.7958800780939722006343882e+01, 1.8196418798852933084511311e+01, 1.8435524712827875258644471e+01, 1.8676176816885087724358203e+01, 1.8918436893181770856317469e+01, 1.9162370524468337507669120e+01, 1.9408047443678915527648282e+01, 1.9655541926238779717773660e+01, 1.9904933231696581852007900e+01, 2.0156306102538408960103184e+01, 2.0409751329571602386146602e+01, 2.0665366395153397356064835e+01, 2.0923256207880053036728538e+01, 2.1183533945274238266112570e+01, 2.1446322024681900006387514e+01, 2.1711753227242152331884139e+01, 2.1979972005732402979093282e+01, 2.2251136014735937033989485e+01, 2.2525417911510261410205347e+01, 2.2803007488961426903566920e+01, 2.3084114219397521301316111e+01, 2.3368970310885331538480179e+01, 2.3657834409456066774035863e+01, 2.3950996123628848479052048e+01, 2.4248781608052614781871560e+01, 2.4551560528643458715087857e+01, 2.4859754855145844760826474e+01, 2.5173850108958237208064469e+01, 2.5494409967825708622699690e+01, 2.5822095551225733525384449e+01, 2.6157691379788251433263128e+01, 2.6502141097849996836684948e+01, 2.6856597908134813373229728e+01, 2.7222497961270095541841192e+01, 2.7601671075507827784986288e+01, 2.7996515289006133611177657e+01, 2.8410287565216026379953973e+01, 2.8847623300317097284912261e+01, 2.9315556495648897392258304e+01, 2.9825809458081402413142885e+01, 3.0401117779657764294819147e+01, 3.1100951037096511748801284e+01};
@@ -985,7 +985,7 @@ NumericalScalar DistFunc::eZ1(const UnsignedLong n)
   NumericalScalar value(0.0);
   // Least square approximation of eZ1
   const NumericalScalar z0(-1.5270815222604243733 - 0.25091814704012410653 * log(n));
-  for (UnsignedLong i = 0; i < 128; ++i)
+  for (UnsignedInteger i = 0; i < 128; ++i)
     value += weights[i] * ((z0 + nodes[i]) * exp(-z0 * nodes[i]) * pow(pNormal(z0 + nodes[i], true), n - 1) + (z0 - nodes[i]) * exp(z0 * nodes[i]) * pow(pNormal(z0 - nodes[i], true), n - 1));
   return n * exp(-0.5 * z0 * z0) * value;
 }

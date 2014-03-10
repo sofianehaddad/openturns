@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    UnsignedLong dimension(3);
+    UnsignedInteger dimension(3);
     NumericalPoint meanPoint(dimension, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 100;
+    UnsignedInteger size = 100;
     NumericalSample oneSample = distribution.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;

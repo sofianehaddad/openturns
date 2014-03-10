@@ -61,7 +61,7 @@ BetaFactory::Implementation BetaFactory::build() const
 
 Beta BetaFactory::buildAsBeta(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Beta distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);

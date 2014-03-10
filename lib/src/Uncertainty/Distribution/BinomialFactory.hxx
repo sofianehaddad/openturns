@@ -58,7 +58,7 @@ public:
 
   //      private:
   // Compute the log-likelihood of a sample
-  static NumericalScalar ComputeLogLikelihood(const UnsignedLong n,
+  static NumericalScalar ComputeLogLikelihood(const UnsignedInteger n,
       const NumericalScalar p,
       const NumericalSample & sample);
 

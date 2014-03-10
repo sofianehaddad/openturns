@@ -51,14 +51,14 @@ public:
 
   /** Constructor from an orthogonal basis */
   AdaptiveStrategy(const OrthogonalBasis & basis,
-                   const UnsignedLong maximumDimension);
+                   const UnsignedInteger maximumDimension);
 
   /** Constructor from implementation */
   AdaptiveStrategy(const AdaptiveStrategyImplementation & implementation);
 
   /** Maximum dimension accessor */
-  void setMaximumDimension(const UnsignedLong maximumDimension);
-  UnsignedLong getMaximumDimension() const;
+  void setMaximumDimension(const UnsignedInteger maximumDimension);
+  UnsignedInteger getMaximumDimension() const;
 
   /** Compute initial basis for the approximation */
   void computeInitialBasis();

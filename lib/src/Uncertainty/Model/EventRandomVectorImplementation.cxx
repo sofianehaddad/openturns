@@ -88,7 +88,7 @@ String EventRandomVectorImplementation::__repr__() const
 }
 
 /* Dimension accessor */
-UnsignedLong EventRandomVectorImplementation::getDimension() const
+UnsignedInteger EventRandomVectorImplementation::getDimension() const
 {
   return 1;
 }
@@ -112,7 +112,7 @@ NumericalPoint EventRandomVectorImplementation::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample EventRandomVectorImplementation::getSample(UnsignedLong size) const
+NumericalSample EventRandomVectorImplementation::getSample(UnsignedInteger size) const
 {
   // We don't build the return sample element by element because it doesn't
   // use the potential distribution of the computation. As the returned
@@ -121,7 +121,7 @@ NumericalSample EventRandomVectorImplementation::getSample(UnsignedLong size) co
   NumericalSample returnSample(CompositeRandomVector::getSample(size));
   // Then, we loop over the sample and substitute realizations of the eventRandomVectorImplementation
   // in place of the realizations of the antecedent
-  for (UnsignedLong i = 0; i < size; ++i) returnSample[i][0] = operator_(returnSample[i][0], threshold_);
+  for (UnsignedInteger i = 0; i < size; ++i) returnSample[i][0] = operator_(returnSample[i][0], threshold_);
   returnSample.setName("EventRandomVectorImplementation sample");
   return returnSample;
 }

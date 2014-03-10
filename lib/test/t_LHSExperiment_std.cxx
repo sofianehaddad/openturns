@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   try
   {
     Normal distribution(4);
-    UnsignedLong size(10);
+    UnsignedInteger size(10);
     LHSExperiment myPlane(distribution, size);
     fullprint << "myPlane = " << myPlane << std::endl;
     NumericalPoint weights(0);

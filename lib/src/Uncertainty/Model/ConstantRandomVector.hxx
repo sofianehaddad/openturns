@@ -67,13 +67,13 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Realization accessor */
   NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
   NumericalPoint getMean() const;
@@ -82,7 +82,7 @@ public:
   CovarianceMatrix getCovariance() const;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
   Implementation getMarginal(const Indices & indices) const;

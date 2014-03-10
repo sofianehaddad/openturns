@@ -96,8 +96,8 @@ public:
   void setResult(const Result & result);
 
   /** Maximum iterations number accessor */
-  UnsignedLong getMaximumEvaluationsNumber() const;
-  void setMaximumEvaluationsNumber(const UnsignedLong maximumEvaluationsNumber);
+  UnsignedInteger getMaximumEvaluationsNumber() const;
+  void setMaximumEvaluationsNumber(const UnsignedInteger maximumEvaluationsNumber);
 
   /** Maximum absolute error accessor */
   NumericalScalar getMaximumAbsoluteError() const;

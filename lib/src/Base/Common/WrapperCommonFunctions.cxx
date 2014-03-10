@@ -461,7 +461,7 @@ size_t _getNumberOfVariables(const struct WrapperExchangedData * p_exchangedData
   const struct WrapperVariableList * currentVariableElement = p_exchangedData->variableList_;
   while (currentVariableElement)
   {
-    if (static_cast<UnsignedLong>(currentVariableElement->variable_->type_) == type) ++number;
+    if (static_cast<UnsignedInteger>(currentVariableElement->variable_->type_) == type) ++number;
     currentVariableElement = currentVariableElement->next_;
   }
 
@@ -481,7 +481,7 @@ size_t _getNumberOfFiles(const struct WrapperExchangedData * p_exchangedData,
   const struct WrapperFileList * currentFileElement = p_exchangedData->fileList_;
   while (currentFileElement)
   {
-    if (static_cast<UnsignedLong>(currentFileElement->file_->type_) == type) ++number;
+    if (static_cast<UnsignedInteger>(currentFileElement->file_->type_) == type) ++number;
     currentFileElement = currentFileElement->next_;
   }
 
@@ -700,7 +700,7 @@ int deleteDirectory(const char * directory,
 
 #else /* WIN32 */
 
-  size_t timeout = ResourceMap::GetAsUnsignedLong("output-files-timeout");
+  size_t timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
   size_t countdown = timeout;
   OT::String rmdirCmd = OT::String("rmdir /Q /S \"") + directory + "\"";
   int directoryExists;
@@ -1426,7 +1426,7 @@ char * substitute(const char * mystring,
           if ( isdigit(newReplace[j]) )
           {
             /* Get the number of the shortcut (\nnn) */
-            size_t width = ResourceMap::GetAsUnsignedLong( "regexp-shortcut-width" );
+            size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
             char NNN[width + 1];
             strncpy( NNN, newReplace.c_str() + j, width );
             NNN[width] = 0;
@@ -1650,7 +1650,7 @@ void substituteShortcuts(const ShortcutMap & shMap,
       int cflags = REG_EXTENDED | REG_NEWLINE;
       int rc = 0;
       //char re[] = "\\\\[0-9]+";
-      size_t width = ResourceMap::GetAsUnsignedLong( "regexp-shortcut-width" );
+      size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
       char * re = newFormattedString( "^\\\\[0-9]{%u}$", width );
       if (( rc = regcomp(compiled, re, cflags) )) /* We look for the \nnn back references */
       {
@@ -1713,7 +1713,7 @@ void substituteShortcuts(const ShortcutMap & shMap,
           } /* end for */
 
           /* We do the substitutions */
-          size_t width = ResourceMap::GetAsUnsignedLong( "regexp-shortcut-width" );
+          size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
           char NNN[width + 2];
           snprintf( NNN, width + 2, "%0*u", static_cast<int>(width), static_cast<unsigned int>(new_nnn) );
           newReplace.append( replaceBeforeSubstitution, pos1, pos2 - pos1 ); /* We copy the part between two substituted substrings */
@@ -1963,7 +1963,7 @@ int retrieve(const std::string & mystring,
   /* We expect a format like '\nnn' where nnn is the number of the parenthesis we have to extract */
   /* The size of nnn is determined by the value of "regexp-shortcut-width" */
   regex_t * expr = (regex_t *) malloc(sizeof(regex_t));
-  size_t width = ResourceMap::GetAsUnsignedLong( "regexp-shortcut-width" );
+  size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
   char * re = newFormattedString( "^\\\\[0-9]{%u}$", width );
   char NNN[width + 1];
   memset( NNN, 'n', width );
@@ -2151,7 +2151,7 @@ int retrieveVariables(char * buf,
 
         if ( origFormat.size() == 0 )
         {
-          size_t width = ResourceMap::GetAsUnsignedLong( "regexp-shortcut-width" );
+          size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
           char NNN[width + 2];
           snprintf( NNN, width + 2, "\\%0*u", static_cast<int>(width), 1 );
           origFormat = NNN;

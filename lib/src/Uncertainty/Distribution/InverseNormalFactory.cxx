@@ -61,7 +61,7 @@ InverseNormalFactory::Implementation InverseNormalFactory::build() const
 
 InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of dimension different from 1";
   const NumericalScalar mu(sample.computeMean()[0]);
@@ -70,7 +70,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample &
     // Maximum likelihood estimation
   {
     NumericalScalar sum(0.0);
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       const NumericalScalar xI(sample[i][0]);
       if (xI <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample with non positive values";

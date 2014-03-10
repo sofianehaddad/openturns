@@ -32,20 +32,20 @@ typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilis
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedLong dim(in.getDimension());
-  for(UnsignedLong i = 0; i < dim; i++)
+  UnsignedInteger dim(in.getDimension());
+  for(UnsignedInteger i = 0; i < dim; i++)
     if (fabs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
 }
 
 SymmetricTensor clean(SymmetricTensor in)
 {
-  UnsignedLong rowDim(in.getNbRows());
-  UnsignedLong colDim(in.getNbColumns());
-  UnsignedLong sheetDim(in.getNbSheets());
-  for(UnsignedLong i = 0; i < rowDim; i++)
-    for(UnsignedLong j = 0; j < colDim; j++)
-      for (UnsignedLong k = 0; k < sheetDim; k++)
+  UnsignedInteger rowDim(in.getNbRows());
+  UnsignedInteger colDim(in.getNbColumns());
+  UnsignedInteger sheetDim(in.getNbSheets());
+  for(UnsignedInteger i = 0; i < rowDim; i++)
+    for(UnsignedInteger j = 0; j < colDim; j++)
+      for (UnsignedInteger k = 0; k < sheetDim; k++)
         if (fabs(in(i, j, k)) < 1.e-6) in(i, j, k) = 0.0;
   return in;
 }
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedLong dim(3);
+    UnsignedInteger dim(3);
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.5;
     }
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     Normal distribution(meanPoint, sigma, R);
 
     // Test for sampling
-    UnsignedLong size = 10000;
+    UnsignedInteger size = 10000;
     NumericalSample sample = distribution.getSample( size );
     fullprint << "sample first=" << sample[0] << " last=" << sample[size - 1] << std::endl;
     fullprint << "sample mean=" << sample.computeMean() << std::endl;

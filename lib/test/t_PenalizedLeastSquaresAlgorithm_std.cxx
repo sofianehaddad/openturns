@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong dimension(2);
+    UnsignedInteger dimension(2);
     // Reference function
     Description inVar(dimension);
     inVar[0] = "x1";
@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
     basis[3] = NumericalMathFunction(inVar, outVar, formula);
 
     // Input sample
-    UnsignedLong size(5);
+    UnsignedInteger size(5);
     NumericalSample inputSample(size * size, dimension);
     NumericalPoint weight(inputSample.getSize());
-    for (UnsignedLong i = 0; i < inputSample.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < inputSample.getSize(); ++i)
     {
       inputSample[i][0] = NumericalScalar(i % size) / size;
       inputSample[i][1] = NumericalScalar (i / size) / size;
@@ -99,9 +99,9 @@ int main(int argc, char *argv[])
     // Non uniform weight, non spherical penalization
     {
       CovarianceMatrix penalizationMatrix(4);
-      for (UnsignedLong i = 0; i < 4; ++i)
+      for (UnsignedInteger i = 0; i < 4; ++i)
         penalizationMatrix(i, i) = 1.0;
-      for (UnsignedLong i = 0; i < 3; ++i)
+      for (UnsignedInteger i = 0; i < 3; ++i)
         penalizationMatrix(i, i + 1) = 1.0 / 8.0;
       PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), weight, basis, penalizationFactor, penalizationMatrix);
       fullprint << "Non uniform weight, non spherical penalization" << std::endl;

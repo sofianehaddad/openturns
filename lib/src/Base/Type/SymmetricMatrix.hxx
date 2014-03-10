@@ -55,11 +55,11 @@ public:
   SymmetricMatrix();
 
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
-  explicit SymmetricMatrix(const UnsignedLong dim);
+  explicit SymmetricMatrix(const UnsignedInteger dim);
 #if 0
   /** Constructor from range of external collection */
   template <class InputIterator>
-  SymmetricMatrix(const UnsignedLong dim,
+  SymmetricMatrix(const UnsignedInteger dim,
                   InputIterator first,
                   InputIterator last);
 #endif
@@ -68,7 +68,7 @@ public:
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  SymmetricMatrix(const UnsignedLong dim,
+  SymmetricMatrix(const UnsignedInteger dim,
                   const NumericalScalarCollection & elementsValues);
 
   /** Check if the internal representation is really symmetric */
@@ -78,9 +78,9 @@ public:
   Bool isDiagonal() const;
 
   /** Row extraction */
-  const Matrix getRow(const UnsignedLong rowIndex) const;
+  const Matrix getRow(const UnsignedInteger rowIndex) const;
   /** Column extration */
-  const Matrix getColumn(const UnsignedLong columnIndex) const;
+  const Matrix getColumn(const UnsignedInteger columnIndex) const;
 
   /** String converter */
   String __repr__() const;
@@ -89,13 +89,13 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j);
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j) const;
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j) const;
 #endif
 
   /** SymmetricMatrix transpose */
@@ -118,7 +118,7 @@ public:
   SymmetricMatrix operator * (const IdentityMatrix & m) const;
 
   /** SymmetricMatrix integer power */
-  SymmetricMatrix power(const UnsignedLong n) const;
+  SymmetricMatrix power(const UnsignedInteger n) const;
 
   /** Multiplication with a NumericalPoint (must have consistent dimensions) */
   NumericalPoint operator * (const NumericalPoint & p) const;

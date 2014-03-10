@@ -61,7 +61,7 @@ FieldImplementation::FieldImplementation()
 
 /* Standard constructor */
 FieldImplementation::FieldImplementation(const Mesh & mesh,
-    const UnsignedLong dim)
+    const UnsignedInteger dim)
   : PersistentObject()
   , mesh_(mesh)
   , values_(mesh.getVerticesNumber(), dim)
@@ -69,8 +69,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
 {
   // Build the default description
   Description description(getMeshDimension() + getDimension());
-  for (UnsignedLong i = 0; i < getMeshDimension(); ++i) description[i] = mesh_.getVertices().getDescription()[i];
-  for (UnsignedLong i = 0; i < getDimension(); ++i) description[getMeshDimension() + i] = values_.getDescription()[i];
+  for (UnsignedInteger i = 0; i < getMeshDimension(); ++i) description[i] = mesh_.getVertices().getDescription()[i];
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) description[getMeshDimension() + i] = values_.getDescription()[i];
   setDescription(description);
 }
 
@@ -84,8 +84,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
 {
   if (mesh.getVerticesNumber() != values.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a Field with a number of values=" << values.getSize() << " different from the number of vertices=" << mesh.getVerticesNumber();
   Description description(getMeshDimension() + getDimension());
-  for (UnsignedLong i = 0; i < getMeshDimension(); ++i) description[i] = mesh_.getVertices().getDescription()[i];
-  for (UnsignedLong i = 0; i < getDimension(); ++i) description[getMeshDimension() + i] = values_.getDescription()[i];
+  for (UnsignedInteger i = 0; i < getMeshDimension(); ++i) description[i] = mesh_.getVertices().getDescription()[i];
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) description[getMeshDimension() + i] = values_.getDescription()[i];
   setDescription(description);
 }
 
@@ -96,18 +96,18 @@ FieldImplementation * FieldImplementation::clone() const
 }
 
 /* Size accessor */
-UnsignedLong FieldImplementation::getSize() const
+UnsignedInteger FieldImplementation::getSize() const
 {
   return values_.getSize();
 }
 
 /* Dimension accessor */
-UnsignedLong FieldImplementation::getMeshDimension() const
+UnsignedInteger FieldImplementation::getMeshDimension() const
 {
   return mesh_.getDimension();
 }
 
-UnsignedLong FieldImplementation::getDimension() const
+UnsignedInteger FieldImplementation::getDimension() const
 {
   return values_.getDimension();
 }
@@ -124,18 +124,18 @@ RegularGrid FieldImplementation::getTimeGrid() const
 }
 
 /* Individual value accessor */
-NSI_point FieldImplementation::operator[](const UnsignedLong index)
+NSI_point FieldImplementation::operator[](const UnsignedInteger index)
 {
   return values_[index];
 }
 
-NSI_const_point FieldImplementation::operator[](const UnsignedLong index) const
+NSI_const_point FieldImplementation::operator[](const UnsignedInteger index) const
 {
   return values_[index];
 }
 
-NumericalScalar & FieldImplementation::operator () (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
@@ -145,8 +145,8 @@ NumericalScalar & FieldImplementation::operator () (const UnsignedLong i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & FieldImplementation::operator () (const UnsignedLong i,
-    const UnsignedLong j) const
+const NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return at(i, j);
@@ -156,28 +156,28 @@ const NumericalScalar & FieldImplementation::operator () (const UnsignedLong i,
 }
 
 
-NSI_point FieldImplementation::at (const UnsignedLong index)
+NSI_point FieldImplementation::at (const UnsignedInteger index)
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*this)[index];
 }
 
-NSI_const_point FieldImplementation::at (const UnsignedLong index) const
+NSI_const_point FieldImplementation::at (const UnsignedInteger index) const
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*this)[index];
 }
 
-NumericalScalar & FieldImplementation::at (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
   return (*this)[i][j];
 }
 
-const NumericalScalar & FieldImplementation::at (const UnsignedLong i,
-    const UnsignedLong j) const
+const NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
+    const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
@@ -185,12 +185,12 @@ const NumericalScalar & FieldImplementation::at (const UnsignedLong i,
 }
 
 /* Data accessors */
-NumericalPoint FieldImplementation::getValueAtIndex(const UnsignedLong index) const
+NumericalPoint FieldImplementation::getValueAtIndex(const UnsignedInteger index) const
 {
   return values_[index];
 }
 
-void FieldImplementation::setValueAtIndex(const UnsignedLong index,
+void FieldImplementation::setValueAtIndex(const UnsignedInteger index,
     const NumericalPoint & val)
 {
   values_[index] = val;
@@ -219,7 +219,7 @@ void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp,
 }
 
 /* Method __len__() is for Python */
-UnsignedLong FieldImplementation::__len__() const
+UnsignedInteger FieldImplementation::__len__() const
 {
   return getSize();
 }
@@ -227,16 +227,16 @@ UnsignedLong FieldImplementation::__len__() const
 /* Method __contains__() is for Python */
 Bool FieldImplementation::__contains__(const NumericalPoint & val) const
 {
-  for (UnsignedLong i = 0; i < getSize(); ++i) if ( getValueAtIndex(i) == val ) return true;
+  for (UnsignedInteger i = 0; i < getSize(); ++i) if ( getValueAtIndex(i) == val ) return true;
   return false;
 }
 
-const NumericalPoint FieldImplementation::__getitem__ (const UnsignedLong index) const
+const NumericalPoint FieldImplementation::__getitem__ (const UnsignedInteger index) const
 {
   return at(index);
 }
 
-void FieldImplementation::__setitem__ (const UnsignedLong index,
+void FieldImplementation::__setitem__ (const UnsignedInteger index,
                                        const NumericalPoint & val)
 {
   at(index) = val;
@@ -314,7 +314,7 @@ NumericalSample FieldImplementation::asSample() const
 }
 
 /* Draw a marginal of the Field */
-Graph FieldImplementation::drawMarginal(const UnsignedLong index,
+Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const
 {
   if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
@@ -344,7 +344,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedLong index,
     if (interpolate)
     {
       // Compute the iso-values
-      const UnsignedInteger levelsNumber(1 + 0 * ResourceMap::GetAsUnsignedLong("FieldImplementation-LevelNumber"));
+      const UnsignedInteger levelsNumber(1 + 0 * ResourceMap::GetAsUnsignedInteger("FieldImplementation-LevelNumber"));
       NumericalPoint levels(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
@@ -440,17 +440,17 @@ void FieldImplementation::exportToVTKFile(const String & fileName) const
   std::ofstream file(fileName.c_str(), std::ios::out);
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
   const String content(mesh_.streamToVTKFormat());
-  const UnsignedLong oldPrecision(PlatformInfo::GetNumericalPrecision());
+  const UnsignedInteger oldPrecision(PlatformInfo::GetNumericalPrecision());
   PlatformInfo::SetNumericalPrecision(16);
   file << content << "\nPOINT_DATA " << getSize() << "\n";
 
-  for (UnsignedLong i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
     String fieldName(getDescription()[getMeshDimension() + i]);
     replace(fieldName.begin(), fieldName.end(), ' ', '~');
     if (fieldName.size() == 0) fieldName = String(OSS() << "v_" << i);
     file << "SCALARS " << fieldName << " float\nLOOKUP_TABLE default\n";
-    for (UnsignedLong j = 0; j < getSize(); ++j) file << values_[j][i] << "\n";
+    for (UnsignedInteger j = 0; j < getSize(); ++j) file << values_[j][i] << "\n";
   }
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   file.close();

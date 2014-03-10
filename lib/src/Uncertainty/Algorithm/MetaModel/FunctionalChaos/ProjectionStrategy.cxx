@@ -99,7 +99,7 @@ void ProjectionStrategy::computeCoefficients(const NumericalMathFunction & funct
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
-    const UnsignedLong marginalIndex)
+    const UnsignedInteger marginalIndex)
 {
   getImplementation()->computeCoefficients(function, partialBasis, indices, addedRanks, conservedRanks, removedRanks, marginalIndex);
 }

@@ -46,12 +46,12 @@ public:
   explicit MonteCarloExperiment(const String & name = DefaultName);
 
   /** Parameters constructor */
-  explicit MonteCarloExperiment(const UnsignedLong size,
+  explicit MonteCarloExperiment(const UnsignedInteger size,
                                 const String & name = DefaultName);
 
   /** Parameters constructor */
   MonteCarloExperiment(const Distribution & distribution,
-                       const UnsignedLong size,
+                       const UnsignedInteger size,
                        const String & name = DefaultName);
 
   /** Virtual constructor */

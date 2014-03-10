@@ -275,13 +275,13 @@ NumericalScalar chepolsum(const NumericalScalar x,
                           const NumericalPoint & a)
 {
   //{a[0]/2+a[1]T1(x)+...a[n]Tn(x); series of Chebychev polynomials}
-  const UnsignedLong n(a.getDimension() - 1);
+  const UnsignedInteger n(a.getDimension() - 1);
   if (n == 0) return 0.5 * a[0];
   if (n == 1) return 0.5 * a[0] + x * a[1];
   const NumericalScalar tx(x + x);
   NumericalScalar r(a[n]);
   NumericalScalar h(a[n - 1] + r * tx);
-  for (UnsignedLong k = n - 2; k >= 1; --k)
+  for (UnsignedInteger k = n - 2; k >= 1; --k)
   {
     const NumericalScalar s(r);
     r = h;
@@ -329,7 +329,7 @@ NumericalScalar fractio(const NumericalScalar x,
                         const NumericalPoint & r,
                         const NumericalPoint & s)
 {
-  const UnsignedLong n(r.getSize() - 1);
+  const UnsignedInteger n(r.getSize() - 1);
   NumericalScalar a(r[n]);
   NumericalScalar b(1.0);
   for (SignedInteger k = n - 1; k >= 0; --k)
@@ -396,11 +396,11 @@ NumericalScalar saeta(const NumericalScalar a,
   NumericalPoint bm(27);
   bm[25] = fm[26];
   bm[24] = fm[25];
-  for (UnsignedLong m = 24; m > 0; --m) bm[m - 1] = fm[m] + (m + 1) * bm[m + 1] / a;
+  for (UnsignedInteger m = 24; m > 0; --m) bm[m - 1] = fm[m] + (m + 1) * bm[m + 1] / a;
   NumericalScalar s(bm[0]);
   NumericalScalar t(s);
   NumericalScalar y(eta);
-  for (UnsignedLong m = 1; m < 25; ++m)
+  for (UnsignedInteger m = 1; m < 25; ++m)
   {
     if (fabs(t / s) <= SpecFunc::NumericalScalarEpsilon) break;
     t = bm[m] * y;

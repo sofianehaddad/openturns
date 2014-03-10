@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 TEMPLATE_CLASSNAMEINIT( PersistentCollection<Indices> );
 static Factory<PersistentCollection<Indices> > RegisteredFactory_PC_I("PersistentCollection<Indices>");
-static Factory<PersistentCollection<UnsignedLong> > RegisteredFactory_PC_UL("PersistentCollection<UnsignedLong>");
+static Factory<PersistentCollection<UnsignedInteger> > RegisteredFactory_PC_UL("PersistentCollection<UnsignedInteger>");
 
 
 
@@ -77,7 +77,7 @@ String BasisSequenceImplementation::__str__(const String & offset) const
 
 
 /* Dimension accessor */
-UnsignedLong BasisSequenceImplementation::getDimension() const
+UnsignedInteger BasisSequenceImplementation::getDimension() const
 {
   return masterBasis_.getDimension();
 }
@@ -88,15 +88,15 @@ Basis BasisSequenceImplementation::getMasterBasis() const
   return masterBasis_;
 }
 
-Basis BasisSequenceImplementation::getBasis(const UnsignedLong index) const
+Basis BasisSequenceImplementation::getBasis(const UnsignedInteger index) const
 {
   Basis result;
   Indices subBasisIndices(operator[](index));
-  for (UnsignedLong i = 0; i < subBasisIndices.getSize(); ++ i) result.add(masterBasis_[subBasisIndices[i]]);
+  for (UnsignedInteger i = 0; i < subBasisIndices.getSize(); ++ i) result.add(masterBasis_[subBasisIndices[i]]);
   return result;
 }
 
-Indices BasisSequenceImplementation::getIndices(const UnsignedLong index) const
+Indices BasisSequenceImplementation::getIndices(const UnsignedInteger index) const
 {
   return operator[](index);
 }

@@ -64,11 +64,11 @@ UserDefinedFactory::Implementation UserDefinedFactory::build() const
 UserDefined UserDefinedFactory::buildAsUserDefined(const NumericalSample & sample,
     const NumericalScalar epsilon) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
   const NumericalScalar p(1.0 / NumericalScalar(size));
   UserDefinedPairCollection support(size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     support[i].setX(sample[i]);
     support[i].setP(p);

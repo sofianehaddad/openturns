@@ -76,7 +76,7 @@ String OrthogonalUniVariatePolynomialFactory::__repr__() const
 
 
 /* The method to get the polynomial of any degree */
-OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(const UnsignedLong degree) const
+OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(const UnsignedInteger degree) const
 {
   CoefficientsCollection rec(0);
   if (degree > 0) rec = buildRecurrenceCoefficientsCollection(degree);
@@ -85,9 +85,9 @@ OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFactory::build(cons
 
 
 /* Build the coefficients of the polynomial based on the recurrence coefficients */
-OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomialFactory::buildCoefficients(const UnsignedLong n) const
+OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomialFactory::buildCoefficients(const UnsignedInteger n) const
 {
-  const UnsignedLong size(coefficientsCache_.getSize());
+  const UnsignedInteger size(coefficientsCache_.getSize());
   // If we have already computed the coefficients
   if (n < size) return coefficientsCache_[n];
   // Else we have to compute all the coefficients from the last computed coefficients to the needed ones. The cache will be filled in the correct order thanks to the recursive call
@@ -116,17 +116,17 @@ OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomi
   // Constant term
   coefficientsN[0] = aN[1] * coefficientsNMinus1[0] + aN[2] * coefficientsNMinus2[0];
   // Remaining terms
-  for (UnsignedLong i = 1; i < n - 1; ++i)
+  for (UnsignedInteger i = 1; i < n - 1; ++i)
     coefficientsN[i] = aN[0] * coefficientsNMinus1[i - 1] + aN[1] * coefficientsNMinus1[i] + aN[2] * coefficientsNMinus2[i];
   coefficientsCache_.add(coefficientsN);
   return coefficientsN;
 }
 
 /* Build the 3 terms recurrence coefficients up to the needed degree */
-OrthogonalUniVariatePolynomialFactory::CoefficientsCollection OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection(const UnsignedLong degree) const
+OrthogonalUniVariatePolynomialFactory::CoefficientsCollection OrthogonalUniVariatePolynomialFactory::buildRecurrenceCoefficientsCollection(const UnsignedInteger degree) const
 {
   CoefficientsCollection recurrenceCoefficients(degree);
-  for (UnsignedLong i = 0; i < degree; ++i) recurrenceCoefficients[i] = getRecurrenceCoefficients(i);
+  for (UnsignedInteger i = 0; i < degree; ++i) recurrenceCoefficients[i] = getRecurrenceCoefficients(i);
   return recurrenceCoefficients;
 }
 
@@ -139,7 +139,7 @@ Distribution OrthogonalUniVariatePolynomialFactory::getMeasure() const
 
 /* Calculate the coefficients of recurrence a0, a1, a2 such that
    Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomialFactory::getRecurrenceCoefficients(const UnsignedLong n) const
+OrthogonalUniVariatePolynomialFactory::Coefficients OrthogonalUniVariatePolynomialFactory::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
   throw NotYetImplementedException(HERE);
 }
@@ -153,20 +153,20 @@ void OrthogonalUniVariatePolynomialFactory::initializeCache()
 }
 
 /* Roots of the polynomial of degree n */
-NumericalPoint OrthogonalUniVariatePolynomialFactory::getRoots(const UnsignedLong n) const
+NumericalPoint OrthogonalUniVariatePolynomialFactory::getRoots(const UnsignedInteger n) const
 {
   // As a specialized UniVariatePolynomial, the roots are complex
   const OrthogonalUniVariatePolynomial::NumericalComplexCollection complexRoots(build(n).getRoots());
   // But in fact we know that they are real
   NumericalPoint roots(n);
-  for (UnsignedLong i = 0; i < n; ++i)
+  for (UnsignedInteger i = 0; i < n; ++i)
     roots[i] = complexRoots[i].real();
   return roots;
 }
 
 /* Nodes and weights of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix and the square
    of the first component of the associated normalized eigenvectors */
-NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedLong n,
+NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedInteger n,
     NumericalPoint & weights) const
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
@@ -178,7 +178,7 @@ NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const U
   Coefficients recurrenceCoefficientsI(getRecurrenceCoefficients(0));
   NumericalScalar alphaPrec(recurrenceCoefficientsI[0]);
   d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
-  for (UnsignedLong i = 1; i < n; ++i)
+  for (UnsignedInteger i = 1; i < n; ++i)
   {
     recurrenceCoefficientsI = getRecurrenceCoefficients(i);
     d[i]     = -recurrenceCoefficientsI[1] / recurrenceCoefficientsI[0];
@@ -192,7 +192,7 @@ NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const U
   DSTEV_F77(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
   weights = NumericalPoint(n);
-  for (UnsignedLong i = 0; i < n; ++i) weights[i] = z(0, i) * z(0, i);
+  for (UnsignedInteger i = 0; i < n; ++i) weights[i] = z(0, i) * z(0, i);
   return d;
 }
 

@@ -54,12 +54,12 @@ public:
   ProcessSample();
 
   /** Constructors */
-  ProcessSample(const UnsignedLong size,
+  ProcessSample(const UnsignedInteger size,
                 const Field & field);
 
   ProcessSample(const Mesh & mesh,
-                const UnsignedLong size,
-                const UnsignedLong dimension);
+                const UnsignedInteger size,
+                const UnsignedInteger dimension);
 
   /** Partial copy constructor */
   void add(const Field & field);
@@ -67,18 +67,18 @@ public:
 #ifndef SWIG
 
   /** Operators accessors */
-  void setField (const UnsignedLong i, const Field & field);
-  Field getField (const UnsignedLong i) const;
-  NumericalSample & operator[] (const UnsignedLong i);
-  const NumericalSample & operator[] (const UnsignedLong i) const;
+  void setField (const UnsignedInteger i, const Field & field);
+  Field getField (const UnsignedInteger i) const;
+  NumericalSample & operator[] (const UnsignedInteger i);
+  const NumericalSample & operator[] (const UnsignedInteger i) const;
 
 #endif
 
   /** Method __getitem__() for Python */
-  Field __getitem__ (const UnsignedLong i) const;
+  Field __getitem__ (const UnsignedInteger i) const;
 
   /** Method __setitem__() is for Python */
-  void __setitem__(const UnsignedLong i,
+  void __setitem__(const UnsignedInteger i,
                    const Field & field);
 
   /** Virtual constructor */
@@ -95,10 +95,10 @@ public:
   Mesh getMesh() const;
 
   /** Size accessor */
-  UnsignedLong getSize() const;
+  UnsignedInteger getSize() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Mean accessor */
   Field computeMean() const;
@@ -113,7 +113,7 @@ public:
   Field computeQuantilePerComponent(const NumericalScalar prob) const;
 
   /** Draw a marginal of the timeSerie */
-  Graph drawMarginal(const UnsignedLong index = 0) const;
+  Graph drawMarginal(const UnsignedInteger index = 0) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

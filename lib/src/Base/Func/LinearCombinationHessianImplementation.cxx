@@ -62,17 +62,17 @@ LinearCombinationHessianImplementation * LinearCombinationHessianImplementation:
 /* Hessian method */
 SymmetricTensor LinearCombinationHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
-  const UnsignedLong sheetSize(evaluation_.getOutputDimension());
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger sheetSize(evaluation_.getOutputDimension());
   SymmetricTensor result(evaluation_.getInputDimension(), sheetSize);
   // We work on a sheet basis because there is no tensor arithmetic
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const SymmetricTensor currentTensor(evaluation_.functionsCollection_[i].hessian(inP));
     const NumericalScalar factor(evaluation_.coefficients_[i]);
-    for (UnsignedLong k = 0; k < sheetSize; ++k)
+    for (UnsignedInteger k = 0; k < sheetSize; ++k)
     {
       SymmetricMatrix sheet(result.getSheet(k) + factor * currentTensor.getSheet(k));
       result.setSheet(k, sheet);
@@ -82,13 +82,13 @@ SymmetricTensor LinearCombinationHessianImplementation::hessian(const NumericalP
 }
 
 /* Accessor for input point dimension */
-UnsignedLong LinearCombinationHessianImplementation::getInputDimension() const
+UnsignedInteger LinearCombinationHessianImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong LinearCombinationHessianImplementation::getOutputDimension() const
+UnsignedInteger LinearCombinationHessianImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }
@@ -104,8 +104,8 @@ String LinearCombinationHessianImplementation::__str__(const String & offset) co
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << evaluation_.coefficients_[i] << ")*" << evaluation_.functionsCollection_[i].getGradientImplementation()->__str__();
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << evaluation_.coefficients_[i] << ")*" << evaluation_.functionsCollection_[i].getGradientImplementation()->__str__();
   return oss;
 }
 

@@ -41,7 +41,7 @@ class IndependentCopula
 public:
 
   /** Default constructor */
-  explicit IndependentCopula(const UnsignedLong dimension = 1);
+  explicit IndependentCopula(const UnsignedInteger dimension = 1);
 
 
   /** Comparison operator */

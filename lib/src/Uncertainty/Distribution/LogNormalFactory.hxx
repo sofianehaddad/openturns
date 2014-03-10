@@ -50,12 +50,12 @@ public:
 
   Implementation build(const NumericalSample & sample) const;
   Implementation build(const NumericalSample & sample,
-                       const UnsignedLong method) const;
+                       const UnsignedInteger method) const;
   Implementation build(const NumericalPointCollection & parameters) const;
   Implementation build() const;
   LogNormal buildAsLogNormal(const NumericalSample & sample) const;
   LogNormal buildAsLogNormal(const NumericalSample & sample,
-                             const UnsignedLong method) const;
+                             const UnsignedInteger method) const;
   LogNormal buildAsLogNormal(const NumericalPointCollection & parameters) const;
   LogNormal buildAsLogNormal(const NumericalPointWithDescriptionCollection & parameters) const;
   LogNormal buildAsLogNormal() const;

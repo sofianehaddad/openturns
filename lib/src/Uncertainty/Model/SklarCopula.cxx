@@ -61,10 +61,10 @@ SklarCopula::SklarCopula(const Distribution & distribution)
   , marginalCollection_(distribution.getDimension())
 {
   // We set the dimension of the SklarCopula distribution
-  const UnsignedLong dimension(distribution.getDimension());
+  const UnsignedInteger dimension(distribution.getDimension());
   setDimension( dimension );
   // Extract all the 1D marginal distributions
-  for (UnsignedLong i = 0; i < dimension; ++i) marginalCollection_[i] = distribution.getMarginal(i);
+  for (UnsignedInteger i = 0; i < dimension; ++i) marginalCollection_[i] = distribution.getMarginal(i);
   computeRange();
 }
 
@@ -97,11 +97,11 @@ SklarCopula * SklarCopula::clone() const
    so a realization of C is a realization of F marginaly composed with F_i */
 NumericalPoint SklarCopula::getRealization() const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   // Special case for independent copula, for improved performance
   if (hasIndependentCopula()) return RandomGenerator::Generate(dimension);
   NumericalPoint realization(distribution_.getRealization());
-  for (UnsignedLong i = 0; i < dimension; ++i) realization[i] = marginalCollection_[i].computeCDF(realization[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) realization[i] = marginalCollection_[i].computeCDF(realization[i]);
   return realization;
 }
 
@@ -117,14 +117,14 @@ NumericalPoint SklarCopula::getRealization() const
 */
 NumericalPoint SklarCopula::computeDDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   // Early exit for the 1D case (Uniform(0,1) distribution)
   if (dimension == 1) return NumericalPoint(1, 0.0);
   NumericalPoint x(point);
   NumericalPoint pdfX(dimension);
   NumericalPoint ddfX(dimension);
   NumericalScalar factor(1.0);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar ui(point[i]);
     if ((ui <= 0.0) || ui >= 1.0) return NumericalPoint(dimension, 0.0);
@@ -137,7 +137,7 @@ NumericalPoint SklarCopula::computeDDF(const NumericalPoint & point) const
   }
   const NumericalScalar pdfDistribution(distribution_.computePDF(x));
   NumericalPoint result(distribution_.computeDDF(x));
-  for (UnsignedLong i = 0; i < dimension; ++i) result[i] -= ddfX[i] * pdfDistribution / pdfX[i];
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] -= ddfX[i] * pdfDistribution / pdfX[i];
   return result * (1.0 / factor);
 }
 
@@ -146,7 +146,7 @@ NumericalPoint SklarCopula::computeDDF(const NumericalPoint & point) const
    so p(x_1,\dots,x_n) = c(F_1(x_1),\dots,F_n(x_n))\prod_{i=1}^n p_i(x_i) */
 NumericalScalar SklarCopula::computePDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   // Early exit for the 1D case (Uniform(0,1) distribution)
   if (dimension == 1)
   {
@@ -155,7 +155,7 @@ NumericalScalar SklarCopula::computePDF(const NumericalPoint & point) const
   }
   NumericalPoint x(dimension);
   NumericalScalar factor(1.0);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar ui(point[i]);
     if ((ui <= 0.0) || ui > 1.0) return 0.0;
@@ -171,11 +171,11 @@ NumericalScalar SklarCopula::computePDF(const NumericalPoint & point) const
    F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n)) */
 NumericalScalar SklarCopula::computeCDF(const NumericalPoint & point) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   // Early exit for the 1D case (Uniform(0,1) distribution)
   if (dimension == 1) return Uniform(0.0, 1.0).computeCDF(point);
   NumericalPoint x(point);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar ui(std::min(point[i], 1.0));
     if (ui <= 0.0) return 0.0;
@@ -187,7 +187,7 @@ NumericalScalar SklarCopula::computeCDF(const NumericalPoint & point) const
 /* Compute the probability content of an interval */
 NumericalScalar SklarCopula::computeProbability(const Interval & interval) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension not compatible with the distribution dimension";
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
   const Interval intersect(interval.intersect(Interval(dimension)));
@@ -201,7 +201,7 @@ NumericalScalar SklarCopula::computeProbability(const Interval & interval) const
   NumericalPoint upperBound(dimension);
   Interval::BoolCollection finiteLowerBound(dimension);
   Interval::BoolCollection finiteUpperBound(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (lowerBoundIntersect[i] == 0.0)
     {
@@ -244,25 +244,25 @@ NumericalPoint SklarCopula::computeCDFGradient(const NumericalPoint & point) con
 NumericalPoint SklarCopula::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  const UnsignedLong dimension(getDimension());
+  const UnsignedInteger dimension(getDimension());
   const NumericalScalar epsilon(cdfEpsilon_);
   if (prob < -epsilon || prob > 1.0 + epsilon) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   if (dimension == 1) return NumericalPoint(1, (tail ? 1.0 - prob : prob));
   NumericalPoint uq(distribution_.computeQuantile(prob));
-  for (UnsignedLong i = 0; i < dimension; ++i) uq[i] = tail ? marginalCollection_[i].computeComplementaryCDF(uq[i]) : marginalCollection_[i].computeCDF(uq[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) uq[i] = tail ? marginalCollection_[i].computeComplementaryCDF(uq[i]) : marginalCollection_[i].computeCDF(uq[i]);
   return uq;
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar SklarCopula::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return Distribution(getMarginal(conditioningDimension)).computePDF(x);
   // General case
   NumericalPoint u(conditioningDimension);
-  for (UnsignedLong i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
   const NumericalScalar ux(marginalCollection_[conditioningDimension].computeQuantile(x)[0]);
   const NumericalScalar pdf(marginalCollection_[conditioningDimension].computePDF(ux));
   if (pdf == 0.0) return 0.0;
@@ -272,13 +272,13 @@ NumericalScalar SklarCopula::computeConditionalPDF(const NumericalScalar x, cons
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar SklarCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
 {
-  const UnsignedLong conditioningDimension(y.getDimension());
+  const UnsignedInteger conditioningDimension(y.getDimension());
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return marginalCollection_[conditioningDimension].computeQuantile(x)[0];
   // General case
   NumericalPoint u(conditioningDimension);
-  for (UnsignedLong i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
   return distribution_.computeConditionalCDF(marginalCollection_[conditioningDimension].computeQuantile(x)[0], u);
 }
 
@@ -346,7 +346,7 @@ SklarCopula::NumericalPointWithDescriptionCollection SklarCopula::getParametersC
 {
   NumericalPointWithDescriptionCollection parameters(0);
   const NumericalPointWithDescriptionCollection distributionParameters(distribution_.getParametersCollection());
-  const UnsignedLong dimension(distribution_.getDimension());
+  const UnsignedInteger dimension(distribution_.getDimension());
   // If the underlying distribution has dependence parameters
   if (distributionParameters.getSize() == dimension + 1)
   {

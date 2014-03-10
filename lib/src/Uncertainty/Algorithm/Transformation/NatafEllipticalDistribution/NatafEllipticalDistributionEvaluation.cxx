@@ -98,18 +98,18 @@ Matrix NatafEllipticalDistributionEvaluation::parametersGradient(const Numerical
 {
   NumericalPoint center(getCenter()); // \mu
   Matrix linear(getLinear()); // \Gamma^t, transposed inverse Cholesky
-  UnsignedLong inputDimension(getInputDimension());
+  UnsignedInteger inputDimension(getInputDimension());
   Matrix result(2 * inputDimension, inputDimension);
   // dT_j/dmu_i
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
-    for (UnsignedLong j = i; j < inputDimension; ++j)
+    for (UnsignedInteger j = i; j < inputDimension; ++j)
     {
       result(i, j) = -linear(i, j);
     }
   }
   // dTj/dsigma_j
-  for (UnsignedLong i = 0; i < inputDimension; ++i)
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     result(inputDimension + i, i) = -linear(i, i) * linear(i, i) * (inP[i] - center[i]);
   }

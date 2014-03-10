@@ -269,7 +269,7 @@ NumericalPoint Chi::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Chi::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Chi::getStandardMoment(const UnsignedInteger n) const
 {
   return NumericalPoint(1, exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
 }

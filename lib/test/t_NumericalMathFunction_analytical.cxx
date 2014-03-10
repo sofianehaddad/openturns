@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     elementaryFunctions.add("rint");
     elementaryFunctions.add("abs");
     /* Check the creation of the elementary functions */
-    for (UnsignedLong i = 0; i < elementaryFunctions.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < elementaryFunctions.getSize(); ++i)
     {
       NumericalPoint x(1, 0.4 / 3);
 
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
 
     NumericalPoint refResultValues(100, 0.);
     NumericalPoint pt(3, 0.);
-    for (UnsignedLong i = 0; i < 100; ++i)
+    for (UnsignedInteger i = 0; i < 100; ++i)
     {
       pt[0] = inputsSample[i][0];
       pt[1] = inputsSample[i][1];

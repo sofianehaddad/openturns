@@ -184,7 +184,7 @@ test_big_endian ( __BIG_ENDIAN__ )
 
 try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UnsignedLong_same_as_uint64_t.cxx )
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx )
 
 # Find system prerequisites
 include ( CheckIncludeFile )

@@ -56,7 +56,7 @@ public:
 
   /** Calculate the coefficients of recurrence a0n, a1n, a2n such that
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedLong n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** Alpha accessor */
   NumericalScalar getAlpha() const;

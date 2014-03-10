@@ -203,7 +203,7 @@ const StorageManager::InternalObject & XMLStorageManager::getState() const
 
 
 /* Query the manager if the version is correct */
-Bool XMLStorageManager::canManageVersion(UnsignedLong version) const
+Bool XMLStorageManager::canManageVersion(UnsignedInteger version) const
 {
   return XMLStorageManager::SupportedVersions.contains(version);
 }
@@ -252,7 +252,7 @@ void XMLStorageManager::read()
   if (! p_state_->root_) throw StudyFileParsingException(HERE) << "Study file has no root element (" << fileName_ << ")";
   if (! XML::IsElement( p_state_->root_, XML_STMGR::root_tag::Get() ))
     throw StudyFileParsingException(HERE) << "Can NOT find root element '" << XML_STMGR::root_tag::Get() << "' in file '" << fileName_ << "'. Got '" << XML::GetNodeName( p_state_->root_ ) << "'";
-  UnsignedLong version = 0;
+  UnsignedInteger version = 0;
   String stul = XML::GetAttributeByName( p_state_->root_, XML_STMGR::version_attribute::Get() );
   std::istringstream iss (stul);
   iss >> version;
@@ -536,7 +536,7 @@ template <typename TAG, typename _Tp>
 static inline
 void IndexedValueWriter(TAG tag,
                         Pointer<StorageManager::InternalObject> & p_obj,
-                        UnsignedLong index,
+                        UnsignedInteger index,
                         _Tp value)
 {
   assert(p_obj);
@@ -556,7 +556,7 @@ template <>
 inline
 void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, NumericalComplex>(XML_STMGR::numericalcomplex_tag tag,
     Pointer<StorageManager::InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     NumericalComplex value)
 {
   assert(p_obj);
@@ -591,7 +591,7 @@ template <typename TAG, typename _Tp>
 static inline
 void IndexedValueReader(TAG tag,
                         Pointer<StorageManager::InternalObject> & p_obj,
-                        UnsignedLong index,
+                        UnsignedInteger index,
                         _Tp & value)
 {
   assert(p_obj);
@@ -600,7 +600,7 @@ void IndexedValueReader(TAG tag,
   XML::Node node;
   while (( node = XML::FindNextElementByName( state.current_, tag.Get() ) ))
   {
-    UnsignedLong idx;
+    UnsignedInteger idx;
     fromStringConverter( XML::GetAttributeByName(node, XML_STMGR::index_attribute::Get()), idx );
     state.next();
     if (idx == index)
@@ -690,7 +690,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
+                                        UnsignedInteger index,
                                         Bool value)
 {
   IndexedValueWriter( XML_STMGR::bool_tag(), p_obj, index, value );
@@ -698,7 +698,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     Bool & value)
 {
   IndexedValueReader( XML_STMGR::bool_tag(), p_obj, index, value );
@@ -707,13 +707,13 @@ void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
 
 
 
-/************ Type = UnsignedLong ************/
+/************ Type = UnsignedInteger ************/
 
 
 /* Add an attribute to an internal object */
 void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
                                      const String & name,
-                                     UnsignedLong value)
+                                     UnsignedInteger value)
 {
   AttributeWriter( p_obj, name, value );
 }
@@ -721,23 +721,23 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 /* Read an attribute */
 void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
                                       const String & name,
-                                      UnsignedLong & value)
+                                      UnsignedInteger & value)
 {
   AttributeReader( XML_STMGR::unsignedlong_tag(), p_state_, name, value );
 }
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
-                                        UnsignedLong value)
+                                        UnsignedInteger index,
+                                        UnsignedInteger value)
 {
   IndexedValueWriter( XML_STMGR::unsignedlong_tag(), p_obj, index, value );
 }
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
-    UnsignedLong & value)
+    UnsignedInteger index,
+    UnsignedInteger & value)
 {
   IndexedValueReader( XML_STMGR::unsignedlong_tag(), p_obj, index, value );
 }
@@ -764,7 +764,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
+                                        UnsignedInteger index,
                                         Unsigned64BitsInteger value)
 {
   IndexedValueWriter( XML_STMGR::unsignedlong_tag(), p_obj, index, value );
@@ -772,7 +772,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     Unsigned64BitsInteger & value)
 {
   IndexedValueReader( XML_STMGR::unsignedlong_tag(), p_obj, index, value );
@@ -801,7 +801,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
+                                        UnsignedInteger index,
                                         NumericalScalar value)
 {
   IndexedValueWriter( XML_STMGR::numericalscalar_tag(), p_obj, index, value );
@@ -809,7 +809,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     NumericalScalar & value)
 {
   IndexedValueReader( XML_STMGR::numericalscalar_tag(), p_obj, index, value );
@@ -839,7 +839,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
+                                        UnsignedInteger index,
                                         NumericalComplex value)
 {
   IndexedValueWriter( XML_STMGR::numericalcomplex_tag(), p_obj, index, value );
@@ -847,7 +847,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     NumericalComplex & value)
 {
   IndexedValueReader( XML_STMGR::numericalcomplex_tag(), p_obj, index, value );
@@ -877,7 +877,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
+                                        UnsignedInteger index,
                                         const String & value)
 {
   IndexedValueWriter( XML_STMGR::string_tag(), p_obj, index, value );
@@ -885,7 +885,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     String & value)
 {
   IndexedValueReader( XML_STMGR::string_tag(), p_obj, index, value );
@@ -924,7 +924,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
+                                        UnsignedInteger index,
                                         const InterfaceObject & value)
 {
   value.save( *this );
@@ -942,7 +942,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     InterfaceObject & value)
 {
   Id shadowedId;
@@ -999,7 +999,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                        UnsignedLong index,
+                                        UnsignedInteger index,
                                         const PersistentObject & value)
 {
   value.save( *this );
@@ -1017,7 +1017,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
-    UnsignedLong index,
+    UnsignedInteger index,
     PersistentObject & value)
 {
   Id shadowedId;

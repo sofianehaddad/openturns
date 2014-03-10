@@ -64,7 +64,7 @@ String Basis::__str__(const String & offset) const
 }
 
 /* Dimension accessor */
-UnsignedLong Basis::getDimension() const
+UnsignedInteger Basis::getDimension() const
 {
   return (getSize() > 0) ? (*this)[0].getInputDimension() : 0;
 }

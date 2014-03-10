@@ -59,8 +59,8 @@ TimeSeries::TimeSeries()
 }
 
 /* Standard constructor */
-TimeSeries::TimeSeries(const UnsignedLong n,
-                       const UnsignedLong dim)
+TimeSeries::TimeSeries(const UnsignedInteger n,
+                       const UnsignedInteger dim)
   : FieldImplementation(RegularGrid(0.0, 1.0, n), dim)
   , start_(0.0)
   , timeStep_(1.0)
@@ -71,7 +71,7 @@ TimeSeries::TimeSeries(const UnsignedLong n,
 
 /* Constructor from a TimeGrid and a dimension */
 TimeSeries::TimeSeries(const RegularGrid & tg,
-                       const UnsignedLong dim)
+                       const UnsignedInteger dim)
   : FieldImplementation(tg, dim)
   , start_( tg.getStart() )
   , timeStep_( tg.getStep() )
@@ -123,7 +123,7 @@ Bool TimeSeries::operator ==(const TimeSeries & other) const
 /* Method __contains__() is for Python */
 Bool TimeSeries::contains(const NumericalPoint & val) const
 {
-  for (UnsignedLong i = 0; i < n_; ++i) if ( getValueAtIndex(i) == val ) return true;
+  for (UnsignedInteger i = 0; i < n_; ++i) if ( getValueAtIndex(i) == val ) return true;
   return false;
 }
 
@@ -158,19 +158,19 @@ TimeSeries & TimeSeries::add(const NumericalSample & sample)
 {
   if ((n_ > 0) && (sample.getDimension() != getDimension())) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
   if (sample.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension greater than 0";
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) return *this;
   // Update the vertices
   NumericalSample vertices(mesh_.getVertices());
-  for (UnsignedLong i = 0; i < size; ++i) vertices.add(NumericalPoint(1, start_ + timeStep_ * (n_ + i)));
+  for (UnsignedInteger i = 0; i < size; ++i) vertices.add(NumericalPoint(1, start_ + timeStep_ * (n_ + i)));
   // Update the values
   values_.add(sample);
   // Update the simplices
   // If there is currently no point in the TimeSeries the new points create (size-1) elements
-  UnsignedLong iStart(0);
+  UnsignedInteger iStart(0);
   if (n_ == 0) iStart = 1;
   Collection<Indices> simplices(mesh_.getSimplices());
-  for (UnsignedLong i = iStart; i < size; ++i)
+  for (UnsignedInteger i = iStart; i < size; ++i)
   {
     Indices element(2);
     element[1] = n_ + i;
@@ -192,7 +192,7 @@ TimeSeries & TimeSeries::add(const TimeSeries & continuer)
 }
 
 /* Draw a marginal of the TimeSeries */
-Graph TimeSeries::drawMarginal(const UnsignedLong index) const
+Graph TimeSeries::drawMarginal(const UnsignedInteger index) const
 {
   if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
   // Discretization of the x axis

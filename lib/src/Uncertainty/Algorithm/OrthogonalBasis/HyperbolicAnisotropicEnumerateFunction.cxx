@@ -43,7 +43,7 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction()
 }
 
 /* Parameter constructor */
-HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const UnsignedLong dimension,
+HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const UnsignedInteger dimension,
     const NumericalScalar q)
   : EnumerateFunctionImplementation(dimension),
     weight_(dimension, 1.0)
@@ -95,17 +95,17 @@ void HyperbolicAnisotropicEnumerateFunction::initialize()
 NumericalScalar HyperbolicAnisotropicEnumerateFunction::qNorm(const Indices & indices) const
 {
   NumericalScalar result(0.0);
-  UnsignedLong dimension(indices.getSize());
-  for( UnsignedLong j = 0; j < dimension; ++ j )
+  UnsignedInteger dimension(indices.getSize());
+  for( UnsignedInteger j = 0; j < dimension; ++ j )
     result += pow( indices[j] * weight_[j], q_ );
   return pow( result, 1.0 / q_ );
 }
 
-UnsignedLong HyperbolicAnisotropicEnumerateFunction::computeDegree(const Indices& indices) const
+UnsignedInteger HyperbolicAnisotropicEnumerateFunction::computeDegree(const Indices& indices) const
 {
-  UnsignedLong maximumDegree = 0;
-  UnsignedLong dimension(indices.getSize());
-  for( UnsignedLong j = 0; j < dimension; ++ j )
+  UnsignedInteger maximumDegree = 0;
+  UnsignedInteger dimension(indices.getSize());
+  for( UnsignedInteger j = 0; j < dimension; ++ j )
     if( indices[j] > maximumDegree)
       maximumDegree = indices[j];
   return maximumDegree;
@@ -118,10 +118,10 @@ UnsignedLong HyperbolicAnisotropicEnumerateFunction::computeDegree(const Indices
 * so the next indice set is the first in the list, i.e. the one closest to the origin
 * then we put it in a vector, allowing for fast retrieval according to the index
 */
-Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedLong index) const
+Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedInteger index) const
 {
   // if we haven't generated enough indices, generate them
-  for ( UnsignedLong i = cache_.getSize(); i <= index; ++ i )
+  for ( UnsignedInteger i = cache_.getSize(); i <= index; ++ i )
   {
     // the current indice is the first candidate in the list as we maintain q-norm sorting
     ValueType current(candidates_.front());
@@ -139,7 +139,7 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedLong i
 
 
     // generate all the neighbours indices
-    for( UnsignedLong j = 0; j < getDimension(); ++ j )
+    for( UnsignedInteger j = 0; j < getDimension(); ++ j )
     {
       Indices nextIndices( current.first );
       ++ nextIndices[j];
@@ -176,9 +176,9 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedLong i
 }
 
 /* The cardinal of the given strata */
-UnsignedLong HyperbolicAnisotropicEnumerateFunction::inverse(const Indices & indices) const
+UnsignedInteger HyperbolicAnisotropicEnumerateFunction::inverse(const Indices & indices) const
 {
-  UnsignedLong inverse( 0 );
+  UnsignedInteger inverse( 0 );
   while (( cache_[ inverse ] != indices ) && ( inverse < cache_.getSize() ) )
   {
     ++ inverse;
@@ -197,9 +197,9 @@ UnsignedLong HyperbolicAnisotropicEnumerateFunction::inverse(const Indices & ind
 
 
 /* The cardinal of the given strata */
-UnsignedLong HyperbolicAnisotropicEnumerateFunction::getStrataCardinal(const UnsignedLong strataIndex) const
+UnsignedInteger HyperbolicAnisotropicEnumerateFunction::getStrataCardinal(const UnsignedInteger strataIndex) const
 {
-  UnsignedLong result(getStrataCumulatedCardinal(strataIndex));
+  UnsignedInteger result(getStrataCumulatedCardinal(strataIndex));
   if ( strataIndex > 0 )
   {
     result -= getStrataCumulatedCardinal( strataIndex - 1 );
@@ -209,7 +209,7 @@ UnsignedLong HyperbolicAnisotropicEnumerateFunction::getStrataCardinal(const Uns
 
 
 /* The cardinal of the cumulated strata above or equal to the given strata */
-UnsignedLong HyperbolicAnisotropicEnumerateFunction::getStrataCumulatedCardinal(const UnsignedLong strataIndex) const
+UnsignedInteger HyperbolicAnisotropicEnumerateFunction::getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const
 {
   while ( strataCumulatedCardinal_.getSize() <= strataIndex )
   {
@@ -219,11 +219,11 @@ UnsignedLong HyperbolicAnisotropicEnumerateFunction::getStrataCumulatedCardinal(
 }
 
 
-UnsignedLong HyperbolicAnisotropicEnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const
+UnsignedInteger HyperbolicAnisotropicEnumerateFunction::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
 {
   // find indice
-  UnsignedLong index = 0;
-  UnsignedLong degree = 0;
+  UnsignedInteger index = 0;
+  UnsignedInteger degree = 0;
   do
   {
     Indices indice(operator()(index));
@@ -233,7 +233,7 @@ UnsignedLong HyperbolicAnisotropicEnumerateFunction::getMaximumDegreeStrataIndex
   while (degree <= maximumDegree);
 
   // find strata
-  UnsignedLong strataIndex = 0;
+  UnsignedInteger strataIndex = 0;
   while( getStrataCumulatedCardinal(strataIndex) < index )
   {
     ++ strataIndex;
@@ -259,7 +259,7 @@ NumericalScalar HyperbolicAnisotropicEnumerateFunction::getQ() const
 /* Weight accessor */
 void HyperbolicAnisotropicEnumerateFunction::setWeight(const NumericalPoint & weight)
 {
-  for ( UnsignedLong i = 0; i < getDimension(); ++ i )
+  for ( UnsignedInteger i = 0; i < getDimension(); ++ i )
   {
     if ( weight[i] < 0.0 )
     {

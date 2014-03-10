@@ -29,8 +29,8 @@ using namespace OT::Test;
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedLong dim(in.getDimension());
-  for(UnsignedLong i = 0; i < dim; i++)
+  UnsignedInteger dim(in.getDimension());
+  for(UnsignedInteger i = 0; i < dim; i++)
     if (fabs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
 }
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     distribution[0] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, 4.0);
     distribution[1] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, TruncatedDistribution::LOWER);
     distribution[2] = TruncatedDistribution(Normal(2.0, 1.5), 4.0, TruncatedDistribution::UPPER);
-    for (UnsignedLong testCase = 0; testCase < 3; ++testCase)
+    for (UnsignedInteger testCase = 0; testCase < 3; ++testCase)
     {
       fullprint << "Distribution " << distribution[testCase] << std::endl;
       std::cout << "Distribution " << distribution[testCase] << std::endl;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10000;
+      UnsignedInteger size = 10000;
       NumericalSample oneSample = distribution[testCase].getSample( size );
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
       TruncatedDistribution::NumericalPointWithDescriptionCollection parameters = distribution[testCase].getParametersCollection();
       fullprint << "parameters      =" << parameters << std::endl;
       fullprint << "parameters (ref)=" << referenceDistribution[testCase].getParametersCollection() << std::endl;
-      for (UnsignedLong i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution[testCase].getStandardMoment(i) << std::endl;
+      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution[testCase].getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution[testCase].getStandardRepresentative()->__str__() << std::endl;
 
       // Specific to this distribution

@@ -41,7 +41,7 @@ static Factory<Compact> RegisteredFactory("Compact");
 /* Constructor with parameters */
 Compact::Compact()
   : HistoryStrategyImplementation()
-  , halfMaximumSize_(ResourceMap::GetAsUnsignedLong( "Compact-DefaultHalfMaximumSize" ))
+  , halfMaximumSize_(ResourceMap::GetAsUnsignedInteger( "Compact-DefaultHalfMaximumSize" ))
   , index_(0)
   , step_(1)
   , throwingCounter_(0)
@@ -50,7 +50,7 @@ Compact::Compact()
 }
 
 /* Constructor with parameters */
-Compact::Compact(const UnsignedLong halfMaximumSize)
+Compact::Compact(const UnsignedInteger halfMaximumSize)
   : HistoryStrategyImplementation()
   , halfMaximumSize_(halfMaximumSize)
   , index_(0)
@@ -88,7 +88,7 @@ void Compact::store(const NumericalPoint & point)
   // Check if one needs compression
   if (index_ == 2 * halfMaximumSize_)
   {
-    for (UnsignedLong i = 0; i < halfMaximumSize_; ++i) sample_[i] = sample_[2 * i + 1];
+    for (UnsignedInteger i = 0; i < halfMaximumSize_; ++i) sample_[i] = sample_[2 * i + 1];
     step_ *= 2;
     throwingCounter_ = step_;
     index_ = halfMaximumSize_;
@@ -102,18 +102,18 @@ NumericalSample Compact::getSample() const
   // If nothing has been stored
   if (!isInitialized_) return sample_;
   NumericalSample outSample(index_, sample_.getDimension());
-  for (UnsignedLong i = 0; i < index_; ++i) outSample[i] = sample_[i];
+  for (UnsignedInteger i = 0; i < index_; ++i) outSample[i] = sample_[i];
   return outSample;
 }
 
 /* HalfMaximumSize accessor */
-UnsignedLong Compact::getHalfMaximumSize() const
+UnsignedInteger Compact::getHalfMaximumSize() const
 {
   return halfMaximumSize_;
 }
 
 /* Index accessor */
-UnsignedLong Compact::getIndex() const
+UnsignedInteger Compact::getIndex() const
 {
   return index_;
 }

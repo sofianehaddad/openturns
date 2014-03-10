@@ -46,7 +46,7 @@ InverseNatafIndependentCopulaGradient::InverseNatafIndependentCopulaGradient()
 }
 
 /* Parameter constructor */
-InverseNatafIndependentCopulaGradient::InverseNatafIndependentCopulaGradient(const UnsignedLong dimension)
+InverseNatafIndependentCopulaGradient::InverseNatafIndependentCopulaGradient(const UnsignedInteger dimension)
   : NumericalMathGradientImplementation()
   , dimension_(dimension)
 {
@@ -79,7 +79,7 @@ String InverseNatafIndependentCopulaGradient::__repr__() const
 Matrix InverseNatafIndependentCopulaGradient::gradient(const NumericalPoint & inP) const
 {
   Matrix result(dimension_, dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const NumericalScalar x(inP[i]);
     // 0.3989422804014326779399462 = 1/sqrt(2*Pi)
@@ -89,13 +89,13 @@ Matrix InverseNatafIndependentCopulaGradient::gradient(const NumericalPoint & in
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseNatafIndependentCopulaGradient::getInputDimension() const
+UnsignedInteger InverseNatafIndependentCopulaGradient::getInputDimension() const
 {
   return dimension_;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseNatafIndependentCopulaGradient::getOutputDimension() const
+UnsignedInteger InverseNatafIndependentCopulaGradient::getOutputDimension() const
 {
   return dimension_;
 }

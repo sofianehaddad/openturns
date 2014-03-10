@@ -35,7 +35,7 @@ static Factory<Interval> RegisteredFactory("Interval");
 
 
 /* Default constructor */
-Interval::Interval(const UnsignedLong dimension)
+Interval::Interval(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
   , lowerBound_(dimension, 0.0)
   , upperBound_(dimension, 1.0)
@@ -109,7 +109,7 @@ Interval Interval::intersect(const Interval & other) const
   NumericalPoint intersectUpper(getDimension());
   BoolCollection intersectFiniteLower(getDimension());
   BoolCollection intersectFiniteUpper(getDimension());
-  for (UnsignedLong i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
     intersectLower[i] = std::max(lowerBound_[i], otherLower[i]);
     intersectUpper[i] = std::min(upperBound_[i], otherUpper[i]);
@@ -136,7 +136,7 @@ Interval Interval::join(const Interval & other) const
   NumericalPoint intersectUpper(getDimension());
   BoolCollection intersectFiniteLower(getDimension());
   BoolCollection intersectFiniteUpper(getDimension());
-  for (UnsignedLong i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
     intersectLower[i] = std::min(lowerBound_[i], otherLower[i]);
     intersectUpper[i] = std::max(upperBound_[i], otherUpper[i]);
@@ -149,14 +149,14 @@ Interval Interval::join(const Interval & other) const
 /* Check if the interval is empty, i.e. if we have lowerBound >= upperBound for at least one component with finite bounds. */
 Bool Interval::isEmpty() const
 {
-  for (UnsignedLong i = 0; i < getDimension(); ++i) if (finiteLowerBound_[i] && finiteUpperBound_[i] && (lowerBound_[i] > upperBound_[i])) return true;
+  for (UnsignedInteger i = 0; i < getDimension(); ++i) if (finiteLowerBound_[i] && finiteUpperBound_[i] && (lowerBound_[i] > upperBound_[i])) return true;
   return false;
 }
 
 /* Check if the given point is inside of the closed interval */
 Bool Interval::contains(const NumericalPoint & point) const
 {
-  for (UnsignedLong i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
     // Check against the lower bound
     if (finiteLowerBound_[i] && (point[i] < lowerBound_[i])) return false;
@@ -176,7 +176,7 @@ void Interval::computeVolume() const
     return;
   }
   volume_ = 1.0;
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     volume_ *= upperBound_[i] - lowerBound_[i];
     if (volume_ <= 0.0)
@@ -190,7 +190,7 @@ void Interval::computeVolume() const
 /* Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
 Bool Interval::numericallyContains(const NumericalPoint & point) const
 {
-  for (UnsignedLong i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
     if ((point[i] < lowerBound_[i]) || (point[i] > upperBound_[i])) return false;
   return true;
 }
@@ -208,7 +208,7 @@ Interval Interval::operator +(const Interval & rhs) const
   const NumericalPoint upperBound(upperBound_ + rhs.getUpperBound());
   Interval::BoolCollection finiteLowerBound(rhs.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(rhs.getFiniteUpperBound());
-  for(UnsignedLong i = 0; i < (getDimension()); ++i)
+  for(UnsignedInteger i = 0; i < (getDimension()); ++i)
   {
     finiteLowerBound[i] = finiteLowerBound[i] && finiteLowerBound_[i];
     finiteUpperBound[i] = finiteUpperBound[i] && finiteUpperBound_[i];
@@ -232,7 +232,7 @@ Interval & Interval::operator +=(const Interval & other)
   upperBound_ += other.getUpperBound();
   Interval::BoolCollection finiteLowerBound(other.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(other.getFiniteUpperBound());
-  for(UnsignedLong i = 0; i < (getDimension()); ++i)
+  for(UnsignedInteger i = 0; i < (getDimension()); ++i)
   {
     finiteLowerBound_[i] = finiteLowerBound[i] && finiteLowerBound_[i];
     finiteUpperBound_[i] = finiteUpperBound[i] && finiteUpperBound_[i];
@@ -254,7 +254,7 @@ Interval Interval::operator -(const Interval & rhs) const
   const NumericalPoint upperBound(upperBound_ - rhs.getLowerBound());
   Interval::BoolCollection finiteLowerBound(rhs.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(rhs.getFiniteUpperBound());
-  for(UnsignedLong i = 0; i < (getDimension()); ++i)
+  for(UnsignedInteger i = 0; i < (getDimension()); ++i)
   {
     finiteLowerBound[i] = finiteLowerBound[i] && finiteUpperBound_[i];
     finiteUpperBound[i] = finiteUpperBound[i] && finiteLowerBound_[i];
@@ -278,7 +278,7 @@ Interval & Interval::operator -=(const Interval & other)
   upperBound_ -= other.getLowerBound();
   Interval::BoolCollection finiteLowerBound(other.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(other.getFiniteUpperBound());
-  for(UnsignedLong i = 0; i < (getDimension()); ++i)
+  for(UnsignedInteger i = 0; i < (getDimension()); ++i)
   {
     finiteLowerBound_[i] = finiteLowerBound[i] && finiteUpperBound_[i];
     finiteUpperBound_[i] = finiteUpperBound[i] && finiteLowerBound_[i];
@@ -409,7 +409,7 @@ String Interval::__repr__() const
 String Interval::__str__(const String & offset) const
 {
   OSS oss(false);
-  for (UnsignedLong i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
     if (i > 0) oss << Os::GetEndOfLine();
     if (finiteLowerBound_[i]) oss << offset << "[" << lowerBound_[i] << ", ";

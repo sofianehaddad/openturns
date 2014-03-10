@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   {
 
     // Instanciate one distribution object
-    UnsignedLong dim(1);
+    UnsignedInteger dim(1);
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     NumericalPoint sigma(dim, 1.0);
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
     Normal distribution2(meanPoint, sigma, R);
 
     // Test for sampling
-    UnsignedLong size(2000);
-    UnsignedLong nBars(20);
+    UnsignedInteger size(2000);
+    UnsignedInteger nBars(20);
     NumericalSample sample1(distribution1.getSample( size ));
     NumericalSample sample2(distribution2.getSample( size ));
 
@@ -69,13 +69,13 @@ int main(int argc, char *argv[])
     NumericalSample data1(nBars, tmp);
     tmp[0] = (max2 - min2) / nBars;
     NumericalSample data2(nBars, tmp);
-    UnsignedLong index;
+    UnsignedInteger index;
 
-    for(UnsignedLong i = 0; i < size; i++)
+    for(UnsignedInteger i = 0; i < size; i++)
     {
-      index = UnsignedLong(floor((sample1[i][0] - min1) / (max1 - min1) * nBars));
+      index = static_cast<UnsignedInteger>(floor((sample1[i][0] - min1) / (max1 - min1) * nBars));
       data1[index][1]++;
-      index = UnsignedLong(floor((sample2[i][0] - min2) / (max2 - min2) * nBars));
+      index = static_cast<UnsignedInteger>(floor((sample2[i][0] - min2) / (max2 - min2) * nBars));
       data2[index][1]++;
     }
 

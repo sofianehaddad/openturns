@@ -48,7 +48,7 @@ NatafIndependentCopulaGradient::NatafIndependentCopulaGradient()
 }
 
 /* Parameter constructor */
-NatafIndependentCopulaGradient::NatafIndependentCopulaGradient(const UnsignedLong dimension)
+NatafIndependentCopulaGradient::NatafIndependentCopulaGradient(const UnsignedInteger dimension)
   : NumericalMathGradientImplementation()
   , dimension_(dimension)
 {
@@ -82,7 +82,7 @@ String NatafIndependentCopulaGradient::__repr__() const
 Matrix NatafIndependentCopulaGradient::gradient(const NumericalPoint & inP) const
 {
   Matrix result(dimension_, dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const NumericalScalar x(inP[i]);
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaGradient if all the components are not in [0, 1], here in=" << inP;
@@ -95,13 +95,13 @@ Matrix NatafIndependentCopulaGradient::gradient(const NumericalPoint & inP) cons
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NatafIndependentCopulaGradient::getInputDimension() const
+UnsignedInteger NatafIndependentCopulaGradient::getInputDimension() const
 {
   return dimension_;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NatafIndependentCopulaGradient::getOutputDimension() const
+UnsignedInteger NatafIndependentCopulaGradient::getOutputDimension() const
 {
   return dimension_;
 }

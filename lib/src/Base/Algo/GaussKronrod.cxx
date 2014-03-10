@@ -38,7 +38,7 @@ static Factory<GaussKronrod> RegisteredFactory("GaussKronrod");
 /* Constructor without parameters */
 GaussKronrod::GaussKronrod(const String & name)
   : IntegrationAlgorithmImplementation(name)
-  , maximumSubIntervals_(ResourceMap::GetAsUnsignedLong("GaussKronrod-MaximumSubIntervals"))
+  , maximumSubIntervals_(ResourceMap::GetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals"))
   , maximumError_(ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"))
   , rule_()
 {
@@ -46,7 +46,7 @@ GaussKronrod::GaussKronrod(const String & name)
 }
 
 /* Parameters constructor */
-GaussKronrod::GaussKronrod(const UnsignedLong maximumSubIntervals,
+GaussKronrod::GaussKronrod(const UnsignedInteger maximumSubIntervals,
                            const NumericalScalar maximumError,
                            const GaussKronrodRule & rule)
   : IntegrationAlgorithmImplementation()
@@ -109,8 +109,8 @@ NumericalScalar GaussKronrod::integrate(const NumericalMathFunction & function,
   bi[0] = b;
   fi = NumericalPoint(maximumSubIntervals_);
   ei = NumericalPoint(maximumSubIntervals_);
-  UnsignedLong ip(0);
-  UnsignedLong im(0);
+  UnsignedInteger ip(0);
+  UnsignedInteger im(0);
   error = maximumError_;
   while ((error > 0.25 * maximumError_) && (im < maximumSubIntervals_ - 1))
   {
@@ -120,11 +120,11 @@ NumericalScalar GaussKronrod::integrate(const NumericalMathFunction & function,
     bi[ip] = ai[im];
     fi[ip] = computeRule(function, ai[ip], bi[ip], ei[ip]);
     fi[im] = computeRule(function, ai[im], bi[im], ei[im]);
-    UnsignedLong iErrorMax(0);
+    UnsignedInteger iErrorMax(0);
     NumericalScalar errorMax(0.0);
     error = 0.0;
     result = 0.0;
-    for (UnsignedLong i = 0; i <= im; ++i)
+    for (UnsignedInteger i = 0; i <= im; ++i)
     {
       const NumericalScalar localError(ei[i]);
       result += fi[i];
@@ -157,7 +157,7 @@ NumericalScalar GaussKronrod::computeRule(const NumericalMathFunction & function
   // Generate the set of points
   NumericalSample x(2 * rule_.order_ + 1, 1);
   x[0][0] = center;
-  for (UnsignedLong i = 0; i < rule_.order_; ++i)
+  for (UnsignedInteger i = 0; i < rule_.order_; ++i)
   {
     const NumericalScalar t(width * rule_.otherKronrodNodes_[i]);
     x[2 * i + 1][0] = center - t;
@@ -168,7 +168,7 @@ NumericalScalar GaussKronrod::computeRule(const NumericalMathFunction & function
   NumericalScalar value(y[0][0]);
   NumericalScalar resultGauss(value * rule_.zeroGaussWeight_);
   NumericalScalar resultGaussKronrod(value * rule_.zeroKronrodWeight_);
-  for (UnsignedLong j = 0; j < (rule_.order_ - 1) / 2; ++j)
+  for (UnsignedInteger j = 0; j < (rule_.order_ - 1) / 2; ++j)
   {
     value = y[4 * j + 1][0] + y[4 * j + 2][0];
     resultGaussKronrod += rule_.otherKronrodWeights_[2 * j] * value;
@@ -183,12 +183,12 @@ NumericalScalar GaussKronrod::computeRule(const NumericalMathFunction & function
 }
 
 /* Maximum sub-intervals accessor */
-UnsignedLong GaussKronrod::getMaximumSubIntervals() const
+UnsignedInteger GaussKronrod::getMaximumSubIntervals() const
 {
   return maximumSubIntervals_;
 }
 
-void GaussKronrod::setMaximumSubIntervals(const UnsignedLong maximumSubIntervals)
+void GaussKronrod::setMaximumSubIntervals(const UnsignedInteger maximumSubIntervals)
 {
   if (maximumSubIntervals < 1) throw InvalidArgumentException(HERE) << "Error: the number of intervals must be at least 1.";
   maximumSubIntervals_ = maximumSubIntervals;

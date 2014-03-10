@@ -86,25 +86,25 @@ String NatafEllipticalCopulaGradient::__repr__() const
  */
 Matrix NatafEllipticalCopulaGradient::gradient(const NumericalPoint & inP) const
 {
-  UnsignedLong dimension(getInputDimension());
+  UnsignedInteger dimension(getInputDimension());
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   Matrix result(dimension, dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalScalar quantileDerivative(1.0 / standardMarginal.computePDF(standardMarginal.computeQuantile(inP[i])));
-    for (UnsignedLong j = i; j < dimension; ++j) result(i, j) = inverseCholesky_(j, i) * quantileDerivative;
+    for (UnsignedInteger j = i; j < dimension; ++j) result(i, j) = inverseCholesky_(j, i) * quantileDerivative;
   }
   return result;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong NatafEllipticalCopulaGradient::getInputDimension() const
+UnsignedInteger NatafEllipticalCopulaGradient::getInputDimension() const
 {
   return inverseCholesky_.getNbColumns();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong NatafEllipticalCopulaGradient::getOutputDimension() const
+UnsignedInteger NatafEllipticalCopulaGradient::getOutputDimension() const
 {
   return inverseCholesky_.getNbRows();
 }

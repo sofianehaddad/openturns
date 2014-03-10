@@ -39,11 +39,11 @@ int main(int argc, char *argv[])
     xi[0] = -0.75;
     xi[1] = 0.0;
     xi[2] = 0.75;
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     CovarianceMatrix covariance;
     GeneralizedParetoFactory factory;
     GeneralizedPareto distribution;
-    for (UnsignedLong i = 0; i < 3; ++i)
+    for (UnsignedInteger i = 0; i < 3; ++i)
     {
       distribution = GeneralizedPareto(2.5, xi[i]);
       NumericalSample sample(distribution.getSample(size));

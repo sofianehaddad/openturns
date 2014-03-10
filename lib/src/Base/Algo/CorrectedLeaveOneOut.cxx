@@ -59,20 +59,20 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
     const NumericalSample & y,
     const Basis & basis) const
 {
-  const UnsignedLong sampleSize( x.getSize() );
+  const UnsignedInteger sampleSize( x.getSize() );
 
   if ( y.getDimension() != 1 ) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if ( y.getSize() != sampleSize ) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
   const NumericalScalar variance( y.computeVariancePerComponent()[0] );
   if ( variance <= 0.0 ) throw InvalidArgumentException( HERE ) << "Null output sample variance.";
 
-  const UnsignedLong basisSize( basis.getSize() );
+  const UnsignedInteger basisSize( basis.getSize() );
   if ( sampleSize < basisSize ) throw InvalidArgumentException( HERE ) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
 
   // Build the design of experiments
   Matrix psiAk(sampleSize, basisSize);
-  for (UnsignedLong i = 0; i < sampleSize; ++ i )
-    for (UnsignedLong j = 0; j < basisSize; ++ j )
+  for (UnsignedInteger i = 0; i < sampleSize; ++ i )
+    for (UnsignedInteger j = 0; j < basisSize; ++ j )
       psiAk( i, j ) = basis[j]( x[i] )[0];
 
   // Compute the reduced SVD (first 'false' flag) trashing the psiAk matrix (second 'false' flag) as it is no more needed
@@ -81,31 +81,31 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   const NumericalPoint svd( psiAk.computeSingularValues(u, vT, false, false) );
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   NumericalPoint b( sampleSize );
-  for (UnsignedLong i = 0; i < sampleSize; ++i) b[i] = y[i][0];
+  for (UnsignedInteger i = 0; i < sampleSize; ++i) b[i] = y[i][0];
   // First step
   const NumericalPoint c(u.transpose() * b);
   // Second step
   NumericalPoint d( basisSize );
-  for (UnsignedLong i = 0; i < basisSize; ++i) d[i] = c[i] / svd[i];
+  for (UnsignedInteger i = 0; i < basisSize; ++i) d[i] = c[i] / svd[i];
   // Third step
   const NumericalPoint coefficients(vT.transpose() * d);
 
   // Compute the  empirical error
   NumericalPoint h( sampleSize );
-  for (UnsignedLong i = 0; i < sampleSize; ++ i )
-    for (UnsignedLong j = 0; j < basisSize; ++ j )
+  for (UnsignedInteger i = 0; i < sampleSize; ++ i )
+    for (UnsignedInteger j = 0; j < basisSize; ++ j )
       h[i] += u(i, j) * u(i, j);
 
   const NumericalMathFunction metamodel(basis, coefficients);
   const NumericalSample yHat(metamodel(x));
   NumericalScalar empiricalError(0.0);
-  for ( UnsignedLong j = 0; j < sampleSize; ++ j )
+  for ( UnsignedInteger j = 0; j < sampleSize; ++ j )
     empiricalError += pow( ( y[j][0] - yHat[j][0] ) / ( 1.0 - h[j] ), 2.0 ) / sampleSize;
 
   // compute correcting factor
 
   NumericalScalar traceInverse( 0.0 );
-  for (UnsignedLong k = 0; k < svd.getDimension(); ++ k)
+  for (UnsignedInteger k = 0; k < svd.getDimension(); ++ k)
     traceInverse += 1.0 / pow(svd[k], 2.0);
 
   const NumericalScalar correctingFactor( ( static_cast<NumericalScalar> (sampleSize) / static_cast<NumericalScalar>(sampleSize - basisSize) ) * ( 1.0 + traceInverse ) );

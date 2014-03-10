@@ -56,12 +56,12 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , relativeError_(0.0)
   , verbose_(false)
 {
-  const UnsignedLong dataSize(x.getSize());
+  const UnsignedInteger dataSize(x.getSize());
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
   if (dataSize != y.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on samples of different size.";
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on output sample of dimension different from 1.";
-  const UnsignedLong basisSize(psi.getSize());
-  for (UnsignedLong i = 0; i < basisSize; ++i)
+  const UnsignedInteger basisSize(psi.getSize());
+  for (UnsignedInteger i = 0; i < basisSize; ++i)
     if (psi[i].getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can only use basis functions with 1D values.";
 }
 
@@ -80,15 +80,15 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
   , relativeError_(0.0)
   , verbose_(false)
 {
-  UnsignedLong dataSize( x.getSize() );
+  UnsignedInteger dataSize( x.getSize() );
   if (dataSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on an empty sample.";
   if (dataSize != y.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on samples of different size.";
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation based on output sample of dimension different from 1.";
-  const UnsignedLong basisSize(psi.getSize());
-  for (UnsignedLong i = 0; i < basisSize; ++i)
+  const UnsignedInteger basisSize(psi.getSize());
+  for (UnsignedInteger i = 0; i < basisSize; ++i)
     if (psi[i].getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can only use basis functions with 1D values.";
   if ( dataSize != weight.getDimension() ) throw InvalidArgumentException(HERE) << "Error: cannot perform approximation with weight of improper dimension.";
-  for ( UnsignedLong i = 0; i < dataSize; ++ i )
+  for ( UnsignedInteger i = 0; i < dataSize; ++ i )
     if ( weight[i] < 0.0 ) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
 }
 

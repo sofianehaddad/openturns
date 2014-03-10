@@ -58,13 +58,13 @@ Multinomial MultinomialFactory::buildAsMultinomial(const NumericalSample & sampl
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution from an empty sample";
   // Check if each component of the sample is an integer, compute the mean and extract the maximum value
-  UnsignedLong size(sample.getSize());
-  UnsignedLong dimension(sample.getDimension());
+  UnsignedInteger size(sample.getSize());
+  UnsignedInteger dimension(sample.getDimension());
   NumericalPoint p(dimension, 0.0);
   NumericalScalar max(sample[0][0]);
-  for (UnsignedLong i = 0; i < size; i++)
+  for (UnsignedInteger i = 0; i < size; i++)
   {
-    for (UnsignedLong j = 0; j < dimension; j++)
+    for (UnsignedInteger j = 0; j < dimension; j++)
     {
       NumericalScalar x(sample[i][j]);
       if ((x != trunc(x)) || (x < 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Multinomial distribution only from a sample with positive integer components, here sample[" << i << "][" << j << "]=" << x;
@@ -72,7 +72,7 @@ Multinomial MultinomialFactory::buildAsMultinomial(const NumericalSample & sampl
       p[j] += x;
     }
   }
-  const UnsignedLong n((UnsignedLong)max);
+  const UnsignedInteger n((UnsignedInteger)max);
   p *= 1.0 / (max * size);
   Multinomial result(n, p);
   result.setDescription(sample.getDescription());

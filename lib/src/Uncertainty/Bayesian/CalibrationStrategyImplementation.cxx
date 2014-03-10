@@ -36,7 +36,7 @@ static Factory<CalibrationStrategyImplementation> RegisteredFactory("Calibration
 CalibrationStrategyImplementation::CalibrationStrategyImplementation(const Interval & range,
     const NumericalScalar expansionFactor,
     const NumericalScalar shrinkFactor,
-    const UnsignedLong calibrationStep)
+    const UnsignedInteger calibrationStep)
   : PersistentObject()
 {
   setRange(range);
@@ -107,14 +107,14 @@ NumericalScalar CalibrationStrategyImplementation::computeUpdateFactor(const Num
   return factor;
 }
 
-void CalibrationStrategyImplementation::setCalibrationStep(const UnsignedLong calibrationStep)
+void CalibrationStrategyImplementation::setCalibrationStep(const UnsignedInteger calibrationStep)
 {
   if (calibrationStep == 0) throw InvalidArgumentException(HERE) << "The calibration period must be positive.";
   calibrationStep_ = calibrationStep;
 }
 
 
-UnsignedLong CalibrationStrategyImplementation::getCalibrationStep() const
+UnsignedInteger CalibrationStrategyImplementation::getCalibrationStep() const
 {
   return calibrationStep_;
 }

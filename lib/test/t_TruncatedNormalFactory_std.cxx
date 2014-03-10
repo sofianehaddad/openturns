@@ -48,10 +48,10 @@ int main(int argc, char *argv[])
     a[3] = 3.0;
     b[3] = 6.0;
     PlatformInfo::SetNumericalPrecision(4);
-    for (UnsignedLong i = 0; i < 4; i++)
+    for (UnsignedInteger i = 0; i < 4; i++)
     {
       TruncatedNormal distribution(mu[i], sigma[i], a[i], b[i]);
-      UnsignedLong size(10000);
+      UnsignedInteger size(10000);
       NumericalSample sample(distribution.getSample(size));
       TruncatedNormalFactory factory;
       CovarianceMatrix covariance;

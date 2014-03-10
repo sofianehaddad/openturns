@@ -58,13 +58,13 @@ public:
   Bool getVerbose() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Returns a realization */
   NumericalPoint getRealization() const;
 
   /** Returns a realization */
-  NumericalSample getSample(const UnsignedLong size) const;
+  NumericalSample getSample(const UnsignedInteger size) const;
 
 }; /* class Sampler */
 

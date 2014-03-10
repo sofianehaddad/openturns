@@ -1,5 +1,24 @@
 = New Features =
 
+== 1.4 release (in-progress) == #release-1.4
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ==== 
+
+==== API changes ====
+ * Removed deprecated types UnsignedLong, IndexType in favor of UnsignedInteger, SignedInteger
+ * Deprecated method ResourceMap::SetAsUnsignedLong|GetAsUnsignedLong  in favor of ResourceMap::SetAsUnsignedInteger|GetAsUnsignedInteger
+ 
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+ 
+ 
 == 1.3 release (2014-03-06) == #release-1.3
 
 === Library ===

@@ -100,7 +100,7 @@ RandomWalkMetropolisHastings* RandomWalkMetropolisHastings::clone() const
 
 NumericalPoint RandomWalkMetropolisHastings::getRealization() const
 {
-  const UnsignedLong dimension = initialState_.getDimension();
+  const UnsignedInteger dimension = initialState_.getDimension();
 
   // update factor
   NumericalPoint delta(dimension, 1.);
@@ -109,7 +109,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
   Indices accepted(dimension);
 
   // perform burning if necessary
-  const UnsignedLong size = getThinning() + (( samplesNumber_ < getBurnIn() ) ? getBurnIn() : 0);
+  const UnsignedInteger size = getThinning() + (( samplesNumber_ < getBurnIn() ) ? getBurnIn() : 0);
 
   // compute the first likelihood
   NumericalScalar alphaLogSave = computeLogLikelihood(currentState_);
@@ -119,8 +119,8 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
   }
 
   // for each new sample
-  UnsignedLong acceptedSteps = 0;
-  for ( UnsignedLong i = 0; i < size; ++ i )
+  UnsignedInteger acceptedSteps = 0;
+  for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     // copy ot current state to accept each component independently
     NumericalPoint newState(currentState_);
@@ -131,7 +131,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
 
     // update each chain component
     acceptedSteps = 0;
-    for ( UnsignedLong j = 0; j < dimension; ++ j )
+    for ( UnsignedInteger j = 0; j < dimension; ++ j )
     {
       NumericalPoint nextState(newState);
 
@@ -163,9 +163,9 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
     // recalibrate for each component if necessary
     NumericalPoint factor(dimension);
     NumericalPoint partialRho(dimension);
-    for ( UnsignedLong j = 0; j < dimension; ++ j )
+    for ( UnsignedInteger j = 0; j < dimension; ++ j )
     {
-      const UnsignedLong calibrationStep = calibrationStrategy_[j].getCalibrationStep();
+      const UnsignedInteger calibrationStep = calibrationStrategy_[j].getCalibrationStep();
       if ( ( samplesNumber_ % calibrationStep ) == ( calibrationStep - 1 ) )
       {
         // compute the current acceptation rate
@@ -198,9 +198,9 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
 
 NumericalPoint RandomWalkMetropolisHastings::getAcceptanceRate() const
 {
-  const UnsignedLong dimension = initialState_.getDimension();
+  const UnsignedInteger dimension = initialState_.getDimension();
   NumericalPoint acceptanceRate(dimension);
-  for ( UnsignedLong j = 0; j < dimension; ++ j )
+  for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
     acceptanceRate[j] = static_cast<NumericalScalar>(acceptedNumber_[j]) / samplesNumber_;
   }
@@ -210,7 +210,7 @@ NumericalPoint RandomWalkMetropolisHastings::getAcceptanceRate() const
 
 void RandomWalkMetropolisHastings::setCalibrationStrategy(const CalibrationStrategy& calibrationStrategy)
 {
-  for ( UnsignedLong i = 0; i < calibrationStrategy_.getSize(); ++ i )
+  for ( UnsignedInteger i = 0; i < calibrationStrategy_.getSize(); ++ i )
   {
     calibrationStrategy_[i] = calibrationStrategy;
   }
@@ -223,7 +223,7 @@ RandomWalkMetropolisHastings::CalibrationStrategyCollection RandomWalkMetropolis
 
 void RandomWalkMetropolisHastings::setCalibrationStrategyPerComponent(const CalibrationStrategyCollection& calibrationStrategy)
 {
-  const UnsignedLong dimension = proposal_.getSize();
+  const UnsignedInteger dimension = proposal_.getSize();
   if(dimension != calibrationStrategy.getSize()) throw InvalidDimensionException(HERE) << "The proposal dimension (" << dimension << ") does not match the size of calibration strategy (" << calibrationStrategy.getSize() << ").";
   calibrationStrategy_ = calibrationStrategy;
 }
@@ -231,10 +231,10 @@ void RandomWalkMetropolisHastings::setCalibrationStrategyPerComponent(const Cali
 
 void RandomWalkMetropolisHastings::setProposal(const RandomWalkMetropolisHastings::DistributionCollection& proposal)
 {
-  const UnsignedLong dimension = getPrior().getDimension();
+  const UnsignedInteger dimension = getPrior().getDimension();
   if (proposal.getSize() != dimension) throw InvalidDimensionException(HERE) << "The proposal dimension (" << proposal.getSize() << ") does not match the prior dimension (" << dimension << ").";
 
-  for ( UnsignedLong i = 0; i < dimension; ++ i )
+  for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
     Bool symmetric = proposal[i].isElliptical();
     symmetric = symmetric && (fabs(proposal[i].getMean()[0]) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));

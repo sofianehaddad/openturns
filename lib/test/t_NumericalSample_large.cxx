@@ -102,8 +102,8 @@ int main(int argc, char *argv[])
 #endif
 
       // We populate the sample
-      UnsignedLong size(sample.getSize());
-      for(UnsignedLong i = 0; i < size; i++)
+      UnsignedInteger size(sample.getSize());
+      for(UnsignedInteger i = 0; i < size; i++)
       {
         sample(i, 0) = i;
         sample(i, 1) = i;

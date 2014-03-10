@@ -46,7 +46,7 @@ class SamplingStrategyImplementation
 public:
 
   /** Constructor with parameters */
-  explicit SamplingStrategyImplementation(const UnsignedLong dimension);
+  explicit SamplingStrategyImplementation(const UnsignedInteger dimension);
 
   /** Virtual constructor */
   virtual SamplingStrategyImplementation * clone() const;
@@ -55,21 +55,21 @@ public:
   virtual NumericalSample generate() const;
 
   /** Generate a uniform random unit vector */
-  NumericalPoint getUniformUnitVectorRealization(const UnsignedLong dimension) const;
+  NumericalPoint getUniformUnitVectorRealization(const UnsignedInteger dimension) const;
 
   /** Generate a uniform random unit vector */
   NumericalPoint getUniformUnitVectorRealization() const;
 
   /** Dimension accessor */
-  void setDimension(const UnsignedLong dimension);
-  UnsignedLong getDimension() const;
+  void setDimension(const UnsignedInteger dimension);
+  UnsignedInteger getDimension() const;
 
   /** String converter */
   virtual String __repr__() const;
 
 protected:
 
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
 } ; /* class SamplingStrategyImplementation */
 

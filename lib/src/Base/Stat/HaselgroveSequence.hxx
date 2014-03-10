@@ -40,7 +40,7 @@ class HaselgroveSequence :
 public:
 
   /** Constructor with parameters */
-  explicit HaselgroveSequence(const UnsignedLong dimension = 1);
+  explicit HaselgroveSequence(const UnsignedInteger dimension = 1);
 
   /** Constructor with parameters */
   explicit HaselgroveSequence(const NumericalPoint & base);
@@ -49,7 +49,7 @@ public:
   virtual HaselgroveSequence * clone() const;
 
   /** Initialize the sequence */
-  void initialize(const UnsignedLong dimension);
+  void initialize(const UnsignedInteger dimension);
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;

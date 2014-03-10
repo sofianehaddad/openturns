@@ -103,7 +103,7 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
   setMesh(mesh);
   setDimension(model.getDimension());
   Description inVars(mesh.getDimension());
-  for (UnsignedLong i = 0; i < mesh.getDimension(); ++i) inVars[i] = String(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < mesh.getDimension(); ++i) inVars[i] = String(OSS() << "x" << i);
   trend_ = TrendTransform(NumericalMathFunction(inVars, Description(getDimension(), "0")));
 }
 
@@ -123,7 +123,7 @@ TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceM
   setMesh(mesh);
   setDimension(covarianceModel.getDimension());
   Description inVars(mesh.getDimension());
-  for (UnsignedLong i = 0; i < mesh.getDimension(); ++i) inVars[i] = String(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < mesh.getDimension(); ++i) inVars[i] = String(OSS() << "x" << i);
   trend_ = TrendTransform(NumericalMathFunction(inVars, Description(getDimension(), "0")));
 }
 
@@ -139,7 +139,7 @@ void TemporalNormalProcess::initialize() const
   // Get the covariance matrix (its Cholesky factor)
   LOGINFO(OSS() << "Discretize the covariance model");
   CovarianceMatrix covarianceMatrix(covarianceModel_.discretize(mesh_));
-  const UnsignedLong fullSize(covarianceMatrix.getDimension());
+  const UnsignedInteger fullSize(covarianceMatrix.getDimension());
   // Boolean flag to tell if the regularization is enough
   Bool continuationCondition(true);
   // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
@@ -162,7 +162,7 @@ void TemporalNormalProcess::initialize() const
     {
       cumulatedScaling += scaling ;
       // Unroll the regularization to optimize the computation
-      for (UnsignedLong i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
+      for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
       LOGWARN(OSS() << "Must regularize the covariance matrix, factor=" << cumulatedScaling);
       scaling *= 2.0;
     }
@@ -217,11 +217,11 @@ Field TemporalNormalProcess::getRealization() const
 {
   if (!isInitialized_) initialize();
   // Constantes values
-  const UnsignedLong size(getMesh().getVerticesNumber());
-  const UnsignedLong fullSize(choleskyFactorCovarianceMatrix_.getDimension());
+  const UnsignedInteger size(getMesh().getVerticesNumber());
+  const UnsignedInteger fullSize(choleskyFactorCovarianceMatrix_.getDimension());
   NumericalPoint gaussianPoint(fullSize);
   // N gaussian realizations
-  for (UnsignedLong index = 0; index <  fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
+  for (UnsignedInteger index = 0; index <  fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
 
   gaussianPoint = TriangularMatrix(choleskyFactorCovarianceMatrix_.getImplementation()) * gaussianPoint;
 
@@ -263,10 +263,10 @@ void TemporalNormalProcess::checkStationaryTrend() const
 {
   hasStationaryTrend_ = true;
   checkedStationaryTrend_ = true;
-  const UnsignedLong n(mesh_.getVerticesNumber());
+  const UnsignedInteger n(mesh_.getVerticesNumber());
   if (n == 0) return;
   const NumericalPoint stationaryTrendValue_((*trend_.getEvaluation())(mesh_.getVertices()[0]));
-  for (UnsignedLong i = 1; i < n; ++i)
+  for (UnsignedInteger i = 1; i < n; ++i)
   {
     if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)
     {

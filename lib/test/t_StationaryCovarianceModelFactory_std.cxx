@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
   {
     // Dimension of the input model
     // Size of the TimeGrid
-    const UnsignedLong size(128);
-    const UnsignedLong dimension(1);
+    const UnsignedInteger size(128);
+    const UnsignedInteger dimension(1);
     const RegularGrid timeGrid(0.0, 0.1, size);
     const NumericalPoint amplitude(dimension, 1.0);
     const NumericalPoint scale(dimension, 1.0);
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     SpectralNormalProcess myProcess(model, timeGrid);
 
     // Create a sample of time series
-    const UnsignedLong N(1000);
+    const UnsignedInteger N(1000);
     ProcessSample sample(myProcess.getSample(N));
 
     // Create the spectral density factory
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
     // Get the time grid of the model
     RegularGrid myTimeGrid(myCovarianceModel.getTimeGrid());
-    for (UnsignedLong i = 0 ; i < myTimeGrid.getN() ; ++i)
+    for (UnsignedInteger i = 0 ; i < myTimeGrid.getN() ; ++i)
     {
       const NumericalScalar t(myTimeGrid.getValue(i));
       const NumericalScalar estimatedValue(myCovarianceModel(t)(0, 0));

@@ -58,16 +58,16 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Returns the master basis */
   Basis getMasterBasis() const;
 
   /** Basis accessor */
-  Basis getBasis(const UnsignedLong index) const;
+  Basis getBasis(const UnsignedInteger index) const;
 
   /** Indices accessor */
-  Indices getIndices(const UnsignedLong index) const;
+  Indices getIndices(const UnsignedInteger index) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

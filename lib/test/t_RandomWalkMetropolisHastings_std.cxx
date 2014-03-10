@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
 
     // observations
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     Normal realDist(31., 1.2);
 
     NumericalSample data(realDist.getSample(size));
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     // if the prior variance is low (information concernig the mu parameter is strong)
     // then the posterior mean will be equal to the prior mean
     // if large, the the posterior distribution is equivalent to the distribution of the sample mean
-    for ( UnsignedLong i = 0; i < sigma0s.getDimension(); ++ i )
+    for ( UnsignedInteger i = 0; i < sigma0s.getDimension(); ++ i )
     {
 
       NumericalScalar sigma0 = sigma0s[i];

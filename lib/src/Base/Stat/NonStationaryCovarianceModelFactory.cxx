@@ -76,14 +76,14 @@ UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefin
 {
   // Get the time grid
   const RegularGrid timeGrid(sample.getTimeGrid());
-  const UnsignedLong sampleSize(sample.getSize());
-  const UnsignedLong N(timeGrid.getN());
-  const UnsignedLong dimension(sample.getDimension());
+  const UnsignedInteger sampleSize(sample.getSize());
+  const UnsignedInteger N(timeGrid.getN());
+  const UnsignedInteger dimension(sample.getDimension());
 
   // Create a collection of null CovarianceMatrix
-  UnsignedLong size(static_cast<UnsignedLong>((N * (N + 1) / 2)));
+  UnsignedInteger size(static_cast<UnsignedInteger>((N * (N + 1) / 2)));
   CovarianceMatrixCollection collection(size);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     collection[i] = CovarianceMatrix(SquareMatrix(dimension).getImplementation());
   }
@@ -93,18 +93,18 @@ UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefin
 
   const Field mean(sample.computeMean());
   const NumericalScalar alpha(1.0 / (sampleSize - 1));
-  UnsignedLong index(0);
-  for (UnsignedLong i = 0; i < N; ++i)
+  UnsignedInteger index(0);
+  for (UnsignedInteger i = 0; i < N; ++i)
   {
-    for (UnsignedLong j = i; j < N; ++j)
+    for (UnsignedInteger j = i; j < N; ++j)
     {
       CovarianceMatrix & matrix = collection[index];
-      for (UnsignedLong k = 0; k < dimension; ++k)
+      for (UnsignedInteger k = 0; k < dimension; ++k)
       {
-        for (UnsignedLong l = 0; l <= k; ++l)
+        for (UnsignedInteger l = 0; l <= k; ++l)
         {
           NumericalScalar coef(0.0);
-          for (UnsignedLong sampleIndex = 0; sampleIndex < sampleSize; ++sampleIndex)
+          for (UnsignedInteger sampleIndex = 0; sampleIndex < sampleSize; ++sampleIndex)
           {
             coef += (sample[sampleIndex][i][k] - mean.getValueAtIndex(i)[k])
                     * (sample[sampleIndex][j][l] - mean.getValueAtIndex(j)[l]);

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
   desc1.add("X");
   desc1.add("Y");
 
-  UnsignedLong size = desc1.getSize();
+  UnsignedInteger size = desc1.getSize();
   fullprint << "size of desc1 = " << size << std::endl;
 
   val1 = ref_desc1[0];

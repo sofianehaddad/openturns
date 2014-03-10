@@ -40,13 +40,13 @@ class ReverseHaltonSequence :
 public:
 
   /** Constructor with parameters */
-  explicit ReverseHaltonSequence(const UnsignedLong dimension = 1);
+  explicit ReverseHaltonSequence(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
   virtual ReverseHaltonSequence * clone() const;
 
   /** Initialize the sequence */
-  void initialize(const UnsignedLong dimension);
+  void initialize(const UnsignedInteger dimension);
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;

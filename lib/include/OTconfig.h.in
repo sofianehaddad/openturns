@@ -239,5 +239,5 @@
 /* Define to 1 if big endian system */
 #cmakedefine __BIG_ENDIAN__
 
-/* Define to 1 if UnsignedLong and uint64_t are the same type */
+/* Define to 1 if UnsignedInteger and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64

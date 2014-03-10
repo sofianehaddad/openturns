@@ -40,15 +40,15 @@ int main(int argc, char *argv[])
     /* We create a NumericalMathFunction */
     NumericalMathFunction myFuncIdentity("TestIdentity");
     /* We create a distribution */
-    UnsignedLong dim(myFuncIdentity.getInputDimension());
+    UnsignedInteger dim(myFuncIdentity.getInputDimension());
     NumericalPoint meanPoint(dim, 0.1);
     NumericalPoint sigma(dim, 1.0);
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       R(i, i) = 1.0;
     }
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.25;
     }

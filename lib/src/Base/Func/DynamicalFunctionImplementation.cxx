@@ -73,7 +73,7 @@ String DynamicalFunctionImplementation::__str__(const String & offset) const
 }
 
 /* Get the i-th marginal function */
-DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation::getMarginal(const UnsignedLong i) const
+DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
@@ -130,30 +130,30 @@ Field DynamicalFunctionImplementation::operator() (const Field & inFld) const
 ProcessSample DynamicalFunctionImplementation::operator() (const ProcessSample & inPS) const
 {
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
-  const UnsignedLong size(inPS.getSize());
+  const UnsignedInteger size(inPS.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
   ProcessSample outSample(computeOutputMesh(inPS.getField(0).getMesh()), size, getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
     outSample.setField(i, operator()(inPS.getField(i)));
   return outSample;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong DynamicalFunctionImplementation::getInputDimension() const
+UnsignedInteger DynamicalFunctionImplementation::getInputDimension() const
 {
   return inputDescription_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong DynamicalFunctionImplementation::getOutputDimension() const
+UnsignedInteger DynamicalFunctionImplementation::getOutputDimension() const
 {
   return outputDescription_.getSize();
 }
 
 /* Number of calls to the dynamical function */
-UnsignedLong DynamicalFunctionImplementation::getCallsNumber() const
+UnsignedInteger DynamicalFunctionImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }

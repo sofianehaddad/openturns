@@ -51,7 +51,7 @@ BoundConstrainedAlgorithmImplementationResult::BoundConstrainedAlgorithmImplemen
 BoundConstrainedAlgorithmImplementationResult::BoundConstrainedAlgorithmImplementationResult(const NumericalPoint & optimizer,
     const NumericalScalar optimalValue,
     const OptimizationProblem optimization,
-    const UnsignedLong evaluationsNumber,
+    const UnsignedInteger evaluationsNumber,
     const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
     const NumericalScalar objectiveError,
@@ -109,12 +109,12 @@ void BoundConstrainedAlgorithmImplementationResult::setOptimizationProblem(const
 }
 
 /* Iterations number accessor */
-UnsignedLong BoundConstrainedAlgorithmImplementationResult::getEvaluationsNumber() const
+UnsignedInteger BoundConstrainedAlgorithmImplementationResult::getEvaluationsNumber() const
 {
   return evaluationsNumber_;
 }
 
-void BoundConstrainedAlgorithmImplementationResult::setEvaluationsNumber(const UnsignedLong evaluationsNumber)
+void BoundConstrainedAlgorithmImplementationResult::setEvaluationsNumber(const UnsignedInteger evaluationsNumber)
 {
   evaluationsNumber_ = evaluationsNumber;
 }
@@ -186,7 +186,7 @@ void BoundConstrainedAlgorithmImplementationResult::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "optimizer_", optimizer_ );
   adv.saveAttribute( "optimalValue_", optimalValue_ );
-  UnsignedLong optimization = optimization_;
+  UnsignedInteger optimization = optimization_;
   adv.saveAttribute( "optimization_", optimization );
   adv.saveAttribute( "evaluationsNumber_", evaluationsNumber_ );
   adv.saveAttribute( "absoluteError_",     absoluteError_ );
@@ -202,7 +202,7 @@ void BoundConstrainedAlgorithmImplementationResult::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "optimizer_", optimizer_ );
   adv.loadAttribute( "optimalValue_", optimalValue_ );
-  UnsignedLong optimization;
+  UnsignedInteger optimization;
   adv.loadAttribute( "optimization_", optimization );
   optimization_ = static_cast<OptimizationProblem>( optimization);
   adv.loadAttribute( "evaluationsNumber_", evaluationsNumber_ );

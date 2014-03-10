@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     fullprint << "Gradient at " << inPoint << "=" << myFunction.gradient(inPoint) << std::endl;
     PlatformInfo::SetNumericalPrecision(5);
     fullprint << "Hessian at " << inPoint << "=" << myFunction.hessian(inPoint) << std::endl;
-    for (UnsignedLong i = 0; i < myFunction.getOutputDimension(); ++i)
+    for (UnsignedInteger i = 0; i < myFunction.getOutputDimension(); ++i)
     {
       fullprint << "Marginal " << i << "=" << myFunction.getMarginal(i) << std::endl;
     }

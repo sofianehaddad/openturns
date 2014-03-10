@@ -60,20 +60,20 @@ AggregatedNumericalMathHessianImplementation * AggregatedNumericalMathHessianImp
 /* Hessian method */
 SymmetricTensor AggregatedNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  const UnsignedLong inputDimension(getInputDimension());
+  const UnsignedInteger inputDimension(getInputDimension());
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedLong size(evaluation_.functionsCollection_.getSize());
+  const UnsignedInteger size(evaluation_.functionsCollection_.getSize());
   SymmetricTensor result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
-  UnsignedLong sheetIndex(0);
+  UnsignedInteger sheetIndex(0);
   // Loop over the contributors
-  for (UnsignedLong contributorIndex = 0; contributorIndex < size; ++contributorIndex)
+  for (UnsignedInteger contributorIndex = 0; contributorIndex < size; ++contributorIndex)
   {
     const SymmetricTensor contributorHessian(evaluation_.functionsCollection_[contributorIndex].hessian(inP));
     // Copy the contributor hessian into the global tensor hessian
-    for (UnsignedLong k = 0; k < contributorHessian.getNbSheets(); ++k)
+    for (UnsignedInteger k = 0; k < contributorHessian.getNbSheets(); ++k)
     {
-      for (UnsignedLong j = 0; j < contributorHessian.getNbColumns(); ++j)
-        for (UnsignedLong i = j; i < contributorHessian.getNbRows(); ++i)
+      for (UnsignedInteger j = 0; j < contributorHessian.getNbColumns(); ++j)
+        for (UnsignedInteger i = j; i < contributorHessian.getNbRows(); ++i)
           result(i, j, sheetIndex) = contributorHessian(i, j, k);
       ++sheetIndex;
     }
@@ -82,13 +82,13 @@ SymmetricTensor AggregatedNumericalMathHessianImplementation::hessian(const Nume
 }
 
 /* Accessor for input point dimension */
-UnsignedLong AggregatedNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger AggregatedNumericalMathHessianImplementation::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong AggregatedNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger AggregatedNumericalMathHessianImplementation::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }

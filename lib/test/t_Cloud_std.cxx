@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   {
 
     // Instanciate one distribution object
-    UnsignedLong dim(2);
+    UnsignedInteger dim(2);
     NumericalPoint meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.5;
     }
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     meanPoint[1] = 0.5;
     sigma[0] = 4.0;
     sigma[1] = 1.0;
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = -0.25;
     }
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
 
     // Test for sampling
-    UnsignedLong size = 200;
+    UnsignedInteger size = 200;
     NumericalSample sample1(distribution1.getSample( size ));
     NumericalSample sample2(distribution2.getSample( size ));
 

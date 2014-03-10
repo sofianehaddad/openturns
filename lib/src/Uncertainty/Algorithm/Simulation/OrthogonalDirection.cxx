@@ -42,8 +42,8 @@ OrthogonalDirection::OrthogonalDirection():
 }
 
 /* Constructor with parameters */
-OrthogonalDirection::OrthogonalDirection(const UnsignedLong dimension,
-    const UnsignedLong size):
+OrthogonalDirection::OrthogonalDirection(const UnsignedInteger dimension,
+    const UnsignedInteger size):
   SamplingStrategyImplementation(dimension),
   size_(size)
 {
@@ -59,10 +59,10 @@ OrthogonalDirection * OrthogonalDirection::clone() const
 /* Generate the next permutation of indices in-place in the size_ first elements */
 void OrthogonalDirection::nextCombination(Indices & indices) const
 {
-  UnsignedLong i(size_ - 1);
+  UnsignedInteger i(size_ - 1);
   while (indices[i] == dimension_ - size_ + i) --i;
   ++indices[i];
-  for (UnsignedLong j = i + 1; j < size_; ++j) indices[j] = indices[i] + j - i;
+  for (UnsignedInteger j = i + 1; j < size_; ++j) indices[j] = indices[i] + j - i;
 }
 
 /* Generate a random realization of an orientation matrix in SO(dimension) uniformly
@@ -83,11 +83,11 @@ Matrix OrthogonalDirection::getUniformOrientationRealization() const
   // Initialization according to the parity of dimension
   Q(0, 0) = (dimension_ % 2 == 0 ? -1.0 : 1.0);
   Matrix column(dimension_, 1);
-  for (UnsignedLong indexDimension = 1; indexDimension < dimension_; indexDimension++)
+  for (UnsignedInteger indexDimension = 1; indexDimension < dimension_; indexDimension++)
   {
     Q(indexDimension, indexDimension) = 1.0;
     NumericalPoint v(getUniformUnitVectorRealization(indexDimension + 1));
-    for (UnsignedLong index = 0; index <= indexDimension; ++index) column(index, 0) = v[index];
+    for (UnsignedInteger index = 0; index <= indexDimension; ++index) column(index, 0) = v[index];
     Q = Q - ((2.0 * column) * (column.transpose() * Q));
   }
   return Q;
@@ -103,21 +103,21 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
   // Normalization factor of the linear combination
   NumericalScalar factor(1.0 / sqrt(size_));
   // We have 2^size linear combinations to generate
-  UnsignedLong indexLinearCombinationMax(2 << size_);
+  UnsignedInteger indexLinearCombinationMax(2 << size_);
   // For each combination
-  for (UnsignedLong indexLinearCombination = 0; indexLinearCombination < indexLinearCombinationMax; ++indexLinearCombination)
+  for (UnsignedInteger indexLinearCombination = 0; indexLinearCombination < indexLinearCombinationMax; ++indexLinearCombination)
   {
     NumericalPoint direction(dimension_);
     // The combination index is used as a mask to select the coefficients equal to 1.0 or to -1.0
-    UnsignedLong mask(indexLinearCombination);
-    for (UnsignedLong index = 0; index < size_; ++index)
+    UnsignedInteger mask(indexLinearCombination);
+    for (UnsignedInteger index = 0; index < size_; ++index)
     {
       // Which column of Q corresponds to the index position of indices?
-      UnsignedLong column(indices[index]);
+      UnsignedInteger column(indices[index]);
       // Sign affected to this column
       NumericalScalar sign(1.0 - 2.0 * (mask % 2));
       // Summation
-      for (UnsignedLong row = 0; row < dimension_; ++row) direction[row] += sign * Q(row, column);
+      for (UnsignedInteger row = 0; row < dimension_; ++row) direction[row] += sign * Q(row, column);
       // Next bit of the mask
       mask /= 2;
     }
@@ -133,7 +133,7 @@ NumericalSample OrthogonalDirection::generate() const
   Matrix Q(getUniformOrientationRealization());
   Indices indices(dimension_);
   // Start with the first lexicographic combination
-  for (UnsignedLong i = 0; i < dimension_; ++i) indices[i] = i;
+  for (UnsignedInteger i = 0; i < dimension_; ++i) indices[i] = i;
   computePartialSample(indices, Q, result);
   while(indices[0] != dimension_ - size_)
   {

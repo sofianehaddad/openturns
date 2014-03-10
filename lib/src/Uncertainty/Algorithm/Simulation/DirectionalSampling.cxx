@@ -79,8 +79,8 @@ NumericalScalar DirectionalSampling::computeContribution(const NumericalScalarCo
 {
   NumericalScalar sign(1.0);
   NumericalScalar estimate(0.0);
-  const UnsignedLong size(roots.getSize());
-  for (UnsignedLong indexRoot = 0; indexRoot < size; ++indexRoot)
+  const UnsignedInteger size(roots.getSize());
+  for (UnsignedInteger indexRoot = 0; indexRoot < size; ++indexRoot)
   {
     NumericalScalar currentRoot(roots[indexRoot]);
     estimate += sign * inputDistribution_->computeRadialDistributionCDF(currentRoot, true);
@@ -104,18 +104,18 @@ NumericalScalar DirectionalSampling::computeMeanContribution(const NumericalScal
   // Here, we know that the getOriginValue() method will not throw an exception, as we already called the solve() method
   // of the root strategy, which in turn initialized the computation of the origin value.
   if (standardEvent_.getOperator().operator()(rootStrategy_.getOriginValue(), standardEvent_.getThreshold())) xK.add(0.0);
-  const UnsignedLong size(roots.getSize());
-  for (UnsignedLong indexRoot = 0; indexRoot < size; ++indexRoot) xK.add(roots[indexRoot]);
+  const UnsignedInteger size(roots.getSize());
+  for (UnsignedInteger indexRoot = 0; indexRoot < size; ++indexRoot) xK.add(roots[indexRoot]);
   // If the number of points is odd, add a point at infinity
   if (xK.getSize() % 2 == 1) xK.add(rootStrategy_.getMaximumDistance());
   // Here we know that the number of points is even. We can integrate the contributions.
-  const UnsignedLong segmentNumber(xK.getSize() / 2);
+  const UnsignedInteger segmentNumber(xK.getSize() / 2);
   // Quadrature rule
   NumericalPoint weights;
   const NumericalPoint nodes(inputDistribution_->getGaussNodesAndWeights(weights));
-  const UnsignedLong nodesSize(nodes.getSize());
+  const UnsignedInteger nodesSize(nodes.getSize());
   NumericalScalar value(0.0);
-  for (UnsignedLong segmentIndex = 0; segmentIndex < segmentNumber; ++segmentIndex)
+  for (UnsignedInteger segmentIndex = 0; segmentIndex < segmentNumber; ++segmentIndex)
   {
     const NumericalScalar a(xK[2 * segmentIndex]);
     const NumericalScalar b(xK[2 * segmentIndex + 1]);
@@ -124,7 +124,7 @@ NumericalScalar DirectionalSampling::computeMeanContribution(const NumericalScal
     value += a * inputDistribution_->computeRadialDistributionCDF(a, true) - b * inputDistribution_->computeRadialDistributionCDF(b, true);
     // Compute the integral part
     NumericalScalar sum(0.0);
-    for (UnsignedLong k = 0; k < nodesSize; ++k) sum += weights[k] * inputDistribution_->computeRadialDistributionCDF(a + (1.0 + nodes[k]) * halfLength, true);
+    for (UnsignedInteger k = 0; k < nodesSize; ++k) sum += weights[k] * inputDistribution_->computeRadialDistributionCDF(a + (1.0 + nodes[k]) * halfLength, true);
     sum *= halfLength;
     // Accumulate the integral part
     value += sum;
@@ -135,20 +135,20 @@ NumericalScalar DirectionalSampling::computeMeanContribution(const NumericalScal
 /* Compute the contribution of a set of directions direction to the probability */
 NumericalScalar DirectionalSampling::computeTotalContribution(const NumericalSample & directionSample)
 {
-  const UnsignedLong sampleSize(directionSample.getSize());
-  const UnsignedLong dimension(directionSample.getDimension());
+  const UnsignedInteger sampleSize(directionSample.getSize());
+  const UnsignedInteger dimension(directionSample.getDimension());
   NumericalScalar totalContribution(0.0);
   // meanPointInEventDomain = NumericalPoint(dimension);
-  UnsignedLong contributionNumber(0);
+  UnsignedInteger contributionNumber(0);
   Matrix linear(dimension, 1);
   // For each direction
-  for (UnsignedLong indexDirection = 0; indexDirection < sampleSize; ++indexDirection)
+  for (UnsignedInteger indexDirection = 0; indexDirection < sampleSize; ++indexDirection)
   {
     const NumericalPoint direction(directionSample[indexDirection]);
     // First compute the roots along this direction
     // 1. Build the scalar function along the direction
     // 1.1 Build the linear function along the direction
-    for (UnsignedLong indexComponent = 0; indexComponent < dimension; ++indexComponent) linear(indexComponent, 0) = direction[indexComponent];
+    for (UnsignedInteger indexComponent = 0; indexComponent < dimension; ++indexComponent) linear(indexComponent, 0) = direction[indexComponent];
     const LinearNumericalMathFunction ray(NumericalPoint(1, 0.0), NumericalPoint(dimension, 0.0), linear);
     // 1.2 Build the function along the ray
     const NumericalMathFunction functionAlongRay(standardFunction_, ray);
@@ -173,11 +173,11 @@ NumericalScalar DirectionalSampling::computeTotalContribution(const NumericalSam
 /* Compute the block sample and the points that realized the event */
 NumericalSample DirectionalSampling::computeBlockSample()
 {
-  const UnsignedLong size(getBlockSize());
+  const UnsignedInteger size(getBlockSize());
   NumericalSample blockSample(size, 1);
   // For each entry of the block sample
   // realizedEventSample = NumericalSample(blockSize_, event_.getImplementation()->getAntecedent()->getDistribution().getDimension());
-  for (UnsignedLong index = 0; index < size; ++index)
+  for (UnsignedInteger index = 0; index < size; ++index)
   {
     const NumericalSample directionSample(samplingStrategy_.generate());
     // Compute the contribution of the sub-sample computed according to the sampling strategy

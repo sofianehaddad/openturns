@@ -6,7 +6,7 @@
 #include "Log.hxx"
 %}
 
-%apply UnsignedLong { OT::Log::Severity };
+%apply UnsignedInteger { OT::Log::Severity };
 
 %nodefaultctor Log;
 

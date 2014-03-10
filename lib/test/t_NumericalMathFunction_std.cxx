@@ -63,18 +63,18 @@ int main(int argc, char *argv[])
     NumericalPoint point(myFunc.getInputDimension(), 1.2);
     fullprint << "myFunc(point)=" << myFunc(point) << std::endl;
     fullprint << "myFunc input parameter(s)=";
-    for (UnsignedLong i = 0; i < myFunc.getInputDimension(); i++)
+    for (UnsignedInteger i = 0; i < myFunc.getInputDimension(); i++)
     {
       fullprint << (i == 0 ? "" : ",") << myFunc.getInputDescription()[i];
     }
     fullprint << std::endl;
     fullprint << "myFunc output parameter(s)=";
-    for (UnsignedLong i = 0; i < myFunc.getOutputDimension(); i++)
+    for (UnsignedInteger i = 0; i < myFunc.getOutputDimension(); i++)
     {
       fullprint << (i == 0 ? "" : ",") << myFunc.getOutputDescription()[i];
     }
     fullprint << std::endl;
-    for (UnsignedLong i = 0; i < myFunc.getOutputDimension(); i++)
+    for (UnsignedInteger i = 0; i < myFunc.getOutputDimension(); i++)
     {
       fullprint << "myFunc marginal " << i << "(point)=" << myFunc.getMarginal(i)(point) << std::endl;
     }

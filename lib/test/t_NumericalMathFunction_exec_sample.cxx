@@ -49,9 +49,9 @@ int main(int argc, char *argv[])
     formula[0] = "-F*L^3/(3*E*I)";
     NumericalMathFunction deviation_analytical(input, output, formula);
 
-    UnsignedLong size(10);
+    UnsignedInteger size(10);
     NumericalSample inSample(size, 4);
-    for(UnsignedLong i = 0; i < size; i++)
+    for(UnsignedInteger i = 0; i < size; i++)
     {
       NumericalScalar fact(1.0 + NumericalScalar(i) / size);
       inSample[i][0] = 210.e9 * fact;

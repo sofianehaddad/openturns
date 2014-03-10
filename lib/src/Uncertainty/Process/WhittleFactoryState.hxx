@@ -48,7 +48,7 @@ public:
   explicit WhittleFactoryState(const String & name = DefaultName);
 
   /** Default constructor */
-  WhittleFactoryState(const UnsignedLong p,
+  WhittleFactoryState(const UnsignedInteger p,
                       const NumericalPoint & theta,
                       const NumericalScalar sigma2,
                       const NumericalPoint & informationCriteria,
@@ -63,10 +63,10 @@ public:
   String __str__(const String & offset = "") const;
 
   /** P accessor */
-  UnsignedLong getP() const;
+  UnsignedInteger getP() const;
 
   /** Q accessor */
-  UnsignedLong getQ() const;
+  UnsignedInteger getQ() const;
 
   /** Theta accessor */
   NumericalPoint getTheta() const;
@@ -101,7 +101,7 @@ public:
 private :
 
   /* The AR order of the ARMA process */
-  UnsignedLong p_;
+  UnsignedInteger p_;
 
   /* The flat vector of coefficients of the ARMA process */
   NumericalPoint theta_;

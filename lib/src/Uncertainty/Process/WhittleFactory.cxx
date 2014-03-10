@@ -62,8 +62,8 @@ WhittleFactory::WhittleFactory(const String & name)
 }
 
 /* Standard constructor */
-WhittleFactory::WhittleFactory(const UnsignedLong p,
-                               const UnsignedLong q,
+WhittleFactory::WhittleFactory(const UnsignedInteger p,
+                               const UnsignedInteger q,
                                const Bool invertible,
                                const String & name)
   : ARMAFactoryImplementation(p, q, invertible, name)
@@ -131,7 +131,7 @@ void WhittleFactory::computeSpectralDensity(const SpectralModel & spectralModel)
   const RegularGrid frequencyGrid(spectralModel.getFrequencyGrid());
   m_ = frequencyGrid.getN();
   // Index of the first frequency to take into account
-  UnsignedLong kStart(0);
+  UnsignedInteger kStart(0);
   // Suppress first value if the associated frequency is zero
   if (frequencyGrid.getStart() == 0.0)
   {
@@ -142,7 +142,7 @@ void WhittleFactory::computeSpectralDensity(const SpectralModel & spectralModel)
   normalizedFrequencies_ = NumericalPoint(m_);
   spectralDensity_ = NumericalPoint(m_);
   NumericalScalar dt(timeGrid_.getStep());
-  for (UnsignedLong k = 0; k < m_ ; ++k)
+  for (UnsignedInteger k = 0; k < m_ ; ++k)
   {
     const NumericalScalar frequency(frequencyGrid.getValue(k + kStart));
     const NumericalScalar estimatedValue(std::real(spectralModel(frequency)(0, 0)) / dt);
@@ -155,16 +155,16 @@ NumericalScalar WhittleFactory::computeLogLikelihood(const NumericalPoint & thet
 {
   NumericalScalar logTerm(0.0);
   NumericalScalar ratioTerm(0.0);
-  for (UnsignedLong j = 0; j < m_; ++j)
+  for (UnsignedInteger j = 0; j < m_; ++j)
   {
     const NumericalScalar frequency(normalizedFrequencies_[j]);
     // Gj computation
-    const UnsignedLong n(std::max(currentP_, currentQ_));
+    const UnsignedInteger n(std::max(currentP_, currentQ_));
     NumericalComplex numerator(1.0, 0.0);
     NumericalComplex denominator(1.0, 0.0);
     NumericalComplex y(std::polar(1.0, -frequency));
     NumericalComplex z(1.0, 0.0);
-    for (UnsignedLong i = 0; i < n; ++i)
+    for (UnsignedInteger i = 0; i < n; ++i)
     {
       z *= y;
       if (i < currentQ_) numerator += theta[currentP_ + i] * z;
@@ -190,26 +190,26 @@ int WhittleFactory::ComputeObjectiveAndConstraint(int n,
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("WhittleFactory-RootEpsilon"));
 
   NumericalPoint theta(n);
-  for (UnsignedLong k = 0; k < static_cast<UnsignedLong>(n); ++k) theta[k] = x[k];
+  for (UnsignedInteger k = 0; k < static_cast<UnsignedInteger>(n); ++k) theta[k] = x[k];
 
   WhittleFactory * factory = static_cast<WhittleFactory *>(state);
   *f = -factory->computeLogLikelihood( theta );
   // AR dimension
-  const UnsignedLong p(factory->getCurrentP());
-  const UnsignedLong q(factory->getCurrentQ());
-  UnsignedLong constraintIndex(0);
+  const UnsignedInteger p(factory->getCurrentP());
+  const UnsignedInteger q(factory->getCurrentQ());
+  UnsignedInteger constraintIndex(0);
   // If not pure MA, check the roots of the AR polynom
   if (p > 0)
   {
     NumericalPoint arCoefficients(p + 1, 1.0);
-    for (UnsignedLong i = 0; i < p; ++i) arCoefficients[i + 1] = theta[i];
+    for (UnsignedInteger i = 0; i < p; ++i) arCoefficients[i + 1] = theta[i];
     UniVariatePolynomial polynom(arCoefficients);
     // Check the roots only if the polynom is not constant
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
       NumericalScalar minRootModule(std::norm(roots[0]));
-      for (UnsignedLong i = 1; i < p; ++i)
+      for (UnsignedInteger i = 1; i < p; ++i)
       {
         const NumericalScalar rootModule(std::norm(roots[i]));
         if (rootModule < minRootModule) minRootModule = rootModule;
@@ -224,14 +224,14 @@ int WhittleFactory::ComputeObjectiveAndConstraint(int n,
   if (factory->getInvertible() && q > 0)
   {
     NumericalPoint maCoefficients(q + 1, 1.0);
-    for (UnsignedLong i = 0; i < q; ++i) maCoefficients[i + 1] = theta[i + p];
+    for (UnsignedInteger i = 0; i < q; ++i) maCoefficients[i + 1] = theta[i + p];
     UniVariatePolynomial polynom(maCoefficients);
     // Check the roots only if the polynom is not constant
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
       NumericalScalar minRootModule(std::norm(roots[0]));
-      for (UnsignedLong i = 1; i < q; ++i)
+      for (UnsignedInteger i = 1; i < q; ++i)
       {
         const NumericalScalar rootModule(std::norm(roots[i]));
         if (rootModule < minRootModule) minRootModule = rootModule;
@@ -367,21 +367,21 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
 {
   // First, clean the history
   clearHistory();
-  const UnsignedLong sizeP(p_.getSize());
-  const UnsignedLong sizeQ(q_.getSize());
+  const UnsignedInteger sizeP(p_.getSize());
+  const UnsignedInteger sizeQ(q_.getSize());
 
   // Best parameters
   NumericalPoint bestTheta(0);
   NumericalScalar bestSigma2(0.0);
   NumericalPoint bestInformationCriteria(3, SpecFunc::MaxNumericalScalar);
-  UnsignedLong bestP(0);
-  UnsignedLong bestQ(0);
+  UnsignedInteger bestP(0);
+  UnsignedInteger bestQ(0);
 
-  UnsignedLong pointIndex(0);
-  for (UnsignedLong pIndex = 0; pIndex < sizeP; ++pIndex)
+  UnsignedInteger pointIndex(0);
+  for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)
   {
     currentP_ = p_[pIndex];
-    for (UnsignedLong qIndex = 0; qIndex < sizeQ; ++qIndex)
+    for (UnsignedInteger qIndex = 0; qIndex < sizeQ; ++qIndex)
     {
       currentQ_ = q_[qIndex];
 
@@ -408,7 +408,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
         // maxfun ==> on input, the maximum number of function evaluations on output, the number of function evaluations done
         NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg"));
         NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoEnd"));
-        int maxFun(static_cast<int>(ResourceMap::GetAsUnsignedLong("WhittleFactory-DefaultMaxFun")));
+        int maxFun(static_cast<int>(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun")));
         // verbosity level
         cobyla_message message( verbose_ ? COBYLA_MSG_INFO : COBYLA_MSG_NONE );
 
@@ -421,7 +421,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
       // First, the corrected AIC
       const NumericalScalar logLikelihood(computeLogLikelihood(theta));
       NumericalPoint currentInformationCriteria(3);
-      if (m_ > static_cast<UnsignedLong>(n + 2)) currentInformationCriteria[0] = -2.0 * logLikelihood + 2.0 * (n + 1) * m_ / (m_ - n - 2);
+      if (m_ > static_cast<UnsignedInteger>(n + 2)) currentInformationCriteria[0] = -2.0 * logLikelihood + 2.0 * (n + 1) * m_ / (m_ - n - 2);
       else
       {
         LOGWARN(OSS() << "Warning! Unable to compute the corrected AIC criteria, too few data (" << m_ << ") for the model complexity (" << n + 1);
@@ -454,20 +454,20 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
 /* Starting points accessor */
 void WhittleFactory::setStartingPoints(const Collection< NumericalPoint > & startingPoints)
 {
-  const UnsignedLong sizeP(p_.getSize());
-  const UnsignedLong sizeQ(q_.getSize());
+  const UnsignedInteger sizeP(p_.getSize());
+  const UnsignedInteger sizeQ(q_.getSize());
   // First, check the size of the collection
   if (startingPoints.getSize() != sizeP * sizeQ) throw InvalidArgumentException(HERE) << "Error: the given collection has size=" << startingPoints.getSize() << " but should have size=" << sizeP * sizeQ;
   // Second, check that all the points have the correct dimension
-  UnsignedLong k(0);
-  for (UnsignedLong pIndex = 0; pIndex < sizeP; ++pIndex)
+  UnsignedInteger k(0);
+  for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)
   {
-    const UnsignedLong p(p_[pIndex]);
-    for (UnsignedLong qIndex = 0; qIndex < sizeQ; ++qIndex)
+    const UnsignedInteger p(p_[pIndex]);
+    for (UnsignedInteger qIndex = 0; qIndex < sizeQ; ++qIndex)
     {
-      const UnsignedLong q(q_[qIndex]);
+      const UnsignedInteger q(q_[qIndex]);
       // Dimension of the optimization problem
-      const UnsignedLong n(p + q);
+      const UnsignedInteger n(p + q);
       if (startingPoints[k].getSize() != n) throw InvalidArgumentException(HERE) << "Error: the point at index=" << k << " should have a size=" << n << " instead of size=" << startingPoints[k].getSize();
       ++k;
     }
@@ -488,21 +488,21 @@ void WhittleFactory::initializeStartingPoints()
   startingPoints_ = Collection< NumericalPoint >(0);
   // Initialization of the starting point
   const NumericalScalar theta0(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultStartingPointScale"));
-  const UnsignedLong sizeP(p_.getSize());
-  const UnsignedLong sizeQ(q_.getSize());
-  for (UnsignedLong pIndex = 0; pIndex < sizeP; ++pIndex)
+  const UnsignedInteger sizeP(p_.getSize());
+  const UnsignedInteger sizeQ(q_.getSize());
+  for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)
   {
-    const UnsignedLong p(p_[pIndex]);
-    for (UnsignedLong qIndex = 0; qIndex < sizeQ; ++qIndex)
+    const UnsignedInteger p(p_[pIndex]);
+    for (UnsignedInteger qIndex = 0; qIndex < sizeQ; ++qIndex)
     {
-      const UnsignedLong q(q_[qIndex]);
+      const UnsignedInteger q(q_[qIndex]);
       // Dimension of the optimization problem
-      const UnsignedLong n(p + q);
+      const UnsignedInteger n(p + q);
       NumericalPoint theta(n);
       if (n > 0)
       {
         theta[0] = theta0;
-        for (UnsignedLong k = 1; k < static_cast<UnsignedLong>(n); ++k) theta[k] = 0.5 * theta[k - 1];
+        for (UnsignedInteger k = 1; k < static_cast<UnsignedInteger>(n); ++k) theta[k] = 0.5 * theta[k - 1];
       }
       startingPoints_.add(theta);
     } // Loop over q

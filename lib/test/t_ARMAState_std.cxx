@@ -37,24 +37,24 @@ int main(int argc, char *argv[])
 
     RandomGenerator::SetSeed(0);
     /* Constructor with size */
-    const UnsignedLong dim(1);
-    const UnsignedLong p(6);
-    const UnsignedLong q(4);
+    const UnsignedInteger dim(1);
+    const UnsignedInteger p(6);
+    const UnsignedInteger q(4);
 
     NumericalSample valuesX(p, dim);
     NumericalSample valuesEpsilon(q, dim);
 
     /**/
-    for(UnsignedLong j = 0 ; j < dim ; ++j)
+    for(UnsignedInteger j = 0 ; j < dim ; ++j)
     {
       // Fill the AR-part (the last p-coefficients X_{-1}, X{-2},..., X_{-p})
-      for(UnsignedLong i = 0 ; i < p ; ++i)
+      for(UnsignedInteger i = 0 ; i < p ; ++i)
       {
         valuesX[i][j] = 2.0 * i + 3.0 * j + 1.0;
       }
 
       // Fill the MA-part (the last p-coefficients \epsilon_{-1}, \epsilon_{-2},..., \epsilon_{-p})
-      for(UnsignedLong i = 0 ; i < q ; ++i)
+      for(UnsignedInteger i = 0 ; i < q ; ++i)
       {
         valuesEpsilon[i][j] = RandomGenerator::Generate() ;
       }

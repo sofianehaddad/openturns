@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(FaureSequence);
 
 /* Constructor with parameters */
-FaureSequence::FaureSequence(const UnsignedLong dimension) :
+FaureSequence::FaureSequence(const UnsignedInteger dimension) :
   LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
@@ -47,7 +47,7 @@ FaureSequence * FaureSequence::clone() const
 
 
 /* Initialize the sequence */
-void FaureSequence::initialize(const UnsignedLong dimension)
+void FaureSequence::initialize(const UnsignedInteger dimension)
 {
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
@@ -69,8 +69,8 @@ NumericalPoint FaureSequence::generate()
   NumericalPoint realization(dimension_);
   // First, compute the decomposition of seed_ in base modulus_
   Unsigned64BitsIntegerCollection aI(logSeed_);
-  UnsignedLong n(seed_);
-  for (UnsignedLong i = 0; i < logSeed_; ++i)
+  UnsignedInteger n(seed_);
+  for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
     aI[i] = n % modulus_;
     n /= modulus_;
@@ -78,28 +78,28 @@ NumericalPoint FaureSequence::generate()
   // Stores the first component of the point
   NumericalScalar xI(0.0);
   NumericalScalar factor(modulusInverse_);
-  for (UnsignedLong i = 0; i < logSeed_; ++i)
+  for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
     xI += aI[i] * factor;
     factor *= modulusInverse_;
   }
   realization[0] = xI;
   // Loop over the dimensions
-  for (UnsignedLong i = 1; i < dimension_; ++i)
+  for (UnsignedInteger i = 1; i < dimension_; ++i)
   {
     // Compute the new digits as a matrix/vector multiply using uint64_t
     Unsigned64BitsIntegerCollection aINew(logSeed_);
-    for (UnsignedLong j = 0; j < logSeed_; ++j)
+    for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {
       Unsigned64BitsInteger aINewJ(0);
       // We perform the reduction modulo modulus_ in order to avoid integer overflow as much as possible
-      for (UnsignedLong k = j; k < logSeed_; ++k) aINewJ = (aINewJ + coefficients_[j + (k * (k + 1)) / 2] * aI[k]) % modulus_;
+      for (UnsignedInteger k = j; k < logSeed_; ++k) aINewJ = (aINewJ + coefficients_[j + (k * (k + 1)) / 2] * aI[k]) % modulus_;
       aINew[j] = aINewJ;
     }
     // Compute the current component
     NumericalScalar xJ(0.0);
     NumericalScalar factor(modulusInverse_);
-    for (UnsignedLong j = 0; j < logSeed_; ++j)
+    for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {
       xJ += aINew[j] * factor;
       factor *= modulusInverse_;
@@ -138,12 +138,12 @@ void FaureSequence::computeInitialBinomialCoefficients()
   // C(n, k) = n! / (k! (n - k)!) is at position (k, n) with flat index n + k(k + 1) / 2
   coefficients_ = Unsigned64BitsIntegerCollection((logSeed_ * (logSeed_ + 1)) / 2, 1);
   // Main part of the array
-  UnsignedLong currentIndex(4);
-  UnsignedLong previousIndex1(2);
-  UnsignedLong previousIndex2(1);
-  for(UnsignedLong n = 2; n < logSeed_; ++n)
+  UnsignedInteger currentIndex(4);
+  UnsignedInteger previousIndex1(2);
+  UnsignedInteger previousIndex2(1);
+  for(UnsignedInteger n = 2; n < logSeed_; ++n)
   {
-    for (UnsignedLong k = 1; k < n; ++k)
+    for (UnsignedInteger k = 1; k < n; ++k)
     {
       // coeff(k, n) = coeff(k, n-1) + coeff(k-1, n-1)
       coefficients_[currentIndex] = (coefficients_[previousIndex1] + coefficients_[previousIndex2]) % modulus_;
@@ -162,10 +162,10 @@ void FaureSequence::computeInitialBinomialCoefficients()
 void FaureSequence::updateBinomialCoefficients()
 {
   // Here, we assume that the coefficient table has already been initialized and stores the values associated with logSeed-1
-  UnsignedLong previousIndex2(coefficients_.getSize() - logSeed_ + 1);
-  UnsignedLong previousIndex1(previousIndex2 + 1);
+  UnsignedInteger previousIndex2(coefficients_.getSize() - logSeed_ + 1);
+  UnsignedInteger previousIndex1(previousIndex2 + 1);
   coefficients_.add(1);
-  for (UnsignedLong k = 2; k < logSeed_; ++k)
+  for (UnsignedInteger k = 2; k < logSeed_; ++k)
   {
     coefficients_.add((coefficients_[previousIndex1] + coefficients_[previousIndex2]) % modulus_);
     ++previousIndex1;

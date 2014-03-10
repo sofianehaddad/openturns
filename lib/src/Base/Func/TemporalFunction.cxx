@@ -113,7 +113,7 @@ Field TemporalFunction::operator() (const Field & inTS) const
 }
 
 /* Get the i-th marginal function */
-TemporalFunction::Implementation TemporalFunction::getMarginal(const UnsignedLong i) const
+TemporalFunction::Implementation TemporalFunction::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return new TemporalFunction(p_evaluation_->getMarginal(i));

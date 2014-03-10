@@ -57,14 +57,14 @@ public:
   SquareComplexMatrix();
 
   /** Constructor with size (dimension, which is the same for nbRows_ and nbColumns_) */
-  explicit SquareComplexMatrix(const UnsignedLong dim);
+  explicit SquareComplexMatrix(const UnsignedInteger dim);
 
 
   /** Constructor from external collection */
   /** If the dimensions of the matrix and of the collection */
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
-  SquareComplexMatrix(const UnsignedLong dimension,
+  SquareComplexMatrix(const UnsignedInteger dimension,
                       const NumericalComplexCollection & elementsValues);
 
   /** Constructor with implementation */
@@ -74,7 +74,7 @@ public:
   String __repr__() const;
 
   /** Get the dimension of the matrix */
-  const UnsignedLong getDimension() const;
+  const UnsignedInteger getDimension() const;
 
   /** SquareComplexMatrix transpose */
   SquareComplexMatrix transpose () const;
@@ -100,7 +100,7 @@ public:
   SquareComplexMatrix operator * (const IdentityMatrix & m) const;
 
   /** SquareComplexMatrix integer power */
-  SquareComplexMatrix power(const UnsignedLong n) const;
+  SquareComplexMatrix power(const UnsignedInteger n) const;
 
   /** Multiplication with a NumericalPoint (must have consistent dimensions) */
   NumericalComplexCollection operator * (const NumericalComplexCollection & p) const;

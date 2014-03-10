@@ -64,13 +64,13 @@ public:
   virtual SamplerImplementation * clone() const;
 
   /** @copydoc Sampler::getDimension() const */
-  virtual UnsignedLong getDimension() const;
+  virtual UnsignedInteger getDimension() const;
 
   /** @copydoc Sampler::getRealization() const */
   virtual NumericalPoint getRealization() const;
 
   /** @copydoc Sampler::getSample() const */
-  virtual NumericalSample getSample(const UnsignedLong size) const;
+  virtual NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

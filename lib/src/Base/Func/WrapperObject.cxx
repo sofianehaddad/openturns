@@ -314,10 +314,10 @@ struct WrapperSymbols : public Object
       }
     }
 
-    void operator() ( const tbb::blocked_range<UnsignedLong> & r ) const
+    void operator() ( const tbb::blocked_range<UnsignedInteger> & r ) const
     {
       enum WrapperErrorCode rc;
-      for( UnsignedLong i = r.begin(); i != r.end(); ++i )
+      for( UnsignedInteger i = r.begin(); i != r.end(); ++i )
       {
         struct point inPoint;
         inPoint.size_ = inSample_->dimension_;
@@ -346,14 +346,14 @@ struct WrapperSymbols : public Object
     wrapper_printState(FUNCTIONNAME, p_state);
     wrapper_printSample(FUNCTIONNAME, inSample);
 
-    const UnsignedLong size = inSample->size_;
-    const UnsignedLong grainSize = ResourceMap::GetAsUnsignedLong( "parallel-execution-grainsize" );
+    const UnsignedInteger size = inSample->size_;
+    const UnsignedInteger grainSize = ResourceMap::GetAsUnsignedInteger( "parallel-execution-grainsize" );
 
     AtomicInt count;
     RunCodeFunctor functor( execSymbol_, p_state, inSample, outSample, p_exchangedData, p_error, count );
     try
     {
-      tbb::parallel_for( tbb::blocked_range<UnsignedLong>( 0, size, grainSize ), functor );
+      tbb::parallel_for( tbb::blocked_range<UnsignedInteger>( 0, size, grainSize ), functor );
       functor.incrementCount();
 
     }
@@ -503,7 +503,7 @@ struct WrapperSymbols : public Object
       if (args->count == args->size) break;
 
       // Go to sleep
-      const long T = ResourceMap::GetAsUnsignedLong("computation-progression-update-interval");
+      const long T = ResourceMap::GetAsUnsignedInteger("computation-progression-update-interval");
       for (long i = 0; i < T; ++i)
       {
 #ifndef WIN32
@@ -940,7 +940,7 @@ String WrapperObject::getFunctionName(FunctionType f) const
 
 
 /* Method getInNumericalPointDimension returns the dimension of the in point */
-UnsignedLong WrapperObject::getInNumericalPointDimension(void * p_state) const
+UnsignedInteger WrapperObject::getInNumericalPointDimension(void * p_state) const
 {
   if (wrapperInfo_.isNull() )
   {
@@ -960,13 +960,13 @@ Description WrapperObject::getDescription() const
 {
   Description description;
   WrapperData::VariableListType variableList(data_.getVariableList());
-  for (UnsignedLong i = 0; i < variableList.getSize(); ++i) description.add(variableList[i].id_);
+  for (UnsignedInteger i = 0; i < variableList.getSize(); ++i) description.add(variableList[i].id_);
   return description;
 }
 
 
 /* Method getInNumericalPointDimension returns the dimension of the out point */
-UnsignedLong WrapperObject::getOutNumericalPointDimension(void * p_state) const
+UnsignedInteger WrapperObject::getOutNumericalPointDimension(void * p_state) const
 {
   if (wrapperInfo_.isNull() )
   {
@@ -1060,14 +1060,14 @@ NumericalPoint WrapperObject::execute(void * p_state,
 NumericalSample WrapperObject::execute(void * p_state,
                                        const NumericalSample & inS) const
 {
-  const UnsignedLong inDimension = getInNumericalPointDimension(p_state);
+  const UnsignedInteger inDimension = getInNumericalPointDimension(p_state);
   // Check the inS argument
   if (inS.getDimension() != inDimension)
     throw InvalidArgumentException(HERE)
         << "Argument 'inS' has incorrect dimension (" << inS.getDimension()
         << "). Expected = " << inDimension;
 
-  const UnsignedLong size = inS.getSize();
+  const UnsignedInteger size = inS.getSize();
   const NumericalSampleImplementation & inSi = * inS.getImplementation();
 
   // We create a point structure to embed the in NumericalPoint passed as argument
@@ -1077,7 +1077,7 @@ NumericalSample WrapperObject::execute(void * p_state,
   inSample.data_      = const_cast<NumericalScalar *>( &inSi[0][0] );
 
   // We create the output sample
-  const UnsignedLong outDimension = getOutNumericalPointDimension(p_state);
+  const UnsignedInteger outDimension = getOutNumericalPointDimension(p_state);
   NumericalSample outS(size, outDimension);
   NumericalSampleImplementation & outSi = * outS.getImplementation();
 
@@ -1115,14 +1115,14 @@ NumericalSample WrapperObject::execute(void * p_state,
 Field WrapperObject::execute(void * p_state,
                              const Field & inFld) const
 {
-  const UnsignedLong inDimension = getInNumericalPointDimension(p_state);
+  const UnsignedInteger inDimension = getInNumericalPointDimension(p_state);
   // Check the inFld argument
   if (inFld.getDimension() != inDimension)
     throw InvalidArgumentException(HERE)
         << "Argument 'inFld' has incorrect dimension (" << inFld.getDimension()
         << "). Expected = " << inDimension;
 
-  const UnsignedLong size = inFld.getSize();
+  const UnsignedInteger size = inFld.getSize();
 
   // We create a point structure to embed the in NumericalPoint passed as argument
   struct field inField;
@@ -1132,7 +1132,7 @@ Field WrapperObject::execute(void * p_state,
   //  inField.data_      = const_cast<NumericalScalar *>( &inFieldi->getValues()[0] );
   //  inField.vertices_  = const_cast<UnsignedScalar *>( &inFieldi->getMesh().
   // We create the output sample
-  const UnsignedLong outDimension = getOutNumericalPointDimension(p_state);
+  const UnsignedInteger outDimension = getOutNumericalPointDimension(p_state);
   Field outFld;
 
   // We create a point structure to embed the returned outS NumericalSample

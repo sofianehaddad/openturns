@@ -69,10 +69,10 @@ public:
   Matrix gradient(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */
-  virtual UnsignedLong getInputDimension() const;
+  virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  virtual UnsignedLong getOutputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

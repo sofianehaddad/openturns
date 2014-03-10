@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong defaultDimension(1);
+    const UnsignedInteger defaultDimension(1);
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -60,14 +60,14 @@ int main(int argc, char *argv[])
     fullprint << "spectral density matrix at f = " << frequencyValueHigh << " : " << myModel(frequencyValueHigh) << std::endl;
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong highDimension(3);
+    const UnsignedInteger highDimension(3);
 
     /* Reallocation of adequate sizes*/
     amplitude.resize(highDimension);
     scale.resize(highDimension);
 
     CorrelationMatrix spatialCorrelation(highDimension);
-    for (UnsignedLong index = 0 ; index < highDimension; ++index)
+    for (UnsignedInteger index = 0 ; index < highDimension; ++index)
     {
       // constant amplitude
       amplitude[index] = 1.0 ;
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     fullprint << "spectral density matrix at f = "  << frequencyValueHigh << " :\n" << myHighModel(frequencyValueHigh).clean(1.0e-6).__str__() << std::endl;
 
     CovarianceMatrix spatialCovariance(highDimension);
-    for (UnsignedLong index = 0 ; index < highDimension; ++index)
+    for (UnsignedInteger index = 0 ; index < highDimension; ++index)
     {
       // constant amplitude
       scale[index] = (index + 1.0) / defaultDimension ;

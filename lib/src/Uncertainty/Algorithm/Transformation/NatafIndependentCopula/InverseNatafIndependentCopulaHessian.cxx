@@ -46,7 +46,7 @@ InverseNatafIndependentCopulaHessian::InverseNatafIndependentCopulaHessian()
 }
 
 /* Parameter constructor */
-InverseNatafIndependentCopulaHessian::InverseNatafIndependentCopulaHessian(const UnsignedLong dimension)
+InverseNatafIndependentCopulaHessian::InverseNatafIndependentCopulaHessian(const UnsignedInteger dimension)
   : NumericalMathHessianImplementation()
   , dimension_(dimension)
 {
@@ -79,7 +79,7 @@ String InverseNatafIndependentCopulaHessian::__repr__() const
 SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const NumericalPoint & inP) const
 {
   SymmetricTensor result(dimension_, dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const NumericalScalar x(inP[i]);
     // 0.3989422804014326779399462 = 1/sqrt(2*Pi)
@@ -89,13 +89,13 @@ SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const NumericalPoi
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseNatafIndependentCopulaHessian::getInputDimension() const
+UnsignedInteger InverseNatafIndependentCopulaHessian::getInputDimension() const
 {
   return dimension_;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseNatafIndependentCopulaHessian::getOutputDimension() const
+UnsignedInteger InverseNatafIndependentCopulaHessian::getOutputDimension() const
 {
   return dimension_;
 }

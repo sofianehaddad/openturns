@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   {
 
     // Instanciate one distribution object
-    UnsignedLong dim(5);
+    UnsignedInteger dim(5);
     NumericalPoint meanPoint(dim, 0.0);
     NumericalPoint sigma(dim, 5.0);
     CorrelationMatrix R(dim);
@@ -45,10 +45,10 @@ int main(int argc, char *argv[])
     Normal distribution(meanPoint, sigma, R);
 
     // Instanciate another distribution object
-    for (UnsignedLong i = 1; i < dim; i++) R(i, i - 1) = -0.25;
+    for (UnsignedInteger i = 1; i < dim; i++) R(i, i - 1) = -0.25;
 
     // Test for sampling
-    UnsignedLong size = 1000;
+    UnsignedInteger size = 1000;
     NumericalSample sample(distribution.getSample( size ));
 
     // Create an empty graph

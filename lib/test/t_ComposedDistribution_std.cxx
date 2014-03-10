@@ -75,12 +75,12 @@ int main(int argc, char *argv[])
     // Instanciate one distribution object
     ComposedDistribution distribution(aCollection, Copula(aCopula));
     distribution.setName("myDist");
-    UnsignedLong dim(distribution.getDimension());
+    UnsignedInteger dim(distribution.getDimension());
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
     fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
     fullprint << "Mean " << distribution.getMean() << std::endl;
-    UnsignedLong precision(PlatformInfo::GetNumericalPrecision());
+    UnsignedInteger precision(PlatformInfo::GetNumericalPrecision());
     PlatformInfo::SetNumericalPrecision(2);
     fullprint << "Covariance " << distribution.getCovariance() << std::endl;
     PlatformInfo::SetNumericalPrecision(precision);
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     NumericalSample oneSample = distribution.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
               << " quantile= " << ref.computeQuantile(0.95)
               << std::endl;
     // Extract the marginals
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       Distribution margin(distribution.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
     // With a Normal copula
     CorrelationMatrix correlation(dim);
-    for(UnsignedLong i = 1; i < dim; i++)
+    for(UnsignedInteger i = 1; i < dim; i++)
     {
       correlation(i - 1, i) = 0.25;
     }

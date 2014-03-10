@@ -60,9 +60,9 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   : DistributionImplementation("RandomMixture"),
     distributionCollection_(),
     constant_(constant),
-    blockMin_(ResourceMap::GetAsUnsignedLong( "RandomMixture-DefaultBlockMin" )),
-    blockMax_(ResourceMap::GetAsUnsignedLong( "RandomMixture-DefaultBlockMax" )),
-    maxSize_(ResourceMap::GetAsUnsignedLong( "RandomMixture-DefaultMaxSize"  )),
+    blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" )),
+    blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" )),
+    maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  )),
     storedSize_(0),
     characteristicValuesCache_(0),
     alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" )),
@@ -86,9 +86,9 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   : DistributionImplementation("RandomMixture"),
     distributionCollection_(),
     constant_(constant),
-    blockMin_(ResourceMap::GetAsUnsignedLong( "RandomMixture-DefaultBlockMin" )),
-    blockMax_(ResourceMap::GetAsUnsignedLong( "RandomMixture-DefaultBlockMax" )),
-    maxSize_(ResourceMap::GetAsUnsignedLong( "RandomMixture-DefaultMaxSize"  )),
+    blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" )),
+    blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" )),
+    maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  )),
     storedSize_(0),
     characteristicValuesCache_(0),
     alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" )),
@@ -103,8 +103,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   // the setDistributionCollection() method that do it for us.
   if (weights.getDimension() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weights collection must have the same size as the distribution collection";
   DistributionCollection weightedCollection(coll);
-  const UnsignedLong size(coll.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) weightedCollection[i].setWeight(weights[i]);
+  const UnsignedInteger size(coll.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) weightedCollection[i].setWeight(weights[i]);
   // This call set also the range.
   setDistributionCollection(weightedCollection);
 }
@@ -114,9 +114,9 @@ void RandomMixture::computeRange()
 {
   const NumericalScalar m(getPositionIndicator());
   const NumericalScalar s(getDispersionIndicator());
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   Interval range(constant_, constant_);
-  for (UnsignedLong i = 0; i < size; ++i) range += distributionCollection_[i].getRange() * distributionCollection_[i].getWeight();
+  for (UnsignedInteger i = 0; i < size; ++i) range += distributionCollection_[i].getRange() * distributionCollection_[i].getWeight();
   setRange(range.intersect(Interval(m - beta_ * s, m + beta_ * s)));
 }
 
@@ -144,8 +144,8 @@ String RandomMixture::__str__(const String & offset) const
   OSS oss(false);
   oss << offset << getClassName() << "(";
   if (constant_ != 0.0) oss << constant_;
-  const UnsignedLong size(distributionCollection_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(distributionCollection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar w(distributionCollection_[i].getWeight());
     if ((constant_ != 0.0) || (i > 0))
@@ -166,8 +166,8 @@ String RandomMixture::__str__(const String & offset) const
 void RandomMixture::setWeights(const NumericalPoint & weights)
 {
   if (weights.getDimension() != distributionCollection_.getSize()) throw InvalidArgumentException(HERE) << "Error: the weights collection must have the same size as the distribution collection";
-  const UnsignedLong size(distributionCollection_.getSize());
-  for (UnsignedLong i = 0; i < size; ++i) distributionCollection_[i].setWeight(weights[i]);
+  const UnsignedInteger size(distributionCollection_.getSize());
+  for (UnsignedInteger i = 0; i < size; ++i) distributionCollection_[i].setWeight(weights[i]);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   computePositionIndicator();
@@ -179,9 +179,9 @@ void RandomMixture::setWeights(const NumericalPoint & weights)
 
 NumericalPoint RandomMixture::getWeights() const
 {
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   NumericalPoint weights(size);
-  for (UnsignedLong i = 0; i < size; ++i) weights[i] = distributionCollection_[i].getWeight();
+  for (UnsignedInteger i = 0; i < size; ++i) weights[i] = distributionCollection_[i].getWeight();
   return weights;
 }
 
@@ -189,7 +189,7 @@ NumericalPoint RandomMixture::getWeights() const
 /* Distribution collection accessor */
 void RandomMixture::setDistributionCollection(const DistributionCollection & coll)
 {
-  const UnsignedLong size(coll.getSize());
+  const UnsignedInteger size(coll.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a RandomMixture based on an empty distribution collection.";
   Bool hasNormalAtom(false);
   NumericalScalar aggregatedMean(0.0);
@@ -197,7 +197,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
   Bool hasPendingUniform(false);
   Uniform pendingUniform;
   distributionCollection_ = DistributionCollection(0);
-  for(UnsignedLong i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (coll[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a RandomMixture cannot be built from a collection of distributions of dimension not equal to 1";
     // Knowledge-based optimization
@@ -249,7 +249,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
       // First, merge the constant
       constant_ += w * mixture->constant_;
       // Second, merge the potential Normal component
-      UnsignedLong atomSize(mixture->distributionCollection_.getSize());
+      UnsignedInteger atomSize(mixture->distributionCollection_.getSize());
       if (mixture->distributionCollection_[atomSize - 1].getImplementation()->getClassName() == "Normal")
       {
         hasNormalAtom = true;
@@ -258,7 +258,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
         --atomSize;
       }
       // Third, merge the remaining components
-      for (UnsignedLong j = 0; j < atomSize; ++j)
+      for (UnsignedInteger j = 0; j < atomSize; ++j)
       {
         Distribution atom(mixture->distributionCollection_[j]);
         atom.setWeight(atom.getWeight() * w);
@@ -339,9 +339,9 @@ RandomMixture * RandomMixture::clone() const
 /* Get one realization of the RandomMixture */
 NumericalPoint RandomMixture::getRealization() const
 {
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   NumericalScalar realization(constant_);
-  for (UnsignedLong i = 0; i < size; ++i) realization += distributionCollection_[i].getWeight() * distributionCollection_[i].getRealization()[0];
+  for (UnsignedInteger i = 0; i < size; ++i) realization += distributionCollection_[i].getWeight() * distributionCollection_[i].getRealization()[0];
   return NumericalPoint(1, realization);
 }
 
@@ -379,7 +379,7 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   const NumericalScalar x(point[0]);
   // Special case for combination containing only one contributor
   if (size == 1) return distributionCollection_[0].computePDF((x - constant_) / distributionCollection_[0].getWeight());
@@ -394,16 +394,16 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
   const NumericalScalar hX(referenceBandwidth_ * x);
   LOGDEBUG(OSS() << "Equivalent normal=" << equivalentNormal_);
   NumericalScalar value(computeEquivalentNormalPDFSum(x));
-  UnsignedLong k(1);
+  UnsignedInteger k(1);
   const NumericalScalar precision(pdfPrecision_);
-  const UnsignedLong kmin(1 << blockMin_);
-  const UnsignedLong kmax(1 << (blockMax_));
+  const UnsignedInteger kmin(1 << blockMin_);
+  const UnsignedInteger kmax(1 << (blockMax_));
   NumericalScalar error(2.0 * precision);
   LOGDEBUG(OSS() << std::setprecision(20) << "h=" << referenceBandwidth_ << ", factor=" << factor << ", equivalent normal pdf sum=" << value << ", k=" << k << ", precision=" << precision << ", kmin=" << kmin << ", kmax=" << kmax << ", error=" << error);
   while ( (k < kmin) || ( (k < kmax) && (error > precision) ) )
   {
     error = 0.0;
-    for (UnsignedLong m = k + 1; m <= 2 * k; ++m)
+    for (UnsignedInteger m = k + 1; m <= 2 * k; ++m)
     {
       NumericalScalar sinMHX;
       NumericalScalar cosMHX;
@@ -426,7 +426,7 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
 /*  Compute the PDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
 NumericalSample RandomMixture::computePDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
-    const UnsignedLong pointNumber,
+    const UnsignedInteger pointNumber,
     NumericalSample & grid) const
 {
   const NumericalSample result(DistributionImplementation::computePDF(xMin, xMax, pointNumber, grid));
@@ -438,7 +438,7 @@ NumericalScalar RandomMixture::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   const NumericalScalar x(point[0]);
   // Special case for combination containing only one contributor Y = alpha * X + beta
   // for alpha > 0.0:
@@ -469,7 +469,7 @@ NumericalScalar RandomMixture::computeComplementaryCDF(const NumericalPoint & po
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   const NumericalScalar x(point[0]);
   // Special case for combination containing only one contributor Y = alpha * X + beta
   // for alpha > 0.0:
@@ -500,7 +500,7 @@ NumericalScalar RandomMixture::computeComplementaryCDF(const NumericalPoint & po
 /*  Compute the CDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
 NumericalSample RandomMixture::computeCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
-    const UnsignedLong pointNumber,
+    const UnsignedInteger pointNumber,
     NumericalSample & grid) const
 {
   const NumericalSample result(DistributionImplementation::computeCDF(xMin, xMax, pointNumber, grid));
@@ -519,7 +519,7 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=1, here dimension=" << interval.getDimension();
 
   if (interval.isNumericallyEmpty()) return 0.0;
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   // Special case for combination containing only one contributor
   if (size == 1)
   {
@@ -549,16 +549,16 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   const NumericalScalar lowerBound(clippedInterval.getLowerBound()[0]);
   const NumericalScalar upperBound(clippedInterval.getUpperBound()[0]);
   // The Fourier series method is numerically unstable for large mixtures, default to standard integration
-  if (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedLong( "RandomMixture-SmallSize" ))
+  if (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" ))
   {
     setIntegrationNodesNumber(128);
     const NumericalSample nodesAndWeights(getGaussNodesAndWeights());
-    const UnsignedLong numberOfNodes(nodesAndWeights.getDimension());
+    const UnsignedInteger numberOfNodes(nodesAndWeights.getDimension());
     NumericalScalar probability(0.0);
     const NumericalScalar halfLength(0.5 * (upperBound - lowerBound));
     cdfEpsilon_ = 0.0;
     // Map [lowerBound, upperBound] into [-1,1]
-    for (UnsignedLong i = 0; i < numberOfNodes; ++i)
+    for (UnsignedInteger i = 0; i < numberOfNodes; ++i)
     {
       const NumericalScalar w(nodesAndWeights[1][i]);
       const NumericalScalar xi(nodesAndWeights[0][i]);
@@ -579,13 +579,13 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   const NumericalScalar b(referenceBandwidth_ * upperBound);
   const NumericalScalar factor(referenceBandwidth_ / M_PI);
   NumericalScalar value(computeEquivalentNormalCDFSum(lowerBound, upperBound));
-  UnsignedLong k(1);
-  const UnsignedLong kmin(1 << blockMin_);
-  const UnsignedLong kmax(1 << blockMax_);
+  UnsignedInteger k(1);
+  const UnsignedInteger kmin(1 << blockMin_);
+  const UnsignedInteger kmax(1 << blockMax_);
   while ( (k < kmax) && (error > std::max(precision, fabs(precision * value)) || k < kmin) )
   {
     error = 0.0;
-    for (UnsignedLong m = k + 1; m <= 2 * k; ++m)
+    for (UnsignedInteger m = k + 1; m <= 2 * k; ++m)
     {
       NumericalScalar sinMHLower;
       NumericalScalar cosMHLower;
@@ -610,14 +610,14 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
 /*  Compute the quantile over a regular grid */
 NumericalSample RandomMixture::computeQuantile(const NumericalScalar qMin,
     const NumericalScalar qMax,
-    const UnsignedLong pointNumber,
+    const UnsignedInteger pointNumber,
     const Bool tail) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the quantile over a regular 1D grid if the dimension is > 1";
   NumericalSample result(pointNumber, 2);
   NumericalScalar q(qMin);
   const NumericalScalar step((qMax - qMin) / NumericalScalar(pointNumber - 1.0));
-  for (UnsignedLong i = 0; i < pointNumber; ++i)
+  for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
     result[i][0] = q;
     result[i][1] = computeQuantile(q)[0];
@@ -656,9 +656,9 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Numerical
 {
   if (x == 0.0) return 0.0;
   NumericalComplex logCfValue(0.0, constant_ * x);
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   const NumericalScalar smallScalar(0.5 * log(SpecFunc::MinNumericalScalar));
-  for(UnsignedLong i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     logCfValue += distributionCollection_[i].computeLogCharacteristicFunction(distributionCollection_[i].getWeight() * x);
     // Early exit for null value
@@ -668,7 +668,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Numerical
 }
 
 /* Compute a value of the characteristic function on a prescribed discretization. As the value associated with index == 0 is known, it is not stored so for index > 0, the corresponding value is at position index-1 */
-NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedLong index) const
+NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger index) const
 {
   LOGDEBUG(OSS() << "In RandomMixture::computeDeltaCharacteristicFunction, index=" << index << ", h=" << referenceBandwidth_);
   if (index == 0) return 0.0;
@@ -692,7 +692,7 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
   // Here, the index has not been computed so far, fill-in the gap
   if (index > storedSize_)
   {
-    for (UnsignedLong i = storedSize_ + 1; i <= index; ++i)
+    for (UnsignedInteger i = storedSize_ + 1; i <= index; ++i)
     {
       const NumericalScalar x(i * referenceBandwidth_);
       const NumericalComplex logCF(computeLogCharacteristicFunction(x));
@@ -731,8 +731,8 @@ NumericalPoint RandomMixture::computeCDFGradient(const NumericalPoint & point) c
 void RandomMixture::computeMean() const
 {
   NumericalScalar mean(constant_);
-  const UnsignedLong size(distributionCollection_.getSize());
-  for(UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(distributionCollection_.getSize());
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar wi(distributionCollection_[i].getWeight());
     const NumericalScalar meanI(distributionCollection_[i].getMean()[0]);
@@ -747,8 +747,8 @@ void RandomMixture::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
   NumericalScalar covariance(0.0);
-  const UnsignedLong size(distributionCollection_.getSize());
-  for(UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(distributionCollection_.getSize());
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar wi(distributionCollection_[i].getWeight());
     covariance += wi * wi * distributionCollection_[i].getCovariance().operator()(0, 0);
@@ -768,8 +768,8 @@ NumericalPoint RandomMixture::getSkewness() const
 {
   NumericalScalar variance(0.0);
   NumericalScalar skewness(0.0);
-  const UnsignedLong size(distributionCollection_.getSize());
-  for(UnsignedLong i = 0; i < size; ++i)
+  const UnsignedInteger size(distributionCollection_.getSize());
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar wi(distributionCollection_[i].getWeight());
     const NumericalScalar wi2(wi * wi);
@@ -786,10 +786,10 @@ NumericalPoint RandomMixture::getKurtosis() const
 {
   NumericalScalar variance(0.0);
   NumericalScalar kurtosis(0.0);
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   NumericalPoint v(size);
   NumericalPoint w2(size);
-  for(UnsignedLong i = 0; i < size; ++i)
+  for(UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar wi(distributionCollection_[i].getWeight());
     const NumericalScalar wi2(wi * wi);
@@ -798,7 +798,7 @@ NumericalPoint RandomMixture::getKurtosis() const
     v[i] = vi;
     variance += wi2 * vi;
     kurtosis += wi2 * wi2 * distributionCollection_[i].getKurtosis()[0] * vi * vi;
-    for (UnsignedLong j = 0; j < i; ++j) kurtosis += 6.0 * wi2 * w2[j] * vi * v[j];
+    for (UnsignedInteger j = 0; j < i; ++j) kurtosis += 6.0 * wi2 * w2[j] * vi * v[j];
   } /* end for */
   kurtosis /= variance * variance;
   return NumericalPoint(1, kurtosis);
@@ -807,18 +807,18 @@ NumericalPoint RandomMixture::getKurtosis() const
 /** Parameters value and description accessor */
 RandomMixture::NumericalPointWithDescriptionCollection RandomMixture::getParametersCollection() const
 {
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   NumericalPointWithDescriptionCollection parameters(1);
   Description parametersDescription;
   // Form a big NumericalPoint from the parameters of each atom
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const String prefix(distributionCollection_[i].getName());
     const NumericalPointWithDescription atomParameters(distributionCollection_[i].getParametersCollection()[0]);
     const Description atomDescription(atomParameters.getDescription());
-    const UnsignedLong atomParameterDimension(atomParameters.getDimension());
+    const UnsignedInteger atomParameterDimension(atomParameters.getDimension());
     // Add the current atom parameters
-    for (UnsignedLong j = 0; j < atomParameterDimension; ++j)
+    for (UnsignedInteger j = 0; j < atomParameterDimension; ++j)
     {
       parameters[0].add(atomParameters[j]);
       parametersDescription.add(OSS() << prefix << "_" << atomDescription[j]);
@@ -840,9 +840,9 @@ NumericalScalar RandomMixture::getPositionIndicator() const
 void RandomMixture::computePositionIndicator() const
 {
   positionIndicator_ = constant_;
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   // Assume an additive behaviour of the position indicator. It is true for the mean value, and almost true for the median of moderatly skewed distributions
-  for(UnsignedLong i = 0; i < size; ++i) positionIndicator_ += distributionCollection_[i].getWeight() * distributionCollection_[i].getPositionIndicator();
+  for(UnsignedInteger i = 0; i < size; ++i) positionIndicator_ += distributionCollection_[i].getWeight() * distributionCollection_[i].getPositionIndicator();
   isAlreadyComputedPositionIndicator_ = true;
 }
 
@@ -858,37 +858,37 @@ NumericalScalar RandomMixture::getDispersionIndicator() const
 void RandomMixture::computeDispersionIndicator() const
 {
   dispersionIndicator_ = 0.0;
-  const UnsignedLong size(distributionCollection_.getSize());
+  const UnsignedInteger size(distributionCollection_.getSize());
   // Assume a quadratic additive behaviour of the dispersion indicator. It is true for the standard deviation value, and almost true for the interquartile of moderatly skewed distributions
-  for(UnsignedLong i = 0; i < size; ++i) dispersionIndicator_ += pow(distributionCollection_[i].getWeight() * distributionCollection_[i].getDispersionIndicator(), 2.0);
+  for(UnsignedInteger i = 0; i < size; ++i) dispersionIndicator_ += pow(distributionCollection_[i].getWeight() * distributionCollection_[i].getDispersionIndicator(), 2.0);
   dispersionIndicator_ = sqrt(dispersionIndicator_);
   isAlreadyComputedDispersionIndicator_ = true;
 }
 
 /* BlockMin accessor */
-void RandomMixture::setBlockMin(const UnsignedLong blockMin)
+void RandomMixture::setBlockMin(const UnsignedInteger blockMin)
 {
   blockMin_ = blockMin;
 }
 
-UnsignedLong RandomMixture::getBlockMin() const
+UnsignedInteger RandomMixture::getBlockMin() const
 {
   return blockMin_;
 }
 
 /* BlockMax accessor */
-void RandomMixture::setBlockMax(const UnsignedLong blockMax)
+void RandomMixture::setBlockMax(const UnsignedInteger blockMax)
 {
   blockMax_ = blockMax;
 }
 
-UnsignedLong RandomMixture::getBlockMax() const
+UnsignedInteger RandomMixture::getBlockMax() const
 {
   return blockMax_;
 }
 
 /* MaxSize accessor */
-void RandomMixture::setMaxSize(const UnsignedLong maxSize)
+void RandomMixture::setMaxSize(const UnsignedInteger maxSize)
 {
   maxSize_ = maxSize;
   // The cache must grow progresively, so;
@@ -901,7 +901,7 @@ void RandomMixture::setMaxSize(const UnsignedLong maxSize)
   }
 }
 
-UnsignedLong RandomMixture::getMaxSize() const
+UnsignedInteger RandomMixture::getMaxSize() const
 {
   return maxSize_;
 }
@@ -982,7 +982,7 @@ void RandomMixture::computeEquivalentNormal()
 NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const NumericalScalar x) const
 {
   NumericalScalar value(equivalentNormal_.computePDF(x));
-  UnsignedLong i(0);
+  UnsignedInteger i(0);
   NumericalScalar delta(0.0);
   do
   {
@@ -1000,7 +1000,7 @@ NumericalScalar RandomMixture::computeEquivalentNormalCDFSum(const NumericalScal
     const NumericalScalar t) const
 {
   NumericalScalar value(equivalentNormal_.computeProbability(Interval(s, t)));
-  UnsignedLong i(0);
+  UnsignedInteger i(0);
   NumericalScalar delta(0.0);
   do
   {
@@ -1055,7 +1055,7 @@ struct KolmogorovProjection
     try
     {
       const Distribution candidate(factory_.build(NumericalPointCollection(1, parameters)));
-      for (UnsignedLong i = 0; i < data_.getSize(); ++i)
+      for (UnsignedInteger i = 0; i < data_.getSize(); ++i)
         norm += pow(candidate.computeCDF(data_[i][0]) - data_[i][1], 2);
       return NumericalPoint(1, norm);
     }
@@ -1078,9 +1078,9 @@ struct KolmogorovProjection
 /** Project a RandomMixture over a Collection of DistributionFactory by using a regular sampling and Kolmogorov distance. */
 DistributionCollection RandomMixture::project(const DistributionFactoryCollection & factoryCollection,
     NumericalPoint & kolmogorovNorm,
-    const UnsignedLong size) const
+    const UnsignedInteger size) const
 {
-  const UnsignedLong factorySize(factoryCollection.getSize());
+  const UnsignedInteger factorySize(factoryCollection.getSize());
   PairCollection result(factorySize);
   const NumericalScalar mean(getMean()[0]);
   const NumericalScalar sigma(getStandardDeviation()[0]);
@@ -1093,7 +1093,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
   Distribution bestCandidate;
   KolmogorovProjection projection(dataX, dataY, factoryCollection[0]);
   // Loop over the factories
-  for (UnsignedLong i = 0; i < factorySize; ++i)
+  for (UnsignedInteger i = 0; i < factorySize; ++i)
   {
     DistributionFactory factory(factoryCollection[i]);
     projection.setDistributionFactory(factory);
@@ -1114,7 +1114,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
     NumericalMathFunction objectiveFunction(bindMethod<KolmogorovProjection, NumericalPoint, NumericalPoint>(projection, &KolmogorovProjection::computeNorm, startingPoint.getDimension(), 1));
     TNC optimAlgo(TNCSpecificParameters(), objectiveFunction, bounds, startingPoint, TNC::Result::MINIMIZATION, false);
     // Use more tighter parameters than the default ones
-    optimAlgo.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedLong( "RandomMixture-ProjectionMaximumIteration" ));
+    optimAlgo.setMaximumEvaluationsNumber(ResourceMap::GetAsUnsignedInteger( "RandomMixture-ProjectionMaximumIteration" ));
     optimAlgo.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar( "RandomMixture-ProjectionMaximumAbsoluteError" ));
     optimAlgo.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar( "RandomMixture-ProjectionMaximumRelativeError" ));
     optimAlgo.setMaximumObjectiveError(ResourceMap::GetAsNumericalScalar( "RandomMixture-ProjectionMaximumObjectiveError" ));
@@ -1130,7 +1130,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
     // The optimization use L2 norm, we quantify it using the L-inf norm
     const Distribution bestCandidate(factory.build(NumericalPointCollection(1, optimAlgo.getResult().getOptimizer())));
     NumericalScalar kolmogorov(0.0);
-    for (UnsignedLong j = 0; j < size; ++j)
+    for (UnsignedInteger j = 0; j < size; ++j)
       kolmogorov = std::max(kolmogorov, fabs(bestCandidate.computeCDF(dataX[j][0]) - dataY[j][0]));
     result[i] = Pair(kolmogorov, bestCandidate);
   }
@@ -1139,7 +1139,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
   // Extract the results
   DistributionCollection distributionCollection(factorySize);
   kolmogorovNorm = NumericalPoint(factorySize);
-  for (UnsignedLong i = 0; i < factorySize; ++i)
+  for (UnsignedInteger i = 0; i < factorySize; ++i)
   {
     distributionCollection[i] = result[i].distribution_;
     kolmogorovNorm[i] = result[i].norm_;

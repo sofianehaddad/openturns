@@ -47,7 +47,7 @@ public:
   /** Default constructor */
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool & bined = true,
-                           const UnsignedLong binNumber = ResourceMap::GetAsUnsignedLong( "KernelSmoothing-BinNumber" ),
+                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ),
                            const String & name = "KernelSmoothing");
 
   /** Virtual constructor */
@@ -106,7 +106,7 @@ private:
   Bool bined_;
 
   // Number of bins
-  UnsignedLong binNumber_;
+  UnsignedInteger binNumber_;
 
 }; /* class KernelSmoothing */
 

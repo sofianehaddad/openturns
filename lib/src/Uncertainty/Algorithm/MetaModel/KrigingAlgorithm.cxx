@@ -64,11 +64,11 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
     throw InvalidArgumentException(HERE) << "Input sample size (" << inputSample_.getSize() << ") does not match output sample size (" << outputSample_.getSize() << ").";
 
   // normalize the sample
-  UnsignedLong dimension(inputSample.getDimension());
+  UnsignedInteger dimension(inputSample.getDimension());
   NumericalPoint mean(inputSample.computeMean());
   NumericalPoint stdev(inputSample.computeStandardDeviationPerComponent());
   SquareMatrix linear(dimension);
-  for (UnsignedLong j = 0; j < dimension; ++ j)
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     linear(j, j) = 1.0;
     if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
@@ -103,21 +103,21 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 /* Perform regression */
 void KrigingAlgorithm::run()
 {
-  const UnsignedLong size(inputSample_.getSize());
-  const UnsignedLong basisSize(basis_.getSize());
+  const UnsignedInteger size(inputSample_.getSize());
+  const UnsignedInteger basisSize(basis_.getSize());
   normalizedInputSample_ = inputTransformation_(inputSample_);
 
-  const UnsignedLong outputDimension(outputSample_.getDimension());
+  const UnsignedInteger outputDimension(outputSample_.getDimension());
   NumericalMathFunction::NumericalMathFunctionCollection processEvaluationCollection(outputDimension);
   //  NumericalSample allBeta(outputDimension, size);
   //  NumericalSample allGamma(outputDimension, basisSize);
   //  NumericalSample allParameters(outputDimension, covarianceModel_.getParameters());
   // Compute F
   F_ = Matrix(size, basisSize);
-  for (UnsignedLong j = 0; j < basisSize; ++ j )
+  for (UnsignedInteger j = 0; j < basisSize; ++ j )
   {
     const NumericalSample basisSample(basis_[j](normalizedInputSample_));
-    for ( UnsignedLong i = 0; i < size; ++ i ) F_(i, j) = basisSample[i][0];
+    for ( UnsignedInteger i = 0; i < size; ++ i ) F_(i, j) = basisSample[i][0];
   }
   // For each output component, build the associated kriging model
   for (outputIndex_ = 0; outputIndex_ < outputDimension; ++ outputIndex_)
@@ -154,10 +154,10 @@ void KrigingAlgorithm::run()
   const NumericalSample mY(metaModel(inputSample_));
   const NumericalPoint outputVariance(outputSample_.computeVariancePerComponent());
 
-  for ( UnsignedLong outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
+  for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
   {
     NumericalScalar quadraticResidual(0.0);
-    for ( UnsignedLong i = 0; i < size; ++ i )
+    for ( UnsignedInteger i = 0; i < size; ++ i )
     {
       const NumericalScalar slack(outputSample_[i][outputIndex] - mY[i][outputIndex]);
       quadraticResidual += slack * slack;
@@ -181,11 +181,11 @@ NumericalScalar KrigingAlgorithm::computeLogLikelihood(const NumericalPoint & th
   CovarianceModel cov(covarianceModel_);
   cov.setParameters(theta);
 
-  const UnsignedLong size(inputSample_.getSize());
+  const UnsignedInteger size(inputSample_.getSize());
 
   CovarianceMatrix R(size);
-  for ( UnsignedLong i = 0; i < size; ++ i )
-    for ( UnsignedLong j = 0; j < i; ++ j )
+  for ( UnsignedInteger i = 0; i < size; ++ i )
+    for ( UnsignedInteger j = 0; j < i; ++ j )
       R(i, j) = cov.operator()(normalizedInputSample_[i], normalizedInputSample_[j])(0, 0);
 
   Bool continuationCondition(true);
@@ -207,7 +207,7 @@ NumericalScalar KrigingAlgorithm::computeLogLikelihood(const NumericalPoint & th
     {
       cumulatedScaling += scaling ;
       // Unroll the regularization to optimize the computation
-      for (UnsignedLong i = 0; i < size; ++i) R(i, i) += scaling;
+      for (UnsignedInteger i = 0; i < size; ++i) R(i, i) += scaling;
       scaling *= 2.0;
     }
   }
@@ -219,7 +219,7 @@ NumericalScalar KrigingAlgorithm::computeLogLikelihood(const NumericalPoint & th
 
   Matrix Ft(C.solveLinearSystem(F_));
   NumericalPoint y(size);
-  for ( UnsignedLong i = 0; i < size; ++ i ) y[i] = outputSample_[i][outputIndex_];
+  for ( UnsignedInteger i = 0; i < size; ++ i ) y[i] = outputSample_[i][outputIndex_];
   NumericalPoint Yt(C.solveLinearSystem(y));
 
   Matrix G;
@@ -233,7 +233,7 @@ NumericalScalar KrigingAlgorithm::computeLogLikelihood(const NumericalPoint & th
 
   NumericalScalar sigma2(rho.normSquare() / size);
   NumericalScalar logDetR(0.0);
-  for ( UnsignedLong i = 0; i < size; ++ i ) logDetR += 2.0 * log(C(i, i)) / size;
+  for ( UnsignedInteger i = 0; i < size; ++ i ) logDetR += 2.0 * log(C(i, i)) / size;
   const NumericalScalar result(-(log(sigma2) + logDetR));
 
   return result;

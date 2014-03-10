@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedLong iMax(5);
+    const UnsignedInteger iMax(5);
     Collection<Distribution> distributionCollection;
     distributionCollection.add(Laplace(1.0, 0.0));
     distributionCollection.add(Logistic(0.0, 1.0));
@@ -45,13 +45,13 @@ int main(int argc, char *argv[])
     distributionCollection.add(Triangular(-1.0, 0.3, 1.0));
     distributionCollection.add(Uniform(-1.0, 1.0));
     distributionCollection.add(Weibull(1.0, 3.0));
-    for (UnsignedLong n = 0; n < distributionCollection.getSize(); ++n)
+    for (UnsignedInteger n = 0; n < distributionCollection.getSize(); ++n)
     {
       const Distribution distribution(distributionCollection[n]);
       const String name(distribution.getImplementation()->getClassName());
       StandardDistributionPolynomialFactory polynomialFactory(distribution);
       fullprint << "polynomialFactory(" << name << "=" << polynomialFactory << std::endl;
-      for (UnsignedLong i = 0; i < iMax; ++i)
+      for (UnsignedInteger i = 0; i < iMax; ++i)
         fullprint << name << " polynomial(" << i << ")=" << polynomialFactory.build(i).__str__() << std::endl;
       NumericalPoint roots(polynomialFactory.getRoots(iMax - 1));
       fullprint << name << " polynomial(" << iMax - 1 << ") roots=" << roots << std::endl;

@@ -37,7 +37,7 @@ SymmetricMatrix::SymmetricMatrix()
 
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-SymmetricMatrix::SymmetricMatrix(const UnsignedLong dim)
+SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)
   : SquareMatrix(dim),
     hasBeenSymmetrized_(false)
 {
@@ -48,7 +48,7 @@ SymmetricMatrix::SymmetricMatrix(const UnsignedLong dim)
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-SymmetricMatrix::SymmetricMatrix(const UnsignedLong dim,
+SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim,
                                  const Collection<NumericalScalar> & elementsValues)
   : SquareMatrix(dim, elementsValues),
     hasBeenSymmetrized_(false)
@@ -82,20 +82,20 @@ Bool SymmetricMatrix::isDiagonal() const
   // The loops must be done in this order in order to use the quick accessor
   // of the underlying implementation without symmetrization of the matrix.
   // We know that the storage is made column-wise, using the upper triangle
-  for (UnsignedLong j = 0; j < getDimension(); ++j)
-    for (UnsignedLong i = j + 1; i < getDimension(); ++i)
+  for (UnsignedInteger j = 0; j < getDimension(); ++j)
+    for (UnsignedInteger i = j + 1; i < getDimension(); ++i)
       if ((*getImplementation())(i, j) != 0.0) return false;
   return true;
 }
 
 /* Row extraction */
-const Matrix SymmetricMatrix::getRow(const UnsignedLong rowIndex) const
+const Matrix SymmetricMatrix::getRow(const UnsignedInteger rowIndex) const
 {
   return Implementation(getImplementation()->getRowSym(rowIndex).clone());
 }
 
 /* Column extration */
-const Matrix SymmetricMatrix::getColumn(const UnsignedLong columnIndex) const
+const Matrix SymmetricMatrix::getColumn(const UnsignedInteger columnIndex) const
 {
   return Implementation(getImplementation()->getColumnSym(columnIndex).clone());
 }
@@ -117,8 +117,8 @@ String SymmetricMatrix::__str__(const String & offset) const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalScalar & SymmetricMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   copyOnWrite();
   hasBeenSymmetrized_ = false;
@@ -128,8 +128,8 @@ NumericalScalar & SymmetricMatrix::operator() (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & SymmetricMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)  const
+const NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)  const
 {
   return (i > j) ? (*getImplementation())(i, j) : (*getImplementation())(j, i) ;
 }
@@ -220,7 +220,7 @@ SymmetricMatrix SymmetricMatrix::operator / (const NumericalScalar & s) const
 }
 
 /* SquareMatrix integer power */
-SymmetricMatrix SymmetricMatrix::power(const UnsignedLong n) const
+SymmetricMatrix SymmetricMatrix::power(const UnsignedInteger n) const
 {
   return Implementation((getImplementation()->symPower(n)).clone());
 }

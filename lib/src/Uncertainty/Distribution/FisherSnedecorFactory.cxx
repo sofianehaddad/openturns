@@ -59,7 +59,7 @@ FisherSnedecorFactory::Implementation FisherSnedecorFactory::build() const
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a FisherSnedecor distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an FisherSnedecor distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar mean(sample.computeMean()[0]);

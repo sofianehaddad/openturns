@@ -52,7 +52,7 @@ public:
 
   /** Standard constructor */
   NearestPointAlgorithmImplementationResult(const NumericalPoint & minimizer,
-      const UnsignedLong iterationsNumber,
+      const UnsignedInteger iterationsNumber,
       const NumericalScalar absoluteError,
       const NumericalScalar relativeError,
       const NumericalScalar residualError,
@@ -65,7 +65,7 @@ public:
   NumericalPoint getMinimizer() const;
 
   /** Iterations number accessor */
-  UnsignedLong getIterationsNumber() const;
+  UnsignedInteger getIterationsNumber() const;
 
   /** Absolute error accessor */
   NumericalScalar getAbsoluteError() const;
@@ -97,7 +97,7 @@ public:
   void load(Advocate & adv);
 
   /** Update current state */
-  void update(const NumericalPoint & minimizer, UnsignedLong iterationNumber);
+  void update(const NumericalPoint & minimizer, UnsignedInteger iterationNumber);
 
   /** Incremental history storage */
   void store(const NumericalPoint & inP,
@@ -116,7 +116,7 @@ protected:
   void setMinimizer(const NumericalPoint & minimizer);
 
   /** Iterations number accessor */
-  void setIterationsNumber(const UnsignedLong iterationsNumber);
+  void setIterationsNumber(const UnsignedInteger iterationsNumber);
 
   /** Absolute error accessor */
   void setAbsoluteError(const NumericalScalar absoluteError);
@@ -138,7 +138,7 @@ protected:
 private:
 
   NumericalPoint  minimizer_;
-  UnsignedLong    iterationsNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
+  UnsignedInteger    iterationsNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   NumericalScalar residualError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */

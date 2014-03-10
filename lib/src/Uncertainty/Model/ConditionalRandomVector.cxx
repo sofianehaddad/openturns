@@ -70,7 +70,7 @@ String ConditionalRandomVector::__repr__() const
 
 
 /* Dimension accessor */
-UnsignedLong ConditionalRandomVector::getDimension() const
+UnsignedInteger ConditionalRandomVector::getDimension() const
 {
   return distribution_.getDimension();
 }

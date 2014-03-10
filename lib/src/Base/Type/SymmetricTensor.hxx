@@ -51,19 +51,19 @@ public:
   SymmetricTensor();
 
   /** Constructor with size (squareDim, sheetDim) */
-  SymmetricTensor(const UnsignedLong squareDim,
-                  const UnsignedLong sheetDim);
+  SymmetricTensor(const UnsignedInteger squareDim,
+                  const UnsignedInteger sheetDim);
 
   /** Constructor from a range of external collection */
   template <class InputIterator>
-  SymmetricTensor(const UnsignedLong squareDim,
-                  const UnsignedLong sheetDim,
+  SymmetricTensor(const UnsignedInteger squareDim,
+                  const UnsignedInteger sheetDim,
                   InputIterator first,
                   InputIterator last);
 
   /** Constructor from external collection */
-  SymmetricTensor(const UnsignedLong squareDim,
-                  const UnsignedLong sheetDim,
+  SymmetricTensor(const UnsignedInteger squareDim,
+                  const UnsignedInteger sheetDim,
                   const NumericalScalarCollection & elementsValues);
 
   /** Constructor with implementation */
@@ -79,22 +79,22 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the symmetric tensor (to modify these elements and their symmetric element) */
   /** The element of the symmetric tensor is designated by its row number i, its column number j and its sheet number k*/
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j,
-                                 const UnsignedLong k);
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j,
+                                 const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j,
-                                       const UnsignedLong k) const;
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j,
+                                       const UnsignedInteger k) const;
 #endif
 
   /** getSheet returns the sheet specified by its sheet number k */
-  SymmetricMatrix getSheet(const UnsignedLong k) const;
+  SymmetricMatrix getSheet(const UnsignedInteger k) const;
 
   /** setSheet sets matrix m as the sheet specified by its sheet number k  */
-  void setSheet(const UnsignedLong k,
+  void setSheet(const UnsignedInteger k,
                 const SymmetricMatrix & m);
 
 protected:
@@ -109,8 +109,8 @@ private:
 
 /** Constructor from a range of external collection */
 template <class InputIterator>
-SymmetricTensor::SymmetricTensor(const UnsignedLong squareDim,
-                                 const UnsignedLong sheetDim,
+SymmetricTensor::SymmetricTensor(const UnsignedInteger squareDim,
+                                 const UnsignedInteger sheetDim,
                                  InputIterator first,
                                  InputIterator last)
   : Tensor(squareDim, squareDim, sheetDim, first, last)

@@ -29,8 +29,8 @@ using namespace OT::Test;
 
 NumericalPoint clean(NumericalPoint in)
 {
-  UnsignedLong dim(in.getDimension());
-  for(UnsignedLong i = 0; i < dim; i++)
+  UnsignedInteger dim(in.getDimension());
+  for(UnsignedInteger i = 0; i < dim; i++)
     if (fabs(in[i]) < 1.e-10) in[i] = 0.0;
   return in;
 }
@@ -42,11 +42,11 @@ int main(int argc, char *argv[])
 
   try
   {
-    const UnsignedLong iMax(5);
+    const UnsignedInteger iMax(5);
     Triangular distribution(-1.0, 0.3, 1.0);
     GramSchmidtAlgorithm algo(distribution);
     fullprint << "algo=" << algo << std::endl;
-    for (UnsignedLong i = 0; i < iMax; ++i)
+    for (UnsignedInteger i = 0; i < iMax; ++i)
       fullprint << distribution.getClassName() << " polynomial(" << i << ")=" << clean(algo.getRecurrenceCoefficients(i)).__str__() << std::endl;
     algo.setReferenceFamily(LegendreFactory());
     fullprint << "Reference family=" << algo.getReferenceFamily() << std::endl;

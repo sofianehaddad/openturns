@@ -46,7 +46,7 @@ public:
   NatafEllipticalDistributionHessian();
 
   /** Parameter constructor */
-  NatafEllipticalDistributionHessian(const UnsignedLong dimension);
+  NatafEllipticalDistributionHessian(const UnsignedInteger dimension);
 
   /** Virtual constructor */
   virtual NatafEllipticalDistributionHessian * clone() const;

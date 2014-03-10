@@ -38,11 +38,11 @@ int main(int argc, char *argv[])
   {
 
     // We create a sample and we fill it
-    const UnsignedLong size = 6;
-    const UnsignedLong dimension = 1;
+    const UnsignedInteger size = 6;
+    const UnsignedInteger dimension = 1;
     NumericalSample sample(size, dimension);
-    for (UnsignedLong i = 0; i < size; ++i)
-      for (UnsignedLong j = 0; j < dimension; ++j)
+    for (UnsignedInteger i = 0; i < size; ++i)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
         sample[i][j] = i + j + 1;
 
     // TimeGrid

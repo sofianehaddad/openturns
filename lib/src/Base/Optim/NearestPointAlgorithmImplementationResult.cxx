@@ -55,7 +55,7 @@ NearestPointAlgorithmImplementationResult::NearestPointAlgorithmImplementationRe
 
 /* Standard constructor */
 NearestPointAlgorithmImplementationResult::NearestPointAlgorithmImplementationResult(const NumericalPoint & minimizer,
-    const UnsignedLong iterationsNumber,
+    const UnsignedInteger iterationsNumber,
     const NumericalScalar absoluteError,
     const NumericalScalar relativeError,
     const NumericalScalar residualError,
@@ -96,13 +96,13 @@ void NearestPointAlgorithmImplementationResult::setMinimizer(const NumericalPoin
 }
 
 /* Iterations number accessor */
-UnsignedLong NearestPointAlgorithmImplementationResult::getIterationsNumber() const
+UnsignedInteger NearestPointAlgorithmImplementationResult::getIterationsNumber() const
 {
   return iterationsNumber_;
 }
 
 /* Iterations Number accessor */
-void NearestPointAlgorithmImplementationResult::setIterationsNumber(const UnsignedLong iterationsNumber)
+void NearestPointAlgorithmImplementationResult::setIterationsNumber(const UnsignedInteger iterationsNumber)
 {
   iterationsNumber_ = iterationsNumber;
 }
@@ -240,7 +240,7 @@ void NearestPointAlgorithmImplementationResult::load(Advocate & adv)
 }
 
 /* Update current state */
-void NearestPointAlgorithmImplementationResult::update(const NumericalPoint & minimizer, UnsignedLong iterationNumber)
+void NearestPointAlgorithmImplementationResult::update(const NumericalPoint & minimizer, UnsignedInteger iterationNumber)
 {
   setMinimizer( minimizer );
   setIterationsNumber( iterationNumber );
@@ -279,10 +279,10 @@ Graph NearestPointAlgorithmImplementationResult::drawErrorHistory() const
   result.setGrid(true);
   result.setGridColor("black");
   // create a sample with the iterations number to be plotted as x data
-  const UnsignedLong size(getAbsoluteErrorHistory().getSize());
+  const UnsignedInteger size(getAbsoluteErrorHistory().getSize());
   {
     NumericalSample data(getAbsoluteErrorHistory());
-    for (UnsignedLong i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve absoluteErrorCurve( data, "absolute error" );
     absoluteErrorCurve.setLegend("absolute error");
     absoluteErrorCurve.setColor("red");
@@ -291,7 +291,7 @@ Graph NearestPointAlgorithmImplementationResult::drawErrorHistory() const
   // Relative error
   {
     NumericalSample data(getRelativeErrorHistory());
-    for (UnsignedLong i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve relativeErrorCurve( data, "relative error" );
     relativeErrorCurve.setLegend("relative error");
     relativeErrorCurve.setColor("blue");
@@ -300,7 +300,7 @@ Graph NearestPointAlgorithmImplementationResult::drawErrorHistory() const
   // Residual error
   {
     NumericalSample data(getResidualErrorHistory());
-    for (UnsignedLong i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve residualErrorCurve( data, "residual error" );
     residualErrorCurve.setLegend("residual error");
     residualErrorCurve.setColor("green");
@@ -309,7 +309,7 @@ Graph NearestPointAlgorithmImplementationResult::drawErrorHistory() const
   // Constraint error
   {
     NumericalSample data(getConstraintErrorHistory());
-    for (UnsignedLong i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve constraintErrorCurve( data, "constraint error" );
     constraintErrorCurve.setLegend("constraint error");
     constraintErrorCurve.setColor("yellow");

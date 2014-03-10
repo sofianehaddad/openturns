@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   //   Log::Show( Log::Flags() | Log::INFO );
 
   // Problem parameters
-  UnsignedLong dimension(3);
+  UnsignedInteger dimension(3);
   NumericalScalar a(7.0);
   NumericalScalar b(0.1);
   // Reference analytical values
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
   // Create the input distribution
   Collection<Distribution> marginalX(dimension);
-  for ( UnsignedLong i = 0; i < dimension; ++ i )
+  for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
     marginalX[i] = Uniform(-M_PI, M_PI);
   }
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
   // Create the orthogonal basis
   Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);
-  for ( UnsignedLong i = 0; i < dimension; ++ i )
+  for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
     polynomialCollection[i] = LegendreFactory();
   }
@@ -87,18 +87,18 @@ int main(int argc, char *argv[])
   OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
   // design experiment
-  UnsignedLong samplingSize( 75 );
+  UnsignedInteger samplingSize( 75 );
 
   // build basis
-  UnsignedLong degree( 10 );
-  UnsignedLong basisSize( enumerateFunction.getStrataCumulatedCardinal( degree ) );
+  UnsignedInteger degree( 10 );
+  UnsignedInteger basisSize( enumerateFunction.getStrataCumulatedCardinal( degree ) );
 
 
   Collection<FittingAlgorithm> listFittingAlgorithm;
   listFittingAlgorithm.add( KFold() );
   listFittingAlgorithm.add( CorrectedLeaveOneOut() );
 
-  for ( UnsignedLong fittingAlgorithmIndex = 0; fittingAlgorithmIndex < listFittingAlgorithm.getSize(); ++ fittingAlgorithmIndex )
+  for ( UnsignedInteger fittingAlgorithmIndex = 0; fittingAlgorithmIndex < listFittingAlgorithm.getSize(); ++ fittingAlgorithmIndex )
   {
     FixedStrategy adaptiveStrategy( productBasis, basisSize );
     FittingAlgorithm fittingAlgorithm( listFittingAlgorithm[fittingAlgorithmIndex] );

@@ -89,10 +89,10 @@ public:
   void setResult(const Result & result);
 
   /** Maximum iterations number accessor */
-  UnsignedLong getMaximumIterationsNumber() const;
+  UnsignedInteger getMaximumIterationsNumber() const;
 
   /** Maximum iterations number accessor */
-  void setMaximumIterationsNumber(const UnsignedLong maximumIterationsNumber);
+  void setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber);
 
   /** Maximum absolute error accessor */
   NumericalScalar getMaximumAbsoluteError() const;

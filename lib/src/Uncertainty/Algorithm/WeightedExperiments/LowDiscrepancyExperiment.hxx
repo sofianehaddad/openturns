@@ -49,18 +49,18 @@ public:
   explicit LowDiscrepancyExperiment(const String & name = DefaultName);
 
   /** Parameters constructor */
-  explicit LowDiscrepancyExperiment(const UnsignedLong size,
+  explicit LowDiscrepancyExperiment(const UnsignedInteger size,
                                     const String & name = DefaultName);
 
   /** Parameters constructor */
   LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
-                           const UnsignedLong size,
+                           const UnsignedInteger size,
                            const String & name = DefaultName);
 
   /** Parameters constructor */
   LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
                            const Distribution & distribution,
-                           const UnsignedLong size,
+                           const UnsignedInteger size,
                            const String & name = DefaultName);
 
   /** Virtual constructor */

@@ -73,10 +73,10 @@ int main(int argc, char *argv[])
     xValues.add(10.0);
     xValues.add(20.0);
     xValues.add(50.0);
-    for (UnsignedLong i = 0; i < nValues.getSize(); ++i)
+    for (UnsignedInteger i = 0; i < nValues.getSize(); ++i)
     {
-      const UnsignedLong n(nValues[i]);
-      for (UnsignedLong j = 0; j < xValues.getSize(); ++j)
+      const UnsignedInteger n(nValues[i]);
+      for (UnsignedInteger j = 0; j < xValues.getSize(); ++j)
       {
         const NumericalScalar x(xValues[j]);
         const NumericalScalar cdf(DistFunc::pKolmogorov(n, x));

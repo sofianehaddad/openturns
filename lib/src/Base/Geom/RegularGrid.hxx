@@ -53,7 +53,7 @@ public:
   /** Parameters constructor */
   RegularGrid(const NumericalScalar start,
               const NumericalScalar step,
-              const UnsignedLong n);
+              const UnsignedInteger n);
 
   /** Parameters constructor */
   RegularGrid(const Mesh & mesh);
@@ -74,10 +74,10 @@ public:
   NumericalScalar getStep() const;
 
   /** TimeStamp number accessor */
-  UnsignedLong getN() const;
+  UnsignedInteger getN() const;
 
   /** Get the value at index i */
-  NumericalScalar getValue(const UnsignedLong i) const;
+  NumericalScalar getValue(const UnsignedInteger i) const;
 
   /** Get all the values as a sample */
   NumericalPoint getValues() const;
@@ -89,7 +89,7 @@ public:
   Bool isRegular() const;
 
   /** Get the index of the nearest vertex */
-  UnsignedLong getNearestVertexIndex(const NumericalPoint & point) const;
+  UnsignedInteger getNearestVertexIndex(const NumericalPoint & point) const;
 
   /**
    * String converter
@@ -112,7 +112,7 @@ private:
   NumericalScalar step_;
 
   /** The number of stamps of the underlying regular grid */
-  UnsignedLong n_;
+  UnsignedInteger n_;
 
 }; // end class RegularGrid
 

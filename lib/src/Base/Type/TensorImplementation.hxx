@@ -52,24 +52,24 @@ public:
   TensorImplementation();
 
   /** Constructor with size (rowDim, colDim, sheetDim) */
-  TensorImplementation(const UnsignedLong rowDim,
-                       const UnsignedLong colDim,
-                       const UnsignedLong sheetDim);
+  TensorImplementation(const UnsignedInteger rowDim,
+                       const UnsignedInteger colDim,
+                       const UnsignedInteger sheetDim);
 
   /** Constructor from range of external collection */
   template <class InputIterator>
-  TensorImplementation(const UnsignedLong rowDim,
-                       const UnsignedLong colDim,
-                       const UnsignedLong sheetDim,
+  TensorImplementation(const UnsignedInteger rowDim,
+                       const UnsignedInteger colDim,
+                       const UnsignedInteger sheetDim,
                        InputIterator first,
                        InputIterator last);
 
   /** Constructor from external collection */
   /** If the dimensions don't correspond with the size of the collection, */
   /** the collection is either truncated or completed with zeros*/
-  TensorImplementation(const UnsignedLong rowDim,
-                       const UnsignedLong colDim,
-                       const UnsignedLong sheetDim,
+  TensorImplementation(const UnsignedInteger rowDim,
+                       const UnsignedInteger colDim,
+                       const UnsignedInteger sheetDim,
                        const Collection<NumericalScalar> & elementsValues);
 
 
@@ -82,37 +82,37 @@ public:
 
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j,
-                                 const UnsignedLong k);
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j,
+                                 const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j,
-                                       const UnsignedLong k) const;
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j,
+                                       const UnsignedInteger k) const;
 
   /** getSheet returns the sheet specified by its sheet number k */
-  Matrix getSheet(const UnsignedLong k) const;
+  Matrix getSheet(const UnsignedInteger k) const;
 
   /** setSheet sets matrix m as the sheet specified by its sheet number k  */
-  void setSheet(const UnsignedLong k,
+  void setSheet(const UnsignedInteger k,
                 const Matrix & m);
 
   /** getSheetSym returns the symmetric sheet specified by its sheet number k */
-  SymmetricMatrix getSheetSym(const UnsignedLong k) const;
+  SymmetricMatrix getSheetSym(const UnsignedInteger k) const;
 
   /** setSheetSym sets symmetric matrix m as the sheet specified by its sheet number k  */
-  void setSheetSym(const UnsignedLong k,
+  void setSheetSym(const UnsignedInteger k,
                    const SymmetricMatrix & m);
 
   /** Get the dimensions of the tensor */
   /** Number of rows */
-  const UnsignedLong getNbRows() const;
+  const UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedLong getNbColumns() const;
+  const UnsignedInteger getNbColumns() const;
   /** Number of sheets */
-  const UnsignedLong getNbSheets() const;
+  const UnsignedInteger getNbSheets() const;
 
   /** Check for symmetry */
   Bool isSymmetric() const;
@@ -135,28 +135,28 @@ public:
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
   const NumericalScalar * __baseaddress__ () const;
-  UnsignedLong __elementsize__ () const;
-  UnsignedLong __stride__ (UnsignedLong dim) const;
+  UnsignedInteger __elementsize__ () const;
+  UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 protected:
 
   /** TensorImplementation Dimensions */
-  UnsignedLong nbRows_;
-  UnsignedLong nbColumns_;
-  UnsignedLong nbSheets_;
+  UnsignedInteger nbRows_;
+  UnsignedInteger nbColumns_;
+  UnsignedInteger nbSheets_;
 
   /** Position conversion function : the indices i & j are used to compute the actual position of the element in the collection */
-  inline UnsignedLong convertPosition (const UnsignedLong i,
-                                       const UnsignedLong j,
-                                       const UnsignedLong k) const;
+  inline UnsignedInteger convertPosition (const UnsignedInteger i,
+                                       const UnsignedInteger j,
+                                       const UnsignedInteger k) const;
 
 }; /* class TensorImplementation */
 
 /** Constructor from range of external collection */
 template <class InputIterator>
-TensorImplementation::TensorImplementation(const UnsignedLong rowDim,
-    const UnsignedLong colDim,
-    const UnsignedLong sheetDim,
+TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
+    const UnsignedInteger colDim,
+    const UnsignedInteger sheetDim,
     InputIterator first,
     InputIterator last)
   : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim),
@@ -169,9 +169,9 @@ TensorImplementation::TensorImplementation(const UnsignedLong rowDim,
 
 /** Inline functions */
 
-inline UnsignedLong TensorImplementation::convertPosition (const UnsignedLong i,
-    const UnsignedLong j,
-    const UnsignedLong k) const
+inline UnsignedInteger TensorImplementation::convertPosition (const UnsignedInteger i,
+    const UnsignedInteger j,
+    const UnsignedInteger k) const
 {
   return i + nbRows_ * (j + nbColumns_ * k) ;
 }

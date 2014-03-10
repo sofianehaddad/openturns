@@ -120,7 +120,7 @@ public:
   static String GetNodeName( const Node & node );
 
   /** Returns the line number where 'node' appears */
-  static UnsignedLong GetNodeLineNumber( const Node & node );
+  static UnsignedInteger GetNodeLineNumber( const Node & node );
 
   /** Create a new node */
   static Node NewNode( const String & name );

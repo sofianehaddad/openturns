@@ -45,7 +45,7 @@ public:
 
   /** Default constructor */
   Student(const NumericalScalar nu = 3.0,
-          const UnsignedLong dimension = 1);
+          const UnsignedInteger dimension = 1);
 
   /** Parameters constructor */
   Student(const NumericalScalar nu,
@@ -103,7 +103,7 @@ public:
   NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;
@@ -124,7 +124,7 @@ public:
   CovarianceMatrix getCovariance() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedLong n) const;
+  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;

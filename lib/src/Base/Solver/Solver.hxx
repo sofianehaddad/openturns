@@ -57,7 +57,7 @@ public:
   Solver(const NumericalScalar absoluteError,
          const NumericalScalar relativeError,
          const NumericalScalar residualError,
-         const UnsignedLong maximumFunctionEvaluation);
+         const UnsignedInteger maximumFunctionEvaluation);
 
 
   /** Comparison operator */
@@ -93,8 +93,8 @@ public:
   NumericalScalar getResidualError() const;
 
   /** Maximum function evaluation accessor */
-  void setMaximumFunctionEvaluation(const UnsignedLong maximumFunctionEvaluation);
-  UnsignedLong getMaximumFunctionEvaluation() const;
+  void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);
+  UnsignedInteger getMaximumFunctionEvaluation() const;
 
 
 }; /* Class Solver */

@@ -62,18 +62,18 @@ DirichletFactory::Implementation DirichletFactory::build() const
 
 Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirichlet distribution from an empty sample";
-  const UnsignedLong dimension(sample.getDimension());
+  const UnsignedInteger dimension(sample.getDimension());
   // Check that the points lie in the simplex x_1+...+x_d < 1, x_k > 0
   // and precompute the sufficient statistics
   NumericalPoint meanLog(dimension + 1);
   NumericalPoint sumX(dimension, 0.0);
   NumericalPoint sumX2(dimension, 0.0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar sum(0.0);
-    for (UnsignedLong j = 0; j < dimension; ++j)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       const NumericalScalar xIJ(sample[i][j]);
       if (xIJ <= 0.0) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
@@ -92,7 +92,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
   NumericalPoint theta(dimension + 1, 0.0);
   NumericalScalar sumTheta(0.0);
   // Estimate the sum of parameters
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar sumXI(sumX[i]);
     const NumericalScalar sumX2I(sumX2[i]);
@@ -101,7 +101,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
   sumTheta /= dimension;
   // Estimate the parameters from the mean of the sample
   NumericalScalar lastTheta(sumTheta);
-  for (UnsignedLong i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar thetaI((sumX[i] / size) * sumTheta);
     // If the estimate is positive, use it, if not, use a default value of ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" )
@@ -111,20 +111,20 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
   // If the estimate is positive, use it, if not, use a default value of ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" )
   theta[dimension] = (lastTheta > 0.0 ? lastTheta : ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" ));
   Bool convergence(false);
-  UnsignedLong iteration(0);
-  while (!convergence && (iteration < ResourceMap::GetAsUnsignedLong( "DirichletFactory-MaximumIteration" )))
+  UnsignedInteger iteration(0);
+  while (!convergence && (iteration < ResourceMap::GetAsUnsignedInteger( "DirichletFactory-MaximumIteration" )))
   {
     // Newton iteration
     ++iteration;
     NumericalScalar sumTheta(0.0);
-    for (UnsignedLong i = 0; i <= dimension; ++i) sumTheta += theta[i];
+    for (UnsignedInteger i = 0; i <= dimension; ++i) sumTheta += theta[i];
     const NumericalScalar diGammaSumTheta(SpecFunc::DiGamma(sumTheta));
     const NumericalScalar triGammaSumTheta(SpecFunc::TriGamma(sumTheta));
     NumericalPoint g(dimension + 1);
     NumericalPoint q(dimension + 1);
     NumericalScalar numerator(0.0);
     NumericalScalar denominator(0.0);
-    for (UnsignedLong i = 0; i <= dimension; ++i)
+    for (UnsignedInteger i = 0; i <= dimension; ++i)
     {
       g[i] = meanLog[i] - SpecFunc::DiGamma(theta[i]) + diGammaSumTheta;
       q[i] = -SpecFunc::TriGamma(theta[i]);
@@ -133,20 +133,20 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
     }
     const NumericalScalar b(numerator / (1.0 / triGammaSumTheta + denominator));
     NumericalPoint delta(dimension + 1);
-    for (UnsignedLong i = 0; i <= dimension; ++i) delta[i] = (g[i] - b) / q[i];
+    for (UnsignedInteger i = 0; i <= dimension; ++i) delta[i] = (g[i] - b) / q[i];
     // Newton update
     theta = theta - delta;
     convergence = (delta.norm() < dimension * ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" ));
   }
   // Fixed point algorithm, works but is slow. Should never go there, as the Newton iteration should converge
   iteration = 0;
-  while (!convergence && (iteration < ResourceMap::GetAsUnsignedLong( "DirichletFactory-MaximumIteration" )))
+  while (!convergence && (iteration < ResourceMap::GetAsUnsignedInteger( "DirichletFactory-MaximumIteration" )))
   {
     NumericalScalar sumTheta(0.0);
-    for (UnsignedLong i = 0; i <= dimension; ++i) sumTheta += theta[i];
+    for (UnsignedInteger i = 0; i <= dimension; ++i) sumTheta += theta[i];
     const NumericalScalar psiSumTheta(SpecFunc::DiGamma(sumTheta));
     NumericalScalar delta(0.0);
-    for (UnsignedLong i = 0; i <= dimension; ++i)
+    for (UnsignedInteger i = 0; i <= dimension; ++i)
     {
       const NumericalScalar thetaI(SpecFunc::DiGammaInv(psiSumTheta + meanLog[i]));
       delta += fabs(theta[i] - thetaI);

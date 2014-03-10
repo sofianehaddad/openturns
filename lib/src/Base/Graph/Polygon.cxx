@@ -55,11 +55,11 @@ Polygon::Polygon(const NumericalSample & dataX,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
-  const UnsignedLong size(dataX.getSize());
+  const UnsignedInteger size(dataX.getSize());
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples with different size.";
   if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples of dimension greater than 1.";
   NumericalSample dataFull(size, 2);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i][0];
     dataFull[i][1] = dataY[i][0];
@@ -75,10 +75,10 @@ Polygon::Polygon(const NumericalPoint & dataX,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
 {
-  const UnsignedLong size(dataX.getDimension());
+  const UnsignedInteger size(dataX.getDimension());
   if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical points with different size.";
   NumericalSample dataFull(size, 2);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i];
     dataFull[i][1] = dataY[i];
@@ -99,9 +99,9 @@ Polygon::Polygon(const NumericalSample & data,
   // If data is unidimensional, assume that it means Y values with indices as X values
   if (data.getDimension() == 1)
   {
-    const UnsignedLong size(data.getSize());
+    const UnsignedInteger size(data.getSize());
     dataFull = NumericalSample(size, 2);
-    for (UnsignedLong i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       dataFull[i][0] = i;
       dataFull[i][1] = data[i][0];

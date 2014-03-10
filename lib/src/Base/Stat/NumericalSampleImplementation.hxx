@@ -50,8 +50,8 @@ class NSI_const_point;
 class NSI_point
 {
   NumericalSampleImplementation * p_nsi_;
-  UnsignedLong index_;
-  UnsignedLong dimension_;
+  UnsignedInteger index_;
+  UnsignedInteger dimension_;
 
   friend class NSI_const_point;
   friend std::ostream & operator << (std::ostream & os, const NSI_point & point);
@@ -62,7 +62,7 @@ public:
 
 public:
   NSI_point(NumericalSampleImplementation * p_nsi,
-            const UnsignedLong index);
+            const UnsignedInteger index);
 
   NSI_point & operator = (const NSI_point & rhs);
 
@@ -79,10 +79,10 @@ public:
   // NSI_point & operator = (const NSI_const_point & rhs);
   // NSI_point & operator = (const NumericalPoint & rhs);
 
-  NumericalScalar & operator [] (const UnsignedLong i);
-  const NumericalScalar & operator [] (const UnsignedLong i) const;
-  NumericalScalar & at (const UnsignedLong i);
-  const NumericalScalar & at (const UnsignedLong i) const;
+  NumericalScalar & operator [] (const UnsignedInteger i);
+  const NumericalScalar & operator [] (const UnsignedInteger i) const;
+  NumericalScalar & at (const UnsignedInteger i);
+  const NumericalScalar & at (const UnsignedInteger i) const;
 
   inline Collection<NumericalScalar> getCollection() const
   {
@@ -93,7 +93,7 @@ public:
     return getCollection();
   }
 
-  inline UnsignedLong getDimension() const
+  inline UnsignedInteger getDimension() const
   {
     return dimension_;
   }
@@ -147,8 +147,8 @@ OStream & operator << (OStream & OS, const NSI_point & point)
 class NSI_const_point
 {
   const NumericalSampleImplementation * p_nsi_;
-  UnsignedLong index_;
-  UnsignedLong dimension_;
+  UnsignedInteger index_;
+  UnsignedInteger dimension_;
 
   friend std::ostream & operator << (std::ostream & os, const NSI_const_point & point);
 
@@ -157,11 +157,11 @@ public:
   typedef const NumericalScalar * const_iterator;
 
 public:
-  NSI_const_point(const NumericalSampleImplementation * p_nsi, UnsignedLong index);
+  NSI_const_point(const NumericalSampleImplementation * p_nsi, UnsignedInteger index);
   NSI_const_point(const NSI_point & point);
 
-  const NumericalScalar & operator [] (const UnsignedLong i) const;
-  const NumericalScalar & at (const UnsignedLong i) const;
+  const NumericalScalar & operator [] (const UnsignedInteger i) const;
+  const NumericalScalar & at (const UnsignedInteger i) const;
 
   inline Collection<NumericalScalar> getCollection() const
   {
@@ -172,7 +172,7 @@ public:
     return getCollection();
   }
 
-  inline UnsignedLong getDimension() const
+  inline UnsignedInteger getDimension() const
   {
     return dimension_;
   }
@@ -212,7 +212,7 @@ NumericalPoint operator * (const NSI_point & point,
                            const NumericalScalar val)
 {
   NumericalPoint res(point.getDimension(), 0.);
-  for(UnsignedLong i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
+  for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
   return res;
 }
 
@@ -228,7 +228,7 @@ NumericalPoint operator * (const NSI_const_point & point,
                            const NumericalScalar val)
 {
   NumericalPoint res(point.getDimension(), 0.);
-  for(UnsignedLong i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
+  for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
   return res;
 }
 
@@ -248,7 +248,7 @@ NumericalPoint operator * (const NumericalScalar val,
 class NSI_iterator
 {
   NumericalSampleImplementation * p_nsi_;
-  UnsignedLong current_;
+  UnsignedInteger current_;
 
 public:
   typedef size_t difference_type;
@@ -265,7 +265,7 @@ public:
 
 public:
   NSI_iterator() : p_nsi_(0), current_(0) {}
-  NSI_iterator(NumericalSampleImplementation & nsi, const UnsignedLong index) : p_nsi_(&nsi), current_(index) {}
+  NSI_iterator(NumericalSampleImplementation & nsi, const UnsignedInteger index) : p_nsi_(&nsi), current_(index) {}
 
   inline NSI_iterator & operator ++ ()
   {
@@ -355,7 +355,7 @@ NSI_iterator::difference_type operator - (const NSI_iterator & lhs, const NSI_it
 class NSI_const_iterator
 {
   const NumericalSampleImplementation * p_nsi_;
-  UnsignedLong current_;
+  UnsignedInteger current_;
 
 public:
   typedef size_t difference_type;
@@ -371,7 +371,7 @@ public:
 
 public:
   NSI_const_iterator() : p_nsi_(0), current_(0) {}
-  NSI_const_iterator(const NumericalSampleImplementation & nsi, const UnsignedLong index) : p_nsi_(&nsi), current_(index) {}
+  NSI_const_iterator(const NumericalSampleImplementation & nsi, const UnsignedInteger index) : p_nsi_(&nsi), current_(index) {}
   NSI_const_iterator(const NSI_iterator & iter) : p_nsi_(iter.p_nsi_), current_(iter.current_) {}
 
   inline NSI_const_iterator & operator ++ ()
@@ -488,7 +488,7 @@ public:
   typedef NSI_iterator               iterator;
   typedef NSI_const_iterator         const_iterator;
 
-  typedef Collection<UnsignedLong>   UnsignedLongCollection;
+  typedef Collection<UnsignedInteger>   UnsignedIntegerCollection;
 
   enum ExternalFileFormat { CSV };
 
@@ -523,11 +523,11 @@ protected:
 public:
 
   /** Standard constructor */
-  NumericalSampleImplementation(const UnsignedLong size,
-                                const UnsignedLong dim);
+  NumericalSampleImplementation(const UnsignedInteger size,
+                                const UnsignedInteger dim);
 
   /** Constructor from a NumericalPoint */
-  NumericalSampleImplementation(const UnsignedLong size,
+  NumericalSampleImplementation(const UnsignedInteger size,
                                 const NumericalPoint & point);
 
 #ifndef SWIG
@@ -559,7 +559,7 @@ public:
     return const_iterator(*this, size_);
   }
 
-  void erase(const UnsignedLong first, const UnsignedLong last);
+  void erase(const UnsignedInteger first, const UnsignedInteger last);
   void erase(iterator first, iterator last);
   void clear();
 
@@ -567,17 +567,17 @@ public:
   NumericalPoint getData() const;
   void setData(const Collection<NumericalScalar> & data);
 
-  inline NSI_point operator [] (const UnsignedLong index)
+  inline NSI_point operator [] (const UnsignedInteger index)
   {
     return NSI_point(this, index);
   }
-  inline NSI_const_point operator [] (const UnsignedLong index) const
+  inline NSI_const_point operator [] (const UnsignedInteger index) const
   {
     return NSI_const_point(this, index);
   }
 
-  void swap_points(const UnsignedLong a, const UnsignedLong b);
-  void swap_range_points(const UnsignedLong fa, const UnsignedLong ta, const UnsignedLong fb);
+  void swap_points(const UnsignedInteger a, const UnsignedInteger b);
+  void swap_range_points(const UnsignedInteger fa, const UnsignedInteger ta, const UnsignedInteger fb);
 #endif
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
@@ -585,7 +585,7 @@ public:
   {
     return &data_[0];
   }
-  UnsignedLong __elementsize__ () const
+  UnsignedInteger __elementsize__ () const
   {
     return sizeof( NumericalScalar );
   }
@@ -615,13 +615,13 @@ public:
   Bool contains(const NumericalPoint & val) const;
 
   /** Size accessor */
-  inline UnsignedLong getSize() const
+  inline UnsignedInteger getSize() const
   {
     return size_;
   }
 
   /** Dimension accessor */
-  inline UnsignedLong getDimension() const
+  inline UnsignedInteger getDimension() const
   {
     return dimension_;
   }
@@ -700,12 +700,12 @@ public:
   /**
    * Gives the centered moment of order k of the sample (by component)
    */
-  NumericalPoint computeCenteredMomentPerComponent(const UnsignedLong k) const;
+  NumericalPoint computeCenteredMomentPerComponent(const UnsignedInteger k) const;
 
   /**
    * Gives the raw moment of order k of the sample (by component)
    */
-  NumericalPoint computeRawMomentPerComponent(const UnsignedLong k) const;
+  NumericalPoint computeRawMomentPerComponent(const UnsignedInteger k) const;
 
   /**
    * Gives the quantile per component of the sample
@@ -733,19 +733,19 @@ public:
   NumericalSampleImplementation rank() const;
 
   /** Ranked component */
-  NumericalSampleImplementation rank(const UnsignedLong index) const;
+  NumericalSampleImplementation rank(const UnsignedInteger index) const;
 
   /** Sorted sample */
   NumericalSampleImplementation sort() const;
 
   /** Sorted component */
-  NumericalSampleImplementation sort(const UnsignedLong index) const;
+  NumericalSampleImplementation sort(const UnsignedInteger index) const;
 
   /** Sorted component */
-  NumericalSampleImplementation sortAccordingToAComponent(const UnsignedLong index) const;
+  NumericalSampleImplementation sortAccordingToAComponent(const UnsignedInteger index) const;
 
   /** Get the i-th marginal sample */
-  NumericalSampleImplementation getMarginal(const UnsignedLong index) const;
+  NumericalSampleImplementation getMarginal(const UnsignedInteger index) const;
 
   /** Get the marginal sample corresponding to indices dimensions */
   NumericalSampleImplementation getMarginal(const Indices & indices) const;
@@ -794,10 +794,10 @@ public:
 private:
 
   /** The size of the sample */
-  UnsignedLong size_;
+  UnsignedInteger size_;
 
   /** The dimension of the sample */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** The collection of unwrapped points */
   PersistentCollection<NumericalScalar> data_;

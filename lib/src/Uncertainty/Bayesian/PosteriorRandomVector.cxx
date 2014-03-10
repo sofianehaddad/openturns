@@ -64,7 +64,7 @@ Sampler PosteriorRandomVector::getSampler() const
 }
 
 
-UnsignedLong PosteriorRandomVector::getDimension() const
+UnsignedInteger PosteriorRandomVector::getDimension() const
 {
   return sampler_.getDimension();
 }
@@ -76,7 +76,7 @@ NumericalPoint PosteriorRandomVector::getRealization() const
 }
 
 
-NumericalSample PosteriorRandomVector::getSample(const UnsignedLong size) const
+NumericalSample PosteriorRandomVector::getSample(const UnsignedInteger size) const
 {
   return sampler_.getSample(size);
 }

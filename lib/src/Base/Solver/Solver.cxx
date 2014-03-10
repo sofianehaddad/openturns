@@ -52,7 +52,7 @@ Solver::Solver():
 Solver::Solver(const NumericalScalar absoluteError,
                const NumericalScalar relativeError,
                const NumericalScalar residualError,
-               const UnsignedLong maximumFunctionEvaluation):
+               const UnsignedInteger maximumFunctionEvaluation):
   TypedInterfaceObject<SolverImplementation>(new SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation))
 {
   // Nothing to do
@@ -130,13 +130,13 @@ NumericalScalar Solver::getResidualError() const
 }
 
 /* Maximum function evaluation accessor */
-void Solver::setMaximumFunctionEvaluation(const UnsignedLong maximumFunctionEvaluation)
+void Solver::setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation)
 {
   copyOnWrite();
   getImplementation()->setMaximumFunctionEvaluation(maximumFunctionEvaluation);
 }
 
-UnsignedLong Solver::getMaximumFunctionEvaluation() const
+UnsignedInteger Solver::getMaximumFunctionEvaluation() const
 {
   return getImplementation()->getMaximumFunctionEvaluation();
 }

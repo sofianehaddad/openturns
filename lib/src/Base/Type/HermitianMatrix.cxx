@@ -42,7 +42,7 @@ HermitianMatrix::HermitianMatrix()
 
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
-HermitianMatrix::HermitianMatrix(const UnsignedLong dimension)
+HermitianMatrix::HermitianMatrix(const UnsignedInteger dimension)
   : SquareComplexMatrix(dimension, dimension),
     hasBeenHermitianized_(false)
 {
@@ -73,7 +73,7 @@ String HermitianMatrix::__str__(const String & offset) const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedLong HermitianMatrix::getDimension() const
+const UnsignedInteger HermitianMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -125,8 +125,8 @@ void HermitianMatrix::checkHermitian() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalComplex & HermitianMatrix::operator () (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalComplex & HermitianMatrix::operator () (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   if (i < j) throw InvalidArgumentException(HERE) << "Error: only the lower triangle of an Hermitian matrix can be filled directly.";
   copyOnWrite();
@@ -137,8 +137,8 @@ NumericalComplex & HermitianMatrix::operator () (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalComplex HermitianMatrix::operator () (const UnsignedLong i,
-    const UnsignedLong j)  const
+const NumericalComplex HermitianMatrix::operator () (const UnsignedInteger i,
+    const UnsignedInteger j)  const
 {
   return (i >= j) ? (*getImplementation())(i, j) : std::conj((*getImplementation())(j, i)) ;
 }
@@ -253,7 +253,7 @@ HermitianMatrix HermitianMatrix::operator / (const NumericalComplex s) const
 }
 
 /* HermitianMatrix integer power */
-HermitianMatrix HermitianMatrix::power(const UnsignedLong n) const
+HermitianMatrix HermitianMatrix::power(const UnsignedInteger n) const
 {
   return Implementation(getImplementation()->hermPower(n).clone());
 }

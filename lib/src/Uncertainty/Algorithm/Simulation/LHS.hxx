@@ -75,10 +75,10 @@ protected:
   NumericalSample computeBlockSample();
 
   /** Second antecedent dimension */
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
   /** Active block index */
-  UnsignedLong blockIndex_;
+  UnsignedInteger blockIndex_;
 
   /** Cells shuffle */
   Matrix shuffle_;

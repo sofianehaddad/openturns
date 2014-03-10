@@ -40,13 +40,13 @@ class FaureSequence :
 public:
 
   /** Constructor with parameters */
-  explicit FaureSequence(const UnsignedLong dimension = 1);
+  explicit FaureSequence(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
   virtual FaureSequence * clone() const;
 
   /** Initialize the sequence */
-  void initialize(const UnsignedLong dimension);
+  void initialize(const UnsignedInteger dimension);
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
@@ -84,7 +84,7 @@ private:
   Unsigned64BitsInteger seedBound_;
 
   /** Number of digits of the seed in base the modulus */
-  UnsignedLong logSeed_;
+  UnsignedInteger logSeed_;
 
 }; /* class FaureSequence */
 

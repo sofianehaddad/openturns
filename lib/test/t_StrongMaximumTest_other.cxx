@@ -32,12 +32,12 @@ void printSample(String name, NumericalSample sample)
   OStream fullprint(std::cout);
 
   fullprint << name << "=[" ;
-  for (UnsignedLong counter = 0; counter < sample.getSize(); counter++)
+  for (UnsignedInteger counter = 0; counter < sample.getSize(); counter++)
   {
     if (counter != 0)  fullprint << ";";
     fullprint << "[" ;
     NumericalPoint point(sample[counter]);
-    for (UnsignedLong coordinate = 0; coordinate < point.getDimension(); coordinate++)
+    for (UnsignedInteger coordinate = 0; coordinate < point.getDimension(); coordinate++)
     {
       if (coordinate != 0)  fullprint << ",";
       fullprint <<  point[coordinate];
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     NumericalMathFunction myFunction(input, Description(1, "y1"), Description(1, "(x1-0.6)*(x1-0.6)-x2*x2"));
 
-    UnsignedLong dim(myFunction.getInputDimension());
+    UnsignedInteger dim(myFunction.getInputDimension());
     /* We create a normal distribution point of dimension 1 */
     NumericalPoint mean(dim, 0.0);
     NumericalPoint sigma(dim, 1.0);

@@ -50,15 +50,15 @@ public:
 
   /** Standard constructor */
   FieldImplementation(const Mesh & mesh,
-                      const UnsignedLong dim);
+                      const UnsignedInteger dim);
 
   /** Constructor from a Mesh and a sample */
   FieldImplementation(const Mesh & mesh,
                       const NumericalSample & values);
 
   /** Accessor to values */
-  NumericalPoint getValueAtIndex(const UnsignedLong index) const;
-  void setValueAtIndex(const UnsignedLong index,
+  NumericalPoint getValueAtIndex(const UnsignedInteger index) const;
+  void setValueAtIndex(const UnsignedInteger index,
                        const NumericalPoint & val);
 
   NumericalPoint getValueAtNearestPosition(const NumericalPoint & position) const;
@@ -94,11 +94,11 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Size accessor */
-  UnsignedLong getSize() const;
+  UnsignedInteger getSize() const;
 
   /** Dimension accessor */
-  UnsignedLong getMeshDimension() const;
-  UnsignedLong getDimension() const;
+  UnsignedInteger getMeshDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Return the values stored in the field as a sample */
   NumericalSample getSample() const;
@@ -106,29 +106,29 @@ public:
 
 #ifndef SWIG
   /** Individual value accessor */
-  NSI_point operator[](const UnsignedLong index);
-  NSI_const_point operator[](const UnsignedLong index) const;
-  NSI_point at(const UnsignedLong index);
-  NSI_const_point at(const UnsignedLong index) const;
-  NumericalScalar & operator() (const UnsignedLong i,
-                                const UnsignedLong j);
-  const NumericalScalar & operator() (const UnsignedLong i,
-                                      const UnsignedLong j) const;
-  NumericalScalar & at(const UnsignedLong i,
-                       const UnsignedLong j);
-  const NumericalScalar & at(const UnsignedLong i,
-                             const UnsignedLong j) const;
+  NSI_point operator[](const UnsignedInteger index);
+  NSI_const_point operator[](const UnsignedInteger index) const;
+  NSI_point at(const UnsignedInteger index);
+  NSI_const_point at(const UnsignedInteger index) const;
+  NumericalScalar & operator() (const UnsignedInteger i,
+                                const UnsignedInteger j);
+  const NumericalScalar & operator() (const UnsignedInteger i,
+                                      const UnsignedInteger j) const;
+  NumericalScalar & at(const UnsignedInteger i,
+                       const UnsignedInteger j);
+  const NumericalScalar & at(const UnsignedInteger i,
+                             const UnsignedInteger j) const;
 #endif
 
   /* Method __len__() is for Python */
-  UnsignedLong __len__() const;
+  UnsignedInteger __len__() const;
 
   /* Method __contains__() is for Python */
   Bool __contains__(const NumericalPoint & val) const;
 
 
-  const NumericalPoint __getitem__ (const UnsignedLong index) const;
-  void __setitem__ (const UnsignedLong index,
+  const NumericalPoint __getitem__ (const UnsignedInteger index) const;
+  void __setitem__ (const UnsignedInteger index,
                     const NumericalPoint & val);
 
   /** Return the fielf as a sample, ie its values and positions */
@@ -142,7 +142,7 @@ public:
   NumericalPoint getTemporalMean() const;
 
   /** Draw a marginal of the timeSerie */
-  Graph drawMarginal(const UnsignedLong index = 0,
+  Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;
 
   /** Method save() stores the object through the StorageManager */

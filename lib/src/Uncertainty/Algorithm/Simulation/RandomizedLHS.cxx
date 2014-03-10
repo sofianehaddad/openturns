@@ -52,7 +52,7 @@ RandomizedLHS::RandomizedLHS(const Event & event):
   dimension_(event.getImplementation()->getAntecedent()->getDimension())
 {
   // Get the marginals
-  for (UnsignedLong index = 0; index < dimension_; ++index) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
+  for (UnsignedInteger index = 0; index < dimension_; ++index) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
 }
 
 /* Virtual constructor */
@@ -65,15 +65,15 @@ RandomizedLHS * RandomizedLHS::clone() const
 NumericalSample RandomizedLHS::computeBlockSample()
 {
   // Size of a block
-  const UnsignedLong blockSize(getBlockSize());
+  const UnsignedInteger blockSize(getBlockSize());
   // Compute a shuffle of given dimension and blocksize
   const Matrix shuffle(LHSExperiment::ComputeShuffle(dimension_, blockSize));
   // First, compute the input sub-sample based on the shuffling
   NumericalSample inputSample(blockSize, NumericalPoint(dimension_));
-  for(UnsignedLong index = 0; index < blockSize; ++index)
+  for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
     const NumericalPoint u(RandomGenerator::Generate(dimension_));
-    for(UnsignedLong component = 0; component < dimension_; ++component)
+    for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
       NumericalScalar xi((shuffle(component, index) + u[component]) / blockSize);
       inputSample[index][component] = marginals_[component].computeQuantile(xi)[0];
@@ -81,7 +81,7 @@ NumericalSample RandomizedLHS::computeBlockSample()
   }
   // Then, evaluate the function on this sample
   NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
-  for (UnsignedLong i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
+  for (UnsignedInteger i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
   return blockSample;
 }
 

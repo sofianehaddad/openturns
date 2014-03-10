@@ -245,7 +245,7 @@ void MeixnerDistribution::update()
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   // Third, the CDF and complementary CDF
-  Collection<PiecewiseHermiteEvaluationImplementation> CDFCCDF(interpolateCDF(ResourceMap::GetAsUnsignedLong("MeixnerDistribution-CDFDiscretization")));
+  Collection<PiecewiseHermiteEvaluationImplementation> CDFCCDF(interpolateCDF(ResourceMap::GetAsUnsignedInteger("MeixnerDistribution-CDFDiscretization")));
   cdfApproximation_ = CDFCCDF[0];
   ccdfApproximation_ = CDFCCDF[1];
   // Fourth, the random generator
@@ -339,7 +339,7 @@ NumericalScalar MeixnerDistribution::computeScalarQuantile(const NumericalScalar
   const NumericalScalar b(getRange().getUpperBound()[0]);
   if (prob <= 0.0) return (tail ? b : a);
   if (prob >= 1.0) return (tail ? a : b);
-  const UnsignedLong n(cdfApproximation_.getLocations().getSize());
+  const UnsignedInteger n(cdfApproximation_.getLocations().getSize());
   if (tail)
   {
     // Here we have to solve ComplementaryCDF(x) = prob which is mathematically

@@ -60,7 +60,7 @@ CalibrationStrategy::CalibrationStrategy(const Interval & range,
 CalibrationStrategy::CalibrationStrategy(const Interval & range,
     const NumericalScalar expansionFactor,
     const NumericalScalar shrinkFactor,
-    const UnsignedLong calibrationStep)
+    const UnsignedInteger calibrationStep)
   : TypedInterfaceObject<CalibrationStrategyImplementation>(new CalibrationStrategyImplementation(range,
       expansionFactor,
       shrinkFactor,
@@ -116,14 +116,14 @@ NumericalScalar CalibrationStrategy::getShrinkFactor() const
 }
 
 
-void CalibrationStrategy::setCalibrationStep(const UnsignedLong calibrationStep)
+void CalibrationStrategy::setCalibrationStep(const UnsignedInteger calibrationStep)
 {
   copyOnWrite();
   getImplementation()->setCalibrationStep(calibrationStep);
 }
 
 
-UnsignedLong CalibrationStrategy::getCalibrationStep() const
+UnsignedInteger CalibrationStrategy::getCalibrationStep() const
 {
   return getImplementation()->getCalibrationStep();
 }

@@ -156,7 +156,7 @@ public:
 
   /** @brief Returns the number of successful hits in the cache
    */
-  UnsignedLong getCacheHits() const;
+  UnsignedInteger getCacheHits() const;
 
   /** @brief Add some content to the cache
    */
@@ -255,16 +255,16 @@ public:
   virtual void setParameters(const NumericalPointWithDescription & parameters);
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputNumericalPointDimension() const;
+  UnsignedInteger getInputNumericalPointDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputNumericalPointDimension() const;
+  UnsignedInteger getOutputNumericalPointDimension() const;
 
   /** Accessor for input point dimension */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Description Accessor, i.e. the names of the input and output parameters */
   void setDescription(const Description & description);
@@ -277,46 +277,46 @@ public:
   Description getOutputDescription() const;
 
   /** Get the i-th marginal function */
-  virtual Implementation getMarginal(const UnsignedLong i) const;
+  virtual Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   virtual Implementation getMarginal(const Indices & indices) const;
 
   /** Number of calls to the evaluation */
-  UnsignedLong getEvaluationCallsNumber() const;
+  UnsignedInteger getEvaluationCallsNumber() const;
 
   /** Number of calls to the gradient */
-  UnsignedLong getGradientCallsNumber() const;
+  UnsignedInteger getGradientCallsNumber() const;
 
   /** Number of calls to the hessian */
-  UnsignedLong getHessianCallsNumber() const;
+  UnsignedInteger getHessianCallsNumber() const;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-  virtual Graph draw(const UnsignedLong inputMarginal,
-                     const UnsignedLong outputMarginal,
+  virtual Graph draw(const UnsignedInteger inputMarginal,
+                     const UnsignedInteger outputMarginal,
                      const NumericalPoint & centralPoint,
                      const NumericalScalar xMin,
                      const NumericalScalar xMax,
-                     const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
 
   /** Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
-  virtual Graph draw(const UnsignedLong firstInputMarginal,
-                     const UnsignedLong secondInputMarginal,
-                     const UnsignedLong outputMarginal,
+  virtual Graph draw(const UnsignedInteger firstInputMarginal,
+                     const UnsignedInteger secondInputMarginal,
+                     const UnsignedInteger outputMarginal,
                      const NumericalPoint & centralPoint,
                      const NumericalPoint & xMin,
                      const NumericalPoint & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
   virtual Graph draw(const NumericalScalar xMin,
                      const NumericalScalar xMax,
-                     const UnsignedLong pointNumber = ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber")) const;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
   virtual Graph draw(const NumericalPoint & xMin,
                      const NumericalPoint & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedLong("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
+                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluationImplementation-DefaultPointNumber"))) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

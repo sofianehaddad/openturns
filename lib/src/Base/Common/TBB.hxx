@@ -130,16 +130,16 @@ public:
 
   template <typename BODY>
   static inline
-  void ParallelFor( UnsignedLong from, UnsignedLong to, const BODY & body, std::size_t gs = 1 )
+  void ParallelFor( UnsignedInteger from, UnsignedInteger to, const BODY & body, std::size_t gs = 1 )
   {
-    tbb::parallel_for( tbb::blocked_range<UnsignedLong>( from, to, gs ), body );
+    tbb::parallel_for( tbb::blocked_range<UnsignedInteger>( from, to, gs ), body );
   }
 
   template <typename BODY>
   static inline
-  void ParallelReduce( UnsignedLong from, UnsignedLong to, BODY & body, std::size_t gs = 1)
+  void ParallelReduce( UnsignedInteger from, UnsignedInteger to, BODY & body, std::size_t gs = 1)
   {
-    tbb::parallel_reduce( tbb::blocked_range<UnsignedLong>( from, to, gs ), body );
+    tbb::parallel_reduce( tbb::blocked_range<UnsignedInteger>( from, to, gs ), body );
   }
 
   template <typename ITERATOR>

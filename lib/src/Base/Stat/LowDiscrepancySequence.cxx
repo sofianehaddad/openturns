@@ -38,7 +38,7 @@ LowDiscrepancySequence::LowDiscrepancySequence()
 
 
 /* Constructor with parameters*/
-LowDiscrepancySequence::LowDiscrepancySequence(const UnsignedLong dimension)
+LowDiscrepancySequence::LowDiscrepancySequence(const UnsignedInteger dimension)
   : TypedInterfaceObject<LowDiscrepancySequenceImplementation>(LowDiscrepancySequenceImplementation(dimension).clone())
 {
   // Nothing to do
@@ -62,14 +62,14 @@ LowDiscrepancySequence::LowDiscrepancySequence(const LowDiscrepancySequenceImple
 
 
 /* Initialize the sequence */
-void LowDiscrepancySequence::initialize(const UnsignedLong dimension)
+void LowDiscrepancySequence::initialize(const UnsignedInteger dimension)
 {
   getImplementation()->initialize(dimension);
 }
 
 
 /* Dimension accessor*/
-UnsignedLong LowDiscrepancySequence::getDimension() const
+UnsignedInteger LowDiscrepancySequence::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -83,7 +83,7 @@ NumericalPoint LowDiscrepancySequence::generate()
 
 
 /* Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-NumericalSample LowDiscrepancySequence::generate(const UnsignedLong size)
+NumericalSample LowDiscrepancySequence::generate(const UnsignedInteger size)
 {
   return getImplementation()->generate(size);
 }

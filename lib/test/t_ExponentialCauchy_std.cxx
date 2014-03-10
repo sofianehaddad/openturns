@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   {
 
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong defaultDimension(1);
+    const UnsignedInteger defaultDimension(1);
 
     /* Amplitude values */
     NumericalPoint amplitude(defaultDimension, 1.0);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     fullprint << "discretized covariance over the time grid=" << timeGrid << " is" << std::endl;
     fullprint << myModel.discretizeCovariance(timeGrid) << std::endl;
     /* Default dimension parameter to evaluate the model */
-    const UnsignedLong highDimension(3);
+    const UnsignedInteger highDimension(3);
 
     /* Reallocation of adequate sizes*/
     amplitude.resize(highDimension);
@@ -81,12 +81,12 @@ int main(int argc, char *argv[])
 
     CorrelationMatrix spatialCorrelation(highDimension);
 
-    for (UnsignedLong index = 0 ; index < highDimension; ++index)
+    for (UnsignedInteger index = 0 ; index < highDimension; ++index)
     {
       // constant amplitude
       amplitude[index] = 1.0 ;
       scale[index] = (index + 1.0) / defaultDimension ;
-      for (UnsignedLong k = 0; k < index; ++k) spatialCorrelation(index, k) = 1.0 / pow(1.0 + index + k, 2);
+      for (UnsignedInteger k = 0; k < index; ++k) spatialCorrelation(index, k) = 1.0 / pow(1.0 + index + k, 2);
     }
     //fullprint << "spatialCorrelation=" << spatialCorrelation << std::endl;
     /* checking the cast*/

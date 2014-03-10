@@ -164,11 +164,11 @@ NumericalPoint NonCentralStudent::getKurtosis() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint NonCentralStudent::getStandardMoment(const UnsignedLong n) const
+NumericalPoint NonCentralStudent::getStandardMoment(const UnsignedInteger n) const
 {
   if (n >= nu_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to the number of degrees of freedom";
   UniVariatePolynomial p(NumericalPoint(1, 1.0));
-  for (UnsignedLong k = 0; k < n; ++k) p = p.derivate() + p.incrementDegree(1);
+  for (UnsignedInteger k = 0; k < n; ++k) p = p.derivate() + p.incrementDegree(1);
   return NumericalPoint(1, p(delta_) * exp(0.5 * n * log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
 }
 

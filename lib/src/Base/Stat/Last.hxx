@@ -49,7 +49,7 @@ public:
   Last();
 
   /** Constructor with parameters */
-  explicit Last(const UnsignedLong maximumSize);
+  explicit Last(const UnsignedInteger maximumSize);
 
   /** Virtual constructor */
   virtual Last * clone() const;
@@ -62,10 +62,10 @@ public:
   NumericalSample getSample() const;
 
   /** MaximumSize accessor */
-  UnsignedLong getMaximumSize() const;
+  UnsignedInteger getMaximumSize() const;
 
   /** Index accessor */
-  UnsignedLong getIndex() const;
+  UnsignedInteger getIndex() const;
 
   /** Wrapped flag accessor */
   Bool getHasWrapped() const;
@@ -83,10 +83,10 @@ protected:
 
 private:
   // Maximum number of points to be hitorized
-  UnsignedLong maximumSize_;
+  UnsignedInteger maximumSize_;
 
   // Index where the next point will be stored
-  UnsignedLong index_;
+  UnsignedInteger index_;
 
   // Flag that tells if the storage has already exceeded maximumSize_
   Bool hasWrapped_;

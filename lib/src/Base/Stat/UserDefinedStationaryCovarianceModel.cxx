@@ -51,7 +51,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   : StationaryCovarianceModel(name),
     covarianceCollection_(0)
 {
-  const UnsignedLong size(timeGrid.getN());
+  const UnsignedInteger size(timeGrid.getN());
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
                                          << " timeGrid size = " << size << "covariance function size = " << covarianceFunction.getSize();
@@ -62,7 +62,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   covarianceCollection_[0] = covarianceFunction[0];
   dimension_ = covarianceCollection_[0].getDimension();
   // put the next elements if dimension is ok
-  for (UnsignedLong k = 1; k < size; ++k)
+  for (UnsignedInteger k = 1; k < size; ++k)
   {
     if (covarianceFunction[k].getDimension() != dimension_)
       throw InvalidArgumentException(HERE) << " Error with dimension; the covariance matrices should be of same dimension";

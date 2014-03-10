@@ -38,7 +38,7 @@ CLASSNAMEINIT(Bisection);
 Bisection::Bisection(const NumericalScalar absoluteError,
                      const NumericalScalar relativeError,
                      const NumericalScalar residualError,
-                     const UnsignedLong maximumFunctionEvaluation)
+                     const UnsignedInteger maximumFunctionEvaluation)
   : SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation)
 {
   // Nothing to do
@@ -69,8 +69,8 @@ NumericalScalar Bisection::solve(const NumericalMathFunction & function,
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the bisection method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
-  UnsignedLong usedFunctionEvaluation(0);
-  const UnsignedLong maximumFunctionEvaluation(getMaximumFunctionEvaluation());
+  UnsignedInteger usedFunctionEvaluation(0);
+  const UnsignedInteger maximumFunctionEvaluation(getMaximumFunctionEvaluation());
   /* We transform function(x) = value into function(x) - value = 0 */
   NumericalScalar a(infPoint);
   NumericalScalar fA(infValue - value);

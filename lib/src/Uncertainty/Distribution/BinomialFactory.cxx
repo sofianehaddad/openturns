@@ -62,15 +62,15 @@ BinomialFactory::Implementation BinomialFactory::build() const
 
 Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Binomial distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Binomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mean(0.0);
   NumericalScalar var(0.0);
   NumericalScalar sum(0.0);
-  UnsignedLong upperBound(0);
+  UnsignedInteger upperBound(0);
   const NumericalScalar supportEpsilon(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x(sample[i][0]);
     const int iX(static_cast<int>(round(x)));
@@ -89,14 +89,14 @@ Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
   // mean = np
   // var = np(1-p)
   // p = 1.0 - var / mean
-  UnsignedLong n(upperBound);
+  UnsignedInteger n(upperBound);
   NumericalScalar p(mean / n);
-  if (mean > var) n = std::max(upperBound, (UnsignedLong)round(mean * mean / (mean - var)));
+  if (mean > var) n = std::max(upperBound, (UnsignedInteger)round(mean * mean / (mean - var)));
   // Loop over n to get the maximum likelihood
   // First, compute the likelihood resulting from the first estimate
   NumericalScalar logLikelihood(ComputeLogLikelihood(n, p, sample));
   NumericalScalar maxLogLikelihood(logLikelihood);
-  UnsignedLong maxN(n);
+  UnsignedInteger maxN(n);
   // Check if we have to try the backward direction
   int step(1);
   if (n > upperBound)
@@ -137,19 +137,19 @@ Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
   return result;
 }
 
-NumericalScalar BinomialFactory::ComputeLogLikelihood(const UnsignedLong n,
+NumericalScalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
     const NumericalScalar p,
     const NumericalSample & sample)
 {
-  std::map<UnsignedLong, NumericalScalar> logLikelihoodCache;
-  const UnsignedLong size(sample.getSize());
+  std::map<UnsignedInteger, NumericalScalar> logLikelihoodCache;
+  const UnsignedInteger size(sample.getSize());
   const NumericalScalar logNFactorial(SpecFunc::LnGamma(n + 1.0));
   const NumericalScalar logP(log(p));
   const NumericalScalar logQ(log1p(-p));
   NumericalScalar logLikelihood(0.0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedLong k(static_cast<UnsignedLong>(round(sample[i][0])));
+    const UnsignedInteger k(static_cast<UnsignedInteger>(round(sample[i][0])));
     if (logLikelihoodCache.find(k) == logLikelihoodCache.end()) logLikelihoodCache[k] = logNFactorial - SpecFunc::LnGamma(n - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * logP + (n - k) * logQ;
     logLikelihood += logLikelihoodCache[k];
   }

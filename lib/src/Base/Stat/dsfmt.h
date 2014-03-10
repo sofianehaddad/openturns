@@ -72,10 +72,10 @@ namespace tutils
         }
 
         uint32_t get_state_length_32(void) { return 4 * (N + 1); }
-        void get_state(OT::UnsignedLong * state) {
-          // We don't know the size of an OT::UnsignedLong, it can be 32 or 64 bits. We decide to
+        void get_state(OT::UnsignedInteger * state) {
+          // We don't know the size of an OT::UnsignedInteger, it can be 32 or 64 bits. We decide to
           // store only 32 bits values, even if it can handle 64 bits.
-          for (OT::UnsignedLong i = 0; i <= (uint32_t)(N); i++)
+          for (OT::UnsignedInteger i = 0; i <= (uint32_t)(N); i++)
             {
               uint32_t words[4];
               memcpy(&words[0], &u_[i], 16);
@@ -93,10 +93,10 @@ namespace tutils
             }
         }
 
-        void set_state(OT::UnsignedLong * state) {
-          // We don't know the size of an OT::UnsignedLong, it can be 32 or 64 bits. We decide to
+        void set_state(OT::UnsignedInteger * state) {
+          // We don't know the size of an OT::UnsignedInteger, it can be 32 or 64 bits. We decide to
           // store only 32 bits values, even if it can handle 64 bits.
-          for (OT::UnsignedLong i = 0; i <= (uint32_t)(N); i++)
+          for (OT::UnsignedInteger i = 0; i <= (uint32_t)(N); i++)
             {
               uint32_t words[4];
 #ifdef __BIG_ENDIAN__

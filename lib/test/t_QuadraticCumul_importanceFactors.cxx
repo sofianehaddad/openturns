@@ -43,17 +43,17 @@ int main(int argc, char *argv[])
     NumericalMathFunction myFunc(inputVar, Description(1, "f1"), Description(1, "(x2 + 1) * exp(x1 - 2 * x2)"));
 
     /* We create a distribution */
-    UnsignedLong dim(myFunc.getInputDimension());
+    UnsignedInteger dim(myFunc.getInputDimension());
     NumericalPoint meanPoint(dim, 0.1);
     NumericalPoint sigma(dim, 1.0e-1);
     sigma[0] = 2.0e-1;
     sigma[1] = 3.0e-1;
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       R(i, i) = 1.0;
     }
-    for (UnsignedLong i = 1; i < dim; i++)
+    for (UnsignedInteger i = 1; i < dim; i++)
     {
       R(i, i - 1) = 0.25;
     }

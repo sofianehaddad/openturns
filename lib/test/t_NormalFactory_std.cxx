@@ -35,21 +35,21 @@ int main(int argc, char *argv[])
 
   try
   {
-    UnsignedLong dim(3);
+    UnsignedInteger dim(3);
     NumericalPoint mean(dim);
     NumericalPoint sigma(dim);
     CorrelationMatrix R(dim);
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       mean[i] = i + 0.5;
       sigma[i] = 2 * i + 1.0;
-      for (UnsignedLong j = 0; j < i; j++)
+      for (UnsignedInteger j = 0; j < i; j++)
       {
         R(i, j) = 0.5 * (1.0 + i) / dim;
       }
     }
     Normal distribution(mean, sigma, R);
-    UnsignedLong size(10000);
+    UnsignedInteger size(10000);
     NumericalSample sample(distribution.getSample(size));
     NormalFactory factory;
     CovarianceMatrix covariance;

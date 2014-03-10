@@ -46,7 +46,7 @@ public:
   explicit GaussKronrod(const String & name = DefaultName);
 
   /** Parameter constructor */
-  GaussKronrod(const UnsignedLong maximumSubIntervals,
+  GaussKronrod(const UnsignedInteger maximumSubIntervals,
                const NumericalScalar maximumError,
                const GaussKronrodRule & rule);
 
@@ -80,8 +80,8 @@ public:
                                     NumericalPoint & ei) const;
 
   /** Maximum sub-intervals accessor */
-  UnsignedLong getMaximumSubIntervals() const;
-  void setMaximumSubIntervals(const UnsignedLong maximumSubIntervals);
+  UnsignedInteger getMaximumSubIntervals() const;
+  void setMaximumSubIntervals(const UnsignedInteger maximumSubIntervals);
 
   /** Maximum error accessor */
   NumericalScalar getMaximumError() const;
@@ -106,7 +106,7 @@ private:
                               NumericalScalar & localError) const;
 
   /* Maximum number of sub-intervals */
-  UnsignedLong maximumSubIntervals_;
+  UnsignedInteger maximumSubIntervals_;
 
   /* Maximum estimated error */
   NumericalScalar maximumError_;

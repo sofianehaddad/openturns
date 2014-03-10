@@ -36,18 +36,18 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(InverseNatafIndependentCopulaEvaluation);
 
 /* Parameter constructor */
-InverseNatafIndependentCopulaEvaluation::InverseNatafIndependentCopulaEvaluation(const UnsignedLong dimension)
+InverseNatafIndependentCopulaEvaluation::InverseNatafIndependentCopulaEvaluation(const UnsignedInteger dimension)
   : NumericalMathEvaluationImplementation()
   , dimension_(dimension)
 {
   Description description;
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     OSS oss;
     oss << "x" << i;
     description.add(oss);
   }
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     OSS oss;
     oss << "y" << i;
@@ -81,7 +81,7 @@ String InverseNatafIndependentCopulaEvaluation::__repr__() const
 NumericalPoint InverseNatafIndependentCopulaEvaluation::operator () (const NumericalPoint & inP) const
 {
   NumericalPoint result(dimension_);
-  for (UnsignedLong i = 0; i < dimension_; ++i) result[i] = DistFunc::pNormal(inP[i]);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = DistFunc::pNormal(inP[i]);
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -99,13 +99,13 @@ Matrix InverseNatafIndependentCopulaEvaluation::parametersGradient(const Numeric
 }
 
 /* Accessor for input point dimension */
-UnsignedLong InverseNatafIndependentCopulaEvaluation::getInputDimension() const
+UnsignedInteger InverseNatafIndependentCopulaEvaluation::getInputDimension() const
 {
   return dimension_;
 }
 
 /* Accessor for output point dimension */
-UnsignedLong InverseNatafIndependentCopulaEvaluation::getOutputDimension() const
+UnsignedInteger InverseNatafIndependentCopulaEvaluation::getOutputDimension() const
 {
   return dimension_;
 }

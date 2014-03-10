@@ -47,7 +47,7 @@ Binomial::Binomial()
 }
 
 /* Parameters constructor */
-Binomial::Binomial(const UnsignedLong n,
+Binomial::Binomial(const UnsignedInteger n,
                    const NumericalScalar p)
   : DiscreteDistribution("Binomial"),
     n_(n),
@@ -194,10 +194,10 @@ void Binomial::computeCovariance() const
 NumericalSample Binomial::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  const UnsignedLong kMin(static_cast< UnsignedLong > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
-  const UnsignedLong kMax(static_cast< UnsignedLong > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_))));
+  const UnsignedInteger kMin(static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0)));
+  const UnsignedInteger kMax(static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_))));
   NumericalSample result(0, 1);
-  for (UnsignedLong k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
+  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
   return result;
 }
 
@@ -219,7 +219,7 @@ Binomial::NumericalPointWithDescriptionCollection Binomial::getParametersCollect
 
 void Binomial::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
-  *this = Binomial(static_cast<UnsignedLong>(parametersCollection[0][0]), parametersCollection[0][1]);
+  *this = Binomial(static_cast<UnsignedInteger>(parametersCollection[0][0]), parametersCollection[0][1]);
 }
 
 /* P accessor */
@@ -242,7 +242,7 @@ NumericalScalar Binomial::getP() const
 }
 
 /* N accessor */
-void Binomial::setN(const UnsignedLong n)
+void Binomial::setN(const UnsignedInteger n)
 {
   if (n != n_)
   {
@@ -254,7 +254,7 @@ void Binomial::setN(const UnsignedLong n)
 }
 
 /* N accessor */
-UnsignedLong Binomial::getN() const
+UnsignedInteger Binomial::getN() const
 {
   return n_;
 }

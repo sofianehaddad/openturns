@@ -289,7 +289,7 @@ void Triangular::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Triangular::getStandardMoment(const UnsignedLong n) const
+NumericalPoint Triangular::getStandardMoment(const UnsignedInteger n) const
 {
   const NumericalScalar mu(((m_ - a_) + (m_ - b_)) / (b_ - a_));
   // Even order

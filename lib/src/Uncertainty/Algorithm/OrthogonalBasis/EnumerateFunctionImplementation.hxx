@@ -43,7 +43,7 @@ public:
 
 
   /** Parameter constructor */
-  EnumerateFunctionImplementation(const UnsignedLong dimension = 1);
+  EnumerateFunctionImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constrcutor */
   virtual EnumerateFunctionImplementation * clone() const;
@@ -52,26 +52,26 @@ public:
   virtual String __repr__() const;
 
   /** The bijective association between an integer and a set of indices */
-  virtual Indices operator() (const UnsignedLong index) const;
+  virtual Indices operator() (const UnsignedInteger index) const;
 
   /** The inverse of the association */
-  virtual UnsignedLong inverse(const Indices & indices) const;
+  virtual UnsignedInteger inverse(const Indices & indices) const;
 
   /** The cardinal of the given strata */
-  virtual UnsignedLong getStrataCardinal(const UnsignedLong strateIndex) const;
+  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strateIndex) const;
 
   /** The cardinal of the cumulated strata above or equal to the given strate */
-  virtual UnsignedLong getStrataCumulatedCardinal(const UnsignedLong strateIndex) const;
+  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strateIndex) const;
 
   /** The index of the strata of degree max <= maximumDegree */
-  virtual UnsignedLong getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const;
+  virtual UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
 
   /** The cardinal of indices of degree max <= maximumDegree */
-  virtual UnsignedLong getMaximumDegreeCardinal(const UnsignedLong maximumDegree) const;
+  virtual UnsignedInteger getMaximumDegreeCardinal(const UnsignedInteger maximumDegree) const;
 
   /** Dimension accessor */
-  void setDimension(const UnsignedLong dimension);
-  UnsignedLong getDimension() const;
+  void setDimension(const UnsignedInteger dimension);
+  UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -84,7 +84,7 @@ protected:
 private:
 
   // The enumerate function maps N into N^dimension
-  UnsignedLong dimension_;
+  UnsignedInteger dimension_;
 
 } ; /* class EnumerateFunctionImplementation */
 

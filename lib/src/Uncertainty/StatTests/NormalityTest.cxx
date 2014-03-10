@@ -44,10 +44,10 @@ TestResult NormalityTest::AndersonDarlingNormal(const NumericalSample & sample,
   NumericalSample sortedSample(sample.sort());
   NumericalScalar mean(sortedSample.computeMean()[0]);
   NumericalScalar sd(sortedSample.computeStandardDeviationPerComponent()[0]);
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   NumericalScalar testStatistic(0.0);
-  UnsignedLong effectiveIndex(0);
-  for (UnsignedLong i = 0; i < size; ++i)
+  UnsignedInteger effectiveIndex(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar yi(DistFunc::pNormal((sortedSample[i][0] - mean) / sd));
     NumericalScalar yni(1.0 - DistFunc::pNormal((sortedSample[size - i - 1][0] - mean) / sd));
@@ -95,9 +95,9 @@ TestResult NormalityTest::CramerVonMisesNormal(const NumericalSample & sample,
   NumericalSample sortedSample(sample.sort());
   NumericalScalar mean(sortedSample.computeMean()[0]);
   NumericalScalar sd(sortedSample.computeStandardDeviationPerComponent()[0]);
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   NumericalScalar testStatistic(1.0 / (12.0 * size));
-  for (UnsignedLong i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar yi(DistFunc::pNormal((sortedSample[i][0] - mean) / sd));
     NumericalScalar delta(yi - (2.0 * i + 1.0) / (2.0 * size));

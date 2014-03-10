@@ -75,8 +75,8 @@ FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection 
 
 /* FFT transformation on complex. The transformation is applied on a part of the collection */
 FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection & collection,
-    const UnsignedLong first,
-    const UnsignedLong size) const
+    const UnsignedInteger first,
+    const UnsignedInteger size) const
 {
   return getImplementation()->transform(collection, first, size);
 }
@@ -84,9 +84,9 @@ FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection 
 
 /* FFT transformation on complex. This transforms a regular sequence of the collection (between first and last, with elements separated by step)*/
 FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection & collection,
-    const UnsignedLong first,
-    const UnsignedLong step,
-    const UnsignedLong last) const
+    const UnsignedInteger first,
+    const UnsignedInteger step,
+    const UnsignedInteger last) const
 {
   return getImplementation()->transform(collection, first, step, last);
 }
@@ -100,8 +100,8 @@ FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexColl
 
 /* FFT transformation on complex. The transformation is applied on a part of the collection */
 FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexCollection & collection,
-    const UnsignedLong first,
-    const UnsignedLong size) const
+    const UnsignedInteger first,
+    const UnsignedInteger size) const
 {
   return getImplementation()->inverseTransform(collection, first, size);
 }
@@ -109,9 +109,9 @@ FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexColl
 
 /* FFT transformation on complex. This transforms a regular sequence of the collection (between first and last, with elements separated by step)*/
 FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexCollection & collection,
-    const UnsignedLong first,
-    const UnsignedLong step,
-    const UnsignedLong last) const
+    const UnsignedInteger first,
+    const UnsignedInteger step,
+    const UnsignedInteger last) const
 {
   return getImplementation()->inverseTransform(collection, first, step, last);
 }

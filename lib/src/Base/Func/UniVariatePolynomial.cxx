@@ -125,7 +125,7 @@ UniVariatePolynomial UniVariatePolynomial::operator* (const UniVariatePolynomial
 } // end method operator*
 
 /* Multiply the polynomial by (x to the power deg) */
-UniVariatePolynomial UniVariatePolynomial::incrementDegree(const UnsignedLong deg) const
+UniVariatePolynomial UniVariatePolynomial::incrementDegree(const UnsignedInteger deg) const
 {
   return getImplementation()->incrementDegree(deg);
 }// end incrementDegree
@@ -160,14 +160,14 @@ UniVariatePolynomial::Coefficients UniVariatePolynomial::getCoefficients() const
 /* Method to draw the graph of the polynomial between given bounds */
 Graph UniVariatePolynomial::draw(const NumericalScalar xMin,
                                  const NumericalScalar xMax,
-                                 const UnsignedLong pointNumber) const
+                                 const UnsignedInteger pointNumber) const
 {
   return getImplementation()->draw(xMin, xMax, pointNumber);
 }
 
 
 /* Get the degree of the polynomial */
-UnsignedLong UniVariatePolynomial::getDegree() const
+UnsignedInteger UniVariatePolynomial::getDegree() const
 {
   return getImplementation()->getDegree();
 }

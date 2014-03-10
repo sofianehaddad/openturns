@@ -74,17 +74,17 @@ String ProcessImplementation::__str__(const String & offset) const
 }
 
 /* Dimension accessor */
-UnsignedLong ProcessImplementation::getMeshDimension() const
+UnsignedInteger ProcessImplementation::getMeshDimension() const
 {
   return mesh_.getDimension();
 }
 
-UnsignedLong ProcessImplementation::getDimension() const
+UnsignedInteger ProcessImplementation::getDimension() const
 {
   return dimension_;
 }
 
-void ProcessImplementation::setDimension(const UnsignedLong dimension)
+void ProcessImplementation::setDimension(const UnsignedInteger dimension)
 {
   dimension_ = dimension;
 }
@@ -164,31 +164,31 @@ NumericalMathFunction ProcessImplementation::getContinuousRealization() const
   return DatabaseNumericalMathEvaluationImplementation(mesh_.getVertices(), values);
 }
 
-ProcessSample ProcessImplementation::getSample(const UnsignedLong size) const
+ProcessSample ProcessImplementation::getSample(const UnsignedInteger size) const
 {
   ProcessSample result(mesh_, size, dimension_);
-  for (UnsignedLong i = 0; i < size; ++i) result[i] = getRealization().getValues();
+  for (UnsignedInteger i = 0; i < size; ++i) result[i] = getRealization().getValues();
   return result;
 }
 
 /* Future accessor */
-TimeSeries ProcessImplementation::getFuture(const UnsignedLong stepNumber) const
+TimeSeries ProcessImplementation::getFuture(const UnsignedInteger stepNumber) const
 {
   throw NotYetImplementedException(HERE);
 }
 
-ProcessSample ProcessImplementation::getFuture(const UnsignedLong stepNumber,
-    const UnsignedLong size) const
+ProcessSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
+    const UnsignedInteger size) const
 {
   if (mesh_.getDimension() != 1) throw NotDefinedException(HERE) << "Error: can extend the realization of a process only if defined on a 1D mesh.";
   if (size == 0) return ProcessSample(mesh_, 0, dimension_);
   ProcessSample result(size, getFuture(stepNumber));
-  for (UnsignedLong i = 1; i < size; ++i) result[i] = getFuture(stepNumber).getValues();
+  for (UnsignedInteger i = 1; i < size; ++i) result[i] = getFuture(stepNumber).getValues();
   return result;
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-ProcessImplementation::Implementation ProcessImplementation::getMarginalProcess(const UnsignedLong i) const
+ProcessImplementation::Implementation ProcessImplementation::getMarginalProcess(const UnsignedInteger i) const
 {
   throw NotYetImplementedException(HERE);
 }

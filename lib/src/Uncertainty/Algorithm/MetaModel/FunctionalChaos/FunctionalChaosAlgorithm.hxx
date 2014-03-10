@@ -132,7 +132,7 @@ protected:
 private:
 
   /** Marginal computation */
-  void runMarginal(const UnsignedLong marginalIndex,
+  void runMarginal(const UnsignedInteger marginalIndex,
                    Indices & indices,
                    NumericalPoint & coefficients,
                    NumericalScalar & residual,

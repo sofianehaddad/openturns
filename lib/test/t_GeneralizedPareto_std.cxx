@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     xiValues[0] = -0.2;
     xiValues[1] = 0.0;
     xiValues[2] = 0.2;
-    for (UnsignedLong n = 0; n < 3; ++n)
+    for (UnsignedInteger n = 0; n < 3; ++n)
     {
       GeneralizedPareto distribution(1.5, xiValues[n]);
       fullprint << "Distribution " << distribution << std::endl;
@@ -57,13 +57,13 @@ int main(int argc, char *argv[])
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
-      UnsignedLong size = 10000;
+      UnsignedInteger size = 10000;
       NumericalSample oneSample = distribution.getSample( size );
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
       fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
       size = 100;
-      for (UnsignedLong i = 0; i < 2; ++i)
+      for (UnsignedInteger i = 0; i < 2; ++i)
       {
         RandomGenerator::SetSeed(0);
         fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
       fullprint << "kendall=" << kendall << std::endl;
       GeneralizedPareto::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
-      for (UnsignedLong i = 0; i < 6; ++i)
+      for (UnsignedInteger i = 0; i < 6; ++i)
       {
         try
         {

@@ -41,7 +41,7 @@ BoundConstrainedAlgorithmImplementation::BoundConstrainedAlgorithmImplementation
   boundConstraints_(0),
   startingPoint_(NumericalPoint(0)),
   optimization_(Result::MINIMIZATION),
-  maximumEvaluationsNumber_(ResourceMap::GetAsUnsignedLong( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber" )),
+  maximumEvaluationsNumber_(ResourceMap::GetAsUnsignedInteger( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber" )),
   maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumAbsoluteError" )),
   maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumRelativeError" )),
   maximumObjectiveError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumObjectiveError" )),
@@ -60,7 +60,7 @@ BoundConstrainedAlgorithmImplementation::BoundConstrainedAlgorithmImplementation
   boundConstraints_(NumericalPoint(objectiveFunction.getInputDimension(), -1.0), NumericalPoint(objectiveFunction.getInputDimension(), 1.0), Interval::BoolCollection(objectiveFunction.getInputDimension(), 0), Interval::BoolCollection(objectiveFunction.getInputDimension(), 0)),
   startingPoint_(NumericalPoint(objectiveFunction.getInputDimension(), 0.0)),
   optimization_(Result::MINIMIZATION),
-  maximumEvaluationsNumber_(ResourceMap::GetAsUnsignedLong( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber" )),
+  maximumEvaluationsNumber_(ResourceMap::GetAsUnsignedInteger( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber" )),
   maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumAbsoluteError" )),
   maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumRelativeError" )),
   maximumObjectiveError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumObjectiveError" )),
@@ -82,7 +82,7 @@ BoundConstrainedAlgorithmImplementation::BoundConstrainedAlgorithmImplementation
   boundConstraints_(boundConstraints),
   startingPoint_(startingPoint),
   optimization_(optimization),
-  maximumEvaluationsNumber_(ResourceMap::GetAsUnsignedLong( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber" )),
+  maximumEvaluationsNumber_(ResourceMap::GetAsUnsignedInteger( "BoundConstrainedAlgorithmImplementation-DefaultMaximumEvaluationsNumber" )),
   maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumAbsoluteError" )),
   maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumRelativeError" )),
   maximumObjectiveError_(ResourceMap::GetAsNumericalScalar( "BoundConstrainedAlgorithmImplementation-DefaultMaximumObjectiveError" )),
@@ -141,12 +141,12 @@ void BoundConstrainedAlgorithmImplementation::setResult(const Result & result)
 }
 
 /* Maximum iterations number accessor */
-UnsignedLong BoundConstrainedAlgorithmImplementation::getMaximumEvaluationsNumber() const
+UnsignedInteger BoundConstrainedAlgorithmImplementation::getMaximumEvaluationsNumber() const
 {
   return maximumEvaluationsNumber_;
 }
 
-void BoundConstrainedAlgorithmImplementation::setMaximumEvaluationsNumber(const UnsignedLong maximumEvaluationsNumber)
+void BoundConstrainedAlgorithmImplementation::setMaximumEvaluationsNumber(const UnsignedInteger maximumEvaluationsNumber)
 {
   maximumEvaluationsNumber_ = maximumEvaluationsNumber;
 }

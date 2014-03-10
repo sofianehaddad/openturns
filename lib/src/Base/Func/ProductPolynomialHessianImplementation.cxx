@@ -50,8 +50,8 @@ ProductPolynomialHessianImplementation::ProductPolynomialHessianImplementation(c
 {
   // Nothing to do
   Description description(0);
-  for (UnsignedLong i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedLong i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
+  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
   setDescription(description);
 }
 
@@ -73,13 +73,13 @@ String ProductPolynomialHessianImplementation::__repr__() const
 /* Compute the hessian of a product of univariate polynomials */
 SymmetricTensor ProductPolynomialHessianImplementation::hessian (const NumericalPoint & inP) const
 {
-  const UnsignedLong inDimension(inP.getDimension());
+  const UnsignedInteger inDimension(inP.getDimension());
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   NumericalScalar productEvaluation(1.0);
   NumericalPoint evaluations(inDimension);
   NumericalPoint derivatives(inDimension);
   NumericalPoint secondDerivatives(inDimension);
-  for (UnsignedLong i = 0; i < inDimension; ++i)
+  for (UnsignedInteger i = 0; i < inDimension; ++i)
   {
     const NumericalScalar x(inP[i]);
     const NumericalScalar y(polynomials_[i](x));
@@ -94,10 +94,10 @@ SymmetricTensor ProductPolynomialHessianImplementation::hessian (const Numerical
   // Usual case: productEvaluation <> 0
   if (productEvaluation != 0.0)
   {
-    for (UnsignedLong i = 0; i < inDimension; ++i)
+    for (UnsignedInteger i = 0; i < inDimension; ++i)
     {
       const NumericalScalar dyi(derivatives[i] * (productEvaluation / evaluations[i]));
-      for (UnsignedLong j = 0; j < i; ++j)
+      for (UnsignedInteger j = 0; j < i; ++j)
       {
         hessian(i, j, 0) = derivatives[j] * (dyi / evaluations[j]);
       }
@@ -107,31 +107,31 @@ SymmetricTensor ProductPolynomialHessianImplementation::hessian (const Numerical
   // Must compute the hessian in a more expensive way
   else
   {
-    for (UnsignedLong i = 0; i < inDimension; ++i)
+    for (UnsignedInteger i = 0; i < inDimension; ++i)
     {
-      for (UnsignedLong j = 0; j < i; ++j)
+      for (UnsignedInteger j = 0; j < i; ++j)
       {
         hessian(i, j, 0) = derivatives[i] * derivatives[j];
-        for (UnsignedLong k = 0; k < j; ++k) hessian(i, j, 0) *= evaluations[k];
-        for (UnsignedLong k = j + 1; k < i; ++k) hessian(i, j, 0) *= evaluations[k];
-        for (UnsignedLong k = i + 1; k < inDimension; ++k) hessian(i, j, 0) *= evaluations[k];
+        for (UnsignedInteger k = 0; k < j; ++k) hessian(i, j, 0) *= evaluations[k];
+        for (UnsignedInteger k = j + 1; k < i; ++k) hessian(i, j, 0) *= evaluations[k];
+        for (UnsignedInteger k = i + 1; k < inDimension; ++k) hessian(i, j, 0) *= evaluations[k];
       }
       hessian(i, i, 0) = secondDerivatives[i];
-      for (UnsignedLong k = 0; k < i; ++k) hessian(i, i, 0) *= evaluations[k];
-      for (UnsignedLong k = i + 1; k < inDimension; ++k) hessian(i, i, 0) *= evaluations[k];
+      for (UnsignedInteger k = 0; k < i; ++k) hessian(i, i, 0) *= evaluations[k];
+      for (UnsignedInteger k = i + 1; k < inDimension; ++k) hessian(i, i, 0) *= evaluations[k];
     }
   }
   return hessian;
 }
 
 /* Accessor for input point dimension */
-UnsignedLong ProductPolynomialHessianImplementation::getInputDimension() const
+UnsignedInteger ProductPolynomialHessianImplementation::getInputDimension() const
 {
   return polynomials_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedLong ProductPolynomialHessianImplementation::getOutputDimension() const
+UnsignedInteger ProductPolynomialHessianImplementation::getOutputDimension() const
 {
   return 1;
 }

@@ -36,7 +36,7 @@ Description::Description()
 
 
 /* Constructor with size */
-Description::Description(const UnsignedLong size)
+Description::Description(const UnsignedInteger size)
   : TypedCollectionInterfaceObject<DescriptionImplementation>(new DescriptionImplementation(size))
 {
   // Nothing to do
@@ -52,7 +52,7 @@ Description::Description(const String & value)
 
 
 /* Constructor with size and default value */
-Description::Description(const UnsignedLong size,
+Description::Description(const UnsignedInteger size,
                          const String & value)
   : TypedCollectionInterfaceObject<DescriptionImplementation>(new DescriptionImplementation(size, value))
 {

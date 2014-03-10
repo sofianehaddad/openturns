@@ -94,7 +94,7 @@ struct LogNormalFactoryLMLEParameterConstraint
   NumericalPoint computeMaximumLikelihoodSums(const NumericalScalar gamma) const
   {
     NumericalPoint sums(4, 0.0);
-    for (UnsignedLong i = 0; i < size_; ++i)
+    for (UnsignedInteger i = 0; i < size_; ++i)
     {
       const NumericalScalar delta(sample_[i][0] - gamma);
       const NumericalScalar logDelta(log(delta));
@@ -109,7 +109,7 @@ struct LogNormalFactoryLMLEParameterConstraint
 
   // The data
   NumericalSample sample_;
-  UnsignedLong size_;
+  UnsignedInteger size_;
 };
 
 /* Algoritm associated with the method of local likelihood maximization */
@@ -138,11 +138,11 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Numer
   if ((constraintLeft < 0.0) == (constraintRight < 0.0)) throw InternalException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
   // Second, the bisection
   // Solve the constraint equation
-  const Brent solver(ResourceMap::GetAsNumericalScalar("LogNormalFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedLong("LogNormalFactory-MaximumIteration"));
+  const Brent solver(ResourceMap::GetAsNumericalScalar("LogNormalFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
   // Gamma estimate
   const NumericalScalar gamma(solver.solve(f, 0.0, left, right, constraintLeft, constraintRight));
   // Third, the final estimates
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   const NumericalPoint sums(constraint.computeMaximumLikelihoodSums(gamma));
   const NumericalScalar mu(sums[1] / size);
   const NumericalScalar sigma2(sums[2] / size - mu * mu);
@@ -153,7 +153,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Numer
 struct LogNormalFactoryMMEParameterConstraint
 {
   /* Constructor from a sample and a derivative factor estimate */
-  LogNormalFactoryMMEParameterConstraint(const UnsignedLong n,
+  LogNormalFactoryMMEParameterConstraint(const UnsignedInteger n,
                                          const NumericalScalar xMin,
                                          const NumericalScalar mean,
                                          const NumericalScalar std):
@@ -213,7 +213,7 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample &
   else if (fabs(fB) < absolutePrecision) omega = b;
   else
   {
-    const Brent solver(absolutePrecision, ResourceMap::GetAsNumericalScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedLong("LogNormalFactory-MaximumIteration"));
+    const Brent solver(absolutePrecision, ResourceMap::GetAsNumericalScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
     // Omega estimate
     omega = solver.solve(f, 0.0, a, b, fA, fB);
   }
@@ -228,11 +228,11 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample &
 
 LogNormalFactory::Implementation LogNormalFactory::build(const NumericalSample & sample) const
 {
-  return build(sample, ResourceMap::GetAsUnsignedLong("LogNormalFactory-EstimationMethod"));
+  return build(sample, ResourceMap::GetAsUnsignedInteger("LogNormalFactory-EstimationMethod"));
 }
 
 LogNormalFactory::Implementation LogNormalFactory::build(const NumericalSample & sample,
-    const UnsignedLong method) const
+    const UnsignedInteger method) const
 {
   return buildAsLogNormal(sample, method).clone();
 }
@@ -249,13 +249,13 @@ LogNormalFactory::Implementation LogNormalFactory::build(const NumericalPointCol
 
 LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample) const
 {
-  return buildAsLogNormal(sample, ResourceMap::GetAsUnsignedLong("LogNormalFactory-EstimationMethod"));
+  return buildAsLogNormal(sample, ResourceMap::GetAsUnsignedInteger("LogNormalFactory-EstimationMethod"));
 };
 
 LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample,
-    const UnsignedLong method) const
+    const UnsignedInteger method) const
 {
-  const UnsignedLong size(sample.getSize());
+  const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   switch (method)

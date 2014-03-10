@@ -7,12 +7,12 @@
 #include "Interval.hxx"
 %}
 
-// class UnsignedLongCollection is defined in wrapper_module.i (module wrapper)
+// class UnsignedIntegerCollection is defined in wrapper_module.i (module wrapper)
 %pythoncode %{
 # We have to make sure the submodule is loaded with absolute path
 import openturns.wrapper
 
-class BoolCollection(openturns.wrapper.UnsignedLongCollection): pass
+class BoolCollection(openturns.wrapper.UnsignedIntegerCollection): pass
 %}
 
 // we check for boolean type but they are stored as integers
@@ -22,7 +22,7 @@ class BoolCollection(openturns.wrapper.UnsignedLongCollection): pass
 
 %typemap(in) const BoolCollection & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
-    temp = OT::convert<OT::_PySequence_,OT::Collection<OT::UnsignedLong> >( $input );
+    temp = OT::convert<OT::_PySequence_,OT::Collection<OT::UnsignedInteger> >( $input );
     $1 = &temp;
   }
 }

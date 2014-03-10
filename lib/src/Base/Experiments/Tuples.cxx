@@ -57,22 +57,22 @@ Tuples * Tuples::clone() const
 CombinatorialGeneratorImplementation::IndicesCollection Tuples::generate()
 {
   /* Dimension of the realizations */
-  const UnsignedLong dimension(bounds_.getSize());
+  const UnsignedInteger dimension(bounds_.getSize());
   /* Size of the sample to be generated: levels[0] * ... * levels[dimension-1] */
-  UnsignedLong size(bounds_[0]);
-  for (UnsignedLong i = 1; i < dimension; ++i) size *= bounds_[i];
+  UnsignedInteger size(bounds_[0]);
+  for (UnsignedInteger i = 1; i < dimension; ++i) size *= bounds_[i];
   IndicesCollection allTuples(size, Indices(dimension));
   /* Indices would have stored the indices of the nested loops if we were able to code "dimension" nested loops dynamically */
   Indices indices(dimension);
-  for (UnsignedLong flatIndex = 0; flatIndex < size; ++flatIndex)
+  for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
   {
     allTuples[flatIndex] = indices;
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
-    for (UnsignedLong i = 0; i < dimension - 1; ++i) indices[i + 1] += (indices[i] == bounds_[i]);
+    for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i + 1] += (indices[i] == bounds_[i]);
     /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedLong i = 0; i < dimension - 1; ++i) indices[i] = indices[i] % bounds_[i];
+    for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i] = indices[i] % bounds_[i];
   }
   return allTuples;
 } // generate()

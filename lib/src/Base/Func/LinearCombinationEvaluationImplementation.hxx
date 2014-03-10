@@ -75,10 +75,10 @@ public:
       const NumericalPoint & coefficients);
 
   /** Input dimension accessor */
-  UnsignedLong getInputDimension() const;
+  UnsignedInteger getInputDimension() const;
 
   /** Output dimension accessor */
-  UnsignedLong getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const;
 
   /** Gradient according to the marginal parameters */
   Matrix parametersGradient(const NumericalPoint & inP) const;
@@ -87,7 +87,7 @@ public:
   NumericalPointWithDescription getParameters() const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedLong i) const;
+  Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
   Implementation getMarginal(const Indices & indices) const;

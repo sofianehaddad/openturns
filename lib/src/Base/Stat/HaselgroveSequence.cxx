@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HaselgroveSequence);
 
 /* Constructor with parameters */
-HaselgroveSequence::HaselgroveSequence(const UnsignedLong dimension) :
+HaselgroveSequence::HaselgroveSequence(const UnsignedInteger dimension) :
   LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
@@ -45,7 +45,7 @@ HaselgroveSequence::HaselgroveSequence(const NumericalPoint & base) :
 {
   dimension_ = base.getDimension();
   base_ = base;
-  seed_ = ResourceMap::GetAsUnsignedLong( "HaselgroveSequence-InitialSeed" );
+  seed_ = ResourceMap::GetAsUnsignedInteger( "HaselgroveSequence-InitialSeed" );
 }
 
 /* Virtual constructor */
@@ -55,14 +55,14 @@ HaselgroveSequence * HaselgroveSequence::clone() const
 }
 
 /* Initialize the sequence */
-void HaselgroveSequence::initialize(const UnsignedLong dimension)
+void HaselgroveSequence::initialize(const UnsignedInteger dimension)
 {
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
   const Unsigned64BitsIntegerCollection directions(ComputeFirstPrimeNumbers(dimension));
   base_ = NumericalPoint(dimension);
-  for (UnsignedLong i = 0; i < dimension; ++i) base_[i] = sqrt(directions[i]);
-  seed_ = ResourceMap::GetAsUnsignedLong( "HaselgroveSequence-InitialSeed" );
+  for (UnsignedInteger i = 0; i < dimension; ++i) base_[i] = sqrt(directions[i]);
+  seed_ = ResourceMap::GetAsUnsignedInteger( "HaselgroveSequence-InitialSeed" );
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
@@ -71,7 +71,7 @@ NumericalPoint HaselgroveSequence::generate()
   NumericalPoint realization(dimension_);
   // Loop over the components
   NumericalScalar scratch(0.0);
-  for (UnsignedLong i = 0; i < dimension_; ++i) realization[i] = modf(seed_ * base_[i], &scratch);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) realization[i] = modf(seed_ * base_[i], &scratch);
   ++seed_;
   return realization;
 }

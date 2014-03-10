@@ -40,7 +40,7 @@ Description(PyObject * pyObj)
 }
 
 /* Method __len__() is for Python */
-OT::UnsignedLong __len__() const
+OT::UnsignedInteger __len__() const
 {
   return self->getSize();
 }
@@ -48,7 +48,7 @@ OT::UnsignedLong __len__() const
 /* Method __contains__() is for Python */
 OT::Bool __contains__(const OT::String & val) const
 {
-  for (OT::UnsignedLong i=0; i<self->getSize(); ++i) if ( (*self)[i] == val ) return true;
+  for (OT::UnsignedInteger i=0; i<self->getSize(); ++i) if ( (*self)[i] == val ) return true;
   return false;
 }
 

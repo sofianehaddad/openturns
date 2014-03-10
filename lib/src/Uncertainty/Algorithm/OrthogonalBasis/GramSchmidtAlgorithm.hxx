@@ -64,7 +64,7 @@ public:
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedLong n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** Reference univariate orthogonal polynomial family accessor */
   void setReferenceFamily(const OrthogonalUniVariatePolynomialFamily & family);
@@ -82,10 +82,10 @@ public:
 private:
 
   /** Return the order-th raw moment of the underlying measure */
-  NumericalScalar getStandardMoment(const UnsignedLong order) const;
+  NumericalScalar getStandardMoment(const UnsignedInteger order) const;
 
   /** Build the coefficients of the kth orthonormal polynomial */
-  UniVariatePolynomial buildPolynomial(const UnsignedLong k) const;
+  UniVariatePolynomial buildPolynomial(const UnsignedInteger k) const;
 
   /** Compute the dot product between two general polynomials according to the measure */
   NumericalScalar dotProduct(const UniVariatePolynomial & p1,

@@ -49,7 +49,7 @@ public:
   /** Parameters constructor */
   TNCSpecificParameters(const NumericalPoint & scale,
                         const NumericalPoint & offset,
-                        const UnsignedLong    maxCGit,
+                        const UnsignedInteger    maxCGit,
                         const NumericalScalar eta,
                         const NumericalScalar stepmx,
                         const NumericalScalar accuracy,
@@ -68,8 +68,8 @@ public:
   void setOffset(const NumericalPoint & offset);
 
   /** MaxCGit accessor */
-  UnsignedLong getMaxCGit() const;
-  void setMaxCGit(const UnsignedLong maxCGit);
+  UnsignedInteger getMaxCGit() const;
+  void setMaxCGit(const UnsignedInteger maxCGit);
 
   /** Eta accessor */
   NumericalScalar getEta() const;
@@ -103,7 +103,7 @@ public:
 private:
   NumericalPoint  scale_;
   NumericalPoint  offset_;
-  UnsignedLong    maxCGit_;
+  UnsignedInteger    maxCGit_;
   NumericalScalar eta_;
   NumericalScalar stepmx_;
   NumericalScalar accuracy_;

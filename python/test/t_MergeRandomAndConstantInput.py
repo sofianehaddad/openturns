@@ -25,7 +25,6 @@ try:
 #     Here we build the linear function x -> A.x + b
 
     stochasticDimension = 2
-    # UnsignedLong deterministicDimension(1)
     A = Matrix(dim, stochasticDimension)
     A[1, 0] = 1
     A[2, 1] = 1

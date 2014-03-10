@@ -63,7 +63,7 @@ void HistoryStrategyImplementation::store(const NumericalPoint & point)
 /* Store the sample according to the strategy */
 void HistoryStrategyImplementation::store(const NumericalSample & sample)
 {
-  for (UnsignedLong i = 0; i < sample.getSize(); ++i) store(sample[i]);
+  for (UnsignedInteger i = 0; i < sample.getSize(); ++i) store(sample[i]);
 }
 
 /* Clear the history storage */

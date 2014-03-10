@@ -42,8 +42,8 @@ ComplexMatrix::ComplexMatrix()
 /* Constructor with size (rowDim and colDim) */
 /* The matrix is made up of a collection of rowDim*colDim elements */
 /* The matrix is viewed as a set of column vectors read one after another */
-ComplexMatrix::ComplexMatrix(const UnsignedLong rowDim,
-                             const UnsignedLong colDim)
+ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
+                             const UnsignedInteger colDim)
   : TypedInterfaceObject<ComplexMatrixImplementation>(new ComplexMatrixImplementation(rowDim, colDim))
 {
   // Nothing to do
@@ -53,8 +53,8 @@ ComplexMatrix::ComplexMatrix(const UnsignedLong rowDim,
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-ComplexMatrix::ComplexMatrix(const UnsignedLong rowDim,
-                             const UnsignedLong colDim,
+ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
+                             const UnsignedInteger colDim,
                              const NumericalComplexCollection & elementsValues)
   : TypedInterfaceObject<ComplexMatrixImplementation>(new ComplexMatrixImplementation(rowDim, colDim, elementsValues))
 {
@@ -65,8 +65,8 @@ ComplexMatrix::ComplexMatrix(const UnsignedLong rowDim,
 /* If the dimensions of the matrix and of the collection */
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
-ComplexMatrix::ComplexMatrix(const UnsignedLong rowDim,
-                             const UnsignedLong colDim,
+ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
+                             const UnsignedInteger colDim,
                              const NumericalScalarCollection & elementsValues)
   : TypedInterfaceObject<ComplexMatrixImplementation>(new ComplexMatrixImplementation(rowDim, colDim, elementsValues))
 {
@@ -104,16 +104,16 @@ String ComplexMatrix::__repr__() const
 String ComplexMatrix::__str__(const String & offset) const
 {
   OSS oss(false);
-  const UnsignedLong rows = getNbRows();
-  const UnsignedLong cols = getNbColumns();
-  if ( (rows >= ResourceMap::GetAsUnsignedLong("Matrix-size-visible-in-str-from")) ||
-       (cols >= ResourceMap::GetAsUnsignedLong("Matrix-size-visible-in-str-from")) )
+  const UnsignedInteger rows = getNbRows();
+  const UnsignedInteger cols = getNbColumns();
+  if ( (rows >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) ||
+       (cols >= ResourceMap::GetAsUnsignedInteger("Matrix-size-visible-in-str-from")) )
     oss << rows << "x" << cols << "\n";
 
   size_t lwidth = 0;
   size_t rwidth = 0;
-  for( UnsignedLong i = 0; i < rows; ++i )
-    for( UnsignedLong j = 0; j < cols; ++j )
+  for( UnsignedInteger i = 0; i < rows; ++i )
+    for( UnsignedInteger j = 0; j < cols; ++j )
     {
       String st = OSS() << (*this)(i, j);
       size_t dotpos = st.find( '.' );
@@ -123,11 +123,11 @@ String ComplexMatrix::__str__(const String & offset) const
 
   const char * bracket = "[";
   const char * newline = "";
-  for( UnsignedLong i = 0; i < rows; ++i, newline = "\n", bracket = " " )
+  for( UnsignedInteger i = 0; i < rows; ++i, newline = "\n", bracket = " " )
   {
     oss << newline << offset << bracket << "[ ";
     const char * sep = "";
-    for( UnsignedLong j = 0; j < cols; ++j, sep = " " )
+    for( UnsignedInteger j = 0; j < cols; ++j, sep = " " )
     {
       String st = OSS() << (*this)(i, j);
       size_t dotpos = st.find( '.' );
@@ -143,13 +143,13 @@ String ComplexMatrix::__str__(const String & offset) const
 
 
 /* Get the dimensions of the matrix : number of rows */
-const UnsignedLong ComplexMatrix::getNbRows() const
+const UnsignedInteger ComplexMatrix::getNbRows() const
 {
   return getImplementation()->getNbRows();
 }
 
 /* Get the dimensions of the matrix : number of columns */
-const UnsignedLong ComplexMatrix::getNbColumns() const
+const UnsignedInteger ComplexMatrix::getNbColumns() const
 {
   return getImplementation()->getNbColumns();
 }
@@ -157,8 +157,8 @@ const UnsignedLong ComplexMatrix::getNbColumns() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalComplex & ComplexMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)
+NumericalComplex & ComplexMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);
@@ -166,8 +166,8 @@ NumericalComplex & ComplexMatrix::operator() (const UnsignedLong i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalComplex & ComplexMatrix::operator() (const UnsignedLong i,
-    const UnsignedLong j)  const
+const NumericalComplex & ComplexMatrix::operator() (const UnsignedInteger i,
+    const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j);
 }
@@ -318,13 +318,13 @@ const NumericalComplex* ComplexMatrix::__baseaddress__() const
 }
 
 
-UnsignedLong ComplexMatrix::__elementsize__() const
+UnsignedInteger ComplexMatrix::__elementsize__() const
 {
   return getImplementation()->__elementsize__();
 }
 
 
-UnsignedLong ComplexMatrix::__stride__(UnsignedLong dim) const
+UnsignedInteger ComplexMatrix::__stride__(UnsignedInteger dim) const
 {
   return getImplementation()->__stride__(dim);
 }

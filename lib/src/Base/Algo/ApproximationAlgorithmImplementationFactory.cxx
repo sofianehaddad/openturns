@@ -53,7 +53,7 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFacto
     const NumericalSample & y,
     const Basis & psi) const
 {
-  const UnsignedLong size( x.getSize() );
+  const UnsignedInteger size( x.getSize() );
   return build( x, y, NumericalPoint( size, 1.0 ), psi );
 }
 

@@ -84,16 +84,16 @@ public:
   void add(const Graph & graph);
 
   /** Erase a drawable instance from the collection of drawables contained in GraphImplementation */
-  void erase(const UnsignedLong i);
+  void erase(const UnsignedInteger i);
 
   /** Drawables accessor */
   DrawableCollection getDrawables() const;
   void setDrawables(const DrawableCollection & drawableCollection);
 
   /** Individual drawable accessor */
-  Drawable getDrawable(const UnsignedLong index) const;
+  Drawable getDrawable(const UnsignedInteger index) const;
   void setDrawable(const Drawable & drawable,
-                   const UnsignedLong index);
+                   const UnsignedInteger index);
 
   /** Global color accessor */
   Description getColors() const;
@@ -159,8 +159,8 @@ public:
 
   /** The method that generates the graphic files */
   void draw(const String & file,
-            const NumericalScalar width = ResourceMap::GetAsUnsignedLong("GraphImplementation-DefaultWidth"),
-            const NumericalScalar height = ResourceMap::GetAsUnsignedLong("GraphImplementation-DefaultHeight"),
+            const NumericalScalar width = ResourceMap::GetAsUnsignedInteger("GraphImplementation-DefaultWidth"),
+            const NumericalScalar height = ResourceMap::GetAsUnsignedInteger("GraphImplementation-DefaultHeight"),
             const Format format = GraphImplementation::ALL);
 
   /** Get the R command corresponding to the graph */

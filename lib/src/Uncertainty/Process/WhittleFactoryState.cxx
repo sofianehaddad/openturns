@@ -45,7 +45,7 @@ WhittleFactoryState::WhittleFactoryState(const String & name)
 }
 
 /* Standard constructor */
-WhittleFactoryState::WhittleFactoryState(const UnsignedLong p,
+WhittleFactoryState::WhittleFactoryState(const UnsignedInteger p,
     const NumericalPoint & theta,
     const NumericalScalar sigma2,
     const NumericalPoint & informationCriteria,
@@ -94,13 +94,13 @@ String WhittleFactoryState::__str__(const String & offset) const
 }
 
 /* P accessor */
-UnsignedLong WhittleFactoryState::getP() const
+UnsignedInteger WhittleFactoryState::getP() const
 {
   return p_;
 }
 
 /* Q accessor */
-UnsignedLong WhittleFactoryState::getQ() const
+UnsignedInteger WhittleFactoryState::getQ() const
 {
   return theta_.getSize() - p_;
 }
@@ -121,16 +121,16 @@ NumericalScalar WhittleFactoryState::getSigma2() const
 ARMACoefficients WhittleFactoryState::getARCoefficients() const
 {
   NumericalPoint arCoefficients(p_);
-  for (UnsignedLong k = 0; k < p_; ++k) arCoefficients[k] = theta_[k];
+  for (UnsignedInteger k = 0; k < p_; ++k) arCoefficients[k] = theta_[k];
   return ARMACoefficients(arCoefficients);
 }
 
 /* MA coefficients accessor */
 ARMACoefficients WhittleFactoryState::getMACoefficients() const
 {
-  const UnsignedLong q(getQ());
+  const UnsignedInteger q(getQ());
   NumericalPoint maCoefficients(q);
-  for (UnsignedLong k = 0; k < q; ++k) maCoefficients[k] = theta_[k + p_];
+  for (UnsignedInteger k = 0; k < q; ++k) maCoefficients[k] = theta_[k + p_];
   return ARMACoefficients(maCoefficients);
 }
 

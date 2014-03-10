@@ -33,7 +33,7 @@ CLASSNAMEINIT(ReverseHaltonSequence);
 
 
 /* Constructor with parameters */
-ReverseHaltonSequence::ReverseHaltonSequence(const UnsignedLong dimension) :
+ReverseHaltonSequence::ReverseHaltonSequence(const UnsignedInteger dimension) :
   LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
@@ -48,12 +48,12 @@ ReverseHaltonSequence * ReverseHaltonSequence::clone() const
 
 
 /* Initialize the sequence */
-void ReverseHaltonSequence::initialize(const UnsignedLong dimension)
+void ReverseHaltonSequence::initialize(const UnsignedInteger dimension)
 {
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
   base_ = ComputeFirstPrimeNumbers(dimension);
-  seed_ = ResourceMap::GetAsUnsignedLong( "ReverseHaltonSequence-InitialSeed" );
+  seed_ = ResourceMap::GetAsUnsignedInteger( "ReverseHaltonSequence-InitialSeed" );
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[
@@ -62,7 +62,7 @@ NumericalPoint ReverseHaltonSequence::generate()
 {
   NumericalPoint realization(dimension_);
   // Loop over the components
-  for (UnsignedLong i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     NumericalScalar xI(0.0);
     const Unsigned64BitsInteger radix(base_[i]);
@@ -71,7 +71,7 @@ NumericalPoint ReverseHaltonSequence::generate()
     Unsigned64BitsInteger currentSeed(seed_);
     while (currentSeed > 0)
     {
-      const UnsignedLong digit(currentSeed % radix);
+      const UnsignedInteger digit(currentSeed % radix);
       if (digit != 0) xI += (radix - digit) * inverseRadixN;
       currentSeed /= radix;
       inverseRadixN *= inverseRadix;

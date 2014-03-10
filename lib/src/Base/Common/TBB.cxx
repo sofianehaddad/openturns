@@ -82,7 +82,7 @@ void TBB::Initialization()
 #else
   TBB_P_instance_ = new TBB;
 #ifdef HAVE_TBB
-  UnsignedLong nbThreads = ResourceMap::GetAsUnsignedLong( "parallel-threads" );
+  UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger( "parallel-threads" );
   TBB_P_scheduler_ = new tbb::task_scheduler_init( nbThreads );
 #endif /* HAVE_TBB */
 #endif /* BOGUS_PTHREAD_LIBRARY */

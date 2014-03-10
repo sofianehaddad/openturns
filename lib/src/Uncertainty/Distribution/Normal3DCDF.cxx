@@ -258,8 +258,8 @@ NumericalScalar adonet(const NumericalScalar h1,
   bi[0] = 1.0;
   NumericalScalar fi[NORMAL3DCDF_MAXINT];
   NumericalScalar ei[NORMAL3DCDF_MAXINT];
-  UnsignedLong ip(0);
-  UnsignedLong im(0);
+  UnsignedInteger ip(0);
+  UnsignedInteger im(0);
   NumericalScalar err(1.0);
   while ((err > 0.25 * NORMAL3DCDF_EPS) && (im < NORMAL3DCDF_MAXINT - 1))
   {
@@ -269,11 +269,11 @@ NumericalScalar adonet(const NumericalScalar h1,
     bi[ip] = ai[im];
     krnrdt(ai[ip], bi[ip], h1, h2, h3, r23, a12, a13, fi[ip], ei[ip]);
     krnrdt(ai[im], bi[im], h1, h2, h3, r23, a12, a13, fi[im], ei[im]);
-    UnsignedLong iErrMax(0);
+    UnsignedInteger iErrMax(0);
     NumericalScalar errMax(0.0);
     err = 0.0;
     result = 0.0;
-    for (UnsignedLong i = 0; i <= im; ++i)
+    for (UnsignedInteger i = 0; i <= im; ++i)
     {
       const NumericalScalar localError(ei[i]);
       result += fi[i];
@@ -315,7 +315,7 @@ void krnrdt(const NumericalScalar a,
   NumericalScalar resg(fc * wg0);
   resk = fc * wgk0;
   NumericalScalar t(0.0);
-  for (UnsignedLong j = 0; j < 5; ++j)
+  for (UnsignedInteger j = 0; j < 5; ++j)
   {
     t = wid * xgk[2 * j];
     fc = tvnf(cen - t, h1, h2, h3, r23, a12, a13) + tvnf(cen + t, h1, h2, h3, r23, a12, a13);

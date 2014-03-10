@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    UnsignedLong dim(2);
+    UnsignedInteger dim(2);
     GumbelCopula copula(2.5);
     copula.setName("a gumbel copula");
     fullprint << "Copula " << copula << std::endl;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
-    UnsignedLong size = 10;
+    UnsignedInteger size = 10;
     NumericalSample oneSample = copula.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
     // Extract the marginals
-    for (UnsignedLong i = 0; i < dim; i++)
+    for (UnsignedInteger i = 0; i < dim; i++)
     {
       Copula margin(copula.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;

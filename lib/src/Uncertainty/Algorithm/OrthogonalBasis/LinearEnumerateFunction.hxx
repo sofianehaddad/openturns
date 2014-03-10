@@ -48,7 +48,7 @@ public:
   LinearEnumerateFunction();
 
   /** Parameter constructor */
-  explicit LinearEnumerateFunction(const UnsignedLong dimension);
+  explicit LinearEnumerateFunction(const UnsignedInteger dimension);
 
   /** Virtual constrcutor */
   virtual LinearEnumerateFunction * clone() const;
@@ -57,19 +57,19 @@ public:
   virtual String __repr__() const;
 
   /** The bijective association between an integer and a set of indices */
-  virtual Indices operator() (const UnsignedLong index) const;
+  virtual Indices operator() (const UnsignedInteger index) const;
 
   /** The inverse of the association */
-  virtual UnsignedLong inverse(const Indices & indices) const;
+  virtual UnsignedInteger inverse(const Indices & indices) const;
 
   /** The cardinal of the given strata */
-  virtual UnsignedLong getStrataCardinal(const UnsignedLong strataIndex) const;
+  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const;
 
   /** The cardinal of the cumulated strata above or equal to the given strata */
-  virtual UnsignedLong getStrataCumulatedCardinal(const UnsignedLong strataIndex) const;
+  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const;
 
   /** The index of the strata of degree max <= maximumDegree */
-  virtual UnsignedLong getMaximumDegreeStrataIndex(const UnsignedLong maximumDegree) const;
+  virtual UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -81,7 +81,7 @@ protected:
 
 private:
   /** Find the smallest n such that Binomial(n, n + dimension) > index and also returns the value of Binomial(n, n + dimension) */
-  UnsignedLong findBinomialCoefficient(const UnsignedLong index, const UnsignedLong dimension, UnsignedLong & BinomialCoefficient) const;
+  UnsignedInteger findBinomialCoefficient(const UnsignedInteger index, const UnsignedInteger dimension, UnsignedInteger & BinomialCoefficient) const;
 
 } ; /* class LinearEnumerateFunction */
 

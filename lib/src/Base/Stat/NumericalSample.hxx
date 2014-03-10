@@ -74,11 +74,11 @@ public:
   NumericalSample();
 
   /** Constructor with size and dimension */
-  NumericalSample(const UnsignedLong size,
-                  const UnsignedLong dim);
+  NumericalSample(const UnsignedInteger size,
+                  const UnsignedInteger dim);
 
   /** Constructor from a NumericalPoint (all elements are equal to the NumericalPoint) */
-  NumericalSample(const UnsignedLong size,
+  NumericalSample(const UnsignedInteger size,
                   const NumericalPoint & point);
 
 #ifndef SWIG
@@ -103,40 +103,40 @@ public:
   Bool operator ==(const NumericalSample & other) const;
 
 #ifndef SWIG
-  NSI_point operator [] (const UnsignedLong index);
-  NSI_const_point operator [] (const UnsignedLong index) const;
-  NSI_point at (const UnsignedLong index);
-  NSI_const_point at (const UnsignedLong index) const;
-  NumericalScalar & operator () (const UnsignedLong i,
-                                 const UnsignedLong j);
-  const NumericalScalar & operator () (const UnsignedLong i,
-                                       const UnsignedLong j) const;
-  NumericalScalar & at (const UnsignedLong i,
-                        const UnsignedLong j);
-  const NumericalScalar & at (const UnsignedLong i,
-                              const UnsignedLong j) const;
+  NSI_point operator [] (const UnsignedInteger index);
+  NSI_const_point operator [] (const UnsignedInteger index) const;
+  NSI_point at (const UnsignedInteger index);
+  NSI_const_point at (const UnsignedInteger index) const;
+  NumericalScalar & operator () (const UnsignedInteger i,
+                                 const UnsignedInteger j);
+  const NumericalScalar & operator () (const UnsignedInteger i,
+                                       const UnsignedInteger j) const;
+  NumericalScalar & at (const UnsignedInteger i,
+                        const UnsignedInteger j);
+  const NumericalScalar & at (const UnsignedInteger i,
+                              const UnsignedInteger j) const;
 
   void erase(NumericalSampleImplementation::iterator first, NumericalSampleImplementation::iterator last);
 #endif
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
   const NumericalScalar * __baseaddress__ () const;
-  UnsignedLong __elementsize__ () const;
+  UnsignedInteger __elementsize__ () const;
 
   /* Method __len__() is for Python */
-  UnsignedLong __len__() const;
+  UnsignedInteger __len__() const;
 
   /* Method __contains__() is for Python */
   Bool __contains__(const NumericalPoint & val) const;
 
 
-  const NumericalPoint __getitem__ (const UnsignedLong index) const;
-  void __setitem__ (const UnsignedLong index,
+  const NumericalPoint __getitem__ (const UnsignedInteger index) const;
+  void __setitem__ (const UnsignedInteger index,
                     const NumericalPoint & val);
 
-  void erase(const UnsignedLong first,
-             const  UnsignedLong last);
-  void erase(const UnsignedLong index);
+  void erase(const UnsignedInteger first,
+             const  UnsignedInteger last);
+  void erase(const UnsignedInteger index);
 
   /** erase the whole sample */
   void clear();
@@ -156,10 +156,10 @@ public:
   Description getDescription() const;
 
   /** Dimension accessor */
-  UnsignedLong getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Size accessor */
-  UnsignedLong getSize() const;
+  UnsignedInteger getSize() const;
 
   /** Maximum accessor */
   NumericalPoint getMax() const;
@@ -181,7 +181,7 @@ public:
    * and returns the remainder as new sample. This method tries its best not for doubling
    * memory usage.
    */
-  NumericalSample split(const UnsignedLong index);
+  NumericalSample split(const UnsignedInteger index);
 
   /**
    * Method computeMean() gives the mean of the sample, based on the formula
@@ -248,12 +248,12 @@ public:
   /**
    * Gives the centered moment of order k of the sample (by component)
    */
-  NumericalPoint computeCenteredMomentPerComponent(const UnsignedLong k) const;
+  NumericalPoint computeCenteredMomentPerComponent(const UnsignedInteger k) const;
 
   /**
    * Gives the raw moment of order k of the sample (by component)
    */
-  NumericalPoint computeRawMomentPerComponent(const UnsignedLong k) const;
+  NumericalPoint computeRawMomentPerComponent(const UnsignedInteger k) const;
 
   /**
    * Method computeQuantilePerComponent() gives the quantile per component of the sample
@@ -275,7 +275,7 @@ public:
    * Get the position of a point in the sample.
    * Returns size+1 if the point does not belong to the sample.
    */
-  UnsignedLong find(const NumericalPoint & point) const;
+  UnsignedInteger find(const NumericalPoint & point) const;
 
   /**
    * Translate realizations in-place
@@ -310,22 +310,22 @@ public:
   NumericalSample rank() const;
 
   /** Ranked component */
-  NumericalSample rank(const UnsignedLong index) const;
+  NumericalSample rank(const UnsignedInteger index) const;
 
   /** Sorted sample */
   NumericalSample sort() const;
 
   /** Sorted component */
-  NumericalSample sort(const UnsignedLong index) const;
+  NumericalSample sort(const UnsignedInteger index) const;
 
   /** Sorted according a component */
-  NumericalSample sortAccordingToAComponent(const UnsignedLong index) const;
+  NumericalSample sortAccordingToAComponent(const UnsignedInteger index) const;
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   virtual String storeToTemporaryFile() const;
 
   /** Get the i-th marginal sample */
-  NumericalSample getMarginal(const UnsignedLong index) const;
+  NumericalSample getMarginal(const UnsignedInteger index) const;
 
   /** Get the marginal sample corresponding to indices dimensions */
   NumericalSample getMarginal(const Indices & indices) const;

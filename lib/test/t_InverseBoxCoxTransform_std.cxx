@@ -35,14 +35,14 @@ int main(int argc, char *argv[])
   try
   {
     // Realization issued from a Normal distribution
-    const UnsignedLong dimension(1);
+    const UnsignedInteger dimension(1);
 
     // Fix the realization as a Normal
     // Parameters are done such as the values are positive
     Uniform myDistribution(-1, 1);
 
     // get a realization
-    const UnsignedLong n(51);
+    const UnsignedInteger n(51);
     const NumericalScalar timeStart(0.);
     const NumericalScalar timeStep(0.1);
     NumericalSample mySample(myDistribution.getSample(n));
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     // Create the lambda parameter
     NumericalPoint lambda(dimension);
-    for (UnsignedLong index = 0 ; index < dimension; ++index)
+    for (UnsignedInteger index = 0 ; index < dimension; ++index)
     {
       lambda[index] = (index + 2) * 0.1;
     }

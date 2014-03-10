@@ -92,32 +92,32 @@ void LinearLeastSquares::run()
     /* Compute the given function over the given sample */
     dataOut_ = inputFunction_(dataIn_);
   }
-  const UnsignedLong inputDimension(dataIn_.getDimension());
-  const UnsignedLong outputDimension(dataOut_.getDimension());
-  const UnsignedLong dataInSize(dataIn_.getSize());
-  const UnsignedLong coefficientsDimension(1 + inputDimension);
+  const UnsignedInteger inputDimension(dataIn_.getDimension());
+  const UnsignedInteger outputDimension(dataOut_.getDimension());
+  const UnsignedInteger dataInSize(dataIn_.getSize());
+  const UnsignedInteger coefficientsDimension(1 + inputDimension);
   /* Matrix of the least-square problem */
   Matrix componentMatrix(dataInSize, coefficientsDimension);
   /* Matrix for the several right-hand sides */
   Matrix rightHandSides(dataInSize, outputDimension);
   /* For each sample of the input data... */
-  for(UnsignedLong sampleIndex = 0; sampleIndex < dataInSize; ++sampleIndex)
+  for(UnsignedInteger sampleIndex = 0; sampleIndex < dataInSize; ++sampleIndex)
   {
     /* build the componentMatrix */
     /* get the current sample x */
     const NumericalPoint currentSample(dataIn_[sampleIndex]);
-    UnsignedLong rowIndex(0);
+    UnsignedInteger rowIndex(0);
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
     ++rowIndex;
     /* Then the linear term x' */
-    for(UnsignedLong componentIndex = 0; componentIndex < inputDimension; ++componentIndex)
+    for(UnsignedInteger componentIndex = 0; componentIndex < inputDimension; ++componentIndex)
     {
       componentMatrix(sampleIndex, rowIndex) = currentSample[componentIndex];
       ++rowIndex;
     } // linear term
     /* build the right-hand side */
-    for(UnsignedLong outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
+    for(UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
     {
       rightHandSides(sampleIndex, outputIndex) = dataOut_[sampleIndex][outputIndex];
     }
@@ -125,14 +125,14 @@ void LinearLeastSquares::run()
   // Now, solve simultaneously the least-squares solutions for all the outputs
   const Matrix coefficients(componentMatrix.solveLinearSystem(rightHandSides));
   // Fill-in the elements of the meta-model
-  for(UnsignedLong outputComponent = 0; outputComponent < outputDimension; ++outputComponent)
+  for(UnsignedInteger outputComponent = 0; outputComponent < outputDimension; ++outputComponent)
   {
     /* First, the constant term */
-    UnsignedLong coefficientsIndex(0);
+    UnsignedInteger coefficientsIndex(0);
     constant_[outputComponent] = coefficients(coefficientsIndex, outputComponent);
     ++coefficientsIndex;
     /* Second, the linear term */
-    for(UnsignedLong componentIndex = 0; componentIndex < inputDimension; ++componentIndex)
+    for(UnsignedInteger componentIndex = 0; componentIndex < inputDimension; ++componentIndex)
     {
       linear_(componentIndex, outputComponent) = coefficients(coefficientsIndex, outputComponent);
       ++coefficientsIndex;
