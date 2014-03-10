@@ -13,7 +13,8 @@
  * Deprecated method ResourceMap::SetAsUnsignedLong|GetAsUnsignedLong  in favor of ResourceMap::SetAsUnsignedInteger|GetAsUnsignedInteger
  
 === Python module ===
-
+ * Added Drawable|Graph::_repr_svg_ for automatic graphing within IPython notebook
+ 
 === Miscellaneous ===
 
 === Bug fixes ===
