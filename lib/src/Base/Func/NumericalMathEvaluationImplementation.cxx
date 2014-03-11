@@ -457,11 +457,22 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "");
+  Graph graph(title, xName, yName, true, "topright");
   Contour isoValues(Contour(x, y, z, NumericalPoint(0), Description(0), true, title));
   isoValues.buildDefaultLevels();
   isoValues.buildDefaultLabels();
-  graph.add(isoValues);
+  NumericalPoint levels(isoValues.getLevels());
+  Description labels(isoValues.getLabels());
+  for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
+    {
+      Contour current(isoValues);
+      current.setLevels(NumericalPoint(1, levels[i]));
+      current.setLabels(Description(1, labels[i]));
+      current.setDrawLabels(false);
+      current.setLegend(labels[i]);
+      current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
+      graph.add(current);
+    }
   return graph;
 }
 

@@ -33,7 +33,6 @@
 #include "Curve.hxx"
 #include "Polygon.hxx"
 #include "SpecFunc.hxx"
-#include "TBB.hxx"
 #include "PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -225,34 +224,28 @@ UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
 /* Compute the volume of a given simplex */
 NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
 {
+  // First special case: 1D simplex
+  if (getDimension() == 1) 
+    {
+      const NumericalScalar x0(vertices_[simplices_[index][0]][0]);
+      const NumericalScalar x1(vertices_[simplices_[index][1]][0]);
+      return fabs(x1 - x0);
+    }
+  // Second special case: 2D simplex
+  if (getDimension() == 2) 
+    {
+      const NumericalScalar x0(vertices_[simplices_[index][0]][0]);
+      const NumericalScalar y0(vertices_[simplices_[index][0]][1]);
+      const NumericalScalar x1(vertices_[simplices_[index][1]][0]);
+      const NumericalScalar y1(vertices_[simplices_[index][1]][1]);
+      const NumericalScalar x2(vertices_[simplices_[index][2]][0]);
+      const NumericalScalar y2(vertices_[simplices_[index][2]][1]);
+      return 0.5 * fabs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
+    }
   SquareMatrix matrix(buildSimplexMatrix(index));
   NumericalScalar sign(0.0);
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
 }
-
-/* TBB functor to speed-up volume computation */
-struct VolumeFunctor
-{
-  const Mesh & mesh_;
-  NumericalScalar accumulator_;
-
-  VolumeFunctor(const Mesh & mesh)
-    : mesh_(mesh), accumulator_(0.0) {}
-
-  VolumeFunctor(const VolumeFunctor & other, TBB::Split)
-    : mesh_(other.mesh_), accumulator_(0.0) {}
-
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += mesh_.computeSimplexVolume(i);
-  }
-
-  void join(const VolumeFunctor & other)
-  {
-    accumulator_ += other.accumulator_;
-  }
-
-}; /* end struct VolumeFunctor */
 
 /* Compute the volume of the mesh */
 void Mesh::computeVolume() const

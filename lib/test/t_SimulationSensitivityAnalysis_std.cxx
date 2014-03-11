@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     comparisonOperators[1] = LessOrEqual();
     comparisonOperators[2] = Greater();
     comparisonOperators[3] = GreaterOrEqual();
-    ResourceMap::SetAsUnsignedLong("SimulationSensitivityAnalysis-DefaultSampleMargin", 10);
+    ResourceMap::SetAsUnsignedInteger("SimulationSensitivityAnalysis-DefaultSampleMargin", 10);
     NumericalScalar threshold(3.0);
     for (UnsignedInteger i = 0; i < 4; ++i)
     {

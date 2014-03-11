@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   {
     // Overwide bug 471
     ResourceMap::SetAsNumericalScalar("BoxCox-RootEpsilon", 1.0e-6);
-    ResourceMap::GetAsUnsignedLong("ARMALikelihoodFactory-DefaultMaxFun", 100000);
+    ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun", 100000);
 
     // ARMA(p, q)
     const UnsignedInteger p(2);

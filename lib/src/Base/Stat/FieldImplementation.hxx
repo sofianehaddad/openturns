@@ -25,10 +25,11 @@
 #ifndef OPENTURNS_FIELDIMPLEMENTATION_HXX
 #define OPENTURNS_FIELDIMPLEMENTATION_HXX
 
-#include <PersistentObject.hxx>
-#include <NumericalSample.hxx>
-#include <Mesh.hxx>
-#include <RegularGrid.hxx>
+#include "PersistentObject.hxx"
+#include "NumericalSample.hxx"
+#include "Mesh.hxx"
+#include "RegularGrid.hxx"
+#include "TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -156,6 +157,45 @@ public:
 
 protected:
 
+  /** Compute the spatial mean of the field */
+  void computeSpatialMean() const;
+
+  /* TBB functor to speed-up spatial mean computation */
+  struct SpatialMeanFunctor
+  {
+    const FieldImplementation & field_;
+    NumericalScalar volumeAccumulator_;
+    NumericalPoint accumulator_;
+
+    SpatialMeanFunctor(const FieldImplementation & field)
+      : field_(field), volumeAccumulator_(0.0), accumulator_(field.getDimension(), 0.0) {}
+
+    SpatialMeanFunctor(const SpatialMeanFunctor & other, TBB::Split)
+      : field_(other.field_), volumeAccumulator_(0.0), accumulator_(other.field_.getDimension(), 0.0) {}
+
+    void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+    {
+      const UnsignedInteger meshDimension(field_.getMeshDimension());
+      const UnsignedInteger dimension(field_.getDimension());
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) 
+	{
+	  const NumericalScalar volume(field_.mesh_.computeSimplexVolume(i));
+	  const Indices simplex(field_.mesh_.getSimplex(i));
+	  NumericalPoint meanValue(dimension, 0.0);
+	  for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
+	  volumeAccumulator_ += volume;
+	  accumulator_ += (volume / dimension) * meanValue;
+	}
+    }
+
+    void join(const SpatialMeanFunctor & other)
+    {
+      volumeAccumulator_ += other.volumeAccumulator_;
+      accumulator_ += other.accumulator_;
+    }
+
+  }; /* end struct SpatialMeanFunctor */
+
   /** The mesh associated to the field */
   Mesh mesh_;
 
@@ -165,6 +205,11 @@ protected:
   /** The description of all components */
   Description description_;
 
+  /** The spatial mean */
+  mutable NumericalPoint spatialMean_;
+
+  /** Flag to tell if the spatial mean has already been computed */
+  mutable Bool isAlreadyComputedSpatialMean_;
 }; /* class FieldImplementation */
 
 

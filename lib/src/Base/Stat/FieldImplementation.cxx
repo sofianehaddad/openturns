@@ -36,7 +36,6 @@
 #include "Cloud.hxx"
 #include "Curve.hxx"
 #include "Os.hxx"
-#include "TBB.hxx"
 #include "PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -55,6 +54,8 @@ FieldImplementation::FieldImplementation()
   , mesh_()
   , values_(0, 0)
   , description_(mesh_.getDescription())
+  , spatialMean_(0)
+  , isAlreadyComputedSpatialMean_(false)
 {
   // Nothing to do
 }
@@ -66,6 +67,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , mesh_(mesh)
   , values_(mesh.getVerticesNumber(), dim)
   , description_(0)
+  , spatialMean_(dim)
+  , isAlreadyComputedSpatialMean_(false)
 {
   // Build the default description
   Description description(getMeshDimension() + getDimension());
@@ -81,6 +84,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , mesh_(mesh)
   , values_(values)
   , description_()
+  , spatialMean_(values.getDimension())
+  , isAlreadyComputedSpatialMean_(false)
 {
   if (mesh.getVerticesNumber() != values.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a Field with a number of values=" << values.getSize() << " different from the number of vertices=" << mesh.getVerticesNumber();
   Description description(getMeshDimension() + getDimension());
@@ -126,6 +131,7 @@ RegularGrid FieldImplementation::getTimeGrid() const
 /* Individual value accessor */
 NSI_point FieldImplementation::operator[](const UnsignedInteger index)
 {
+  isAlreadyComputedSpatialMean_ = false;
   return values_[index];
 }
 
@@ -137,6 +143,7 @@ NSI_const_point FieldImplementation::operator[](const UnsignedInteger index) con
 NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
+  isAlreadyComputedSpatialMean_ = false;
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
   return at(i, j);
@@ -159,6 +166,7 @@ const NumericalScalar & FieldImplementation::operator () (const UnsignedInteger 
 NSI_point FieldImplementation::at (const UnsignedInteger index)
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  isAlreadyComputedSpatialMean_ = false;
   return (*this)[index];
 }
 
@@ -173,6 +181,7 @@ NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
+  isAlreadyComputedSpatialMean_ = false;
   return (*this)[i][j];
 }
 
@@ -193,6 +202,7 @@ NumericalPoint FieldImplementation::getValueAtIndex(const UnsignedInteger index)
 void FieldImplementation::setValueAtIndex(const UnsignedInteger index,
     const NumericalPoint & val)
 {
+  isAlreadyComputedSpatialMean_ = false;
   values_[index] = val;
 }
 
@@ -204,6 +214,7 @@ NumericalPoint FieldImplementation::getValueAtNearestPosition(const NumericalPoi
 void FieldImplementation::setValueAtNearestPosition(const NumericalPoint & position,
     const NumericalPoint & val)
 {
+  isAlreadyComputedSpatialMean_ = false;
   values_[mesh_.getNearestVertexIndex(position)] = val;
 }
 
@@ -215,6 +226,7 @@ NumericalPoint FieldImplementation::getValueAtNearestTime(const NumericalScalar 
 
 void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp, const NumericalPoint & val)
 {
+  isAlreadyComputedSpatialMean_ = false;
   setValueAtNearestPosition(NumericalPoint(1, timestamp), val);
 }
 
@@ -280,11 +292,22 @@ String FieldImplementation::__str__(const String & offset) const
   return data.__str__(offset);
 }
 
+/* Compute the spatial mean of the field */
+void FieldImplementation::computeSpatialMean() const
+{
+  SpatialMeanFunctor functor( *this );
+  TBB::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
+  if (functor.volumeAccumulator_ == 0.0) throw InternalException(HERE) << "Error: cannot compute the spatial mean of a field supported by a mesh of zero volume.";
+  spatialMean_ = functor.accumulator_ / functor.volumeAccumulator_;
+  isAlreadyComputedSpatialMean_ = true;
+}
+
 
 /* Compute the spatial mean of the field */
 NumericalPoint FieldImplementation::getSpatialMean() const
 {
-  return values_.computeMean();
+  if (!isAlreadyComputedSpatialMean_) computeSpatialMean();
+  return spatialMean_;
 }
 
 /* Compute the spatial mean of the field */
@@ -344,15 +367,16 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     if (interpolate)
     {
       // Compute the iso-values
-      const UnsignedInteger levelsNumber(1 + 0 * ResourceMap::GetAsUnsignedInteger("FieldImplementation-LevelNumber"));
+      const UnsignedInteger levelsNumber(ResourceMap::GetAsUnsignedInteger("FieldImplementation-LevelNumber"));
       NumericalPoint levels(levelsNumber);
+      Description palette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
         const NumericalScalar q((i + 1.0) / (levelsNumber + 1.0));
         levels[i] = marginalValues.computeQuantile(q)[0];
+	palette[i] = Curve::ConvertFromHSV((360.0 * i) / levelsNumber, 1.0, 1.0);
       }
       // Loop over the simplices to draw the segments (if any) associated with the different levels
-      const Description palette(Curve::BuildDefaultPalette(levelsNumber));
       const UnsignedInteger simplicesNumber(mesh_.getSimplicesNumber());
       for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
       {
@@ -422,6 +446,8 @@ void FieldImplementation::save(Advocate & adv) const
   adv.saveAttribute( "mesh_", mesh_);
   adv.saveAttribute( "values_", values_);
   adv.saveAttribute( "description_", description_);
+  adv.saveAttribute( "spatialMean_", spatialMean_);
+  adv.saveAttribute( "isAlreadyComputedSpatialMean_", isAlreadyComputedSpatialMean_);
 }
 
 
@@ -432,6 +458,8 @@ void FieldImplementation::load(Advocate & adv)
   adv.loadAttribute( "mesh_", mesh_);
   adv.loadAttribute( "values_", values_);
   adv.loadAttribute( "description_", description_);
+  adv.loadAttribute( "spatialMean_", spatialMean_);
+  adv.loadAttribute( "isAlreadyComputedSpatialMean_", isAlreadyComputedSpatialMean_);
 }
 
 /* Export to VTK file */
