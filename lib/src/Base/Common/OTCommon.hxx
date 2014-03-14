@@ -41,7 +41,6 @@
 #include "Lockable.hxx"
 #include "Log.hxx"
 #include "Memory.hxx"
-#include "MPI.hxx"
 #include "Os.hxx"
 #include "OSS.hxx"
 #include "Object.hxx"
