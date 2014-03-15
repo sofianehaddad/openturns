@@ -336,6 +336,15 @@ NumericalSample FieldImplementation::asSample() const
   return data;
 }
 
+/* Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
+Mesh FieldImplementation::asDeformedMesh() const
+{
+  if (getDimension() != getMeshDimension()) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << values_.getDimension() << " does not match the mesh dimension=" << getMeshDimension();
+  NumericalSample data(mesh_.getVertices());
+  data += values_;
+  return Mesh(data, mesh_.getSimplices());
+}
+
 /* Draw a marginal of the Field */
 Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const

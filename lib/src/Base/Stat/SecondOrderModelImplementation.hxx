@@ -75,7 +75,7 @@ public:
                  const SpectralModel & spectralModel);
 
   /** Discretize the covariance function on a given TimeGrid */
-  virtual CovarianceMatrix discretizeCovariance(const RegularGrid & timeGrid) const;
+  virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 
   /** Computation of the spectral density function */
   virtual HermitianMatrix computeSpectralDensity(const NumericalScalar frequency) const;

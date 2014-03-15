@@ -111,9 +111,9 @@ HermitianMatrix SecondOrderModel::computeSpectralDensity(const NumericalScalar f
 }
 
 /* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix SecondOrderModel::discretizeCovariance(const RegularGrid & timeGrid) const
+CovarianceMatrix SecondOrderModel::discretize(const RegularGrid & timeGrid) const
 {
-  return getImplementation()->discretizeCovariance(timeGrid);
+  return getImplementation()->discretize(timeGrid);
 }
 
 /* String converter */

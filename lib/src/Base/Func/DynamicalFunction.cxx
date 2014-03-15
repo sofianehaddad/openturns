@@ -29,15 +29,16 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(DynamicalFunction);
 
 /* Default constructor */
-DynamicalFunction::DynamicalFunction()
-  : TypedInterfaceObject<DynamicalFunctionImplementation>(new DynamicalFunctionImplementation())
+DynamicalFunction::DynamicalFunction(const UnsignedInteger meshDimension)
+  : TypedInterfaceObject<DynamicalFunctionImplementation>(new DynamicalFunctionImplementation(meshDimension))
 {
   // Nothing to do
 }
 
 /* Constructor from NumericalMathFunction */
-DynamicalFunction::DynamicalFunction(const NumericalMathFunction & function)
-  : TypedInterfaceObject<DynamicalFunctionImplementation>(SpatialFunction(function).clone())
+DynamicalFunction::DynamicalFunction(const NumericalMathFunction & function,
+				     const UnsignedInteger meshDimension)
+  : TypedInterfaceObject<DynamicalFunctionImplementation>(SpatialFunction(function, meshDimension).clone())
 {
   // Nothing to do
 }
@@ -129,6 +130,12 @@ Field DynamicalFunction::operator() (const Field & inFld) const
 ProcessSample DynamicalFunction::operator() (const ProcessSample & inPS) const
 {
   return getImplementation()->operator()(inPS);
+}
+
+/* Accessor for mesh dimension */
+UnsignedInteger DynamicalFunction::getMeshDimension() const
+{
+  return getImplementation()->getMeshDimension();
 }
 
 /* Accessor for input point dimension */

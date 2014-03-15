@@ -40,7 +40,7 @@ try:
     # Discretize the process on a small time grid
     timeGrid = RegularGrid(0.0, 1.0, 11)
     print "discretized covariance over the time grid = ", timeGrid, " is "
-    print myModel.discretizeCovariance(timeGrid)
+    print myModel.discretize(timeGrid)
 
 except:
     import sys

@@ -1,0 +1,6 @@
+myDefautModel =  class=ExponentiallyDampedCosineModel amplitude=1 scale=1 frequency=1
+myModel =  class=ExponentiallyDampedCosineModel amplitude=1 scale=0.1 frequency=1
+covariance matrix at t =  1.0  :  [[ 4.53999e-05 ]]
+covariance matrix at t =  -1.0  :  [[ 4.53999e-05 ]]
+covariance matrix at t =  15.0  :  [[ 7.1751e-66 ]]
+discretized covariance over the time grid= RegularGrid(start=0, step=0.333333, n=4) is= t_ExponentiallyDampedCosineModel_std.py <type 'exceptions.AttributeError'> discretizeCovariance

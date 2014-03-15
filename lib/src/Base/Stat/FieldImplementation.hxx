@@ -132,8 +132,11 @@ public:
   void __setitem__ (const UnsignedInteger index,
                     const NumericalPoint & val);
 
-  /** Return the fielf as a sample, ie its values and positions */
+  /** Return the field as a sample, ie its values and positions */
   NumericalSample asSample() const;
+
+  /** Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
+  Mesh asDeformedMesh() const;
 
   /** Compute the spatial mean of the field */
   NumericalPoint getSpatialMean() const;

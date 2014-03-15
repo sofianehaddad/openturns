@@ -75,12 +75,6 @@ CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & t
 }
 
 /* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix StationaryCovarianceModel::discretizeCovariance(const RegularGrid & timeGrid) const
-{
-  LOGUSER(OSS() << "The discretizeCovariance(const RegularGrid & timeGrid) method is deprecated in favor of the discretize(const RegularGrid & timeGrid) method");
-  return discretize(timeGrid);
-}
-
 CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeGrid) const
 {
   const UnsignedInteger size(timeGrid.getN());

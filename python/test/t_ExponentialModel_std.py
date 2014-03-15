@@ -25,12 +25,12 @@ try:
     print "myModel = ", myModel
 
     timeValueOne = 1.
-    print "covariance matrix at t = ", timeValueOne, " : ", myModel.computeCovariance(timeValueOne)
-    print "covariance matrix at t = ", -1.0 * timeValueOne, " : ", myModel.computeCovariance(-1.0 * timeValueOne)
+    print "covariance matrix at t = ", timeValueOne, " : ", myModel(timeValueOne)
+    print "covariance matrix at t = ", -1.0 * timeValueOne, " : ", myModel(-1.0 * timeValueOne)
 
     # Evaluation at time higher to check the decrease of the exponential values
     timeValueHigh = 15.
-    print "covariance matrix at t = ", timeValueHigh, " : ", myModel.computeCovariance(timeValueHigh).__str__()
+    print "covariance matrix at t = ", timeValueHigh, " : ", myModel(timeValueHigh).__str__()
 
     timeGrid = RegularGrid(0.0, 1.0 / 3.0, 4)
     print "discretized covariance over the time grid=", timeGrid, "is=", myModel.discretizeCovariance(timeGrid)
@@ -57,9 +57,9 @@ try:
     myHighModel = ExponentialModel(amplitude, scale, spatialCorrelation)
     print "myHighModel = ", myHighModel
 
-    print "covariance matrix at t = ", timeValueOne, " : ", myHighModel.computeCovariance(timeValueOne)
-    print "covariance matrix at t = ", -1.0 * timeValueOne, " : ", myHighModel.computeCovariance(-1.0 * timeValueOne)
-    print "covariance matrix at t = ", timeValueHigh, " : ", myHighModel.computeCovariance(timeValueHigh)
+    print "covariance matrix at t = ", timeValueOne, " : ", myHighModel(timeValueOne)
+    print "covariance matrix at t = ", -1.0 * timeValueOne, " : ", myHighModel(-1.0 * timeValueOne)
+    print "covariance matrix at t = ", timeValueHigh, " : ", myHighModel(timeValueHigh)
 
     print "discretized covariance over the time grid=", timeGrid, "is=", myHighModel.discretizeCovariance(timeGrid)
 

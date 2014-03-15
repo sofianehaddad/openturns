@@ -124,16 +124,6 @@ SymmetricTensor CovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Discretize the covariance function on a given TimeGrid/Mesh */
-CovarianceMatrix CovarianceModel::discretizeCovariance(const RegularGrid & timeGrid) const
-{
-  return getImplementation()->discretizeCovariance(timeGrid);
-}
-
-CovarianceMatrix CovarianceModel::discretizeCovariance(const Mesh & mesh) const
-{
-  return getImplementation()->discretizeCovariance(mesh);
-}
-
 CovarianceMatrix CovarianceModel::discretize(const RegularGrid & timeGrid) const
 {
   return getImplementation()->discretize(timeGrid);

@@ -123,6 +123,9 @@ public:
   NumericalSample getSample() const;
   NumericalSample getValues() const;
 
+  /** Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
+  Mesh asDeformedMesh() const;
+
   /** Compute the spatial mean of the field */
   NumericalPoint getSpatialMean() const;
 

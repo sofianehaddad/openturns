@@ -86,9 +86,9 @@ HermitianMatrix SecondOrderModelImplementation::computeSpectralDensity(const Num
 }
 
 /* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix SecondOrderModelImplementation::discretizeCovariance(const RegularGrid & timeGrid) const
+CovarianceMatrix SecondOrderModelImplementation::discretize(const RegularGrid & timeGrid) const
 {
-  return covarianceModel_.discretizeCovariance(timeGrid) ;
+  return covarianceModel_.discretize(timeGrid) ;
 }
 
 /* String converter */

@@ -88,12 +88,6 @@ public:
                                           const NumericalPoint & t) const;
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
-  /** @deprecated */
-  virtual CovarianceMatrix discretizeCovariance(const RegularGrid & timeGrid) const;
-
-  /** @deprecated */
-  virtual CovarianceMatrix discretizeCovariance(const Mesh & mesh) const;
-
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;

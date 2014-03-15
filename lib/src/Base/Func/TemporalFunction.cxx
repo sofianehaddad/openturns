@@ -28,52 +28,59 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(TemporalFunction);
 
 static Factory<TemporalFunction> RegisteredFactory("TemporalFunction");
 
 /* Default constructor */
-TemporalFunction::TemporalFunction()
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(new NoNumericalMathEvaluationImplementation)
+TemporalFunction::TemporalFunction(const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-TemporalFunction::TemporalFunction(const NumericalMathFunction & function)
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(function.getEvaluationImplementation())
+TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
+				   const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(function.getEvaluationImplementation())
 {
+  // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
+  if (p_evaluation_->getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << p_evaluation_->getInputDimension();
   // Set the descriptions
   DescriptionImplementation inputDescription(*(p_evaluation_->getInputDescription().getImplementation()));
-  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + 1);
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
   setInputDescription(inputDescription);
   setOutputDescription(p_evaluation_->getOutputDescription());
 }
 
 /* Parameter constructor */
-TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation)
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(p_evaluation)
+TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation,
+				   const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(p_evaluation)
 {
+  // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
+  if (p_evaluation_->getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << p_evaluation_->getInputDimension();
   // Set the descriptions
   DescriptionImplementation inputDescription(*(p_evaluation_->getInputDescription().getImplementation()));
-  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + 1);
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
   setInputDescription(inputDescription);
   setOutputDescription(p_evaluation_->getOutputDescription());
 }
 
 /* Parameter constructor */
-TemporalFunction::TemporalFunction(const NumericalMathEvaluationImplementation & evaluation)
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(evaluation.clone())
+TemporalFunction::TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
+				   const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(evaluation.clone())
 {
+  // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
+  if (p_evaluation_->getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << p_evaluation_->getInputDimension();
   // Set the descriptions
   DescriptionImplementation inputDescription(*(p_evaluation_->getInputDescription().getImplementation()));
-  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + 1);
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
   setInputDescription(inputDescription);
   setOutputDescription(p_evaluation_->getOutputDescription());
 }
@@ -106,10 +113,11 @@ String TemporalFunction::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field TemporalFunction::operator() (const Field & inTS) const
+Field TemporalFunction::operator() (const Field & inFld) const
 {
+  if (inFld.getMeshDimension() != getMeshDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getMeshDimension() << ", got mesh dimension=" << inFld.getMeshDimension();
   ++callsNumber_;
-  return Field(inTS.getTimeGrid(), (*p_evaluation_)(inTS.getImplementation()->asSample()));
+  return Field(inFld.getMesh(), (*p_evaluation_)(inFld.getImplementation()->asSample()));
 }
 
 /* Get the i-th marginal function */

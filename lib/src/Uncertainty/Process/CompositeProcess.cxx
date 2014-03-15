@@ -61,11 +61,12 @@ CompositeProcess::CompositeProcess(const DynamicalFunction & function,
   , function_(function)
   , p_antecedent_(antecedent.getImplementation())
 {
+  std::cerr << "function=" << function << ", process=" << antecedent << std::endl;
   if (function.getInputDimension() != p_antecedent_->getDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a DynamicalFunction with incompatible dimensions "
                                          << "here Process dimension=" << p_antecedent_->getDimension()
                                          << " and DynamicalFunction input dimension=" << function.getInputDimension();
-  setTimeGrid(p_antecedent_->getTimeGrid());
+  setMesh(p_antecedent_->getMesh());
 }
 
 /* Virtual constructor */

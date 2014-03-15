@@ -63,11 +63,6 @@ public:
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
-  /** @deprecated */
-  using CovarianceModelImplementation::discretizeCovariance;
-  /** @deprecated */
-  CovarianceMatrix discretizeCovariance(const RegularGrid & timeGrid) const;
-
   using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 

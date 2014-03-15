@@ -50,7 +50,7 @@ public:
   typedef Pointer<DynamicalFunctionImplementation> Implementation;
 
   /** Default constructor */
-  DynamicalFunctionImplementation();
+  explicit DynamicalFunctionImplementation(const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual DynamicalFunctionImplementation * clone() const;
@@ -69,6 +69,9 @@ public:
                                      const NumericalPoint & inP) const;
   virtual Field operator() (const Field & inFld) const;
   virtual ProcessSample operator() (const ProcessSample & inPS) const;
+
+  /** Accessor for mesh dimension */
+  virtual UnsignedInteger getMeshDimension() const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -93,9 +96,6 @@ public:
   /** Number of calls to the dynamical function */
   virtual UnsignedInteger getCallsNumber() const;
 
-  /** Compute the output mesh based on a given input mesh */
-  virtual Mesh computeOutputMesh(const Mesh & mesh) const;
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -104,6 +104,8 @@ public:
 
 protected:
 
+  /** Expected dimension of the mesh underlying the field arguments */
+  UnsignedInteger meshDimension_;
   /** Description of the input variables */
   Description inputDescription_;
 

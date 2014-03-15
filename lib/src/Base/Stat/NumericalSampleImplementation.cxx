@@ -506,11 +506,11 @@ String NumericalSampleImplementation::streamToRFormat() const
 
 /* Default constructor is private */
 NumericalSampleImplementation::NumericalSampleImplementation()
-  : PersistentObject(),
-    size_(0),
-    dimension_(0),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(0)
+  , dimension_(0)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   // Nothing to do
 }
@@ -518,11 +518,11 @@ NumericalSampleImplementation::NumericalSampleImplementation()
 /* Standard constructor */
 NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteger size,
     const UnsignedInteger dim)
-  : PersistentObject(),
-    size_(size),
-    dimension_(dim),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(size)
+  , dimension_(dim)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   // Nothing to do
 }
@@ -530,11 +530,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteg
 /* Constructor from a NumericalPoint */
 NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteger size,
     const NumericalPoint & point)
-  : PersistentObject(),
-    size_(size),
-    dimension_(point.getDimension()),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(size)
+  , dimension_(point.getDimension())
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   for (UnsignedInteger i = 0; i < size_; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -544,11 +544,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteg
 
 /* Constructor from a collection of NumericalPoint */
 NumericalSampleImplementation::NumericalSampleImplementation(const Collection<NumericalPoint> & coll)
-  : PersistentObject(),
-    size_(coll.getSize()),
-    dimension_((coll.getSize() > 0) ? coll[0].getDimension() : 0),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(coll.getSize())
+  , dimension_((coll.getSize() > 0) ? coll[0].getDimension() : 0)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   for (UnsignedInteger i = 0; i < size_; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -557,11 +557,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const Collection<Nu
 
 /* Constructor from a collection of Indices */
 NumericalSampleImplementation::NumericalSampleImplementation(const Collection<Indices> & coll)
-  : PersistentObject(),
-    size_(coll.getSize()),
-    dimension_((coll.getSize() > 0) ? coll[0].getSize() : 0),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(coll.getSize())
+  , dimension_((coll.getSize() > 0) ? coll[0].getSize() : 0)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   for (UnsignedInteger i = 0; i < size_; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -570,11 +570,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const Collection<In
 
 /* Partial copy constructor */
 NumericalSampleImplementation::NumericalSampleImplementation(const NumericalSampleImplementation & other, iterator first, iterator last)
-  : PersistentObject(),
-    size_(last - first),
-    dimension_(other.getDimension()),
-    data_(size_ * dimension_, 0.0),
-    p_description_(other.p_description_)
+  : PersistentObject()
+  , size_(last - first)
+  , dimension_(other.getDimension())
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(other.p_description_)
 {
   std::copy( first, last, begin() );
 }
@@ -1691,11 +1691,44 @@ NumericalSampleImplementation & NumericalSampleImplementation::operator += (cons
   return *this;
 }
 
+struct PositiveTranslationSamplePolicy
+{
+  const NumericalSampleImplementation & translation_;
+  NumericalSampleImplementation & output_;
+
+  PositiveTranslationSamplePolicy( const NumericalSampleImplementation & translation,
+				   NumericalSampleImplementation & output)
+    : translation_(translation), output_(output) {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] += translation_[i];
+  }
+
+}; /* end struct TranslationSamplePolicy */
+
+struct NegativeTranslationSamplePolicy
+{
+  const NumericalSampleImplementation & translation_;
+  NumericalSampleImplementation & output_;
+
+  NegativeTranslationSamplePolicy( const NumericalSampleImplementation & translation,
+				   NumericalSampleImplementation & output)
+    : translation_(translation), output_(output) {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] -= translation_[i];
+  }
+
+}; /* end struct TranslationSamplePolicy */
+
 NumericalSampleImplementation & NumericalSampleImplementation::operator += (const NumericalSampleImplementation & translation)
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] += translation[i];
+  const PositiveTranslationSamplePolicy policy( translation, *this );
+  TBB::ParallelFor( 0, size_, policy );
   return *this;
 }
 
@@ -1709,7 +1742,8 @@ NumericalSampleImplementation & NumericalSampleImplementation::operator -= (cons
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] -= translation[i];
+  const NegativeTranslationSamplePolicy policy( translation, *this );
+  TBB::ParallelFor( 0, size_, policy );
   return *this;
 }
 

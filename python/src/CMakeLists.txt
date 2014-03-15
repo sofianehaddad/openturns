@@ -182,6 +182,7 @@ ot_add_python_module( statistics statistics_module.i
                       UserDefinedSpectralModel.i
                       WelchFactory.i
                       ExponentialModel.i
+                      ExponentiallyDampedCosineModel.i
                       CauchyModel.i
                       CovarianceModelFactoryImplementation.i
                       CovarianceModelFactory.i

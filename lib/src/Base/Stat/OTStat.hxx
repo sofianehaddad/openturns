@@ -72,6 +72,7 @@
 #include "UserDefinedSpectralModel.hxx"
 #include "WelchFactory.hxx"
 #include "ExponentialModel.hxx"
+#include "ExponentiallyDampedCosineModel.hxx"
 #include "CauchyModel.hxx"
 #include "CovarianceModelFactoryImplementation.hxx"
 #include "CovarianceModelFactory.hxx"

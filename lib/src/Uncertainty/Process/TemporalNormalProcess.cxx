@@ -197,11 +197,12 @@ String TemporalNormalProcess::__repr__() const
 String TemporalNormalProcess::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << " TemporalNormalProcess=" << TemporalNormalProcess::GetClassName()
+  oss << "TemporalNormalProcess("
       << " dimension=" << dimension_
       << " mesh=\n" << mesh_.__str__(offset)
       << " trend=\n" << trend_.__str__(offset)
-      << " covarianceModel=" << covarianceModel_.__str__(offset);
+      << " covarianceModel=" << covarianceModel_.__str__(offset)
+      << "\n)";
   return oss;
 }
 

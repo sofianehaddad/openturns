@@ -81,6 +81,7 @@
 %include UserDefinedSpectralModel.i
 %include WelchFactory.i
 %include ExponentialModel.i
+%include ExponentiallyDampedCosineModel.i
 %include CauchyModel.i
 %include CovarianceModelFactoryImplementation.i
 %include CovarianceModelFactory.i

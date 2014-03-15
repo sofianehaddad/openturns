@@ -90,7 +90,7 @@ public:
   virtual HermitianMatrix computeSpectralDensity(const NumericalScalar frequency) const;
 
   /** Discretize the covariance function on a given TimeGrid */
-  virtual CovarianceMatrix discretizeCovariance(const RegularGrid & timeGrid) const;
+  virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 
   /** String converter */
   String __repr__() const;

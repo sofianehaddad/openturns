@@ -50,10 +50,11 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  DynamicalFunction();
+  DynamicalFunction(const UnsignedInteger meshDimension = 1);
 
   /** Constructor from NumericalMathFunction */
-  DynamicalFunction(const NumericalMathFunction & function);
+  DynamicalFunction(const NumericalMathFunction & function,
+		    const UnsignedInteger meshDimension = 1);
 
   /** Constructor from DynamicalFunctionImplementation */
   DynamicalFunction(const DynamicalFunctionImplementation & implementation);
@@ -88,6 +89,9 @@ public:
 
   /** Get the function corresponding to indices components */
   DynamicalFunction getMarginal(const Indices & indices) const;
+
+  /** Accessor for mesh dimension */
+  UnsignedInteger getMeshDimension() const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
