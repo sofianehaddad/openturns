@@ -36,7 +36,7 @@ try:
     print "covariance matrix at t = ", timeValueHigh, " : ", myModel(timeValueHigh).__str__()
 
     timeGrid = RegularGrid(0.0, 1.0 / 3.0, 4)
-    print "discretized covariance over the time grid=", timeGrid, "is=", myModel.discretizeCovariance(timeGrid)
+    print "discretized covariance over the time grid=", timeGrid, "is=", myModel.discretize(timeGrid)
 
 except:
     import sys

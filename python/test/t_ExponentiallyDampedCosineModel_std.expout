@@ -3,4 +3,7 @@ myModel =  class=ExponentiallyDampedCosineModel amplitude=1 scale=0.1 frequency=
 covariance matrix at t =  1.0  :  [[ 4.53999e-05 ]]
 covariance matrix at t =  -1.0  :  [[ 4.53999e-05 ]]
 covariance matrix at t =  15.0  :  [[ 7.1751e-66 ]]
-discretized covariance over the time grid= RegularGrid(start=0, step=0.333333, n=4) is= t_ExponentiallyDampedCosineModel_std.py <type 'exceptions.AttributeError'> discretizeCovariance
+discretized covariance over the time grid= RegularGrid(start=0, step=0.333333, n=4) is= [[  1           -0.017837    -0.000636317  4.53999e-05 ]
+ [ -0.017837     1           -0.017837    -0.000636317 ]
+ [ -0.000636317 -0.017837     1           -0.017837    ]
+ [  4.53999e-05 -0.000636317 -0.017837     1           ]]
