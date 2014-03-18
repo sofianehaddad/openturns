@@ -126,15 +126,9 @@ NumericalScalar Dirichlet::computePDF(const NumericalPoint & point) const
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar sum(0.0);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const NumericalScalar xI(point[i]);
-    if (xI <= 0.0) return 0.0;
-    sum += xI;
-  }
-  if (sum >= 1.0) return 0.0;
-  return exp(computeLogPDF(point));
+  const NumericalScalar logPDF(computeLogPDF(point));
+  if (logPDF == -SpecFunc::MaxNumericalScalar) return 0.0;
+  return exp(logPDF);
 }
 
 NumericalScalar Dirichlet::computeLogPDF(const NumericalPoint & point) const
@@ -153,6 +147,28 @@ NumericalScalar Dirichlet::computeLogPDF(const NumericalPoint & point) const
   NumericalScalar logPDF(normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum));
   for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * log(point[i]);
   return logPDF;
+}
+
+/* Initialize the integration routine */
+void Dirichlet::initializeIntegration() const
+{
+  const UnsignedInteger dimension(getDimension());
+  // Initialization at the first call
+  static const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize"));
+  // Do we have to initialize the CDF data?
+  if (!isInitializedCDF_)
+    {
+      integrationNodes_ = NumericalPointCollection(0);
+      integrationWeights_ = NumericalPointCollection(0);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+	{
+	  NumericalPoint marginalWeights;
+	  NumericalPoint marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
+	  integrationNodes_.add(marginalNodes);
+	  integrationWeights_.add(marginalWeights);
+	}
+      isInitializedCDF_ = true;
+    } // !isInitialized
 }
 
 /* Get the CDF of the distribution */
@@ -185,27 +201,14 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
   // The "inside simplex" case: use Gauss integration for now
   if (allPositive && (sum <= 1.0))
   {
-    // Initialization at the first call
-    static const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize"));
-    // Do we have to initialize the CDF data?
-    if (!isInitializedCDF_)
-    {
-      integrationNodes_ = NumericalPointCollection(0);
-      integrationWeights_ = NumericalPointCollection(0);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        NumericalPoint marginalWeights;
-        NumericalPoint marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
-        integrationNodes_.add(marginalNodes);
-        integrationWeights_.add(marginalWeights);
-      }
-      isInitializedCDF_ = true;
-    } // !isInitialized
     Indices indices(dimension, 0);
     NumericalScalar value(0.0);
     NumericalScalar logFactor(normalizationFactor_);
     for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * log(point[i]) - log(theta_[i]);
-    const UnsignedInteger size(static_cast<UnsignedInteger>(round(pow(N, dimension))));
+    // Initialize the integration data
+    initializeIntegration();
+    UnsignedInteger size(1);
+    for (UnsignedInteger i = 0; i < dimension; ++i) size *= integrationNodes_[i].getSize();
     // Loop over the integration nodes
     for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
     {
@@ -224,9 +227,9 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
       // Update the indices
       ++indices[0];
       // Propagate the remainders
-      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i + 1] += (indices[i] == N);
+      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i + 1] += (indices[i] == integrationNodes_[i].getSize());
       // Correction of the indices. The last index cannot overflow.
-      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i] = indices[i] % N;
+      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i] = indices[i] % integrationNodes_[i].getSize();
     } // flatIndex
     return value;
   } // in the simplex
@@ -466,6 +469,57 @@ Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
   return marginal.clone();
 } // getMarginal(Indices)
 
+/* Tell if the distribution has independent marginals */
+Bool Dirichlet::hasIndependentCopula() const
+{
+  return getDimension() == 1;
+}
+
+/* Tell if the distribution has an elliptical copula */
+Bool Dirichlet::hasEllipticalCopula() const
+{
+  return hasIndependentCopula();
+}
+
+/* Get the Spearman correlation of the distribution */
+CorrelationMatrix Dirichlet::getSpearmanCorrelation() const
+{
+  return DistributionImplementation::getSpearmanCorrelation();
+#ifdef NEW_IMPLEMENTATION
+  const UnsignedInteger dimension(getDimension());
+  CorrelationMatrix rho(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const UnsignedInteger nI(integrationNodes_[i].getSize());
+      for (UnsignedInteger j = 0; j < i; ++j)
+	{
+	  const UnsignedInteger nJ(integrationNodes_[j].getSize());
+	  // Perform the numerical integration of the (i,j) correlation
+	  NumericalScalar rhoIJ(0.0);
+	  for (UnsignedLong indexU = 0; indexU < nI; ++indexU)
+	    {
+	      const NumericalScalar u(0.5 * (integrationNodes_[j][indexU] + 1.0));
+	      for (UnsignedLong indexV = 0; indexV < nJ; ++indexV)
+		{
+		  NumericalScalar v(0.5 * (integrationNodes_[j][indexU] + 1.0) * (1.0 - u));
+		} // indexV
+	    } // indexU
+	} // j
+    } // i
+  return rho;
+#endif
+}
+
+/* Get the Kendall concordance of the distribution */
+CorrelationMatrix Dirichlet::getKendallTau() const
+{
+  return DistributionImplementation::getKendallTau();
+#ifdef NEW_IMPLEMENTATION
+  CorrelationMatrix tau(2);
+  tau(0, 1) = 1.0 + 4.0 * (SpecFunc::Debye(theta_, 1) - 1.0) / theta_;
+  return tau;
+#endif
+}
 
 DistributionImplementation::NumericalPointWithDescriptionCollection Dirichlet::getParametersCollection() const
 {

@@ -31,20 +31,17 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(GramSchmidtAlgorithm);
 
 static Factory<GramSchmidtAlgorithm> RegisteredFactory("GramSchmidtAlgorithm");
 
-
 /* Default constructor */
 GramSchmidtAlgorithm::GramSchmidtAlgorithm()
-  : OrthonormalizationAlgorithmImplementation(),
-    standardMoments_(1, 1.0),
-    coefficientsCache_(1, Coefficients(1, 1.0)),
-    referenceFamily_(),
-    useCanonicalBasis_(true)
+  : OrthonormalizationAlgorithmImplementation()
+  , standardMoments_(1, 1.0)
+  , coefficientsCache_(1, Coefficients(1, 1.0))
+  , referenceFamily_()
+  , useCanonicalBasis_(true)
 {
   // Nothing to do
 }
@@ -52,11 +49,11 @@ GramSchmidtAlgorithm::GramSchmidtAlgorithm()
 
 /* Parameter constructor */
 GramSchmidtAlgorithm::GramSchmidtAlgorithm(const Distribution & measure)
-  : OrthonormalizationAlgorithmImplementation(measure),
-    standardMoments_(1, 1.0),
-    coefficientsCache_(1, Coefficients(1, 1.0)),
-    referenceFamily_(),
-    useCanonicalBasis_(true)
+  : OrthonormalizationAlgorithmImplementation(measure)
+  , standardMoments_(1, 1.0)
+  , coefficientsCache_(1, Coefficients(1, 1.0))
+  , referenceFamily_()
+  , useCanonicalBasis_(true)
 {
   // Nothing to do
 }
@@ -65,11 +62,11 @@ GramSchmidtAlgorithm::GramSchmidtAlgorithm(const Distribution & measure)
 /* Parameter constructor */
 GramSchmidtAlgorithm::GramSchmidtAlgorithm(const Distribution & measure,
     const OrthogonalUniVariatePolynomialFamily & referenceFamily)
-  : OrthonormalizationAlgorithmImplementation(measure),
-    standardMoments_(1, 1.0),
-    coefficientsCache_(1, Coefficients(1, 1.0)),
-    referenceFamily_(referenceFamily),
-    useCanonicalBasis_(false)
+  : OrthonormalizationAlgorithmImplementation(measure)
+  , standardMoments_(1, 1.0)
+  , coefficientsCache_(1, Coefficients(1, 1.0))
+  , referenceFamily_(referenceFamily)
+  , useCanonicalBasis_(false)
 {
   // Nothing to do
 }

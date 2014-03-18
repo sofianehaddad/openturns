@@ -291,7 +291,7 @@ Bool Uniform::isElliptical() const
 /* A accessor */
 void Uniform::setA(const NumericalScalar a)
 {
-  if (b_ <= a) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be lesser than its upper bound b, here a=" << a << " b=" << b_;
+  if (b_ <= a) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a << " b=" << b_;
   if (a != a_)
   {
     a_ = a;
@@ -310,7 +310,7 @@ NumericalScalar Uniform::getA() const
 /* B accessor */
 void Uniform::setB(const NumericalScalar b)
 {
-  if (b <= a_) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be lesser than its upper bound b, here a=" << a_ << " b=" << b;
+  if (b <= a_) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a_ << " b=" << b;
   if (b != b_)
   {
     b_ = b;

@@ -34,23 +34,20 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ChebychevAlgorithm);
 
 static Factory<ChebychevAlgorithm> RegisteredFactory("ChebychevAlgorithm");
 
-
 /* Default constructor */
 ChebychevAlgorithm::ChebychevAlgorithm()
-  : OrthonormalizationAlgorithmImplementation(Uniform()),
-    referenceFamily_(),
-    useCanonicalBasis_(true),
-    standardMoments_(0),
-    modifiedMoments_(0),
-    mixedMoments_(),
-    monicRecurrenceCoefficients_(0),
-    referenceMonicRecurrenceCoefficients_(0)
+  : OrthonormalizationAlgorithmImplementation(Uniform())
+  , referenceFamily_()
+  , useCanonicalBasis_(true)
+  , standardMoments_(0)
+  , modifiedMoments_(0)
+  , mixedMoments_()
+  , monicRecurrenceCoefficients_(0)
+  , referenceMonicRecurrenceCoefficients_(0)
 {
   // The moment cache must be initialized before the coefficient cache
   standardMoments_.add(1.0);
@@ -61,14 +58,14 @@ ChebychevAlgorithm::ChebychevAlgorithm()
 
 /* Parameter constructor */
 ChebychevAlgorithm::ChebychevAlgorithm(const Distribution & measure)
-  : OrthonormalizationAlgorithmImplementation(measure),
-    referenceFamily_(HermiteFactory()),
-    useCanonicalBasis_(true),
-    standardMoments_(0),
-    modifiedMoments_(0),
-    mixedMoments_(),
-    monicRecurrenceCoefficients_(0),
-    referenceMonicRecurrenceCoefficients_(0)
+  : OrthonormalizationAlgorithmImplementation(measure)
+  , referenceFamily_(HermiteFactory())
+  , useCanonicalBasis_(true)
+  , standardMoments_(0)
+  , modifiedMoments_(0)
+  , mixedMoments_()
+  , monicRecurrenceCoefficients_(0)
+  , referenceMonicRecurrenceCoefficients_(0)
 {
   // Selection of the best reference factory according to the range of the measure
   // There are 4 possibilities:
@@ -105,14 +102,14 @@ ChebychevAlgorithm::ChebychevAlgorithm(const Distribution & measure)
 /* Parameter constructor with specific reference family */
 ChebychevAlgorithm::ChebychevAlgorithm(const Distribution & measure,
                                        const OrthogonalUniVariatePolynomialFamily & family)
-  : OrthonormalizationAlgorithmImplementation(measure),
-    referenceFamily_(family),
-    useCanonicalBasis_(false),
-    standardMoments_(0),
-    modifiedMoments_(0),
-    mixedMoments_(),
-    monicRecurrenceCoefficients_(0),
-    referenceMonicRecurrenceCoefficients_(0)
+  : OrthonormalizationAlgorithmImplementation(measure)
+  , referenceFamily_(family)
+  , useCanonicalBasis_(false)
+  , standardMoments_(0)
+  , modifiedMoments_(0)
+  , mixedMoments_()
+  , monicRecurrenceCoefficients_(0)
+  , referenceMonicRecurrenceCoefficients_(0)
 {
   // The moment cache must be initialized before the coefficient cache
   standardMoments_.add(1.0);
