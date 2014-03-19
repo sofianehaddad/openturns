@@ -385,13 +385,21 @@ NumericalPoint Distribution::computePDFGradient(const NumericalPoint & point) co
   return getImplementation()->computePDFGradient(point);
 }
 
+NumericalSample Distribution::computePDFGradient(const NumericalSample & sample) const
+{
+  return getImplementation()->computePDFGradient(sample);
+}
+
 /* Get the CDF gradient of the distribution */
 NumericalPoint Distribution::computeCDFGradient(const NumericalPoint & point) const
 {
   return getImplementation()->computeCDFGradient(point);
 }
 
-
+NumericalSample Distribution::computeCDFGradient(const NumericalSample & sample) const
+{
+  return getImplementation()->computeCDFGradient(sample);
+}
 
 /* Get the mathematical and numerical range of the distribution.
    Its mathematical range is the smallest closed interval outside
