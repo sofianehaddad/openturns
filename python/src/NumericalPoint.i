@@ -28,9 +28,18 @@
 #define OT_TYPECHECK_NUMERICALPOINT 5
 
 %typemap(in) const NumericalPoint & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0)))
+  {
+    //Nothing to do for NP
+  }
+  else if (OT::isAPythonSequenceOf<OT::_PyFloat_>( $input ))
+  {
     temp = OT::convert<OT::_PySequence_,OT::NumericalPoint>( $input );
     $1 = &temp;
+  }
+  else
+  {
+    SWIG_exception(SWIG_TypeError, "InvalidArgumentException : Object passed as argument is not a sequence of double");
   }
 }
 
