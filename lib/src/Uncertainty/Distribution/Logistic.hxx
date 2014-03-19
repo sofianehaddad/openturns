@@ -88,9 +88,11 @@ public:
   NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the PDFGradient of the Logistic distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the Logistic distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */

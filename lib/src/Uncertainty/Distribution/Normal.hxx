@@ -94,6 +94,7 @@ public:
   NumericalScalar computeProbability(const Interval & interval) const;
 
   /** Get the CDF gradient of the distribution */
+  using EllipticalDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Compute the radial distribution CDF */

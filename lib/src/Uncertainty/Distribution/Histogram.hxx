@@ -89,9 +89,11 @@ public:
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
   /** Get the PDFGradient of the Histogram distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the Histogram distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the raw moments of the standardized distribution */

@@ -78,6 +78,7 @@ public:
   NumericalScalar computePDF(const NumericalPoint & point) const;
 
   /** Get the PDF gradient of the distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Compute the density generator of the elliptical distribution, i.e.
