@@ -926,13 +926,127 @@ NumericalSample DistributionImplementation::computeQuantile(const NumericalPoint
 /* Get the PDF gradient of the distribution */
 NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoint & point) const
 {
-  throw NotYetImplementedException(HERE) << "in DistributionImplementation::computePDFGradient()";
+  if (dimension_ > 1) throw NotYetImplementedException(HERE) << "in DistributionImplementation::computePDFGradient()";
+  // As we are in 1D, we know that the collection contains exactly one point
+  const NumericalPointWithDescription initialParameters(getParametersCollection()[0]);
+  const UnsignedInteger parametersDimension(initialParameters.getDimension());
+  NumericalPoint PDFGradient(parametersDimension);
+  // Clone the distribution
+  Implementation cloneDistribution(clone());
+  // Increment for centered differences
+  const NumericalScalar eps(pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0));
+  // Increment for noncentered differences
+  const NumericalScalar eps2(pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0));
+  NumericalPointWithDescription newParameters(initialParameters);
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+    {
+      NumericalScalar delta(0.0);
+      NumericalScalar rightPDF(0.0);
+      // We will try a centered finite difference approximation 
+      try
+	{
+	  newParameters[i] = initialParameters[i] + eps;
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  rightPDF = cloneDistribution->computePDF(point);
+	  delta += eps;
+	}
+      catch (...)
+	{
+	  // If something went wrong with the right point, stay at the center point
+	  newParameters[i] = initialParameters[i];
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  rightPDF = cloneDistribution->computePDF(point);
+	}
+      NumericalScalar leftPDF(0.0);
+      try
+	{
+	  // If something is wrong with the right point, use non-centered finite differences
+	  const NumericalScalar leftEpsilon(delta == 0.0 ? eps2 : eps);
+	  newParameters[i] = initialParameters[i] - leftEpsilon;
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  leftPDF = cloneDistribution->computePDF(point);
+	  delta += leftEpsilon;
+	}
+      catch (...)
+	{
+	  // If something is wrong with the left point, it is either because the gradient is not computable or because we must use non-centered finite differences, in which case the right point has to be recomputed
+	  if (delta == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute the PDF gradient at x=" << point << " for the current values of the parameters=" << initialParameters;
+	  newParameters[i] = initialParameters[i] + eps2;
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  rightPDF = cloneDistribution->computePDF(point);
+	  delta += eps2;
+	  // And the left point will be the center point
+	  newParameters[i] = initialParameters[i];
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  leftPDF = cloneDistribution->computePDF(point);
+	}
+      PDFGradient[i] = (rightPDF - leftPDF) / delta;
+      newParameters[i] = initialParameters[i];
+    }
+  return PDFGradient;
 }
 
 /* Get the CDF gradient of the distribution */
 NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoint & point) const
 {
-  throw NotYetImplementedException(HERE) << "in DistributionImplementation::computeCDFGradient()";
+  if (dimension_ > 1) throw NotYetImplementedException(HERE) << "in DistributionImplementation::computeCDFGradient()";
+  // As we are in 1D, we know that the collection contains exactly one point
+  const NumericalPointWithDescription initialParameters(getParametersCollection()[0]);
+  const UnsignedInteger parametersDimension(initialParameters.getDimension());
+  NumericalPoint CDFGradient(parametersDimension);
+  // Clone the distribution
+  Implementation cloneDistribution(clone());
+  // We will use centered differences
+  const NumericalScalar eps(pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0));
+  // Increment for noncentered differences
+  const NumericalScalar eps2(pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0));
+  NumericalPointWithDescription newParameters(initialParameters);
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+    {
+      NumericalScalar delta(0.0);
+      NumericalScalar rightCDF(0.0);
+      // We will try a centered finite difference approximation 
+      try
+	{
+	  newParameters[i] = initialParameters[i] + eps;
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  rightCDF = cloneDistribution->computeCDF(point);
+	  delta += eps;
+	}
+      catch (...)
+	{
+	  // If something went wrong with the right point, stay at the center point
+	  newParameters[i] = initialParameters[i];
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  rightCDF = cloneDistribution->computeCDF(point);
+	}
+      NumericalScalar leftCDF(0.0);
+      try
+	{
+	  // If something is wrong with the right point, use non-centered finite differences
+	  const NumericalScalar leftEpsilon(delta == 0.0 ? eps2 : eps);
+	  newParameters[i] = initialParameters[i] - leftEpsilon;
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  leftCDF = cloneDistribution->computeCDF(point);
+	  delta += leftEpsilon;
+	}
+      catch (...)
+	{
+	  // If something is wrong with the left point, it is either because the gradient is not computable or because we must use non-centered finite differences, in which case the right point has to be recomputed
+	  if (delta == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute the CDF gradient at x=" << point << " for the current values of the parameters=" << initialParameters;
+	  newParameters[i] = initialParameters[i] + eps2;
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  rightCDF = cloneDistribution->computeCDF(point);
+	  delta += eps2;
+	  // And the left point will be the center point
+	  newParameters[i] = initialParameters[i];
+	  cloneDistribution->setParametersCollection(NumericalPointWithDescriptionCollection(1, newParameters));
+	  leftCDF = cloneDistribution->computeCDF(point);
+	}
+      CDFGradient[i] = (rightCDF - leftCDF) / delta;
+      newParameters[i] = initialParameters[i];
+    }
+  return CDFGradient;
 }
 
 /* Build a C1 interpolation of the CDF function for 1D continuous distributions */

@@ -26,8 +26,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(Distribution);
 
 /* Default constructor */
