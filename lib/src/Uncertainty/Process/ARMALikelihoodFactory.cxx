@@ -908,7 +908,6 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
   else
   {
     // Memory allocate for the rhs and matA matrices
-    const UnsignedInteger one(1);
     const UnsignedInteger max1P(std::max(one, currentP_));
     const UnsignedInteger size(dimension_ * dimension_ * (max1P - 1) + dimension_ * (dimension_ + 1) / 2);
     SquareMatrix matA(size);

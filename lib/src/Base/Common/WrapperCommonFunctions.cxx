@@ -1713,7 +1713,7 @@ void substituteShortcuts(const ShortcutMap & shMap,
           } /* end for */
 
           /* We do the substitutions */
-          size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
+          width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
           char NNN[width + 2];
           snprintf( NNN, width + 2, "%0*u", static_cast<int>(width), static_cast<unsigned int>(new_nnn) );
           newReplace.append( replaceBeforeSubstitution, pos1, pos2 - pos1 ); /* We copy the part between two substituted substrings */

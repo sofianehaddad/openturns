@@ -161,7 +161,6 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
     currentState_ = newState;
 
     // recalibrate for each component if necessary
-    NumericalPoint factor(dimension);
     NumericalPoint partialRho(dimension);
     for ( UnsignedInteger j = 0; j < dimension; ++ j )
     {

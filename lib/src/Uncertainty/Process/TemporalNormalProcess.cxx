@@ -265,10 +265,10 @@ void TemporalNormalProcess::checkStationaryTrend() const
   checkedStationaryTrend_ = true;
   const UnsignedInteger n(mesh_.getVerticesNumber());
   if (n == 0) return;
-  const NumericalPoint stationaryTrendValue_((*trend_.getEvaluation())(mesh_.getVertices()[0]));
+  const NumericalPoint stationaryTrendValue((*trend_.getEvaluation())(mesh_.getVertices()[0]));
   for (UnsignedInteger i = 1; i < n; ++i)
   {
-    if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)
+    if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue)
     {
       hasStationaryTrend_ = false;
       return;
