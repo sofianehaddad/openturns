@@ -73,7 +73,7 @@ public:
 
 
   /** Get the dimension of the matrix */
-  const UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** HermitianMatrix transpose */
   HermitianMatrix transpose () const;

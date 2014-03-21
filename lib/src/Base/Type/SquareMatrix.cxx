@@ -77,7 +77,7 @@ String SquareMatrix::__repr__() const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedInteger SquareMatrix::getDimension() const
+UnsignedInteger SquareMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }

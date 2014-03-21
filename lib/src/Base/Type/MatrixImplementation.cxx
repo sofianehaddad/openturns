@@ -155,19 +155,19 @@ const NumericalScalar & MatrixImplementation::operator() (const UnsignedInteger 
 
 
 /* Get the dimensions of the MatrixImplementation : number of rows */
-const UnsignedInteger MatrixImplementation::getNbRows() const
+UnsignedInteger MatrixImplementation::getNbRows() const
 {
   return nbRows_;
 }
 
 /* Get the dimensions of the MatrixImplementation : number of columns */
-const UnsignedInteger MatrixImplementation::getNbColumns() const
+UnsignedInteger MatrixImplementation::getNbColumns() const
 {
   return nbColumns_;
 }
 
 /* Get the dimensions of the MatrixImplementation : dimension (square matrix : nbRows_) */
-const UnsignedInteger MatrixImplementation::getDimension() const
+UnsignedInteger MatrixImplementation::getDimension() const
 {
   return nbRows_;
 }
@@ -450,13 +450,13 @@ MatrixImplementation MatrixImplementation::symPower(const UnsignedInteger n) con
 }
 
 /* Empty returns true if there is no element in the MatrixImplementation */
-const Bool MatrixImplementation::isEmpty() const
+Bool MatrixImplementation::isEmpty() const
 {
   return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<NumericalScalar>::isEmpty()));
 }
 
 /* Returns true if triangular lower or upper */
-const Bool MatrixImplementation::isTriangular(Bool lower) const
+Bool MatrixImplementation::isTriangular(Bool lower) const
 {
   if ( nbRows_ == nbColumns_ )
   {

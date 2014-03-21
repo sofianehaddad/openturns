@@ -140,7 +140,7 @@ public:
   inline
   String __str__(const String & offset = "") const
   {
-    return Collection<T>::__str__();
+    return Collection<T>::__str__(offset);
   }
 
   /** Method save() stores the object through the StorageManager */

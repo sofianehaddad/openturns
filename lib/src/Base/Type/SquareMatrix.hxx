@@ -79,7 +79,7 @@ public:
   String __repr__() const;
 
   /** Get the dimension of the matrix */
-  const UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** SquareMatrix transpose */
   SquareMatrix transpose () const;
