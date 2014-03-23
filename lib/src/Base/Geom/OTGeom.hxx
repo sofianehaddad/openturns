@@ -28,6 +28,8 @@
 #include "Domain.hxx"
 #include "Interval.hxx"
 #include "Mesh.hxx"
+#include "MeshFactory.hxx"
+#include "MeshFactoryImplementation.hxx"
 #include "RegularGrid.hxx"
 
 #endif /* OPENTURNS_OTGEOM_HXX */

@@ -37,4 +37,6 @@
 %include DomainImplementation.i
 %include Domain.i
 %include Mesh.i
+%include MeshFactoryImplementation.i
+%include MeshFactory.i
 %include RegularGrid.i

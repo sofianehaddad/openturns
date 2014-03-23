@@ -198,9 +198,11 @@ ot_add_python_module( statistics statistics_module.i
                     
 ot_add_python_module( geom geom_module.i
                       DomainImplementation.i
+                      Mesh.i
                       Domain.i
                       Interval.i
-                      Mesh.i
+                      MeshFactoryImplementation.i
+                      MeshFactory.i
 		      RegularGrid.i
                       BaseGeomTemplateDefs.i
                      )

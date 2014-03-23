@@ -1,0 +1,131 @@
+//                                               -*- C++ -*-
+/**
+ *  @file  CompositeDistribution.hxx
+ *  @brief The CompositeDistribution distribution
+ *
+ *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  @author schueller
+ *  @date   2012-07-16 10:12:54 +0200 (Mon, 16 Jul 2012)
+ */
+#ifndef OPENTURNS_COMPOSITEDISTRIBUTION_HXX
+#define OPENTURNS_COMPOSITEDISTRIBUTION_HXX
+
+#include "DistributionImplementation.hxx"
+#include "Distribution.hxx"
+#include "NumericalMathFunction.hxx"
+#include "Solver.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class CompositeDistribution
+ *
+ * The CompositeDistribution distribution.
+ */
+class CompositeDistribution
+  : public DistributionImplementation
+{
+  CLASSNAME;
+public:
+
+  /** Default constructor */
+  CompositeDistribution();
+
+  /** Parameters constructor to use when the two bounds are finite */
+  CompositeDistribution(const NumericalMathFunction & function,
+			const Distribution & antecedent);
+
+  /** Comparison operator */
+  Bool operator ==(const CompositeDistribution & other) const;
+
+  /** String converter */
+  String __repr__() const;
+  String __str__(const String & offset = "") const;
+
+  /* Interface inherited from Distribution */
+
+  /** Virtual constructor */
+  virtual CompositeDistribution * clone() const;
+
+  /** Get one realization of the distribution */
+  NumericalPoint getRealization() const;
+
+  /** Get the PDF of the distribution */
+  using DistributionImplementation::computePDF;
+  NumericalScalar computePDF(const NumericalPoint & point) const;
+
+  /** Get the CDF of the distribution */
+  using DistributionImplementation::computeCDF;
+  NumericalScalar computeCDF(const NumericalPoint & point) const;
+
+  /** Parameters value and description accessor */
+  NumericalPointWithDescriptionCollection getParametersCollection() const;
+
+  /* Interface specific to CompositeDistribution */
+
+  /** Function accessor */
+  void setFunction(const NumericalMathFunction & function);
+  NumericalMathFunction getFunction() const;
+
+  /** Antecedent accessor */
+  void setAntecedent(const Distribution & antecedent);
+  Distribution getAntecedent() const;
+
+  /** Tell if the distribution is continuous */
+  Bool isContinuous() const;
+
+  /** Check if the distribution is discrete */
+  Bool isDiscrete() const;
+
+  /** Set the solver used to perform the different computations */
+  void setSolver(const Solver & solver);
+  Solver getSolver() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
+protected:
+
+private:
+
+  /** Set the function and antecedent with check */
+  void setFunctionAndAntecedent(const Distribution & antecedent);
+
+  /** Get the quantile of the distribution */
+  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+                                        const Bool tail = false) const;
+
+  /** The main parameter set of the distribution */
+  NumericalMathFunction function_;
+  Distribution antecedent_;
+
+  /** Usefull quantities */
+  NumericalPoint bounds_;
+  NumericalPoint values_;
+  NumericalPoint probabilities_;
+
+  /** Solver used to invert the function and to find the zeros of its derivative */
+  Solver solver_;
+}; /* class CompositeDistribution */
+
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_COMPOSITEDISTRIBUTION_HXX */

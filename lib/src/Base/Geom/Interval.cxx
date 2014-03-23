@@ -26,13 +26,13 @@
 #include "Log.hxx"
 #include "Os.hxx"
 #include "Exception.hxx"
+#include "Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Interval);
 
 static Factory<Interval> RegisteredFactory("Interval");
-
 
 /* Default constructor */
 Interval::Interval(const UnsignedInteger dimension)
@@ -110,12 +110,12 @@ Interval Interval::intersect(const Interval & other) const
   BoolCollection intersectFiniteLower(getDimension());
   BoolCollection intersectFiniteUpper(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-  {
-    intersectLower[i] = std::max(lowerBound_[i], otherLower[i]);
-    intersectUpper[i] = std::min(upperBound_[i], otherUpper[i]);
-    intersectFiniteLower[i] = finiteLowerBound_[i] || otherFiniteLower[i];
-    intersectFiniteUpper[i] = finiteUpperBound_[i] || otherFiniteUpper[i];
-  }
+    {
+      intersectLower[i] = std::max(lowerBound_[i], otherLower[i]);
+      intersectUpper[i] = std::min(upperBound_[i], otherUpper[i]);
+      intersectFiniteLower[i] = finiteLowerBound_[i] || otherFiniteLower[i];
+      intersectFiniteUpper[i] = finiteUpperBound_[i] || otherFiniteUpper[i];
+    }
   return Interval(intersectLower, intersectUpper, intersectFiniteLower, intersectFiniteUpper);
 }
 
@@ -137,12 +137,12 @@ Interval Interval::join(const Interval & other) const
   BoolCollection intersectFiniteLower(getDimension());
   BoolCollection intersectFiniteUpper(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-  {
-    intersectLower[i] = std::min(lowerBound_[i], otherLower[i]);
-    intersectUpper[i] = std::max(upperBound_[i], otherUpper[i]);
-    intersectFiniteLower[i] = finiteLowerBound_[i] && otherFiniteLower[i];
-    intersectFiniteUpper[i] = finiteUpperBound_[i] && otherFiniteUpper[i];
-  }
+    {
+      intersectLower[i] = std::min(lowerBound_[i], otherLower[i]);
+      intersectUpper[i] = std::max(upperBound_[i], otherUpper[i]);
+      intersectFiniteLower[i] = finiteLowerBound_[i] && otherFiniteLower[i];
+      intersectFiniteUpper[i] = finiteUpperBound_[i] && otherFiniteUpper[i];
+    }
   return Interval(intersectLower, intersectUpper, intersectFiniteLower, intersectFiniteUpper);
 }
 
@@ -157,12 +157,12 @@ Bool Interval::isEmpty() const
 Bool Interval::contains(const NumericalPoint & point) const
 {
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-  {
-    // Check against the lower bound
-    if (finiteLowerBound_[i] && (point[i] < lowerBound_[i])) return false;
-    // Check against the upper bound
-    if (finiteUpperBound_[i] && (point[i] > upperBound_[i])) return false;
-  }
+    {
+      // Check against the lower bound
+      if (finiteLowerBound_[i] && (point[i] < lowerBound_[i])) return false;
+      // Check against the upper bound
+      if (finiteUpperBound_[i] && (point[i] > upperBound_[i])) return false;
+    }
   return true;
 }
 
@@ -171,20 +171,20 @@ void Interval::computeVolume() const
 {
   const UnsignedInteger dimension(getDimension());
   if (dimension == 0)
-  {
-    volume_ = 0.0;
-    return;
-  }
-  volume_ = 1.0;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    volume_ *= upperBound_[i] - lowerBound_[i];
-    if (volume_ <= 0.0)
     {
       volume_ = 0.0;
       return;
     }
-  }
+  volume_ = 1.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      volume_ *= upperBound_[i] - lowerBound_[i];
+      if (volume_ <= 0.0)
+        {
+          volume_ = 0.0;
+          return;
+        }
+    }
 }
 
 /* Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
@@ -200,19 +200,19 @@ Interval Interval::operator +(const Interval & rhs) const
 {
   if (getDimension() != rhs.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Intervals of different dimensions cannot be added (LHS dimension = "
-        << getDimension()
-        << "; RHS dimension = "
-        << rhs.getDimension();
+      << "Intervals of different dimensions cannot be added (LHS dimension = "
+      << getDimension()
+      << "; RHS dimension = "
+      << rhs.getDimension();
   const NumericalPoint lowerBound(lowerBound_ + rhs.getLowerBound());
   const NumericalPoint upperBound(upperBound_ + rhs.getUpperBound());
   Interval::BoolCollection finiteLowerBound(rhs.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(rhs.getFiniteUpperBound());
   for(UnsignedInteger i = 0; i < (getDimension()); ++i)
-  {
-    finiteLowerBound[i] = finiteLowerBound[i] && finiteLowerBound_[i];
-    finiteUpperBound[i] = finiteUpperBound[i] && finiteUpperBound_[i];
-  }
+    {
+      finiteLowerBound[i] = finiteLowerBound[i] && finiteLowerBound_[i];
+      finiteUpperBound[i] = finiteUpperBound[i] && finiteUpperBound_[i];
+    }
   return Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
 }
 
@@ -223,20 +223,20 @@ Interval & Interval::operator +=(const Interval & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Intervals of different dimensions cannot be added (LHS dimension = "
-        << getDimension()
-        << "; RHS dimension = "
-        << other.getDimension();
+      << "Intervals of different dimensions cannot be added (LHS dimension = "
+      << getDimension()
+      << "; RHS dimension = "
+      << other.getDimension();
 
   lowerBound_ += other.getLowerBound();
   upperBound_ += other.getUpperBound();
   Interval::BoolCollection finiteLowerBound(other.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(other.getFiniteUpperBound());
   for(UnsignedInteger i = 0; i < (getDimension()); ++i)
-  {
-    finiteLowerBound_[i] = finiteLowerBound[i] && finiteLowerBound_[i];
-    finiteUpperBound_[i] = finiteUpperBound[i] && finiteUpperBound_[i];
-  }
+    {
+      finiteLowerBound_[i] = finiteLowerBound[i] && finiteLowerBound_[i];
+      finiteUpperBound_[i] = finiteUpperBound[i] && finiteUpperBound_[i];
+    }
   return *this;
 }
 
@@ -246,19 +246,19 @@ Interval Interval::operator -(const Interval & rhs) const
 {
   if (getDimension() != rhs.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Intervals of different dimensions cannot be added (LHS dimension = "
-        << getDimension()
-        << "; RHS dimension = "
-        << rhs.getDimension();
+      << "Intervals of different dimensions cannot be added (LHS dimension = "
+      << getDimension()
+      << "; RHS dimension = "
+      << rhs.getDimension();
   const NumericalPoint lowerBound(lowerBound_ - rhs.getUpperBound());
   const NumericalPoint upperBound(upperBound_ - rhs.getLowerBound());
   Interval::BoolCollection finiteLowerBound(rhs.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(rhs.getFiniteUpperBound());
   for(UnsignedInteger i = 0; i < (getDimension()); ++i)
-  {
-    finiteLowerBound[i] = finiteLowerBound[i] && finiteUpperBound_[i];
-    finiteUpperBound[i] = finiteUpperBound[i] && finiteLowerBound_[i];
-  }
+    {
+      finiteLowerBound[i] = finiteLowerBound[i] && finiteUpperBound_[i];
+      finiteUpperBound[i] = finiteUpperBound[i] && finiteLowerBound_[i];
+    }
   return Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
 }
 
@@ -269,20 +269,20 @@ Interval & Interval::operator -=(const Interval & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Intervals of different dimensions cannot be substracted (LHS dimension = "
-        << getDimension()
-        << "; RHS dimension = " <<
-        other.getDimension();
+      << "Intervals of different dimensions cannot be substracted (LHS dimension = "
+      << getDimension()
+      << "; RHS dimension = " <<
+      other.getDimension();
 
   lowerBound_ -= other.getUpperBound();
   upperBound_ -= other.getLowerBound();
   Interval::BoolCollection finiteLowerBound(other.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(other.getFiniteUpperBound());
   for(UnsignedInteger i = 0; i < (getDimension()); ++i)
-  {
-    finiteLowerBound_[i] = finiteLowerBound[i] && finiteUpperBound_[i];
-    finiteUpperBound_[i] = finiteUpperBound[i] && finiteLowerBound_[i];
-  }
+    {
+      finiteLowerBound_[i] = finiteLowerBound[i] && finiteUpperBound_[i];
+      finiteUpperBound_[i] = finiteUpperBound[i] && finiteLowerBound_[i];
+    }
   return *this;
 }
 
@@ -305,19 +305,19 @@ Interval & Interval::operator *=(const NumericalScalar scalar)
 {
   // Special case for multiplication by 0. We assume that 0 x (+/-inf) = 0.
   if (scalar == 0.0)
-  {
-    lowerBound_ = NumericalPoint(getDimension());
-    upperBound_ = NumericalPoint(getDimension());
-    finiteLowerBound_ = BoolCollection(getDimension(), true);
-    finiteUpperBound_ = BoolCollection(getDimension(), true);
-    return *this;
-  }
+    {
+      lowerBound_ = NumericalPoint(getDimension());
+      upperBound_ = NumericalPoint(getDimension());
+      finiteLowerBound_ = BoolCollection(getDimension(), true);
+      finiteUpperBound_ = BoolCollection(getDimension(), true);
+      return *this;
+    }
   if (scalar > 0.0)
-  {
-    lowerBound_ *= scalar;
-    upperBound_ *= scalar;
-    return *this;
-  }
+    {
+      lowerBound_ *= scalar;
+      upperBound_ *= scalar;
+      return *this;
+    }
   const NumericalPoint tmpBound(lowerBound_);
   lowerBound_ = scalar * upperBound_;
   upperBound_ = scalar * tmpBound;
@@ -335,13 +335,13 @@ Bool Interval::operator == (const Interval & rhs) const
   Bool equality(true);
 
   if (&lhs != &rhs)   // Not the same object
-  {
-    equality = (getDimension() == rhs.getDimension())
-               && (lowerBound_ == rhs.lowerBound_)
-               && (upperBound_ == rhs.upperBound_)
-               && (finiteLowerBound_ == rhs.finiteLowerBound_)
-               && (finiteUpperBound_ == rhs.finiteUpperBound_);
-  }
+    {
+      equality = (getDimension() == rhs.getDimension())
+        && (lowerBound_ == rhs.lowerBound_)
+        && (upperBound_ == rhs.upperBound_)
+        && (finiteLowerBound_ == rhs.finiteLowerBound_)
+        && (finiteUpperBound_ == rhs.finiteUpperBound_);
+    }
 
   return equality;
 }
@@ -398,26 +398,91 @@ void Interval::setFiniteUpperBound(const BoolCollection & finiteUpperBound)
 String Interval::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-         << " name=" << getName()
-         << " dimension=" << getDimension()
-         << " lower bound=" << lowerBound_.__repr__()
-         << " upper bound=" << upperBound_.__repr__()
-         << " finite lower bound=" << finiteLowerBound_.__repr__()
-         << " finite upper bound=" << finiteUpperBound_.__repr__();
+                   << " name=" << getName()
+                   << " dimension=" << getDimension()
+                   << " lower bound=" << lowerBound_.__repr__()
+                   << " upper bound=" << upperBound_.__repr__()
+                   << " finite lower bound=" << finiteLowerBound_.__repr__()
+                   << " finite upper bound=" << finiteUpperBound_.__repr__();
 }
 
 String Interval::__str__(const String & offset) const
 {
   OSS oss(false);
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-  {
-    if (i > 0) oss << Os::GetEndOfLine();
-    if (finiteLowerBound_[i]) oss << offset << "[" << lowerBound_[i] << ", ";
-    else oss << offset << "]-inf (" << lowerBound_[i] << "), ";
-    if (finiteUpperBound_[i]) oss << upperBound_[i] << "]";
-    else oss << offset << "(" << upperBound_[i] << ") +inf[";
-  }
+    {
+      if (i > 0) oss << Os::GetEndOfLine();
+      if (finiteLowerBound_[i]) oss << offset << "[" << lowerBound_[i] << ", ";
+      else oss << offset << "]-inf (" << lowerBound_[i] << "), ";
+      if (finiteUpperBound_[i]) oss << upperBound_[i] << "]";
+      else oss << offset << "(" << upperBound_[i] << ") +inf[";
+    }
   return oss;
+}
+
+/* Mesh converter */
+Pointer<DomainImplementation> Interval::asMesh(const Indices & discretization) const
+{
+  const UnsignedInteger dimension(getDimension());
+  if (discretization.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the given discretization is for dimension=" << discretization.getSize() << ", here dimension=" << dimension;
+  if (dimension > 2) throw NotYetImplementedException(HERE);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    if (discretization[i] == 0) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
+  // Waiting for a generic implementation in higher dimension
+  if (dimension == 1)
+    {
+      // We must insure that the interval bounds will be within the vertices
+      const UnsignedInteger n(discretization[0]);
+      NumericalSample vertices(n + 1, 1);
+      // First the vertices
+      for (UnsignedInteger i = 0; i <= n; ++i) vertices[i][0] = (i * vertices[0][0] + (n - i) * vertices[0][0]) / n;
+      // Second the simplices
+      Mesh::IndicesCollection simplices(n);
+      Indices simplex(2);
+      for (UnsignedInteger i = 0; i < n; ++i)
+        {
+          simplex[0] = i;
+          simplex[1] = i + 1;
+          simplices[i] = simplex;
+        } // i
+      return Mesh(vertices, simplices).clone();
+    } // dimension == 1
+  if (dimension == 2)
+    {
+      const UnsignedInteger m(discretization[0]);
+      const UnsignedInteger n(discretization[1]);
+      // First the vertices
+      NumericalSample vertices(0, 2);
+      NumericalPoint point(2);
+      for (UnsignedInteger i = 0; i <= m; ++i)
+        {
+          point[0] = (i * lowerBound_[0] + (m - i) * upperBound_[0]) / m;
+          for (UnsignedInteger j = 0; j <= n; ++j)
+            {
+              point[1] = (j * lowerBound_[1] + (n - j) * upperBound_[1]) / n;
+              vertices.add(point);
+            } // j
+        } // i
+      // Second the simplices
+      Mesh::IndicesCollection simplices(0, Indices(3));
+      UnsignedInteger vertexIndex(0);
+      Indices index(3);
+      for (UnsignedInteger i = 0; i < m; ++i)
+        {
+          for (UnsignedInteger j = 0; j < n; ++j)
+            {
+              index[0] = vertexIndex;
+              index[1] = vertexIndex + 1;
+              index[2] = vertexIndex + 1 + n;
+              simplices.add(index);
+              index[0] = vertexIndex + 2 + n;
+              simplices.add(index);
+              ++vertexIndex;
+            } // j
+          ++vertexIndex;
+        } // i
+      return Mesh(vertices, simplices).clone();
+    } // dimension == 2
 }
 
 /* Method save() stores the object through the StorageManager */
