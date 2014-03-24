@@ -40,7 +40,7 @@ extern const String DefaultName;
 
 
 class StorageManager;
-class StorageManagerAdvocate;
+class Advocate;
 template <class PERSISTENT> class Factory;
 
 /**
