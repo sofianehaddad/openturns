@@ -238,7 +238,7 @@ NumericalScalar CompositeDistribution::computePDF(const NumericalPoint & point) 
   NumericalScalar a(bounds_[0]);
   NumericalScalar fA(values_[0]);
   NumericalScalar b(a);
-  NumericalScalar fB(b);
+  NumericalScalar fB(fA);
   for (UnsignedInteger i = 1; i < bounds_.getSize(); ++i)
     {
       a = b;
