@@ -193,9 +193,9 @@ NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Ind
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
-    for (UnsignedInteger i = 0; i < degreesSize - 1; ++i) indices[i + 1] += (indices[i] == degrees[i]);
+    for (UnsignedInteger j = 0; j < degreesSize - 1; ++j) indices[j + 1] += (indices[j] == degrees[j]);
     /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedInteger i = 0; i < degreesSize - 1; ++i) indices[i] = indices[i] % degrees[i];
+    for (UnsignedInteger j = 0; j < degreesSize - 1; ++j) indices[j] = indices[j] % degrees[j];
   }
   return nodes;
 }
