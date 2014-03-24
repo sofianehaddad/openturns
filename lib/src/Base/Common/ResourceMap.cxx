@@ -538,6 +538,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "ConditionalDistribution-MarginalIntegrationNodesNumber", 16 );
   setAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber", 100000 );
 
+  // CompositeDistribution parameters //
+  setAsUnsignedInteger( "CompositeDistribution-StepNumber", 256 );
+
   // DirichletFactory parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
   setAsUnsignedInteger( "Dirichlet-DefaultIntegrationSize", 50 );

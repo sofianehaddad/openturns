@@ -424,6 +424,7 @@ ot_add_python_module( model_copula model_copula_module.i
                       GumbelCopulaFactory.i
                       ComposedDistribution.i
                       ComposedCopula.i
+                      CompositeDistribution.i
                       ConditionalDistribution.i
                       PosteriorDistribution.i
                       PythonDistributionImplementation.cxx

@@ -46,11 +46,12 @@ CompositeDistribution::CompositeDistribution()
   , bounds_(0)
   , values_(0)
   , probabilities_(0)
+  , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
   setDimension(1);
   // Update the derivative attributes. It also recompute the range
-  update()
+  update();
 }
 
 /* Parameters constructor to use when the two bounds are finite */
@@ -62,10 +63,11 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
   , bounds_(0)
   , values_(0)
   , probabilities_(0)
+  , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
   // This method check everything and call the update() method.
-  setAntecedentAndFunction(antecedent, function);
+  setFunctionAndAntecedent(function, antecedent);
 }
 
 /* Set the function and antecedent with check */
@@ -75,9 +77,11 @@ void CompositeDistribution::setFunctionAndAntecedent(const NumericalMathFunction
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
   if (!function.getGradientImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the function must have a gradient. Consider using finite difference.";
-  if (antecedent.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the antecedent must have dimension 1. Here dimension=" << antecedent.getInputDimension();
+  if (antecedent.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the antecedent must have dimension 1. Here dimension=" << antecedent.getDimension();
   function_ = function;
   antecedent_ = antecedent;
+  isAlreadyComputedMean_ = false;
+  isAlreadyComputedCovariance_ = false;
   update();
 }
 
@@ -85,47 +89,103 @@ struct DerivativeWrapper
 {
   const NumericalMathFunction & function_;
   
-  DerivativeWrapper(const NumericalMathFunction & function_)
+  DerivativeWrapper(const NumericalMathFunction & function)
     : function_(function)
   {}
 
   NumericalPoint computeDerivative(const NumericalPoint & point) const
   {
-    return NumericalPoint(1, function_.gradient(point)(0, 0));
+    NumericalPoint value(1, function_.gradient(point)(0, 0));
+    return value;
   }
 
 };
 
-void set
 /* Compute all the derivative attributes */
-void update()
+void CompositeDistribution::update()
 {
   // First, compute the roots of the gradient
   const NumericalScalar xMin(antecedent_.getRange().getLowerBound()[0]);
-  bounds_ = NumericalPoint(1, xMin);
   const NumericalScalar xMax(antecedent_.getRange().getUpperBound()[0]);
+  bounds_ = NumericalPoint(1, xMin);
+  values_ = function_(NumericalPoint(1, xMin));
+  probabilities_ = NumericalPoint(1, antecedent_.computeCDF(xMin));
+  NumericalScalar fMin(values_[0]);
+  NumericalScalar fMax(values_[0]);
   const UnsignedInteger n(ResourceMap::GetAsUnsignedInteger("CompositeDistribution-StepNumber"));
-  const NumericalScalar step((xMax - xMin) / n);
-  NumericalScalar a(xMin);
-  NumericalScalar b(xMin);
   const DerivativeWrapper derivativeWrapper(function_);
-  const NumericalMathFunction derivative(bindMethod<computeDerivative, NumericalPoint, NumericalPoint>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
-  derivativeRoots_ = NumericalSample(0, 1);
+  const NumericalMathFunction derivative(bindMethod<DerivativeWrapper, NumericalPoint, NumericalPoint>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
+  NumericalScalar a(xMin);
+  NumericalScalar fpA(derivative(NumericalPoint(1, a))[0]);
+  NumericalScalar b(a);
+  NumericalScalar fpB(fpA);
   for (UnsignedInteger i = 0; i < n; ++i)
     {
       a = b;
-      b += step;
+      fpA = fpB;
+      b = ((i + 1) * xMax + (n - i) * xMin) / (n + 1);
+      fpB = derivative(NumericalPoint(1, b))[0];
       try
 	{
-	  const NumericalScalar root(solver_.solve(derivative, 0.0, a, b));
+	  const NumericalScalar root(solver_.solve(derivative, 0.0, a, b, fpA, fpB));
 	  bounds_.add(root);
-	  values_.add(function_(NumericalPoint(1, root))[0]);
+	  const NumericalScalar value(function_(NumericalPoint(1, root))[0]);
+	  increasing_.add(value > values_[values_.getSize() - 1]);
+	  values_.add(value);
+	  probabilities_.add(antecedent_.computeCDF(root));
+	  fMin = std::min(value, fMin);
+	  fMax = std::max(value, fMax);
 	}
-      catch(...) continue;
+      catch(...)
+	{
+	  // Nothing to do
+	}
     }
   bounds_.add(xMax);
-  // Second, the contributions of each interval
-  for (UnsignedInteger i = 1; i < bounds_.getSize() - 1; ++i) probabilities_.add(fabs(antecedent_.computeProbability(Interval(bounds_[i], bounds_[i - 1]))));
+  const NumericalScalar value(function_(NumericalPoint(1, xMax))[0]);
+  increasing_.add(value > values_[values_.getSize() - 1]);
+  values_.add(value);
+  probabilities_.add(NumericalPoint(1, antecedent_.computeCDF(xMax)));
+  fMin = std::min(value, fMin);
+  fMax = std::max(value, fMax);
+  setRange(Interval(fMin, fMax));
+}
+
+/* Function accessors */
+void CompositeDistribution::setFunction(const NumericalMathFunction & function)
+{
+  if (function != function_) setFunctionAndAntecedent(function, antecedent_);
+}
+
+NumericalMathFunction CompositeDistribution::getFunction() const
+{
+  return function_;
+}
+
+/* Antecedent accessors */
+void CompositeDistribution::setAntecedent(const Distribution & antecedent)
+{
+  if (antecedent != antecedent_) setFunctionAndAntecedent(function_, antecedent);
+}
+
+Distribution CompositeDistribution::getAntecedent() const
+{
+  return antecedent_;
+}
+
+/* Solver accessors */
+void CompositeDistribution::setSolver(const Solver & solver)
+{
+  if (solver != solver_)
+    {
+      solver_ = solver;
+      update();
+    }
+}
+
+Solver CompositeDistribution::getSolver() const
+{
+  return solver_;
 }
 
 /* Comparison operator */
@@ -141,10 +201,12 @@ String CompositeDistribution::__repr__() const
   OSS oss;
   oss << "class=" << CompositeDistribution::GetClassName()
       << " name=" << getName()
-      << " antecedent=" << antecedent_
       << " function=" << function_
-      << " derivativeRoots=" << derivativeRoots_
-      << " cumulatedProbabilities=" << cumulatedProbabilities_;
+      << " antecedent=" << antecedent_
+      << " bounds=" << bounds_
+      << " values=" << values_
+      << " probabilities=" << probabilities_
+      << " increasing=" << increasing_;
   return oss;
 }
 
@@ -161,16 +223,6 @@ CompositeDistribution * CompositeDistribution::clone() const
   return new CompositeDistribution(*this);
 }
 
-/* Compute the numerical range of the distribution given the parameters values */
-void CompositeDistribution::computeRange()
-{
-  const NumericalPoint lowerBound(1, lowerBound_);
-  const NumericalPoint upperBound(1, upperBound_);
-  const Interval::BoolCollection finiteLowerBound(1, finiteLowerBound_);
-  const Interval::BoolCollection finiteUpperBound(1, finiteUpperBound_);
-  setRange(distribution_.getRange().intersect(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound)));
-}
-
 /* Get one realization of the distribution */
 NumericalPoint CompositeDistribution::getRealization() const
 {
@@ -182,7 +234,26 @@ NumericalScalar CompositeDistribution::computePDF(const NumericalPoint & point) 
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   NumericalScalar pdf(0.0);
-  for (UnsignedInteger i = 0; i < bounds_.getSize(); 
+  const NumericalScalar x(point[0]);
+  NumericalScalar a(bounds_[0]);
+  NumericalScalar fA(values_[0]);
+  NumericalScalar b(a);
+  NumericalScalar fB(b);
+  for (UnsignedInteger i = 1; i < bounds_.getSize(); ++i)
+    {
+      a = b;
+      fA = fB;
+      b = bounds_[i];
+      fB = values_[i];
+      if (( increasing_[i - 1] && (fA <= x) && (x < fB)) ||
+	  (!increasing_[i - 1] && (fB <= x) && (x < fA)))
+	{
+	  const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
+	  const NumericalScalar denom(fabs(function_.gradient(fInvX)(0, 0)));
+	  pdf += antecedent_.computePDF(fInvX) / denom;
+	}
+    } // i
+  return pdf;
 }
 
 
@@ -190,216 +261,54 @@ NumericalScalar CompositeDistribution::computePDF(const NumericalPoint & point) 
 NumericalScalar CompositeDistribution::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
+  NumericalScalar cdf(0.0);
   const NumericalScalar x(point[0]);
-  if (x <= lowerBound_) return 0.0;
-  if (x >= upperBound_) return 1.0;
-  // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
-  return normalizationFactor_ * (distribution_.computeCDF(point) - cdfLowerBound_);
-}
-
-NumericalScalar CompositeDistribution::computeComplementaryCDF(const NumericalPoint & point) const
-{
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const NumericalScalar x(point[0]);
-  if (x <= lowerBound_) return 1.0;
-  if (x > upperBound_) return 0.0;
-  // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
-  return normalizationFactor_ * (cdfUpperBound_ - distribution_.computeCDF(point));
-}
-
-/* Get the PDFGradient of the distribution */
-NumericalPoint CompositeDistribution::computePDFGradient(const NumericalPoint & point) const
-{
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const NumericalScalar x(point[0]);
-  if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
-  const NumericalPoint pdfGradientX(distribution_.computePDFGradient(point));
-  const NumericalPoint cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, lowerBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalPoint cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, upperBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalScalar pdfPoint(distribution_.computePDF(point));
-  NumericalPoint pdfGradient(normalizationFactor_ * pdfGradientX - pdfPoint * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
-  // If the lower bound is finite, add a component to the gradient
-  if (finiteLowerBound_)
-  {
-    pdfGradient.add(pdfLowerBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_);
-  }
-  // If the upper bound is finite, add a component to the gradient
-  if (finiteUpperBound_)
-  {
-    pdfGradient.add(-pdfUpperBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_);
-  }
-  return pdfGradient;
-}
-
-/* Get the CDFGradient of the distribution */
-NumericalPoint CompositeDistribution::computeCDFGradient(const NumericalPoint & point) const
-{
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const NumericalScalar x(point[0]);
-  if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
-  const NumericalPoint cdfGradientX(distribution_.computeCDFGradient(point));
-  const NumericalPoint cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, lowerBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalPoint cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, upperBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalScalar cdfPoint(distribution_.computeCDF(point));
-  NumericalPoint cdfGradient(normalizationFactor_ * (cdfGradientX - cdfGradientLowerBound) - (cdfPoint - cdfLowerBound_) * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
-  // If the lower bound is finite, add a component to the gradient
-  if (finiteLowerBound_)
-  {
-    cdfGradient.add(pdfLowerBound_ * normalizationFactor_ * ((cdfPoint - cdfLowerBound_) * normalizationFactor_ - 1.0));
-  }
-  // If the upper bound is finite, add a component to the gradient
-  if (finiteUpperBound_)
-  {
-    cdfGradient.add(-pdfUpperBound_ * normalizationFactor_ * (cdfPoint - cdfLowerBound_) * normalizationFactor_);
-  }
-  return cdfGradient;
-}
-
-/* Get the quantile of the distribution */
-NumericalScalar CompositeDistribution::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
-{
-  if (tail) return distribution_.computeQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_))[0];
-  return distribution_.computeQuantile(cdfLowerBound_ + prob * (cdfUpperBound_ - cdfLowerBound_))[0];
+  NumericalScalar a(bounds_[0]);
+  NumericalScalar fA(values_[0]);
+  NumericalScalar b(a);
+  NumericalScalar fB(fA);
+  for (UnsignedInteger i = 1; i < bounds_.getSize(); ++i)
+    {
+      a = b;
+      fA = fB;
+      b = bounds_[i];
+      fB = values_[i];
+      // The contribution of the current segment [a, b] to the probability P(X <= x) where X = f(antecedent) is
+      // the probability of X\in f([a,b])\cap X <= x
+      // If f is increasing, f([a, b]) = [f(a), f(b)] and the contribution is:
+      // 0 if x <= f(a)
+      // Fantecedent(b) - Fantecedent(a) if x >= f(b)
+      // Fantecedent(t) - Fantecedent(a) if f(a) < x < f(b) where f(t) = x
+      if (increasing_[i - 1])
+	{
+	  if (x >= fB) cdf += probabilities_[i] - probabilities_[i - 1];
+	  else if (x > fA)
+	    {
+	      const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
+	      cdf += antecedent_.computeCDF(fInvX) - probabilities_[i - 1];
+	    }
+	} // increasing
+      // If f is decreasing, f([a, b]) = [f(b), f(a)] and the contribution is:
+      // 0 if x <= f(b)
+      // Fantecedent(b) - Fantecedent(a) if x >= f(a)
+      // Fantecedent(b) - Fantecedent(t) if f(b) < x < f(a) where f(t) = x
+      else
+	{
+	  if (x >= fA) cdf += probabilities_[i] - probabilities_[i - 1];
+	  else if (x > fB)
+	    {
+	      const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
+	      cdf += probabilities_[i] - antecedent_.computeCDF(fInvX);
+	    }
+	} // decreasing
+    } // i
+  return cdf;  
 }
 
 /* Parameters value and description accessor */
 CompositeDistribution::NumericalPointWithDescriptionCollection CompositeDistribution::getParametersCollection() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
-  NumericalPointWithDescription point(distribution_.getParametersCollection()[0]);
-  Description description(point.getDescription());
-  if (finiteLowerBound_)
-  {
-    point.add(lowerBound_);
-    description.add("lowerBound");
-  }
-  if (finiteUpperBound_)
-  {
-    point.add(upperBound_);
-    description.add("upperBound");
-  }
-  point.setDescription(description);
-  point.setName(getDescription()[0]);
-  parameters[0] = point;
-  return parameters;
-}
-
-/* distribution accessor */
-void CompositeDistribution::setDistribution(const Distribution & distribution)
-{
-  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can truncate only distribution with dimension=1, here dimension=" << distribution.getDimension();
-  distribution_ = distribution;
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
-  isAlreadyCreatedGeneratingFunction_ = false;
-  computeRange();
-}
-
-Distribution CompositeDistribution::getDistribution() const
-{
-  return distribution_;
-}
-
-/* Realiation threshold accessor */
-void CompositeDistribution::setThresholdRealization(const NumericalScalar thresholdRealization)
-{
-  if ((thresholdRealization < 0.0) || (thresholdRealization > 1.0)) throw InvalidArgumentException(HERE) << "Realization threshold must be in [0, 1], here thresholdRealization=" << thresholdRealization;
-  thresholdRealization_ = thresholdRealization;
-}
-
-NumericalScalar CompositeDistribution::getThresholdRealization() const
-{
-  return thresholdRealization_;
-}
-
-/* Lower bound accessor */
-void CompositeDistribution::setLowerBound(const NumericalScalar lowerBound)
-{
-  if ((finiteUpperBound_) && (lowerBound > upperBound_)) throw InvalidArgumentException(HERE) << "Error: the lower bound must be strictly less than the upper bound, here lower bound=" << lowerBound << " and upper bound=" << upperBound_;
-  cdfLowerBound_ = distribution_.computeCDF(NumericalPoint(1, lowerBound));
-  if (cdfLowerBound_ >= cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
-  pdfLowerBound_ = distribution_.computePDF(NumericalPoint(1, lowerBound));
-  lowerBound_ = lowerBound;
-  finiteLowerBound_ = true;
-  normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
-  computeRange();
-}
-
-NumericalScalar CompositeDistribution::getLowerBound() const
-{
-  return lowerBound_;
-}
-
-
-/* Upper bound accessor */
-void CompositeDistribution::setUpperBound(const NumericalScalar upperBound)
-{
-  if ((finiteLowerBound_) && (upperBound < lowerBound_)) throw InvalidArgumentException(HERE) << "Error: the upper bound must be strictly greater than the lower bound, here upper bound=" << upperBound << " and lower bound=" << lowerBound_;
-  cdfUpperBound_ = distribution_.computeCDF(NumericalPoint(1, upperBound));
-  if (cdfUpperBound_ <= cdfLowerBound_) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
-  pdfUpperBound_ = distribution_.computePDF(NumericalPoint(1, upperBound));
-  upperBound_ = upperBound;
-  finiteUpperBound_ = true;
-  normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
-  isAlreadyCreatedGeneratingFunction_ = false;
-  computeRange();
-}
-
-NumericalScalar CompositeDistribution::getUpperBound() const
-{
-  return upperBound_;
-}
-
-/* Lower bound finite flag accessor */
-void CompositeDistribution::setFiniteLowerBound(const Bool finiteLowerBound)
-{
-  // A stange case: the new flag tells that the bound is finite, but no finite previous value has been given
-  if (finiteLowerBound && !finiteLowerBound_) throw InvalidArgumentException(HERE) << "Error: cannot set a finite flag on a non finite previous value";
-  // If we switched from a finite value to an infinite one, update everything
-  if (!finiteLowerBound)
-  {
-    lowerBound_ = -SpecFunc::MaxNumericalScalar;
-    pdfLowerBound_ = 0.0;
-    cdfLowerBound_ = 0.0;
-    finiteLowerBound_ = false;
-    normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
-  }
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
-  isAlreadyCreatedGeneratingFunction_ = false;
-  computeRange();
-}
-
-Bool CompositeDistribution::getFiniteLowerBound() const
-{
-  return finiteLowerBound_;
-}
-
-/* Upper bound finite flag accessor */
-void CompositeDistribution::setFiniteUpperBound(const Bool finiteUpperBound)
-{
-  // A strange case: the new flag tells that the bound is finite, but no finite previous value has been given
-  if (finiteUpperBound && !finiteUpperBound_) throw InvalidArgumentException(HERE) << "Error: cannot set a finite flag on a non finite previous value";
-  // If we switched from a finite value to an infinite one, update everything
-  if (!finiteUpperBound)
-  {
-    upperBound_ = SpecFunc::MaxNumericalScalar;
-    pdfUpperBound_ = 0.0;
-    cdfUpperBound_ = 1.0;
-    finiteUpperBound_ = false;
-    normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
-  }
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
-  isAlreadyCreatedGeneratingFunction_ = false;
-  computeRange();
+  return antecedent_.getParametersCollection();
 }
 
 /* Tell if the distribution is continuous */
@@ -418,20 +327,25 @@ Bool CompositeDistribution::isDiscrete() const
 void CompositeDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
-  adv.saveAttribute( "antecedent_", antecedent_ );
   adv.saveAttribute( "function_", function_ );
-  adv.saveAttribute( "derivativeRoots_", derivativeRoots_ );
-  adv.saveAttribute( "cumulatedProbabilities_", cumulatedProbabilities_ );
+  adv.saveAttribute( "antecedent_", antecedent_ );
+  adv.saveAttribute( "bounds_", bounds_ );
+  adv.saveAttribute( "values_", values_ );
+  adv.saveAttribute( "probabilities_", probabilities_ );
+  adv.saveAttribute( "increasing_", increasing_ );
+  adv.saveAttribute( "solver_", solver_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void CompositeDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
-  adv.loadAttribute( "antecedent_", antecedent_ );
   adv.loadAttribute( "function_", function_ );
-  adv.loadAttribute( "derivativeRoots_", derivativeRoots_ );
-  adv.loadAttribute( "cumulatedProbabilities_", cumulatedProbabilities_ );
+  adv.loadAttribute( "antecedent_", antecedent_ );
+  adv.loadAttribute( "bounds_", bounds_ );
+  adv.loadAttribute( "values_", values_ );
+  adv.loadAttribute( "probabilities_", probabilities_ );
+  adv.loadAttribute( "solver_", solver_ );
   update();
 }
 

@@ -45,6 +45,7 @@
 #include "ClaytonCopulaFactory.hxx"
 #include "ComposedCopula.hxx"
 #include "ComposedDistribution.hxx"
+#include "CompositeDistribution.hxx"
 #include "ConditionalDistribution.hxx"
 #include "Dirac.hxx"
 #include "DiracFactory.hxx"

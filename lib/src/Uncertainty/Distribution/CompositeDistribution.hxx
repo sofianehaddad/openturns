@@ -104,13 +104,12 @@ public:
 protected:
 
 private:
+  /** update all the derivative attributes */
+  void update();
 
   /** Set the function and antecedent with check */
-  void setFunctionAndAntecedent(const Distribution & antecedent);
-
-  /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  void setFunctionAndAntecedent(const NumericalMathFunction & function,
+				const Distribution & antecedent);
 
   /** The main parameter set of the distribution */
   NumericalMathFunction function_;
@@ -120,6 +119,7 @@ private:
   NumericalPoint bounds_;
   NumericalPoint values_;
   NumericalPoint probabilities_;
+  Indices increasing_;
 
   /** Solver used to invert the function and to find the zeros of its derivative */
   Solver solver_;

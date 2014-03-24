@@ -43,29 +43,32 @@ InverseTrendTransform::InverseTrendTransform()
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const NumericalMathFunction & function)
-  : TemporalFunction()
+  : TemporalFunction(function.getInputDimension())
 {
   p_evaluation_ = function.getEvaluationImplementation() ;
   // Set the descriptions
-  setInputDescription(p_evaluation_->getInputDescription());
+  setInputDescription(p_evaluation_->getOutputDescription());
   setOutputDescription(p_evaluation_->getOutputDescription());
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & p_evaluation)
-  : TemporalFunction()
+  : TemporalFunction(p_evaluation->getInputDimension())
 {
   p_evaluation_ = p_evaluation;
   // Set the descriptions
-  setInputDescription(p_evaluation_->getInputDescription());
+  setInputDescription(p_evaluation_->getOutputDescription());
   setOutputDescription(p_evaluation_->getOutputDescription());
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const NumericalMathEvaluationImplementation & evaluation)
-  : TemporalFunction()
+  : TemporalFunction(evaluation.getInputDimension())
 {
   p_evaluation_ = evaluation.clone();
+  // Set the descriptions
+  setInputDescription(p_evaluation_->getOutputDescription());
+  setOutputDescription(p_evaluation_->getOutputDescription());
 }
 
 /* Virtual constructor */

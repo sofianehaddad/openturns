@@ -210,6 +210,9 @@
   <ConditionalDistribution-MarginalIntegrationNodesNumber value="16" />
   <ConditionalDistribution-MaximumIntegrationNodesNumber value="100000" />
   
+  <!-- OT::CompositeDistribution parameters -->
+  <CompositeDistribution-StepNumber value="256" />
+
   <!-- OT::Dirichlet parameters -->
   <Dirichlet-DefaultSamplingSize     value="500000" />
   <Dirichlet-DefaultIntegrationSize  value="50" />
