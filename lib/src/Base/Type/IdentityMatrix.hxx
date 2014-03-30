@@ -92,7 +92,7 @@ public:
   virtual Bool isPositiveDefinite(const Bool keepIntact = true);
 
   /** Build the Cholesky factorization of the matrix */
-  SquareMatrix computeCholesky(const Bool keepIntact = true);
+  TriangularMatrix computeCholesky(const Bool keepIntact = true);
 
   /** Compute singular values */
   NumericalPoint computeSingularValues(const Bool keepIntact = true);

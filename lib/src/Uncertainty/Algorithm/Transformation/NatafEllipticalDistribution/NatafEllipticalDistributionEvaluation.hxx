@@ -49,7 +49,7 @@ public:
 
   /** Parameter constructor */
   NatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
-                                        const SquareMatrix & inverseCholesky);
+                                        const TriangularMatrix & inverseCholesky);
 
   /** Virtual constructor */
   virtual NatafEllipticalDistributionEvaluation * clone() const;

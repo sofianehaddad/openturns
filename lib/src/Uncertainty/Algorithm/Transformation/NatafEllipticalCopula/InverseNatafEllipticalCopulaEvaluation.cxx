@@ -37,20 +37,20 @@ CLASSNAMEINIT(InverseNatafEllipticalCopulaEvaluation);
 static Factory<InverseNatafEllipticalCopulaEvaluation> RegisteredFactory("InverseNatafEllipticalCopulaEvaluation");
 
 /* Default constructor */
-InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation():
-  NumericalMathEvaluationImplementation(),
-  standardDistribution_(),
-  cholesky_()
+InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation()
+  : NumericalMathEvaluationImplementation()
+  , standardDistribution_()
+  , cholesky_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation(const Distribution & standardDistribution,
-    const SquareMatrix & cholesky):
-  NumericalMathEvaluationImplementation(),
-  standardDistribution_(standardDistribution),
-  cholesky_(cholesky)
+    const TriangularMatrix & cholesky)
+  : NumericalMathEvaluationImplementation()
+  , standardDistribution_(standardDistribution)
+  , cholesky_(cholesky)
 {
   Description description;
   for (UnsignedInteger i = 0; i < cholesky_.getNbColumns(); ++i) description.add(OSS() << "x" << i);

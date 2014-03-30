@@ -51,7 +51,7 @@ public:
 
   /** Parameter constructor */
   NatafEllipticalCopulaHessian(const Distribution & standardDistribution,
-                               const SquareMatrix & inverseCholesky);
+                               const TriangularMatrix & inverseCholesky);
 
 
   /** Virtual constructor */
@@ -80,7 +80,7 @@ protected:
 
 private:
   Distribution standardDistribution_;
-  SquareMatrix inverseCholesky_;
+  TriangularMatrix inverseCholesky_;
 
 }; /* NatafEllipticalCopulaHessian */
 

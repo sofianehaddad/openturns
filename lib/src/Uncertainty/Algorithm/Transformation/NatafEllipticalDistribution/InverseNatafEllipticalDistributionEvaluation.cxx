@@ -38,16 +38,16 @@ CLASSNAMEINIT(InverseNatafEllipticalDistributionEvaluation);
 static Factory<InverseNatafEllipticalDistributionEvaluation> RegisteredFactory("InverseNatafEllipticalDistributionEvaluation");
 
 /* Default constructor */
-InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation():
-  LinearNumericalMathEvaluationImplementation()
+InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation()
+  : LinearNumericalMathEvaluationImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
-    const SquareMatrix & cholesky):
-  LinearNumericalMathEvaluationImplementation(
+    const TriangularMatrix & cholesky)
+  : LinearNumericalMathEvaluationImplementation(
     NumericalPoint(mean.getDimension(), 0.0),
     mean,
     cholesky.transpose()
@@ -99,15 +99,9 @@ Matrix InverseNatafEllipticalDistributionEvaluation::parametersGradient(const Nu
   UnsignedInteger inputDimension(getInputDimension());
   Matrix result(2 * inputDimension, inputDimension);
   // dT_j/dmu_i
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
-  {
-    result(i, i) = 1.0;
-  }
+  for (UnsignedInteger i = 0; i < inputDimension; ++i) result(i, i) = 1.0;
   // dTj/dsigma_j
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
-  {
-    result(inputDimension + i, i) = inP[i];
-  }
+  for (UnsignedInteger i = 0; i < inputDimension; ++i) result(inputDimension + i, i) = inP[i];
   return result;
 }
 

@@ -37,25 +37,25 @@ static Factory<UserDefinedStationaryCovarianceModel> RegisteredFactory("UserDefi
 
 /* Constructor with parameters */
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const String & name)
-  : StationaryCovarianceModel(name),
-    covarianceCollection_(0)
+  : StationaryCovarianceModel(name)
+  , covarianceCollection_(0)
 {
   dimension_ = 0;
 }
 
 // Classical constructor
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
-UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & timeGrid,
+UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const Mesh & mesh,
     const CovarianceMatrixCollection & covarianceFunction,
     const String & name)
-  : StationaryCovarianceModel(name),
-    covarianceCollection_(0)
+  : StationaryCovarianceModel(name)
+  , covarianceCollection_(0)
 {
-  const UnsignedInteger size(timeGrid.getN());
+  const UnsignedInteger size(mesh.getVerticesNumber());
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
-                                         << " timeGrid size = " << size << "covariance function size = " << covarianceFunction.getSize();
-  timeGrid_ = timeGrid;
+                                         << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();
+  mesh_ = mesh;
 
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
@@ -79,24 +79,24 @@ UserDefinedStationaryCovarianceModel * UserDefinedStationaryCovarianceModel::clo
 /* Computation of the covariance function */
 CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const NumericalPoint & t) const
 {
-  if (t.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot evaluate a UserDefinedStationaryCovarianceModel on multidimensional locations.";
+  if (t.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expect a shift of dimension=" << dimension_ << ", here dimension=" << t.getDimension();
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values
-  if (timeGrid_.getN() == 1) return covarianceCollection_[0];
+  if (mesh_.getVerticesNumber() == 1) return covarianceCollection_[0];
 
-  // We consider that the time step is positive
-  const NumericalScalar initialInstant(timeGrid_.getStart());
-  const NumericalScalar N(timeGrid_.getN());
-  const NumericalScalar step(timeGrid_.getStep());
-  const SignedInteger index(static_cast<SignedInteger>(std::min(N - 1.0, std::max(0.0,  nearbyint( ( t[0] - initialInstant ) / step) ))));
-
-  return covarianceCollection_[index];
+  return covarianceCollection_[mesh_.getNearestVertexIndex(t)];
 }
 
-/* Time grid accessor */
+/* Time grid/mesh accessor */
+Mesh UserDefinedStationaryCovarianceModel::getMesh() const
+{
+  return mesh_;
+}
+
+/* Mesh accessor */
 RegularGrid UserDefinedStationaryCovarianceModel::getTimeGrid() const
 {
-  return timeGrid_;
+  return RegularGrid(mesh_);
 }
 
 /* String converter */
@@ -104,7 +104,7 @@ String UserDefinedStationaryCovarianceModel::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << UserDefinedStationaryCovarianceModel::GetClassName()
-      << " timeGrid=" << timeGrid_
+      << " mesh=" << mesh_
       << " dimension=" << dimension_
       << " covarianceCollection=" << covarianceCollection_;
   return oss;
@@ -121,7 +121,7 @@ String UserDefinedStationaryCovarianceModel::__str__(const String & offset) cons
 void UserDefinedStationaryCovarianceModel::save(Advocate & adv) const
 {
   StationaryCovarianceModel::save(adv);
-  adv.saveAttribute( "timeGrid_", timeGrid_);
+  adv.saveAttribute( "mesh_", mesh_);
   adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
 }
 
@@ -129,7 +129,7 @@ void UserDefinedStationaryCovarianceModel::save(Advocate & adv) const
 void UserDefinedStationaryCovarianceModel::load(Advocate & adv)
 {
   StationaryCovarianceModel::load(adv);
-  adv.loadAttribute( "timeGrid_", timeGrid_);
+  adv.loadAttribute( "mesh_", mesh_);
   adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
 }
 

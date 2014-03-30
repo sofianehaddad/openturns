@@ -72,15 +72,14 @@ SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
 SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel,
     const RegularGrid & timeGrid,
     const String & name)
-
-  : ProcessImplementation(name),
-    spectralModel_(spectralModel),
-    maximalFrequency_(0.0),
-    nFrequency_(0),
-    frequencyStep_(0.0),
-    choleskyFactorsCache_(0),
-    alpha_(0),
-    fftAlgorithm_()
+  : ProcessImplementation(name)
+  , spectralModel_(spectralModel)
+  , maximalFrequency_(0.0)
+  , nFrequency_(0)
+  , frequencyStep_(0.0)
+  , choleskyFactorsCache_(0)
+  , alpha_(0)
+  , fftAlgorithm_()
 {
   setTimeGrid(timeGrid);
   setDimension(spectralModel.getDimension());

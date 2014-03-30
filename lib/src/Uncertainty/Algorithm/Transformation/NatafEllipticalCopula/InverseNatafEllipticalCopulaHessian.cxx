@@ -37,20 +37,20 @@ CLASSNAMEINIT(InverseNatafEllipticalCopulaHessian);
 static Factory<InverseNatafEllipticalCopulaHessian> RegisteredFactory("InverseNatafEllipticalCopulaHessian");
 
 /* Default constructor */
-InverseNatafEllipticalCopulaHessian::InverseNatafEllipticalCopulaHessian():
-  NumericalMathHessianImplementation(),
-  standardDistribution_(),
-  cholesky_()
+InverseNatafEllipticalCopulaHessian::InverseNatafEllipticalCopulaHessian()
+  : NumericalMathHessianImplementation()
+  , standardDistribution_()
+  , cholesky_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseNatafEllipticalCopulaHessian::InverseNatafEllipticalCopulaHessian(const Distribution & standardDistribution,
-    const SquareMatrix & cholesky):
-  NumericalMathHessianImplementation(),
-  standardDistribution_(standardDistribution),
-  cholesky_(cholesky)
+    const TriangularMatrix & cholesky)
+  : NumericalMathHessianImplementation()
+  , standardDistribution_(standardDistribution)
+  , cholesky_(cholesky)
 {
   // Nothing to do
 }
@@ -106,9 +106,9 @@ SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const NumericalPoin
       for (UnsignedInteger j = 0; j <= k; ++j)
       {
         result(i, j, k) = cholesky_(k, j) * factor;
-      }
-    }
-  }
+      } // j
+    } // i
+  } // k
   return result;
 }
 

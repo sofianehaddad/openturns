@@ -940,7 +940,7 @@ CovarianceMatrix NumericalSampleImplementation::computeCovariance() const
 /*
  * Gives the standard deviation of the sample, i.e. the square-root of the covariance matrix.
  */
-SquareMatrix NumericalSampleImplementation::computeStandardDeviation() const
+TriangularMatrix NumericalSampleImplementation::computeStandardDeviation() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation of an empty sample.";
   return computeCovariance().computeCholesky();

@@ -132,10 +132,10 @@ public:
   SquareMatrix getInverseCorrelation() const;
 
   /** Cholesky factor of the correlation matrix accessor */
-  SquareMatrix getCholesky() const;
+  TriangularMatrix getCholesky() const;
 
   /** Inverse of the Cholesky factor of the correlation matrix accessor */
-  SquareMatrix getInverseCholesky() const;
+  TriangularMatrix getInverseCholesky() const;
 
   /** Get the isoprobabilist transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
@@ -174,10 +174,10 @@ protected:
   SymmetricMatrix inverseR_;
 
   /** The Cholesky factor of the shape matrix shape_ = cholesky_ * cholesky_.transpose() */
-  SquareMatrix cholesky_;
+  TriangularMatrix cholesky_;
 
   /** The inverse Cholesky factor of the covariance matrix */
-  SquareMatrix inverseCholesky_;
+  TriangularMatrix inverseCholesky_;
 
   /** The normalization factor of the distribution */
   NumericalScalar normalizationFactor_;

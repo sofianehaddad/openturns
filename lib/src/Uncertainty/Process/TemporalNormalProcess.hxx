@@ -121,7 +121,7 @@ private:
   CovarianceModel covarianceModel_;
 
   /** Cholesky factor  */
-  mutable SquareMatrix choleskyFactorCovarianceMatrix_;
+  mutable TriangularMatrix choleskyFactorCovarianceMatrix_;
 
   /** Flag to manage process initialization */
   mutable Bool isInitialized_;

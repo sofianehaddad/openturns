@@ -199,7 +199,7 @@ NumericalScalar KrigingAlgorithm::computeLogLikelihood(const NumericalPoint & th
     try
     {
       // C_ = R.computeCholesky().getImplementation();
-      C = R.computeCholesky().getImplementation();
+      C = R.computeCholesky();
       continuationCondition = false;
     }
     // If it has not yet been computed, compute it and store it

@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
   bool isSPD = matrix1.isPositiveDefinite();
   fullprint << "isSPD=" << isSPD << std::endl;
 
-  SquareMatrix matrix2 = matrix1.computeCholesky();
+  TriangularMatrix matrix2 = matrix1.computeCholesky();
   fullprint << "matrix2=" << matrix2 << std::endl;
 
   return ExitCode::Success;

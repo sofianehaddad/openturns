@@ -39,6 +39,10 @@
 %import BaseGeomTemplateDefs.i
 
 /* Base/Func */
+%include EnumerateFunctionImplementation.i
+%include EnumerateFunction.i
+%include LinearEnumerateFunction.i
+%include HyperbolicAnisotropicEnumerateFunction.i
 %include FieldImplementation.i
 %include Field.i
 %include TimeSeries.i 

@@ -26,10 +26,6 @@
 #define OPENTURNS_OTORTHOGONALBASIS_HXX
 
 #include "ChebychevAlgorithm.hxx"
-#include "EnumerateFunction.hxx"
-#include "EnumerateFunctionImplementation.hxx"
-#include "LinearEnumerateFunction.hxx"
-#include "HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "GramSchmidtAlgorithm.hxx"
 #include "OrthogonalUniVariatePolynomial.hxx"
 #include "CharlierFactory.hxx"

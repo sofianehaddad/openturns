@@ -31,20 +31,20 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<ProcessSample>);
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Field>);
-static Factory<PersistentCollection<Field> > RegisteredFactory1("PersistentCollection<Field>");
 
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Field>);
+
+static Factory<PersistentCollection<Field> > RegisteredFactory1("PersistentCollection<Field>");
 
 CLASSNAMEINIT(ProcessSample);
 
 static Factory<ProcessSample> RegisteredFactory("ProcessSample");
 
 ProcessSample::ProcessSample()
-  : PersistentObject(),
-    mesh_(),
-    data_(0)
+  : PersistentObject()
+  , mesh_()
+  , data_(0)
 {
   // Nothing to do
 }
@@ -52,9 +52,9 @@ ProcessSample::ProcessSample()
 /* Default constructor */
 ProcessSample::ProcessSample(const UnsignedInteger size,
                              const Field & field)
-  : PersistentObject(),
-    mesh_(field.getMesh()),
-    data_(NumericalSampleCollection(size, field.getValues()))
+  : PersistentObject()
+  , mesh_(field.getMesh())
+  , data_(NumericalSampleCollection(size, field.getValues()))
 {
   // Nothing to do
 }
@@ -62,9 +62,9 @@ ProcessSample::ProcessSample(const UnsignedInteger size,
 ProcessSample::ProcessSample(const Mesh & mesh,
                              const UnsignedInteger size,
                              const UnsignedInteger dimension)
-  : PersistentObject(),
-    mesh_(mesh),
-    data_(NumericalSampleCollection(size, NumericalSample(mesh.getVerticesNumber(), mesh.getDimension())))
+  : PersistentObject()
+  , mesh_(mesh)
+  , data_(NumericalSampleCollection(size, NumericalSample(mesh.getVerticesNumber(), mesh.getDimension())))
 {
   // Nothing to do
 }
@@ -176,17 +176,10 @@ Field ProcessSample::computeMean() const
   const UnsignedInteger size(getSize());
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
-  Field result(mesh_, data_[0]);
-  const UnsignedInteger length(data_[0].getSize());
-  // Aggregate the mean on the fly
-  for (UnsignedInteger k = 1; k < size; ++k)
-    for (UnsignedInteger t = 0; t < length ; ++t)
-      result.setValueAtIndex(t, result.getValueAtIndex(t) + data_[k][t]);
-  // Normalize the result
-  const NumericalScalar factor(1.0 / size);
-  for (UnsignedInteger t = 0; t < length ; ++t)
-    result.setValueAtIndex(t, result.getValueAtIndex(t) * factor);
-  return result;
+  NumericalSample meanValues(data_[0]);
+  for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
+  meanValues *= NumericalPoint(getDimension(), 1.0 / size);
+  return Field(mesh_, meanValues);
 }
 
 /* Compute the sample of spatial means of each field */

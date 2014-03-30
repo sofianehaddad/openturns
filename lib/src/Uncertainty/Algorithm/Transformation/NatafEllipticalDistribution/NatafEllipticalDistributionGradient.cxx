@@ -38,15 +38,15 @@ CLASSNAMEINIT(NatafEllipticalDistributionGradient);
 static Factory<NatafEllipticalDistributionGradient> RegisteredFactory("NatafEllipticalDistributionGradient");
 
 /* Default constructor */
-NatafEllipticalDistributionGradient::NatafEllipticalDistributionGradient():
-  ConstantNumericalMathGradientImplementation()
+NatafEllipticalDistributionGradient::NatafEllipticalDistributionGradient()
+  : ConstantNumericalMathGradientImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-NatafEllipticalDistributionGradient::NatafEllipticalDistributionGradient(const SquareMatrix & inverseCholesky):
-  ConstantNumericalMathGradientImplementation(inverseCholesky.transpose())
+NatafEllipticalDistributionGradient::NatafEllipticalDistributionGradient(const TriangularMatrix & inverseCholesky)
+  : ConstantNumericalMathGradientImplementation(inverseCholesky.transpose())
 {
   // Nothing to do
 }

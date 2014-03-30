@@ -26,7 +26,7 @@
 
 #include "OTprivate.hxx"
 #include "ConstantNumericalMathGradientImplementation.hxx"
-#include "SquareMatrix.hxx"
+#include "TriangularMatrix.hxx"
 #include "SymmetricTensor.hxx"
 #include "StorageManager.hxx"
 
@@ -48,7 +48,7 @@ public:
   NatafEllipticalDistributionGradient();
 
   /** Parameter constructor */
-  NatafEllipticalDistributionGradient(const SquareMatrix & inverseCholesky);
+  NatafEllipticalDistributionGradient(const TriangularMatrix & inverseCholesky);
 
   /** Virtual constructor */
   virtual NatafEllipticalDistributionGradient * clone() const;

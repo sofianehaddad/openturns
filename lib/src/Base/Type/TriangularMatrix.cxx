@@ -45,10 +45,10 @@ TriangularMatrix::TriangularMatrix()
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 TriangularMatrix::TriangularMatrix(const UnsignedInteger dimension,
                                    Bool isLower)
-  : SquareMatrix(dimension),
-    isTriangularLower_(isLower)
+  : SquareMatrix(dimension)
+  , isTriangularLower_(isLower)
 {
-
+  // Nothing to do
 }
 
 
@@ -56,8 +56,8 @@ TriangularMatrix::TriangularMatrix(const UnsignedInteger dimension,
 TriangularMatrix::TriangularMatrix(const Implementation & i,
                                    Bool isLower)
 
-  : SquareMatrix(i),
-    isTriangularLower_(isLower)
+  : SquareMatrix(i)
+  , isTriangularLower_(isLower)
 {
   // Nothing to do
 }
@@ -151,32 +151,28 @@ SquareMatrix TriangularMatrix::operator- (const TriangularMatrix & m) const
 /* Matrix multiplications */
 SquareMatrix TriangularMatrix::operator * (const SquareMatrix & m) const
 {
-  char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  char uplo(isTriangularLower() ? 'L' : 'U');
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L',  uplo ) ).clone());
 }
 
 /* Matrix multiplications */
 Matrix TriangularMatrix::operator * (const Matrix & m) const
 {
-  char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  char uplo(isTriangularLower() ? 'L' : 'U');
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L',  uplo ) ).clone());
 }
 
 /* TriangularMatrix multiplications */
 SquareMatrix TriangularMatrix::operator * (const TriangularMatrix & m) const
 {
-  char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  char uplo(isTriangularLower() ? 'L' : 'U');
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
 }
 
 /* SymmetricMatrix multiplications */
 SquareMatrix TriangularMatrix::operator * (const SymmetricMatrix & m) const
 {
-  char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  char uplo(isTriangularLower() ? 'L' : 'U');
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
 }
 
@@ -189,16 +185,14 @@ TriangularMatrix TriangularMatrix::operator * (const IdentityMatrix & m) const
 /* Multiplication with a NumericalScalarCollection (must have consistent dimensions) */
 TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalScalarCollection & pt) const
 {
-  char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  char uplo(isTriangularLower() ? 'L' : 'R');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
 /* Multiplication with a NumericalPoint (must have consistent dimensions) */
 TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalPoint & pt) const
 {
-  char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  char uplo(isTriangularLower() ? 'L' : 'R');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 

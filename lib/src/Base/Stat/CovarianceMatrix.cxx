@@ -25,8 +25,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(CovarianceMatrix);
 
 /* Default constructor */
@@ -96,7 +94,7 @@ Bool CovarianceMatrix::isPositiveDefinite(const Bool keepIntact)
 }
 
 /* Build the Cholesky factorization of the matrix */
-SquareMatrix CovarianceMatrix::computeCholesky(const Bool keepIntact)
+TriangularMatrix CovarianceMatrix::computeCholesky(const Bool keepIntact)
 {
   return Implementation(getImplementation()->computeCholesky(keepIntact).clone());
 }

@@ -140,7 +140,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) co
   for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
   {
     // Only the lower part has to be filled-in
-    for (UnsignedInteger columnIndex = 0; columnIndex < rowIndex; ++columnIndex)
+    for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
     {
       const CovarianceMatrix localCovarianceMatrix(operator()( vertices[rowIndex],  vertices[columnIndex] ));
       // We fill the covariance matrix using the previous local one

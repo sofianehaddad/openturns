@@ -31,9 +31,10 @@ BEGIN_NAMESPACE_OPENTURNS
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< CovarianceMatrix >);
 static Factory< PersistentCollection< CovarianceMatrix > > RegisteredFactory1("PersistentCollection< CovarianceMatrix >");
 
-
 CLASSNAMEINIT(UserDefinedCovarianceModel);
+
 static Factory<UserDefinedCovarianceModel> RegisteredFactory("UserDefinedCovarianceModel");
+
 /* Constructor with parameters */
 UserDefinedCovarianceModel::UserDefinedCovarianceModel(const String & name)
   : CovarianceModelImplementation(name)
@@ -91,13 +92,18 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
   // We look for the two vertices of the mesh the nearest to s and t resp.
   UnsignedInteger sIndex(p_mesh_->getNearestVertexIndex(s));
   UnsignedInteger tIndex(p_mesh_->getNearestVertexIndex(t));
-  // If sIndex > tIndex, swap the indices
-  if (sIndex > tIndex) std::swap(sIndex, tIndex);
-  // We use the information about the ordering of the collection
-  // N first elements => s = first vertex and t = (first vertex...last vertex)
-  // then s = second vertex and t = (second vertex...last vertex)
-  // size is N * (N + 1) / 2 with N the mesh size
-  const SignedInteger index(tIndex + (sIndex * (2 * N - sIndex - 1)) / 2);
+  // The covariance matrices correspond to sIndex >= tIndex.
+  // As C(s, t) = C(t, s), we swap sIndex and tIndex if sIndex < tIndex
+  if (sIndex < tIndex) std::swap(sIndex, tIndex);
+  // The covariances are stored the following way:
+  // sIndex=0, tIndex=0 -> index=0
+  // sIndex=1, tIndex=0 -> index=1
+  // sIndex=1, tIndex=1 -> index=2
+  // sIndex=2, tIndex=0 -> index=3
+  // sIndex=2, tIndex=1 -> index=4
+  // sIndex=2, tIndex=2 -> index=5
+  // ie index = tIndex + sIndex * (sIndex + 1) / 2
+  const SignedInteger index(tIndex + (sIndex * (sIndex + 1)) / 2);
   return covarianceCollection_[index];
 }
 
@@ -110,12 +116,7 @@ Mesh UserDefinedCovarianceModel::getMesh() const
 /* Time grid accessor */
 RegularGrid UserDefinedCovarianceModel::getTimeGrid() const
 {
-  if (p_mesh_->getClassName() != RegularGrid().getClassName()) throw InternalException(HERE) << "Error: the discretization of the covariance model does not correspond to a regular 1D grid.";
-  const NumericalSample vertices(p_mesh_->getVertices());
-  const UnsignedInteger n(vertices.getSize());
-  const NumericalScalar start(vertices[0][0]);
-  const NumericalScalar step((vertices[n - 1][0] - start) / n);
-  return RegularGrid(start, step, n);
+  return RegularGrid(*p_mesh_);
 }
 
 /* String converter */

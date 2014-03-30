@@ -39,9 +39,9 @@ static Factory<ComplexMatrixImplementation> RegisteredFactory("ComplexMatrixImpl
 
 /* Default constructor */
 ComplexMatrixImplementation::ComplexMatrixImplementation()
-  : PersistentCollection<NumericalComplex>(),
-    nbRows_(0),
-    nbColumns_(0)
+  : PersistentCollection<NumericalComplex>()
+  , nbRows_(0)
+  , nbColumns_(0)
 {
   // Nothing to do
 }
@@ -51,9 +51,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation()
 /* The ComplexMatrixImplementation is viewed as a set of column vectors read one after another */
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   // Nothing to do
 }
@@ -62,9 +62,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<NumericalComplex> & elementsValues)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
@@ -74,9 +74,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
   //  Implicit cast from NumericalScalar into NumericalComplex
@@ -85,9 +85,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 
 
 ComplexMatrixImplementation::ComplexMatrixImplementation(const MatrixImplementation & matrix)
-  : PersistentCollection<NumericalComplex>(matrix.getNbRows() * matrix.getNbColumns(), 0.0),
-    nbRows_(matrix.getNbRows()),
-    nbColumns_(matrix.getNbColumns())
+  : PersistentCollection<NumericalComplex>(matrix.getNbRows() * matrix.getNbColumns(), 0.0)
+  , nbRows_(matrix.getNbRows())
+  , nbColumns_(matrix.getNbColumns())
 {
   // Copy from matrix
   const UnsignedInteger matrixSize(nbRows_ * nbColumns_);
@@ -886,7 +886,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-        A(i, j) = NumericalComplex(0.0, 0.0);
+        A(i, j) = 0.0;//NumericalComplex(0.0, 0.0);
     // Check return code from Lapack
     if(info != 0)
       throw InvalidArgumentException(HERE) << " Error - Matrix is not positive definite" ;
@@ -898,7 +898,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-        (*this)(i, j) = NumericalComplex(0.0, 0.0);
+        (*this)(i, j) = 0.0;//NumericalComplex(0.0, 0.0);
     // Check return code from Lapack
     if(info != 0)
       throw InvalidArgumentException(HERE) << " Error - Matrix is not positive definite" ;

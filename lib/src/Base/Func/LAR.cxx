@@ -29,8 +29,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(LAR);
 
 typedef Collection<NumericalScalar>    NumericalScalarCollection;

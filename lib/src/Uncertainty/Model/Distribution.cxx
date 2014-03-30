@@ -157,13 +157,13 @@ CovarianceMatrix Distribution::getCovariance() const
 }
 
 /* Cholesky factor of the covariance matrix accessor */
-SquareMatrix Distribution::getCholesky() const
+TriangularMatrix Distribution::getCholesky() const
 {
   return getImplementation()->getCholesky();
 }
 
 /* Inverse of the Cholesky factor of the covariance matrix accessor */
-SquareMatrix Distribution::getInverseCholesky() const
+TriangularMatrix Distribution::getInverseCholesky() const
 {
   return getImplementation()->getInverseCholesky();
 }

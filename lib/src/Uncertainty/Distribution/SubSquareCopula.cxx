@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @file  NormalCopula.cxx
- *  @brief A class that implements a normal copula
+ *  @file  SubSquareCopula.cxx
+ *  @brief A class that implements an independent copula
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -22,7 +22,7 @@
  *  @date   2012-04-18 17:56:46 +0200 (Wed, 18 Apr 2012)
  */
 #include <cmath>
-#include "NormalCopula.hxx"
+#include "SubSquareCopula.hxx"
 #include "Uniform.hxx"
 #include "IdentityMatrix.hxx"
 #include "NatafEllipticalCopulaEvaluation.hxx"
@@ -41,15 +41,15 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NormalCopula);
+CLASSNAMEINIT(SubSquareCopula);
 
-static Factory<NormalCopula> RegisteredFactory("NormalCopula");
+static Factory<SubSquareCopula> RegisteredFactory("SubSquareCopula");
 
 /* Default constructor */
-NormalCopula::NormalCopula(const UnsignedInteger dim)
-  : CopulaImplementation("NormalCopula")
+SubSquareCopula::SubSquareCopula(const UnsignedInteger dim)
+  : CopulaImplementation("SubSquareCopula")
   , correlation_(dim)
-  , normal_(dim)
+  , subSquare_(dim)
 {
   // The range is generic for all the copulas
   setDimension(dim);
@@ -57,10 +57,10 @@ NormalCopula::NormalCopula(const UnsignedInteger dim)
 }
 
 /* Default constructor */
-NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
-  : CopulaImplementation("NormalCopula")
+SubSquareCopula::SubSquareCopula(const CorrelationMatrix & correlation)
+  : CopulaImplementation("SubSquareCopula")
   , correlation_(correlation)
-  , normal_(NumericalPoint(correlation.getNbRows(), 0.0), NumericalPoint(correlation.getNbRows(), 1.0), correlation)
+  , subSquare_(NumericalPoint(correlation.getNbRows(), 0.0), NumericalPoint(correlation.getNbRows(), 1.0), correlation)
 {
   // The range is generic for all the copulas
   setDimension(correlation.getNbRows());
@@ -68,24 +68,24 @@ NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
 }
 
 /* Comparison operator */
-Bool NormalCopula::operator ==(const NormalCopula & other) const
+Bool SubSquareCopula::operator ==(const SubSquareCopula & other) const
 {
   if (this == &other) return true;
   return correlation_ == other.correlation_;
 }
 
 /* String converter */
-String NormalCopula::__repr__() const
+String SubSquareCopula::__repr__() const
 {
   OSS oss;
-  oss << "class=" << NormalCopula::GetClassName()
+  oss << "class=" << SubSquareCopula::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " correlation=" << correlation_;
   return oss;
 }
 
-String NormalCopula::__str__(const String & offset) const
+String SubSquareCopula::__str__(const String & offset) const
 {
   OSS oss;
   oss << offset << getClassName() << "(R = " << correlation_.__str__(offset) << ")";
@@ -93,26 +93,26 @@ String NormalCopula::__str__(const String & offset) const
 }
 
 /* Virtual constructor */
-NormalCopula * NormalCopula::clone() const
+SubSquareCopula * SubSquareCopula::clone() const
 {
-  return new NormalCopula(*this);
+  return new SubSquareCopula(*this);
 }
 
 /* Get one realization of the distribution */
-NumericalPoint NormalCopula::getRealization() const
+NumericalPoint SubSquareCopula::getRealization() const
 {
   UnsignedInteger dimension(getDimension());
   if (hasIndependentCopula()) return RandomGenerator::Generate(dimension);
   else
   {
-    NumericalPoint realization(normal_.getRealization());
-    for (UnsignedInteger i = 0; i < dimension; ++i) realization[i] = DistFunc::pNormal(realization[i]);
+    NumericalPoint realization(subSquare_.getRealization());
+    for (UnsignedInteger i = 0; i < dimension; ++i) realization[i] = DistFunc::pSubSquare(realization[i]);
     return realization;
   }
 }
 
 /* Get a sample of the distribution */
-NumericalSample NormalCopula::getSampleParallel(const UnsignedInteger size) const
+NumericalSample SubSquareCopula::getSampleParallel(const UnsignedInteger size) const
 {
   if (hasIndependentCopula())
   {
@@ -127,9 +127,9 @@ NumericalSample NormalCopula::getSampleParallel(const UnsignedInteger size) cons
   else
   {
     const UnsignedInteger dimension(getDimension());
-    const NumericalSample normalSample(normal_.getSample(size));
+    const NumericalSample subSquareSample(subSquare_.getSample(size));
     NumericalSample result(size, dimension);
-    const ComputeSamplePolicy policy( normalSample, result );
+    const ComputeSamplePolicy policy( subSquareSample, result );
     TBB::ParallelFor( 0, size, policy );
     result.setName(getName());
     result.setDescription(getDescription());
@@ -137,14 +137,14 @@ NumericalSample NormalCopula::getSampleParallel(const UnsignedInteger size) cons
   } // Nonindependente copula
 }
 
-NumericalSample NormalCopula::getSample(const UnsignedInteger size) const
+NumericalSample SubSquareCopula::getSample(const UnsignedInteger size) const
 {
   if (isParallel_) return getSampleParallel(size);
   return DistributionImplementation::getSample(size);
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint NormalCopula::computeDDF(const NumericalPoint & point) const
+NumericalPoint SubSquareCopula::computeDDF(const NumericalPoint & point) const
 {
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -160,22 +160,22 @@ NumericalPoint NormalCopula::computeDDF(const NumericalPoint & point) const
   NumericalScalar marginalPDFProduct(1.0);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar xi(DistFunc::qNormal(point[i]));
+    const NumericalScalar xi(DistFunc::qSubSquare(point[i]));
     x[i] = xi;
     // .398942280401432677939946059934 = 1 / sqrt(2.pi)
     const NumericalScalar pdfI(0.398942280401432677939946059934 * exp(-0.5 * xi * xi));
     marginalPDF[i] = pdfI;
     marginalPDFProduct *= pdfI;
   }
-  const NumericalPoint ddfNorm(normal_.computeDDF(x));
-  const NumericalScalar pdfNorm(normal_.computePDF(x));
+  const NumericalPoint ddfNorm(subSquare_.computeDDF(x));
+  const NumericalScalar pdfNorm(subSquare_.computePDF(x));
   NumericalPoint ddf(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) ddf[i] = (ddfNorm[i] + x[i] * pdfNorm) / (marginalPDFProduct * marginalPDF[i]);
   return ddf;
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
+NumericalScalar SubSquareCopula::computePDF(const NumericalPoint & point) const
 {
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -186,33 +186,33 @@ NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
     // If outside of the support return 0.0
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
   }
-  // Compute the normal point such that a normal distribution with this copula
-  // and standard 1D normal marginals has the same CDF at this normal point
+  // Compute the subSquare point such that a subSquare distribution with this copula
+  // and standard 1D subSquare marginals has the same CDF at this subSquare point
   // than the copula at the given point.
   // Compute the multiplicative factor between the copula PDF
-  // and the PDF of the associated generic normal using the specific form of
-  // the standard normal PDF
-  NumericalPoint normalPoint(dimension);
+  // and the PDF of the associated generic subSquare using the specific form of
+  // the standard subSquare PDF
+  NumericalPoint subSquarePoint(dimension);
   NumericalScalar value(0.0);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar yi(DistFunc::qNormal(point[i]));
-    normalPoint[i] = yi;
+    const NumericalScalar yi(DistFunc::qSubSquare(point[i]));
+    subSquarePoint[i] = yi;
     value += yi * yi;
   }
   // 0.398942280401432677939946059934 = 1 / sqrt(2.pi)
   value = pow(0.398942280401432677939946059934, dimension) * exp(-0.5 * value);
-  return normal_.computePDF(normalPoint) / value;
+  return subSquare_.computePDF(subSquarePoint) / value;
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar NormalCopula::computeCDF(const NumericalPoint & point) const
+NumericalScalar SubSquareCopula::computeCDF(const NumericalPoint & point) const
 {
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  // Compute the normal point such that a normal distribution with this copula
-  // and standard 1D normal marginals has the same CDF at this normal point
+  // Compute the subSquare point such that a subSquare distribution with this copula
+  // and standard 1D subSquare marginals has the same CDF at this subSquare point
   // than the copula at the given point.
   // Be careful to evaluate the copula only in the interior of its support
   Indices indices;
@@ -227,23 +227,23 @@ NumericalScalar NormalCopula::computeCDF(const NumericalPoint & point) const
   const UnsignedInteger activeDimension(indices.getSize());
   // Quick return if all the components are >= 1
   if (activeDimension == 0) return 1.0;
-  NumericalPoint normalPoint(activeDimension);
-  for (UnsignedInteger i = 0; i < activeDimension; ++i) normalPoint[i] = DistFunc::qNormal(point[indices[i]]);
+  NumericalPoint subSquarePoint(activeDimension);
+  for (UnsignedInteger i = 0; i < activeDimension; ++i) subSquarePoint[i] = DistFunc::qSubSquare(point[indices[i]]);
   // In the usual case when the given point is in the interior of the support
-  // use the associated normal distribution
-  if (dimension == activeDimension) return normal_.computeCDF(normalPoint);
+  // use the associated subSquare distribution
+  if (dimension == activeDimension) return subSquare_.computeCDF(subSquarePoint);
   // In the other case, we must use the appropriate marginal distribution
-  else return normal_.getMarginal(indices)->computeCDF(normalPoint);
+  else return subSquare_.getMarginal(indices)->computeCDF(subSquarePoint);
 } // computeCDF
 
 /* Get the survival function of the distribution */
-NumericalScalar NormalCopula::computeSurvivalFunction(const NumericalPoint & point) const
+NumericalScalar SubSquareCopula::computeSurvivalFunction(const NumericalPoint & point) const
 {
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  // Compute the normal point such that a normal distribution with this copula
-  // and standard 1D normal marginals has the same CDF at this normal point
+  // Compute the subSquare point such that a subSquare distribution with this copula
+  // and standard 1D subSquare marginals has the same CDF at this subSquare point
   // than the copula at the given point.
   // Be careful to evaluate the copula only in the interior of its support
   Indices indices;
@@ -258,17 +258,17 @@ NumericalScalar NormalCopula::computeSurvivalFunction(const NumericalPoint & poi
   const UnsignedInteger activeDimension(indices.getSize());
   // Quick return if all the components are >= 1
   if (activeDimension == 0) return 1.0;
-  NumericalPoint normalPoint(activeDimension);
-  for (UnsignedInteger i = 0; i < activeDimension; ++i) normalPoint[i] = DistFunc::qNormal(point[indices[i]], true);
+  NumericalPoint subSquarePoint(activeDimension);
+  for (UnsignedInteger i = 0; i < activeDimension; ++i) subSquarePoint[i] = DistFunc::qSubSquare(point[indices[i]], true);
   // In the usual case when the given point is in the interior of the support
-  // use the associated normal distribution
-  if (dimension == activeDimension) return normal_.computeSurvivalFunction(normalPoint);
+  // use the associated subSquare distribution
+  if (dimension == activeDimension) return subSquare_.computeSurvivalFunction(subSquarePoint);
   // In the other case, we must use the appropriate marginal distribution
-  else return Distribution(normal_.getMarginal(indices)).computeSurvivalFunction(normalPoint);
+  else return Distribution(subSquare_.getMarginal(indices)).computeSurvivalFunction(subSquarePoint);
 } // computeSurvivalFunction
 
 /* Compute the probability content of an interval */
-NumericalScalar NormalCopula::computeProbability(const Interval & interval) const
+NumericalScalar SubSquareCopula::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension(getDimension());
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -293,7 +293,7 @@ NumericalScalar NormalCopula::computeProbability(const Interval & interval) cons
     else
     {
       finiteLowerBound[i] = true;
-      lowerBound[i] = DistFunc::qNormal(lowerBoundIntersect[i]);
+      lowerBound[i] = DistFunc::qSubSquare(lowerBoundIntersect[i]);
     }
     if (upperBoundIntersect[i] == 1.0)
     {
@@ -303,14 +303,14 @@ NumericalScalar NormalCopula::computeProbability(const Interval & interval) cons
     else
     {
       finiteUpperBound[i] = true;
-      upperBound[i] = DistFunc::qNormal(upperBoundIntersect[i]);
+      upperBound[i] = DistFunc::qSubSquare(upperBoundIntersect[i]);
     }
   }
-  return normal_.computeProbability(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
+  return subSquare_.computeProbability(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
 /* Get the Spearman correlation of the distribution */
-CorrelationMatrix NormalCopula::getSpearmanCorrelation() const
+CorrelationMatrix SubSquareCopula::getSpearmanCorrelation() const
 {
   const UnsignedInteger dimension(getDimension());
   CorrelationMatrix rho(dimension);
@@ -320,7 +320,7 @@ CorrelationMatrix NormalCopula::getSpearmanCorrelation() const
 }
 
 /* Get the Kendall concordance of the distribution */
-CorrelationMatrix NormalCopula::getKendallTau() const
+CorrelationMatrix SubSquareCopula::getKendallTau() const
 {
   const UnsignedInteger dimension(getDimension());
   CorrelationMatrix tau(dimension);
@@ -330,13 +330,13 @@ CorrelationMatrix NormalCopula::getKendallTau() const
 }
 
 /* Get the Shape matrix of the copula */
-CorrelationMatrix NormalCopula::getShapeMatrix() const
+CorrelationMatrix SubSquareCopula::getShapeMatrix() const
 {
   return correlation_;
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint NormalCopula::computePDFGradient(const NumericalPoint & point) const
+NumericalPoint SubSquareCopula::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -344,7 +344,7 @@ NumericalPoint NormalCopula::computePDFGradient(const NumericalPoint & point) co
 }
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint NormalCopula::computeCDFGradient(const NumericalPoint & point) const
+NumericalPoint SubSquareCopula::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -352,14 +352,14 @@ NumericalPoint NormalCopula::computeCDFGradient(const NumericalPoint & point) co
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
-   For Normal distribution, the conditional distribution is also Normal, with mean and covariance
+   For SubSquare distribution, the conditional distribution is also SubSquare, with mean and covariance
    such as:
    mean_cond = mean(x) + cov(x, y).cov(y, y)^(-1)(y - mean(y))
    cov_cond = cov(x, x) - cov(x, y).cov(y, y)^(-1)cov(x, y)
    This expression simplifies if we use the inverse of the Cholesky factor of the covariance matrix.
    See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
 */
-NumericalScalar NormalCopula::computeConditionalPDF(const NumericalScalar x,
+NumericalScalar SubSquareCopula::computeConditionalPDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
   const UnsignedInteger conditioningDimension(y.getDimension());
@@ -368,12 +368,12 @@ NumericalScalar NormalCopula::computeConditionalPDF(const NumericalScalar x,
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return 1.0;
   // General case
   NumericalPoint u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qNormal(y[i]);
-  return normal_.computeConditionalPDF(DistFunc::qNormal(x), u);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qSubSquare(y[i]);
+  return subSquare_.computeConditionalPDF(DistFunc::qSubSquare(x), u);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar NormalCopula::computeConditionalCDF(const NumericalScalar x,
+NumericalScalar SubSquareCopula::computeConditionalCDF(const NumericalScalar x,
     const NumericalPoint & y) const
 {
   const UnsignedInteger conditioningDimension(y.getDimension());
@@ -382,12 +382,12 @@ NumericalScalar NormalCopula::computeConditionalCDF(const NumericalScalar x,
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
   // General case
   NumericalPoint u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qNormal(y[i]);
-  return normal_.computeConditionalCDF(DistFunc::qNormal(x), u);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qSubSquare(y[i]);
+  return subSquare_.computeConditionalCDF(DistFunc::qSubSquare(x), u);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar NormalCopula::computeConditionalQuantile(const NumericalScalar q,
+NumericalScalar SubSquareCopula::computeConditionalQuantile(const NumericalScalar q,
     const NumericalPoint & y) const
 {
   const UnsignedInteger conditioningDimension(y.getDimension());
@@ -399,12 +399,12 @@ NumericalScalar NormalCopula::computeConditionalQuantile(const NumericalScalar q
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   // General case
   NumericalPoint u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qNormal(y[i]);
-  return DistFunc::pNormal(normal_.computeConditionalQuantile(q, u));
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qSubSquare(y[i]);
+  return DistFunc::pSubSquare(subSquare_.computeConditionalQuantile(q, u));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-NormalCopula::Implementation NormalCopula::getMarginal(const Indices & indices) const
+SubSquareCopula::Implementation SubSquareCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension(getDimension());
   if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
@@ -419,39 +419,39 @@ NormalCopula::Implementation NormalCopula::getMarginal(const Indices & indices) 
     const UnsignedInteger index_i(indices[i]);
     for (UnsignedInteger j = 0; j <= i; ++j) R(i, j) = correlation_(index_i, indices[j]);
   }
-  return new NormalCopula(R);
+  return new SubSquareCopula(R);
 }
 
 /* Get the isoprobabilist transformation */
-NormalCopula::IsoProbabilisticTransformation NormalCopula::getIsoProbabilisticTransformation() const
+SubSquareCopula::IsoProbabilisticTransformation SubSquareCopula::getIsoProbabilisticTransformation() const
 {
   IsoProbabilisticTransformation transformation;
-  transformation.setEvaluationImplementation(new NatafEllipticalCopulaEvaluation(getStandardDistribution(), normal_.getInverseCholesky()));
-  transformation.setGradientImplementation(new NatafEllipticalCopulaGradient(getStandardDistribution(), normal_.getInverseCholesky()));
-  transformation.setHessianImplementation(new NatafEllipticalCopulaHessian(getStandardDistribution(), normal_.getInverseCholesky()));
+  transformation.setEvaluationImplementation(new NatafEllipticalCopulaEvaluation(getStandardDistribution(), subSquare_.getInverseCholesky()));
+  transformation.setGradientImplementation(new NatafEllipticalCopulaGradient(getStandardDistribution(), subSquare_.getInverseCholesky()));
+  transformation.setHessianImplementation(new NatafEllipticalCopulaHessian(getStandardDistribution(), subSquare_.getInverseCholesky()));
 
   return transformation;
 }
 
 /* Get the inverse isoprobabilist transformation */
-NormalCopula::InverseIsoProbabilisticTransformation NormalCopula::getInverseIsoProbabilisticTransformation() const
+SubSquareCopula::InverseIsoProbabilisticTransformation SubSquareCopula::getInverseIsoProbabilisticTransformation() const
 {
   InverseIsoProbabilisticTransformation transformation;
-  transformation.setEvaluationImplementation(new InverseNatafEllipticalCopulaEvaluation(getStandardDistribution(), normal_.getCholesky()));
-  transformation.setGradientImplementation(new InverseNatafEllipticalCopulaGradient(getStandardDistribution(), normal_.getCholesky()));
-  transformation.setHessianImplementation(new InverseNatafEllipticalCopulaHessian(getStandardDistribution(), normal_.getCholesky()));
+  transformation.setEvaluationImplementation(new InverseNatafEllipticalCopulaEvaluation(getStandardDistribution(), subSquare_.getCholesky()));
+  transformation.setGradientImplementation(new InverseNatafEllipticalCopulaGradient(getStandardDistribution(), subSquare_.getCholesky()));
+  transformation.setHessianImplementation(new InverseNatafEllipticalCopulaHessian(getStandardDistribution(), subSquare_.getCholesky()));
 
   return transformation;
 }
 
 /* Tell if the distribution has independent copula */
-Bool NormalCopula::hasIndependentCopula() const
+Bool SubSquareCopula::hasIndependentCopula() const
 {
-  return normal_.hasIndependentCopula();
+  return subSquare_.hasIndependentCopula();
 }
 
 /* Parameters value and description accessor */
-NormalCopula::NumericalPointWithDescriptionCollection NormalCopula::getParametersCollection() const
+SubSquareCopula::NumericalPointWithDescriptionCollection SubSquareCopula::getParametersCollection() const
 {
   const UnsignedInteger dimension(getDimension());
   NumericalPointWithDescriptionCollection parameters(0);
@@ -480,7 +480,7 @@ NormalCopula::NumericalPointWithDescriptionCollection NormalCopula::getParameter
   return parameters;
 } // getParametersCollection
 
-void NormalCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void SubSquareCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
   // Check if the given parameters are ok
   if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
@@ -499,47 +499,47 @@ void NormalCopula::setParametersCollection(const NumericalPointCollection & para
   }
 }
 
-/* Compute the correlation matrix of a Normal Copula from its Spearman correlation matrix */
-CorrelationMatrix NormalCopula::GetCorrelationFromSpearmanCorrelation(const CorrelationMatrix & matrix)
+/* Compute the correlation matrix of a SubSquare Copula from its Spearman correlation matrix */
+CorrelationMatrix SubSquareCopula::GetCorrelationFromSpearmanCorrelation(const CorrelationMatrix & matrix)
 {
   const UnsignedInteger dimension(matrix.getNbRows());
   CorrelationMatrix result(dimension);
   for (UnsignedInteger i = 1; i < dimension; ++i)
     for (UnsignedInteger j = 0; j < i; ++j) result(i, j) = 2.0 * sin(M_PI * matrix(i, j) / 6.0);
-  if (!result.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the normal copula correlation matrix built from the given Spearman correlation matrix is not definite positive";
+  if (!result.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the subSquare copula correlation matrix built from the given Spearman correlation matrix is not definite positive";
   return result;
 }
 
-/* Compute the correlation matrix of a Normal Copula from its Kendal correlation matrix */
-CorrelationMatrix NormalCopula::GetCorrelationFromKendallCorrelation(const CorrelationMatrix & matrix)
+/* Compute the correlation matrix of a SubSquare Copula from its Kendal correlation matrix */
+CorrelationMatrix SubSquareCopula::GetCorrelationFromKendallCorrelation(const CorrelationMatrix & matrix)
 {
   const UnsignedInteger dimension(matrix.getNbRows());
   CorrelationMatrix result(dimension);
   for (UnsignedInteger i = 1; i < dimension; ++i)
     for (UnsignedInteger j = 0; j < i; ++j) result(i, j) = sin(M_PI_2 * matrix(i, j));
-  if (!result.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the normal copula correlation matrix built from the given Kendall correlation matrix is not definite positive";
+  if (!result.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the subSquare copula correlation matrix built from the given Kendall correlation matrix is not definite positive";
   return result;
 }
 
 /* Method save() stores the object through the StorageManager */
-void NormalCopula::save(Advocate & adv) const
+void SubSquareCopula::save(Advocate & adv) const
 {
   CopulaImplementation::save(adv);
   adv.saveAttribute( "correlation_", correlation_ );
   adv.saveAttribute( "covariance_duplicate", covariance_ );
-  adv.saveAttribute( "normal_", normal_ );
+  adv.saveAttribute( "subSquare_", subSquare_ );
   adv.saveAttribute( "integrationNodesNumber_duplicate", integrationNodesNumber_ );
   adv.saveAttribute( "isAlreadyComputedCovariance_duplicate", isAlreadyComputedCovariance_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
-void NormalCopula::load(Advocate & adv)
+void SubSquareCopula::load(Advocate & adv)
 {
   // The range is generic for all the copulas
   CopulaImplementation::load(adv);
   adv.loadAttribute( "correlation_", correlation_ );
   adv.loadAttribute( "covariance_duplicate", covariance_ );
-  adv.loadAttribute( "normal_", normal_ );
+  adv.loadAttribute( "subSquare_", subSquare_ );
   adv.loadAttribute( "integrationNodesNumber_duplicate", integrationNodesNumber_ );
   adv.loadAttribute( "isAlreadyComputedCovariance_duplicate", isAlreadyComputedCovariance_ );
   computeRange();

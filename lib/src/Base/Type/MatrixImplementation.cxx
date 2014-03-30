@@ -44,9 +44,9 @@ static Factory<MatrixImplementation> RegisteredFactory("MatrixImplementation");
 // All the pivots with a magnitude less than this threshold are considered as zero
 /* Default constructor */
 MatrixImplementation::MatrixImplementation()
-  : PersistentCollection<NumericalScalar>(),
-    nbRows_(0),
-    nbColumns_(0)
+  : PersistentCollection<NumericalScalar>()
+  , nbRows_(0)
+  , nbColumns_(0)
 {
   // Nothing to do
 }
@@ -56,9 +56,9 @@ MatrixImplementation::MatrixImplementation()
 /* The MatrixImplementation is viewed as a set of column vectors read one after another */
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   // Nothing to do
 }
@@ -67,9 +67,9 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
@@ -381,7 +381,8 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   NumericalScalar alpha(1.0);
 
   // Lapack routine
-  DTRMM_F77(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
+  std::cerr << "side=" << side << ", uplo=" << uplo << ", trans=" << trans << ", diag=" << diag << ", m=" << m << ", n=" << n << ", alpha=" << alpha << std::endl;
+  DTRMM_F77(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
   return mult;
 }
 
@@ -1252,18 +1253,18 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
     MatrixImplementation A(*this);
     DPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
-    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+    /*    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < j; ++i)
-        A(i, j) = 0.0;
+      A(i, j) = 0.0;*/
     A.setName(DefaultName);
     return A;
   }
   else
   {
     DPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
-    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+    /*    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-        (*this)(i, j) = 0.0;
+      (*this)(i, j) = 0.0;*/
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
     setName(DefaultName);
     return (*this);

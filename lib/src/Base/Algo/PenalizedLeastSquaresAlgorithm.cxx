@@ -30,8 +30,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(PenalizedLeastSquaresAlgorithm);
 
 static Factory<PenalizedLeastSquaresAlgorithm> RegisteredFactory("PenalizedLeastSquaresAlgorithm");
@@ -49,9 +47,9 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
     const NumericalSample & y,
     const NumericalMathFunctionCollection & psi,
     const NumericalScalar penalizationFactor)
-  : ApproximationAlgorithmImplementation( x, y, psi ),
-    penalizationFactor_(penalizationFactor),
-    penalizationMatrix_(0)
+  : ApproximationAlgorithmImplementation( x, y, psi )
+  , penalizationFactor_(penalizationFactor)
+  , penalizationMatrix_(0)
 {
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
@@ -68,9 +66,9 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
     const NumericalPoint & weight,
     const NumericalMathFunctionCollection & psi,
     const NumericalScalar penalizationFactor)
-  : ApproximationAlgorithmImplementation( x, y, weight, psi ),
-    penalizationFactor_(penalizationFactor),
-    penalizationMatrix_(0)
+  : ApproximationAlgorithmImplementation( x, y, weight, psi )
+  , penalizationFactor_(penalizationFactor)
+  , penalizationMatrix_(0)
 {
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
@@ -87,9 +85,9 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
     const NumericalMathFunctionCollection & psi,
     const NumericalScalar penalizationFactor,
     const CovarianceMatrix & penalizationMatrix)
-  : ApproximationAlgorithmImplementation( x, y, weight, psi ),
-    penalizationFactor_(penalizationFactor),
-    penalizationMatrix_(penalizationMatrix)
+  : ApproximationAlgorithmImplementation( x, y, weight, psi )
+  , penalizationFactor_(penalizationFactor)
+  , penalizationMatrix_(penalizationMatrix)
 {
   const UnsignedInteger basisSize(psi.getSize());
   // Check if the penalization matrix has the proper dimension
@@ -135,7 +133,7 @@ void PenalizedLeastSquaresAlgorithm::run()
   // If there is a penalization term, add the penalization matrix to the basis matrix
   if (penalizationFactor_ > 0.0)
   {
-    const Matrix transposedSquareRootPenalizationMatrix(sqrt(penalizationFactor_) * penalizationMatrix_.computeCholesky());
+    const TriangularMatrix transposedSquareRootPenalizationMatrix(sqrt(penalizationFactor_) * penalizationMatrix_.computeCholesky());
     for (UnsignedInteger i = 0; i < basisDimension; ++i)
     {
       // The cholesky factor has to be transposed, thus we fill only the upper triangular part of the trailing block

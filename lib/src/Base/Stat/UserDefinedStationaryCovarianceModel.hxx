@@ -51,7 +51,7 @@ public:
   UserDefinedStationaryCovarianceModel(const String & name = OT::DefaultName);
 
   /** Standard onstructor */
-  UserDefinedStationaryCovarianceModel(const RegularGrid & timeGrid,
+  UserDefinedStationaryCovarianceModel(const Mesh & mesh,
                                        const CovarianceMatrixCollection & covarianceCollection,
                                        const String & name = OT::DefaultName);
 
@@ -62,7 +62,8 @@ public:
   using StationaryCovarianceModel::operator();
   CovarianceMatrix operator() (const NumericalPoint & t) const;
 
-  /** Time grid accessor */
+  /** Time grid/mesh accessor */
+  Mesh getMesh() const;
   RegularGrid getTimeGrid() const;
 
   /** String converter */
@@ -82,8 +83,8 @@ private:
   /** Collection of covariance functions */
   CovarianceMatrixPersistentCollection covarianceCollection_;
 
-  /** Time grid of evaluation */
-  RegularGrid timeGrid_;
+  /** Mesh of evaluation */
+  Mesh mesh_;
 
 } ; /* class UserDefinedStationaryCovarianceModel */
 

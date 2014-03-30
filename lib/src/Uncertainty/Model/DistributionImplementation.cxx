@@ -1732,19 +1732,18 @@ CorrelationMatrix DistributionImplementation::getShapeMatrix() const
 }
 
 /* Cholesky factor of the correlation matrix accessor */
-SquareMatrix DistributionImplementation::getCholesky() const
+TriangularMatrix DistributionImplementation::getCholesky() const
 {
-  covariance_ = getCovariance();
-  return covariance_.computeCholesky();
+  return getCovariance().computeCholesky();
 }
 
 /* Inverse of the Cholesky factor of the correlation matrix accessor */
-SquareMatrix DistributionImplementation::getInverseCholesky() const
+TriangularMatrix DistributionImplementation::getInverseCholesky() const
 {
   // Compute its Cholesky factor
-  SquareMatrix cholesky(getCholesky());
+  TriangularMatrix cholesky(getCholesky());
 
-  SquareMatrix inverseCholesky = TriangularMatrix(cholesky.getImplementation()).solveLinearSystem(IdentityMatrix(dimension_)).getImplementation();
+  const TriangularMatrix inverseCholesky(cholesky.solveLinearSystem(IdentityMatrix(dimension_), false).getImplementation());
 
   return inverseCholesky;
 }

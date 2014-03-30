@@ -274,10 +274,10 @@ public:
   virtual CorrelationMatrix getShapeMatrix() const;
 
   /** Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getCholesky() const;
+  TriangularMatrix getCholesky() const;
 
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getInverseCholesky() const;
+  TriangularMatrix getInverseCholesky() const;
 
   /** Check if the distribution is a copula */
   virtual Bool isCopula() const;

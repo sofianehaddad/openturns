@@ -224,7 +224,7 @@ Field TemporalNormalProcess::getRealization() const
   // N gaussian realizations
   for (UnsignedInteger index = 0; index <  fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
 
-  gaussianPoint = TriangularMatrix(choleskyFactorCovarianceMatrix_.getImplementation()) * gaussianPoint;
+  gaussianPoint = choleskyFactorCovarianceMatrix_ * gaussianPoint;
 
   NumericalSample gaussianSample(size, dimension_);
   gaussianSample.getImplementation()->setData(gaussianPoint);

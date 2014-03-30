@@ -177,7 +177,7 @@ public:
   CovarianceMatrix getCovariance() const;
 
   /** Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getCholesky() const;
+  TriangularMatrix getCholesky() const;
 
   /** Get the raw moments of the standardized distribution */
   NumericalPoint getStandardMoment(const UnsignedInteger n) const;
@@ -189,7 +189,7 @@ public:
   NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
 
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getInverseCholesky() const;
+  TriangularMatrix getInverseCholesky() const;
 
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;

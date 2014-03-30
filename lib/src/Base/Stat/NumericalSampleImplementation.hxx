@@ -649,7 +649,7 @@ public:
   /**
    * Gives the standard deviation of the sample, i.e. the square-root of the covariance matrix.
    */
-  SquareMatrix computeStandardDeviation() const;
+  TriangularMatrix computeStandardDeviation() const;
 
   /**
    * Gives the standard deviation of each component of the sample

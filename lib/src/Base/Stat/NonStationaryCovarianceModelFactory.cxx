@@ -72,50 +72,72 @@ CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactor
   return buildAsUserDefinedCovarianceModel(sample).clone();
 }
 
+
+struct ComputeCovariancePolicy
+{
+  const ProcessSample & input_;
+  CovarianceMatrixCollection & output_;
+  Field mean_;
+  UnsignedInteger dimension_;
+  UnsignedInteger N_;
+  UnsignedInteger size_;
+  NumericalScalar alpha_;
+
+  ComputeCovariancePolicy(const ProcessSample & input,
+                    CovarianceMatrixCollection & output)
+    : input_(input)
+    , output_(output)
+    , mean_()
+    , dimension_(input.getDimension())
+    , size_(input.getSize())
+    , alpha_(1.0 / (size_ - 1.0))
+  {
+    mean_ = input.computeMean();
+  }
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+      {
+	const UnsignedInteger i(static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5));
+	const UnsignedInteger j(index - (i * (i + 1)) / 2);
+	CovarianceMatrix & matrix(output_[index]);
+	for (UnsignedInteger k = 0; k < dimension_; ++k)
+	  {
+	    const NumericalScalar muIK(mean_.getValueAtIndex(i)[k]);
+	    for (UnsignedInteger l = 0; l <= k; ++l)
+	      {
+		const NumericalScalar muJL(mean_.getValueAtIndex(j)[l]);
+		NumericalScalar coef(0.0);
+		for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
+		  {
+		    coef += (input_[sampleIndex][i][k] - muIK)
+		      * (input_[sampleIndex][j][l] - muJL);
+		  } // sampleIndex
+		matrix(k, l) = coef * alpha_;
+	      } // l
+	  } // k
+      } // index
+  }
+
+}; /* end struct ComputeCovariancePolicy */
+
 UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const ProcessSample & sample) const
 {
-  // Get the time grid
-  const RegularGrid timeGrid(sample.getTimeGrid());
-  const UnsignedInteger sampleSize(sample.getSize());
-  const UnsignedInteger N(timeGrid.getN());
-  const UnsignedInteger dimension(sample.getDimension());
-
+  const Mesh mesh(sample.getMesh());
+  const UnsignedInteger N(mesh.getVerticesNumber());
   // Create a collection of null CovarianceMatrix
-  UnsignedInteger size(static_cast<UnsignedInteger>((N * (N + 1) / 2)));
+  const UnsignedInteger size((N * (N + 1)) / 2);
+  const UnsignedInteger dimension(sample.getDimension());
   CovarianceMatrixCollection collection(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    collection[i] = CovarianceMatrix(SquareMatrix(dimension).getImplementation());
-  }
+  for (UnsignedInteger i = 0; i < size; ++i) collection[i] = CovarianceMatrix(SquareMatrix(dimension).getImplementation());
 
   // Special case for a sample of size 1
-  if (size == 1) return UserDefinedCovarianceModel(timeGrid, collection);
+  if (size == 0) return UserDefinedCovarianceModel(mesh, collection);
 
-  const Field mean(sample.computeMean());
-  const NumericalScalar alpha(1.0 / (sampleSize - 1));
-  UnsignedInteger index(0);
-  for (UnsignedInteger i = 0; i < N; ++i)
-  {
-    for (UnsignedInteger j = i; j < N; ++j)
-    {
-      CovarianceMatrix & matrix = collection[index];
-      for (UnsignedInteger k = 0; k < dimension; ++k)
-      {
-        for (UnsignedInteger l = 0; l <= k; ++l)
-        {
-          NumericalScalar coef(0.0);
-          for (UnsignedInteger sampleIndex = 0; sampleIndex < sampleSize; ++sampleIndex)
-          {
-            coef += (sample[sampleIndex][i][k] - mean.getValueAtIndex(i)[k])
-                    * (sample[sampleIndex][j][l] - mean.getValueAtIndex(j)[l]);
-          }
-          matrix(k, l) = coef * alpha;
-        }
-      }
-      index += 1;
-    }
-  }
-  return UserDefinedCovarianceModel(timeGrid, collection);
+  const ComputeCovariancePolicy policy( sample, collection );
+  TBB::ParallelFor( 0, size, policy );
+  return UserDefinedCovarianceModel(mesh, collection);
 }
 
 /* Method save() stores the object through the StorageManager */

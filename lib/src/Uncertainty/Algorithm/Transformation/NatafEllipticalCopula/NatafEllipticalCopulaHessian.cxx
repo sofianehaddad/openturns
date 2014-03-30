@@ -37,20 +37,20 @@ CLASSNAMEINIT(NatafEllipticalCopulaHessian);
 static Factory<NatafEllipticalCopulaHessian> RegisteredFactory("NatafEllipticalCopulaHessian");
 
 /* Default constructor */
-NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian():
-  NumericalMathHessianImplementation(),
-  standardDistribution_(),
-  inverseCholesky_()
+NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian()
+  : NumericalMathHessianImplementation()
+  , standardDistribution_()
+  , inverseCholesky_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian(const Distribution & standardDistribution,
-    const SquareMatrix & inverseCholesky):
-  NumericalMathHessianImplementation(),
-  standardDistribution_(standardDistribution),
-  inverseCholesky_(inverseCholesky)
+    const TriangularMatrix & inverseCholesky)
+  : NumericalMathHessianImplementation()
+  , standardDistribution_(standardDistribution)
+  , inverseCholesky_(inverseCholesky)
 {
   // Nothing to do
 }
@@ -102,11 +102,8 @@ SymmetricTensor NatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP
     NumericalScalar factor(1.0 / standardMarginal.computePDF(q));
     NumericalScalar quantileSecondDerivative(-standardMarginal.computeDDF(q)[0] * factor * factor * factor);
     // inverseCholesky_ is lower triangular
-    for (UnsignedInteger j = i; j < dimension; ++j)
-    {
-      result(i, i, j) = inverseCholesky_(j, i) * quantileSecondDerivative;
-    }
-  }
+    for (UnsignedInteger j = i; j < dimension; ++j) result(i, i, j) = inverseCholesky_(j, i) * quantileSecondDerivative;
+  } // i
   return result;
 }
 

@@ -239,7 +239,7 @@ void EllipticalDistribution::update()
     // Compute its Cholesky factor
     cholesky_ = shape_.computeCholesky();
 
-    inverseCholesky_ = TriangularMatrix(cholesky_.getImplementation()).solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
+    inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
 
     // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)
     // R^(-1) = D.L^(-1).L^(-1)'.D
@@ -257,8 +257,8 @@ void EllipticalDistribution::update()
     {
       shape_ = CovarianceMatrix(1);
       inverseR_ = IdentityMatrix(1);
-      cholesky_ = SquareMatrix(1);
-      inverseCholesky_ = SquareMatrix(1);
+      cholesky_ = TriangularMatrix(1);
+      inverseCholesky_ = TriangularMatrix(1);
     }
     shape_(0, 0) = sigma_[0] * sigma_[0];
     cholesky_(0, 0) = sigma_[0];
@@ -360,13 +360,13 @@ SquareMatrix EllipticalDistribution::getInverseCorrelation() const
 }
 
 /* Cholesky factor of the correlation matrix accessor */
-SquareMatrix EllipticalDistribution::getCholesky() const
+TriangularMatrix EllipticalDistribution::getCholesky() const
 {
   return cholesky_;
 }
 
 /* Inverse of the Cholesky factor of the correlation matrix accessor */
-SquareMatrix EllipticalDistribution::getInverseCholesky() const
+TriangularMatrix EllipticalDistribution::getInverseCholesky() const
 {
   return inverseCholesky_;
 }

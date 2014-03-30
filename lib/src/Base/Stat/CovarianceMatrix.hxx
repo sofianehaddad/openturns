@@ -26,7 +26,7 @@
 
 #include "OTprivate.hxx"
 #include "SymmetricMatrix.hxx"
-#include "SquareMatrix.hxx"
+#include "TriangularMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -71,7 +71,7 @@ public:
   virtual Bool isPositiveDefinite(const Bool keepIntact = true);
 
   /** Build the Cholesky factorization of the matrix */
-  virtual SquareMatrix computeCholesky(const Bool keepIntact = true);
+  virtual TriangularMatrix computeCholesky(const Bool keepIntact = true);
 
   /** Constructor with implementation */
   CovarianceMatrix(const Implementation & i);
