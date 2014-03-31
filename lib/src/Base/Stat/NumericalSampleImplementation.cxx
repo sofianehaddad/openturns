@@ -1366,7 +1366,11 @@ NumericalPoint NumericalSampleImplementation::computeSkewnessPerComponent() cons
   TBB::ParallelReduce( 0, size_, functor );
   NumericalPoint skewness(dimension_);
   const NumericalScalar factor(size_ * sqrt(size_ - 1) / (size_ - 2));
-  for (UnsignedInteger i = 0; i < dimension_; ++i) skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
+      skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
+    }
   return skewness;
 }
 
@@ -1421,7 +1425,11 @@ NumericalPoint NumericalSampleImplementation::computeKurtosisPerComponent() cons
   NumericalPoint kurtosis(dimension_);
   const NumericalScalar factor1((size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0)));
   const NumericalScalar factor2(-3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0)));
-  for (UnsignedInteger i = 0; i < dimension_; ++i) kurtosis[i] = factor1 * functor.accumulator_[i + dimension_] / (functor.accumulator_[i] * functor.accumulator_[i]) + factor2;
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
+      kurtosis[i] = factor1 * functor.accumulator_[i + dimension_] / (functor.accumulator_[i] * functor.accumulator_[i]) + factor2;
+    }
   return kurtosis;
 }
 

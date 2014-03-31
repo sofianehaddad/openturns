@@ -54,6 +54,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const NumericalSample & sample)
 {
   // ME
   const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
+  if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of moments.";
   const NumericalScalar skew(sample.computeSkewnessPerComponent()[0]);
   const NumericalScalar a3(skew);
   // V parameter, see "LogNormal Distributions, Theory and Applications", ISBN 0-8247-7803-0, p116
@@ -72,9 +73,9 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const NumericalSample & sample)
 struct LogNormalFactoryLMLEParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  LogNormalFactoryLMLEParameterConstraint(const NumericalSample & sample):
-    sample_(sample),
-    size_(sample.getSize())
+  LogNormalFactoryLMLEParameterConstraint(const NumericalSample & sample)
+    : sample_(sample)
+    , size_(sample.getSize())
   {
     // Nothing to do
   };
@@ -97,6 +98,7 @@ struct LogNormalFactoryLMLEParameterConstraint
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       const NumericalScalar delta(sample_[i][0] - gamma);
+      if (delta <= 0.0) throw InternalException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
       const NumericalScalar logDelta(log(delta));
       const NumericalScalar inverseDelta(1.0 / delta);
       sums[0] += inverseDelta;
@@ -116,6 +118,7 @@ struct LogNormalFactoryLMLEParameterConstraint
 LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const NumericalSample & sample) const
 {
   const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
+  if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
   const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
   NumericalScalar step(std * sqrt(quantileEpsilon));
   const NumericalScalar xMin(sample.getMin()[0]);
@@ -166,6 +169,7 @@ struct LogNormalFactoryMMEParameterConstraint
   NumericalPoint computeConstraint(const NumericalPoint & parameter) const
   {
     const NumericalScalar omega(parameter[0]);
+    if (omega <= 0.0) throw InternalException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of modified moments, probably because the sample is constant.";
     return NumericalPoint(1, alpha_ * pow(sqrt(omega) - exp(eZ1_ * sqrt(log(omega))), 2) - omega * (omega - 1.0));
   }
 
@@ -182,8 +186,9 @@ struct LogNormalFactoryMMEParameterConstraint
 /* Algorithm associated with the method of modified moments */
 LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample & sample) const
 {
-  const NumericalScalar mean(sample.computeMean()[0]);
   const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
+  if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of modified moments.";
+  const NumericalScalar mean(sample.computeMean()[0]);
   const NumericalScalar xMin(sample.getMin()[0]);
   const LogNormalFactoryMMEParameterConstraint constraint(sample.getSize(), xMin, mean, std);
   const NumericalMathFunction f(bindMethod<LogNormalFactoryMMEParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &LogNormalFactoryMMEParameterConstraint::computeConstraint, 1, 1));
