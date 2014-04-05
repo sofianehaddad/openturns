@@ -208,7 +208,9 @@ NonCentralStudent::NumericalPointWithDescriptionCollection NonCentralStudent::ge
 
 void NonCentralStudent::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = NonCentralStudent(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  setWeight(w);
 }
 
 /* Nu accessor */

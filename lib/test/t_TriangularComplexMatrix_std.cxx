@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
     /* String converter */
     fullprint << "triangularMatrix1 = " << triangularMatrix1 << std::endl;
-    fullprint << "is triangular lower ?  " << triangularMatrix1.isTriangularLower() << std::endl;
+    fullprint << "is triangular lower ?  " << triangularMatrix1.isLowerTriangular() << std::endl;
 
 
     /** COPY CONSTRUCTOR AND STRING CONVERTER */
@@ -94,13 +94,13 @@ int main(int argc, char *argv[])
 
     /* Check transpose method */
     fullprint << "triangularMatrix1 transpose = " << triangularMatrix1.transpose() << std::endl;
-    fullprint << "is transpose triangular lower ?  " << triangularMatrix1.transpose().isTriangularLower() << std::endl;
+    fullprint << "is transpose triangular lower ?  " << triangularMatrix1.transpose().isLowerTriangular() << std::endl;
     fullprint << "triangularMatrix1 conjugate = " << triangularMatrix1.conjugate() << std::endl;
-    fullprint << "is conjugate triangular lower ?  " << triangularMatrix1.conjugate().isTriangularLower() << std::endl;
+    fullprint << "is conjugate triangular lower ?  " << triangularMatrix1.conjugate().isLowerTriangular() << std::endl;
 
     TriangularComplexMatrix triangularMatrix4 = triangularMatrix1.conjugateTranspose();
     fullprint << "triangularMatrix1 conjugate transpose = " << triangularMatrix4 << std::endl;
-    fullprint << "is conjugate/transpose triangular lower ?  " << triangularMatrix4.isTriangularLower() << std::endl;
+    fullprint << "is conjugate/transpose triangular lower ?  " << triangularMatrix4.isLowerTriangular() << std::endl;
 
     /**  ADDITION METHOD */
     fullprint << "test number 6 : addition method" << std::endl;

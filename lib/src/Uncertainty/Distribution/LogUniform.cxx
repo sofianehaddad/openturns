@@ -273,7 +273,9 @@ LogUniform::NumericalPointWithDescriptionCollection LogUniform::getParametersCol
 
 void LogUniform::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = LogUniform(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 

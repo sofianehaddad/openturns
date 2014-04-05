@@ -235,7 +235,9 @@ Poisson::NumericalPointWithDescriptionCollection Poisson::getParametersCollectio
 
 void Poisson::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Poisson(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 

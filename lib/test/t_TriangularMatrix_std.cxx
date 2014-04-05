@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
     /* String converter */
     fullprint << "triangularMatrix1 = " << triangularMatrix1 << std::endl;
-    fullprint << "is triangular lower ?  " << triangularMatrix1.isTriangularLower() << std::endl;
+    fullprint << "is triangular lower ?  " << triangularMatrix1.isLowerTriangular() << std::endl;
 
 
     /** COPY CONSTRUCTOR AND STRING CONVERTER */
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 
     /* Check transpose method */
     fullprint << "triangularMatrix1 transpose = " << triangularMatrix1.transpose() << std::endl;
-    fullprint << "is transpose triangular lower ?  " << triangularMatrix1.transpose().isTriangularLower() << std::endl;
+    fullprint << "is transpose triangular lower ?  " << triangularMatrix1.transpose().isLowerTriangular() << std::endl;
 
     TriangularMatrix triangularMatrix4 = triangularMatrix1.transpose();
 

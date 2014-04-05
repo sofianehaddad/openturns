@@ -429,7 +429,9 @@ MeixnerDistribution::NumericalPointWithDescriptionCollection MeixnerDistribution
 
 void MeixnerDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = MeixnerDistribution(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
+  setWeight(w);
 }
 
 /* Method save() stores the object through the StorageManager */

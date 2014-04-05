@@ -35,8 +35,9 @@ CLASSNAMEINIT(TriangularMatrix);
 
 /* Default constructor */
 TriangularMatrix::TriangularMatrix()
-  : SquareMatrix(0),
-    isTriangularLower_(true)
+  : SquareMatrix(0)
+  , isLowerTriangular_(true)
+  , hasBeenTriangularized_(false)
 {
   // Nothing to do
 }
@@ -46,7 +47,8 @@ TriangularMatrix::TriangularMatrix()
 TriangularMatrix::TriangularMatrix(const UnsignedInteger dimension,
                                    Bool isLower)
   : SquareMatrix(dimension)
-  , isTriangularLower_(isLower)
+  , isLowerTriangular_(isLower)
+  , hasBeenTriangularized_(false)
 {
   // Nothing to do
 }
@@ -57,11 +59,40 @@ TriangularMatrix::TriangularMatrix(const Implementation & i,
                                    Bool isLower)
 
   : SquareMatrix(i)
-  , isTriangularLower_(isLower)
+  , isLowerTriangular_(isLower)
+  , hasBeenTriangularized_(false)
 {
   // Nothing to do
 }
 
+
+/* Check if the internal representation is actually symmetric */
+void TriangularMatrix::checkTriangularity() const
+{
+  if (!hasBeenTriangularized_)
+  {
+    getImplementation()->triangularize(isLowerTriangular_);
+    hasBeenTriangularized_ = true;
+  }
+}
+
+/* Test if the matrix is diagonal */
+Bool TriangularMatrix::isDiagonal() const
+{
+  if (isLowerTriangular_)
+    {
+      for (UnsignedInteger j = 0; j < getDimension(); ++j)
+	for (UnsignedInteger i = j + 1; i < getDimension(); ++i)
+	  if ((*getImplementation())(i, j) != 0.0) return false;
+    }
+  else
+    {
+      for (UnsignedInteger j = 0; j < getDimension(); ++j)
+	for (UnsignedInteger i = 0; i < j; ++i)
+	  if ((*getImplementation())(i, j) != 0.0) return false;
+    }
+  return true;
+}
 
 /* String converter */
 String TriangularMatrix::__repr__() const
@@ -73,6 +104,7 @@ String TriangularMatrix::__repr__() const
 
 String TriangularMatrix::__str__(const String & offset) const
 {
+  checkTriangularity();
   return SquareMatrix::__str__();
 }
 
@@ -87,14 +119,14 @@ TriangularMatrix TriangularMatrix::transpose () const
 {
   // Quick return for empty or scalar TriangularMatrix
   if (getDimension() <= 1) return (*this);
-  return TriangularMatrix(Implementation(getImplementation()->transpose().clone()), !isTriangularLower_);
+  return TriangularMatrix(getImplementation()->transpose(), !isLowerTriangular_);
 }
 
 
 /* Check if the matrix is lower or upper */
-Bool TriangularMatrix::isTriangularLower() const
+Bool TriangularMatrix::isLowerTriangular() const
 {
-  return isTriangularLower_;
+  return isLowerTriangular_;
 }
 
 
@@ -104,14 +136,13 @@ Bool TriangularMatrix::isTriangularLower() const
 NumericalScalar & TriangularMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
-  if (isTriangularLower() && (i < j))
+  if (isLowerTriangular() && (i < j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is lower. "
                                          << "The indices are not valid" ;
 
-  if (!isTriangularLower() && (i > j))
+  if (!isLowerTriangular() && (i > j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is upper. "
                                          << "The indices are not valid" ;
-
   return  (*getImplementation())(i, j) ;
 }
 
@@ -127,53 +158,53 @@ const NumericalScalar & TriangularMatrix::operator() (const UnsignedInteger i,
 /* TriangularMatrix additions */
 SquareMatrix TriangularMatrix::operator+ (const TriangularMatrix & m) const
 {
-  return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
+  return *getImplementation() + *m.getImplementation();
 }
 
 /* Matrix additions */
 SquareMatrix TriangularMatrix::operator+ (const SquareMatrix & m) const
 {
-  return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
+  return *getImplementation() + *m.getImplementation();
 }
 
 /* Matrix substractions */
 SquareMatrix TriangularMatrix::operator- (const SquareMatrix & m) const
 {
-  return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());
+  return *getImplementation() - *m.getImplementation();
 }
 
 /* TriangularMatrix substractions */
 SquareMatrix TriangularMatrix::operator- (const TriangularMatrix & m) const
 {
-  return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());
+  return *getImplementation() - *m.getImplementation();
 }
 
 /* Matrix multiplications */
 SquareMatrix TriangularMatrix::operator * (const SquareMatrix & m) const
 {
-  char uplo(isTriangularLower() ? 'L' : 'U');
-  return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L',  uplo ) ).clone());
+  char uplo(isLowerTriangular() ? 'L' : 'U');
+  return getImplementation()->triangularProd(*m.getImplementation(), 'L',  uplo );
 }
 
 /* Matrix multiplications */
 Matrix TriangularMatrix::operator * (const Matrix & m) const
 {
-  char uplo(isTriangularLower() ? 'L' : 'U');
-  return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L',  uplo ) ).clone());
+  char uplo(isLowerTriangular() ? 'L' : 'U');
+  return getImplementation()->triangularProd(*m.getImplementation(), 'L',  uplo );
 }
 
 /* TriangularMatrix multiplications */
 SquareMatrix TriangularMatrix::operator * (const TriangularMatrix & m) const
 {
-  char uplo(isTriangularLower() ? 'L' : 'U');
-  return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
+  char uplo(isLowerTriangular() ? 'L' : 'U');
+  return getImplementation()->triangularProd(*m.getImplementation(), 'L', uplo );
 }
 
 /* SymmetricMatrix multiplications */
 SquareMatrix TriangularMatrix::operator * (const SymmetricMatrix & m) const
 {
-  char uplo(isTriangularLower() ? 'L' : 'U');
-  return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
+  char uplo(isLowerTriangular() ? 'L' : 'U');
+  return getImplementation()->triangularProd(*m.getImplementation(), 'L', uplo );
 }
 
 /*  IdentityMatrix multiplications */
@@ -185,27 +216,27 @@ TriangularMatrix TriangularMatrix::operator * (const IdentityMatrix & m) const
 /* Multiplication with a NumericalScalarCollection (must have consistent dimensions) */
 TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalScalarCollection & pt) const
 {
-  char uplo(isTriangularLower() ? 'L' : 'R');
+  char uplo(isLowerTriangular() ? 'L' : 'R');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
 /* Multiplication with a NumericalPoint (must have consistent dimensions) */
 TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalPoint & pt) const
 {
-  char uplo(isTriangularLower() ? 'L' : 'R');
+  char uplo(isLowerTriangular() ? 'L' : 'R');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
 /* Multiplication with a Numerical */
 TriangularMatrix TriangularMatrix::operator* (const NumericalScalar s) const
 {
-  return TriangularMatrix(Implementation((*getImplementation() * s ).clone()), isTriangularLower_);
+  return TriangularMatrix(*getImplementation() * s, isLowerTriangular_);
 }
 
 /* Division by a Numerical*/
 TriangularMatrix TriangularMatrix::operator / (const NumericalScalar s) const
 {
-  return TriangularMatrix(Implementation((*getImplementation() / s ).clone()), isTriangularLower_);
+  return TriangularMatrix(*getImplementation() / s, isLowerTriangular_);
 }
 
 
@@ -213,13 +244,13 @@ TriangularMatrix TriangularMatrix::operator / (const NumericalScalar s) const
 NumericalPoint TriangularMatrix::solveLinearSystem (const NumericalPoint & b,
     const Bool keepIntact)
 {
-  return getImplementation()->solveLinearSystemTri(b, keepIntact, isTriangularLower_);
+  return getImplementation()->solveLinearSystemTri(b, keepIntact, isLowerTriangular_);
 }
 
 Matrix TriangularMatrix::solveLinearSystem (const Matrix & b,
     const Bool keepIntact)
 {
-  return Implementation(getImplementation()->solveLinearSystemTri(*b.getImplementation(), keepIntact, isTriangularLower_).clone());
+  return getImplementation()->solveLinearSystemTri(*b.getImplementation(), keepIntact, isLowerTriangular_);
 }
 
 END_NAMESPACE_OPENTURNS

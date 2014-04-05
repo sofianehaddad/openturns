@@ -254,7 +254,9 @@ Exponential::NumericalPointWithDescriptionCollection Exponential::getParametersC
 
 void Exponential::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Exponential(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* Lambda accessor */

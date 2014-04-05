@@ -212,7 +212,9 @@ NonCentralChiSquare::NumericalPointWithDescriptionCollection NonCentralChiSquare
 
 void NonCentralChiSquare::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = NonCentralChiSquare(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* Nu accessor */

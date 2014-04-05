@@ -252,7 +252,9 @@ FarlieGumbelMorgensternCopula::NumericalPointWithDescriptionCollection FarlieGum
 
 void FarlieGumbelMorgensternCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = FarlieGumbelMorgensternCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Theta accessor */

@@ -27,12 +27,7 @@
 #include "MatrixImplementation.hxx"
 #include "TypedInterfaceObject.hxx"
 
-
-
-
 BEGIN_NAMESPACE_OPENTURNS
-
-
 
 class IdentityMatrix;
 class SymmetricMatrix;

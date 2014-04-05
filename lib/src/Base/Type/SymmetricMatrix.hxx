@@ -29,8 +29,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 class IdentityMatrix;
 
 /**
@@ -71,7 +69,7 @@ public:
   SymmetricMatrix(const UnsignedInteger dim,
                   const NumericalScalarCollection & elementsValues);
 
-  /** Check if the internal representation is really symmetric */
+  /** Check if the internal representation is actually symmetric */
   void checkSymmetry() const;
 
   /** Test if the matrix is diagonal */
@@ -153,7 +151,7 @@ protected:
 
 
 private:
-  /** Check if one needs to symmetrized the internal representation of the tensor */
+  /** Check if one needs to symmetrized the internal representation of the matrix */
   mutable Bool hasBeenSymmetrized_;
 
 }; /* class SymmetricMatrix */

@@ -233,7 +233,9 @@ Geometric::NumericalPointWithDescriptionCollection Geometric::getParametersColle
 
 void Geometric::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Geometric(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 

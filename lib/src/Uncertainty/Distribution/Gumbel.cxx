@@ -277,7 +277,9 @@ Gumbel::NumericalPointWithDescriptionCollection Gumbel::getParametersCollection(
 
 void Gumbel::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Gumbel(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 

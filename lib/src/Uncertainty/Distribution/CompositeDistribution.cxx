@@ -311,6 +311,12 @@ CompositeDistribution::NumericalPointWithDescriptionCollection CompositeDistribu
   return antecedent_.getParametersCollection();
 }
 
+void CompositeDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+{
+  antecedent_.setParametersCollection(parametersCollection);
+  setFunctionAndAntecedent(function_, antecedent_);
+}
+
 /* Tell if the distribution is continuous */
 Bool CompositeDistribution::isContinuous() const
 {

@@ -277,7 +277,9 @@ Uniform::NumericalPointWithDescriptionCollection Uniform::getParametersCollectio
 
 void Uniform::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Uniform(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* Check if the distribution is elliptical */

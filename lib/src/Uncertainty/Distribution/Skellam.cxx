@@ -228,7 +228,9 @@ Skellam::NumericalPointWithDescriptionCollection Skellam::getParametersCollectio
 
 void Skellam::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Skellam(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 

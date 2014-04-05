@@ -386,7 +386,9 @@ LogNormal::NumericalPointWithDescriptionCollection LogNormal::getParametersColle
 
 void LogNormal::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = LogNormal(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  setWeight(w);
 }
 
 

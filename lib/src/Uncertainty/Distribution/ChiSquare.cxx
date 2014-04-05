@@ -279,7 +279,9 @@ ChiSquare::NumericalPointWithDescriptionCollection ChiSquare::getParametersColle
 
 void ChiSquare::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = ChiSquare(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Method save() stores the object through the StorageManager */

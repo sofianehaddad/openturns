@@ -152,6 +152,9 @@ public:
   /** Symmetrize MatrixImplementation in case it is a symmetric matrix (stored as a triangular matrix) */
   void symmetrize() const;
 
+  /** Triangularize MatrixImplementation in case it is a triangular matrix (stored as a square matrix) */
+  void triangularize(const Bool isLowerTriangular) const;
+
   /** Resolution of a linear system in case of a rectangular matrix */
   NumericalPoint solveLinearSystemRect(const NumericalPoint & b,
                                        const Bool keepIntact = true);

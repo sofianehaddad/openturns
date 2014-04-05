@@ -28,8 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(SquareMatrix);
 
 /* Default constructor */
@@ -61,6 +59,15 @@ SquareMatrix::SquareMatrix(const UnsignedInteger dim,
 
 /* Constructor with implementation */
 SquareMatrix::SquareMatrix(const Implementation & i)
+  : Matrix(i)
+{
+  if (getNbRows() != getNbColumns())
+    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
+}
+
+
+/* Constructor with implementation */
+SquareMatrix::SquareMatrix(const MatrixImplementation & i)
   : Matrix(i)
 {
   if (getNbRows() != getNbColumns())

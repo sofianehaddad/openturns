@@ -332,7 +332,9 @@ Triangular::NumericalPointWithDescriptionCollection Triangular::getParametersCol
 
 void Triangular::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Triangular(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  setWeight(w);
 }
 
 /* Interface specific to Triangular */

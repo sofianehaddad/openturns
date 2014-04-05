@@ -334,7 +334,9 @@ FrankCopula::NumericalPointWithDescriptionCollection FrankCopula::getParametersC
 
 void FrankCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = FrankCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Tell if the distribution has independent copula */

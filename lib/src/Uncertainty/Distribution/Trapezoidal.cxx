@@ -395,7 +395,9 @@ Trapezoidal::NumericalPointWithDescriptionCollection Trapezoidal::getParametersC
 
 void Trapezoidal::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Trapezoidal(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
+  setWeight(w);
 }
 
 /* Sigma accessor */

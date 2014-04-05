@@ -220,7 +220,9 @@ FisherSnedecor::NumericalPointWithDescriptionCollection FisherSnedecor::getParam
 
 void FisherSnedecor::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = FisherSnedecor(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 /* D1 accessor */
 void FisherSnedecor::setD1(const NumericalScalar d1)

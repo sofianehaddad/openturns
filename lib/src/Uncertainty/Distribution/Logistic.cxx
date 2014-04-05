@@ -312,7 +312,9 @@ Logistic::NumericalPointWithDescriptionCollection Logistic::getParametersCollect
 
 void Logistic::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Logistic(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* Alpha accessor */

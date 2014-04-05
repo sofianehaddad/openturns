@@ -290,7 +290,9 @@ Chi::NumericalPointWithDescriptionCollection Chi::getParametersCollection() cons
 
 void Chi::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Chi(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Method save() stores the object through the StorageManager */

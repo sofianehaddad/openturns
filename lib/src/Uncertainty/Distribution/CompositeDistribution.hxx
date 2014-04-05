@@ -74,6 +74,8 @@ public:
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
+  using DistributionImplementation::setParametersCollection;
+  void setParametersCollection(const NumericalPointCollection & parametersCollection);
 
   /* Interface specific to CompositeDistribution */
 

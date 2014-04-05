@@ -219,7 +219,9 @@ Binomial::NumericalPointWithDescriptionCollection Binomial::getParametersCollect
 
 void Binomial::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Binomial(static_cast<UnsignedInteger>(parametersCollection[0][0]), parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* P accessor */

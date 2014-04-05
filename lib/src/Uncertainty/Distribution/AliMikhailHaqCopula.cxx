@@ -295,7 +295,9 @@ AliMikhailHaqCopula::NumericalPointWithDescriptionCollection AliMikhailHaqCopula
 
 void AliMikhailHaqCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = AliMikhailHaqCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Tell if the distribution has independent copula */

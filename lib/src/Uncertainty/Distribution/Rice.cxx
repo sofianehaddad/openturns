@@ -204,7 +204,9 @@ Rice::NumericalPointWithDescriptionCollection Rice::getParametersCollection() co
 
 void Rice::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Rice(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 

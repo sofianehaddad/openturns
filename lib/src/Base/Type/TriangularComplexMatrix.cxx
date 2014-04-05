@@ -35,8 +35,8 @@ CLASSNAMEINIT(TriangularComplexMatrix);
 
 /* Default constructor */
 TriangularComplexMatrix::TriangularComplexMatrix()
-  : SquareComplexMatrix(0),
-    isTriangularLower_(true)
+  : SquareComplexMatrix(0)
+  , isLowerTriangular_(true)
 {
   // Nothing to do
 }
@@ -45,19 +45,18 @@ TriangularComplexMatrix::TriangularComplexMatrix()
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 TriangularComplexMatrix::TriangularComplexMatrix(const UnsignedInteger dimension,
     Bool isLower)
-  : SquareComplexMatrix(dimension),
-    isTriangularLower_(isLower)
+  : SquareComplexMatrix(dimension)
+  , isLowerTriangular_(isLower)
 {
-
+  // Nothing to do
 }
 
 
 /* Constructor with implementation */
 TriangularComplexMatrix::TriangularComplexMatrix(const Implementation & i,
     Bool isLower)
-
-  : SquareComplexMatrix(i),
-    isTriangularLower_(isLower)
+  : SquareComplexMatrix(i)
+  , isLowerTriangular_(isLower)
 {
   // Nothing to do
 }
@@ -87,7 +86,7 @@ TriangularComplexMatrix TriangularComplexMatrix::transpose () const
 {
   // Quick return for empty or scalar TriangularComplexMatrix
   if (getDimension() <= 1) return (*this);
-  return TriangularComplexMatrix(Implementation(getImplementation()->transpose().clone()), !isTriangularLower_);
+  return TriangularComplexMatrix(Implementation(getImplementation()->transpose().clone()), !isLowerTriangular_);
 }
 
 /* TriangularComplexMatrix conjugate */
@@ -95,7 +94,7 @@ TriangularComplexMatrix TriangularComplexMatrix::conjugate () const
 {
   // Quick return for empty or scalar TriangularComplexMatrix
   if (getDimension() <= 1) return (*this);
-  return TriangularComplexMatrix(Implementation(getImplementation()->conjugate().clone()), isTriangularLower_);
+  return TriangularComplexMatrix(Implementation(getImplementation()->conjugate().clone()), isLowerTriangular_);
 }
 
 /* TriangularComplexMatrix conjugate */
@@ -103,13 +102,13 @@ TriangularComplexMatrix TriangularComplexMatrix::conjugateTranspose () const
 {
   // Quick return for empty or scalar TriangularComplexMatrix
   if (getDimension() <= 1) return (*this);
-  return TriangularComplexMatrix(Implementation(getImplementation()->conjugateTranspose().clone()), !isTriangularLower_);
+  return TriangularComplexMatrix(Implementation(getImplementation()->conjugateTranspose().clone()), !isLowerTriangular_);
 }
 
 /* Check if the matrix is lower or upper */
-Bool TriangularComplexMatrix::isTriangularLower() const
+Bool TriangularComplexMatrix::isLowerTriangular() const
 {
-  return isTriangularLower_;
+  return isLowerTriangular_;
 }
 
 
@@ -119,11 +118,11 @@ Bool TriangularComplexMatrix::isTriangularLower() const
 NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
-  if (isTriangularLower() && (i < j))
+  if (isLowerTriangular() && (i < j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is lower. "
                                          << "The indices are not valid" ;
 
-  if (!isTriangularLower() && (i > j))
+  if (!isLowerTriangular() && (i > j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is upper. "
                                          << "The indices are not valid" ;
 
@@ -167,7 +166,7 @@ SquareComplexMatrix TriangularComplexMatrix::operator- (const TriangularComplexM
 SquareComplexMatrix TriangularComplexMatrix::operator * (const SquareComplexMatrix & m) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L',  uplo ) ).clone());
 }
 
@@ -175,7 +174,7 @@ SquareComplexMatrix TriangularComplexMatrix::operator * (const SquareComplexMatr
 ComplexMatrix TriangularComplexMatrix::operator * (const ComplexMatrix & m) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L',  uplo ) ).clone());
 }
 
@@ -183,7 +182,7 @@ ComplexMatrix TriangularComplexMatrix::operator * (const ComplexMatrix & m) cons
 SquareComplexMatrix TriangularComplexMatrix::operator * (const HermitianMatrix & m) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
 }
 
@@ -191,7 +190,7 @@ SquareComplexMatrix TriangularComplexMatrix::operator * (const HermitianMatrix &
 SquareComplexMatrix TriangularComplexMatrix::operator * (const TriangularComplexMatrix & m) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
 }
 
@@ -199,7 +198,7 @@ SquareComplexMatrix TriangularComplexMatrix::operator * (const TriangularComplex
 SquareComplexMatrix  TriangularComplexMatrix::operator * (const SquareMatrix & m) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
 }
 
@@ -207,7 +206,7 @@ SquareComplexMatrix  TriangularComplexMatrix::operator * (const SquareMatrix & m
 ComplexMatrix  TriangularComplexMatrix::operator * (const Matrix & m) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
 }
 
@@ -215,7 +214,7 @@ ComplexMatrix  TriangularComplexMatrix::operator * (const Matrix & m) const
 SquareComplexMatrix TriangularComplexMatrix::operator * (const SymmetricMatrix & m) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return Implementation((getImplementation()->triangularProd(*(m.getImplementation()), 'L', uplo ) ).clone());
 }
 
@@ -229,7 +228,7 @@ TriangularComplexMatrix TriangularComplexMatrix::operator * (const IdentityMatri
 TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const NumericalComplexCollection & pt) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
@@ -237,7 +236,7 @@ TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::ope
 TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const NumericalScalarCollection & pt) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
@@ -245,20 +244,20 @@ TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::ope
 TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const NumericalPoint & pt) const
 {
   char uplo('L');
-  if (!isTriangularLower()) uplo = 'R';
+  if (!isLowerTriangular()) uplo = 'R';
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
 /* Multiplication with a NumericalComplex */
 TriangularComplexMatrix TriangularComplexMatrix::operator* (const NumericalComplex s) const
 {
-  return TriangularComplexMatrix(Implementation((*getImplementation() * s ).clone()), isTriangularLower_);
+  return TriangularComplexMatrix(Implementation((*getImplementation() * s ).clone()), isLowerTriangular_);
 }
 
 /* Division by a NumericalComplex*/
 TriangularComplexMatrix TriangularComplexMatrix::operator / (const NumericalComplex s) const
 {
-  return TriangularComplexMatrix(Implementation((*getImplementation() / s ).clone()), isTriangularLower_);
+  return TriangularComplexMatrix(Implementation((*getImplementation() / s ).clone()), isLowerTriangular_);
 }
 
 END_NAMESPACE_OPENTURNS

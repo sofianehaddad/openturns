@@ -29,8 +29,8 @@ CLASSNAMEINIT(SymmetricMatrix);
 
 /* Default constructor */
 SymmetricMatrix::SymmetricMatrix()
-  : SquareMatrix(0),
-    hasBeenSymmetrized_(false)
+  : SquareMatrix(0)
+  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
@@ -38,8 +38,8 @@ SymmetricMatrix::SymmetricMatrix()
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)
-  : SquareMatrix(dim),
-    hasBeenSymmetrized_(false)
+  : SquareMatrix(dim)
+  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
@@ -50,8 +50,8 @@ SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)
 /* or the rest of the matrix is filled with zeros */
 SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim,
                                  const Collection<NumericalScalar> & elementsValues)
-  : SquareMatrix(dim, elementsValues),
-    hasBeenSymmetrized_(false)
+  : SquareMatrix(dim, elementsValues)
+  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
@@ -59,14 +59,14 @@ SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim,
 
 /* Constructor with implementation */
 SymmetricMatrix::SymmetricMatrix(const Implementation & i)
-  : SquareMatrix(i) ,
-    hasBeenSymmetrized_(false)
+  : SquareMatrix(i)
+  , hasBeenSymmetrized_(false)
 {
   // Nothing to do
 }
 
 
-/* Check if the internal representation is really symmetric */
+/* Check if the internal representation is actually symmetric */
 void SymmetricMatrix::checkSymmetry() const
 {
   if (!hasBeenSymmetrized_)

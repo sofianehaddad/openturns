@@ -231,7 +231,9 @@ Bernoulli::NumericalPointWithDescriptionCollection Bernoulli::getParametersColle
 
 void Bernoulli::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Bernoulli(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* P accessor */

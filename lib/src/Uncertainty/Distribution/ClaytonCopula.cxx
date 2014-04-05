@@ -334,7 +334,9 @@ ClaytonCopula::NumericalPointWithDescriptionCollection ClaytonCopula::getParamet
 
 void ClaytonCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = ClaytonCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Theta accessor */

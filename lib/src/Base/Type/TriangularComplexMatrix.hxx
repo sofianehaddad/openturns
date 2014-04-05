@@ -83,7 +83,7 @@ public:
   TriangularComplexMatrix conjugateTranspose () const;
 
   /** Check if the matrix is lower or upper */
-  Bool isTriangularLower() const;
+  Bool isLowerTriangular() const;
 
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
@@ -152,7 +152,7 @@ public:
 private:
 
   /** Boolean information : is the matrix triangular lower or upper? */
-  mutable Bool isTriangularLower_;
+  mutable Bool isLowerTriangular_;
 
 }; /* class TriangularComplexMatrix */
 

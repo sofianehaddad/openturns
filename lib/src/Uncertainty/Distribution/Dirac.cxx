@@ -250,6 +250,7 @@ Dirac::NumericalPointWithDescriptionCollection Dirac::getParametersCollection() 
 
 void Dirac::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   const UnsignedInteger dimension(parametersCollection.getSize());
   NumericalPoint point(dimension);
   // The ith component of the point is supposed to be the first component of the point
@@ -257,6 +258,7 @@ void Dirac::setParametersCollection(const NumericalPointCollection & parametersC
   for (UnsignedInteger i = 0; i < dimension; ++i)
     point[i] = parametersCollection[i][0];
   *this = Dirac(point);
+  setWeight(w);
 }
 
 /* Point accessor */

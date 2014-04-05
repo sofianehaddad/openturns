@@ -620,6 +620,7 @@ Student::NumericalPointWithDescriptionCollection Student::getParametersCollectio
 
 void Student::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   const UnsignedInteger size(parametersCollection.getSize());
   const UnsignedInteger dimension(size > 1 ? size - 1 : size);
   if (dimension == 1) *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
@@ -645,6 +646,7 @@ void Student::setParametersCollection(const NumericalPointCollection & parameter
     }
     *this = Student(nu, mean, sigma, R);
   }
+  setWeight(w);
 }
 
 

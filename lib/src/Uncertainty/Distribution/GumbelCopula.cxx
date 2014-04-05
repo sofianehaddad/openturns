@@ -318,7 +318,9 @@ GumbelCopula::NumericalPointWithDescriptionCollection GumbelCopula::getParameter
 
 void GumbelCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = GumbelCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Compute the archimedean generator of the archimedean copula, i.e.

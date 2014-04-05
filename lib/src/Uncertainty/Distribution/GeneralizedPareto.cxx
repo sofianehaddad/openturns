@@ -292,7 +292,9 @@ GeneralizedPareto::NumericalPointWithDescriptionCollection GeneralizedPareto::ge
 
 void GeneralizedPareto::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = GeneralizedPareto(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* Sigma accessor */

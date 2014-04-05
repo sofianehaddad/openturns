@@ -193,7 +193,7 @@ SquareComplexMatrix HermitianMatrix::operator * (const HermitianMatrix & m) cons
 SquareComplexMatrix HermitianMatrix::operator * (const TriangularComplexMatrix & m) const
 {
   char uplo('L');
-  if (!m.isTriangularLower()) uplo = 'R';
+  if (!m.isLowerTriangular()) uplo = 'R';
   return Implementation((m.getImplementation()->triangularProd(*(this->getImplementation()), 'R',  uplo ) ).clone());
 }
 

@@ -216,7 +216,9 @@ NegativeBinomial::NumericalPointWithDescriptionCollection NegativeBinomial::getP
 
 void NegativeBinomial::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = NegativeBinomial(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* P accessor */

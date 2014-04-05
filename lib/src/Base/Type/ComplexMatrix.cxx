@@ -243,7 +243,7 @@ ComplexMatrix ComplexMatrix::operator* (const HermitianMatrix & m) const
 ComplexMatrix ComplexMatrix::operator* (const TriangularComplexMatrix & m) const
 {
   char uplo('L');
-  if (!m.isTriangularLower()) uplo = 'R';
+  if (!m.isLowerTriangular()) uplo = 'R';
   return Implementation(m.getImplementation()->triangularProd(*(getImplementation()), 'R', uplo).clone());
 }
 

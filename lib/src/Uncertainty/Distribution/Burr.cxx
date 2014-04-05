@@ -247,7 +247,9 @@ Burr::NumericalPointWithDescriptionCollection Burr::getParametersCollection() co
 
 void Burr::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Burr(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* C accessor */

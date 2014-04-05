@@ -350,7 +350,9 @@ TruncatedNormal::NumericalPointWithDescriptionCollection TruncatedNormal::getPar
 
 void TruncatedNormal::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = TruncatedNormal(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
+  setWeight(w);
 }
 
 

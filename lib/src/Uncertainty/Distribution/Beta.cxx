@@ -316,7 +316,9 @@ Beta::NumericalPointWithDescriptionCollection Beta::getParametersCollection() co
 
 void Beta::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Beta(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
+  setWeight(w);
 }
 
 /* Check if the distribution is elliptical */

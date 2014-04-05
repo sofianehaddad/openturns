@@ -274,7 +274,9 @@ Rayleigh::NumericalPointWithDescriptionCollection Rayleigh::getParametersCollect
 
 void Rayleigh::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Rayleigh(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 

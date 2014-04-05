@@ -258,7 +258,9 @@ InverseNormal::NumericalPointWithDescriptionCollection InverseNormal::getParamet
 
 void InverseNormal::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = InverseNormal(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* Method save() stores the object through the StorageManager */

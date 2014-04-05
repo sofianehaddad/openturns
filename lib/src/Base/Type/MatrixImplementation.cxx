@@ -381,7 +381,6 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   NumericalScalar alpha(1.0);
 
   // Lapack routine
-  std::cerr << "side=" << side << ", uplo=" << uplo << ", trans=" << trans << ", diag=" << diag << ", m=" << m << ", n=" << n << ", alpha=" << alpha << std::endl;
   DTRMM_F77(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
   return mult;
 }
@@ -511,6 +510,24 @@ void MatrixImplementation::symmetrize() const
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < j; ++i)
       refThis->operator[](convertPosition(i, j)) = operator[](convertPosition(j, i));
+}
+
+/* Fill the relevant triangle with zero */
+void MatrixImplementation::triangularize(const Bool isLowerTriangular) const
+{
+  MatrixImplementation *refThis(const_cast<MatrixImplementation *>(this));
+  if (isLowerTriangular)
+    {
+      for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+	for (UnsignedInteger i = 0; i < j; ++i)
+	  refThis->operator[](convertPosition(i, j)) = 0.0;
+    }
+  else
+    {
+      for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+	for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
+	  refThis->operator[](convertPosition(i, j)) = 0.0;
+    }
 }
 
 /* Check if the matrix values belong to (-1;1) */
