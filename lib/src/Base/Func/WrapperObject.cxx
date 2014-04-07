@@ -884,7 +884,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
   BIND_METHODS;
 
   // fill in the array with the pointer of the functions
-  METHODS methodsToBind[ nbMethods ];
+  METHODS * methodsToBind = new METHODS[nbMethods];
   METHODS * ptr = methodsToBind;
 #undef BIND_ACTION
 #define BIND_ACTION(rtype, name, args) *ptr++ = reinterpret_cast<METHODS>( wrapper_ ## name );
@@ -895,6 +895,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
   assert( bindMethodsSymbol_ != 0 );
   enum WrapperErrorCode returnCode = (* bindMethodsSymbol_)( methodsToBind );
   if (returnCode != WRAPPER_OK) throw DynamicLibraryException(HERE) << "Method binding error. Report bug.";
+  delete [] methodsToBind;
 }
 
 /* Destructor */

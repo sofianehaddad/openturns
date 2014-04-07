@@ -2032,9 +2032,10 @@ int retrieveVariables(char * buf,
         if ( origFormat.size() == 0 )
         {
           size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
-          char NNN[width + 2];
+          char * NNN = new char[width + 2];
           snprintf( NNN, width + 2, "\\%0*u", static_cast<int>(width), 1 );
           origFormat = NNN;
+          delete [] NNN;
           //LOGTRACE(OSS() << "origFormat='" << origFormat << "'");
         }
 

@@ -105,9 +105,9 @@ int Os::ExecuteCommand(const String & command)
 
     // Create the process
     DWORD dwProcessFlags = 0;
-    char cmd[command.size() + 1];
-    strcpy(&cmd[0], command.c_str());
-    const Bool processOk = CreateProcess(NULL, &cmd[0], NULL, NULL, TRUE, dwProcessFlags, NULL, NULL, &si, &pi);
+    char * cmd = strdup(command.c_str());
+    const Bool processOk = CreateProcess(NULL, cmd, NULL, NULL, TRUE, dwProcessFlags, NULL, NULL, &si, &pi);
+    free(cmd);
     if ( processOk )
     {
       // Wait for the external application to finish
