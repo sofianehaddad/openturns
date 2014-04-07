@@ -64,6 +64,9 @@ public:
   /** Comparison operator */
   Bool operator == (const RegularGrid & rhs) const;
 
+  /** Comparison operator */
+  Bool operator != (const RegularGrid & rhs) const;
+
   /** Start accessor */
   NumericalScalar getStart() const;
 

@@ -68,6 +68,12 @@ Bool Distribution::operator ==(const Distribution & other) const
   return (this == &other);
 }
 
+/* Comparison operator */
+Bool Distribution::operator !=(const Distribution & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String Distribution::__repr__() const
 {

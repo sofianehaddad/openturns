@@ -180,6 +180,15 @@ Bool operator == (const PersistentCollection<T> & lhs,
 }
 
 
+/** Comparison operator */
+template <class T> inline
+Bool operator != (const PersistentCollection<T> & lhs,
+                  const PersistentCollection<T> & rhs)
+{
+  return !(lhs == rhs);
+}
+
+
 /** Ordering operator */
 template <class T> inline
 Bool operator < (const PersistentCollection<T> & lhs,

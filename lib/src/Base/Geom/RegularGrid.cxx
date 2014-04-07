@@ -96,6 +96,11 @@ Bool RegularGrid::operator == (const RegularGrid & rhs) const
   return (lhs.start_ == rhs.start_) && (lhs.step_ == rhs.step_) && (lhs.n_ == rhs.n_);
 }
 
+Bool RegularGrid::operator != (const RegularGrid & rhs) const
+{
+  return !operator==(rhs);
+}
+
 NumericalScalar RegularGrid::getStart() const
 {
   return start_;

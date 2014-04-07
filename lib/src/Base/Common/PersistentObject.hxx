@@ -118,6 +118,17 @@ public:
   }
 
   /**
+   * Comparison operator
+   *
+   * This method compares objects based on their content.
+   */
+  inline virtual
+  Bool operator !=(const PersistentObject & other) const
+  {
+    return !operator==(other);
+  }
+
+  /**
    * Identity comparator
    *
    * This method compares objects based on their Id.

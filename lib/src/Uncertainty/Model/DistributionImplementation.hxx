@@ -68,6 +68,9 @@ public:
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;
 
+  /** Comparison operator */
+  Bool operator !=(const DistributionImplementation & other) const;
+
   /** String converter */
   virtual String __repr__() const;
   String __str__(const String & offset = "") const;

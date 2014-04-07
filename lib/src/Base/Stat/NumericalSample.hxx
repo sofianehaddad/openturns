@@ -102,6 +102,9 @@ public:
   /** Comparison operator */
   Bool operator ==(const NumericalSample & other) const;
 
+  /** Comparison operator */
+  Bool operator !=(const NumericalSample & other) const;
+
 #ifndef SWIG
   NSI_point operator [] (const UnsignedInteger index);
   NSI_const_point operator [] (const UnsignedInteger index) const;

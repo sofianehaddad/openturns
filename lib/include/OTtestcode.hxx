@@ -234,7 +234,7 @@ OT::Bool areSameObjects(const T & firstObject,
  * @fn areDifferentObjects(const T & firstObject, const T & secondObject)
  *
  * Try to compare two objects supposed to be different.
- * This method tests the operator == of the object.
+ * This method tests the operator != of the object.
  */
 template <class T>
 OT::Bool areDifferentObjects(const T & firstObject,

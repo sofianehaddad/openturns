@@ -111,6 +111,12 @@ Bool DistributionImplementation::operator ==(const DistributionImplementation & 
   return (dimension_ == other.dimension_) && (weight_ == other.weight_) && (range_ == other.range_);
 }
 
+/* Comparison operator */
+Bool DistributionImplementation::operator !=(const DistributionImplementation & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String DistributionImplementation::__repr__() const
 {

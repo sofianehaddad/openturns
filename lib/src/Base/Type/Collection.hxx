@@ -55,6 +55,15 @@ Bool operator == (const Collection<T> & lhs,
 }
 
 
+/** Comparison operator (friend) */
+template <class T> inline
+Bool operator != (const Collection<T> & lhs,
+                  const Collection<T> & rhs)
+{
+  return !(lhs == rhs);
+}
+
+
 /** Ordering operator (friend) */
 template <class T> inline
 Bool operator < (const Collection<T> & lhs,
@@ -378,6 +387,11 @@ public:
   /* Friend operator */
   template <class U> friend inline
   Bool operator == (const Collection<U> & lhs,
+                    const Collection<U> & rhs);
+
+  /* Friend operator */
+  template <class U> friend inline
+  Bool operator != (const Collection<U> & lhs,
                     const Collection<U> & rhs);
 
   /* Friend operator */
