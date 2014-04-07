@@ -53,7 +53,7 @@ Normal::Normal(const UnsignedInteger dimension)
                            , CorrelationMatrix(dimension),
                            1.0,
                            "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, dimension)))
+  , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(dimension))))
   , hasIndependentCopula_(true)
 {
   // Compute the range, the upper class cannot do it.
@@ -84,7 +84,7 @@ Normal::Normal(const NumericalPoint & mean,
                            , R
                            , 1.0
                            , "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, mean.getDimension())))
+  , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
   , hasIndependentCopula_(false)
 {
   // Compute the range, the upper class cannot do it.
@@ -99,7 +99,7 @@ Normal::Normal(const NumericalPoint & mean,
                            , IdentityMatrix(mean.getDimension())
                            , 1.0
                            , "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, mean.getDimension())))
+  , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
   , hasIndependentCopula_(false)
 {
   UnsignedInteger dimension(mean.getDimension());

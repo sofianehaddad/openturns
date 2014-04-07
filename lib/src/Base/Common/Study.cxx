@@ -92,7 +92,7 @@ String Study::__str__(const String & offset) const
   for(Map::const_iterator it = map_.begin(); it != map_.end(); ++it, separator = "\n  ")
   {
     oss << separator << (*it).first << " => " << ((*it).second)->getClassName() << "\n"
-        << ((*it).second)->__str__( String( 7 + int( ((*it).first != 0 ? log10((*it).first) : 1) ), ' ') );
+        << ((*it).second)->__str__( String( 7 + int( ((*it).first != 0 ? log10(static_cast<double>((*it).first)) : 1) ), ' ') );
   }
   oss << "\n";
   separator = "  ";

@@ -67,7 +67,7 @@ NumericalSample Composite::generate()
   /* Dimension of the realizations */
   const UnsignedInteger dimension(center_.getDimension());
   /* Hypercube number of vertices */
-  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2, dimension)));
+  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2.0, static_cast<int>(dimension))));
   /* Number of levels to be generated */
   const UnsignedInteger levelNumber(levels_.getDimension());
   /* Size of the sample to be generated: 1 + number of levels x (2 x dimension + 2^dimension) */

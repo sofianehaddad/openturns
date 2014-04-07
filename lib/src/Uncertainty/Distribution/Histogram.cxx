@@ -285,7 +285,7 @@ NumericalPoint Histogram::getStandardMoment(const UnsignedInteger n) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x(xPrec + collection_[i].getWidth() * factor);
-    value += (pow(x, n + 1) - pow(xPrec, n + 1)) * collection_[i].getHeight();
+    value += (pow(x, static_cast<int>(n + 1)) - pow(xPrec, static_cast<int>(n + 1))) * collection_[i].getHeight();
     xPrec = x;
   }
   value /= (n + 1) * factor;

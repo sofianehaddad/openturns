@@ -61,7 +61,7 @@ void HaselgroveSequence::initialize(const UnsignedInteger dimension)
   dimension_ = dimension;
   const Unsigned64BitsIntegerCollection directions(ComputeFirstPrimeNumbers(dimension));
   base_ = NumericalPoint(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) base_[i] = sqrt(directions[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) base_[i] = sqrt(1.0 * directions[i]);
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaselgroveSequence-InitialSeed" );
 }
 

@@ -346,8 +346,8 @@ NumericalPoint Trapezoidal::getStandardMoment(const UnsignedInteger n) const
   const NumericalScalar beta(1.0 - 2.0 * (d_ - b_) / (d_ - a_));
   const NumericalScalar gamma(1.0 - 2.0 * (d_ - c_) / (d_ - a_));
   const NumericalScalar eta(2.0 / (2.0 - beta + gamma));
-  const NumericalScalar betaPow(pow(beta, n + 1));
-  const NumericalScalar gammaPow(pow(gamma, n + 1));
+  const NumericalScalar betaPow(pow(beta, n + 1.0));
+  const NumericalScalar gammaPow(pow(gamma, n + 1.0));
   NumericalScalar value(eta * (gammaPow - betaPow) / (n + 1));
   if (beta > -1.0)
   {

@@ -279,7 +279,7 @@ NumericalScalar SpecFunc::Debye(const NumericalScalar x,
   if (x < 0.0) return 0.0;
   // The threshold is such that the overall error is less than 1.0e-16
   if (x < 1.0e-8) return 1.0 - n * x / (2.0 * (n + 1.0));
-  return debyen(x, static_cast<int>(n)) * n / pow(x, n);
+  return debyen(x, static_cast<int>(n)) * n / pow(x, static_cast<int>(n));
 }
 
 // DiLog function: DiLog(x) = -\int_0^x \log(1-t)/t dt

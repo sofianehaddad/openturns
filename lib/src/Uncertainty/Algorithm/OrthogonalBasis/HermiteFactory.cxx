@@ -62,7 +62,7 @@ HermiteFactory::Coefficients HermiteFactory::getRecurrenceCoefficients(const Uns
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  recurrenceCoefficients[0] = 1.0 / sqrt(n + 1);
+  recurrenceCoefficients[0] = 1.0 / sqrt(n + 1.0);
   recurrenceCoefficients[1] = 0.0;
   recurrenceCoefficients[2] = -sqrt(1.0 - 1.0 / (n + 1));
   return recurrenceCoefficients;

@@ -295,7 +295,7 @@ struct WrapperSymbols : public Object
         p_error_(p_error),
         count_(count),
         size_(inSample ? inSample->size_ : 0),
-        width_( size_ != 0 ? ceil( log10( size_ ) ) : 1 ),
+        width_( size_ != 0 ? ceil( log10( 1.0 * size_ ) ) : 1 ),
         modulo_( size_ > 1000 ? size_ / 1000 : size_ )
     {}
 
@@ -479,7 +479,7 @@ struct WrapperSymbols : public Object
 
 
       double ratio = 100.0 * args->count / args->size;
-      int width = static_cast<int>( (args->size != 0 ? ceil( log10( args->size ) ) : 1) );
+      int width = static_cast<int>( (args->size != 0 ? ceil( log10( 1.0 * args->size ) ) : 1) );
       LOGINFO( OSS() << "Progression : "
                << std::setw(7) << ratio << "% ( "
                << std::setw(width) << args->count << " / "

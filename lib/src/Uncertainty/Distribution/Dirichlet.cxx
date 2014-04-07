@@ -205,7 +205,7 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
     NumericalScalar value(0.0);
     NumericalScalar logFactor(normalizationFactor_);
     for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * log(point[i]) - log(theta_[i]);
-    const UnsignedInteger size(static_cast<UnsignedInteger>(round(pow(N, dimension))));
+    const UnsignedInteger size(static_cast<UnsignedInteger>(round(pow(static_cast<double>(N), static_cast<int>(dimension)))));
     // Loop over the integration nodes
     for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
     {

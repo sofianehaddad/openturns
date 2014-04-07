@@ -360,7 +360,7 @@ void StrongMaximumTest::initializeParametersGivenPointNumber()
   if((p >= 1.0) or (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
 
   /* evaluate and affect the confidenceLevel */
-  setConfidenceLevel(1.0 - pow(1.0 - p, pointNumber_));
+  setConfidenceLevel(1.0 - pow(1.0 - p, static_cast<int>(pointNumber_)));
 
   /* evaluate and affect the designPointVicinity_ */
   setDesignPointVicinity(1.0 / (1.0 + accuracyLevel_ * deltaEpsilon_));

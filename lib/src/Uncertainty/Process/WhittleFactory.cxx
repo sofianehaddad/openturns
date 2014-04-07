@@ -430,7 +430,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(NumericalPoint & informationCriteria)
       // Second, the AIC
       currentInformationCriteria[1] = -2.0 * logLikelihood + 2.0 * (n + 1);
       // Third, the BIC
-      currentInformationCriteria[2] = -2.0 * logLikelihood + 2.0 * (n + 1) * log(m_);
+      currentInformationCriteria[2] = -2.0 * logLikelihood + 2.0 * (n + 1) * log(1.0 * m_);
       if (verbose_) LOGINFO(OSS(false) << "Current estimate: theta=" << theta << ", sigma2=" << sigma2_ << ", Current information criteria=" << currentInformationCriteria);
       if (isHistoryEnabled_) history_.add(WhittleFactoryState(currentP_, theta, sigma2_, currentInformationCriteria, timeGrid_));
       // Keep the best model according to the first criteria
