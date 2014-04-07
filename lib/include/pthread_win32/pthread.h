@@ -22,6 +22,9 @@
 #ifndef __STARPU_PTHREAD_H__
 #define __STARPU_PTHREAD_H__
 
+/* pthread_mutex_init does not support PTHREAD_MUTEX_ERRORCHECK */
+#define OT_MUTEXINIT_NOCHECK 1
+
 /* TODO:
  * pthread_rwlock_*
  * pthread_spinlock_*

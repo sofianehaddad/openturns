@@ -100,6 +100,7 @@ FileSystemMutex_init::FileSystemMutex_init()
 
 void FileSystemMutex_init::Initialization()
 {
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
@@ -111,6 +112,9 @@ void FileSystemMutex_init::Initialization()
     perror("FileSystemMutex_init::Initialization mutex initialization failed");
     exit(1);
   }
+#else
+  pthread_mutex_init( &FileSystemMutex, NULL );
+#endif
 }
 
 
@@ -429,12 +433,16 @@ void initMutex(const struct WrapperExchangedData * p_exchangedData)
   ptr->p_lock_ = new pthread_mutex_t;
   assert(ptr->p_lock_);
 
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
   pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
   pthread_mutex_init( const_cast<pthread_mutex_t *>(ptr->p_lock_), &attr );
   pthread_mutexattr_destroy( &attr );
+#else
+  pthread_mutex_init( const_cast<pthread_mutex_t *>(ptr->p_lock_), NULL );
+#endif
 }
 
 

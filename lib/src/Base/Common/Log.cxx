@@ -172,7 +172,7 @@ Log & Log::GetInstance()
 
 void Log::Initialization()
 {
-#ifndef WIN32
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
@@ -184,6 +184,8 @@ void Log::Initialization()
     perror("Log::Initialization mutex initialization failed");
     exit(1);
   }
+#else
+  pthread_mutex_init( &Log_InstanceMutex_, NULL );
 #endif
   Log_P_instance_ = 0;
 }
