@@ -1943,7 +1943,7 @@ void NumericalSampleImplementation::exportToCSVFile(const FileName & filename,
     {
       String label(description[i]);
       Bool isBlank(true);
-      for (UnsignedInteger j = 0; j < label.size(); ++j) isBlank = isBlank && isblank(label[j]);
+      for (UnsignedInteger j = 0; isBlank && j < label.size(); ++j) isBlank = (label[j] == ' ') || (label[j] == '\t');
       if (isBlank) csvFile << separator << "\"NoDescription\"";
       else csvFile << separator << "\"" << description[i] << "\"";
     }
