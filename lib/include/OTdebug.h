@@ -70,6 +70,7 @@
 
 # else /* not __GNUC_ */
 
+#  define REINTERPRET_CAST(T,V) ( reinterpret_cast< T > (V) )
 #  define GCC_VERSION 0
 #  define DEPRECATED
 #  define UNUSED

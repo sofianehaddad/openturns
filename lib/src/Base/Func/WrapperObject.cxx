@@ -38,7 +38,7 @@
 #include "WrapperMacros.h"
 #include "TBB.hxx"
 #include "FieldImplementation.hxx"
-#ifdef WIN32
+#ifdef __MINGW32__
 #include <sys/time.h> // gettimeofday
 #endif
 #include "AtomicFunctions.hxx"
@@ -375,6 +375,18 @@ struct WrapperSymbols : public Object
     return WRAPPER_OK;
   }
 
+#elif defined(_MSC_VER) /* HAVE_TBB */
+#pragma message ( "WARNING: WrapperObject.cxx has currently been ported on Windows MSVC only with TBB enabled" )
+
+  enum WrapperErrorCode defaultWrapperExecSampleFunction_PTHREAD(void * p_state,
+      const struct sample * inSample,
+      struct sample * outSample,
+      const struct WrapperExchangedData * p_exchangedData,
+      void * p_error) const
+  {
+    LOGINFO( OSS() << "Build OpenTURNS with TBB to use wrappers on Windows" );
+    return WRAPPER_NOT_IMPLEMENTED;
+  }
 #else /* HAVE_TBB */
 
   struct AdapterArguments
@@ -506,10 +518,7 @@ struct WrapperSymbols : public Object
       const long T = ResourceMap::GetAsUnsignedInteger("computation-progression-update-interval");
       for (long i = 0; i < T; ++i)
       {
-#ifndef WIN32
-        pthread_testcancel();
-        sleep(1);
-#else
+#ifdef __MINGW32__
         struct timeval  tp;
         gettimeofday( &tp, NULL );
         struct timespec ts;
@@ -521,6 +530,9 @@ struct WrapperSymbols : public Object
         if (args->cancel == 0)
           pthread_cond_timedwait( &(args->cancelCond), &cancelMutex, &ts );
         pthread_mutex_unlock( &cancelMutex );
+#else
+        pthread_testcancel();
+        sleep(1);
 #endif
       }
     } /* end while */

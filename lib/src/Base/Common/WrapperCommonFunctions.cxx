@@ -48,6 +48,50 @@
 #include "Exception.hxx"
 #include "TTY.hxx"
 
+
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+#include <io.h>
+
+
+typedef SSIZE_T ssize_t;
+# define open  _open
+# define close _close
+# define creat _creat
+# define read  _read
+# define write _write
+# define S_ISDIR(mode)	(((mode) & S_IFDIR) != 0)
+
+# define va_copy(d,s) ((d) = (s))
+# define snprintf c99_snprintf
+
+static inline int c99_vsnprintf(char* str, size_t size, const char* format, va_list ap)
+{
+    int count = -1;
+
+    if (size != 0)
+        count = _vsnprintf_s(str, size, _TRUNCATE, format, ap);
+    if (count == -1)
+        count = _vscprintf(format, ap);
+
+    return count;
+}
+
+static inline int c99_snprintf(char* str, size_t size, const char* format, ...)
+{
+    int count;
+    va_list ap;
+
+    va_start(ap, format);
+    count = c99_vsnprintf(str, size, format, ap);
+    va_end(ap);
+
+    return count;
+}
+
+#endif /* _MSC_VER */
+
+
 #define SHELL_NAME "sh"
 #define SHELL_PATH "/bin/sh"
 

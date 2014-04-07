@@ -31,7 +31,16 @@
 #define _DARWIN_C_SOURCE
 #endif
 
+#ifdef _MSC_VER
+# include <direct.h>
+# define mkdir(p)  _mkdir(p)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
+#ifndef _MSC_VER
 #include <sys/time.h>  // for select(2)
+#endif
 #include <sys/types.h> // for select(2)
 #include <sys/stat.h>
 #include <ctype.h>
@@ -39,7 +48,9 @@
 #include <malloc.h>
 #endif
 #include <unistd.h>    // for select(2)
+#ifndef WIN32
 #include <libgen.h>    // for dirname(3)
+#endif
 #include <cstring>
 #include <fcntl.h>
 #include <cerrno>
@@ -1079,6 +1090,21 @@ extern void wrapper_deleteTemporaryDirectory(char * tempDir,
  */
 extern char * wrapper_getCurrentWorkingDirectory(void * p_error)
 {
+#ifdef _MSC_VER
+  DWORD dwSize = MAX_PATH;
+  char * path = (char*) calloc(dwSize, sizeof(char));
+  if (path == NULL)
+  {
+    wrapper_setError( p_error, "(wrapper_getCurrentWorkingDirectory) Can't build directory name" );
+    return NULL;
+  }
+  if ( GetCurrentDirectory(dwSize, path) > 0 )
+    return path;
+
+  delete path;
+  wrapper_setError( p_error, "(getCurrentWorkingDirectory) Can NOT get current working directory" );
+  return NULL;
+#else
   long size = BUFFER_LENGTH;
   char * path = NULL;
   char * buf = NULL;
@@ -1108,6 +1134,7 @@ extern char * wrapper_getCurrentWorkingDirectory(void * p_error)
   }
 
   return path;
+#endif
 }
 
 
@@ -1842,19 +1869,14 @@ extern long wrapper_runInsulatedCommand(const char * temporaryDir,
   rc = 0;
   retries = wrapper_getRunCommandRetries( p_exchangedData );
   {
-    const long MICROSECONDS = 1000 * 1000;
     long waitfor = ResourceMap::GetAsUnsignedInteger("slow-filesystem-error-recovery");
+#ifndef WIN32
+    const long MICROSECONDS = 1000 * 1000;
     struct timeval tv;
     tv.tv_sec  = waitfor / MICROSECONDS;
     tv.tv_usec = waitfor % MICROSECONDS;
-#ifndef WIN32
     while ( (retries-- > 0) && ((rc = runCommand( cmd2, temporaryDir, p_exchangedData, p_point, p_error)) == 33) )
     {
-#else /* WIN32 */
-    while ( (retries-- > 0) && ((rc = system( cmd2 )) != 0) )
-    {
-      rc = rc & 0xff; // WEXITSTATUS(rc)
-#endif /* WIN32 */
       if (Log::HasWrapper())
       {
         char * msg = newFormattedString( "Command %s failed to execute (execve failure). Try #%d out of %d",
@@ -1870,6 +1892,24 @@ extern long wrapper_runInsulatedCommand(const char * temporaryDir,
       tv.tv_sec  = waitfor / MICROSECONDS;
       tv.tv_usec = waitfor % MICROSECONDS;
     }
+#else /* WIN32 */
+    while ( (retries-- > 0) && ((rc = system( cmd2 )) != 0) )
+    {
+      rc = rc & 0xff; // WEXITSTATUS(rc)
+      if (Log::HasWrapper())
+      {
+        char * msg = newFormattedString( "Command %s failed to execute (execve failure). Try #%d out of %d",
+                                         cmd2,
+                                         wrapper_getRunCommandRetries( p_exchangedData ) - retries,
+                                         wrapper_getRunCommandRetries( p_exchangedData ) );
+        printToLogWrapper( "(runInsulatedCommand) %s", msg );
+        free( msg );
+      }
+      // Wait for 1s to ensure that the filesystem has been updated.
+      Sleep(waitfor * 1000);
+      waitfor *= 2;
+    }
+#endif /* WIN32 */
   }
 
   if (rc != 0)
