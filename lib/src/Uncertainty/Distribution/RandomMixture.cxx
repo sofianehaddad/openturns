@@ -40,8 +40,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalComplex>);
-static Factory<PersistentCollection<NumericalComplex> > RegisteredFactory2("PersistentCollection<NumericalComplex>");
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Distribution>);
 static Factory<PersistentCollection<Distribution> > RegisteredFactory3("PersistentCollection<Distribution>");
 

@@ -35,6 +35,9 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(StationaryCovarianceModelFactory);
 static Factory<StationaryCovarianceModelFactory> RegisteredFactory("StationaryCovarianceModelFactory");
 
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalComplex>);
+static Factory<PersistentCollection<NumericalComplex> > RegisteredFactory2("PersistentCollection<NumericalComplex>");
+
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 
 /* Default constructor */

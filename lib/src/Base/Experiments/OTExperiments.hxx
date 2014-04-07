@@ -34,7 +34,6 @@
 #include "Experiment.hxx"
 #include "ExperimentImplementation.hxx"
 #include "Factorial.hxx"
-#include "FixedExperiment.hxx"
 #include "KPermutations.hxx"
 #include "StratifiedExperiment.hxx"
 #include "Tuples.hxx"
