@@ -32,6 +32,10 @@
 #include <cstdlib>        // for exit codes
 #include <cstring>        // for strcmp
 
+#ifdef _MSC_VER
+# include <cstdio>         // for _set_output_format
+#endif
+
 #include "RandomGenerator.hxx"
 #include "OStream.hxx"
 #include "NumericalSample.hxx"
@@ -101,6 +105,12 @@ void parseOptions(int argc, char *argv[])
       exit(ExitCode::Success);
     }
   } /* end for */
+
+#ifdef _MSC_VER
+  // Windows displays scientific notation with 3 digits in the exponent.
+  // We force 2 digits to avoid test failures.
+  _set_output_format(_TWO_DIGIT_EXPONENT);
+#endif
 }
 
 
