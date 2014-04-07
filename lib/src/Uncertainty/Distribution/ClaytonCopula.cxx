@@ -25,6 +25,7 @@
 #include "ClaytonCopula.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 #include "Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

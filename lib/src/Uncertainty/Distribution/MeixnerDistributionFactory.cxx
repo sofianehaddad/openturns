@@ -22,6 +22,7 @@
  *  @date   2012-07-16 10:12:54 +0200 (Mon, 16 Jul 2012)
  */
 #include "MeixnerDistributionFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

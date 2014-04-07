@@ -26,6 +26,7 @@
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

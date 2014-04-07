@@ -33,6 +33,7 @@
 #include "Description.hxx"
 #include "ResourceMap.hxx"
 #include "UserDefined.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

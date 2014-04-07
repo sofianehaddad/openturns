@@ -25,6 +25,7 @@
 #include <cmath>
 #include "UserDefined.hxx"
 #include "RandomGenerator.hxx"
+#include "SpecFunc.hxx"
 #include "PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

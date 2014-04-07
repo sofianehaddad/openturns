@@ -36,6 +36,7 @@
 #include "Exception.hxx"
 #include "Description.hxx"
 #include "DistFunc.hxx"
+#include "SpecFunc.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "TBB.hxx"
 

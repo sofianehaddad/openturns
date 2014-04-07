@@ -27,6 +27,7 @@
 #include "Exception.hxx"
 #include "NumericalSample.hxx"
 #include "DistFunc.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

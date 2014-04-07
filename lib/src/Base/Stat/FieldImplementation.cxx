@@ -38,6 +38,7 @@
 #include "Os.hxx"
 #include "TBB.hxx"
 #include "PlatformInfo.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -26,6 +26,7 @@
 #include "Box.hxx"
 #include "Indices.hxx"
 #include "Tuples.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

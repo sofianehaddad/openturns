@@ -23,6 +23,7 @@
  */
 
 #include "AnalyticalParser.hxx"
+#include "SpecFunc.hxx"
 
 using namespace mu;
 

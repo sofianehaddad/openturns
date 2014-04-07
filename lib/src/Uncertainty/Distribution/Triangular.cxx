@@ -25,6 +25,7 @@
 #include "Triangular.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -23,6 +23,7 @@
  */
 #include <cmath>
 #include "SkellamFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -24,6 +24,7 @@
 #include "Factorial.hxx"
 #include "Axial.hxx"
 #include "Composite.hxx"
+#include "SpecFunc.hxx"
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS

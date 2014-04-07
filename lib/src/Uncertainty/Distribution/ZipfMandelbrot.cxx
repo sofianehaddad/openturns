@@ -24,6 +24,7 @@
 #include <cmath>
 #include "ZipfMandelbrot.hxx"
 #include "DistFunc.hxx"
+#include "SpecFunc.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"

@@ -30,6 +30,7 @@
 #include "ResourceMap.hxx"
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "GaussKronrod.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

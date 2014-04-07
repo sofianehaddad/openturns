@@ -796,7 +796,7 @@ NumericalScalar SpecFunc::LambertW(const NumericalScalar x,
   // Second real branch, defined over [-1/e, 0[, LambertW <= -1
   else
   {
-    if (x >= 0.0) return -INFINITY;
+    if (x >= 0.0) return - std::numeric_limits<NumericalScalar>::infinity();
     if (x < -0.1) w = -2.0;
     else
     {

@@ -23,6 +23,7 @@
  */
 #include "OTprivate.hxx"
 #include "Factorial.hxx"
+#include "SpecFunc.hxx"
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS

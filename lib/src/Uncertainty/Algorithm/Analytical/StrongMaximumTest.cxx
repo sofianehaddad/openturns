@@ -32,6 +32,7 @@
 #include "ComparisonOperatorImplementation.hxx"
 #include "ResourceMap.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
