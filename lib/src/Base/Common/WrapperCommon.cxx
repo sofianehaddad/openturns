@@ -48,7 +48,7 @@ typedef SSIZE_T ssize_t;
 #include <malloc.h>
 #endif
 #include <unistd.h>    // for select(2)
-#ifndef WIN32
+#ifndef _MSC_VER
 #include <libgen.h>    // for dirname(3)
 #endif
 #include <cstring>

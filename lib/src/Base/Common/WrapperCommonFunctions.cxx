@@ -34,6 +34,8 @@
 #include <sys/types.h> // for waitpid(2), stat(2)
 #ifndef WIN32
 #include <sys/wait.h>  // for waitpid(2)
+#endif
+#ifndef _MSC_VER
 #include <libgen.h>    // for dirname(3)
 #include <dirent.h>    // for scandir(3)
 #endif

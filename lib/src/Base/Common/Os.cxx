@@ -40,10 +40,14 @@
 
 #ifdef _MSC_VER
 # include <direct.h>
-# define mkdir(p, mode)  _mkdir(p)
+# define MKDIR(p, mode)  _mkdir(p)
 # if !defined(S_ISDIR)
 #  define S_ISDIR(mode) (((mode) & S_IFDIR) != 0)
 # endif
+#elif defined(WIN32)
+# define MKDIR(p, mode)  mkdir(p)
+#else
+# define MKDIR(p, mode)  mkdir(p, mode)
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -196,7 +200,7 @@ int Os::MakeDirectory(const String & path)
   {
     String current_dir(path.substr(0, pos));
     const char * path = current_dir.c_str();
-    if (!is_directory(path) && (0 != mkdir(path, 0777))) return 1;
+    if (!is_directory(path) && (0 != MKDIR(path, 0777))) return 1;
     pos++;
   }
 
