@@ -78,11 +78,11 @@ set ( OPENTURNS_DOC_PATH
       CACHE PATH "The directory where the license files are installed"
     )
 
-if ( MINGW )
+if ( WIN32 )
   set ( DEFAULT_TMP TEMP )
-else ( MINGW )
+else ( WIN32 )
   set( DEFAULT_TMP /tmp )
-endif( MINGW ) 
+endif( WIN32 )
 
 set ( OPENTURNS_TEMPDIR
       ${DEFAULT_TMP}
@@ -99,10 +99,23 @@ foreach ( _var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFI
   endif ( IS_ABSOLUTE ${OPENTURNS_${_var}} )
 endforeach ( _var )
 
+# CMake 2.x does not define MSVC when using Intel compiler on Windows, see
+# http://public.kitware.com/Bug/view.php?id=14476
+if ( WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Intel" )
+  set(WINTEL TRUE)
+endif()
+
 
 if ( BUILD_LIB )
 
 enable_language ( C Fortran )
+
+if ( MSVC OR WINTEL )
+  set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
+  include_directories(${PROJECT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
+  find_package(Boost REQUIRED)
+  set(USE_BOOST ON CACHE INTERNAL "Force use of Boost on Windows")
+endif ()
 
 if ( USE_BISON )
   find_package ( BISON 2.4 )
@@ -253,9 +266,11 @@ macro ( ot_add_build_dir_to_include_dirs DIR )
   set ( INTERNAL_INCLUDE_DIRS ${inc_dirs} CACHE INTERNAL "List of directories with header files needed for build" )
 endmacro ( ot_add_build_dir_to_include_dirs )
 
-if ( MINGW )
+if ( WIN32 )
   list ( APPEND OPENTURNS_LIBRARIES ws2_32 )
-  set ( CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-auto-import ${CMAKE_EXE_LINKER_FLAGS}" )
+  if (MINGW)
+    set ( CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-auto-import ${CMAKE_EXE_LINKER_FLAGS}" )
+  endif ()
 endif ()
 
 # Add definitions according to the prerequisites found
