@@ -104,7 +104,7 @@ public:
   }
   inline iterator end()
   {
-    return &operator[](dimension_);
+    return &operator[](0) + dimension_;
   }
   inline const_iterator begin() const
   {
@@ -112,7 +112,7 @@ public:
   }
   inline const_iterator end() const
   {
-    return &operator[](dimension_);
+    return &operator[](0) + dimension_;
   }
 
   NSI_point & operator += (const NSI_point & other);
@@ -183,7 +183,7 @@ public:
   }
   inline const_iterator end() const
   {
-    return &operator[](dimension_);
+    return &operator[](0) + dimension_;
   }
 };
 
