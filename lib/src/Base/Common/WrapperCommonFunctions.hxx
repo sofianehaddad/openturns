@@ -50,6 +50,8 @@
 #include "WrapperInterface.h"
 #include "OTthread.hxx"
 
+/* Execute 'code' under filesystem lock. Warning: 'code' MUST NOT THROW any exception */
+#ifdef SLOW_FILESYSTEM
 /* This mutex is used to lock all filesystem access to avoid races */
 extern pthread_mutex_t FileSystemMutex;
 
@@ -62,8 +64,6 @@ public:
 
 static FileSystemMutex_init __FileSystemMutex_initializer;
 
-/* Execute 'code' under filesystem lock. Warning: 'code' MUST NOT THROW any exception */
-#ifdef SLOW_FILESYSTEM
 #define FSLOCK(code) do { pthread_mutex_lock(&FileSystemMutex); code; pthread_mutex_unlock(&FileSystemMutex); } while (0)
 #else
 #define FSLOCK(code) code

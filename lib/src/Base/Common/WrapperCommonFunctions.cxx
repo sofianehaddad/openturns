@@ -130,6 +130,7 @@ static pthread_once_t FileSystemMutex_once = PTHREAD_ONCE_INIT;
 
 
 
+#ifdef SLOW_FILESYSTEM
 FileSystemMutex_init::FileSystemMutex_init()
 {
   int rc = pthread_once( &FileSystemMutex_once, FileSystemMutex_init::Initialization );
@@ -160,7 +161,7 @@ void FileSystemMutex_init::Initialization()
   pthread_mutex_init( &FileSystemMutex, NULL );
 #endif
 }
-
+#endif
 
 
 using OT::ResourceMap;
@@ -2278,9 +2279,11 @@ int runCommand(const char * command,
     stdout = freopen( newStdout.c_str(), "w", stdout );
     stderr = freopen( newStderr.c_str(), "w", stderr );
 
+#ifdef SLOW_FILESYSTEM
     // Filesystem lock destroyed to avoid future deadlocks in case fork() happened during critical section and
     // mutex remains locked
     pthread_mutex_destroy( &FileSystemMutex );
+#endif
 
     // Wait for 1ms to ensure that the filesystem has been updated.
     //     struct timeval tv;
