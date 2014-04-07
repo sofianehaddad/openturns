@@ -221,6 +221,7 @@ double kendallNlogN(double* arr1, double* arr2, size_t len) {
   uint64_t m1 = 0, m2 = 0, tieCount, swapCount, nPair;
   int64_t s;
   size_t i;
+  double denominator1, denominator2;
 
   zipSort(arr1, arr2, len);
   nPair = (uint64_t) len * ((uint64_t) len - 1) / 2;
@@ -252,12 +253,12 @@ double kendallNlogN(double* arr1, double* arr2, size_t len) {
   s -= (m1 + m2) + 2 * swapCount;
 
   if (s == 0) return 0.0;
-  double denominator1 = nPair - m1;
+  denominator1 = nPair - m1;
   if (denominator1 <= 0.0) {
     fprintf(stderr, "Warning, denominator1=%f, do not take into account ties for first component\n", denominator1);
     denominator1 = nPair;
   }
-  double denominator2 = nPair - m2;
+  denominator2 = nPair - m2;
   if (denominator2 <= 0.0) {
     fprintf(stderr, "Warning, denominator2=%f, do not take into account ties for second component\n", denominator2);
     denominator2 = nPair;

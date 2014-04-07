@@ -1841,6 +1841,9 @@ static getptc_rc getptcIter(double big, double
 static double mchpr1(void)
 {
   static double epsmch = 0.0;
+#ifdef WIN32
+  const double epsmch_linux = 2.220446e-16;
+#endif
 
   if (epsmch == 0.0)
     {
@@ -1853,7 +1856,6 @@ static double mchpr1(void)
 #ifdef WIN32
   // On linux with SSE extension enabled kernel epsmch = 2.220446e-16 (double computed on 64 bit register),
   // on mingw32 by default epsmch = 1.084202e-19 (double computed on 80bit register) which results to strange TNC algorithm behavior.
-  const double epsmch_linux = 2.220446e-16;
   if(epsmch < epsmch_linux)
     epsmch = epsmch_linux;
 #endif
