@@ -22,13 +22,29 @@
  *  @date   2009-04-30 12:04:13 +0200 (jeu 30 avr 2009)
  */
 
+#include "OTwindows.h" // For CreateProcess
 #include "Os.hxx"
 #include "Log.hxx"
 #include "OSS.hxx"
-
-#include "OTwindows.h" // For CreateProcess
+#ifdef WIN32
 #include "ResourceMap.hxx" // For ResourceMap
+#endif
+
 #include <cstdlib>   // for system(3)
+#include <sys/types.h>            // for stat
+#include <sys/stat.h>             // for stat
+#include <fcntl.h>
+#ifndef WIN32
+#include <ftw.h>       // for stat(2)
+#endif
+
+#ifdef _MSC_VER
+# include <direct.h>
+# define mkdir(p, mode)  _mkdir(p)
+# if !defined(S_ISDIR)
+#  define S_ISDIR(mode) (((mode) & S_IFDIR) != 0)
+# endif
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -137,5 +153,148 @@ void Os::Remove(const String& fileName)
   }
 }
 
+// Function helper for Os::MakeDirectory: replace backslash by slash
+static void
+convert_backslashes(String & path)
+{
+#ifdef _WIN32
+  const char* current_char = path.c_str();
+  String::size_type pos = 0;
+  // On Windows, leading \\ is for network paths and must not be stripped
+  if (*current_char == '\\' && *(current_char+1) == '\\')
+  {
+    pos = 2;
+    current_char += pos;
+  }
+  for ( ; *current_char != '\0'; ++pos, ++current_char )
+  {
+    if (*current_char == '\\') path[pos] = '/';
+  }
+#endif
+}
+
+// Function helper for Os::MakeDirectory
+static bool
+is_directory(const char * name)
+{
+  struct stat dir_stat;
+  if(stat(name, &dir_stat) != 0) return false;
+  return S_ISDIR(dir_stat.st_mode);
+}
+
+// Returns 0 if no error
+int Os::MakeDirectory(const String & path)
+{
+  if (path.empty()) return 1;
+  if (is_directory(path.c_str())) return 0;
+
+  String slashPath(path);
+  convert_backslashes(slashPath);
+
+  String::size_type pos = 0;
+  while((pos = slashPath.find('/', pos)) != String::npos)
+  {
+    String current_dir(path.substr(0, pos));
+    const char * path = current_dir.c_str();
+    if (!is_directory(path) && (0 != mkdir(path, 0777))) return 1;
+    pos++;
+  }
+
+  return 0;
+}
+
+#ifndef WIN32
+static int deleteRegularFileOrDirectory(const char * path,
+                                        const struct stat * p_sb,
+                                        int typeflag,
+                                        struct FTW * ftwbuf)
+{
+  int rc;
+
+  switch (typeflag)
+  {
+    case FTW_DP:
+      rc = rmdir( path );
+      if ( rc < 0 ) return 1;
+      break;
+
+    case FTW_SL:
+    case FTW_SLN:
+    case FTW_F:
+      rc = unlink( path );
+      if ( rc < 0 ) return 1;
+      break;
+
+  } /* end switch */
+
+  return 0;
+}
+#endif /* !WIN32 */
+
+
+
+// Delete a directory and its contents recursively. Returns 0 if no error
+int Os::DeleteDirectory(const String & path)
+{
+  if (path.empty()) return 1;
+  if (!is_directory(path.c_str())) return 1;
+
+  // Refuse to delete root directory (/) and current directory (.)
+  if (path == "/" || path == ".") return 1;
+
+  const char * directory = path.c_str();
+#ifdef WIN32
+  if ( ((strlen( directory ) == 3) && (directory[1] == ':') && (directory[2] == '\\' || directory[2] == '/')) ||
+       ((strlen( directory ) == 2) && (directory[1] == ':')) )
+  {
+    // do not delete root directory
+    return 1;
+  }
+#endif
+
+  struct stat file_stat;
+  int rc = 0;
+  rc = stat( directory, &file_stat );
+  if (rc == 0)
+  {
+    if (! S_ISDIR(file_stat.st_mode))
+    {
+      // Not a directory
+      return 1;
+    }
+  }
+
+#ifndef WIN32
+
+  rc = nftw( directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH );
+  if ( rc != 0 ) return 1;
+
+#else /* WIN32 */
+
+  size_t timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
+  size_t countdown = timeout;
+  OT::String rmdirCmd = OT::String("rmdir /Q /S \"") + directory + "\"";
+  int directoryExists;
+
+  do
+  {
+    rc = system( (rmdirCmd + " > NUL 2>&1").c_str() );
+
+    // check if directory still there (rmdir dos command always return 0)
+    struct stat dir_stat;
+    directoryExists = stat( directory, &dir_stat );
+    if( directoryExists == 0 )
+    {
+      if  ( countdown <= 0 ) return 1;
+      --countdown;
+    }
+    Sleep( 1000 );
+  }
+  while( directoryExists == 0 );
+
+#endif /* WIN32 */
+
+  return 0;
+}
 
 END_NAMESPACE_OPENTURNS

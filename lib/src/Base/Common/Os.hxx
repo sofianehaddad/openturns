@@ -65,6 +65,16 @@ public:
   static void Remove(const String & fileName);
 
   /**
+   * Create a directory.
+   */
+  static int MakeDirectory(const String & fileName);
+
+  /**
+   * Delete a directory recursively.
+   */
+  static int DeleteDirectory(const String & path);
+
+  /**
    * Make a system call. Return 0 if no error.
    */
   static int ExecuteCommand(const String & command);

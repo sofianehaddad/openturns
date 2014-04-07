@@ -34,9 +34,9 @@
 #include <sys/types.h> // for waitpid(2), stat(2)
 #ifndef WIN32
 #include <sys/wait.h>  // for waitpid(2)
-#endif
 #include <libgen.h>    // for dirname(3)
 #include <dirent.h>    // for scandir(3)
+#endif
 #include <sys/stat.h>  // for stat(2)
 #ifndef WIN32
 #include <ftw.h>       // for stat(2)
@@ -551,102 +551,13 @@ int createDirectory(const char * directory,
     return 1;
   }
 
-  // Root directory (/) and current directory (.) are supposed to exists
-  if (!strcmp( directory, "/" )) return 0;
-  if (!strcmp( directory, "." )) return 0;
-#ifdef WIN32
-  // Root directory (e.g. C:\) are supposed to exists
-  if ((strlen( directory ) == 3) &&
-      (directory[1] == ':') &&
-      (directory[2] == '\\' || directory[2] == '/'))
-    return 0;
-#endif
-
-
-  char * parent = strdup( directory );
-  parent = dirname( parent );
-  int rc = createDirectory( parent, p_error );
-  free( parent );
-  if (rc) return 1;
-
-  //IDM
-  // LOGTRACE( OT::String("IDM - ??? dir  : ") + directory );
-
-  struct stat file_stat;
-  FSLOCK( rc = stat( directory, &file_stat ) );
-  if (rc == 0)
-  {
-    if (! S_ISDIR(file_stat.st_mode))
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(createDirectory) %s exists and is NOT a directory", directory );
-      setWrapperError( p_error, msg );
-      return 1;
-    }
-
+  const String path(directory);
+  if (Os::MakeDirectory(path)) {
+    setWrapperError( p_error, "(createDirectory) Unable to create directory" );
+    return 1;
   }
-  else
-  {
-#ifndef WIN32
-    FSLOCK( rc = mkdir( directory, 0777 ) );
-#else
-    FSLOCK( rc = mkdir( directory ) );
-#endif
-    if (rc < 0)
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(createDirectory) Can't create directory %s", directory );
-      setWrapperError( p_error, msg );
-      return 1;
-    } // else LOGTRACE( OT::String("IDM - Add dir  : ") + directory );
-
-  }
-
   return 0;
 }
-
-
-
-#ifndef WIN32
-static int deleteRegularFileOrDirectory(const char * path,
-                                        const struct stat * p_sb,
-                                        int typeflag,
-                                        struct FTW * ftwbuf)
-{
-  int rc;
-
-  switch (typeflag)
-  {
-    case FTW_DP:
-      FSLOCK( rc = rmdir( path ); );
-      if ( rc < 0 )
-      {
-        char * msg = newFormattedString( "(deleteRegularFileOrDirectory) Can NOT remove directory %s", path );
-        LOGWRAPPER( msg );
-        free( msg );
-        return 1;
-      }
-      break;
-
-    case FTW_SL:
-    case FTW_SLN:
-    case FTW_F:
-      FSLOCK( rc = unlink( path ); );
-      if ( rc < 0 )
-      {
-        char * msg = newFormattedString( "(deleteRegularFileOrDirectory) Can NOT remove file %s", path );
-        LOGWRAPPER( msg );
-        free( msg );
-        return 1;
-      }
-      break;
-
-  } /* end switch */
-
-  return 0;
-}
-#endif /* WIN32 */
-
 
 
 
@@ -660,104 +571,11 @@ int deleteDirectory(const char * directory,
     return 1;
   }
 
-  // Root directory (/) and current directory (.) are supposed to exists
-  if (!strcmp( directory, "/" ))
-  {
-    setWrapperError( p_error, "(deleteDirectory) Can't delete / directory" );
+  const String path(directory);
+  if (Os::DeleteDirectory(path)) {
+    setWrapperError( p_error, "(deleteDirectory) Unable to delete directory" );
     return 1;
   }
-  if (!strcmp( directory, "." ))
-  {
-    setWrapperError( p_error, "(deleteDirectory) Can't delete . directory" );
-    return 1;
-  }
-#ifdef WIN32
-  if ( ((strlen( directory ) == 3) && (directory[1] == ':') && (directory[2] == '\\' || directory[2] == '/')) ||
-       ((strlen( directory ) == 2) && (directory[1] == ':')) )
-  {
-    setWrapperError( p_error, OT::String("(deleteDirectory) Can't delete ") + directory + " drive directory" );
-    return 1;
-  }
-#endif
-
-  struct stat file_stat;
-  int rc = 0;
-  FSLOCK( rc = stat( directory, &file_stat ) );
-  if (rc == 0)
-  {
-    if (! S_ISDIR(file_stat.st_mode))
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) %s exists and is NOT a directory", directory );
-      setWrapperError( p_error, msg );
-      return 1;
-    }
-  }
-
-#ifndef WIN32
-
-  rc = nftw( directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH );
-  if ( rc != 0 )
-  {
-    char msg[BUFFER_LENGTH];
-    snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) Can't delete directory %s",
-              directory );
-    setWrapperError( p_error, msg );
-    return 1;
-  }
-
-#else /* WIN32 */
-
-  size_t timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
-  size_t countdown = timeout;
-  OT::String rmdirCmd = OT::String("rmdir /Q /S \"") + directory + "\"";
-  int directoryExists;
-
-  do
-  {
-    // only show the output of the last try
-    if ( countdown <= 0 )
-      rc = system( rmdirCmd.c_str() );
-    else
-      rc = system( (rmdirCmd + " > NUL 2>&1").c_str() );
-    if ( rc != 0 )
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) Can't delete directory %s. Command rmdir failed to execute. "
-                "Retry still %d times.", directory, countdown );
-      if ( countdown <= 0 )
-        printToLogWarn( msg );
-      else
-        printToLogDebug( msg );
-    }
-
-    // check if directory still there (rmdir dos command always return 0)
-    struct stat dir_stat;
-    directoryExists = stat( directory, &dir_stat );
-    if( directoryExists == 0 )
-    {
-      if  ( countdown <= 0 )
-      {
-        char msg[BUFFER_LENGTH];
-        snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) Can't delete directory %s (after %i retry)",
-                  directory, timeout );
-        printToLogWarn( msg );
-        setWrapperError( p_error, msg );
-        return 1;
-      }
-      else
-      {
-        printToLogDebug( "(deleteDirectory) Can't delete directory %s. Wait the directory still %d times.",
-                         directory, countdown );
-        --countdown;
-      }
-    }
-    Sleep( 1000 );
-  }
-  while( directoryExists == 0 );
-
-#endif /* WIN32 */
-
   return 0;
 }
 
@@ -953,8 +771,17 @@ int writeFile(const char * path,
 
   /* Create all upper directories */
   char * copypath = strdup( path );
+#ifdef _MSC_VER
+  char * parent = strdup( copypath );
+  char * cp = parent + strlen(parent);
+  while (*cp != '\\' && *cp != '/' && cp != parent) --cp;
+  if (cp != parent) *cp = '\0';
+  rc = createDirectory( parent, p_error );
+  free( parent );
+#else
   char * parent = dirname( copypath );
   rc = createDirectory( parent, p_error );
+#endif
   free( copypath );
   if (rc)
   {
