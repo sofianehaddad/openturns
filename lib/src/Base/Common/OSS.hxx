@@ -273,7 +273,7 @@ public:
   /// Writes @a value to underlying ostream using operator<<.  If
   /// constructed with delimiter string, writes delimiter to ostream.
   OSS_iterator&
-  operator=(const _Tp& __value)
+  operator=(const _Tp& value)
   {
 #ifdef __GNUC__
 #if ( GCC_VERSION >= 30400 )
@@ -282,10 +282,10 @@ public:
                             ._M_iterator(*this));
 #endif
 #endif
-    if (_UnaryPredicate()(__value))
+    if (_UnaryPredicate()(value))
     {
       if (!_M_first) *_M_stream << _M_string;
-      *_M_stream << _M_prefix << __value;
+      *_M_stream << _M_prefix << value;
       _M_first = false;
     }
     return *this;
