@@ -80,9 +80,11 @@ int main(int argc, char *argv[])
                                (void*) &atom );
       if (rc != 0)
       {
+#ifndef _MSC_VER
         int j;
         for( j = i - 1 ; j >= 0 ; --j )
           pthread_kill( threadsIds[j], SIGTERM );
+#endif
         OSS errorMessage;
         errorMessage << "OT::AtomicFunctions Threads creation failed!";
         throw TestFailed(errorMessage);
