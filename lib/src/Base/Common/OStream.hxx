@@ -186,6 +186,24 @@ OStream & operator << (OStream & OS, std::ios_base & (*manip)(std::ios_base &))
   return OS;
 }
 
+#ifdef _MSC_VER
+
+template<typename T>
+inline OStream & operator << (OStream & OS, std::_Smanip<T> manip)
+{
+  OS.getStream() << manip;
+  return OS;
+}
+
+template <typename T>
+inline OStream & operator << (OStream & OS, std::_Fillobj<T> manip)
+{
+  OS.getStream() << manip;
+  return OS;
+}
+
+#elif defined(__GNUC__)
+
 inline
 OStream & operator << (OStream & OS, std::_Setw manip)
 {
@@ -228,6 +246,7 @@ OStream & operator << (OStream & OS, std::_Setfill<char> manip)
   OS.getStream() << manip;
   return OS;
 }
+#endif
 
 
 END_NAMESPACE_OPENTURNS
