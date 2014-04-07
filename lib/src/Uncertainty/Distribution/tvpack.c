@@ -133,7 +133,7 @@ doublereal tvtl_(integer *nu, doublereal *h__, doublereal *r__, doublereal *
     /* Local variables */
     static doublereal r12, r13, pt, eps, tvt;
     extern doublereal phid_(doublereal *), bvtl_(integer *, doublereal *, 
-	    doublereal *, doublereal *), adonet_(U_fp, doublereal *, 
+	    doublereal *, doublereal *), adonet_(D_fp, doublereal *, 
 	    doublereal *, doublereal *);
     extern /* Subroutine */ doublereal tvtmfn_(doublereal *);
 
@@ -238,7 +238,7 @@ doublereal tvtl_(integer *nu, doublereal *h__, doublereal *r__, doublereal *
 	tvtmbk_1.rub = asin(r13);
 	tvtmbk_1.ar = asin(tvtmbk_1.r23);
 	tvtmbk_1.ruc = d_sign(&pt, &tvtmbk_1.ar) - tvtmbk_1.ar;
-	tvt += adonet_((U_fp)tvtmfn_, &c_b2, &c_b6, &eps) / (pt * 4);
+	tvt += adonet_((D_fp)tvtmfn_, &c_b2, &c_b6, &eps) / (pt * 4);
     }
 /* Computing MAX */
     d__1 = 0., d__2 = min(tvt,1.);
