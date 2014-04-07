@@ -43,6 +43,9 @@ struct Atomic
 #if defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || ( ( GCC_VERSION >= 40100 ) && ! defined( __i386__ ) )
 #define HAVE_SYNC_PRIMITIVES
 #endif
+#ifdef _MSC_VER
+#undef HAVE_SYNC_PRIMITIVES
+#endif
 
 #if !defined(HAVE_SYNC_PRIMITIVES)
   static pthread_mutex_t Atomic_Mutex_;
