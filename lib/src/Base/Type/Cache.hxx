@@ -418,7 +418,7 @@ private:
   {
     Cache * p_cache_;
     inline addFunctor( Cache * p_cache ) : p_cache_(p_cache) {}
-    inline void operator() ( const typename std::map< Cache::KeyType, Cache::ValueType >::value_type & val )
+    inline void operator() ( const typename std::map< typename Cache::KeyType, typename Cache::ValueType >::value_type & val )
     {
       p_cache_->insert( val.first, val.second );
     }
