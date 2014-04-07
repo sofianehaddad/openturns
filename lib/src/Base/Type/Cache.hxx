@@ -98,6 +98,7 @@ public:
     PersistentCollection< KeyType >      & valueColl_;
     PersistentCollection< UnsignedInteger > & ageColl_;
     UnsignedInteger i_;
+
     ConvertMapToCollections(PersistentCollection< KeyType > & keyColl,
                             PersistentCollection< KeyType > & valueColl,
                             PersistentCollection< UnsignedInteger > & ageColl)
@@ -110,6 +111,16 @@ public:
       valueColl_[i_] = val.second.first;
       ageColl_  [i_] = val.second.second;
       ++i_;
+      return *this;
+    }
+
+    ConvertMapToCollections &
+    operator = (const ConvertMapToCollections & other)
+    {
+      keyColl_   = other.keyColl_;
+      valueColl_ = other.valueColl_;
+      ageColl_   = other.ageColl_;
+      i_         = other.i_;
       return *this;
     }
 

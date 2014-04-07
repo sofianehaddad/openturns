@@ -229,8 +229,8 @@ public:
 
 private:
   ostream_type*     _M_stream;
-  const String &    _M_string;
-  const String &    _M_prefix;
+  String            _M_string;
+  String            _M_prefix;
   mutable bool      _M_first;
 
 public:
@@ -258,6 +258,17 @@ public:
     , _M_prefix(__obj._M_prefix)
     , _M_first(__obj._M_first)
   {}
+
+  /// Copy assignment
+  OSS_iterator&
+  operator=(const OSS_iterator& obj)
+  {
+    _M_stream = obj._M_stream;
+    _M_string = obj._M_string;
+    _M_prefix = obj._M_prefix;
+    _M_first  = obj._M_first;
+    return *this;
+  }
 
   /// Writes @a value to underlying ostream using operator<<.  If
   /// constructed with delimiter string, writes delimiter to ostream.

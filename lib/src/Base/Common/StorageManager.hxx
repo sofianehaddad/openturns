@@ -441,6 +441,18 @@ public:
     ++index_;
     return *this;
   }
+
+  AdvocateIterator &
+  operator = (const AdvocateIterator & other )
+  {
+    // Copy-assignment does not make sense on different advocate_
+    if (&advocate_ != &other.advocate_)
+      throw InternalException(HERE) << "Wrong advocates in copy assignment. Report bug";
+    index_ = other.index_;
+    first_ = other.first_;
+    return *this;
+  }
+
   _Tp operator () ()
   {
     _Tp value;
