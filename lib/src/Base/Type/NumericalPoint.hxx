@@ -97,7 +97,7 @@ public:
   const NumericalScalar & operator[](const UnsignedInteger index) const;
 
   /** Erase the elements between first and last */
-  iterator erase(iterator first, iterator last);
+  iterator erase(const iterator first, const iterator last);
 
   /** Erase the element pointed by position */
   iterator erase(iterator position);
