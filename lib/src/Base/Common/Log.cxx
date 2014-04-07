@@ -48,7 +48,7 @@ std::ostream & operator << ( std::ostream & os, const _Prefix & pfx )
 }
 
 
-#ifndef WIN32
+#ifndef __MINGW32__
 static pthread_mutex_t Log_InstanceMutex_;
 #else
 // on windows Log_InstanceMutex_once is not called before Log is used!?.
