@@ -108,7 +108,7 @@ endif()
 
 if ( BUILD_LIB )
 
-enable_language ( C Fortran )
+enable_language ( C )
 
 if ( MSVC OR WINTEL )
   set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
@@ -138,9 +138,15 @@ if ( USE_TBB )
 endif ()
 
 if ( USE_SYSTEM_LAPACK )
-  find_package ( LAPACK REQUIRED )
+  find_package ( LAPACKE NO_MODULE )
+  if ( NOT LAPACKE_FOUND )
+    find_package ( LAPACK REQUIRED )
+  endif ()
 endif ()
-if ( NOT LAPACK_FOUND )
+if ( NOT LAPACKE_FOUND )
+  enable_language( Fortran )
+endif ()
+if ( NOT LAPACK_FOUND AND NOT LAPACKE_FOUND )
   include ( ExternalProject )
   set ( LAPACK_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/lapack-prefix )
   ExternalProject_Add ( lapack
@@ -295,6 +301,11 @@ endif ()
 
 if ( LAPACK_FOUND )
   list ( APPEND OPENTURNS_LIBRARIES ${LAPACK_LIBRARIES} )
+endif ()
+if ( LAPACKE_FOUND )
+  set ( OPENTURNS_HAVE_LAPACKE TRUE )
+  list ( APPEND OPENTURNS_INCLUDE_DIRS ${LAPACKE_INCLUDE_DIRS} )
+  list ( APPEND OPENTURNS_LIBRARIES ${LAPACKE_LIBRARIES} )
 endif ()
 
 if ( MUPARSER_FOUND )

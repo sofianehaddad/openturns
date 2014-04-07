@@ -257,7 +257,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     int dim = static_cast<UnsignedInteger>( dimension );
     do
     {
-      MVNDST_F77(&dim, &lower[0], &u[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
+      mvndst_(&dim, &lower[0], &u[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
       if (inform == 1)
       {
         LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
@@ -412,7 +412,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     int dim = static_cast<UnsignedInteger>( dimension );
     do
     {
-      MVNDST_F77(&dim, &lower[0], &upper[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
+      mvndst_(&dim, &lower[0], &upper[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
       if (inform == 1)
       {
         LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);

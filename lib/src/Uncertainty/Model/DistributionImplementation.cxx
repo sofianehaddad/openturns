@@ -1657,7 +1657,7 @@ void DistributionImplementation::computeGaussNodesAndWeights() const
   SquareMatrix z(integrationNodesNumber);
   NumericalPoint work(2 * integrationNodesNumber - 2);
   int info;
-  DSTEV_F77(&jobz, &integrationNodesNumber, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
+  dstev_(&jobz, &integrationNodesNumber, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
   for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(integrationNodesNumber); ++i)
   {

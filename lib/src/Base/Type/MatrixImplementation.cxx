@@ -229,7 +229,7 @@ MatrixImplementation MatrixImplementation::operator+ (const MatrixImplementation
   int size(nbRows_ * nbColumns_);
   double alpha(1.0);
   int one(1);
-  DAXPY_F77(&size, &alpha, const_cast<double*>(&((*this)[0])), &one, &add[0], &one);
+  daxpy_(&size, &alpha, const_cast<double*>(&((*this)[0])), &one, &add[0], &one);
 
   return add;
 }
@@ -243,7 +243,7 @@ MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation
   int size(nbRows_ * nbColumns_);
   double alpha(-1.0);
   int one(1);
-  DAXPY_F77(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &sub[0], &one);
+  daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &sub[0], &one);
 
   return sub;
 }
@@ -267,7 +267,7 @@ MatrixImplementation MatrixImplementation::genProd (const MatrixImplementation &
   double beta(0.0);
   int ltransa(1);
   int ltransb(1);
-  DGEMM_F77(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(matrix[0])), &k, &beta, &mult[0], &m, &ltransa, &ltransb);
+  dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(matrix[0])), &k, &beta, &mult[0], &m, &ltransa, &ltransb);
 
   return mult;
 }
@@ -290,8 +290,8 @@ MatrixImplementation MatrixImplementation::symProd (const MatrixImplementation &
   double beta(0.0);
   int lside(1);
   int luplo(1);
-  if (side == 'L') DSYMM_F77(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
-  else DSYMM_F77(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&(matrix[0])), &k, const_cast<double*>(&((*this)[0])), &m, &beta, &mult[0], &m, &lside, &luplo);
+  if (side == 'L') dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
+  else dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&(matrix[0])), &k, const_cast<double*>(&((*this)[0])), &m, &beta, &mult[0], &m, &lside, &luplo);
   return mult;
 }
 
@@ -310,7 +310,7 @@ NumericalPoint MatrixImplementation::genVectProd (const NumericalPoint & pt) con
   double beta(0.0);
   int ltrans(1);
 
-  DGEMV_F77(&trans, &m_, &n_, &alpha, const_cast<double*>(&((*this)[0])), &m_, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
+  dgemv_(&trans, &m_, &n_, &alpha, const_cast<double*>(&((*this)[0])), &m_, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -328,7 +328,7 @@ NumericalPoint MatrixImplementation::symVectProd (const NumericalPoint & pt) con
   double alpha(1.0);
   double beta(0.0);
   int luplo(1);
-  DSYMV_F77(&uplo, &n, &alpha, const_cast<double*>(&((*this)[0])), &n, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
+  dsymv_(&uplo, &n, &alpha, const_cast<double*>(&((*this)[0])), &n, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -342,7 +342,7 @@ MatrixImplementation MatrixImplementation::operator* (const NumericalScalar s) c
   double alpha(s);
   int one(1);
   int n_(nbRows_ * nbColumns_);
-  DSCAL_F77(&n_, &alpha, &scalprod[0], &one);
+  dscal_(&n_, &alpha, &scalprod[0], &one);
 
   return scalprod;
 }
@@ -381,7 +381,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   NumericalScalar alpha(1.0);
 
   // Lapack routine
-  DTRMM_F77(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
+  dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
   return mult;
 }
 
@@ -584,17 +584,17 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DGELSY_F77(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
+    dgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGELSY_F77(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
+    dgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
   }
   else
   {
-    DGELSY_F77(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
+    dgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGELSY_F77(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
+    dgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
   }
   MatrixImplementation result(n, q);
   for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
@@ -653,9 +653,9 @@ MatrixImplementation MatrixImplementation::solveLinearSystemTri (const MatrixImp
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DTRSM_F77(&side, &uplo, &transa, &diag, &m, &n, &alpha, const_cast<double*>(&(A[0])), &lda, const_cast<double*>(&(B[0])), &ldb, &lside, &luplo, &ltransa, &ldiag);
+    dtrsm_(&side, &uplo, &transa, &diag, &m, &n, &alpha, const_cast<double*>(&(A[0])), &lda, const_cast<double*>(&(B[0])), &ldb, &lside, &luplo, &ltransa, &ldiag);
   }
-  else DTRSM_F77(&side, &uplo, &transa, &diag, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(B[0])), &ldb, &lside, &luplo, &ltransa, &ldiag);
+  else dtrsm_(&side, &uplo, &transa, &diag, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(B[0])), &ldb, &lside, &luplo, &ltransa, &ldiag);
   return B;
 }
 
@@ -689,9 +689,9 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const Matrix
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DGESV_F77(&m, &nrhs, &A[0], &m, &ipiv[0], &B[0], &m, &info);
+    dgesv_(&m, &nrhs, &A[0], &m, &ipiv[0], &B[0], &m, &info);
   }
-  else DGESV_F77(&m, &nrhs, &(*this)[0], &m, &ipiv[0], &B[0], &m, &info);
+  else dgesv_(&m, &nrhs, &(*this)[0], &m, &ipiv[0], &B[0], &m, &info);
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
   return B;
 }
@@ -727,17 +727,17 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DSYSV_F77(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
+    dsysv_(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DSYSV_F77(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &work[0], &lwork, &info, &luplo);
+    dsysv_(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &work[0], &lwork, &info, &luplo);
   }
   else
   {
-    DSYSV_F77(&uplo, &n, &nrhs, &(*this)[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
+    dsysv_(&uplo, &n, &nrhs, &(*this)[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DSYSV_F77(&uplo, &n, &nrhs, &(*this)[0], &n, &ipiv[0], &B[0], &n, &work[0], &lwork, &info, &luplo);
+    dsysv_(&uplo, &n, &nrhs, &(*this)[0], &n, &ipiv[0], &B[0], &n, &work[0], &lwork, &info, &luplo);
   }
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
   return B;
@@ -771,11 +771,11 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCov (const MatrixImp
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DPOSV_F77(&uplo, &n, &nrhs, &A[0], &n, &B[0], &n, &info, &luplo);
+    dposv_(&uplo, &n, &nrhs, &A[0], &n, &B[0], &n, &info, &luplo);
   }
   else
   {
-    DPOSV_F77(&uplo, &n, &nrhs, &(*this)[0], &n, &B[0], &n, &info, &luplo);
+    dposv_(&uplo, &n, &nrhs, &(*this)[0], &n, &B[0], &n, &info, &luplo);
   }
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
   return B;
@@ -824,7 +824,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
     if (keepIntact)
     {
       MatrixImplementation A(*this);
-      DGETRF_F77(&n, &n, &A[0], &n, &ipiv[0], &info);
+      dgetrf_(&n, &n, &A[0], &n, &ipiv[0], &info);
       if (info > 0) return -SpecFunc::MaxNumericalScalar;
       // Determinant computation
       for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
@@ -842,7 +842,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
     } // keepIntact true
     else
     {
-      DGETRF_F77(&n, &n, &(*this)[0], &n, &ipiv[0], &info);
+      dgetrf_(&n, &n, &(*this)[0], &n, &ipiv[0], &info);
       if (info > 0) return -SpecFunc::MaxNumericalScalar;
       // Determinant computation
       for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
@@ -894,10 +894,10 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      if (keepIntact)
      {
      MatrixImplementation A(*this);
-     DSYTRF_F77(&uplo, &n, &A[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
+     dsytrf_(&uplo, &n, &A[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
      lwork = static_cast<int>(lwork_d);
      NumericalPoint work(lwork);
-     DSYTRF_F77(&uplo, &n, &A[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
+     dsytrf_(&uplo, &n, &A[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
      // Determinant computation
      for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
      {
@@ -907,10 +907,10 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      }
      else
      {
-     DSYTRF_F77(&uplo, &n, &(*this)[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
+     dsytrf_(&uplo, &n, &(*this)[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
      lwork = static_cast<int>(lwork_d);
      NumericalPoint work(lwork);
-     DSYTRF_F77(&uplo, &n, &(*this)[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
+     dsytrf_(&uplo, &n, &(*this)[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
      // Determinant computation
      for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
      {
@@ -955,17 +955,17 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEi
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DGEEV_F77(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGEEV_F77(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
   }
   else
   {
-    DGEEV_F77(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGEEV_F77(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
   }
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   NumericalComplexCollection eigenValues(n);
@@ -994,17 +994,17 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEi
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DGEEV_F77(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGEEV_F77(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
   }
   else
   {
-    DGEEV_F77(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGEEV_F77(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
+    dgeev_(&jobvl, &jobvr, &n, &(*this)[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
   }
   // Cast the eigenvalues into OpenTURNS data structures
   NumericalComplexCollection eigenValues(n);
@@ -1054,17 +1054,17 @@ NumericalPoint MatrixImplementation::computeEigenValuesSym (const Bool keepIntac
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DSYEV_F77(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DSYEV_F77(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
   }
   else
   {
-    DSYEV_F77(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DSYEV_F77(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
   }
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   return w;
@@ -1086,18 +1086,18 @@ NumericalPoint MatrixImplementation::computeEigenValuesSym (MatrixImplementation
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DSYEV_F77(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DSYEV_F77(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
     v = A;
   }
   else
   {
-    DSYEV_F77(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DSYEV_F77(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
+    dsyev_(&jobz, &uplo, &n, &(*this)[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
     v = *this;
   }
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
@@ -1125,20 +1125,20 @@ NumericalPoint MatrixImplementation::computeSingularValues(const Bool keepIntact
   {
     MatrixImplementation A(*this);
     // First call to compute the optimal work size
-    DGESDD_F77(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
     lwork = static_cast<int>(work[0]);
     work = NumericalPoint(lwork, 0.0);
     // Second call to compute the SVD
-    DGESDD_F77(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   }
   else
   {
     // First call to compute the optimal work size
-    DGESDD_F77(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
     lwork = static_cast<int>(work[0]);
     work = NumericalPoint(lwork, 0.0);
     // Second call to compute the SVD
-    DGESDD_F77(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   }
   if (info != 0) throw InternalException(HERE) << "Error: the updating process failed.";
   return S;
@@ -1168,20 +1168,20 @@ NumericalPoint MatrixImplementation::computeSingularValues(MatrixImplementation 
   {
     MatrixImplementation A(*this);
     // First call to compute the optimal work size
-    DGESDD_F77(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
     lwork = static_cast<int>(work[0]);
     work = NumericalPoint(lwork, 0.0);
     // Second call to compute the SVD
-    DGESDD_F77(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   }
   else
   {
     // First call to compute the optimal work size
-    DGESDD_F77(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
     lwork = static_cast<int>(work[0]);
     work = NumericalPoint(lwork, 0.0);
     // Second call to compute the SVD
-    DGESDD_F77(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
+    dgesdd_(&jobz, &m, &n, &(*this)[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   }
   if (info != 0) throw InternalException(HERE) << "Error: the updating process failed.";
   return S;
@@ -1199,9 +1199,9 @@ Bool MatrixImplementation::isPositiveDefinite(const Bool keepIntact)
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
+    dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
   }
-  else DPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
+  else dpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
   return (info == 0) ;
 }
 
@@ -1229,7 +1229,7 @@ MatrixImplementation::NumericalScalarCollection MatrixImplementation::triangular
   NumericalScalarCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
-  DTRMV_F77(&uplo, &trans, &diag, &n, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  dtrmv_(&uplo, &trans, &diag, &n, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
@@ -1250,7 +1250,7 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
   if (keepIntact)
   {
     MatrixImplementation A(*this);
-    DPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
+    dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < j; ++i)
@@ -1260,7 +1260,7 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
   }
   else
   {
-    DPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
+    dpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
         (*this)(i, j) = 0.0;
@@ -1289,11 +1289,11 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
   {
     MatrixImplementation Q(*this);
 
-    DGEQRF_F77(&m, &n, &Q[0], &lda, &tau[0], &lwork_d, &lwork, &info);
+    dgeqrf_(&m, &n, &Q[0], &lda, &tau[0], &lwork_d, &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGEQRF_F77(&m, &n, &Q[0], &lda, &tau[0], &work[0], &lwork, &info);
+    dgeqrf_(&m, &n, &Q[0], &lda, &tau[0], &work[0], &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
 
     // rebuild R
@@ -1302,12 +1302,12 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
         R(i, j) = Q(i, j);
 
     lwork = -1;
-    DORGQR_F77(&m, &n, &k, &Q[0], &lda, &tau[0], &lwork_d, &lwork, &info);
+    dorgqr_(&m, &n, &k, &Q[0], &lda, &tau[0], &lwork_d, &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work2(lwork);
 
-    DORGQR_F77(&m, &n, &k, &Q[0], &lda, &tau[0], &work2[0], &lwork, &info);
+    dorgqr_(&m, &n, &k, &Q[0], &lda, &tau[0], &work2[0], &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
 
     Q.setName("");
@@ -1315,11 +1315,11 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
   }
   else
   {
-    DGEQRF_F77(&m, &n, &(*this)[0], &lda, &tau[0], &lwork_d, &lwork, &info);
+    dgeqrf_(&m, &n, &(*this)[0], &lda, &tau[0], &lwork_d, &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work(lwork);
-    DGEQRF_F77(&m, &n, &(*this)[0], &lda, &tau[0], &work[0], &lwork, &info);
+    dgeqrf_(&m, &n, &(*this)[0], &lda, &tau[0], &work[0], &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
 
     // rebuild R
@@ -1328,12 +1328,12 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
         R(i, j) = (*this)(i, j);
 
     lwork = -1;
-    DORGQR_F77(&m, &n, &k, &(*this)[0], &lda, &tau[0], &lwork_d, &lwork, &info);
+    dorgqr_(&m, &n, &k, &(*this)[0], &lda, &tau[0], &lwork_d, &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
     lwork = static_cast<int>(lwork_d);
     NumericalPoint work2(lwork);
 
-    DORGQR_F77(&m, &n, &k, &(*this)[0], &lda, &tau[0], &work2[0], &lwork, &info);
+    dorgqr_(&m, &n, &k, &(*this)[0], &lda, &tau[0], &work2[0], &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
 
     setName("");
