@@ -95,7 +95,6 @@ int main(int argc, char *argv[])
 
       /* We create an Event from this RandomVector */
       Event myEvent(output, Greater(), 0.0);
-      myEvent.setName("Event 1");
 
       /* We create a NearestPoint algorithm */
       Cobyla myCobyla;
