@@ -55,7 +55,7 @@ public:
   typedef Antecedent                          Implementation;
 
   /** Default constructor */
-  RandomVectorImplementation(const String & name = DefaultName);
+  RandomVectorImplementation();
 
   /** Virtual constructor */
   virtual RandomVectorImplementation * clone() const;

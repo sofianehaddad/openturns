@@ -53,22 +53,18 @@ public:
   SecondOrderModel();
 
   /** Copy constructors */
-  SecondOrderModel(const SecondOrderModelImplementation & implementation,
-                   const String & name = DefaultName);
+  SecondOrderModel(const SecondOrderModelImplementation & implementation);
 
   /** Constructor from implementation */
-  SecondOrderModel(const Implementation & p_implementation,
-                   const String & name = DefaultName);
+  SecondOrderModel(const Implementation & p_implementation);
 
   SecondOrderModel(const CovarianceModel & covarianceModel,
-                   const SpectralModel & spectralModel,
-                   const String & name = DefaultName);
+                   const SpectralModel & spectralModel);
 
 #ifndef SWIG
 
   /** Constructor from implementation pointer */
-  SecondOrderModel(SecondOrderModelImplementation * p_implementation,
-                   const String & name = DefaultName);
+  SecondOrderModel(SecondOrderModelImplementation * p_implementation);
 #endif
 
   /** Dimension accessor */

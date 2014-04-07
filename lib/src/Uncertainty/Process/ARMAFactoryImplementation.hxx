@@ -49,19 +49,17 @@ public:
   typedef Antecedent                         Implementation;
 
   /** Default constructor */
-  ARMAFactoryImplementation(const String & name = DefaultName);
+  ARMAFactoryImplementation();
 
   /** Parameter constructor */
   ARMAFactoryImplementation(const UnsignedInteger p,
                             const UnsignedInteger q,
-                            const Bool invertible = true,
-                            const String & name = DefaultName);
+                            const Bool invertible = true);
 
   /** Parameter constructor */
   ARMAFactoryImplementation(const Indices & p,
                             const Indices & q,
-                            const Bool invertible = true,
-                            const String & name = DefaultName);
+                            const Bool invertible = true);
 
   /** Virtual constructor */
   virtual ARMAFactoryImplementation * clone() const;

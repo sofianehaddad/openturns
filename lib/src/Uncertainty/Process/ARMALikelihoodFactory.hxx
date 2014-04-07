@@ -42,21 +42,19 @@ class ARMALikelihoodFactory
 public:
 
   /** Default constructor */
-  explicit ARMALikelihoodFactory(const String & name = OT::DefaultName);
+  ARMALikelihoodFactory();
 
   /** Default constructor */
   ARMALikelihoodFactory(const UnsignedInteger p,
                         const UnsignedInteger q,
                         const UnsignedInteger dimension,
-                        const Bool invertible = true,
-                        const String & name = OT::DefaultName);
+                        const Bool invertible = true);
 
   /** Parameter constructor */
   ARMALikelihoodFactory(const Indices & p,
                         const Indices & q,
                         const UnsignedInteger dimension,
-                        const Bool invertible = true,
-                        const String & name = DefaultName);
+                        const Bool invertible = true);
 
   /** Virtual constructor */
   virtual ARMALikelihoodFactory * clone() const;

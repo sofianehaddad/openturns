@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Beta
 {
 public:
-  explicit TestObject() : Beta(2., 5., -1., 2.) {}
-  explicit TestObject(const String & name) : Beta(2., 5., -1., 2.)
-  {
-    setName(name);
-  }
+  TestObject() : Beta(2., 5., -1., 2.) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Beta distribution(2., 5., -1., 2.);

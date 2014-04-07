@@ -44,12 +44,11 @@ public:
 
 
   /** Default constructor */
-  explicit StratifiedExperiment(const String & name = DefaultName);
+  StratifiedExperiment();
 
   /** Constructor with parameters */
   StratifiedExperiment(const NumericalPoint & center,
-                       const NumericalPoint & levels,
-                       const String & name = DefaultName);
+                       const NumericalPoint & levels);
 
   /** String converter */
   virtual String __repr__() const;

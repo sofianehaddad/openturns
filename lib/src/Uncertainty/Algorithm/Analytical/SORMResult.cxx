@@ -49,9 +49,8 @@ static Factory<SORMResult> RegisteredFactory("SORMResult");
  */
 SORMResult::SORMResult(const NumericalPoint & standardSpaceDesignPoint,
                        const Event & limitStateVariable,
-                       const Bool isStandardPointOriginInFailureSpace,
-                       const String & name):
-  AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace, name),
+                       const Bool isStandardPointOriginInFailureSpace):
+  AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace),
   hessianLimitStateFunction_(),
   gradientLimitStateFunction_(),
   sortedCurvatures_(),

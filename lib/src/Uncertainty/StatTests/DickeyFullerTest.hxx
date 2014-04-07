@@ -44,12 +44,11 @@ class DickeyFullerTest
 public:
 
   /** Standard constructor */
-  explicit DickeyFullerTest(const String & name = DefaultName);
+  DickeyFullerTest();
 
   /** Standard constructor */
   explicit DickeyFullerTest(const TimeSeries & series,
-                            const Bool verbose = true,
-                            const String & name = DefaultName);
+                            const Bool verbose = true);
 
   /** Virtual constructor */
   virtual DickeyFullerTest * clone() const;

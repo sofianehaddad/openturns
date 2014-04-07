@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Logistic name=Logistic dimension=1 alpha=-0.5 beta=1.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Logistic name=myName dimension=1 alpha=-0.5 beta=1.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Logistic name=myNewName dimension=1 alpha=-0.5 beta=1.5
 Distribution class=Logistic name=Logistic dimension=1 alpha=-0.5 beta=1.5
 Distribution Logistic(alpha = -0.5, beta = 1.5)
 Elliptical = false

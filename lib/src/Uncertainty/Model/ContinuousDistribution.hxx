@@ -41,7 +41,7 @@ class ContinuousDistribution
 public:
 
   /** Default constructor */
-  explicit ContinuousDistribution(const String & name = DefaultName);
+  ContinuousDistribution();
 
   /** Virtual constructor */
   virtual ContinuousDistribution * clone() const;

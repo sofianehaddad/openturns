@@ -43,17 +43,15 @@ public:
 
 
   /** Default constructor */
-  explicit Axial(const String & name = DefaultName);
+  Axial();
 
   /** Constructor with parameters */
   Axial(const NumericalPoint & center,
-        const NumericalPoint & levels,
-        const String & name = DefaultName);
+        const NumericalPoint & levels);
 
   /** Constructor with parameters */
   Axial(const UnsignedInteger dimension,
-        const NumericalPoint & levels,
-        const String & name = DefaultName);
+        const NumericalPoint & levels);
 
   /** Virtual constructor */
   virtual Axial * clone() const;

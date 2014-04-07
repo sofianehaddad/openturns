@@ -41,8 +41,8 @@ typedef Collection<NumericalComplex> NumericalComplexCollection;
 typedef Collection<HermitianMatrix>  HermitianMatrixCollection;
 
 /* Default constructor */
-WelchFactory::WelchFactory(const String & name)
-  : SpectralModelFactoryImplementation(name),
+WelchFactory::WelchFactory()
+  : SpectralModelFactoryImplementation(),
     window_(Hamming()),
     blockNumber_(1),
     overlap_(0.0)
@@ -52,9 +52,8 @@ WelchFactory::WelchFactory(const String & name)
 
 WelchFactory::WelchFactory(const FilteringWindows & window,
                            const UnsignedInteger blockNumber,
-                           const NumericalScalar overlap,
-                           const String & name)
-  : SpectralModelFactoryImplementation(name),
+                           const NumericalScalar overlap)
+  : SpectralModelFactoryImplementation(),
     window_(window),
     blockNumber_(0),
     overlap_(0.0)

@@ -41,11 +41,12 @@ static Factory<NonCentralStudent> RegisteredFactory("NonCentralStudent");
 NonCentralStudent::NonCentralStudent(const NumericalScalar nu,
                                      const NumericalScalar delta,
                                      const NumericalScalar gamma)
-  : ContinuousDistribution("NonCentralStudent")
+  : ContinuousDistribution()
   , nu_(0.0)
   , delta_(delta)
   , gamma_(gamma)
 {
+  setName("NonCentralStudent");
   // This call set also the range.
   setNu(nu);
   setDimension(1);

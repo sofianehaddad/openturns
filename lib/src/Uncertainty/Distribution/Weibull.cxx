@@ -36,11 +36,12 @@ static Factory<Weibull> RegisteredFactory("Weibull");
 
 /* Default constructor */
 Weibull::Weibull()
-  : ContinuousDistribution("Weibull")
+  : ContinuousDistribution()
   , alpha_(1.0)
   , beta_(1.0)
   , gamma_(0.0)
 {
+  setName("Weibull");
   setDimension(1);
   computeRange();
 }
@@ -50,11 +51,12 @@ Weibull::Weibull(const NumericalScalar arg1,
                  const NumericalScalar arg2,
                  const NumericalScalar gamma,
                  const ParameterSet set)
-  : ContinuousDistribution("Weibull")
+  : ContinuousDistribution()
   , alpha_(0.0)
   , beta_(0.0)
   , gamma_(gamma)
 {
+  setName("Weibull");
   switch (set)
   {
     case ALPHABETA:

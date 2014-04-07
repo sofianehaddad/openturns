@@ -39,22 +39,24 @@ static Factory<UserDefined> RegisteredFactory_alt2("UserDefined");
 
 /* Default constructor */
 UserDefined::UserDefined()
-  : DiscreteDistribution("UserDefined")
+  : DiscreteDistribution()
   , collection_(UserDefinedPairCollection(1))
   , cumulativeProbabilities_(1, 1.0)
   , hasUniformWeights_(true)
 {
+  setName("UserDefined");
   // Empty range
   setRange(Interval(1.0, 0.0));
 }
 
 /* Constructor from UserDefinedPairCollection */
 UserDefined::UserDefined(const UserDefinedPairCollection & collection)
-  : DiscreteDistribution("UserDefined")
+  : DiscreteDistribution()
   , collection_(0)
   , cumulativeProbabilities_(0)
   , hasUniformWeights_(false)
 {
+  setName("UserDefined");
   // We set the dimension of the UserDefined distribution
   // This call set also the range
   setPairCollection( collection );
@@ -62,11 +64,12 @@ UserDefined::UserDefined(const UserDefinedPairCollection & collection)
 
 /* Constructor from a sample */
 UserDefined::UserDefined(const NumericalSample & sample)
-  : DiscreteDistribution("UserDefined")
+  : DiscreteDistribution()
   , collection_(0)
   , cumulativeProbabilities_(0)
   , hasUniformWeights_(true)
 {
+  setName("UserDefined");
   const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution based on an empty sample.";
   UserDefinedPairCollection collection(size);
@@ -81,11 +84,12 @@ UserDefined::UserDefined(const NumericalSample & sample)
 /* Constructor from a sample and the associated weights */
 UserDefined::UserDefined(const NumericalSample & sample,
                          const NumericalPoint & weights)
-  : DiscreteDistribution("UserDefined")
+  : DiscreteDistribution()
   , collection_(0)
   , cumulativeProbabilities_(0)
   , hasUniformWeights_(false)
 {
+  setName("UserDefined");
   const UnsignedInteger size(sample.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution based on an empty sample.";
   if (weights.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution if the weights don't have the same dimension as the sample size.";

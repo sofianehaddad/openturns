@@ -37,13 +37,14 @@ static Factory<ZipfMandelbrot> RegisteredFactory("ZipfMandelbrot");
 
 /* Default constructor */
 ZipfMandelbrot::ZipfMandelbrot()
-  : DiscreteDistribution("ZipfMandelbrot")
+  : DiscreteDistribution()
   , isAlreadyComputedHarmonicNumbers_(false)
   , harmonicNumbers_(0)
   , n_(1)
   , q_(0.0)
   , s_(1.0)
 {
+  setName("ZipfMandelbrot");
   // We set the dimension of the ZipfMandelbrot distribution
   setDimension( 1 );
   computeRange();
@@ -53,13 +54,14 @@ ZipfMandelbrot::ZipfMandelbrot()
 ZipfMandelbrot::ZipfMandelbrot(const UnsignedInteger n,
                                const NumericalScalar q,
                                const NumericalScalar s )
-  : DiscreteDistribution("ZipfMandelbrot")
+  : DiscreteDistribution()
   , isAlreadyComputedHarmonicNumbers_(false)
   , harmonicNumbers_(NumericalScalarCollection(0))
   , n_(n)
   , q_(q)
   , s_(s)
 {
+  setName("ZipfMandelbrot");
   // We set the dimension of the ZipfMandelbrot distribution
   setDimension( 1 );
   computeRange();

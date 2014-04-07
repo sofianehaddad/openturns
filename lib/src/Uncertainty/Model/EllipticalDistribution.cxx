@@ -43,8 +43,8 @@ CLASSNAMEINIT(EllipticalDistribution);
 static Factory<EllipticalDistribution> RegisteredFactory("EllipticalDistribution");
 
 /* Default constructor */
-EllipticalDistribution::EllipticalDistribution(const String & name)
-  : ContinuousDistribution(name)
+EllipticalDistribution::EllipticalDistribution()
+  : ContinuousDistribution()
 {
   // Nothing to do
 }
@@ -53,9 +53,8 @@ EllipticalDistribution::EllipticalDistribution(const String & name)
 EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
     const NumericalPoint & sigma,
     const CorrelationMatrix & R,
-    const NumericalScalar covarianceScalingFactor,
-    const String & name)
-  : ContinuousDistribution(name)
+    const NumericalScalar covarianceScalingFactor)
+  : ContinuousDistribution()
   , sigma_(sigma)
   , R_(R)
   , covarianceScalingFactor_(covarianceScalingFactor)

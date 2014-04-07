@@ -1255,7 +1255,7 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < j; ++i)
         A(i, j) = 0.0;
-    A.setName(DefaultName);
+    A.setName("");
     return A;
   }
   else
@@ -1265,7 +1265,7 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
         (*this)(i, j) = 0.0;
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
-    setName(DefaultName);
+    setName("");
     return (*this);
   }
 }
@@ -1310,7 +1310,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
     DORGQR_F77(&m, &n, &k, &Q[0], &lda, &tau[0], &work2[0], &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
 
-    Q.setName(DefaultName);
+    Q.setName("");
     return Q;
   }
   else
@@ -1336,7 +1336,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
     DORGQR_F77(&m, &n, &k, &(*this)[0], &lda, &tau[0], &work2[0], &lwork, &info);
     if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
 
-    setName(DefaultName);
+    setName("");
     return (*this);
   }
 }

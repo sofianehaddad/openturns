@@ -45,18 +45,16 @@ class RandomWalk
 public:
 
   /** Default constructor */
-  explicit RandomWalk(const String & name = DefaultName);
+  RandomWalk();
+
+  /** Standard constructor */
+  RandomWalk(const NumericalPoint & origin,
+             const Distribution & distribution);
 
   /** Standard constructor */
   RandomWalk(const NumericalPoint & origin,
              const Distribution & distribution,
-             const String & name = DefaultName);
-
-  /** Standard constructor */
-  RandomWalk(const NumericalPoint & origin,
-             const Distribution & distribution,
-             const RegularGrid & timeGrid,
-             const String & name = DefaultName);
+             const RegularGrid & timeGrid);
 
   /** Virtual constructor */
   virtual RandomWalk * clone() const;

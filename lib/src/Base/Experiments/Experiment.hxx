@@ -43,16 +43,14 @@ class Experiment
 public:
 
   /** Default constructor */
-  explicit Experiment(const String & name = DefaultName);
+  Experiment();
 
   /** Constructor from implementation */
-  Experiment(const ExperimentImplementation & implementation,
-             const String & name = DefaultName);
+  Experiment(const ExperimentImplementation & implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  Experiment(const Implementation & p_implementation,
-             const String & name = DefaultName);
+  Experiment(const Implementation & p_implementation);
 #endif
 
   /** String converter */

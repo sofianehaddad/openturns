@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Multinomial
 {
 public:
-  explicit TestObject() : Multinomial(5, NumericalPoint(3, 0.25)) {}
-  explicit TestObject(const String & name) : Multinomial(5, NumericalPoint(3, 0.25))
-  {
-    setName(name);
-  }
+  TestObject() : Multinomial(5, NumericalPoint(3, 0.25)) {}
   virtual ~TestObject() {}
 };
 
@@ -48,9 +44,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Multinomial distribution(5, NumericalPoint(3, 0.25));

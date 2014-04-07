@@ -44,8 +44,7 @@ public:
   /** Standard constructor */
   FORMResult(const NumericalPoint & standardSpaceDesignPoint,
              const Event & limitStateVariable,
-             const Bool isStandardPointOriginInFailureSpace,
-             const String & name = DefaultName);
+             const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor */
   FORMResult();

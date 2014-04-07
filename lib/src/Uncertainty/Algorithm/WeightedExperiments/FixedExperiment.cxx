@@ -32,17 +32,16 @@ CLASSNAMEINIT(FixedExperiment);
 
 
 /* Default constructor */
-FixedExperiment::FixedExperiment(const String & name):
-  WeightedExperiment(name),
+FixedExperiment::FixedExperiment():
+  WeightedExperiment(),
   sample_(0, 0)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-FixedExperiment::FixedExperiment(const NumericalSample & sample,
-                                 const String & name):
-  WeightedExperiment(UserDefined(sample), sample.getSize(), name),
+FixedExperiment::FixedExperiment(const NumericalSample & sample):
+  WeightedExperiment(UserDefined(sample), sample.getSize()),
   sample_(sample)
 {
   // Nothing to do
@@ -50,9 +49,8 @@ FixedExperiment::FixedExperiment(const NumericalSample & sample,
 
 /* Constructor with parameters */
 FixedExperiment::FixedExperiment(const NumericalSample & sample,
-                                 const NumericalPoint & weights,
-                                 const String & name):
-  WeightedExperiment(UserDefined(sample, weights), sample.getSize(), name),
+                                 const NumericalPoint & weights):
+  WeightedExperiment(UserDefined(sample, weights), sample.getSize()),
   sample_(sample)
 {
   // Add the weights to the upper level class

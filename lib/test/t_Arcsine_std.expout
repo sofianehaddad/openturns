@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Arcsine name=Arcsine dimension=1 a=-1 b=1
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Arcsine name=myName dimension=1 a=-1 b=1
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Arcsine name=myNewName dimension=1 a=-1 b=1
 Distribution class=Arcsine name=Arcsine dimension=1 a=5.2 b=11.6
 Distribution Arcsine(a = 5.2, b = 11.6)
 Elliptical = false

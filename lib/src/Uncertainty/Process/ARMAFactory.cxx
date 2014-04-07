@@ -38,27 +38,24 @@ ARMAFactory::ARMAFactory()
 }
 
 /* Parameters constructor */
-ARMAFactory::ARMAFactory(const ARMAFactoryImplementation & implementation,
-                         const String & name)
+ARMAFactory::ARMAFactory(const ARMAFactoryImplementation & implementation)
   : TypedInterfaceObject<ARMAFactoryImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-ARMAFactory::ARMAFactory(const Implementation & p_implementation,
-                         const String & name)
+ARMAFactory::ARMAFactory(const Implementation & p_implementation)
   : TypedInterfaceObject<ARMAFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-ARMAFactory::ARMAFactory(ARMAFactoryImplementation * p_implementation,
-                         const String & name)
+ARMAFactory::ARMAFactory(ARMAFactoryImplementation * p_implementation)
   : TypedInterfaceObject<ARMAFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Virtual constructor */

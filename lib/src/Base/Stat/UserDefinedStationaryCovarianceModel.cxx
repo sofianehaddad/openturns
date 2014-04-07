@@ -37,8 +37,8 @@ CLASSNAMEINIT(UserDefinedStationaryCovarianceModel);
 static Factory<UserDefinedStationaryCovarianceModel> RegisteredFactory("UserDefinedStationaryCovarianceModel");
 
 /* Constructor with parameters */
-UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const String & name)
-  : StationaryCovarianceModel(name),
+UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
+  : StationaryCovarianceModel(),
     covarianceCollection_(0)
 {
   dimension_ = 0;
@@ -47,9 +47,8 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
 // Classical constructor
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & timeGrid,
-    const CovarianceMatrixCollection & covarianceFunction,
-    const String & name)
-  : StationaryCovarianceModel(name),
+    const CovarianceMatrixCollection & covarianceFunction)
+  : StationaryCovarianceModel(),
     covarianceCollection_(0)
 {
   const UnsignedInteger size(timeGrid.getN());

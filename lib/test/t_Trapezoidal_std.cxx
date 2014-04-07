@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Trapezoidal
 {
 public:
-  explicit TestObject() : Trapezoidal(1.0, 2.0, 3.0, 4.0) {}
-  explicit TestObject(const String & name) : Trapezoidal(1.0, 2.0, 3.0, 4.0)
-  {
-    setName(name);
-  }
+  TestObject() : Trapezoidal(1.0, 2.0, 3.0, 4.0) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Trapezoidal distribution(1.0, 1.2, 3.0, 14.0);

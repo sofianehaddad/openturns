@@ -51,11 +51,11 @@ Normal::Normal(const UnsignedInteger dimension)
   : EllipticalDistribution(NumericalPoint(dimension, 0.0)
                            , NumericalPoint(dimension, 1.0)
                            , CorrelationMatrix(dimension),
-                           1.0,
-                           "Normal")
+                           1.0)
   , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(dimension))))
   , hasIndependentCopula_(true)
 {
+  setName("Normal");
   // Compute the range, the upper class cannot do it.
   computeRange();
 }
@@ -66,11 +66,11 @@ Normal::Normal(const NumericalScalar mu,
   : EllipticalDistribution(NumericalPoint(1, mu)
                            , NumericalPoint(1, sd)
                            , CorrelationMatrix(1)
-                           , 1.0
-                           , "Normal")
+                           , 1.0)
   , normalizationFactor_(1.0 / sqrt(2 * M_PI))
   , hasIndependentCopula_(true)
 {
+  setName("Normal");
   // Compute the range, the upper class cannot do it.
   computeRange();
 }
@@ -82,11 +82,11 @@ Normal::Normal(const NumericalPoint & mean,
   : EllipticalDistribution(mean
                            , sigma
                            , R
-                           , 1.0
-                           , "Normal")
+                           , 1.0)
   , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
   , hasIndependentCopula_(false)
 {
+  setName("Normal");
   // Compute the range, the upper class cannot do it.
   computeRange();
   checkIndependentCopula();
@@ -97,11 +97,11 @@ Normal::Normal(const NumericalPoint & mean,
   : EllipticalDistribution(mean
                            , NumericalPoint(mean.getDimension(), 1.0)
                            , IdentityMatrix(mean.getDimension())
-                           , 1.0
-                           , "Normal")
+                           , 1.0)
   , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
   , hasIndependentCopula_(false)
 {
+  setName("Normal");
   UnsignedInteger dimension(mean.getDimension());
   if (C.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mean vector and the covariance matrix have incompatible dimensions";
   if (!const_cast<CovarianceMatrix*>(&C)->isPositiveDefinite()) throw InvalidArgumentException(HERE) << "Error: the covariance matrix is not positive definite";

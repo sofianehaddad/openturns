@@ -42,13 +42,12 @@ class KernelSmoothing : public PersistentObject
 public:
 
   /** Default constructor */
-  explicit KernelSmoothing(const String & name = "KernelSmoothing");
+  KernelSmoothing();
 
   /** Default constructor */
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool & bined = true,
-                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ),
-                           const String & name = "KernelSmoothing");
+                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ));
 
   /** Virtual constructor */
   virtual KernelSmoothing * clone() const;

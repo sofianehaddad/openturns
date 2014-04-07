@@ -57,7 +57,7 @@ static Factory<RandomMixture> RegisteredFactory("RandomMixture");
 /* Default constructor */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const NumericalScalar constant)
-  : DistributionImplementation("RandomMixture"),
+  : DistributionImplementation(),
     distributionCollection_(),
     constant_(constant),
     blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" )),
@@ -71,6 +71,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
     cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" )),
     equivalentNormal_()
 {
+  setName("RandomMixture");
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the same dimension). We do this by calling
@@ -83,7 +84,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const NumericalPoint & weights,
                              const NumericalScalar constant)
-  : DistributionImplementation("RandomMixture"),
+  : DistributionImplementation(),
     distributionCollection_(),
     constant_(constant),
     blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" )),
@@ -97,6 +98,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
     cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" )),
     equivalentNormal_()
 {
+  setName("RandomMixture");
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the same dimension). We do this by calling

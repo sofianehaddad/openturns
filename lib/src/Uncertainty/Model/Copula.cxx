@@ -43,25 +43,22 @@ Copula::Copula(const Distribution & distribution)
 }
 
 /* Constructor from implementation */
-Copula::Copula(const DistributionImplementation & implementation,
-               const String & name)
-  : Distribution(implementation, name)
+Copula::Copula(const DistributionImplementation & implementation)
+  : Distribution(implementation)
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-Copula::Copula(const Implementation & p_implementation,
-               const String & name)
-  : Distribution(p_implementation, name)
+Copula::Copula(const Implementation & p_implementation)
+  : Distribution(p_implementation)
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-Copula::Copula(DistributionImplementation * p_implementation,
-               const String & name)
-  : Distribution(p_implementation, name)
+Copula::Copula(DistributionImplementation * p_implementation)
+  : Distribution(p_implementation)
 {
   // Nothing to do
 }

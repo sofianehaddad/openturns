@@ -33,17 +33,16 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearTaylor);
 
-LinearTaylor::LinearTaylor(const String & name)
-  : PersistentObject(name)
+LinearTaylor::LinearTaylor()
+  : PersistentObject()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 LinearTaylor::LinearTaylor(const NumericalPoint & center,
-                           const NumericalMathFunction & inputFunction,
-                           const String & name)
-  : PersistentObject(name),
+                           const NumericalMathFunction & inputFunction)
+  : PersistentObject(),
     center_(center),
     inputFunction_(inputFunction)
 {

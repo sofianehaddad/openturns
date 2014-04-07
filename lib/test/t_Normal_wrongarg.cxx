@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Normal
 {
 public:
-  explicit TestObject() : Normal(NumericalPoint(1), NumericalPoint(1), CorrelationMatrix(1)) {}
-  explicit TestObject(const String & name) : Normal(NumericalPoint(1), NumericalPoint(1), CorrelationMatrix(1))
-  {
-    setName(name);
-  }
+  TestObject() : Normal(NumericalPoint(1), NumericalPoint(1), CorrelationMatrix(1)) {}
   virtual ~TestObject() {}
 };
 

@@ -46,7 +46,7 @@ class ArchimedeanCopula
 public:
 
   /** Default constructor */
-  explicit ArchimedeanCopula(const String & name = DefaultName);
+  ArchimedeanCopula();
 
 
   /** Virtual constructor */

@@ -48,12 +48,11 @@ public:
 
 
   /** Default constructor */
-  explicit QuadraticTaylor(const String & name = DefaultName);
+  QuadraticTaylor();
 
   /** Constructor with parameters */
   QuadraticTaylor(const NumericalPoint & center,
-                  const NumericalMathFunction & inputFunction,
-                  const String & name = DefaultName);
+                  const NumericalMathFunction & inputFunction);
 
 
   /** Virtual constructor */

@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public LogNormal
 {
 public:
-  explicit TestObject() : LogNormal(-1.0, 1.5, -0.5) {}
-  explicit TestObject(const String & name) : LogNormal(-1.0, 1.5, -0.5)
-  {
-    setName(name);
-  }
+  TestObject() : LogNormal(-1.0, 1.5, -0.5) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     LogNormal distribution(-1.0, 1.5, -0.5);

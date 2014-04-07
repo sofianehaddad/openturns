@@ -36,8 +36,8 @@ CLASSNAMEINIT(IntegrationAlgorithmImplementation);
 static Factory<IntegrationAlgorithmImplementation> RegisteredFactory("IntegrationAlgorithmImplementation");
 
 /* Constructor without parameters */
-IntegrationAlgorithmImplementation::IntegrationAlgorithmImplementation(const String & name)
-  : PersistentObject(name)
+IntegrationAlgorithmImplementation::IntegrationAlgorithmImplementation()
+  : PersistentObject()
 {
   // Nothing to do
 }

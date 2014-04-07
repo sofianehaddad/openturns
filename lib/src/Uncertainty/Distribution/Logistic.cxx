@@ -35,9 +35,10 @@ static Factory<Logistic> RegisteredFactory("Logistic");
 
 /* Default constructor */
 Logistic::Logistic()
-  : ContinuousDistribution("Logistic"),
+  : ContinuousDistribution(),
     alpha_(0.0), beta_(1.0)
 {
+  setName( "Logistic" );
   setDimension( 1 );
   computeRange();
 }
@@ -45,9 +46,10 @@ Logistic::Logistic()
 /* Parameters constructor */
 Logistic::Logistic(const NumericalScalar alpha,
                    const NumericalScalar beta)
-  : ContinuousDistribution("Logistic"),
+  : ContinuousDistribution(),
     alpha_(alpha), beta_(0.0)
 {
+  setName( "Logistic" );
   // This call set also the range.
   setBeta(beta);
   setDimension( 1 );

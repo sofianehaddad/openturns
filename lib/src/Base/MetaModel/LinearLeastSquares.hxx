@@ -48,13 +48,11 @@ public:
 
   /** Constructor with parameters */
   explicit LinearLeastSquares(const NumericalSample & dataIn,
-                              const NumericalMathFunction & inputFunction,
-                              const String & name = DefaultName);
+                              const NumericalMathFunction & inputFunction);
 
   /** Constructor with parameters */
   explicit LinearLeastSquares(const NumericalSample & dataIn,
-                              const NumericalSample & dataOut,
-                              const String & name = DefaultName);
+                              const NumericalSample & dataOut);
 
 
   /** Virtual constructor */

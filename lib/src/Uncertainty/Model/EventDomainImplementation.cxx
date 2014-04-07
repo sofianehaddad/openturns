@@ -44,16 +44,15 @@ EventDomainImplementation::EventDomainImplementation()
 
 /* Constructor from RandomVector */
 EventDomainImplementation::EventDomainImplementation(const RandomVectorImplementation & antecedent,
-    const Domain & domain,
-    const String & name)
-  : CompositeRandomVector(name),
+    const Domain & domain)
+  : CompositeRandomVector(),
     domain_(domain)
 {
   // Event can only be constructed from composite random vectors
   if (!antecedent.isComposite())
     throw InvalidArgumentException(HERE) << "Event can only be constructed from composite random vectors. The random vector ("
-                                         << antecedent << ") passed as first argument of event '"
-                                         << name << "' has incorrect type";
+                                         << antecedent << ") passed as first argument of EventDomainImplementation "
+                                         << " has incorrect type";
   function_ = antecedent.getFunction();
   p_antecedent_ = antecedent.getAntecedent();
   setName(antecedent.getName());

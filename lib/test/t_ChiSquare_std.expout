@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=ChiSquare name=ChiSquare dimension=1 nu=1.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=ChiSquare name=myName dimension=1 nu=1.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=ChiSquare name=myNewName dimension=1 nu=1.5
 Distribution class=ChiSquare name=ChiSquare dimension=1 nu=1.5
 Distribution ChiSquare(nu = 1.5)
 Elliptical = false

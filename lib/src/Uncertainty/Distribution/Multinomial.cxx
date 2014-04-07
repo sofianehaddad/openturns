@@ -45,13 +45,14 @@ static Factory<Multinomial> RegisteredFactory("Multinomial");
 
 /* Default constructor */
 Multinomial::Multinomial()
-  : DiscreteDistribution("Multinomial")
+  : DiscreteDistribution()
   , n_(0)
   , p_(0)
   , sumP_(0.0)
   , smallA_(ResourceMap::GetAsNumericalScalar("Multinomial-smallA"))
   , eta_(ResourceMap::GetAsNumericalScalar("Multinomial-eta"))
 {
+  setName("Multinomial");
   // This method compute the range also
   setN(1);
   setP( NumericalPoint(1, 0.5) );
@@ -60,13 +61,14 @@ Multinomial::Multinomial()
 /* Parameters constructor */
 Multinomial::Multinomial(const UnsignedInteger n,
                          const NumericalPoint & p)
-  : DiscreteDistribution("Multinomial")
+  : DiscreteDistribution()
   , n_(0)
   , p_(0)
   , sumP_(0.0)
   , smallA_(ResourceMap::GetAsNumericalScalar("Multinomial-smallA"))
   , eta_(ResourceMap::GetAsNumericalScalar("Multinomial-eta"))
 {
+  setName("Multinomial");
   // This method compute the range also
   setN( n );
   setP( p );

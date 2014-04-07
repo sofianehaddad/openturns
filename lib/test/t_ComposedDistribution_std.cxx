@@ -40,8 +40,6 @@ int main(int argc, char *argv[])
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
-    // Test some extra functionnalities
-    //checkNameFeature<TestObject>();
     NumericalPoint mean(3);
     mean[0] = 1.0;
     mean[1] = 2.0;
@@ -57,17 +55,20 @@ int main(int argc, char *argv[])
     Description component(1);
     component[0] = "One";
     marginal.setDescription(component);
-    aCollection.add( Distribution(marginal, "First") );
+    aCollection.add( Distribution(marginal) );
+    aCollection[0].setName("First");
     marginal = Normal(mean[1], sigma[1]);
     marginal.setName("Second");
     component[0] = "Two";
     marginal.setDescription(component);
-    aCollection.add( Distribution(marginal, "Second") );
+    aCollection.add( Distribution(marginal) );
+    aCollection[1].setName("Second");
     marginal = Normal(mean[2], sigma[2]);
     marginal.setName("Third");
     component[0] = "Three";
     marginal.setDescription(component);
-    aCollection.add( Distribution(marginal, "Third") );
+    aCollection.add( Distribution(marginal) );
+    aCollection[2].setName("Third");
 
     // Create a copula
     IndependentCopula aCopula(aCollection.getSize());

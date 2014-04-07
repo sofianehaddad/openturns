@@ -53,7 +53,7 @@ public:
   typedef Antecedent                         Implementation;
 
   /** Default constructor */
-  explicit ProcessImplementation(const String & name = DefaultName);
+  ProcessImplementation();
 
   /** Virtual constructor */
   virtual ProcessImplementation * clone() const;

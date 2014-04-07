@@ -56,7 +56,7 @@ public:
   QuadraticCumul() {};
 
   /** Constructor with parameters */
-  explicit QuadraticCumul(const RandomVector & limitStateVariable, const String & name = DefaultName);
+  explicit QuadraticCumul(const RandomVector & limitStateVariable);
 
 
   /** Virtual constructor */

@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public IndependentCopula
 {
 public:
-  explicit TestObject() : IndependentCopula(3) {}
-  explicit TestObject(const String & name) : IndependentCopula(3)
-  {
-    setName(name);
-  }
+  TestObject() : IndependentCopula(3) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     //    checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    //    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     UnsignedInteger dim(3);

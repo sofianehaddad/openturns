@@ -37,10 +37,11 @@ static Factory<ChiSquare> RegisteredFactory("ChiSquare");
 
 /* Default constructor */
 ChiSquare::ChiSquare()
-  : ContinuousDistribution("ChiSquare")
+  : ContinuousDistribution()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
+  setName("ChiSquare");
   // This call also call update() and computeRange()
   setNu(1.0);
   setDimension(1);
@@ -49,10 +50,11 @@ ChiSquare::ChiSquare()
 
 /* Parameters constructor */
 ChiSquare::ChiSquare(const NumericalScalar nu)
-  : ContinuousDistribution("ChiSquare")
+  : ContinuousDistribution()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
+  setName("ChiSquare");
   // This call set also call computeRange() and update().
   setNu(nu);
   setDimension(1);

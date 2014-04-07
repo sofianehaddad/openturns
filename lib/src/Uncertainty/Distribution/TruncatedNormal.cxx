@@ -36,7 +36,7 @@ static Factory<TruncatedNormal> RegisteredFactory("TruncatedNormal");
 
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
-  : ContinuousDistribution("TruncatedNormal"),
+  : ContinuousDistribution(),
     mu_(0.0),
     sigma_(1.0),
     a_(-1.0),
@@ -53,6 +53,7 @@ TruncatedNormal::TruncatedNormal()
     // 1.46479477349154407761 = 1 / (Phi(1) - Phi(-1))
     normalizationFactor_(1.46479477349154407761)
 {
+  setName("TruncatedNormal");
   setDimension(1);
   computeRange();
 }
@@ -62,7 +63,7 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
                                  const NumericalScalar sigma,
                                  const NumericalScalar a,
                                  const NumericalScalar b)
-  : ContinuousDistribution("TruncatedNormal"),
+  : ContinuousDistribution(),
     mu_(mu),
     sigma_(0.0),
     a_(a),
@@ -75,6 +76,7 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
     PhiBNorm_(0.0),
     normalizationFactor_(0.0)
 {
+  setName("TruncatedNormal");
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with sigma <=0. Here, sigma=" << sigma;
   if (a >= b) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with a >= b. Here, a=" << a << " and b=" << b;
   setSigma(sigma);

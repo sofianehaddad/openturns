@@ -44,16 +44,14 @@ public:
   /** Some typedefs to ease reading */
 
   /** Default constructor */
-  explicit WhiteNoise(const String & name = DefaultName);
+  WhiteNoise();
 
   /** Standard constructor */
-  explicit WhiteNoise(const Distribution & distribution,
-                      const String & name = DefaultName);
+  explicit WhiteNoise(const Distribution & distribution);
 
   /** Standard constructor */
   WhiteNoise(const Distribution & distribution,
-             const Mesh & mesh,
-             const String & name = DefaultName);
+             const Mesh & mesh);
 
   /** Virtual constructor */
   virtual WhiteNoise * clone() const;

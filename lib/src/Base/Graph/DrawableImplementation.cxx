@@ -929,7 +929,7 @@ String DrawableImplementation::ConvertFromHSVA(const NumericalScalar hue,
 /* Default constructor */
 DrawableImplementation::DrawableImplementation(const NumericalSample & data,
     const String & legend)
-  : PersistentObject(legend),
+  : PersistentObject(),
     legend_(legend),
     data_(data),
     color_(ResourceMap::Get("DrawableImplementation-DefaultColor")),
@@ -939,6 +939,7 @@ DrawableImplementation::DrawableImplementation(const NumericalSample & data,
     lineWidth_(ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DefaultLineWidth")),
     dataFileName_("")
 {
+  setName(legend);
   if(IsFirstInitialization)
   {
     InitializeValidParameterList();

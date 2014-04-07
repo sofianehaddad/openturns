@@ -50,27 +50,28 @@ CLASSNAMEINIT(KernelSmoothing);
 static Factory<KernelSmoothing> RegisteredFactory("KernelSmoothing");
 
 /* Default constructor */
-KernelSmoothing::KernelSmoothing(const String & name)
-  : PersistentObject(name)
+KernelSmoothing::KernelSmoothing()
+  : PersistentObject()
   , bandwidth_(NumericalPoint(0))
   , kernel_(Normal())
   , bined_(true)
   , binNumber_(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ))
 {
+  setName("KernelSmoothing");
   if (binNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: The default number of bins=" << binNumber_ << " is less than 2. Check the ResourceMap or the openturns.conf file.";
 }
 
 /* Default constructor */
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
                                  const Bool & bined,
-                                 const UnsignedInteger binNumber,
-                                 const String & name)
-  : PersistentObject(name)
+                                 const UnsignedInteger binNumber)
+  : PersistentObject()
   , bandwidth_(NumericalPoint(0))
   , kernel_(kernel)
   , bined_(bined)
   , binNumber_(binNumber)
 {
+  setName("KernelSmoothing");
   // Only 1D kernel allowed here
   if (kernel.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: only 1D kernel allowed for product kernel smoothing";
   if (bined && (binNumber < 2)) throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";

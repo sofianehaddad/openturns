@@ -52,29 +52,25 @@ public:
   typedef Collection<NumericalComplex>                     NumericalComplexCollection;
 
   /** Default constructor */
-  explicit SpectralNormalProcess(const String & name = DefaultName);
+  SpectralNormalProcess();
 
   /** Standard constructor  - The timeGrid imposes the frequencies values*/
   SpectralNormalProcess(const SecondOrderModel & model,
-                        const RegularGrid & grid,
-                        const String & name = DefaultName);
+                        const RegularGrid & grid);
 
   /** Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
   SpectralNormalProcess(const SpectralModel & spectralModel,
-                        const RegularGrid & grid,
-                        const String & name = DefaultName);
+                        const RegularGrid & grid);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralNormalProcess(const SecondOrderModel & model,
                         const NumericalScalar maximalFrequency,
-                        const UnsignedInteger nFrequency,
-                        const String & name = DefaultName);
+                        const UnsignedInteger nFrequency);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralNormalProcess(const SpectralModel & spectralModel,
                         const NumericalScalar maximalFrequency,
-                        const UnsignedInteger nFrequency,
-                        const String & name = DefaultName);
+                        const UnsignedInteger nFrequency);
 
   /** Virtual constructor */
   virtual SpectralNormalProcess * clone() const;

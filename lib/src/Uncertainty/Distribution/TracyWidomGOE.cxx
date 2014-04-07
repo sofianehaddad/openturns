@@ -36,9 +36,10 @@ static Factory<TracyWidomGOE> RegisteredFactory("TracyWidomGOE");
 
 /* Default constructor */
 TracyWidomGOE::TracyWidomGOE()
-  : ContinuousDistribution("TracyWidomGOE")
+  : ContinuousDistribution()
 {
   throw NotYetImplementedException(HERE);
+  setName("TracyWidomGOE");
 }
 
 /* Comparison operator */

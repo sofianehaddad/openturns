@@ -38,8 +38,8 @@ CLASSNAMEINIT(GaussProductExperiment);
 typedef Collection< NumericalPoint > NumericalPointCollection;
 
 /* Default constructor */
-GaussProductExperiment::GaussProductExperiment(const String & name):
-  WeightedExperiment(name),
+GaussProductExperiment::GaussProductExperiment():
+  WeightedExperiment(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)
@@ -48,9 +48,8 @@ GaussProductExperiment::GaussProductExperiment(const String & name):
 }
 
 /* Constructor with parameters */
-GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees,
-    const String & name):
-  WeightedExperiment(name),
+GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees):
+  WeightedExperiment(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)
@@ -59,9 +58,8 @@ GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees,
 }
 
 /* Constructor with parameters */
-GaussProductExperiment::GaussProductExperiment(const Distribution & distribution,
-    const String & name):
-  WeightedExperiment(name),
+GaussProductExperiment::GaussProductExperiment(const Distribution & distribution):
+  WeightedExperiment(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)
@@ -73,9 +71,8 @@ GaussProductExperiment::GaussProductExperiment(const Distribution & distribution
 
 /* Constructor with parameters */
 GaussProductExperiment::GaussProductExperiment(const Distribution & distribution,
-    const Indices & marginalDegrees,
-    const String & name):
-  WeightedExperiment(name),
+    const Indices & marginalDegrees):
+  WeightedExperiment(),
   collection_(0),
   marginalDegrees_(0),
   nodes_(0, 0)

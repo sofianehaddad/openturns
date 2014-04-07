@@ -38,8 +38,8 @@ CLASSNAMEINIT(ARMA);
 
 static Factory<ARMA> RegisteredFactory("ARMA");
 
-ARMA::ARMA(const String & name)
-  : ProcessImplementation(name)
+ARMA::ARMA()
+  : ProcessImplementation()
   , ARCoefficients_(0, 1)
   , MACoefficients_(0, 1)
   , noiseDistribution_(Normal())
@@ -56,9 +56,8 @@ ARMA::ARMA(const String & name)
 /* Standard constructor with coefficients and a White Noise */
 ARMA::ARMA(const ARMACoefficients & ARCoefficients,
            const ARMACoefficients & MACoefficients,
-           const WhiteNoise & whiteNoise,
-           const String & name)
-  : ProcessImplementation(name)
+           const WhiteNoise & whiteNoise)
+  : ProcessImplementation()
   // Don't initialize these attributes before to check if they are valid
   // as they can be huge
   , ARCoefficients_()
@@ -88,9 +87,8 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
 ARMA::ARMA(const ARMACoefficients & ARCoefficients,
            const ARMACoefficients & MACoefficients,
            const WhiteNoise & whiteNoise,
-           const ARMAState & state,
-           const String & name)
-  : ProcessImplementation(name)
+           const ARMAState & state)
+  : ProcessImplementation()
   // Don't initialize these attributes before to check if they are valid
   // as they can be huge
   , ARCoefficients_()

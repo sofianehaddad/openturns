@@ -45,7 +45,7 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit KissFFT(const String & name = DefaultName);
+  KissFFT();
 
   /** Virtual copy constructor */
   KissFFT * clone() const;

@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Burr
 {
 public:
-  explicit TestObject() : Burr(1.5, 4.5) {}
-  explicit TestObject(const String & name) : Burr(1.5, 4.5)
-  {
-    setName(name);
-  }
+  TestObject() : Burr(1.5, 4.5) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Burr distribution(1.5, 4.5);

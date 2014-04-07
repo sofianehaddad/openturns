@@ -36,8 +36,8 @@ CLASSNAMEINIT(GaussKronrod);
 static Factory<GaussKronrod> RegisteredFactory("GaussKronrod");
 
 /* Constructor without parameters */
-GaussKronrod::GaussKronrod(const String & name)
-  : IntegrationAlgorithmImplementation(name)
+GaussKronrod::GaussKronrod()
+  : IntegrationAlgorithmImplementation()
   , maximumSubIntervals_(ResourceMap::GetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals"))
   , maximumError_(ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"))
   , rule_()

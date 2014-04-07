@@ -50,8 +50,7 @@ public:
 
   /** Default constructor */
   ConditionalRandomVector(const Distribution & distribution,
-                          const RandomVector & randomParameters,
-                          const String & name = DefaultName);
+                          const RandomVector & randomParameters);
 
 
   /** Virtual constructor */
@@ -87,7 +86,7 @@ protected:
   friend class Factory<ConditionalRandomVector>;
 
   /** Default constructor */
-  ConditionalRandomVector(const String & name = DefaultName) : RandomVectorImplementation(name) {};
+  ConditionalRandomVector() : RandomVectorImplementation() {};
 
 private:
 

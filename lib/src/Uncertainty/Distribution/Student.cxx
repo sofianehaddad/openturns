@@ -51,10 +51,11 @@ Student::Student(const NumericalScalar nu,
                  const UnsignedInteger dimension)
   : EllipticalDistribution(NumericalPoint(dimension, 0.0),
                            NumericalPoint(dimension, 1.0),
-                           IdentityMatrix(dimension), -1.0, "Student")
+                           IdentityMatrix(dimension), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
+  setName("Student");
   setDimension( dimension );
   // This call set also the range
   setNu(nu);
@@ -64,10 +65,11 @@ Student::Student(const NumericalScalar nu,
 Student::Student(const NumericalScalar nu,
                  const NumericalScalar mu,
                  const NumericalScalar sigma)
-  : EllipticalDistribution(NumericalPoint(1, mu), NumericalPoint(1, sigma), IdentityMatrix(1), -1.0, "Student")
+  : EllipticalDistribution(NumericalPoint(1, mu), NumericalPoint(1, sigma), IdentityMatrix(1), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
+  setName("Student");
   setDimension(1);
   // Set nu with checks. This call set also the range.
   setNu(nu);
@@ -78,10 +80,11 @@ Student::Student(const NumericalScalar nu,
                  const NumericalPoint & mu,
                  const NumericalPoint & sigma,
                  const CorrelationMatrix & R)
-  : EllipticalDistribution(mu, sigma, R, -1.0, "Student")
+  : EllipticalDistribution(mu, sigma, R, -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
+  setName("Student");
   setDimension(mu.getDimension());
   // Set nu with checks. This call set also the range.
   setNu(nu);

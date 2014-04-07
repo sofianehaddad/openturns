@@ -51,10 +51,11 @@ static Factory<ComposedDistribution> RegisteredFactory("ComposedDistribution");
 
 /* Default constructor */
 ComposedDistribution::ComposedDistribution()
-  : DistributionImplementation("ComposedDistribution")
+  : DistributionImplementation()
   , distributionCollection_()
   , copula_(IndependentCopula(1))
 {
+  setName("ComposedDistribution");
   setDimension(1);
   DistributionCollection coll(1);
   coll[0] = Uniform();
@@ -64,10 +65,11 @@ ComposedDistribution::ComposedDistribution()
 
 /* Default constructor */
 ComposedDistribution::ComposedDistribution(const DistributionCollection & coll)
-  : DistributionImplementation("ComposedDistribution")
+  : DistributionImplementation()
   , distributionCollection_()
   , copula_(IndependentCopula(coll.getSize()))
 {
+  setName("ComposedDistribution");
   setDimension(coll.getSize());
   // We can NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
@@ -80,10 +82,11 @@ ComposedDistribution::ComposedDistribution(const DistributionCollection & coll)
 /* Default constructor */
 ComposedDistribution::ComposedDistribution(const DistributionCollection & coll,
     const Distribution & copula)
-  : DistributionImplementation("ComposedDistribution")
+  : DistributionImplementation()
   , distributionCollection_()
   , copula_(copula)
 {
+  setName("ComposedDistribution");
   if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
   setDimension(copula.getDimension());
   // We can NOT set distributionCollection_ in the member area of the constructor

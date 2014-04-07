@@ -48,12 +48,11 @@ public:
 
 
   /** Default constructor */
-  explicit LinearTaylor(const String & name = DefaultName);
+  LinearTaylor();
 
   /** Constructor with parameters */
   LinearTaylor(const NumericalPoint & center,
-               const NumericalMathFunction & inputFunction,
-               const String & name = DefaultName);
+               const NumericalMathFunction & inputFunction);
 
 
   /** Virtual constructor */

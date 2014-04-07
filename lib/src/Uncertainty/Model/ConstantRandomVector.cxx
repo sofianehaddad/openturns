@@ -36,9 +36,8 @@ CLASSNAMEINIT(ConstantRandomVector);
 static Factory<ConstantRandomVector> RegisteredFactory("ConstantRandomVector");
 
 /* Default constructor */
-ConstantRandomVector::ConstantRandomVector(const NumericalPointWithDescription & point,
-    const String & name)
-  : RandomVectorImplementation(name),
+ConstantRandomVector::ConstantRandomVector(const NumericalPointWithDescription & point)
+  : RandomVectorImplementation(),
     point_(point)
 {
   // Get the description from the underlying point
@@ -46,9 +45,8 @@ ConstantRandomVector::ConstantRandomVector(const NumericalPointWithDescription &
 }
 
 /* Parameter constructor */
-ConstantRandomVector::ConstantRandomVector(const NumericalPoint & point,
-    const String & name)
-  : RandomVectorImplementation(name),
+ConstantRandomVector::ConstantRandomVector(const NumericalPoint & point)
+  : RandomVectorImplementation(),
     point_(point)
 {
 }

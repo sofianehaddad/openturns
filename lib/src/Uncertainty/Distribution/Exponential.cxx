@@ -35,10 +35,11 @@ static Factory<Exponential> RegisteredFactory("Exponential");
 
 /* Default constructor */
 Exponential::Exponential()
-  : ContinuousDistribution("Exponential"),
+  : ContinuousDistribution(),
     lambda_(1.0),
     gamma_(0.0)
 {
+  setName( "Exponential" );
   setDimension( 1 );
   computeRange();
 }
@@ -46,10 +47,11 @@ Exponential::Exponential()
 /* Parameters constructor */
 Exponential::Exponential(const NumericalScalar lambda,
                          const NumericalScalar gamma)
-  : ContinuousDistribution("Exponential"),
+  : ContinuousDistribution(),
     lambda_(0.0),
     gamma_(gamma)
 {
+  setName( "Exponential" );
   // We set the dimension of the Exponential distribution
   setDimension( 1 );
   // This call check lambda and set also the range.

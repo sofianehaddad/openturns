@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Binomial name=Binomial dimension=1 n=15 p=0.7
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Binomial name=myName dimension=1 n=15 p=0.7
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Binomial name=myNewName dimension=1 n=15 p=0.7
 Distribution class=Binomial name=Binomial dimension=1 n=15 p=0.7
 Distribution Binomial(n = 15, p = 0.7)
 Elliptical = false

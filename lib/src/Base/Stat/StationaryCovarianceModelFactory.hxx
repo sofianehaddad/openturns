@@ -43,8 +43,7 @@ public:
 
 
   /** Default constructor */
-  StationaryCovarianceModelFactory(const SpectralModelFactory & factory = WelchFactory(),
-                                   const String & name = OT::DefaultName);
+  StationaryCovarianceModelFactory(const SpectralModelFactory & factory = WelchFactory());
 
   /** Virtual constructor */
   virtual StationaryCovarianceModelFactory * clone() const;

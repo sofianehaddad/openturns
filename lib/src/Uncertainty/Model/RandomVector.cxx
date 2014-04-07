@@ -46,61 +46,53 @@ RandomVector:: RandomVector()
 }
 
 /* Parameters constructor */
-RandomVector::RandomVector(const RandomVectorImplementation & implementation,
-                           const String & name)
+RandomVector::RandomVector(const RandomVectorImplementation & implementation)
   : TypedInterfaceObject<RandomVectorImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-RandomVector::RandomVector(const Implementation & p_implementation,
-                           const String & name)
+RandomVector::RandomVector(const Implementation & p_implementation)
   : TypedInterfaceObject<RandomVectorImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-RandomVector::RandomVector(RandomVectorImplementation * p_implementation,
-                           const String & name)
+RandomVector::RandomVector(RandomVectorImplementation * p_implementation)
   : TypedInterfaceObject<RandomVectorImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor for constant vector */
-RandomVector::RandomVector(const NumericalPoint & point,
-                           const String & name)
-  : TypedInterfaceObject<RandomVectorImplementation>(new ConstantRandomVector(point, name))
+RandomVector::RandomVector(const NumericalPoint & point)
+  : TypedInterfaceObject<RandomVectorImplementation>(new ConstantRandomVector(point))
 {
   // Nothing to do
 }
 
 /* Constructor for distribution-based vector */
-RandomVector::RandomVector(const Distribution & distribution,
-                           const String & name)
-  : TypedInterfaceObject<RandomVectorImplementation>(new UsualRandomVector(distribution, name))
+RandomVector::RandomVector(const Distribution & distribution)
+  : TypedInterfaceObject<RandomVectorImplementation>(new UsualRandomVector(distribution))
 {
   // Nothing to do
 }
 
 /* Constructor for distribution-based conditional vector */
 RandomVector::RandomVector(const Distribution & distribution,
-                           const RandomVector & randomParameters,
-                           const String & name)
-  : TypedInterfaceObject<RandomVectorImplementation>(new UsualRandomVector(distribution, name))
+                           const RandomVector & randomParameters)
+  : TypedInterfaceObject<RandomVectorImplementation>(new UsualRandomVector(distribution))
 {
   // Nothing to do
 }
 
 /* Constructor for composite vector */
 RandomVector::RandomVector(const NumericalMathFunction & function,
-                           const RandomVector & antecedent,
-                           const String & name)
+                           const RandomVector & antecedent)
   : TypedInterfaceObject<RandomVectorImplementation>(new CompositeRandomVector(function,
-      antecedent.getImplementation(),
-      name))
+      antecedent.getImplementation()))
 {
   // Nothing to do
 }
@@ -115,18 +107,16 @@ RandomVector::RandomVector(const FunctionalChaosResult & functionalChaosResult)
 /* Constructor from event RandomVector */
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const ComparisonOperator & op,
-                           const NumericalScalar threshold,
-                           const String & name)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventRandomVectorImplementation(*antecedent.getImplementation(), op, threshold, name))
+                           const NumericalScalar threshold)
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventRandomVectorImplementation(*antecedent.getImplementation(), op, threshold))
 {
   // Nothing to do
 }
 
 /* Constructor from domain event */
 RandomVector::RandomVector(const RandomVector & antecedent,
-                           const Domain & domain,
-                           const String & name)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomainImplementation(*antecedent.getImplementation(), domain, name))
+                           const Domain & domain)
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomainImplementation(*antecedent.getImplementation(), domain))
 {
   // Nothing to do
 }
@@ -134,9 +124,8 @@ RandomVector::RandomVector(const RandomVector & antecedent,
 
 /* Constructor from domain event */
 RandomVector::RandomVector(const Process & process,
-                           const Domain & domain,
-                           const String & name)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventProcess(process, domain, name))
+                           const Domain & domain)
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventProcess(process, domain))
 {
   // Nothing to do
 }

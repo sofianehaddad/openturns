@@ -41,7 +41,7 @@ class GaussKronrodRule
   CLASSNAME;
 
   /** Default constructor without parameters */
-  explicit GaussKronrodRule(const String & name = DefaultName);
+  GaussKronrodRule();
 
 public:
 

@@ -71,8 +71,8 @@ typedef Collection<Distribution>                                      Distributi
 static Factory<DistributionImplementation> RegisteredFactory("DistributionImplementation");
 
 /* Default constructor */
-DistributionImplementation::DistributionImplementation(const String & name)
-  : PersistentObject(name)
+DistributionImplementation::DistributionImplementation()
+  : PersistentObject()
   , mean_(NumericalPoint(0))
   , covariance_(CovarianceMatrix(0))
   , gaussNodesAndWeights_()

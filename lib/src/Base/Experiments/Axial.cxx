@@ -31,26 +31,24 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Axial);
 
 /* Default constructor */
-Axial::Axial(const String & name):
-  StratifiedExperiment(name)
+Axial::Axial()
+  : StratifiedExperiment()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Axial::Axial(const NumericalPoint & center,
-             const NumericalPoint & levels,
-             const String & name):
-  StratifiedExperiment(center, levels, name)
+             const NumericalPoint & levels)
+  : StratifiedExperiment(center, levels)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Axial::Axial(const UnsignedInteger dimension,
-             const NumericalPoint & levels,
-             const String & name):
-  StratifiedExperiment(NumericalPoint(dimension, 0.0), levels, name)
+             const NumericalPoint & levels)
+  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
 {
   // Nothing to do
 }

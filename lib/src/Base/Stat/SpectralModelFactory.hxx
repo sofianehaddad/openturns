@@ -42,20 +42,17 @@ public:
   typedef SpectralModelFactoryImplementation::Implementation    Implementation;
 
   /** Default constructor */
-  explicit SpectralModelFactory(const String & name = DefaultName);
+  SpectralModelFactory();
 
   /** Copy constructors */
-  SpectralModelFactory(const SpectralModelFactoryImplementation & implementation,
-                       const String & name = DefaultName);
+  SpectralModelFactory(const SpectralModelFactoryImplementation & implementation);
 
   /** Constructor from implementation */
-  SpectralModelFactory(const Implementation & p_implementation,
-                       const String & name = DefaultName);
+  SpectralModelFactory(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  SpectralModelFactory(SpectralModelFactoryImplementation * p_implementation,
-                       const String & name = DefaultName);
+  SpectralModelFactory(SpectralModelFactoryImplementation * p_implementation);
 #endif
 
   /** Virtual constructor */

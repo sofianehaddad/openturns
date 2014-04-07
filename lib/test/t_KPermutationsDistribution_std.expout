@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=KPermutationsDistribution name=KPermutationsDistribution dimension=5 k=5 n=12
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=KPermutationsDistribution name=myName dimension=5 k=5 n=12
-checkNameAccessors()
-streamObject(const T & anObject)
-class=KPermutationsDistribution name=myNewName dimension=5 k=5 n=12
 Distribution class=KPermutationsDistribution name=KPermutationsDistribution dimension=5 k=5 n=12
 Distribution KPermutationsDistribution(k = 5, n = 12)
 Elliptical = false

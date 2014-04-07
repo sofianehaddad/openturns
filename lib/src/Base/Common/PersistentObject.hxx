@@ -32,12 +32,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/**
- * The default name of any object
- */
-extern const String DefaultName;
-
-
 
 class StorageManager;
 class StorageManagerAdvocate;
@@ -75,24 +69,6 @@ public:
    */
   PersistentObject()
     : p_name_(),
-      id_(IdFactory::BuildId()),
-      shadowedId_(id_),
-      studyVisible_(true)
-  {}
-
-  /**
-   * Standard constructor
-   *
-   * The constructor sets a new Id to the object,
-   * so it can be later referenced by a Study object.
-   * It is also declared visible if member of a study.
-   *
-   * The \p name is used to set the name of the object.
-   * Setting the name implies storage space allocation.
-   * @param name The name of the object
-   */
-  explicit PersistentObject(const String & name)
-    : p_name_(new String(name)),
       id_(IdFactory::BuildId()),
       shadowedId_(id_),
       studyVisible_(true)
@@ -226,7 +202,7 @@ public:
   inline
   Bool hasVisibleName() const
   {
-    return (p_name_ && (p_name_->size() > 0) && (*p_name_ != DefaultName)) ;
+    return (p_name_ && !p_name_->empty());
   }
 
   /**
@@ -240,7 +216,7 @@ public:
   inline
   String getName() const
   {
-    return ( hasName() ? *p_name_ : DefaultName );
+    return ( hasName() ? *p_name_ : "Unnamed" );
   }
 
   /**
@@ -254,7 +230,8 @@ public:
   inline
   void setName(const String & name)
   {
-    p_name_.reset(new String(name));
+    if (name.empty()) p_name_.reset();
+    else p_name_.reset(new String(name));
   }
 
 

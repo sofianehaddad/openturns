@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=2 c=3 d=4 h=0.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Trapezoidal name=myName dimension=1 a=1 b=2 c=3 d=4 h=0.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Trapezoidal name=myNewName dimension=1 a=1 b=2 c=3 d=4 h=0.5
 Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=3 d=14 h=0.135135
 Distribution Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)
 Elliptical = false

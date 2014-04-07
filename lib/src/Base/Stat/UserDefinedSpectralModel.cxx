@@ -35,17 +35,16 @@ static Factory< PersistentCollection< HermitianMatrix > > RegisteredFactory1("Pe
 CLASSNAMEINIT(UserDefinedSpectralModel);
 static Factory<UserDefinedSpectralModel> RegisteredFactory("UserDefinedSpectralModel");
 /* Constructor with parameters */
-UserDefinedSpectralModel::UserDefinedSpectralModel(const String & name)
-  : SpectralModelImplementation(name)
+UserDefinedSpectralModel::UserDefinedSpectralModel()
+  : SpectralModelImplementation()
   , DSPCollection_(0)
 {
   dimension_ = 0;
 }
 
 UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequencyGrid,
-    const HermitianMatrixCollection & spectralFunction,
-    const String & name)
-  : SpectralModelImplementation(name),
+    const HermitianMatrixCollection & spectralFunction)
+  : SpectralModelImplementation(),
     DSPCollection_(0)
 {
   const UnsignedInteger N(frequencyGrid.getN());

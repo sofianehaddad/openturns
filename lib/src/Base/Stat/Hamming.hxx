@@ -44,7 +44,7 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit Hamming(const String & name = DefaultName);
+  Hamming();
 
   /** Virtual copy constructor */
   virtual Hamming * clone() const;

@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Skellam name=Skellam dimension=1 lambda1=10 lambda2=5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Skellam name=myName dimension=1 lambda1=10 lambda2=5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Skellam name=myNewName dimension=1 lambda1=10 lambda2=5
 Distribution class=Skellam name=Skellam dimension=1 lambda1=10 lambda2=5
 Distribution Skellam(lambda1 = 10, lambda2 = 5)
 Elliptical = false

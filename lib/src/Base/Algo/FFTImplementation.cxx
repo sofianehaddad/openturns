@@ -36,8 +36,8 @@ CLASSNAMEINIT(FFTImplementation);
 static Factory<FFTImplementation> RegisteredFactory("FFTImplementation");
 
 /* Constructor without parameters */
-FFTImplementation::FFTImplementation(const String & name)
-  : PersistentObject(name)
+FFTImplementation::FFTImplementation()
+  : PersistentObject()
 {
   // Nothing to do
 }

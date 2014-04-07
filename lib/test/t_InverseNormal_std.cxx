@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public InverseNormal
 {
 public:
-  explicit TestObject() : InverseNormal(0.5, 2.) {}
-  explicit TestObject(const String & name) : InverseNormal(0.5, 2.)
-  {
-    setName(name);
-  }
+  TestObject() : InverseNormal(0.5, 2.) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     InverseNormal distribution(0.5, 2.0);

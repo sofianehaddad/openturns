@@ -42,8 +42,9 @@ static Factory<IndependentCopula> RegisteredFactory("IndependentCopula");
 
 /* Default constructor */
 IndependentCopula::IndependentCopula(const UnsignedInteger dimension)
-  : CopulaImplementation("IndependentCopula")
+  : CopulaImplementation()
 {
+  setName( "IndependentCopula" );
   setDimension(dimension);
   computeRange();
 }

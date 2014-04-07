@@ -43,7 +43,7 @@ class GaussKronrod
 public:
 
   /** Default constructor without parameters */
-  explicit GaussKronrod(const String & name = DefaultName);
+  GaussKronrod();
 
   /** Parameter constructor */
   GaussKronrod(const UnsignedInteger maximumSubIntervals,

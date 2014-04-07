@@ -35,11 +35,12 @@ static Factory<Triangular> RegisteredFactory("Triangular");
 
 /* Default constructor */
 Triangular::Triangular()
-  : ContinuousDistribution("Triangular")
+  : ContinuousDistribution()
   , a_(-1.0)
   , m_(0.0)
   , b_(1.0)
 {
+  setName( "Triangular" );
   setDimension( 1 );
   computeRange();
 }
@@ -48,11 +49,12 @@ Triangular::Triangular()
 Triangular::Triangular(const NumericalScalar a,
                        const NumericalScalar m,
                        const NumericalScalar b)
-  : ContinuousDistribution("Triangular")
+  : ContinuousDistribution()
   , a_(0.0)
   , m_(0.0)
   , b_(0.0)
 {
+  setName( "Triangular" );
   // This call set also the range
   setAMB(a, m, b);
   setDimension( 1 );

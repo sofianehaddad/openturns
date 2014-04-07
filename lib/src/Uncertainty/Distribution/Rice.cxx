@@ -37,11 +37,12 @@ static Factory<Rice> RegisteredFactory("Rice");
 
 /* Default constructor */
 Rice::Rice()
-  : ContinuousDistribution("Rice")
+  : ContinuousDistribution()
   , sigma_(1.0)
   , nu_(0.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
+  setName("Rice");
   setDimension(1);
   computeRange();
 }
@@ -49,11 +50,12 @@ Rice::Rice()
 /* Parameters constructor */
 Rice::Rice(const NumericalScalar sigma,
            const NumericalScalar nu)
-  : ContinuousDistribution("Rice")
+  : ContinuousDistribution()
   , sigma_(0.0)
   , nu_(nu)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
+  setName("Rice");
   setNu(nu);
   // This call sets also the range
   setSigma(sigma);

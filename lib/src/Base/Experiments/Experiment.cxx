@@ -29,23 +29,21 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Experiment);
 
 /* Default constructor */
-Experiment::Experiment(const String & name)
-  : TypedInterfaceObject<ExperimentImplementation>(new Axial(name))
+Experiment::Experiment()
+  : TypedInterfaceObject<ExperimentImplementation>(new Axial())
 {
   // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-Experiment::Experiment(const Implementation & p_implementation,
-                       const String & name)
+Experiment::Experiment(const Implementation & p_implementation)
   : TypedInterfaceObject<ExperimentImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-Experiment::Experiment(const ExperimentImplementation & implementation,
-                       const String & name)
+Experiment::Experiment(const ExperimentImplementation & implementation)
   : TypedInterfaceObject<ExperimentImplementation>(implementation.clone())
 {
   // Nothing to do

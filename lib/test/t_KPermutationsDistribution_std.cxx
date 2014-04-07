@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public KPermutationsDistribution
 {
 public:
-  explicit TestObject() : KPermutationsDistribution(5, 12) {}
-  explicit TestObject(const String & name) : KPermutationsDistribution(5, 12)
-  {
-    setName(name);
-  }
+  TestObject() : KPermutationsDistribution(5, 12) {}
   virtual ~TestObject() {}
 };
 
@@ -48,9 +44,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     KPermutationsDistribution distribution(5, 12);

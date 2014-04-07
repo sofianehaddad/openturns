@@ -35,8 +35,8 @@ CLASSNAMEINIT(RandomWalk);
 static Factory<RandomWalk> RegisteredFactory("RandomWalk");
 
 /* Standard constructor */
-RandomWalk::RandomWalk(const String & name)
-  : ProcessImplementation(name),
+RandomWalk::RandomWalk()
+  : ProcessImplementation(),
     origin_(1),
     distribution_(Normal()),
     currentPosition_(1)
@@ -46,9 +46,8 @@ RandomWalk::RandomWalk(const String & name)
 
 /* Standard constructor */
 RandomWalk::RandomWalk(const NumericalPoint & origin,
-                       const Distribution & distribution,
-                       const String & name)
-  : ProcessImplementation(name),
+                       const Distribution & distribution)
+  : ProcessImplementation(),
     origin_(origin),
     distribution_(),
     currentPosition_(origin)
@@ -61,9 +60,8 @@ RandomWalk::RandomWalk(const NumericalPoint & origin,
 /* Standard constructor */
 RandomWalk::RandomWalk(const NumericalPoint & origin,
                        const Distribution & distribution,
-                       const RegularGrid & timeGrid,
-                       const String & name)
-  : ProcessImplementation(name),
+                       const RegularGrid & timeGrid)
+  : ProcessImplementation(),
     origin_(origin),
     distribution_(),
     currentPosition_(origin)

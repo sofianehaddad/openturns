@@ -63,7 +63,7 @@ public:
   typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
 
   /** Default constructor */
-  DistributionImplementation(const String & name = DefaultName);
+  DistributionImplementation();
 
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;

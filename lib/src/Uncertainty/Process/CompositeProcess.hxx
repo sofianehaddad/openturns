@@ -44,17 +44,15 @@ public:
 
 
   /** Default constructor */
-  explicit CompositeProcess(const String & name = DefaultName);
+  CompositeProcess();
 
   /** Standard constructor */
   CompositeProcess(const DynamicalFunction & function,
-                   const Antecedent & p_antecedent,
-                   const String & name = DefaultName);
+                   const Antecedent & p_antecedent);
 
   /** Standard constructor */
   CompositeProcess(const DynamicalFunction & function,
-                   const Process & antecedent,
-                   const String & name = DefaultName);
+                   const Process & antecedent);
 
   /** Virtual constructor */
   virtual CompositeProcess * clone() const;

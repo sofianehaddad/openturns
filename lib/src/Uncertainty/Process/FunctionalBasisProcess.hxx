@@ -46,18 +46,16 @@ public:
   /** Some typedefs to ease reading */
 
   /** Default constructor */
-  FunctionalBasisProcess(const String & name = DefaultName);
+  FunctionalBasisProcess();
+
+  /** Standard constructor */
+  FunctionalBasisProcess(const Distribution & distribution,
+                         const Basis & basis);
 
   /** Standard constructor */
   FunctionalBasisProcess(const Distribution & distribution,
                          const Basis & basis,
-                         const String & name = DefaultName);
-
-  /** Standard constructor */
-  FunctionalBasisProcess(const Distribution & distribution,
-                         const Basis & basis,
-                         const Mesh & mesh,
-                         const String & name = DefaultName);
+                         const Mesh & mesh);
 
   /** Virtual constructor */
   virtual FunctionalBasisProcess * clone() const;

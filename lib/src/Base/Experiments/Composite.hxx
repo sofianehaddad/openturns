@@ -43,17 +43,15 @@ public:
 
 
   /** Default constructor */
-  explicit Composite(const String & name = DefaultName);
+  Composite();
 
   /** Constructor with parameters */
   Composite(const NumericalPoint & center,
-            const NumericalPoint & levels,
-            const String & name = DefaultName);
+            const NumericalPoint & levels);
 
   /** Constructor with parameters */
   Composite(const UnsignedInteger dimension,
-            const NumericalPoint & levels,
-            const String & name = DefaultName);
+            const NumericalPoint & levels);
 
   /** Virtual constructor */
   virtual Composite * clone() const;

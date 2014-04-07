@@ -39,8 +39,6 @@ int main(int argc, char *argv[])
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
-    // Test some extra functionnalities
-    //checkNameFeature<TestObject>();
     // Create a collection of distribution
     {
       Collection< Distribution > coll2;

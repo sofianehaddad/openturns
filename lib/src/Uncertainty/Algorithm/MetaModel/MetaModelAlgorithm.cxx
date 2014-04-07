@@ -34,16 +34,15 @@ CLASSNAMEINIT(MetaModelAlgorithm);
 static Factory<MetaModelAlgorithm> RegisteredFactory("MetaModelAlgorithm");
 
 /* Default constructor */
-MetaModelAlgorithm::MetaModelAlgorithm(const String & name)
-  : PersistentObject( name )
+MetaModelAlgorithm::MetaModelAlgorithm()
+  : PersistentObject()
 {
 }
 
 /* Constructor with parameters */
 MetaModelAlgorithm::MetaModelAlgorithm(const Distribution & distribution,
-                                       const NumericalMathFunction & model,
-                                       const String & name)
-  : PersistentObject( name ),
+                                       const NumericalMathFunction & model)
+  : PersistentObject(),
     distribution_(distribution),
     model_(model)
 {

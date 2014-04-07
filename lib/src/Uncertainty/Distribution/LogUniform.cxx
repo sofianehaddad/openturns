@@ -36,12 +36,13 @@ static Factory<LogUniform> RegisteredFactory("LogUniform");
 
 /* Default constructor */
 LogUniform::LogUniform()
-  : ContinuousDistribution("LogUniform")
+  : ContinuousDistribution()
   , aLog_(-1.0)
   , bLog_(1.0)
   , a_(exp(-1.0))
   , b_(exp(1.0))
 {
+  setName( "LogUniform" );
   setDimension( 1 );
   computeRange();
 }
@@ -49,13 +50,14 @@ LogUniform::LogUniform()
 /* Parameters constructor */
 LogUniform::LogUniform(const NumericalScalar aLog,
                        const NumericalScalar bLog)
-  : ContinuousDistribution("LogUniform")
+  : ContinuousDistribution()
   , aLog_(aLog)
   , bLog_(bLog)
   , a_(exp(aLog_))
   , b_(exp(bLog_))
 {
   if (bLog <= aLog) throw InvalidArgumentException(HERE) << "Error the lower bound aLog of a LogUniform distribution must be lesser than its upper bound bLog, here aLog=" << aLog << " bLog=" << bLog;
+  setName( "LogUniform" );
   setDimension( 1 );
   computeRange();
 }

@@ -32,26 +32,24 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Composite);
 
 /* Default constructor */
-Composite::Composite(const String & name)
-  : StratifiedExperiment(name)
+Composite::Composite()
+  : StratifiedExperiment()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Composite::Composite(const NumericalPoint & center,
-                     const NumericalPoint & levels,
-                     const String & name)
-  : StratifiedExperiment(center, levels, name)
+                     const NumericalPoint & levels)
+  : StratifiedExperiment(center, levels)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Composite::Composite(const UnsignedInteger dimension,
-                     const NumericalPoint & levels,
-                     const String & name)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels, name)
+                     const NumericalPoint & levels)
+  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
 {
   // Nothing to do
 }

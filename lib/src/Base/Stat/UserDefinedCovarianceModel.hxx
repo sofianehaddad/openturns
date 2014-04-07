@@ -51,12 +51,11 @@ public:
   typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
 
   /** Default onstructor */
-  UserDefinedCovarianceModel(const String & name = OT::DefaultName);
+  UserDefinedCovarianceModel();
 
   /** Standard onstructor */
   UserDefinedCovarianceModel(const Mesh & mesh,
-                             const CovarianceMatrixCollection & spectralFunction,
-                             const String & name = OT::DefaultName);
+                             const CovarianceMatrixCollection & spectralFunction);
 
   /** Virtual copy constructor */
   virtual UserDefinedCovarianceModel * clone() const;

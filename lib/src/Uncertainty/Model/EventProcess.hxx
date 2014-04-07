@@ -55,8 +55,7 @@ public:
 
   /** Constructor from RandomVector */
   EventProcess(const Process & process,
-               const Domain & domain,
-               const String & name = DefaultName);
+               const Domain & domain);
 
   /** Virtual constructor */
   virtual EventProcess * clone() const;

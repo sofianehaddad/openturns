@@ -48,12 +48,11 @@ public:
   typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
 
   /** Default onstructor */
-  UserDefinedStationaryCovarianceModel(const String & name = OT::DefaultName);
+  UserDefinedStationaryCovarianceModel();
 
   /** Standard onstructor */
   UserDefinedStationaryCovarianceModel(const RegularGrid & timeGrid,
-                                       const CovarianceMatrixCollection & covarianceCollection,
-                                       const String & name = OT::DefaultName);
+                                       const CovarianceMatrixCollection & covarianceCollection);
 
   /** Virtual copy constructor */
   virtual UserDefinedStationaryCovarianceModel * clone() const;

@@ -30,8 +30,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(ExperimentImplementation);
 
 /* Default constructor */
-ExperimentImplementation::ExperimentImplementation(const String & name)
-  : PersistentObject(name)
+ExperimentImplementation::ExperimentImplementation()
+  : PersistentObject()
 {
   // Nothing to do
 }

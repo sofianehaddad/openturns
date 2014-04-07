@@ -46,8 +46,7 @@ public:
 
 
   /** Default constructor */
-  explicit UsualRandomVector(const Distribution & distribution,
-                             const String & name = DefaultName);
+  explicit UsualRandomVector(const Distribution & distribution);
 
 
   /** Virtual constructor */
@@ -94,7 +93,7 @@ protected:
   friend class Factory<UsualRandomVector>;
 
   /** Default constructor */
-  UsualRandomVector(const String & name = DefaultName) : RandomVectorImplementation(name) {};
+  UsualRandomVector() : RandomVectorImplementation() {};
 
 private:
 

@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Rice
 {
 public:
-  explicit TestObject() : Rice(5, 4) {}
-  explicit TestObject(const String & name) : Rice(5, 4)
-  {
-    setName(name);
-  }
+  TestObject() : Rice(5, 4) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Rice distribution(5.0, 4.0);

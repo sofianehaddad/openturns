@@ -48,10 +48,11 @@ static Factory<NormalCopula> RegisteredFactory("NormalCopula");
 
 /* Default constructor */
 NormalCopula::NormalCopula(const UnsignedInteger dim)
-  : CopulaImplementation("NormalCopula")
+  : CopulaImplementation()
   , correlation_(dim)
   , normal_(dim)
 {
+  setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(dim);
   computeRange();
@@ -59,10 +60,11 @@ NormalCopula::NormalCopula(const UnsignedInteger dim)
 
 /* Default constructor */
 NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
-  : CopulaImplementation("NormalCopula")
+  : CopulaImplementation()
   , correlation_(correlation)
   , normal_(NumericalPoint(correlation.getNbRows(), 0.0), NumericalPoint(correlation.getNbRows(), 1.0), correlation)
 {
+  setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(correlation.getNbRows());
   computeRange();

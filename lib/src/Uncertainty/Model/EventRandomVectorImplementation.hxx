@@ -56,8 +56,7 @@ public:
   /** Constructor from RandomVector */
   EventRandomVectorImplementation(const RandomVectorImplementation & antecedent,
                                   const ComparisonOperator & op,
-                                  const NumericalScalar threshold,
-                                  const String & name = DefaultName);
+                                  const NumericalScalar threshold);
 
   /** Virtual constructor */
   virtual EventRandomVectorImplementation * clone() const;

@@ -37,27 +37,24 @@ FilteringWindows::FilteringWindows()
 }
 
 /* Parameters constructor */
-FilteringWindows::FilteringWindows(const FilteringWindowsImplementation & implementation,
-                                   const String & name)
+FilteringWindows::FilteringWindows(const FilteringWindowsImplementation & implementation)
   : TypedInterfaceObject<FilteringWindowsImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-FilteringWindows::FilteringWindows(const Implementation & p_implementation,
-                                   const String & name)
+FilteringWindows::FilteringWindows(const Implementation & p_implementation)
   : TypedInterfaceObject<FilteringWindowsImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-FilteringWindows::FilteringWindows(FilteringWindowsImplementation * p_implementation,
-                                   const String & name)
+FilteringWindows::FilteringWindows(FilteringWindowsImplementation * p_implementation)
   : TypedInterfaceObject<FilteringWindowsImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* functor - evaluation of filter using () */

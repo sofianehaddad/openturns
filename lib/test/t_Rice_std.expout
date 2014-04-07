@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Rice name=Rice dimension=1 sigma=5 nu=4
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Rice name=myName dimension=1 sigma=5 nu=4
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Rice name=myNewName dimension=1 sigma=5 nu=4
 Distribution class=Rice name=Rice dimension=1 sigma=5 nu=4
 Distribution Rice(sigma = 5, nu = 4)
 Elliptical = false

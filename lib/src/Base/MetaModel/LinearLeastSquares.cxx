@@ -36,9 +36,8 @@ CLASSNAMEINIT(LinearLeastSquares);
 
 /* Constructor with parameters */
 LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
-                                       const NumericalMathFunction & inputFunction,
-                                       const String & name)
-  : PersistentObject(name),
+                                       const NumericalMathFunction & inputFunction)
+  : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(0, inputFunction.getOutputDimension()),
     inputFunction_(inputFunction),
@@ -51,9 +50,8 @@ LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
 
 /* Constructor with parameters */
 LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
-                                       const NumericalSample & dataOut,
-                                       const String & name)
-  : PersistentObject(name),
+                                       const NumericalSample & dataOut)
+  : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(0, dataOut.getDimension()),
     inputFunction_(),

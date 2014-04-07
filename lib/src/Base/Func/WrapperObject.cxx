@@ -816,7 +816,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
                              const WrapperData & data,
                              ObjectType o
                             )
-  : PersistentObject(symbolName),
+  : PersistentObject(),
     handle_(LibraryLoader::GetInstance().load(libraryPath)),
     data_(data),
     p_exchangedData_(data.getNewWrapperExchangedDataForCInterface()),
@@ -825,6 +825,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
     wrapperSymbols_(new WrapperSymbols),
     wrapperInfo_(0)
 {
+  setName(symbolName);
   if (symbolName.empty())
   {
     String name;

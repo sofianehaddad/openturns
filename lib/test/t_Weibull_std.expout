@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Weibull name=myName dimension=1 alpha=2 beta=1.5 gamma=-0.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Weibull name=myNewName dimension=1 alpha=2 beta=1.5 gamma=-0.5
 Distribution class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
 Distribution Weibull(alpha = 2, beta = 1.5, gamma = -0.5)
 Elliptical = false

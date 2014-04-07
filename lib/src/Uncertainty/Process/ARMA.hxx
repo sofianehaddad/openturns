@@ -50,20 +50,18 @@ public:
 
 
   /** Default constructor */
-  explicit ARMA(const String & name = DefaultName);
+  ARMA();
 
   /** Standard constructor with coefficients and a White Noise */
   ARMA(const ARMACoefficients & ARCoefficients,
        const ARMACoefficients & MACoefficients,
-       const WhiteNoise & whiteNoise,
-       const String & name = DefaultName);
+       const WhiteNoise & whiteNoise);
 
   /** Standard constructor with coefficients, a White Noise and a state */
   ARMA(const ARMACoefficients & ARCoefficients,
        const ARMACoefficients & MACoefficients,
        const WhiteNoise & whiteNoise,
-       const ARMAState & state,
-       const String & name = DefaultName);
+       const ARMAState & state);
 
   /** Virtual constructor */
   virtual ARMA * clone() const;

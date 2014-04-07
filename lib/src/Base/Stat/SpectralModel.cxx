@@ -31,34 +31,31 @@ CLASSNAMEINIT(SpectralModel);
 //   static Factory<SpectralModel> RegisteredFactory("SpectralModel");
 
 /* Constructor with parameters */
-SpectralModel::SpectralModel(const String & name)
-  : TypedInterfaceObject<SpectralModelImplementation>(new CauchyModel(name))
+SpectralModel::SpectralModel()
+  : TypedInterfaceObject<SpectralModelImplementation>(new CauchyModel())
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-SpectralModel::SpectralModel(const SpectralModelImplementation & implementation,
-                             const String & name)
+SpectralModel::SpectralModel(const SpectralModelImplementation & implementation)
   : TypedInterfaceObject<SpectralModelImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-SpectralModel::SpectralModel(const Implementation & p_implementation,
-                             const String & name)
+SpectralModel::SpectralModel(const Implementation & p_implementation)
   : TypedInterfaceObject<SpectralModelImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-SpectralModel::SpectralModel(SpectralModelImplementation * p_implementation,
-                             const String & name)
+SpectralModel::SpectralModel(SpectralModelImplementation * p_implementation)
   : TypedInterfaceObject<SpectralModelImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 

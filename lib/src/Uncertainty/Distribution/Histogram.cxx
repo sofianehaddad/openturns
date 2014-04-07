@@ -39,11 +39,12 @@ static Factory<Histogram> RegisteredFactory_alt("Histogram");
 
 /* Default constructor */
 Histogram::Histogram()
-  : ContinuousDistribution("Histogram")
+  : ContinuousDistribution()
   , first_(0.0)
   , collection_(0)
   , cumulatedWidth_(0)
 {
+  setName( "Histogram" );
   // This call set also the range.
   setPairCollection(HistogramPairCollection(1, HistogramPair(1.0, 1.0)));
   setDimension( 1 );
@@ -52,11 +53,12 @@ Histogram::Histogram()
 /* Parameters constructor */
 Histogram::Histogram(const NumericalScalar first,
                      const HistogramPairCollection & collection)
-  : ContinuousDistribution("Histogram")
+  : ContinuousDistribution()
   , first_(first)
   , collection_(0)
   , cumulatedWidth_(0)
 {
+  setName( "Histogram" );
   // This call set also the range.
   setPairCollection(collection);
   setDimension( 1 );
@@ -65,11 +67,12 @@ Histogram::Histogram(const NumericalScalar first,
 Histogram::Histogram(const NumericalScalar first,
                      const NumericalPoint & width,
                      const NumericalPoint & height)
-  : ContinuousDistribution("Histogram")
+  : ContinuousDistribution()
   , first_(first)
   , collection_(0)
   , cumulatedWidth_(0)
 {
+  setName( "Histogram" );
   // Convert the width and height into an Histogram pairs collection
   const UnsignedInteger size(width.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given width has a size of 0.";

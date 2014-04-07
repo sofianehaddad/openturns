@@ -37,10 +37,11 @@ static Factory<Chi> RegisteredFactory("Chi");
 
 /* Default constructor */
 Chi::Chi()
-  : ContinuousDistribution("Chi")
+  : ContinuousDistribution()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
+  setName("Chi");
   // This call also call update and computeRange()
   setNu(1.0);
   setDimension(1);
@@ -48,10 +49,11 @@ Chi::Chi()
 
 /* Parameters constructor */
 Chi::Chi(const NumericalScalar nu)
-  : ContinuousDistribution("Chi")
+  : ContinuousDistribution()
   , nu_(0.0)
   , normalizationFactor_(0.0)
 {
+  setName("Chi");
   // This call also call update() and computeRange()
   setNu(nu);
   setDimension(1);

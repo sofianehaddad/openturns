@@ -46,7 +46,7 @@ public:
   typedef Pointer<SpectralModelImplementation>    Implementation;
 
   /** Default constructor */
-  SpectralModelImplementation(const String & name = DefaultName);
+  SpectralModelImplementation();
 
   /** Virtual copy constructor */
   virtual SpectralModelImplementation * clone() const;

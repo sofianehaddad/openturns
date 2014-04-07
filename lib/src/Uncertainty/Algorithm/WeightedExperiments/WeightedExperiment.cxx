@@ -36,8 +36,8 @@ CLASSNAMEINIT(WeightedExperiment);
 
 
 /* Default constructor */
-WeightedExperiment::WeightedExperiment(const String & name):
-  ExperimentImplementation(name),
+WeightedExperiment::WeightedExperiment():
+  ExperimentImplementation(),
   distribution_(),
   size_(ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" )),
   weights_(ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" ), 1.0 / ResourceMap::GetAsUnsignedInteger( "WeightedExperiment-DefaultSize" ))
@@ -46,9 +46,8 @@ WeightedExperiment::WeightedExperiment(const String & name):
 }
 
 /* Constructor with parameters */
-WeightedExperiment::WeightedExperiment(const UnsignedInteger size,
-                                       const String & name):
-  ExperimentImplementation(name),
+WeightedExperiment::WeightedExperiment(const UnsignedInteger size):
+  ExperimentImplementation(),
   distribution_(),
   size_(0),
   weights_(0)
@@ -59,9 +58,8 @@ WeightedExperiment::WeightedExperiment(const UnsignedInteger size,
 
 /* Constructor with parameters */
 WeightedExperiment::WeightedExperiment(const Distribution & distribution,
-                                       const UnsignedInteger size,
-                                       const String & name):
-  ExperimentImplementation(name),
+                                       const UnsignedInteger size):
+  ExperimentImplementation(),
   distribution_(distribution),
   size_(0),
   weights_(0)

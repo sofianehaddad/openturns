@@ -49,17 +49,14 @@ public:
   Copula(const Distribution & distribution);
 
   /* Constructor from implementation */
-  Copula(const DistributionImplementation & implementation,
-         const String & name = DefaultName);
+  Copula(const DistributionImplementation & implementation);
 
   /* Constructor from implementation */
-  Copula(const Implementation & p_implementation,
-         const String & name = DefaultName);
+  Copula(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  Copula(DistributionImplementation * p_implementation,
-         const String & name = DefaultName);
+  Copula(DistributionImplementation * p_implementation);
 #endif
 
   /** String converter */

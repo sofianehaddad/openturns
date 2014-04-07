@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Poisson
 {
 public:
-  explicit TestObject() : Poisson(10.0) {}
-  explicit TestObject(const String & name) : Poisson(10.0)
-  {
-    setName(name);
-  }
+  TestObject() : Poisson(10.0) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Poisson distribution(10.0);

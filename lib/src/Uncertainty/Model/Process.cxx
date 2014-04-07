@@ -38,27 +38,24 @@ Process::Process()
 }
 
 /* Parameters constructor */
-Process::Process(const ProcessImplementation & implementation,
-                 const String & name)
+Process::Process(const ProcessImplementation & implementation)
   : TypedInterfaceObject<ProcessImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-Process::Process(const Implementation & p_implementation,
-                 const String & name)
+Process::Process(const Implementation & p_implementation)
   : TypedInterfaceObject<ProcessImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-Process::Process(ProcessImplementation * p_implementation,
-                 const String & name)
+Process::Process(ProcessImplementation * p_implementation)
   : TypedInterfaceObject<ProcessImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* String converter */

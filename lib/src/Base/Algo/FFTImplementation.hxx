@@ -45,7 +45,7 @@ public:
   typedef Collection<NumericalComplex>  NumericalComplexCollection;
 
   /** Default constructor without parameters */
-  FFTImplementation(const String & name = DefaultName);
+  FFTImplementation();
 
   /** Virtual copy constructor */
   virtual FFTImplementation * clone() const;

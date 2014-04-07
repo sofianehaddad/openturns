@@ -36,12 +36,13 @@ static Factory<Gamma> RegisteredFactory("Gamma");
 
 /* Default constructor */
 Gamma::Gamma()
-  : ContinuousDistribution("Gamma")
+  : ContinuousDistribution()
   , k_(1.0)
   , lambda_(1.0)
   , gamma_(0.0)
   , normalizationFactor_(0.0)
 {
+  setName("Gamma");
   setDimension(1);
   computeRange();
 }
@@ -51,12 +52,13 @@ Gamma::Gamma(const NumericalScalar arg1,
              const NumericalScalar arg2,
              const NumericalScalar gamma,
              const ParameterSet set)
-  : ContinuousDistribution("Gamma")
+  : ContinuousDistribution()
   , k_(0.0)
   , lambda_(0.0)
   , gamma_(gamma)
   , normalizationFactor_(0.0)
 {
+  setName("Gamma");
   switch (set)
   {
     case KLAMBDA:

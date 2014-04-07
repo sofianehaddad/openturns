@@ -43,19 +43,17 @@ class WhittleFactory
 public:
 
   /** Default constructor */
-  explicit WhittleFactory(const String & name = DefaultName);
+  WhittleFactory();
 
   /** Default constructor */
   WhittleFactory(const UnsignedInteger p,
                  const UnsignedInteger q,
-                 const Bool invertible = true,
-                 const String & name = DefaultName);
+                 const Bool invertible = true);
 
   /** Default constructor */
   WhittleFactory(const Indices & p,
                  const Indices & q,
-                 const Bool invertible = true,
-                 const String & name = DefaultName);
+                 const Bool invertible = true);
 
   /** Virtual constructor */
   virtual WhittleFactory * clone() const;

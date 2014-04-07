@@ -36,8 +36,8 @@ CLASSNAMEINIT(GaussKronrodRule);
 static Factory<GaussKronrodRule> RegisteredFactory("GaussKronrodRule");
 
 /* Constructor without parameters */
-GaussKronrodRule::GaussKronrodRule(const String & name)
-  : PersistentObject(name)
+GaussKronrodRule::GaussKronrodRule()
+  : PersistentObject()
 {
   // Select the high order rule
   *this = GaussKronrodRule(G11K23);

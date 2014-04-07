@@ -44,20 +44,17 @@ public:
   typedef CovarianceModelImplementation::Implementation    Implementation;
 
   /** Default constructor without parameters */
-  explicit CovarianceModel(const String & name = DefaultName);
+  CovarianceModel();
 
   /** Copy constructors */
-  CovarianceModel(const CovarianceModelImplementation & implementation,
-                  const String & name = DefaultName);
+  CovarianceModel(const CovarianceModelImplementation & implementation);
 
   /** Constructor from implementation */
-  CovarianceModel(const Implementation & p_implementation,
-                  const String & name = DefaultName);
+  CovarianceModel(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  CovarianceModel(CovarianceModelImplementation * p_implementation,
-                  const String & name = DefaultName);
+  CovarianceModel(CovarianceModelImplementation * p_implementation);
 #endif
 
   /** Dimension accessor */

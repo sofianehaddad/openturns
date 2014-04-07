@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=LogNormal name=LogNormal dimension=1 muLog=-1 sigmaLog=1.5 gamma=-0.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=LogNormal name=myName dimension=1 muLog=-1 sigmaLog=1.5 gamma=-0.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=LogNormal name=myNewName dimension=1 muLog=-1 sigmaLog=1.5 gamma=-0.5
 Distribution class=LogNormal name=LogNormal dimension=1 muLog=-1 sigmaLog=1.5 gamma=-0.5
 Distribution LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)
 Elliptical = false

@@ -37,8 +37,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(ContinuousDistribution);
 
 /* Default constructor */
-ContinuousDistribution::ContinuousDistribution(const String & name)
-  : DistributionImplementation(name)
+ContinuousDistribution::ContinuousDistribution()
+  : DistributionImplementation()
 {
   // Nothing to do
 }

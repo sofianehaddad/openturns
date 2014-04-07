@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=NonCentralChiSquare name=NonCentralChiSquare dimension=1 nu=1.5 lambda=2.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=NonCentralChiSquare name=myName dimension=1 nu=1.5 lambda=2.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=NonCentralChiSquare name=myNewName dimension=1 nu=1.5 lambda=2.5
 Distribution class=NonCentralChiSquare name=NonCentralChiSquare dimension=1 nu=1.5 lambda=2.5
 Distribution NonCentralChiSquare(nu = 1.5, lambda = 2.5)
 Elliptical = false

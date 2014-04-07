@@ -75,7 +75,7 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation()
 
 /* Constructor from a wrapper name */
 NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const String & name)
-  : PersistentObject(name)
+  : PersistentObject()
   , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
   , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
   , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
@@ -85,6 +85,7 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const S
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
+  setName(name);
   // Read the description file of the wrapper
   WrapperFile wrapperFile = WrapperFile::FindWrapperByName( name );
 
@@ -94,7 +95,7 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const S
 
 /* Constructor from a wrapper file */
 NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const WrapperFile & wrapperFile)
-  : PersistentObject(wrapperFile.getName())
+  : PersistentObject()
   , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
   , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
   , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
@@ -104,6 +105,7 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const W
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
+  setName(wrapperFile.getName());
   // We set the implementations
   initImplementations( wrapperFile );
 }

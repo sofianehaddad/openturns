@@ -30,10 +30,11 @@ using namespace OT::Test;
 class BaseClass : public PersistentObject
 {
 public:
-  BaseClass(const String & name) : PersistentObject(name)
+  BaseClass(const String & name) : PersistentObject()
   {
     OStream fullprint(std::cout);
 
+    setName(name);
     fullprint << "BaseClass(const String & name) ("
               << getName() << ")" << std::endl;
   }
@@ -109,8 +110,9 @@ public:
 class NotDerivedClass : public PersistentObject
 {
 public:
-  explicit NotDerivedClass(const String & name) : PersistentObject(name)
+  explicit NotDerivedClass(const String & name) : PersistentObject()
   {
+    setName(name);
   }
   explicit NotDerivedClass(const NotDerivedClass & other) : PersistentObject(other)
   {

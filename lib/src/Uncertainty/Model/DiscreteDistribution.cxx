@@ -31,8 +31,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(DiscreteDistribution);
 
 /* Default constructor */
-DiscreteDistribution::DiscreteDistribution(const String & name)
-  : DistributionImplementation(name)
+DiscreteDistribution::DiscreteDistribution()
+  : DistributionImplementation()
   , supportEpsilon_(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"))
 {
   // Nothing to do

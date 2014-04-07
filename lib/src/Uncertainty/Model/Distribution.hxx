@@ -53,18 +53,15 @@ public:
   Distribution();
 
   /** Default constructor */
-  Distribution(const DistributionImplementation & implementation,
-               const String & name = DefaultName);
+  Distribution(const DistributionImplementation & implementation);
 
 
   /** Constructor from implementation */
-  Distribution(const Implementation & p_implementation,
-               const String & name = DefaultName);
+  Distribution(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  Distribution(DistributionImplementation * p_implementation,
-               const String & name = DefaultName);
+  Distribution(DistributionImplementation * p_implementation);
 #endif
 
   /** Comparison operator */

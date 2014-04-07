@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Triangular name=Triangular dimension=1 a=-0.5 m=1.5 b=2.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Triangular name=myName dimension=1 a=-0.5 m=1.5 b=2.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Triangular name=myNewName dimension=1 a=-0.5 m=1.5 b=2.5
 Distribution class=Triangular name=Triangular dimension=1 a=-0.5 m=1.5 b=2.5
 Distribution Triangular(a = -0.5, m = 1.5, b = 2.5)
 Elliptical = false

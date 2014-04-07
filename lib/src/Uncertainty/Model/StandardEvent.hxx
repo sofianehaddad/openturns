@@ -53,12 +53,10 @@ public:
   /** Constructor from RandomVector */
   StandardEvent(const RandomVector & antecedent,
                 const ComparisonOperator & op,
-                const NumericalScalar threshold,
-                const String & name = DefaultName);
+                const NumericalScalar threshold);
 
   /** Constructor from Event */
-  StandardEvent(const Event & event,
-                const String & name = DefaultName);
+  StandardEvent(const Event & event);
 
 
 protected:

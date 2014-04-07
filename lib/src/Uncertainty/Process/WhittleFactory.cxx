@@ -45,8 +45,8 @@ static Factory<WhittleFactory> RegisteredFactory("WhittleFactory");
 
 
 /* Default constructor */
-WhittleFactory::WhittleFactory(const String & name)
-  : ARMAFactoryImplementation(name)
+WhittleFactory::WhittleFactory()
+  : ARMAFactoryImplementation()
   , spectralFactory_(WelchFactory())
   , normalizedFrequencies_(0)
   , timeGrid_()
@@ -64,9 +64,8 @@ WhittleFactory::WhittleFactory(const String & name)
 /* Standard constructor */
 WhittleFactory::WhittleFactory(const UnsignedInteger p,
                                const UnsignedInteger q,
-                               const Bool invertible,
-                               const String & name)
-  : ARMAFactoryImplementation(p, q, invertible, name)
+                               const Bool invertible)
+  : ARMAFactoryImplementation(p, q, invertible)
   , spectralFactory_(WelchFactory())
   , normalizedFrequencies_(0)
   , timeGrid_()
@@ -85,9 +84,8 @@ WhittleFactory::WhittleFactory(const UnsignedInteger p,
 /* Standard constructor */
 WhittleFactory::WhittleFactory(const Indices & p,
                                const Indices & q,
-                               const Bool invertible,
-                               const String & name)
-  : ARMAFactoryImplementation(p, q, invertible, name)
+                               const Bool invertible)
+  : ARMAFactoryImplementation(p, q, invertible)
   , spectralFactory_(WelchFactory())
   , normalizedFrequencies_(0)
   , timeGrid_()

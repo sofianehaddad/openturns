@@ -46,7 +46,7 @@ public:
   typedef Pointer<ExperimentImplementation> Implementation;
 
   /** Default constructor */
-  explicit ExperimentImplementation(const String & name = DefaultName);
+  ExperimentImplementation();
 
   /** Virtual constructor */
   virtual ExperimentImplementation * clone() const;

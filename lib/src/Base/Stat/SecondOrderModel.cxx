@@ -36,35 +36,31 @@ SecondOrderModel::SecondOrderModel()
 }
 
 SecondOrderModel::SecondOrderModel(const CovarianceModel & covarianceModel,
-                                   const SpectralModel & spectralModel,
-                                   const String & name)
+                                   const SpectralModel & spectralModel)
   : TypedInterfaceObject<SecondOrderModelImplementation>(new SecondOrderModelImplementation(covarianceModel, spectralModel))
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Parameters constructor */
-SecondOrderModel::SecondOrderModel(const SecondOrderModelImplementation & implementation,
-                                   const String & name)
+SecondOrderModel::SecondOrderModel(const SecondOrderModelImplementation & implementation)
   : TypedInterfaceObject<SecondOrderModelImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-SecondOrderModel::SecondOrderModel(const Implementation & p_implementation,
-                                   const String & name)
+SecondOrderModel::SecondOrderModel(const Implementation & p_implementation)
   : TypedInterfaceObject<SecondOrderModelImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-SecondOrderModel::SecondOrderModel(SecondOrderModelImplementation * p_implementation,
-                                   const String & name)
+SecondOrderModel::SecondOrderModel(SecondOrderModelImplementation * p_implementation)
   : TypedInterfaceObject<SecondOrderModelImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* SpectralModel and CovarianceModel accessor */

@@ -41,7 +41,7 @@ public:
 
 
   /** Default constructor */
-  NonStationaryCovarianceModelFactory(const String & name = OT::DefaultName);
+  NonStationaryCovarianceModelFactory();
 
   /** Virtual constructor */
   virtual NonStationaryCovarianceModelFactory * clone() const;

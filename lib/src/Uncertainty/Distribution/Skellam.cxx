@@ -36,11 +36,12 @@ static Factory<Skellam> RegisteredFactory("Skellam");
 
 /* Default constructor */
 Skellam::Skellam()
-  : DiscreteDistribution("Skellam")
+  : DiscreteDistribution()
   , lambda1_(1.0)
   , lambda2_(1.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
+  setName("Skellam");
   // We set the dimension of the Skellam distribution
   setDimension( 1 );
   computeRange();
@@ -49,11 +50,12 @@ Skellam::Skellam()
 /* Parameters constructor */
 Skellam::Skellam(const NumericalScalar lambda1,
                  const NumericalScalar lambda2)
-  : DiscreteDistribution("Skellam")
+  : DiscreteDistribution()
   , lambda1_(0.0)
   , lambda2_(0.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
+  setName("Skellam");
   // We set the dimension of the Skellam distribution
   setDimension( 1 );
   // This call set also the range.

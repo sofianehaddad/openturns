@@ -44,16 +44,14 @@ public:
 
 
   /** Default constructor */
-  explicit LHSExperiment(const String & name = DefaultName);
+  LHSExperiment();
 
   /** Parameters constructor */
-  explicit LHSExperiment(const UnsignedInteger size,
-                         const String & name = DefaultName);
+  explicit LHSExperiment(const UnsignedInteger size);
 
   /** Parameters constructor */
   LHSExperiment(const Distribution & distribution,
-                const UnsignedInteger size,
-                const String & name = DefaultName);
+                const UnsignedInteger size);
 
   /** Virtual constructor */
   virtual LHSExperiment * clone() const;

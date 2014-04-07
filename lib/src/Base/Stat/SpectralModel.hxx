@@ -45,20 +45,17 @@ public:
   typedef SpectralModelImplementation::Implementation Implementation;
 
   /** Default constructor */
-  explicit SpectralModel(const String & name = DefaultName);
+  SpectralModel();
 
   /** Copy constructors */
-  SpectralModel(const SpectralModelImplementation & implementation,
-                const String & name = DefaultName);
+  SpectralModel(const SpectralModelImplementation & implementation);
 
   /** Constructor from implementation */
-  SpectralModel(const Implementation & p_implementation,
-                const String & name = DefaultName);
+  SpectralModel(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  SpectralModel(SpectralModelImplementation * p_implementation,
-                const String & name = DefaultName);
+  SpectralModel(SpectralModelImplementation * p_implementation);
 #endif
 
 

@@ -45,7 +45,7 @@ public:
   typedef Pointer<CovarianceModelFactoryImplementation>    Implementation;
 
   /** Default constructor */
-  explicit CovarianceModelFactoryImplementation(const String & name = OT::DefaultName);
+  CovarianceModelFactoryImplementation();
 
   /** Virtual constructor */
   virtual CovarianceModelFactoryImplementation * clone() const;

@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public NonCentralChiSquare
 {
 public:
-  explicit TestObject() : NonCentralChiSquare(1.5, 2.5) {}
-  explicit TestObject(const String & name) : NonCentralChiSquare(1.5, 2.5)
-  {
-    setName(name);
-  }
+  TestObject() : NonCentralChiSquare(1.5, 2.5) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     NonCentralChiSquare distribution(1.5, 2.5);

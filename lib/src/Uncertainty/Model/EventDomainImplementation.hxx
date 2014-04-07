@@ -53,8 +53,7 @@ public:
 
   /** Constructor from RandomVector */
   EventDomainImplementation(const RandomVectorImplementation & antecedent,
-                            const Domain & domain,
-                            const String & name = DefaultName);
+                            const Domain & domain);
 
   /** Virtual contructor */
   virtual EventDomainImplementation * clone() const;

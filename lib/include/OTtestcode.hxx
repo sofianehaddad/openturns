@@ -214,27 +214,6 @@ void checkCopyConstructor()
 
 
 /**
- * @fn checkNameConstructor()
- *
- * Try to instanciate an object with a name.
- */
-template <class T>
-void checkNameConstructor()
-{
-  std::cout << "checkNameConstructor()"
-            << std::endl;
-
-  OT::String aName("myName");
-
-  // Call the default constructor
-  T anObject( aName );
-
-  // Stream out the object
-  streamObject( anObject );
-}
-
-
-/**
  * @fn areSameObjects(const T & firstObject, const T & secondObject)
  *
  * Try to compare two objects supposed to be identical.
@@ -265,59 +244,6 @@ OT::Bool areDifferentObjects(const T & firstObject,
             << std::endl;
 
   return (firstObject != secondObject);
-}
-
-
-/**
- * @fn checkNameAccessors()
- *
- * Try to read and modify the name of an object.
- */
-template <class T>
-void checkNameAccessors()
-{
-  std::cout << "checkNameAccessors()"
-            << std::endl;
-
-  // Call the default constructor
-  T anObject;
-
-  // Change the name of the object
-  OT::String aNewName("myNewName");
-  anObject.setName( aNewName );
-
-  // Get the name of the object
-  OT::String readName = anObject.getName();
-
-  // Stream out the object
-  streamObject( anObject );
-
-  // Throw an exception if the name was not correctly set
-  if (aNewName != readName)
-  {
-    OSS errorMessage;
-    errorMessage << "OT::Object.getName does NOT return the correct value. Right = "
-                 << aNewName
-                 << " - Wrong = "
-                 << readName;
-    throw OT::Test::TestFailed(errorMessage);
-  }
-}
-
-
-/**
- * @fn checkNameFeature()
- *
- * Try to create an nammed object and access in R/W its name
- */
-template <class T>
-void checkNameFeature()
-{
-  std::cout << "checkNameFeature()"
-            << std::endl;
-
-  checkNameConstructor<T>();
-  checkNameAccessors<T>();
 }
 
 

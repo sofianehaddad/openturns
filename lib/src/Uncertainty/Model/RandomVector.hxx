@@ -49,37 +49,30 @@ public:
   RandomVector();
 
   /** Default constructor */
-  RandomVector(const RandomVectorImplementation & implementation,
-               const String & name = DefaultName);
+  RandomVector(const RandomVectorImplementation & implementation);
 
 
   /** Constructor from implementation */
-  RandomVector(const Implementation & p_implementation,
-               const String & name = DefaultName);
+  RandomVector(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  RandomVector(RandomVectorImplementation * p_implementation,
-               const String & name = DefaultName);
+  RandomVector(RandomVectorImplementation * p_implementation);
 #endif
 
   /** Constructor for constant vector */
-  explicit RandomVector(const NumericalPoint & point,
-                        const String & name = DefaultName);
+  explicit RandomVector(const NumericalPoint & point);
 
   /** Constructor for distribution-based vector */
-  explicit RandomVector(const Distribution & distribution,
-                        const String & name = DefaultName);
+  explicit RandomVector(const Distribution & distribution);
 
   /** Constructor for distribution-based conditional vector */
   RandomVector(const Distribution & distribution,
-               const RandomVector & randomParameters,
-               const String & name = DefaultName);
+               const RandomVector & randomParameters);
 
   /** Constructor for composite vector */
   RandomVector(const NumericalMathFunction & function,
-               const RandomVector & antecedent,
-               const String & name = DefaultName);
+               const RandomVector & antecedent);
 
   /** Constructor for functional chaos vector */
   explicit RandomVector(const FunctionalChaosResult & functionalChaosResult);
@@ -138,19 +131,16 @@ protected:
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,
                const ComparisonOperator & op,
-               const NumericalScalar threshold,
-               const String & name = DefaultName);
+               const NumericalScalar threshold);
 
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,
-               const Domain & domain,
-               const String & name = DefaultName);
+               const Domain & domain);
 
 
   /** Constructor for event vector */
   RandomVector(const Process & process,
-               const Domain & domain,
-               const String & name = DefaultName);
+               const Domain & domain);
 
 }; /* class RandomVector */
 

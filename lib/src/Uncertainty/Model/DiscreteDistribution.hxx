@@ -43,7 +43,7 @@ public:
 
 
   /** Default constructor */
-  explicit DiscreteDistribution(const String & name = DefaultName);
+  DiscreteDistribution();
 
 
   /** Virtual constructor */

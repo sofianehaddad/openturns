@@ -44,7 +44,7 @@ public:
   typedef Pointer<FilteringWindowsImplementation>    Implementation;
 
   /** Default constructor without parameters */
-  FilteringWindowsImplementation(const String & name = DefaultName);
+  FilteringWindowsImplementation();
 
   /** Virtual copy constructor */
   virtual FilteringWindowsImplementation * clone() const;

@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Multinomial name=Multinomial dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Multinomial name=myName dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Multinomial name=myNewName dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
 Distribution class=Multinomial name=Multinomial dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
 Distribution Multinomial(n = 5, p = [0.25,0.25,0.25])
 Elliptical = false

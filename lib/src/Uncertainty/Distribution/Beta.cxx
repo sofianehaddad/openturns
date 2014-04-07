@@ -37,13 +37,14 @@ static Factory<Beta> RegisteredFactory("Beta");
 
 /* Default constructor */
 Beta::Beta()
-  : ContinuousDistribution("Beta")
+  : ContinuousDistribution()
   , r_(2.0)
   , t_(4.0)
   , a_(-1.0)
   , b_(1.0)
   , normalizationFactor_(log(0.75))
 {
+  setName("Beta");
   setDimension(1);
   computeRange();
 }
@@ -54,13 +55,14 @@ Beta::Beta(const NumericalScalar arg1,
            const NumericalScalar a,
            const NumericalScalar b,
            const ParameterSet set)
-  : ContinuousDistribution("Beta")
+  : ContinuousDistribution()
   , r_(0.0)
   , t_(0.0)
   , a_(a)
   , b_(b)
   , normalizationFactor_(0.0)
 {
+  setName("Beta");
   setA(a);
   setB(b);
   switch (set)

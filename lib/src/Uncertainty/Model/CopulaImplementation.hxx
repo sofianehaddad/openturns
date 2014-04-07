@@ -39,7 +39,7 @@ class CopulaImplementation
 public:
 
   /** Default constructor */
-  explicit CopulaImplementation(const String & name = DefaultName);
+  CopulaImplementation();
 
   /** Virtual constructor */
   virtual CopulaImplementation * clone() const;

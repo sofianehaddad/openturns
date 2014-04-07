@@ -46,22 +46,19 @@ public:
   typedef Collection<Distribution> DistributionCollection;
 
   /** Default constructor */
-  explicit LowDiscrepancyExperiment(const String & name = DefaultName);
+  LowDiscrepancyExperiment();
 
   /** Parameters constructor */
-  explicit LowDiscrepancyExperiment(const UnsignedInteger size,
-                                    const String & name = DefaultName);
+  explicit LowDiscrepancyExperiment(const UnsignedInteger size);
 
   /** Parameters constructor */
   LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
-                           const UnsignedInteger size,
-                           const String & name = DefaultName);
+                           const UnsignedInteger size);
 
   /** Parameters constructor */
   LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
                            const Distribution & distribution,
-                           const UnsignedInteger size,
-                           const String & name = DefaultName);
+                           const UnsignedInteger size);
 
   /** Virtual constructor */
   virtual LowDiscrepancyExperiment * clone() const;

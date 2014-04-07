@@ -49,17 +49,14 @@ public:
   IntegrationAlgorithm();
 
   /** Copy constructors */
-  IntegrationAlgorithm(const IntegrationAlgorithmImplementation & implementation,
-                       const String & name = DefaultName);
+  IntegrationAlgorithm(const IntegrationAlgorithmImplementation & implementation);
 
   /** Constructor from implementation */
-  IntegrationAlgorithm(const Implementation & p_implementation,
-                       const String & name = DefaultName);
+  IntegrationAlgorithm(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  IntegrationAlgorithm(IntegrationAlgorithmImplementation * p_implementation,
-                       const String & name = DefaultName);
+  IntegrationAlgorithm(IntegrationAlgorithmImplementation * p_implementation);
 #endif
 
   /** Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]

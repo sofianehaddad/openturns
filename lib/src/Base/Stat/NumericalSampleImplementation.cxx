@@ -1717,7 +1717,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator + (const N
 {
   NumericalSampleImplementation sample(*this);
   sample += translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1725,7 +1725,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator + (const N
 {
   NumericalSampleImplementation sample(*this);
   sample += translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1733,7 +1733,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator - (const N
 {
   NumericalSampleImplementation sample(*this);
   sample -= translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1741,7 +1741,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator - (const N
 {
   NumericalSampleImplementation sample(*this);
   sample -= translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1854,7 +1854,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator * (const N
 {
   NumericalSampleImplementation nsi(*this);
   nsi *= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1862,7 +1862,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator / (const N
 {
   NumericalSampleImplementation nsi(*this);
   nsi /= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1912,7 +1912,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator * (const S
 {
   NumericalSampleImplementation nsi(*this);
   nsi *= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1920,7 +1920,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator / (const S
 {
   NumericalSampleImplementation nsi(*this);
   nsi /= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 

@@ -43,11 +43,10 @@ public:
 
 
   /** Default constructor */
-  explicit BootstrapExperiment(const String & name = DefaultName);
+  BootstrapExperiment();
 
   /** Parameters constructor */
-  explicit BootstrapExperiment(const NumericalSample & sample,
-                               const String & name = DefaultName);
+  explicit BootstrapExperiment(const NumericalSample & sample);
 
   /** Virtual constructor */
   virtual BootstrapExperiment * clone() const;
