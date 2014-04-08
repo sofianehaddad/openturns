@@ -141,6 +141,7 @@ FileName Path::GetWinDirectory()
   // get python.exe absolute path
   TCHAR szPath[MAX_PATH];
   GetModuleFileName(NULL, szPath, MAX_PATH);
+#ifdef _MSC_VER
   // remove executable name
   String otModulePath(szPath);
   if (otModulePath.empty()) return otModulePath;
@@ -153,6 +154,9 @@ FileName Path::GetWinDirectory()
       break;
     }
   }
+#else
+  String otModulePath(dirname(szPath));
+#endif
   // add path to openturns module
   otModulePath += "\\Lib\\site-packages\\openturns";
   return otModulePath;
