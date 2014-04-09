@@ -117,6 +117,8 @@ public:
   /** ComplexMatrix substractions */
   SquareComplexMatrix operator - (const SquareComplexMatrix & m) const;
 
+  using SquareComplexMatrix::operator *;
+
   /** Multiplication with a NumericalComplex */
   HermitianMatrix operator * (const NumericalComplex s) const;
 
@@ -152,8 +154,6 @@ public:
 
   /** Multiplication with a NumericalPoint (must have consistent dimensions) */
   NumericalComplexCollection operator * (const NumericalPoint & p) const;
-
-  using SquareComplexMatrix::operator *;
 
   /** HermitianMatrix integer power */
   HermitianMatrix power(const UnsignedInteger n) const;

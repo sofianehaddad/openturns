@@ -64,12 +64,12 @@ public:
 #endif
 
   /** Multiplications */
+  using CorrelationMatrix::operator *;
   Matrix operator * (const Matrix & m) const;
   SquareMatrix operator * (const SquareMatrix & m) const;
   SymmetricMatrix operator * (const SymmetricMatrix & m) const;
   CovarianceMatrix operator * (const CovarianceMatrix & m) const;
   CorrelationMatrix operator * (const CorrelationMatrix & m) const;
-  using CorrelationMatrix::operator *;
 
   /** Resolution of a linear system */
   NumericalPoint solveLinearSystem(const NumericalPoint & b,

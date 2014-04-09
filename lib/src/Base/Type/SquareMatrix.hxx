@@ -92,6 +92,9 @@ public:
   SquareMatrix operator - (const SquareMatrix & m) const;
   SquareMatrix operator - (const SymmetricMatrix & m) const;
 
+  // We import the definitions from the upper class (for Matrix multiplication)
+  using Matrix::operator *;
+
   /** SquareMatrix multiplications (must have consistent dimensions) */
   SquareMatrix operator * (const SquareMatrix & m) const;
   SquareMatrix operator * (const SymmetricMatrix & m) const;
@@ -105,9 +108,6 @@ public:
 
   /** Multiplication with a NumericalScalar */
   SquareMatrix operator * (const NumericalScalar s) const;
-
-  // We import the definitions from the upper class (for Matrix multiplication)
-  using Matrix::operator *;
 
   /** Division by a NumericalScalar*/
   SquareMatrix operator / (const NumericalScalar s) const;
