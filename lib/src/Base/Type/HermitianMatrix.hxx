@@ -117,7 +117,9 @@ public:
   /** ComplexMatrix substractions */
   SquareComplexMatrix operator - (const SquareComplexMatrix & m) const;
 
+#ifdef _MSC_VER   // VS2010 does not like 'using' being called after overloads
   using SquareComplexMatrix::operator *;
+#endif
 
   /** Multiplication with a NumericalComplex */
   HermitianMatrix operator * (const NumericalComplex s) const;
@@ -154,6 +156,10 @@ public:
 
   /** Multiplication with a NumericalPoint (must have consistent dimensions) */
   NumericalComplexCollection operator * (const NumericalPoint & p) const;
+
+#ifndef _MSC_VER
+  using SquareComplexMatrix::operator *;
+#endif
 
   /** HermitianMatrix integer power */
   HermitianMatrix power(const UnsignedInteger n) const;
