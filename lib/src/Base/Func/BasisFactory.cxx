@@ -60,16 +60,4 @@ Basis BasisFactory::build() const
 }
 
 
-/* Method save() stores the object through the StorageManager */
-void BasisFactory::save(Advocate & adv) const
-{
-  BasisFactory::save(adv);
-}
-
-/* Method load() reloads the object from the StorageManager */
-void BasisFactory::load(Advocate & adv)
-{
-  BasisFactory::load(adv);
-}
-
 END_NAMESPACE_OPENTURNS
