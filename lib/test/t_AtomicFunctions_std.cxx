@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     }
 #endif
     nbThreads++;
-    pthread_t threadsIds[nbThreads];
+    pthread_t *threadsIds = new pthread_t[nbThreads];
 
     unsigned int i;
     for( i = 0; i < nbThreads; ++i )
@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
         throw TestFailed(errorMessage);
       }
     } /* end for */
+    delete [] threadsIds;
 
     for( i = 0; i < nbThreads; ++i )
     {
