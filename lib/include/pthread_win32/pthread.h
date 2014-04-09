@@ -297,7 +297,7 @@ static __inline int pthread_cond_timedwait (pthread_cond_t *cond, pthread_mutex_
   cond->nbwait++;
   winPthreadAssertPthread(pthread_mutex_unlock(mutex));
 again:
-  switch (WaitForSingleObject(cond->sem, time->tv_sec*1000+time->tv_nsec/1000)) {
+  switch (WaitForSingleObject(cond->sem, (DWORD) (time->tv_sec*1000+time->tv_nsec/1000))) {
     default:
     case WAIT_FAILED:
     {
