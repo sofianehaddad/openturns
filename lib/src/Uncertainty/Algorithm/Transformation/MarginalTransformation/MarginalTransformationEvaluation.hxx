@@ -63,7 +63,7 @@ public:
   /** Parameter constructor */
   MarginalTransformationEvaluation(const DistributionCollection & inputDistributionCollection,
                                    const DistributionCollection & outputDistributionCollection,
-                                   const Bool simplify = ResourceMap::GetAsUnsignedInteger("MarginalTransformationEvaluation-Simplify"));
+                                   const Bool simplify = (0 != ResourceMap::GetAsUnsignedInteger("MarginalTransformationEvaluation-Simplify")));
 
   /** Virtual constructor */
   virtual MarginalTransformationEvaluation * clone() const;
