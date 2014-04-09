@@ -194,14 +194,14 @@ public:
 #ifndef SWIG
   /** Operator[]() gives access to the elements of the collection */
   inline
-  virtual T & operator [] (UnsignedInteger i)
+  virtual T & operator [] (const UnsignedInteger i)
   {
     return coll__[i];
   }
 
   /** Operator[]() gives access to the elements of the const collection */
   inline
-  virtual const T & operator [] (UnsignedInteger i) const
+  virtual const T & operator [] (const UnsignedInteger i) const
   {
     return coll__[i];
   }

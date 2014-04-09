@@ -56,7 +56,7 @@ public:
 
   /** Grade a point as if it were associated to a class */
   virtual NumericalScalar grade(const NumericalPoint & inP,
-                                UnsignedInteger outC) const;
+                                const UnsignedInteger outC) const;
   virtual NumericalPoint grade(const NumericalSample & inS,
                                const Indices & outC) const;
 

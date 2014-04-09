@@ -111,7 +111,7 @@ NumericalPoint EventRandomVectorImplementation::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample EventRandomVectorImplementation::getSample(UnsignedInteger size) const
+NumericalSample EventRandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
   // We don't build the return sample element by element because it doesn't
   // use the potential distribution of the computation. As the returned
