@@ -93,7 +93,7 @@ struct OSSFormater<double>
   static
   void apply(std::ostringstream & oss, double d, int precision)
   {
-    int oldPrecision = oss.precision(precision);
+    int oldPrecision = static_cast<int>(oss.precision(precision));
     oss << d;
     oss.precision(oldPrecision);
   }
@@ -102,7 +102,7 @@ struct OSSFormater<double>
   static
   void apply(OStream & OS, double d, int precision)
   {
-    int oldPrecision = OS.getStream().precision(precision);
+    int oldPrecision = static_cast<int>(OS.getStream().precision(precision));
     OS.getStream() << d;
     OS.getStream().precision(oldPrecision);
   }
@@ -116,7 +116,7 @@ struct OSSFormater<float>
   static
   void apply(std::ostringstream & oss, float f, int precision)
   {
-    int oldPrecision = oss.precision(precision);
+    int oldPrecision = static_cast<int>(oss.precision(precision));
     oss << f;
     oss.precision(oldPrecision);
   }
@@ -125,7 +125,7 @@ struct OSSFormater<float>
   static
   void apply(OStream & OS, float f, int precision)
   {
-    int oldPrecision = OS.getStream().precision(precision);
+    int oldPrecision = static_cast<int>(OS.getStream().precision(precision));
     OS.getStream() << f;
     OS.getStream().precision(oldPrecision);
   }
