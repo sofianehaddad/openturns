@@ -90,7 +90,6 @@ int main(int argc, char *argv[])
         throw TestFailed(errorMessage);
       }
     } /* end for */
-    delete [] threadsIds;
 
     for( i = 0; i < nbThreads; ++i )
     {
@@ -102,6 +101,7 @@ int main(int argc, char *argv[])
         throw TestFailed(errorMessage);
       }
     } /* end for */
+    delete [] threadsIds;
 
     unsigned int shaked = atom.fetchAndAdd(10);
     if (shaked != (NB_ITER * nbThreads))
