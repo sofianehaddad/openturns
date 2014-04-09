@@ -230,7 +230,7 @@ NumericalScalar SpecFunc::IncompleteBeta(const NumericalScalar a,
     const NumericalScalar x,
     const Bool tail)
 {
-  return IncompleteBeta(a, b, x, tail) * Beta(a, b);
+  return RegularizedIncompleteBeta(a, b, x, tail) * Beta(a, b);
 }
 
 // Incomplete Beta function inverse
