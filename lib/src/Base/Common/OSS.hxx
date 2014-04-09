@@ -193,7 +193,7 @@ public:
   inline
   int getPrecision() const
   {
-    precision_ = oss_.precision();
+    precision_ = static_cast<int>(oss_.precision());
     return precision_;
   }
 
