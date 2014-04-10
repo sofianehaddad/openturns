@@ -148,14 +148,14 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
       IndiceCache::iterator it = candidates_.begin();
 
       // we'll try to insert the indice in the list according to its q-norm
-      while (( it->second < nextNorm ) && ( it != candidates_.end() ))
+      while (( it != candidates_.end() ) && ( it->second < nextNorm ))
       {
         ++ it;
       }
 
       // check if the same indice was already added
       bool duplicate( false );
-      while (( it->second == nextNorm ) && ( it != candidates_.end() ))
+      while (( it != candidates_.end() ) && ( it->second == nextNorm ))
       {
         if ( it->first == nextIndices )
         {
