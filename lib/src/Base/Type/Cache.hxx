@@ -409,7 +409,7 @@ private:
     bool operator() (const PairType & a,
                      const PairType & b)
     {
-      return a.second.second <= b.second.second ;
+      return a.second.second < b.second.second ;
     }
   };
 
