@@ -72,7 +72,7 @@ const char * Os::GetDirectoryListSeparator()
 
 const char * Os::GetEndOfLine()
 {
-#ifndef WIN32
+#ifndef __MINGW32__
   return "\n";
 #else
   return "\r\n";
