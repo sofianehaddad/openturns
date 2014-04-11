@@ -78,7 +78,8 @@ template <typename K_, typename V_>
 class Cache
   : public PersistentObject
 {
-  CLASSNAME;
+  static  OT::String GetClassName() { return OT::String("Cache"); }
+  OT::String getClassName() const { return OT::String("Cache"); }
 
 public:
 
