@@ -66,6 +66,9 @@ public:
   /** Check if the content is all blank */
   Bool isBlank() const;
 
+  /** Check if the content is all blank */
+  UnsignedInteger getDimension() const { return PersistentCollection<String>::getSize(); }
+
   /** String converter */
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
