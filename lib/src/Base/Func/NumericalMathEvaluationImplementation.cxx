@@ -42,7 +42,8 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 typedef NumericalMathEvaluationImplementation::CacheType NumericalMathEvaluationImplementationCache;
-TEMPLATE_CLASSNAMEINIT(NumericalMathEvaluationImplementationCache);
+// Already defined in Cache.hxx
+//TEMPLATE_CLASSNAMEINIT(NumericalMathEvaluationImplementationCache);
 
 static Factory<NumericalMathEvaluationImplementationCache> RegisteredFactory_Cache("NumericalMathEvaluationImplementationCache");
 
