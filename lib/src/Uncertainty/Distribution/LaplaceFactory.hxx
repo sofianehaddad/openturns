@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class LaplaceFactory
  */
-class LaplaceFactory
+class OT_API LaplaceFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

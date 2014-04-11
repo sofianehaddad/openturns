@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-struct TTY
+struct OT_API TTY
 {
 
   enum Color

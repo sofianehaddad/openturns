@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implements all random vectors
  */
-class RandomVector
+class OT_API RandomVector
   : public TypedInterfaceObject<RandomVectorImplementation>
 {
   CLASSNAME;

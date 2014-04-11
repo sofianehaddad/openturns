@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Jacobi polynomial factory
  */
 
-class JacobiFactory
+class OT_API JacobiFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

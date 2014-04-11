@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is abstract so it can not be instanciated. It must be derived.
  * @see ComparisonOperator
  */
-class ComparisonOperatorImplementation
+class OT_API ComparisonOperatorImplementation
   : public PersistentObject
 {
   CLASSNAME;

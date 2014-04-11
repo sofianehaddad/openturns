@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class LowDiscrepancySequence
  */
 
-class LowDiscrepancySequence :
+class OT_API LowDiscrepancySequence :
   public TypedInterfaceObject<LowDiscrepancySequenceImplementation>
 {
   CLASSNAME;

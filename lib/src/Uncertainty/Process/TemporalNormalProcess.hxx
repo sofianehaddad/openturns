@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The implementation of the Normal process class
  */
-class TemporalNormalProcess
+class OT_API TemporalNormalProcess
   : public ProcessImplementation
 {
   CLASSNAME;

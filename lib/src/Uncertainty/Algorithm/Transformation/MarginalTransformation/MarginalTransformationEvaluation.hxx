@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the Nataf function for elliptical distributions
  */
-class MarginalTransformationEvaluation
+class OT_API MarginalTransformationEvaluation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

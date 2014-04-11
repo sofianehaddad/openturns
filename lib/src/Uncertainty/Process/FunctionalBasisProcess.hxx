@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface class for composite White Noise
  */
-class FunctionalBasisProcess
+class OT_API FunctionalBasisProcess
   : public ProcessImplementation
 {
   CLASSNAME;

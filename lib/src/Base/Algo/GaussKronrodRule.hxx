@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class GaussKronrodRule
  */
 
-class GaussKronrodRule
+class OT_API GaussKronrodRule
   : public PersistentObject
 {
 

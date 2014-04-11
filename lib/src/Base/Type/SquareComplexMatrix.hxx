@@ -41,7 +41,7 @@ class TriangularComplexMatrix;
  * SquareComplexMatrix implements the classical mathematical square matrix
  */
 
-class SquareComplexMatrix :
+class OT_API SquareComplexMatrix :
   public ComplexMatrix
 {
   CLASSNAME;

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A subclass for elliptical usual distributions.
  */
-class EllipticalDistribution
+class OT_API EllipticalDistribution
   : public ContinuousDistribution
 {
   CLASSNAME;

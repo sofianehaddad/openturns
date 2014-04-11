@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the Nataf function for independent distributions
  */
-class NatafIndependentCopulaEvaluation
+class OT_API NatafIndependentCopulaEvaluation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

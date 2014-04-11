@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class LinearNumericalMathEvaluationImplementation
  */
-class LinearNumericalMathEvaluationImplementation
+class OT_API LinearNumericalMathEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

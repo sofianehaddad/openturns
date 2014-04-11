@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IntegrationAlgorithmImplementation
  */
 
-class IntegrationAlgorithmImplementation
+class OT_API IntegrationAlgorithmImplementation
   : public PersistentObject
 {
 

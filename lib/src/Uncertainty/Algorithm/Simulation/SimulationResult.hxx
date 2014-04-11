@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SimulationResult
  * SimulationResult stores the simulation result
  */
-class SimulationResult
+class OT_API SimulationResult
   : public TypedInterfaceObject<SimulationResultImplementation>
 {
 

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of combinations generator
  */
-class Combinations
+class OT_API Combinations
   : public CombinatorialGeneratorImplementation
 {
   CLASSNAME;

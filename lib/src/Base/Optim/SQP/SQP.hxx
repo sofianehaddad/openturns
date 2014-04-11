@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NearestPointAlgorithm
  */
 
-class SQP :
+class OT_API SQP :
   public NearestPointAlgorithmImplementation
 {
   CLASSNAME;

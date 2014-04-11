@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the function, the gradient or the hessian.
  */
-class LinearNumericalMathFunction
+class OT_API LinearNumericalMathFunction
   : public NumericalMathFunction
 {
   CLASSNAME;

@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Simulation
  */
 
-class Simulation
+class OT_API Simulation
   : public PersistentObject
 {
 

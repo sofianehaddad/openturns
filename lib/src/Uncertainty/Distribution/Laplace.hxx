@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Laplace distribution.
  */
-class Laplace
+class OT_API Laplace
   : public ContinuousDistribution
 {
   CLASSNAME;

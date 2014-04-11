@@ -39,7 +39,7 @@ class RegularGrid;
  * @class ExponentialModel
  */
 
-class ExponentialModel
+class OT_API ExponentialModel
   : public StationaryCovarianceModel
 {
 

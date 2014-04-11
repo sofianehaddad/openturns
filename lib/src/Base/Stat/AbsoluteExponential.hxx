@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class AbsoluteExponential
  */
 
-class AbsoluteExponential
+class OT_API AbsoluteExponential
   : public CovarianceModelImplementation
 {
 

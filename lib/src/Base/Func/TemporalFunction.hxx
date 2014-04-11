@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * numerical math function that acts only on the temporal part
  * of a time series.
  */
-class TemporalFunction
+class OT_API TemporalFunction
   : public DynamicalFunctionImplementation
 {
   CLASSNAME;

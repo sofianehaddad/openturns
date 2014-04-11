@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an abstract interface for the implementation
  * of an real numerical mathematical Gradient into the platform.
  */
-class NumericalMathGradientImplementation
+class OT_API NumericalMathGradientImplementation
   : public PersistentObject
 {
   CLASSNAME;

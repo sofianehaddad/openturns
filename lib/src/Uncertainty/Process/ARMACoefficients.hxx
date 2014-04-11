@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Coefficients of ARMA process
  *
  */
-class ARMACoefficients
+class OT_API ARMACoefficients
   : public PersistentCollection<SquareMatrix>
 {
   CLASSNAME;

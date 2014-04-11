@@ -39,7 +39,7 @@ class RegularGrid;
  * @class ExponentialCauchy
  */
 
-class ExponentialCauchy
+class OT_API ExponentialCauchy
   : public SecondOrderModelImplementation
 {
 

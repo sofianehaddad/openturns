@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of box experiment plan
  */
-class Box
+class OT_API Box
   : public StratifiedExperiment
 {
   CLASSNAME;

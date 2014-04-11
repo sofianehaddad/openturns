@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class LinearModelTest
+class OT_API LinearModelTest
 {
 public:
 

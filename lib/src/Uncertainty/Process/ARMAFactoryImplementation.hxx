@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface for all implementation class of process
  */
-class ARMAFactoryImplementation
+class OT_API ARMAFactoryImplementation
   : public PersistentObject
 {
   CLASSNAME;

@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for composite random vectors
  */
-class CompositeRandomVector
+class OT_API CompositeRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;

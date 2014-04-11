@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class ConstantBasisFactory
+class OT_API ConstantBasisFactory
   : public BasisFactory
 {
   CLASSNAME;

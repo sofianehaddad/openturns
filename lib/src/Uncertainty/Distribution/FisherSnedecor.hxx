@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Fisher-Snedecor distribution.
  */
-class FisherSnedecor
+class OT_API FisherSnedecor
   : public ContinuousDistribution
 {
   CLASSNAME;

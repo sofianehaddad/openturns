@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Arcsine distribution.
  */
-class Arcsine
+class OT_API Arcsine
   : public ContinuousDistribution
 {
   CLASSNAME;

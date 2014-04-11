@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The bijective function to select polynomials in the orthogonal basis
  */
-class EnumerateFunction
+class OT_API EnumerateFunction
   : public TypedInterfaceObject<EnumerateFunctionImplementation>
 {
   CLASSNAME;

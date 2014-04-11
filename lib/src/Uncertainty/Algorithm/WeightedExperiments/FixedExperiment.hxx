@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of fixedExperiment plan
  */
-class FixedExperiment
+class OT_API FixedExperiment
   : public WeightedExperiment
 {
   CLASSNAME;

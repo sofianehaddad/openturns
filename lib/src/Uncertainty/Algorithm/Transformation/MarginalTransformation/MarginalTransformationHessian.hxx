@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the Nataf function for elliptical distributions
  */
-class MarginalTransformationHessian
+class OT_API MarginalTransformationHessian
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

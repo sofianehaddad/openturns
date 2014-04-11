@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of quadratic taylor response surface
  */
-class QuadraticTaylor
+class OT_API QuadraticTaylor
   : public PersistentObject
 {
   CLASSNAME;

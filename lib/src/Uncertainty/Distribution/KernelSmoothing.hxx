@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of KernelSmoothing.
  */
-class KernelSmoothing : public PersistentObject
+class OT_API KernelSmoothing : public PersistentObject
 {
   CLASSNAME;
 public:

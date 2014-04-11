@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @internal
  */
 
-class XMLWrapperErrorHandler : public XERCES_CPP_NAMESPACE_QUALIFIER DOMErrorHandler
+class OT_API XMLWrapperErrorHandler : public XERCES_CPP_NAMESPACE_QUALIFIER DOMErrorHandler
 {
 public:
 

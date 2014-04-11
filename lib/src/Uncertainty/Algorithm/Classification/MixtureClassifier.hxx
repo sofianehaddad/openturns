@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Associate to a given point its class index
  */
-class MixtureClassifier
+class OT_API MixtureClassifier
   : public ClassifierImplementation
 {
   CLASSNAME;

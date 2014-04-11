@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This an abstract class for 1D polynomial factories
  */
 
-class OrthogonalUniVariatePolynomialFactory
+class OT_API OrthogonalUniVariatePolynomialFactory
   : public PersistentObject
 {
   CLASSNAME;

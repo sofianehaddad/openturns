@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * cobyla is an actual implementation for
  * NearestPointAlgorithm using the cobyla library
  */
-class Cobyla :
+class OT_API Cobyla :
   public NearestPointAlgorithmImplementation
 {
   CLASSNAME;

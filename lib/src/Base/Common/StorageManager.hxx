@@ -55,8 +55,8 @@ class Study;
  *
  * Allow correct selection of method
  */
-struct SaveAction {};
-struct LoadAction {};
+struct OT_API SaveAction {};
+struct OT_API LoadAction {};
 
 /**
  * @class StorageManager
@@ -68,7 +68,7 @@ struct LoadAction {};
  * @see Study
  */
 
-class StorageManager
+class OT_API StorageManager
   : public Object
 {
   CLASSNAME;
@@ -297,7 +297,7 @@ private:
 
 #ifndef SWIG
 
-class Advocate
+class OT_API Advocate
 {
 public:
 

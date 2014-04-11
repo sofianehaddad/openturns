@@ -46,7 +46,7 @@ class WrapperObject;
  * of a vector (aka NumericalPoint) through the function. The
  * function may be loaded in an external way through a wrapper.
  */
-class ComputedNumericalMathEvaluationImplementation
+class OT_API ComputedNumericalMathEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

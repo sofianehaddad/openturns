@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements an independent copula
  */
-class IndependentCopula
+class OT_API IndependentCopula
   : public CopulaImplementation
 {
   CLASSNAME;

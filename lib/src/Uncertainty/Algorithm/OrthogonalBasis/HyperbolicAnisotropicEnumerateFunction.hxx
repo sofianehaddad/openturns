@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The bijective function to select polynomials in the orthogonal basis
  */
 
-class HyperbolicAnisotropicEnumerateFunction
+class OT_API HyperbolicAnisotropicEnumerateFunction
   : public EnumerateFunctionImplementation
 {
   CLASSNAME;

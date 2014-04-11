@@ -51,7 +51,7 @@ template <class PERSISTENT> class Factory;
  * @sa Study
  */
 
-class PersistentObject
+class OT_API PersistentObject
   : public Object
 {
   CLASSNAME;
@@ -207,7 +207,7 @@ public:
   /**
    * %Object name visibility query
    *
-   * This methos returns true if a non-empty name was given to the object
+   * This method returns true if a non-empty name was given to the object
    * @return True if object has a non-empty name
    */
   inline

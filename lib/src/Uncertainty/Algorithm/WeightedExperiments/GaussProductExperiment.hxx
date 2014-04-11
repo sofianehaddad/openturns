@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of monteCarloExperiment plan
  */
-class GaussProductExperiment
+class OT_API GaussProductExperiment
   : public WeightedExperiment
 {
   CLASSNAME;

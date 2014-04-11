@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class BurrFactory
  */
-class BurrFactory
+class OT_API BurrFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

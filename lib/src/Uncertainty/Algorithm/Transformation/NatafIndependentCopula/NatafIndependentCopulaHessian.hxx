@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the Nataf function for independent distributions
  */
-class NatafIndependentCopulaHessian
+class OT_API NatafIndependentCopulaHessian
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

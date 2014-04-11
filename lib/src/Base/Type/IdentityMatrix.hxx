@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IdentityMatrix
  */
 
-class IdentityMatrix
+class OT_API IdentityMatrix
   : public CorrelationMatrix
 {
   CLASSNAME;

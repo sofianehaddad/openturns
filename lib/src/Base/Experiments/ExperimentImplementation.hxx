@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of experimentImplementation plan
  */
-class ExperimentImplementation
+class OT_API ExperimentImplementation
   : public PersistentObject
 {
   CLASSNAME;

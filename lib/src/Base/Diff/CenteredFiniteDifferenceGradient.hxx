@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * form a numerical math evaluation implementation by using centered
  * finite difference formula
  */
-class CenteredFiniteDifferenceGradient
+class OT_API CenteredFiniteDifferenceGradient
   : public FiniteDifferenceGradient
 {
   CLASSNAME;

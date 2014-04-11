@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The InverseNormal distribution.
  */
-class InverseNormal
+class OT_API InverseNormal
   : public ContinuousDistribution
 {
   CLASSNAME;

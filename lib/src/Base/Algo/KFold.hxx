@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Creates all the possible training sets by removing P samples from the complete set
  */
-class KFold
+class OT_API KFold
   : public FittingAlgorithmImplementation
 {
   CLASSNAME;

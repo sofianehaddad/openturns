@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Exponential distribution.
  */
-class Exponential
+class OT_API Exponential
   : public ContinuousDistribution
 {
   CLASSNAME;

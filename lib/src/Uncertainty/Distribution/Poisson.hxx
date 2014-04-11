@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Poisson distribution.
  */
-class Poisson
+class OT_API Poisson
   : public DiscreteDistribution
 {
   CLASSNAME;

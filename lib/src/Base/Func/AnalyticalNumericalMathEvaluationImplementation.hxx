@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the evaluation of an analytical function.
  */
-class AnalyticalNumericalMathEvaluationImplementation
+class OT_API AnalyticalNumericalMathEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

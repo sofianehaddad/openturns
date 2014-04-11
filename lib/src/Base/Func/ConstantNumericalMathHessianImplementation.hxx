@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * implementations into the platform. It realizes the computation of the image symmetric tensor
  * of a vector (aka NumericalPoint) through the hessian.
  */
-class ConstantNumericalMathHessianImplementation
+class OT_API ConstantNumericalMathHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

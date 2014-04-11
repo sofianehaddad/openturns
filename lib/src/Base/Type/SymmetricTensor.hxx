@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * SymmetricTensor implements the classical mathematical symmetric tensor
  */
 
-class SymmetricTensor :
+class OT_API SymmetricTensor :
   public Tensor
 
 {

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The UserDefinedPair class.
  */
-class UserDefinedPair
+class OT_API UserDefinedPair
   : public PersistentObject
 {
   CLASSNAME;

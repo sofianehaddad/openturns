@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of stratifiedExperiment plan
  */
-class StratifiedExperiment
+class OT_API StratifiedExperiment
   : public ExperimentImplementation
 {
   CLASSNAME;

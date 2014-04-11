@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Classification algorithm base type
  */
-class ClassifierImplementation
+class OT_API ClassifierImplementation
   : public PersistentObject
 {
   CLASSNAME;

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class  SpectralModelFactory
  */
-class  SpectralModelFactory
+class OT_API  SpectralModelFactory
   : public TypedInterfaceObject<SpectralModelFactoryImplementation>
 {
   CLASSNAME;

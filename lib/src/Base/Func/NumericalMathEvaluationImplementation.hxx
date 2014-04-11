@@ -48,7 +48,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an abstract interface for the implementation
  * of an real numerical mathematical function into the platform.
  */
-class NumericalMathEvaluationImplementation
+class OT_API NumericalMathEvaluationImplementation
   : public PersistentObject
 {
   CLASSNAME;

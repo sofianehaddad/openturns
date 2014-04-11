@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of factorial experiment plan
  */
-class Factorial
+class OT_API Factorial
   : public StratifiedExperiment
 {
   CLASSNAME;

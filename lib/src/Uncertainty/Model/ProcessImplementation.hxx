@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface for all implementation class of process
  */
-class ProcessImplementation
+class OT_API ProcessImplementation
   : public PersistentObject
 {
   CLASSNAME;

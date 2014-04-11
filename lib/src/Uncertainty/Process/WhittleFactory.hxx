@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements the Whittle likelihood for estimating ARMA coefficients
  */
-class WhittleFactory
+class OT_API WhittleFactory
   : public ARMAFactoryImplementation
 {
   CLASSNAME;

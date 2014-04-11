@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the marginal hessian of an hessian
  */
-class RestrictedHessianImplementation
+class OT_API RestrictedHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

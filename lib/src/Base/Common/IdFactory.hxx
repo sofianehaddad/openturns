@@ -45,7 +45,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The IdFactory implements a 'singleton' strategy.
  */
 
-class IdFactory
+class OT_API IdFactory
 {
 public:
 
@@ -65,7 +65,7 @@ private:
 }; /* class IdFactory */
 
 /** This struct initializes all static members of IdFactory */
-struct IdFactory_init
+struct OT_API IdFactory_init
 {
   IdFactory_init();
 }; /* end struct IdFactory_init */

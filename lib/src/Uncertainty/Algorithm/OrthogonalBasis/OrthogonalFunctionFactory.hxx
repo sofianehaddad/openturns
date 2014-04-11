@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is an abstract class for orthogonal basis
  */
 
-class OrthogonalFunctionFactory
+class OT_API OrthogonalFunctionFactory
   : public PersistentObject
 {
   CLASSNAME;

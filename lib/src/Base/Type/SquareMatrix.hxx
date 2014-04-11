@@ -43,7 +43,7 @@ class SquareComplexMatrix;
  * SquareMatrix implements the classical mathematical square matrix
  */
 
-class SquareMatrix :
+class OT_API SquareMatrix :
   public Matrix
 {
   CLASSNAME;

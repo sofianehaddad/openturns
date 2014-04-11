@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FilteringWindowsImplementation
  */
 
-class FilteringWindows
+class OT_API FilteringWindows
   : public TypedInterfaceObject<FilteringWindowsImplementation>
 {
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Charlier polynomial factory
  */
 
-class CharlierFactory
+class OT_API CharlierFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

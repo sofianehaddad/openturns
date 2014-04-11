@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RandomizedQuasiMonteCarlo
  */
 
-class RandomizedQuasiMonteCarlo :
+class OT_API RandomizedQuasiMonteCarlo :
   public Simulation
 {
   CLASSNAME;

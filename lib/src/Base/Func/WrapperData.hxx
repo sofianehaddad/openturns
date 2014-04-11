@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @struct WrapperSymbolProvided
  * @brief  Stores information about the presence or no of symbols in the wrapper
  */
-struct WrapperSymbolProvided
+struct OT_API WrapperSymbolProvided
 {
   static const WrapperProvided NO;  ///< No symbol is provided
   static const WrapperProvided YES; ///< The symbol is provided
@@ -50,7 +50,7 @@ struct WrapperSymbolProvided
  * @deprecated
  * This class is deprecated and should not be used anymore.
  */
-struct WrapperComputedGradient
+struct OT_API WrapperComputedGradient
 {
   static const WrapperProvided NO;  ///< No need to compute the gradient within the numerical function
   static const WrapperProvided YES; ///< We need to compute the gradient within the numerical function
@@ -61,7 +61,7 @@ struct WrapperComputedGradient
  * @struct WrapperFunctionDescription
  * @brief  Describes what is the interface of a numerical function
  */
-struct WrapperFunctionDescription
+struct OT_API WrapperFunctionDescription
     : public Object
 {
   String name_;               ///< The name of the numerical function
@@ -77,7 +77,7 @@ struct WrapperFunctionDescription
  * @struct WrapperDataFileType
  * @brief  Stores the type (input or output) of the file
  */
-struct WrapperDataFileType
+struct OT_API WrapperDataFileType
 {
   static const WrapperListElementType IN;  ///< The file is an input file
   static const WrapperListElementType OUT; ///< The file is an output file
@@ -87,7 +87,7 @@ struct WrapperDataFileType
  * @struct WrapperDataFile
  * @brief  Holds the name and the path of any file passed as argument to the wrapper
  */
-struct WrapperDataFile
+struct OT_API WrapperDataFile
     : public Object
 {
   String id_;                   ///< The id of the file (any string to distinguish each file from another)
@@ -107,7 +107,7 @@ struct WrapperDataFile
  * @struct WrapperDataVariableType
  * @brief  Stores the type (input or output) of the variable
  */
-struct WrapperDataVariableType
+struct OT_API WrapperDataVariableType
 {
   static const WrapperListElementType IN;       ///< The variable is an input variable
   static const WrapperListElementType OUT;      ///< The variable is an output variable
@@ -118,7 +118,7 @@ struct WrapperDataVariableType
  * @struct WrapperDataVariableLocation
  * @brief  Stores the line number or the regular expression that locates the variable in the file
  */
-struct WrapperDataVariableLocation
+struct OT_API WrapperDataVariableLocation
 {
   static const WrapperLocationType LINE;   ///< The location is a line number
   static const WrapperLocationType REGEXP; ///< The location is a regular expression
@@ -128,7 +128,7 @@ struct WrapperDataVariableLocation
  * @struct WrapperDataVariable
  * @brief  Holds information of any variable passed as argument to the wrapper
  */
-struct WrapperDataVariable
+struct OT_API WrapperDataVariable
     : public Object
 {
   String id_;                    ///< The id of the variable (any string to distinguish each variable from another)
@@ -156,7 +156,7 @@ struct WrapperDataVariable
  * @struct WrapperState
  * @brief  Stores the mode of invocation of the external code
  */
-struct WrapperState
+struct OT_API WrapperState
 {
   static const WrapperConfigurationState SHARED;   ///< The intenal state is shared amoung function, gradient and hessian
   static const WrapperConfigurationState SPECIFIC; ///< Function, gradient and hessian have specific internal state
@@ -167,7 +167,7 @@ struct WrapperState
  * @struct WrapperMode
  * @brief  Stores the mode of invocation of the external code
  */
-struct WrapperMode
+struct OT_API WrapperMode
 {
   static const WrapperConfigurationMode STATICLINK;  ///< The external code is statically linked with the wrapper
   static const WrapperConfigurationMode DYNAMICLINK; ///< The external code is dynamically linked with the wrapper
@@ -179,7 +179,7 @@ struct WrapperMode
  * @struct WrapperDataTransfer
  * @brief  Stores the mode of transmission for the arguments
  */
-struct WrapperDataTransfer
+struct OT_API WrapperDataTransfer
 {
   static const WrapperDataTransferMode FILES;     ///< The values are transmitted through files
   static const WrapperDataTransferMode PIPE;      ///< The values are transmitted through a pipe
@@ -193,7 +193,7 @@ struct WrapperDataTransfer
  * struct WrapperParameter
  * @brief Holds the configuration of the wrapper
  */
-struct WrapperParameter
+struct OT_API WrapperParameter
     : public Object
 {
   WrapperConfigurationState state_; ///< The sharing mode of internal state
@@ -214,7 +214,7 @@ struct WrapperParameter
  * @class WrapperData
  * @brief Declares the wrapper data that are exchanged with the platform
  */
-class WrapperData
+class OT_API WrapperData
   : public Object
 {
   CLASSNAME;

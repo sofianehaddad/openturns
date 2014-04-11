@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class DistributionImplementationFactory
  */
-class DistributionImplementationFactory
+class OT_API DistributionImplementationFactory
   : public PersistentObject
 {
   CLASSNAME;

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class RayleighFactory
  */
-class RayleighFactory
+class OT_API RayleighFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

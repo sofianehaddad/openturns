@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * point of an interval that minimize the given objective function
  */
 
-class BoundConstrainedAlgorithm
+class OT_API BoundConstrainedAlgorithm
   : public TypedInterfaceObject<BoundConstrainedAlgorithmImplementation>
 {
 

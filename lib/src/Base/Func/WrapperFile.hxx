@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * XML, etc.).
  */
 
-class WrapperFile
+class OT_API WrapperFile
   : public PersistentObject
 {
   CLASSNAME;

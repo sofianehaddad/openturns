@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of combinatorialGenerator plan
  */
-class CombinatorialGenerator
+class OT_API CombinatorialGenerator
   : public TypedInterfaceObject<CombinatorialGeneratorImplementation>
 {
   CLASSNAME;

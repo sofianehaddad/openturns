@@ -159,7 +159,7 @@ struct OSSFormater<bool>
  * Class OSS is useful when streaming data through a function
  * that expect a string as parameter
  */
-class OSS
+class OT_API OSS
 {
 private:
   std::ostringstream oss_;

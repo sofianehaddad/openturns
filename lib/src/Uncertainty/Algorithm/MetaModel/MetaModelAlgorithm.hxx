@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class MetaModelAlgorithm
+class OT_API MetaModelAlgorithm
   : public PersistentObject
 {
   CLASSNAME;

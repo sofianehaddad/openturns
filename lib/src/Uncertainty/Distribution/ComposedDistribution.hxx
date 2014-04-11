@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of distributions
  * made from marginal distributions and from a copula.
  */
-class ComposedDistribution
+class OT_API ComposedDistribution
   : public DistributionImplementation
 {
   CLASSNAME;

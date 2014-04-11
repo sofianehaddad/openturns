@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class CopulaImplementation
  */
-class CopulaImplementation
+class OT_API CopulaImplementation
   : public ContinuousDistribution
 {
   CLASSNAME;

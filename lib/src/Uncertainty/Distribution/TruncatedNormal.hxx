@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The TruncatedNormal distribution.
  */
-class TruncatedNormal
+class OT_API TruncatedNormal
   : public ContinuousDistribution
 {
   CLASSNAME;

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of axial experiment plan
  */
-class Axial
+class OT_API Axial
   : public StratifiedExperiment
 {
   CLASSNAME;

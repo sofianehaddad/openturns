@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class NormalityTest
+class OT_API NormalityTest
 {
 public:
 

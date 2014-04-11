@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of LHSExperiment plan
  */
-class LHSExperiment
+class OT_API LHSExperiment
   : public WeightedExperiment
 {
   CLASSNAME;

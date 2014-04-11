@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class PiecewiseLinearEvaluationImplementation
+class OT_API PiecewiseLinearEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

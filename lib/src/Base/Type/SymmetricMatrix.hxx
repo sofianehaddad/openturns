@@ -39,7 +39,7 @@ class IdentityMatrix;
  * SymmetricMatrix implements the classical mathematical square matrix
  */
 
-class SymmetricMatrix :
+class OT_API SymmetricMatrix :
   public SquareMatrix
 {
   CLASSNAME;

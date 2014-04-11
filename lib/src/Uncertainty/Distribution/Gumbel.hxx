@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Gumbel distribution.
  */
-class Gumbel
+class OT_API Gumbel
   : public ContinuousDistribution
 {
   CLASSNAME;

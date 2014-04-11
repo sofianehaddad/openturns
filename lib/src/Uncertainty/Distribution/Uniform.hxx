@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Uniform distribution.
  */
-class Uniform
+class OT_API Uniform
   : public ContinuousDistribution
 {
   CLASSNAME;

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Laguerre polynomial factory
  */
 
-class LaguerreFactory
+class OT_API LaguerreFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

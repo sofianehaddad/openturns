@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SpectralModelImplementation
  */
 
-class SpectralModelImplementation
+class OT_API SpectralModelImplementation
   : public PersistentObject
 {
 

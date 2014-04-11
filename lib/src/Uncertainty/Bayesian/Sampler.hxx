@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The implementation defines how the
  * @see SamplerImplementation
  */
-class Sampler
+class OT_API Sampler
   : public TypedInterfaceObject<SamplerImplementation>
 {
   CLASSNAME;

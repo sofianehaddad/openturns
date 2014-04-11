@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  *
  */
-class EventDomainImplementation
+class OT_API EventDomainImplementation
   : public CompositeRandomVector
 {
   CLASSNAME;

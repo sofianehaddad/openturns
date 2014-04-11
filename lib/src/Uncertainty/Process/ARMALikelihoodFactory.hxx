@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements the classical likelihood for estimating ARMA coefficients
  */
-class ARMALikelihoodFactory
+class OT_API ARMALikelihoodFactory
   : public ARMAFactoryImplementation
 {
   CLASSNAME;

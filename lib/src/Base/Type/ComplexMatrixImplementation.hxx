@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * ComplexMatrixImplementation implements the classical mathematical ComplexMatrixImplementation
  */
 
-class ComplexMatrixImplementation
+class OT_API ComplexMatrixImplementation
   : public PersistentCollection<NumericalComplex>
 
 {

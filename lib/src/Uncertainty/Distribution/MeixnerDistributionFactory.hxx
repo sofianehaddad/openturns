@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class MeixnerDistributionFactory
  */
-class MeixnerDistributionFactory
+class OT_API MeixnerDistributionFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

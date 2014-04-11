@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The ConditionalDistribution distribution.
  */
-class ConditionalDistribution
+class OT_API ConditionalDistribution
   : public Mixture
 {
   CLASSNAME;

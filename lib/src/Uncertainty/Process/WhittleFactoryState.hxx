@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements the state of the WhittleFactory class that results form a particular fitting
  */
-class WhittleFactoryState
+class OT_API WhittleFactoryState
   : public PersistentObject
 {
   CLASSNAME;

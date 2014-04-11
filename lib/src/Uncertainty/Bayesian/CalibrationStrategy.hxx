@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The implementation defines how the
  * @see CalibrationStrategyImplementation
  */
-class CalibrationStrategy
+class OT_API CalibrationStrategy
   : public TypedInterfaceObject<CalibrationStrategyImplementation>
 {
   CLASSNAME;

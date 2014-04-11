@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A subclass for Continuous usual distributions.
  */
-class ContinuousDistribution
+class OT_API ContinuousDistribution
   : public DistributionImplementation
 {
 

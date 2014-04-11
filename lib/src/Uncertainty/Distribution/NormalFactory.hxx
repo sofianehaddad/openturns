@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class NormalFactory
  */
-class NormalFactory
+class OT_API NormalFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

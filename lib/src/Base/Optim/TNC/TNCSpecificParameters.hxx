@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TNCSpecificParameters
  * Specific parameters of the TNC library
  */
-class TNCSpecificParameters
+class OT_API TNCSpecificParameters
   : public PersistentObject
 {
 

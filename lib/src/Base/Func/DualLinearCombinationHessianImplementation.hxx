@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The hessian part of functional linear combination of vectors
  */
 
-class DualLinearCombinationHessianImplementation
+class OT_API DualLinearCombinationHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

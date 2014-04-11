@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of importanceSamplingExperiment plan
  */
-class ImportanceSamplingExperiment
+class OT_API ImportanceSamplingExperiment
   : public WeightedExperiment
 {
   CLASSNAME;

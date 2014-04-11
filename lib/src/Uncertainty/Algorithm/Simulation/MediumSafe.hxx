@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class MediumSafe
  */
 
-class MediumSafe :
+class OT_API MediumSafe :
   public RootStrategyImplementation
 {
 

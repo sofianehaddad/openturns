@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IntegrationAlgorithm
  */
 
-class IntegrationAlgorithm
+class OT_API IntegrationAlgorithm
   : public TypedInterfaceObject<IntegrationAlgorithmImplementation>
 {
 

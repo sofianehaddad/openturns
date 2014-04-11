@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FORMResult
  * FORMResult stores the FORM result
  */
-class FORMResult:
+class OT_API FORMResult:
   public AnalyticalResult
 {
   CLASSNAME;

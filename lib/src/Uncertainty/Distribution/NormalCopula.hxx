@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements a normal copula
  */
-class NormalCopula
+class OT_API NormalCopula
   : public CopulaImplementation
 {
   CLASSNAME;

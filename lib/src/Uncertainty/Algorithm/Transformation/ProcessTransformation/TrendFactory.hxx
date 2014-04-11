@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TrendFactory
  */
 
-class TrendFactory
+class OT_API TrendFactory
   : public PersistentObject
 {
 

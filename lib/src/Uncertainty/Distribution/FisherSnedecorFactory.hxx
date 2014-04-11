@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class FisherSnedecorFactory
  */
-class FisherSnedecorFactory
+class OT_API FisherSnedecorFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for distribution-based random vectors
  */
-class ConditionalRandomVector
+class OT_API ConditionalRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;

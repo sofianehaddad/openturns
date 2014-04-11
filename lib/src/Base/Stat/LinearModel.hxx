@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * LinearModel implements the notion of linear model
  */
 
-class LinearModel :
+class OT_API LinearModel :
   public PersistentObject
 {
   CLASSNAME;

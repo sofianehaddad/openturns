@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Binomial distribution.
  */
-class Binomial
+class OT_API Binomial
   : public DiscreteDistribution
 {
   CLASSNAME;

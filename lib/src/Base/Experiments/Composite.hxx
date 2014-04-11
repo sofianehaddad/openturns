@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of composite experiment plan
  */
-class Composite
+class OT_API Composite
   : public StratifiedExperiment
 {
   CLASSNAME;

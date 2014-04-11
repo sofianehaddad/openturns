@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  *
  */
-class EventProcess
+class OT_API EventProcess
   : public RandomVectorImplementation
 {
   CLASSNAME;

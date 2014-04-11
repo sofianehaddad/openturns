@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The bijective function to select polynomials in the orthogonal basis
  */
 
-class EnumerateFunctionImplementation
+class OT_API EnumerateFunctionImplementation
   : public PersistentObject
 {
   CLASSNAME;

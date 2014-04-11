@@ -36,7 +36,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-struct Atomic
+struct OT_API Atomic
 {
 
   // sometimes __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 is not defined altough sync primitives are available
@@ -153,7 +153,7 @@ struct Atomic
 
 
 #if defined(OPENTURNS_HAVE_TBB)
-class AtomicInt
+class OT_API AtomicInt
 {
 
   typedef tbb::atomic<int> Integer;
@@ -202,7 +202,7 @@ public:
 
 #else
 
-class AtomicInt
+class OT_API AtomicInt
 {
   typedef int Integer;
   Integer val_;

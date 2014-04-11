@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is abstract so it can not be instanciated. It must be derived.
  * @see CalibrationStrategy
  */
-class CalibrationStrategyImplementation
+class OT_API CalibrationStrategyImplementation
   : public PersistentObject
 {
   CLASSNAME;

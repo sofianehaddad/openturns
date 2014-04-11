@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the function, the gradient or the hessian.
  */
-class QuadraticNumericalMathFunction
+class OT_API QuadraticNumericalMathFunction
   : public NumericalMathFunction
 {
   CLASSNAME;

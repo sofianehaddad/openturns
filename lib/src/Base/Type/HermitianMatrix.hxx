@@ -42,7 +42,7 @@ class TriangularComplexMatrix;
  * HermitianMatrix implements the classical mathematical hermitian matrix
  */
 
-class HermitianMatrix :
+class OT_API HermitianMatrix :
   public SquareComplexMatrix
 {
   CLASSNAME;

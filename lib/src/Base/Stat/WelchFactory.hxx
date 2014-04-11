@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class WelchFactory
  */
-class WelchFactory
+class OT_API WelchFactory
   : public SpectralModelFactoryImplementation
 {
   CLASSNAME;

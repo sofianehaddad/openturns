@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class GaussKronrod
  */
 
-class GaussKronrod
+class OT_API GaussKronrod
   : public IntegrationAlgorithmImplementation
 {
 

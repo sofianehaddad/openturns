@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Skellam distribution.
  */
-class Skellam
+class OT_API Skellam
   : public DiscreteDistribution
 {
   CLASSNAME;

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HistoryStrategyImplementation
  */
 
-class HistoryStrategyImplementation
+class OT_API HistoryStrategyImplementation
   : public PersistentObject
 {
 

@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The SklarCopula distribution.
  */
-class SklarCopula
+class OT_API SklarCopula
   : public CopulaImplementation
 {
   CLASSNAME;

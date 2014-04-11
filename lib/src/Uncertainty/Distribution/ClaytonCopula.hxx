@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The ClaytonCopula distribution.
  */
-class ClaytonCopula
+class OT_API ClaytonCopula
   : public ArchimedeanCopula
 {
   CLASSNAME;

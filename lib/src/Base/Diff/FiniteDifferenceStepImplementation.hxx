@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class FiniteDifferenceStepImplementation
+class OT_API FiniteDifferenceStepImplementation
   : public PersistentObject
 {
 

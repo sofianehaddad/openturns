@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class building chaos expansions
  */
 
-class KrigingAlgorithm
+class OT_API KrigingAlgorithm
   : public MetaModelAlgorithm
 {
   CLASSNAME;

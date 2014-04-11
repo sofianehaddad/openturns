@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class GeneralizedParetoFactory
  */
-class GeneralizedParetoFactory
+class OT_API GeneralizedParetoFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

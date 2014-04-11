@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /** Forward declaration */
 class ResourceMap;
 
-class ResourceMapInstance
+class OT_API ResourceMapInstance
 {
   ResourceMap & rm_;
   MutexLock lock_;
@@ -62,7 +62,7 @@ public:
  * some other are read in an configuration file.
  */
 
-class ResourceMap
+class OT_API ResourceMap
 {
 public:
 
@@ -182,7 +182,7 @@ private:
 }; /* class ResourceMap */
 
 /** This struct initializes all static members of ResourceMap */
-struct ResourceMap_init
+struct OT_API ResourceMap_init
 {
   ResourceMap_init();
   ~ResourceMap_init();
@@ -199,9 +199,9 @@ static ResourceMap_init __ResourceMap_initializer;
  * Operator << converts the ResourceMap object to an output stream
  * so it is easy to show the content of the resourceMap.
  */
-std::ostream & operator <<(std::ostream & os, const ResourceMapInstance & obj);
+OT_API std::ostream & operator <<(std::ostream & os, const ResourceMapInstance & obj);
 #ifndef SWIG
-OStream & operator <<(OStream & OS, const ResourceMapInstance & obj);
+OT_API OStream & operator <<(OStream & OS, const ResourceMapInstance & obj);
 #endif
 
 

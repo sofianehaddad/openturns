@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Beta distribution.
  */
-class Beta
+class OT_API Beta
   : public ContinuousDistribution
 {
   CLASSNAME;

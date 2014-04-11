@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface class for composite White Noise
  */
-class RandomWalk
+class OT_API RandomWalk
   : public ProcessImplementation
 {
   CLASSNAME;

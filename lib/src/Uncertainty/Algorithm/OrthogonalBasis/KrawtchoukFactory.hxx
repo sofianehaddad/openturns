@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Krawtchouk polynomial factory
  */
 
-class KrawtchoukFactory
+class OT_API KrawtchoukFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

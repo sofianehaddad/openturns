@@ -54,7 +54,7 @@ struct WrapperSymbols;
  * library.
  */
 
-class WrapperObject
+class OT_API WrapperObject
   : public PersistentObject
 {
   CLASSNAME;

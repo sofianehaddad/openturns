@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class KissFFT
  */
 
-class KissFFT
+class OT_API KissFFT
   : public FFTImplementation
 {
 

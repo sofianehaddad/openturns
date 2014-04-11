@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class BoxCoxFactory
  */
 
-class BoxCoxFactory
+class OT_API BoxCoxFactory
   : public PersistentObject
 {
 

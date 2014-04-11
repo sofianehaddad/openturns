@@ -42,7 +42,7 @@ class TriangularComplexMatrix;
  * ComplexMatrix implements the classical mathematical matrix with complex values
  */
 
-class ComplexMatrix :
+class OT_API ComplexMatrix :
   public TypedInterfaceObject<ComplexMatrixImplementation>
 {
   CLASSNAME;

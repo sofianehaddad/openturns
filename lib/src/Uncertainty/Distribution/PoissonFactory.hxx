@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PoissonFactory
  */
-class PoissonFactory
+class OT_API PoissonFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

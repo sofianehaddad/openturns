@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The gradient part of functional linear combination of vectors
  */
 
-class DualLinearCombinationGradientImplementation
+class OT_API DualLinearCombinationGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * TNC is an actual implementation for
  * BoundConstrainedAlgorithm using the TNC library
  */
-class TNC :
+class OT_API TNC :
   public BoundConstrainedAlgorithmImplementation
 {
   CLASSNAME;

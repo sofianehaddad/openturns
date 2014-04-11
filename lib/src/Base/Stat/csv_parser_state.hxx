@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-struct CSVParserState
+struct OT_API CSVParserState
 {
 
   enum FieldType { NotSet, RealField, StringField };

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SORMResult
  * SORMResult stores the SORM result
  */
-class SORMResult:
+class OT_API SORMResult:
   public AnalyticalResult
 {
   CLASSNAME;

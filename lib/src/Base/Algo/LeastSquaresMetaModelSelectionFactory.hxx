@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A factory for building LeastSquaresMetaModelSelection objects
  */
-class LeastSquaresMetaModelSelectionFactory
+class OT_API LeastSquaresMetaModelSelectionFactory
   : public ApproximationAlgorithmImplementationFactory
 {
   CLASSNAME;

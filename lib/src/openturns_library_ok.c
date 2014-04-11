@@ -21,13 +21,14 @@
  *  @author schueller
  *  @date   2012-02-17 19:35:43 +0100 (Fri, 17 Feb 2012)
  */
+#include "OTdebug.h"
 
 /*
  * @fn     int openturns_library_ok()
  * @brief  A function that return 1 on success
  * @return The return code
  */
-int openturns_library_ok()
+int OT_API openturns_library_ok()
 {
   return 1;
 }

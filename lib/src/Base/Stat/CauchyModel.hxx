@@ -38,7 +38,7 @@ class TimeGrid;
  * @class CauchyModel
  */
 
-class CauchyModel
+class OT_API CauchyModel
   : public SpectralModelImplementation
 {
 

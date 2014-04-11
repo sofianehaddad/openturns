@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class FarlieGumbelMorgensternCopulaFactory
  */
-class FarlieGumbelMorgensternCopulaFactory
+class OT_API FarlieGumbelMorgensternCopulaFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

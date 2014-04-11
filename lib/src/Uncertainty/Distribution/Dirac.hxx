@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Dirac distribution.
  */
-class Dirac
+class OT_API Dirac
   : public DiscreteDistribution
 {
   CLASSNAME;

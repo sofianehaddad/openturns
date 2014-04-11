@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class OrthonormalizationAlgorithm
  */
 
-class OrthonormalizationAlgorithm
+class OT_API OrthonormalizationAlgorithm
   : public TypedInterfaceObject<OrthonormalizationAlgorithmImplementation>
 {
   CLASSNAME;

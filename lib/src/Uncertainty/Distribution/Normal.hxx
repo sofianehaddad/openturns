@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Normal (gaussian) distribution.
  */
-class Normal
+class OT_API Normal
   : public EllipticalDistribution
 {
 

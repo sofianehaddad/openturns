@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class UserDefinedCovarianceModel
  */
 
-class UserDefinedCovarianceModel
+class OT_API UserDefinedCovarianceModel
   : public CovarianceModelImplementation
 {
 

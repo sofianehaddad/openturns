@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @brief Defines static methods to query the library about various information (name, version, etc.)
  */
 
-class PlatformInfo
+class OT_API PlatformInfo
 {
 private:
   /**

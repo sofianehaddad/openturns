@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class StationaryCovarianceModelFactory
  */
-class StationaryCovarianceModelFactory
+class OT_API StationaryCovarianceModelFactory
   : public CovarianceModelFactoryImplementation
 {
   CLASSNAME;

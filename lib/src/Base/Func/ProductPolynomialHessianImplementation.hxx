@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is a nD polynomial build as a product of n 1D polynomial
  */
 
-class ProductPolynomialHessianImplementation
+class OT_API ProductPolynomialHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

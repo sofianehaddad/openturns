@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of experiment plan
  */
-class Experiment
+class OT_API Experiment
   : public TypedInterfaceObject<ExperimentImplementation>
 {
   CLASSNAME;

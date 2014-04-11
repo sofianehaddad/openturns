@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SquaredExponential
  */
 
-class SquaredExponential
+class OT_API SquaredExponential
   : public CovarianceModelImplementation
 {
 

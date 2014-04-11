@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is a abstract class for projection strategy implementations
  */
 
-class ProjectionStrategyImplementation
+class OT_API ProjectionStrategyImplementation
   : public PersistentObject
 {
   CLASSNAME;

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class UserDefinedSpectralModel
  */
 
-class UserDefinedSpectralModel
+class OT_API UserDefinedSpectralModel
   : public SpectralModelImplementation
 {
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class UserDefinedStationaryCovarianceModel
  */
 
-class UserDefinedStationaryCovarianceModel
+class OT_API UserDefinedStationaryCovarianceModel
   : public StationaryCovarianceModel
 {
 

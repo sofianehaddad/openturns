@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A factory for building PenalizedLeastSquaresAlgorithm objects
  */
-class PenalizedLeastSquaresAlgorithmFactory
+class OT_API PenalizedLeastSquaresAlgorithmFactory
   : public ApproximationAlgorithmImplementationFactory
 {
   CLASSNAME;

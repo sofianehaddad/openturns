@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the InverseNataf function for independent distributions
  */
-class InverseNatafIndependentCopulaEvaluation
+class OT_API InverseNatafIndependentCopulaEvaluation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

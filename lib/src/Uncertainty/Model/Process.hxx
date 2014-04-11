@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implements all processs
  */
-class Process
+class OT_API Process
   : public TypedInterfaceObject<ProcessImplementation>
 {
   CLASSNAME;

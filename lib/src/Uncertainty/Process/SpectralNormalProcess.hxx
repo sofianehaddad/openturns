@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The implementation of the Normal process class
  * in spectral domain
  */
-class SpectralNormalProcess
+class OT_API SpectralNormalProcess
   : public ProcessImplementation
 {
   CLASSNAME;

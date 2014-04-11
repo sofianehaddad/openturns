@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RiskyAndFast
  */
 
-class RiskyAndFast :
+class OT_API RiskyAndFast :
   public RootStrategyImplementation
 {
 

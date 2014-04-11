@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class HypothesisTest
+class OT_API HypothesisTest
 {
 public:
 

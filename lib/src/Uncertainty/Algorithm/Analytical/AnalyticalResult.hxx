@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class AnalyticalResult
  * AnalyticalResult stores the Analytical result
  */
-class AnalyticalResult
+class OT_API AnalyticalResult
   : public PersistentObject
 {
   CLASSNAME;

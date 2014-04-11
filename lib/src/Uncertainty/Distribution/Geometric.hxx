@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Geometric distribution.
  */
-class Geometric
+class OT_API Geometric
   : public DiscreteDistribution
 {
   CLASSNAME;

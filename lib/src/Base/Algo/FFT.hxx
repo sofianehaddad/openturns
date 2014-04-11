@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FFT
  */
 
-class FFT
+class OT_API FFT
   : public TypedInterfaceObject<FFTImplementation>
 {
 

@@ -281,6 +281,10 @@ endif ()
 # Add definitions according to the prerequisites found
 add_definitions( -DHAVE_CONFIG_H )
 
+if (NOT BUILD_SHARED_LIBS)
+  list ( APPEND OPENTURNS_DEFINITIONS -DOT_STATIC )
+endif ()
+
 # CMake makefiles don't link against stdc++ on OSX
 if ( APPLE )
   list ( APPEND OPENTURNS_LIBRARIES stdc++ )

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implements all random vectors
  */
-class Event
+class OT_API Event
   : public RandomVector
 {
   CLASSNAME;

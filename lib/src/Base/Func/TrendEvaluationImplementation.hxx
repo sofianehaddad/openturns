@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *  Care that x should be positive
  */
 
-class TrendEvaluationImplementation
+class OT_API TrendEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

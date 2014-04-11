@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class OrthogonalDirection
  */
 
-class OrthogonalDirection :
+class OT_API OrthogonalDirection :
   public SamplingStrategyImplementation
 {
 

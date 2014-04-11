@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Trapezoidal distribution.
  */
-class Trapezoidal
+class OT_API Trapezoidal
   : public ContinuousDistribution
 {
   CLASSNAME;

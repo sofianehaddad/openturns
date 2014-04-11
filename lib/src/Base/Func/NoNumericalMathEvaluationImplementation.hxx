@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Class for unavailable evaluation implementations
  */
-class NoNumericalMathEvaluationImplementation
+class OT_API NoNumericalMathEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

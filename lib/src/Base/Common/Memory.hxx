@@ -111,7 +111,7 @@ bool operator != (const CStyleAllocator<T> & lhs, const CStyleAllocator<T> & rhs
   return false;
 }
 
-struct _OpenTURNS_memory
+struct OT_API _OpenTURNS_memory
 {
   void * ptr_;
   size_t size_;
@@ -124,7 +124,7 @@ typedef std::map < void *,
 
 typedef std::map<size_t, size_t, std::less<size_t>,  CStyleAllocator<std::pair<size_t, size_t> > > MemSpectrum;
 
-class MemoryImplementation
+class OT_API MemoryImplementation
 {
 public:
   MemContainer memList_;
@@ -139,7 +139,7 @@ public:
   ~MemoryImplementation();
 };
 
-class Memory
+class OT_API Memory
 {
   static MemoryImplementation * p_impl_;
   Memory() {}
@@ -149,7 +149,7 @@ public:
   static MemoryImplementation & GetInstance();
 };
 
-class LockNewDelete
+class OT_API LockNewDelete
 {
   static pthread_mutex_t NewMutex_;
   static void Lock();

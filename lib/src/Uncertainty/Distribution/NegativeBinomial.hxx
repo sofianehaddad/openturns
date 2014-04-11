@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The NegativeBinomial distribution.
  */
-class NegativeBinomial
+class OT_API NegativeBinomial
   : public DiscreteDistribution
 {
   CLASSNAME;

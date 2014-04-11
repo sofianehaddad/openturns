@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * distribution, can compute PDF or CDF, etc.
  * They are the actual key component of RandomVectors.
  */
-class Copula
+class OT_API Copula
   : public Distribution
 {
   CLASSNAME;

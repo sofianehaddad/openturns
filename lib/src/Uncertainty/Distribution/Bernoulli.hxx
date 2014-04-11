@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Bernoulli distribution.
  */
-class Bernoulli
+class OT_API Bernoulli
   : public DiscreteDistribution
 {
   CLASSNAME;

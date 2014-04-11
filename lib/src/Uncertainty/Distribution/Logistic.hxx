@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Logistic distribution.
  */
-class Logistic
+class OT_API Logistic
   : public ContinuousDistribution
 {
   CLASSNAME;

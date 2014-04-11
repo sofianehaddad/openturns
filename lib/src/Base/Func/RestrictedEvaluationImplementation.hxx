@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the marginal evaluation of an evaluation
  */
-class RestrictedEvaluationImplementation
+class OT_API RestrictedEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

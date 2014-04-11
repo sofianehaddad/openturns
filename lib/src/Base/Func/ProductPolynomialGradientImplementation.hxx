@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is a nD polynomial build as a product of n 1D polynomial
  */
 
-class ProductPolynomialGradientImplementation
+class OT_API ProductPolynomialGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * DescriptionImplementation is the active part of Description
  */
 
-class DescriptionImplementation
+class OT_API DescriptionImplementation
   : public PersistentCollection<String>
 {
   CLASSNAME;

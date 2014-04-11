@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class NormalCopulaFactory
  */
-class NormalCopulaFactory
+class OT_API NormalCopulaFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class  CovarianceModelFactory
  */
-class  CovarianceModelFactory
+class OT_API  CovarianceModelFactory
   : public TypedInterfaceObject<CovarianceModelFactoryImplementation>
 {
   CLASSNAME;

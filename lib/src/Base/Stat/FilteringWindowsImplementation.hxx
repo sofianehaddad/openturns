@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FilteringWindowsImplementation
  */
 
-class FilteringWindowsImplementation
+class OT_API FilteringWindowsImplementation
   : public PersistentObject
 {
 

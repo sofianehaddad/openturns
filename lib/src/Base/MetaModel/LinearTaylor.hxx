@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of linear taylor response surface
  */
-class LinearTaylor
+class OT_API LinearTaylor
   : public PersistentObject
 {
   CLASSNAME;

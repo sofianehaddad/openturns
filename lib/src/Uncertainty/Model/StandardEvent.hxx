@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implements an event based on a composite random vector whose
  * antecedent has a spherical distribution
  */
-class StandardEvent
+class OT_API StandardEvent
   : public Event
 {
   CLASSNAME;

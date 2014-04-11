@@ -61,7 +61,7 @@ struct _Prefix
  * @internal
  */
 
-class Log
+class OT_API Log
 {
 public:
 
@@ -192,7 +192,7 @@ public:
   static String GetColor(const Log::Severity severity);
 
 #ifndef SWIG
-  struct Entry
+  struct OT_API Entry
   {
     Severity sev_;
     String msg_;
@@ -242,7 +242,7 @@ private:
 
 
 /** This struct initializes all static members of Log */
-struct Log_init
+struct OT_API Log_init
 {
   Log_init();
   ~Log_init();

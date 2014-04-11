@@ -34,7 +34,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class MutexLock
+class OT_API MutexLock
 {
   pthread_mutex_t & mtx_;
 public:

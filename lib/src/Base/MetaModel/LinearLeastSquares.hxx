@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of quadratic response surface
  */
-class LinearLeastSquares
+class OT_API LinearLeastSquares
   : public PersistentObject
 {
   CLASSNAME;

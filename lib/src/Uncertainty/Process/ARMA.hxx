@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface class for ARMA
  */
-class ARMA
+class OT_API ARMA
   : public ProcessImplementation
 {
   CLASSNAME;

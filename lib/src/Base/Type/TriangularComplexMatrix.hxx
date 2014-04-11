@@ -42,7 +42,7 @@ class HermitianMatrix;
  * Default implementation is triangular lower
  */
 
-class TriangularComplexMatrix :
+class OT_API TriangularComplexMatrix :
   public SquareComplexMatrix
 {
   CLASSNAME;

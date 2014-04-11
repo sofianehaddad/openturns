@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The GumbelCopula distribution.
  */
-class GumbelCopula
+class OT_API GumbelCopula
   : public ArchimedeanCopula
 {
   CLASSNAME;

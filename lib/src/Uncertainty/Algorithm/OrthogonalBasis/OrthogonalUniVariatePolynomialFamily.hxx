@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is the interface class for orthogonal polynomial factories
  */
 
-class OrthogonalUniVariatePolynomialFamily
+class OT_API OrthogonalUniVariatePolynomialFamily
   : public TypedInterfaceObject<OrthogonalUniVariatePolynomialFactory>
 {
   CLASSNAME;

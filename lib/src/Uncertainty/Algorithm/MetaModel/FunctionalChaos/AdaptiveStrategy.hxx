@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is the interface class for adaptive strategies
  */
 
-class AdaptiveStrategy
+class OT_API AdaptiveStrategy
   : public TypedInterfaceObject<AdaptiveStrategyImplementation>
 {
   CLASSNAME;

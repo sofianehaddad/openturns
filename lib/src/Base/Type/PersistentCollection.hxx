@@ -61,7 +61,7 @@ std::ostream & operator << (std::ostream & os,
 
 
 template <class T>
-class PersistentCollection
+class OT_API PersistentCollection
   : public PersistentObject,
   public Collection<T>
 {

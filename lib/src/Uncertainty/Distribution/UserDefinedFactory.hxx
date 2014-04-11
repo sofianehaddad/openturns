@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class UserDefinedFactory
  */
-class UserDefinedFactory
+class OT_API UserDefinedFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

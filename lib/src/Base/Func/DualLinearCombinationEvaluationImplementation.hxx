@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The evaluation part of functional linear combination of vectors
  */
 
-class DualLinearCombinationEvaluationImplementation
+class OT_API DualLinearCombinationEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

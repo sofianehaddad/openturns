@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Hamming
  */
 
-class Hamming
+class OT_API Hamming
   : public FilteringWindowsImplementation
 {
 

@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the composition of two numerical math hessians
  */
-class ProductNumericalMathHessianImplementation
+class OT_API ProductNumericalMathHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

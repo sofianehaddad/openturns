@@ -58,7 +58,7 @@ static inline double nearbyint(double x) { return (x > 0.0)? floor(x + 0.5) : ce
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class SpecFunc
+class OT_API SpecFunc
 {
 
 public:

@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of weightedExperiment plan
  */
-class WeightedExperiment
+class OT_API WeightedExperiment
   : public ExperimentImplementation
 {
   CLASSNAME;

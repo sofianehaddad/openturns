@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class DatabaseNumericalMathEvaluationImplementation
  * Provided two samples X (input) and Y (output), returns Yi when evaluated on Xi.
  */
-class DatabaseNumericalMathEvaluationImplementation
+class OT_API DatabaseNumericalMathEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CovarianceModelImplementation
  */
 
-class CovarianceModelImplementation
+class OT_API CovarianceModelImplementation
   : public PersistentObject
 {
 

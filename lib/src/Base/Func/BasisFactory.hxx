@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class BasisFactory
+class OT_API BasisFactory
   : public PersistentObject
 {
   CLASSNAME;

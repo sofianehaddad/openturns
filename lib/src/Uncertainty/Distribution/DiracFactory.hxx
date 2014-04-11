@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class DiracFactory
  */
-class DiracFactory
+class OT_API DiracFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

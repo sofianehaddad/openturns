@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for constant random vectors
  */
-class ConstantRandomVector
+class OT_API ConstantRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;

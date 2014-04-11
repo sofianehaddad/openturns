@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for distribution-based random vectors
  */
-class UsualRandomVector
+class OT_API UsualRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;

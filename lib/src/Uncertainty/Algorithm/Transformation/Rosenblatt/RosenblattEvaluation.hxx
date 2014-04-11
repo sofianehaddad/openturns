@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the Nataf function for elliptical distributions
  */
-class RosenblattEvaluation
+class OT_API RosenblattEvaluation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is abstract so it can not be instanciated. It must be derived.
  * @see Sampler
  */
-class SamplerImplementation
+class OT_API SamplerImplementation
   : public PersistentObject
 {
   CLASSNAME;

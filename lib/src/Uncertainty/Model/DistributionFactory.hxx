@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class DistributionFactory
  */
-class DistributionFactory
+class OT_API DistributionFactory
   : public TypedInterfaceObject<DistributionImplementationFactory>
 {
   CLASSNAME;

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Factory for linear model
  */
 
-class LinearModelFactory
+class OT_API LinearModelFactory
 {
 public:
 

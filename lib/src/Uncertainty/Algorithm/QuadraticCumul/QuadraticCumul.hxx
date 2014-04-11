@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
  Y=G(X) by implementing the Taylor approximation of G
 */
 
-class QuadraticCumul
+class OT_API QuadraticCumul
   : public PersistentObject
 {
 

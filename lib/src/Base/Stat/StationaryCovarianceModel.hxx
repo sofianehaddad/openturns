@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class StationaryCovarianceModel
  */
 
-class StationaryCovarianceModel
+class OT_API StationaryCovarianceModel
   : public CovarianceModelImplementation
 {
 

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Epanechnikov distribution.
  */
-class Epanechnikov
+class OT_API Epanechnikov
   : public ContinuousDistribution
 {
   CLASSNAME;

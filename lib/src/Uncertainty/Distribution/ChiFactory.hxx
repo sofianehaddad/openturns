@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ChiFactory
  */
-class ChiFactory
+class OT_API ChiFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

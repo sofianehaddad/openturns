@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RootStrategyImplementation
  */
 
-class RootStrategyImplementation
+class OT_API RootStrategyImplementation
   : public PersistentObject
 {
 

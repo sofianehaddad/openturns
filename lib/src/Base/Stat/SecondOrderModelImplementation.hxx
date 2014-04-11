@@ -40,7 +40,7 @@ class RegularGrid;
  * @class SecondOrderModelImplementation
  */
 
-class SecondOrderModelImplementation
+class OT_API SecondOrderModelImplementation
   : public PersistentObject
 {
 

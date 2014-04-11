@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the marginal gradient of an gradient
  */
-class RestrictedGradientImplementation
+class OT_API RestrictedGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

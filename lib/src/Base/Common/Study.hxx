@@ -50,7 +50,7 @@ class StorageManager;
  * @see StorageManager
  */
 
-class Study
+class OT_API Study
   : public Object
 {
   CLASSNAME;

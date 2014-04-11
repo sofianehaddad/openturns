@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Legendre polynomial factory
  */
 
-class LegendreFactory
+class OT_API LegendreFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

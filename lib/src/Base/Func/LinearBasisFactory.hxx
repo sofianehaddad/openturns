@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class LinearBasisFactory
+class OT_API LinearBasisFactory
   : public BasisFactory
 {
   CLASSNAME;

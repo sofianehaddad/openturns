@@ -39,7 +39,7 @@ class FittingAlgorithmImplementation;
  *
  * Cross-validation algorithm interface
  */
-class FittingAlgorithm
+class OT_API FittingAlgorithm
   : public TypedInterfaceObject<FittingAlgorithmImplementation>
 {
   CLASSNAME;

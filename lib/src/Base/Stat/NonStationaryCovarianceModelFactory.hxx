@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class NonStationaryCovarianceModelFactory
  */
-class NonStationaryCovarianceModelFactory
+class OT_API NonStationaryCovarianceModelFactory
   : public CovarianceModelFactoryImplementation
 {
   CLASSNAME;

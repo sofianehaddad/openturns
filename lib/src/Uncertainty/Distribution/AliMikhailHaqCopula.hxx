@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The AliMikhailHaqCopula distribution.
  */
-class AliMikhailHaqCopula
+class OT_API AliMikhailHaqCopula
   : public ArchimedeanCopula
 {
   CLASSNAME;

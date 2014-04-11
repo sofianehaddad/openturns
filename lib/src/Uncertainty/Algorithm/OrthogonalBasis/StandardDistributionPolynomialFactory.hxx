@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * OrthogonalUniVariatePolynomialStandardDistribution polynomial factory
  */
 
-class StandardDistributionPolynomialFactory
+class OT_API StandardDistributionPolynomialFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

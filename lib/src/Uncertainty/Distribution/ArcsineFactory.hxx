@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ArcsineFactory
  */
-class ArcsineFactory
+class OT_API ArcsineFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

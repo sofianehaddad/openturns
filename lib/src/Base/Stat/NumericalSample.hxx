@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class NumericalSample
  */
 
-class NumericalSample
+class OT_API NumericalSample
   : public TypedInterfaceObject<NumericalSampleImplementation>
 {
   CLASSNAME;

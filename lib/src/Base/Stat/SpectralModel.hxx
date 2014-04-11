@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SpectralModel
  */
 
-class SpectralModel
+class OT_API SpectralModel
   : public TypedInterfaceObject<SpectralModelImplementation>
 {
 

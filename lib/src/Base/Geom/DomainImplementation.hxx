@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a collection of domain
  */
-class DomainImplementation
+class OT_API DomainImplementation
   : public PersistentObject
 {
   CLASSNAME;

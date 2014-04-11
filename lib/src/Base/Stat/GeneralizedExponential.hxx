@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class GeneralizedExponential
  */
 
-class GeneralizedExponential
+class OT_API GeneralizedExponential
   : public CovarianceModelImplementation
 {
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Hermite polynomial factory
  */
 
-class HermiteFactory
+class OT_API HermiteFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

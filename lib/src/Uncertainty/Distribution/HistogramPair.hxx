@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The HistogramPair class.
  */
-class HistogramPair
+class OT_API HistogramPair
   : public PersistentObject
 {
   CLASSNAME;

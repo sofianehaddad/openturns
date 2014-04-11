@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The embedded Lock class is a scoped-lock, ie the lock is
  * guaranted during the lifetime of the Lock object.
  */
-class Lockable
+class OT_API Lockable
 {
 public:
 

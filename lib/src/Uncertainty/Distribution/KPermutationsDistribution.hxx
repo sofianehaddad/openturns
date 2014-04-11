@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The KPermutationsDistribution distribution.
  */
-class KPermutationsDistribution
+class OT_API KPermutationsDistribution
   : public DiscreteDistribution
 {
   CLASSNAME;

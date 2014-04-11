@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The UserDefined distribution.
  */
-class UserDefined
+class OT_API UserDefined
   : public DiscreteDistribution
 {
   CLASSNAME;

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * and compute the results of such kind of analyses
  */
 
-class FORM
+class OT_API FORM
   : public Analytical
 {
 

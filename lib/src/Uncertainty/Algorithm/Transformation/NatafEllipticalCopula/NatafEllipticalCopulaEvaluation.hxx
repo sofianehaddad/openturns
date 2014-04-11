@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the Nataf function for elliptical distributions
  */
-class NatafEllipticalCopulaEvaluation
+class OT_API NatafEllipticalCopulaEvaluation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

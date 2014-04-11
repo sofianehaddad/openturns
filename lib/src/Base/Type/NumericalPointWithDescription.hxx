@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NumericalPointWithDescription extends the classical mathematical point with a description of the coordinates
  */
 
-class NumericalPointWithDescription
+class OT_API NumericalPointWithDescription
   : public NumericalPoint
 {
   CLASSNAME;

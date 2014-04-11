@@ -41,7 +41,7 @@ class RegularGrid;
  * @class SecondOrderModelImplementation
  */
 
-class SecondOrderModel
+class OT_API SecondOrderModel
   : public TypedInterfaceObject<SecondOrderModelImplementation>
 {
 

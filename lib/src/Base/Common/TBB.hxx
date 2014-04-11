@@ -100,7 +100,7 @@ void parallel_sort( ITERATOR first, ITERATOR last )
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class TBB
+class OT_API TBB
 {
 public:
 #ifdef OPENTURNS_HAVE_TBB
@@ -157,7 +157,7 @@ private:
 
 
 /** This struct initializes all static members of TBB */
-struct TBB_init
+struct OT_API TBB_init
 {
   TBB_init();
   ~TBB_init();

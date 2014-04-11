@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-class Pairs : public DrawableImplementation
+class OT_API Pairs : public DrawableImplementation
 {
   CLASSNAME;
 
