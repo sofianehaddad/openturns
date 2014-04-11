@@ -619,6 +619,7 @@ Description NumericalSampleImplementation::getDescription() const
 Bool operator ==(const NumericalSampleImplementation & lhs,
                  const NumericalSampleImplementation & rhs)
 {
+  if (&lhs == &rhs) return true;
   return (lhs.size_ == rhs.size_) && (lhs.dimension_ == rhs.dimension_) &&
          std::equal( lhs.begin(), lhs.end(), rhs.begin() );
 }

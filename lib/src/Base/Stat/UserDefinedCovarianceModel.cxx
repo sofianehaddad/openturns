@@ -107,6 +107,23 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
   return covarianceCollection_[index];
 }
 
+CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
+{
+  // It is better to check vertices as the simplces don't play a role in the discretization
+  if (p_mesh_->getVertices() != mesh.getVertices()) return CovarianceModelImplementation::discretize(mesh);
+  // Here we know that the given mesh is exactly the one defining the covariance model
+  CovarianceMatrix covariance(mesh.getVerticesNumber() * dimension_);
+  for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
+    {
+      const UnsignedInteger jBase(static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5));
+      const UnsignedInteger kBase(i - (jBase * (jBase + 1)) / 2);
+      for (UnsignedInteger k = 0; k < dimension_; ++k)
+	for (UnsignedInteger j = 0; j < dimension_; ++j)
+	  covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
+    }
+  return covariance;
+}
+
 /* Mesh accessor */
 Mesh UserDefinedCovarianceModel::getMesh() const
 {

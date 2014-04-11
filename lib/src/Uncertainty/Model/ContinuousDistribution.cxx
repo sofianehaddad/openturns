@@ -99,7 +99,7 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
     allOutside &= (point[i] >= upperBounds[i]);
   }
   if (allOutside) return 1.0;
-  const NumericalScalar cdf(ContinuousDistribution::computeProbability(Interval(getRange().getLowerBound(), point)));
+  const NumericalScalar cdf(computeProbability(Interval(getRange().getLowerBound(), point)));
   return cdf;
 }
 
@@ -117,45 +117,8 @@ NumericalScalar ContinuousDistribution::computeSurvivalFunction(const NumericalP
     allOutside &= (point[i] <= lowerBounds[i]);
   }
   if (allOutside) return 1.0;
-  const NumericalScalar survival(ContinuousDistribution::computeProbability(Interval(point, getRange().getUpperBound())));
+  const NumericalScalar survival(computeProbability(Interval(point, getRange().getUpperBound())));
   return survival;
-}
-
-/* Get the probability content of an interval */
-NumericalScalar ContinuousDistribution::computeProbability(const Interval & interval) const
-{
-  const Interval reducedInterval(interval.intersect(getRange()));
-  if (reducedInterval.isNumericallyEmpty()) return 0.0;
-  if (reducedInterval == getRange()) return 1.0;
-  const UnsignedInteger dimension(getDimension());
-  const NumericalPoint lowerBounds(reducedInterval.getLowerBound());
-  const NumericalPoint upperBounds(reducedInterval.getUpperBound());
-  NumericalSample nodesAndWeights(getGaussNodesAndWeights());
-  // Perform the integration
-  const UnsignedInteger marginalNodesNumber(getIntegrationNodesNumber());
-  const UnsignedInteger size(static_cast< UnsignedInteger >(round(pow(marginalNodesNumber, dimension))));
-  NumericalScalar probability(0.0);
-  Indices indices(dimension, 0);
-  for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
-  {
-    NumericalPoint node(dimension);
-    NumericalScalar weight(1.0);
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      const UnsignedInteger indiceJ(indices[j]);
-      const NumericalScalar delta(0.5 * (upperBounds[j] - lowerBounds[j]));
-      node[j] = lowerBounds[j] + delta * (1.0 + nodesAndWeights[0][indiceJ]);
-      weight *= delta * nodesAndWeights[1][indiceJ];
-    }
-    probability += weight * computePDF(node);
-    /* Update the indices */
-    ++indices[0];
-    /* Propagate the remainders */
-    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j + 1] += (indices[j] == marginalNodesNumber);
-    /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
-  } // Loop over the n-D nodes
-  return probability;
 }
 
 /* Build a C1 interpolation of the CDF function for 1D continuous distributions */

@@ -25,7 +25,7 @@
 #ifndef OPENTURNS_KERNELSMOOTHING_HXX
 #define OPENTURNS_KERNELSMOOTHING_HXX
 
-#include "PersistentObject.hxx"
+#include "DistributionImplementationFactory.hxx"
 #include "Distribution.hxx"
 #include "NumericalSample.hxx"
 
@@ -36,19 +36,19 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of KernelSmoothing.
  */
-class KernelSmoothing : public PersistentObject
+class KernelSmoothing
+  : public DistributionImplementationFactory
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  explicit KernelSmoothing(const String & name = "KernelSmoothing");
+  explicit KernelSmoothing();
 
   /** Default constructor */
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool & bined = true,
-                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ),
-                           const String & name = "KernelSmoothing");
+                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ));
 
   /** Virtual constructor */
   virtual KernelSmoothing * clone() const;

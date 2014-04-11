@@ -36,9 +36,9 @@ try:
     k = 0
     for i in range(timeGrid.getN()):
         t = timeGrid.getValue(i)
-        for j in range(i, timeGrid.getN()):
+        for j in range(i+1):
             s = timeGrid.getValue(j)
-            covarianceCollection[k] = referenceModel.computeCovariance(t, s)
+            covarianceCollection[k] = referenceModel(t, s)
             k = k + 1
     # Create a UserDefinedCovarianceModel
     myModel = UserDefinedCovarianceModel(timeGrid, covarianceCollection)
@@ -50,7 +50,8 @@ try:
             s = timeGrid.getValue(j)
             # We look for cov(s,t) ==> when adding to the collection, we compute cov(t,s)
             # Because of symmetry, we check the right index computation
-            print "myModel =  %.12g" % myModel.computeCovariance(s, t)[0, 0], ", referenceModel=  %.12g" % referenceModel.computeCovariance(s, t)[0, 0]
+            print "myModel =  %.12g" % myModel(s, t)[0, 0], ", referenceModel=  %.12g" % referenceModel(s, t)[0, 0]
+    print "myModel.discretize()=", myModel.discretize(timeGrid)
 
 except:
     import sys

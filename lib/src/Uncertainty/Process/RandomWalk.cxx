@@ -36,10 +36,10 @@ static Factory<RandomWalk> RegisteredFactory("RandomWalk");
 
 /* Standard constructor */
 RandomWalk::RandomWalk(const String & name)
-  : ProcessImplementation(name),
-    origin_(1),
-    distribution_(Normal()),
-    currentPosition_(1)
+  : ProcessImplementation(name)
+  , origin_(1)
+  , distribution_(Normal())
+  , currentPosition_(1)
 {
   // Nothing to do
 }
@@ -48,10 +48,10 @@ RandomWalk::RandomWalk(const String & name)
 RandomWalk::RandomWalk(const NumericalPoint & origin,
                        const Distribution & distribution,
                        const String & name)
-  : ProcessImplementation(name),
-    origin_(origin),
-    distribution_(),
-    currentPosition_(origin)
+  : ProcessImplementation(name)
+  , origin_(origin)
+  , distribution_()
+  , currentPosition_(origin)
 {
   // Set the dimension of the process
   setDimension(origin.getDimension());
@@ -63,10 +63,10 @@ RandomWalk::RandomWalk(const NumericalPoint & origin,
                        const Distribution & distribution,
                        const RegularGrid & timeGrid,
                        const String & name)
-  : ProcessImplementation(name),
-    origin_(origin),
-    distribution_(),
-    currentPosition_(origin)
+  : ProcessImplementation(name)
+  , origin_(origin)
+  , distribution_()
+  , currentPosition_(origin)
 {
   // Set the dimension of the process
   setDimension(origin.getDimension());

@@ -47,9 +47,9 @@ static Factory<BoxCoxFactory> RegisteredFactory("BoxCoxFactory");
 
 /* Constructor with parameters */
 BoxCoxFactory::BoxCoxFactory()
-  : PersistentObject(),
-    sample_(),
-    sumLog_(0.0)
+  : PersistentObject()
+  , sample_()
+  , sumLog_(0.0)
 {
   // Nothing to do
 }
@@ -209,7 +209,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
     graph.setBoundingBox(bb);
   }
   // return result ==> Box Cox transform
-  return BoxCoxTransform(lambda);
+  return BoxCoxTransform(lambda, shift);
 }
 
 /* String converter */

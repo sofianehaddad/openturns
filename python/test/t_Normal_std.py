@@ -22,12 +22,7 @@ def cleanNumericalPoint(inNumericalPoint):
 
 
 def cleanMatrix(inMatrix):
-    rowDim = inMatrix.getNbRows()
-    colDim = inMatrix.getNbColumns()
-    for i in range(rowDim):
-        for j in range(colDim):
-            if (fabs(inMatrix[i, j]) < 1.e-10):
-                inMatrix[i, j] = 0.0
+    inMatrix.clean(1.0e-10)
     return inMatrix
 
 

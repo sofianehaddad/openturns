@@ -526,7 +526,7 @@ Bool Mixture::isContinuous() const
 Bool Mixture::isDiscrete() const
 {
   const UnsignedInteger size(distributionCollection_.getSize());
-  for (UnsignedInteger i = 1; i < size; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
+  for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
   return true;
 }
 
@@ -534,7 +534,7 @@ Bool Mixture::isDiscrete() const
 Bool Mixture::isIntegral() const
 {
   const UnsignedInteger size(distributionCollection_.getSize());
-  for (UnsignedInteger i = 1; i < size; ++i) if (!distributionCollection_[i].isIntegral()) return false;
+  for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isIntegral()) return false;
   return true;
 }
 

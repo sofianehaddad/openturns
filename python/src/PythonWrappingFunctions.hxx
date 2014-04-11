@@ -755,7 +755,7 @@ convert< _PySequence_, TriangularMatrix >(PyObject * pyObj)
   MatrixImplementation *p_implementation = convert< _PySequence_, MatrixImplementation* >(pyObj);
   if (!(p_implementation->isTriangular(true) || p_implementation->isTriangular(false)))
     throw InvalidArgumentException(HERE) << "The matrix is not triangular";
-  return TriangularMatrix( p_implementation );
+  return TriangularMatrix( p_implementation, p_implementation->isTriangular(true) );
 }
 
 

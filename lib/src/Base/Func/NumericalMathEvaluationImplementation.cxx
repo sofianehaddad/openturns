@@ -140,7 +140,7 @@ void NumericalMathEvaluationImplementation::setInputDescription(const Descriptio
 
 Description NumericalMathEvaluationImplementation::getInputDescription() const
 {
-  if (inputDescription_.getSize() == 0) return BuildDefaultDescription(getInputDimension(), "x");
+  if (inputDescription_.getSize() == 0) return Description::BuildDefault(getInputDimension(), "x");
   return inputDescription_;
 }
 
@@ -153,7 +153,7 @@ void NumericalMathEvaluationImplementation::setOutputDescription(const Descripti
 
 Description NumericalMathEvaluationImplementation::getOutputDescription() const
 {
-  if (outputDescription_.getSize() == 0) return BuildDefaultDescription(getOutputDimension(), "y");
+  if (outputDescription_.getSize() == 0) return Description::BuildDefault(getOutputDimension(), "y");
   return outputDescription_;
 }
 
@@ -496,14 +496,6 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalPoint & xMin,
   return draw(0, 1, 0, NumericalPoint(2), xMin, xMax, pointNumber);
 }
 
-/* Build a default description */
-Description NumericalMathEvaluationImplementation::BuildDefaultDescription(const UnsignedInteger dimension,
-    const String & prefix)
-{
-  Description description(dimension);
-  for (UnsignedInteger k = 0; k < dimension; ++k) description[k] =  String(OSS() << prefix << k);
-  return description;
-}
 
 /* Method save() stores the object through the StorageManager */
 void NumericalMathEvaluationImplementation::save(Advocate & adv) const

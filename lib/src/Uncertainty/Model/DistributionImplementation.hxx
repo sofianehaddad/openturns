@@ -172,6 +172,14 @@ public:
 
   /** Get the probability content of an interval */
   virtual NumericalScalar computeProbability(const Interval & interval) const;
+protected:
+  /** Generic implementation for continuous distributions */
+  virtual NumericalScalar computeProbabilityContinuous(const Interval & interval) const;
+  /** Generic implementation for discrete distributions */
+  virtual NumericalScalar computeProbabilityDiscrete(const Interval & interval) const;
+  /** Generic implementation for general distributions */
+  virtual NumericalScalar computeProbabilityGeneral(const Interval & interval) const;
+public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   virtual NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;

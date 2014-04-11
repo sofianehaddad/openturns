@@ -329,21 +329,13 @@ Interval & Interval::operator *=(const NumericalScalar scalar)
 
 
 /* Comparison operator */
-Bool Interval::operator == (const Interval & rhs) const
+Bool Interval::operator == (const Interval & other) const
 {
-  const Interval &lhs(*this);
-  Bool equality(true);
-
-  if (&lhs != &rhs)   // Not the same object
-    {
-      equality = (getDimension() == rhs.getDimension())
-        && (lowerBound_ == rhs.lowerBound_)
-        && (upperBound_ == rhs.upperBound_)
-        && (finiteLowerBound_ == rhs.finiteLowerBound_)
-        && (finiteUpperBound_ == rhs.finiteUpperBound_);
-    }
-
-  return equality;
+  if (this == &other) return true;
+  return (lowerBound_ == other.lowerBound_)
+        && (upperBound_ == other.upperBound_)
+        && (finiteLowerBound_ == other.finiteLowerBound_)
+        && (finiteUpperBound_ == other.finiteUpperBound_);
 }
 
 /* Lower bound accessor */
@@ -418,71 +410,6 @@ String Interval::__str__(const String & offset) const
       else oss << offset << "(" << upperBound_[i] << ") +inf[";
     }
   return oss;
-}
-
-/* Mesh converter */
-Pointer<DomainImplementation> Interval::asMesh(const Indices & discretization) const
-{
-  const UnsignedInteger dimension(getDimension());
-  if (discretization.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the given discretization is for dimension=" << discretization.getSize() << ", here dimension=" << dimension;
-  if (dimension > 2) throw NotYetImplementedException(HERE);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    if (discretization[i] == 0) throw InvalidArgumentException(HERE) << "Error: expected positive values for the discretization, here discretization[" << i << "]=" << discretization[i];
-  // Waiting for a generic implementation in higher dimension
-  if (dimension == 1)
-    {
-      // We must insure that the interval bounds will be within the vertices
-      const UnsignedInteger n(discretization[0]);
-      NumericalSample vertices(n + 1, 1);
-      // First the vertices
-      for (UnsignedInteger i = 0; i <= n; ++i) vertices[i][0] = (i * vertices[0][0] + (n - i) * vertices[0][0]) / n;
-      // Second the simplices
-      Mesh::IndicesCollection simplices(n);
-      Indices simplex(2);
-      for (UnsignedInteger i = 0; i < n; ++i)
-        {
-          simplex[0] = i;
-          simplex[1] = i + 1;
-          simplices[i] = simplex;
-        } // i
-      return Mesh(vertices, simplices).clone();
-    } // dimension == 1
-  if (dimension == 2)
-    {
-      const UnsignedInteger m(discretization[0]);
-      const UnsignedInteger n(discretization[1]);
-      // First the vertices
-      NumericalSample vertices(0, 2);
-      NumericalPoint point(2);
-      for (UnsignedInteger i = 0; i <= m; ++i)
-        {
-          point[0] = (i * lowerBound_[0] + (m - i) * upperBound_[0]) / m;
-          for (UnsignedInteger j = 0; j <= n; ++j)
-            {
-              point[1] = (j * lowerBound_[1] + (n - j) * upperBound_[1]) / n;
-              vertices.add(point);
-            } // j
-        } // i
-      // Second the simplices
-      Mesh::IndicesCollection simplices(0, Indices(3));
-      UnsignedInteger vertexIndex(0);
-      Indices index(3);
-      for (UnsignedInteger i = 0; i < m; ++i)
-        {
-          for (UnsignedInteger j = 0; j < n; ++j)
-            {
-              index[0] = vertexIndex;
-              index[1] = vertexIndex + 1;
-              index[2] = vertexIndex + 1 + n;
-              simplices.add(index);
-              index[0] = vertexIndex + 2 + n;
-              simplices.add(index);
-              ++vertexIndex;
-            } // j
-          ++vertexIndex;
-        } // i
-      return Mesh(vertices, simplices).clone();
-    } // dimension == 2
 }
 
 /* Method save() stores the object through the StorageManager */

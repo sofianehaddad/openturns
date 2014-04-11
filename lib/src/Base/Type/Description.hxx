@@ -75,6 +75,12 @@ public:
 #endif
 
   void sort();
+
+  /** Build a default description */
+  static Description BuildDefault(const UnsignedInteger dimension,
+      const String & prefix = "Component");
+
+
 }; /* class Description */
 
 END_NAMESPACE_OPENTURNS

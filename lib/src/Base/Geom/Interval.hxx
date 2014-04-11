@@ -101,7 +101,7 @@ public:
   Interval & operator *=(const NumericalScalar scalar);
 
   /** Comparison operator */
-  Bool operator == (const Interval & rhs) const;
+  Bool operator == (const Interval & other) const;
 
   /** Lower bound accessor */
   NumericalPoint getLowerBound() const;
@@ -122,9 +122,6 @@ public:
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
-
-  /** Mesh converter */
-  Pointer<DomainImplementation> asMesh(const Indices & discretization) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

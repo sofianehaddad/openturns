@@ -37,8 +37,8 @@ InverseBoxCoxEvaluationImplementation::InverseBoxCoxEvaluationImplementation(con
   , lambda_(lambda)
   , shift_(lambda.getDimension())
 {
-  setInputDescription(BuildDefaultDescription(lambda_.getSize(), "x"));
-  setOutputDescription(BuildDefaultDescription(lambda_.getSize(), "y"));
+  setInputDescription(Description::BuildDefault(lambda_.getSize(), "x"));
+  setOutputDescription(Description::BuildDefault(lambda_.getSize(), "y"));
 }
 
 InverseBoxCoxEvaluationImplementation::InverseBoxCoxEvaluationImplementation(const NumericalPoint & lambda,
@@ -48,8 +48,8 @@ InverseBoxCoxEvaluationImplementation::InverseBoxCoxEvaluationImplementation(con
   , shift_(shift)
 {
   if (lambda.getDimension() != shift.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given exponent vector has a dimension=" << lambda.getDimension() << " different from the shift dimension=" << shift.getDimension();
-  setInputDescription(BuildDefaultDescription(lambda_.getSize(), "x"));
-  setOutputDescription(BuildDefaultDescription(lambda_.getSize(), "y"));
+  setInputDescription(Description::BuildDefault(lambda_.getSize(), "x"));
+  setOutputDescription(Description::BuildDefault(lambda_.getSize(), "y"));
 }
 
 /* Clone constructor */

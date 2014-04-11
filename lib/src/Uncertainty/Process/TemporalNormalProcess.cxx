@@ -102,9 +102,7 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
 {
   setMesh(mesh);
   setDimension(model.getDimension());
-  Description inVars(mesh.getDimension());
-  for (UnsignedInteger i = 0; i < mesh.getDimension(); ++i) inVars[i] = String(OSS() << "x" << i);
-  trend_ = TrendTransform(NumericalMathFunction(inVars, Description(getDimension(), "0")));
+  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(mesh.getDimension(), "x"), Description(getDimension(), "0.0")));
 }
 
 /* Standard constructor  */
@@ -122,9 +120,7 @@ TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceM
 {
   setMesh(mesh);
   setDimension(covarianceModel.getDimension());
-  Description inVars(mesh.getDimension());
-  for (UnsignedInteger i = 0; i < mesh.getDimension(); ++i) inVars[i] = String(OSS() << "x" << i);
-  trend_ = TrendTransform(NumericalMathFunction(inVars, Description(getDimension(), "0")));
+  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(mesh.getDimension(), "x"), Description(getDimension(), "0.0")));
 }
 
 /* Virtual constructor */
@@ -222,14 +218,20 @@ Field TemporalNormalProcess::getRealization() const
   const UnsignedInteger fullSize(choleskyFactorCovarianceMatrix_.getDimension());
   NumericalPoint gaussianPoint(fullSize);
   // N gaussian realizations
-  for (UnsignedInteger index = 0; index <  fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
+  for (UnsignedInteger index = 0; index < fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
 
   gaussianPoint = choleskyFactorCovarianceMatrix_ * gaussianPoint;
 
   NumericalSample gaussianSample(size, dimension_);
   gaussianSample.getImplementation()->setData(gaussianPoint);
-  // If null trend
-  if (isTrendStationary() && (stationaryTrendValue_.norm() == 0.0)) return Field(mesh_, gaussianSample);
+  // If constant trend
+  if (isTrendStationary())
+    {
+      // If zero trend
+      if (stationaryTrendValue_.norm() == 0.0) return Field(mesh_, gaussianSample);
+      // If nonzero trend
+      return Field(mesh_, gaussianSample + stationaryTrendValue_);
+    }
   // else apply the trend
   return trend_(Field(mesh_, gaussianSample));
 }
@@ -266,7 +268,7 @@ void TemporalNormalProcess::checkStationaryTrend() const
   checkedStationaryTrend_ = true;
   const UnsignedInteger n(mesh_.getVerticesNumber());
   if (n == 0) return;
-  const NumericalPoint stationaryTrendValue_((*trend_.getEvaluation())(mesh_.getVertices()[0]));
+  stationaryTrendValue_ = (*trend_.getEvaluation())(mesh_.getVertices()[0]);
   for (UnsignedInteger i = 1; i < n; ++i)
   {
     if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)

@@ -50,8 +50,8 @@ CLASSNAMEINIT(KernelSmoothing);
 static Factory<KernelSmoothing> RegisteredFactory("KernelSmoothing");
 
 /* Default constructor */
-KernelSmoothing::KernelSmoothing(const String & name)
-  : PersistentObject(name)
+KernelSmoothing::KernelSmoothing()
+  : DistributionImplementationFactory()
   , bandwidth_(NumericalPoint(0))
   , kernel_(Normal())
   , bined_(true)
@@ -63,9 +63,8 @@ KernelSmoothing::KernelSmoothing(const String & name)
 /* Default constructor */
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
                                  const Bool & bined,
-                                 const UnsignedInteger binNumber,
-                                 const String & name)
-  : PersistentObject(name)
+                                 const UnsignedInteger binNumber)
+  : DistributionImplementationFactory()
   , bandwidth_(NumericalPoint(0))
   , kernel_(kernel)
   , bined_(bined)
@@ -373,14 +372,14 @@ Distribution KernelSmoothing::getKernel() const
 /* Method save() stores the object through the StorageManager */
 void KernelSmoothing::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  DistributionImplementationFactory::save(adv);
   adv.saveAttribute( "bandwidth_", bandwidth_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void KernelSmoothing::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  DistributionImplementationFactory::load(adv);
   adv.loadAttribute( "bandwidth_", bandwidth_ );
 }
 

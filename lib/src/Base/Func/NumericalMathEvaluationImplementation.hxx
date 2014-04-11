@@ -225,10 +225,6 @@ protected:
   /** Flag to activate or deactivate the history mechanism */
   mutable Bool isHistoryEnabled_;
 
-  /** Build a default description */
-  static Description BuildDefaultDescription(const UnsignedInteger dimension,
-      const String & prefix = "Component");
-
 private:
 
   /** The description of the input components */

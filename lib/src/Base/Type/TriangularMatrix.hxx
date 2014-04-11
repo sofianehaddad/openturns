@@ -66,6 +66,10 @@ public:
   TriangularMatrix(const Implementation & i,
                    const Bool isLower = true);
 
+  /** Constructor with matrix implementation */
+  TriangularMatrix(const MatrixImplementation & i,
+                   const Bool isLower = true);
+
   /** Check if the internal representation is actually symmetric */
   void checkTriangularity() const;
 

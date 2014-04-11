@@ -92,6 +92,13 @@ void Description::sort()
   std::sort(begin(), end());
 }
 
+
+Description Description::BuildDefault(const UnsignedInteger dimension,
+						 const String & prefix)
+{
+  return DescriptionImplementation::BuildDefault(dimension, prefix);
+}
+
 END_NAMESPACE_OPENTURNS
 
 

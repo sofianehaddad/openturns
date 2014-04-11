@@ -381,7 +381,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   NumericalScalar alpha(1.0);
 
   // Lapack routine
-  DTRMM_F77(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
+  DTRMM_F77(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
   return mult;
 }
 
@@ -519,14 +519,14 @@ void MatrixImplementation::triangularize(const Bool isLowerTriangular) const
   if (isLowerTriangular)
     {
       for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-	for (UnsignedInteger i = 0; i < j; ++i)
-	  refThis->operator[](convertPosition(i, j)) = 0.0;
+        for (UnsignedInteger i = 0; i < j; ++i)
+          refThis->operator[](convertPosition(i, j)) = 0.0;
     }
   else
     {
       for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-	for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
-	  refThis->operator[](convertPosition(i, j)) = 0.0;
+        for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
+          refThis->operator[](convertPosition(i, j)) = 0.0;
     }
 }
 
@@ -1270,18 +1270,18 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
     MatrixImplementation A(*this);
     DPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
-    /*    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < j; ++i)
-      A(i, j) = 0.0;*/
+        A(i, j) = 0.0;
     A.setName(DefaultName);
     return A;
   }
   else
   {
     DPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
-    /*    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
+    for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-      (*this)(i, j) = 0.0;*/
+        (*this)(i, j) = 0.0;
     if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
     setName(DefaultName);
     return (*this);

@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @file  MeshFactoryImplementation.cxx
- *  @brief Top-level class for all spectral model factories
+ *  @brief Top-level class for meshing algorithms
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *

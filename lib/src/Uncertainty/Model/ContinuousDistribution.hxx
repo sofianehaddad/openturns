@@ -65,9 +65,6 @@ public:
   using DistributionImplementation::computeSurvivalFunction;
   NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
 
-  /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
-
 protected:
   /** Interpolate the CDF for smooth continuous distributions */
   Collection<PiecewiseHermiteEvaluationImplementation> interpolateCDF(const UnsignedInteger n);

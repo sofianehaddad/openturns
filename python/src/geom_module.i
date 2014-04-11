@@ -33,10 +33,16 @@
 %import graph_module.i
 %import BaseGraphTemplateDefs.i
 
+/* Base/Func */
+%import func_module.i
+%import BaseFuncTemplateDefs.i
+
 /* Base/Geom */
 %include DomainImplementation.i
 %include Domain.i
+%include LevelSet.i
 %include Mesh.i
+%include RegularGrid.i
 %include MeshFactoryImplementation.i
 %include MeshFactory.i
-%include RegularGrid.i
+%include IntervalMesher.i

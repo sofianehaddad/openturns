@@ -27,6 +27,8 @@
 #include "DomainImplementation.hxx"
 #include "Domain.hxx"
 #include "Interval.hxx"
+#include "IntervalMesher.hxx"
+#include "LevelSet.hxx"
 #include "Mesh.hxx"
 #include "MeshFactory.hxx"
 #include "MeshFactoryImplementation.hxx"

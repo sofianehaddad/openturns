@@ -64,7 +64,7 @@ ProcessSample::ProcessSample(const Mesh & mesh,
                              const UnsignedInteger dimension)
   : PersistentObject()
   , mesh_(mesh)
-  , data_(NumericalSampleCollection(size, NumericalSample(mesh.getVerticesNumber(), mesh.getDimension())))
+  , data_(NumericalSampleCollection(size, NumericalSample(mesh.getVerticesNumber(), dimension)))
 {
   // Nothing to do
 }

@@ -66,6 +66,18 @@ TriangularMatrix::TriangularMatrix(const Implementation & i,
 }
 
 
+/* Constructor with matrix implementation */
+TriangularMatrix::TriangularMatrix(const MatrixImplementation & i,
+                                   Bool isLower)
+
+  : SquareMatrix(i)
+  , isLowerTriangular_(isLower)
+  , hasBeenTriangularized_(false)
+{
+  // Nothing to do
+}
+
+
 /* Check if the internal representation is actually symmetric */
 void TriangularMatrix::checkTriangularity() const
 {
@@ -216,14 +228,14 @@ TriangularMatrix TriangularMatrix::operator * (const IdentityMatrix & m) const
 /* Multiplication with a NumericalScalarCollection (must have consistent dimensions) */
 TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalScalarCollection & pt) const
 {
-  char uplo(isLowerTriangular() ? 'L' : 'R');
+  char uplo(isLowerTriangular() ? 'L' : 'U');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
 /* Multiplication with a NumericalPoint (must have consistent dimensions) */
 TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalPoint & pt) const
 {
-  char uplo(isLowerTriangular() ? 'L' : 'R');
+  char uplo(isLowerTriangular() ? 'L' : 'U');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 

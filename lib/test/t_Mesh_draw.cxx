@@ -35,10 +35,6 @@ int main(int argc, char *argv[])
   try
   {
     {
-      Mesh mesh1D;
-      fullprint << "Default 1D mesh=" << mesh1D << std::endl;
-    }
-    {
       NumericalSample vertices(0, 1);
       vertices.add(NumericalPoint(1, 0.5));
       vertices.add(NumericalPoint(1, 1.5));
@@ -52,15 +48,9 @@ int main(int argc, char *argv[])
       simplicies[2][0] = 2;
       simplicies[2][1] = 3;
       Mesh mesh1D(vertices, simplicies);
-      fullprint << "1D mesh=" << mesh1D << std::endl;
-      fullprint << "Is empty? " << mesh1D.isEmpty() << std::endl;
-      fullprint << "vertices=" << mesh1D.getVertices() << std::endl;
-      fullprint << "simplices=" << mesh1D.getSimplices() << std::endl;
-      fullprint << "volume=" << mesh1D.getVolume() << std::endl;
-      fullprint << "First simplex volume=" << mesh1D.computeSimplexVolume(0) << std::endl;
-      NumericalPoint p(1);
-      p[0] = 1.3;
-      fullprint << "is p=" << p << " in mesh? " << mesh1D.contains(p) << std::endl;
+      mesh1D.draw().draw("mesh1D");
+      mesh1D.draw1D().draw("mesh1D");
+      fullprint << "mesh 1D ok" << std::endl;
     }
     {
       NumericalSample vertices(0, 2);
@@ -110,7 +100,9 @@ int main(int argc, char *argv[])
       simplicies[4][1] = 2;
       simplicies[4][2] = 5;
       Mesh mesh2D(vertices, simplicies);
-      fullprint << "2D mesh=" << mesh2D << std::endl;
+      mesh2D.draw().draw("mesh2D");
+      mesh2D.draw2D().draw("mesh2D");
+      fullprint << "mesh 2D ok" << std::endl;
     }
     {
       NumericalSample vertices(0, 3);
@@ -188,7 +180,15 @@ int main(int argc, char *argv[])
       simplicies[5][3] = 6;
 
       Mesh mesh3D(vertices, simplicies);
-      fullprint << "3D mesh=" << mesh3D << std::endl;
+      mesh3D.draw().draw("mesh3D");
+      SquareMatrix rotation(3);
+      rotation(0, 0) =  cos(M_PI / 3.0);
+      rotation(0, 1) =  sin(M_PI / 3.0);
+      rotation(1, 0) = -sin(M_PI / 3.0);
+      rotation(1, 1) =  cos(M_PI / 3.0);
+      rotation(2, 2) = 1.0;
+      mesh3D.draw3D(true, rotation, true).draw("mesh3D_2");
+      fullprint << "mesh 3D ok" << std::endl;
     }
   }
   catch (TestFailed & ex)

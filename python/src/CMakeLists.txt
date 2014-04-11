@@ -201,9 +201,11 @@ ot_add_python_module( geom geom_module.i
                       Mesh.i
                       Domain.i
                       Interval.i
+                      LevelSet.i
+		      RegularGrid.i
                       MeshFactoryImplementation.i
                       MeshFactory.i
-		      RegularGrid.i
+		      IntervalMesher.i
                       BaseGeomTemplateDefs.i
                      )
                      

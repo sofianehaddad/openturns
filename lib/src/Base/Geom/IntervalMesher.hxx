@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @file  MeshFactoryImplementation.hxx
- *  @brief Top-level class for the meshing algorithms
+ *  @file  IntervalMesher.hxx
+ *  @brief Meshing algorithm for intervals
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -20,33 +20,38 @@
  *
  *  @author: $LastChangedBy: schueller $
  *  @date:   $LastChangedDate: 2012-02-17 19:35:43 +0100 (ven. 17 févr. 2012) $
- *  Id:      $Id: MeshFactoryImplementation.hxx 2392 2012-02-17 18:35:43Z schueller $
+ *  Id:      $Id: IntervalMesher.hxx 2392 2012-02-17 18:35:43Z schueller $
  */
-#ifndef OPENTURNS_MESHFACTORYIMPLEMENTATION_HXX
-#define OPENTURNS_MESHFACTORYIMPLEMENTATION_HXX
+#ifndef OPENTURNS_INTERVALMESHER_HXX
+#define OPENTURNS_INTERVALMESHER_HXX
 
-#include "Domain.hxx"
+#include "Interval.hxx"
 #include "Mesh.hxx"
-#include "PersistentObject.hxx"
+#include "MeshFactoryImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MeshFactoryImplementation
+ * @class IntervalMesher
  */
-class MeshFactoryImplementation
-  : public PersistentObject
+class IntervalMesher
+  : public MeshFactoryImplementation
 {
   CLASSNAME;
 public:
 
-  typedef Pointer< MeshFactoryImplementation > Implementation;
+  /** Default constructor */
+  IntervalMesher();
 
   /** Default constructor */
-  explicit MeshFactoryImplementation(const String & name = OT::DefaultName);
+  explicit IntervalMesher(const Indices & discretization);
 
   /** Virtual constructor */
-  virtual MeshFactoryImplementation * clone() const;
+  virtual IntervalMesher * clone() const;
+
+  /** Discretization accessors */
+  void setDiscretization(const Indices & discretization);
+  Indices getDiscretization() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -56,12 +61,17 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a mesh based on a domain */
-  virtual Mesh build(const Domain & domain) const;
+  virtual Mesh build(const Interval & interval) const;
 
 protected:
 
-}; /* class MeshFactoryImplementation */
+private:
+
+  /* Discretization in each dimension */
+  Indices discretization_;
+
+}; /* class IntervalMesher */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_MESHFACTORYIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_INTERVALMESHER_HXX */

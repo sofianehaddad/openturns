@@ -67,6 +67,10 @@ public:
                                const NumericalPoint & t) const;
 
 
+  /** Discretize the covariance function on a given TimeGrid/Mesh */
+  using CovarianceModelImplementation::discretize;
+  virtual CovarianceMatrix discretize(const Mesh & mesh) const;
+
   /** Mesh accessor */
   Mesh getMesh() const;
 
