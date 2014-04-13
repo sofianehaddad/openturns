@@ -114,7 +114,7 @@ private:
 
 
 /** Comparison operator */
-Bool operator ==(const LinearModel & lhs, const LinearModel & rhs);
+OT_API Bool operator ==(const LinearModel & lhs, const LinearModel & rhs);
 
 END_NAMESPACE_OPENTURNS
 
