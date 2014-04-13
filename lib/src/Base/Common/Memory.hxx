@@ -26,6 +26,8 @@
 
 #include <cstddef>
 
+#include "OTdebug.h"
+
 #ifdef DEBUG_MEMORY
 
 #include <new>
@@ -163,14 +165,14 @@ public:
 
 #endif /* DEBUG_MEMORY */
 
-extern size_t GetMemoryUsage();
-extern size_t GetFullMemoryUsage();
-extern size_t GetMaxMemoryUsage();
-extern size_t GetMaxFullMemoryUsage();
+OT_API size_t GetMemoryUsage();
+OT_API size_t GetFullMemoryUsage();
+OT_API size_t GetMaxMemoryUsage();
+OT_API size_t GetMaxFullMemoryUsage();
 
-extern void printMemoryUsage();
-extern void printMemorySpectrum();
+OT_API void printMemoryUsage();
+OT_API void printMemorySpectrum();
 
-extern void SetMemoryFlag(bool);
+OT_API void SetMemoryFlag(bool);
 
 #endif /* OPENTURNS_MEMORY_HXX */
