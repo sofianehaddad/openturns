@@ -273,9 +273,6 @@ endmacro ( ot_add_build_dir_to_include_dirs )
 
 if ( WIN32 )
   list ( APPEND OPENTURNS_LIBRARIES ws2_32 )
-  if (MINGW)
-    set ( CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-auto-import ${CMAKE_EXE_LINKER_FLAGS}" )
-  endif ()
 endif ()
 
 # Add definitions according to the prerequisites found
