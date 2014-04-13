@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @see PersistentObject
  */
 template <class T>
-class OT_API TypedInterfaceObject
+class TypedInterfaceObject
   : public InterfaceObject
 {
 public:
