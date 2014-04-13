@@ -28,7 +28,6 @@
 #include "Distribution.hxx"
 #include "ChiSquare.hxx"
 #include "SpecFunc.hxx"
-#include "Mvndstpack.hxx"
 #include "Log.hxx"
 #include "OSS.hxx"
 #include "DistFunc.hxx"
@@ -236,41 +235,6 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeCDF(point);
   }
-  // For larger dimension, use an adaptive integration
-  if (dimension <= 500)
-  {
-    NumericalPoint lower(dimension, 0.0);
-    std::vector<int> infin(dimension, 0);
-    NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
-    /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedInteger i = 0; i < dimension; i++)
-      for (UnsignedInteger j = 0; j < i; j++)
-        correl[j + i * (i - 1) / 2] = R_(j, i);
-    int maxpts(ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
-    // Use only relative precision
-    double abseps(0.0);
-    // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) for dimension=500
-    double releps(ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ) * pow(ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) / ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ), (4.0 + dimension) / 496.0));
-    double error;
-    double value;
-    int inform;
-    int dim = static_cast<UnsignedInteger>( dimension );
-    do
-    {
-      MVNDST_F77(&dim, &lower[0], &u[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
-      if (inform == 1)
-      {
-        LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
-        maxpts *= 10;
-      }
-      else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
-    }
-    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" )) && (inform == 1));
-    if (inform == 1) LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
-    if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Normal::computeCDF(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
-    cdfEpsilon_ = error;
-    return std::min(std::max(value, 0.0), 1.0);
-  }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
   RandomGeneratorState initialState(RandomGenerator::GetState());
@@ -377,53 +341,6 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeProbability(interval);
-  }
-  // For large dimension, use an adaptive integration
-  if (dimension <= 500)
-  {
-    // Build finite/infinite flags according to MVNDST documentation
-    std::vector<int> infin(dimension, -1);
-    for (UnsignedInteger i = 0; i < dimension; i++)
-    {
-      // Infin[i] should be:
-      //  2 if finiteLower[i] && finiteUpper[i]
-      //  1 if finiteLower[i] && !finiteUpper[i]
-      //  0 if !finiteLower[i] && finiteUpper[i]
-      // -1 if !finiteLower[i] && !finiteUpper[i]
-      infin[i] += 2 * int(finiteLower[i]) + int(finiteUpper[i]);
-    }
-    NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
-    /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      for (UnsignedInteger j = 0; j < i; j++)
-      {
-        correl[j + i * (i - 1) / 2] = R_(j, i);
-      }
-    }
-    int maxpts(ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
-    // Use only relative precision
-    double abseps(0.0);
-    // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) for dimension=500
-    double releps(ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ) * pow(ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) / ResourceMap::GetAsNumericalScalar( "Normal-MaximumCDFEpsilon" ), (4.0 + dimension) / 496.0));
-    double error;
-    double value;
-    int inform;
-    int dim = static_cast<UnsignedInteger>( dimension );
-    do
-    {
-      MVNDST_F77(&dim, &lower[0], &upper[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
-      if (inform == 1)
-      {
-        LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
-        maxpts *= 10;
-      }
-      else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
-    }
-    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" )) && (inform == 1));
-    if (inform == 1) LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
-    if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Normal::computeProbability(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
-    return std::min(std::max(value, 0.0), 1.0);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");

@@ -191,19 +191,6 @@ TimeSeries & TimeSeries::add(const TimeSeries & continuer)
   return add(continuer.getSample());
 }
 
-/* Draw a marginal of the TimeSeries */
-Graph TimeSeries::drawMarginal(const UnsignedInteger index) const
-{
-  if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
-  // Discretization of the x axis
-  const String title(OSS() << getName() << " - " << index << " marginal" );
-  const Curve curveSerie(mesh_.getVertices(), values_.getMarginal(index));
-  Graph graph(title, "Time", "Values", true, "topright");
-  graph.add(curveSerie);
-  return graph;
-}
-
-
 /* Method save() stores the object through the StorageManager */
 void TimeSeries::save(Advocate & adv) const
 {

@@ -32,15 +32,11 @@
 #include "DistFunc.hxx"
 #include "Log.hxx"
 #include "OSS.hxx"
-#include "Mvtdstpack.hxx"
-#include "Tvpack.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "NumericalPoint.hxx"
 #include "Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-
 
 CLASSNAMEINIT(Student);
 
@@ -167,27 +163,6 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
-  // Normalize the point to use the standard form of the multivariate student distribution
-  NumericalPoint u(normalize(point));
-  // For the bidimensional case, use specialized high precision routine for integral degrees of freedom
-  if ((dimension == 2) && (nu_ == round(nu_)))
-  {
-    int nu(static_cast<int>(round(nu_)));
-    double r(R_(0, 1));
-    return BVTL_F77(&nu, &(u[0]), &(u[1]), &r);
-  }
-  // For the tridimensional case, use specialized high precision routine for integral degrees of freedom
-  if ((dimension == 3) && (nu_ == round(nu_)))
-  {
-    int nu(static_cast<int>(round(nu_)));
-    double r[3];
-    r[0] = R_(1, 0);
-    r[1] = R_(2, 0);
-    r[2] = R_(2, 1);
-    double eps(ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) * ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ));
-    cdfEpsilon_ = eps;
-    return TVTL_F77(&nu, &(u[0]), &r[0], &eps);
-  }
   // For moderate dimension, use a Gauss-Legendre integration
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {
@@ -197,43 +172,6 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeCDF(point);
-  }
-  // For larger dimension, use an adaptive integration
-  if ((dimension <= 500) && (nu_ == round(nu_)))
-  {
-    int nu(static_cast<int>(round(nu_)));
-    NumericalPoint lower(dimension, 0.0);
-    std::vector<int> infin(dimension, 0);
-    NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
-    /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      for (UnsignedInteger j = 0; j < i; ++j) correl[j + i * (i - 1) / 2] = R_(j, i);
-    // Non-centrality parameters
-    NumericalPoint delta(dimension, 0.0);
-    int maxpts(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    // Use only relative precision
-    double abseps(0.0);
-    // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) for dimension=500
-    double releps(ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) * pow(ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) / ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ), (4.0 + dimension) / 496.0));
-    double error;
-    double value;
-    int inform;
-    int dim(static_cast<UnsignedInteger>( dimension ));
-    do
-    {
-      MVTDST_F77(&dim, &nu, &lower[0], &u[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
-      if (inform == 1)
-      {
-        LOGWARN(OSS() << "Warning, in Student::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
-        maxpts *= 10;
-      }
-      else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
-    }
-    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" )) && (inform == 1));
-    if (inform == 1) LOGWARN(OSS() << "Warning, in Student::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
-    if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Student::computeCDF(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
-    cdfEpsilon_ = error;
-    return std::min(std::max(value, 0.0), 1.0);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
@@ -301,51 +239,6 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeProbability(interval);
-  }
-  // For large dimension, use an adaptive integration
-  if (dimension <= 500)
-  {
-    int nu(static_cast<UnsignedInteger>(round(nu_)));
-    // Build finite/infinite flags according to MVNDST documentation
-    std::vector<int> infin(dimension, -1);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      // Infin[i] should be:
-      //  2 if finiteLower[i] && finiteUpper[i]
-      //  1 if finiteLower[i] && !finiteUpper[i]
-      //  0 if !finiteLower[i] && finiteUpper[i]
-      // -1 if !finiteLower[i] && !finiteUpper[i]
-      infin[i] += 2 * int(finiteLower[i]) + int(finiteUpper[i]);
-    }
-    NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
-    /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-      for (UnsignedInteger j = 0; j < i; ++j) correl[j + i * (i - 1) / 2] = R_(j, i);
-    // Non-centrality parameter
-    NumericalPoint delta(dimension, 0.0);
-    int maxpts(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    // Use only relative precision
-    double abseps(0.0);
-    // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) for dimension=500
-    double releps(ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) * pow(ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) / ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ), (4.0 + dimension) / 496.0));
-    double error;
-    double value;
-    int inform;
-    int dim = static_cast<UnsignedInteger>( dimension );
-    do
-    {
-      MVTDST_F77(&dim, &nu, &lower[0], &upper[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
-      if (inform == 1)
-      {
-        LOGWARN(OSS() << "Warning, in Student::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
-        maxpts *= 10;
-      }
-      else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
-    }
-    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" )) && (inform == 1));
-    if (inform == 1) LOGWARN(OSS() << "Warning, in Student::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
-    if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Student::computeProbability(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
-    return std::min(std::max(value, 0.0), 1.0);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");

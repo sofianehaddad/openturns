@@ -67,7 +67,7 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
   // else check dimension compatibility
   if (other.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot intersect levelSets of different dimensions";
   // The outsideBooleanFunction is true (ie takes value 1) iff the given point is outside of the resulting level set
-  const NumericalMathFunction outsideBooleanFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "(x0 > " << level_ << ") || (x1 > " << other.level_ << ")"))));
+  const NumericalMathFunction outsideBooleanFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "(x0 > " << level_ << ") + (x1 > " << other.level_ << ") > 0.0"))));
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
@@ -83,7 +83,7 @@ LevelSet LevelSet::join(const LevelSet & other) const
   // else check dimension compatibility
   if (other.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot intersect levelSets of different dimensions";
   // The outsideBooleanFunction is true (ie takes value 1) iff the given point is outside of the resulting level set
-  const NumericalMathFunction outsideBooleanFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "(x0 > " << level_ << ") && (x1 > " << other.level_ << ")"))));
+  const NumericalMathFunction outsideBooleanFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "(x0 > " << level_ << ") * (x1 > " << other.level_ << ") > 0.0 "))));
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;

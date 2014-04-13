@@ -72,7 +72,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Build the factory from data  */
-  TrendTransform build(const Field & timeSeries,
+  TrendTransform build(const Field & field,
                        const Basis & basis) const;
 
   /** Method save() stores the object through the StorageManager */

@@ -102,9 +102,6 @@ public:
   /** Append another time series to the collection. The time grids must match (one follows the other) */
   TimeSeries & add(const TimeSeries & continuer);
 
-  /** Draw a marginal of the timeSerie */
-  Graph drawMarginal(const UnsignedInteger index = 0) const;
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

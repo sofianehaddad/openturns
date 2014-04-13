@@ -225,7 +225,8 @@ Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) con
 /* Draw a marginal of the ProcessSample, ie the collection of all the Field marginals */
 Graph ProcessSample::drawMarginal(const UnsignedInteger index) const
 {
-  if (index > getDimension() - 1 ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
+  if (mesh_.getDimension() != 1) throw NotDefinedException(HERE) << "Error: cannot draw a marginal sample if the mesh is of dimension greater than one. Here dimension=" << mesh_.getDimension();
+  if (index > getDimension() - 1 ) throw InvalidArgumentException(HERE) << "Error : indice should be in {0,...," << getDimension() - 1 << "}";
 
   // Discretization of the x axis
   const String title(OSS() << getName() << " - " << index << " marginal" );
