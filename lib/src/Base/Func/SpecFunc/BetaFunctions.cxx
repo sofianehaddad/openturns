@@ -62,8 +62,9 @@ NumericalScalar RegularizedIncompleteBeta(const NumericalScalar a,
     const NumericalScalar x,
     const Bool tail)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (a < 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (b < 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return (tail ? 1.0 : 0.0);
   if (x >= 1.0) return (tail ? 0.0 : 1.0);
 #ifdef HAVE_BOOST
