@@ -416,6 +416,7 @@ void Dirichlet::setTheta(const NumericalPoint & theta)
   setDimension(size - 1);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+  computeRange();
 }
 
 NumericalPoint Dirichlet::getTheta() const

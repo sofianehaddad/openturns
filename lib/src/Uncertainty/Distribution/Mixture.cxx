@@ -585,7 +585,7 @@ void Mixture::load(Advocate & adv)
   adv.loadAttribute( "ccdfApproximation_", ccdfApproximation_ );
   adv.loadAttribute( "useApproximatePDFCDF_", useApproximatePDFCDF_ );
   // To compute the range
-  setDistributionCollection(distributionCollection_);
+  setDistributionCollection(DistributionCollection(distributionCollection_));
 }
 
 END_NAMESPACE_OPENTURNS

@@ -6,19 +6,6 @@ from math import *
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
-
-def cleanMatrix(inMatrix):
-    tmp = inMatrix.__str__()
-    rowDim = inMatrix.getNbRows()
-    colDim = inMatrix.getNbColumns()
-    for i in range(rowDim):
-        for j in range(colDim):
-            inMatrix[i, j] = 1.e-6 * round(1.e6 * inMatrix[i, j])
-            if (abs(inMatrix[i, j]) < 1.e-6):
-                inMatrix[i, j] = 0.0
-    return inMatrix
-
-
 def cleanSymmetricTensor(inSymmetricTensor):
     rowDim = inSymmetricTensor.getNbRows()
     colDim = inSymmetricTensor.getNbColumns()
@@ -74,13 +61,13 @@ try:
     print "point=", repr(point)
     transformedPoint = transform(point)
     print "transform value at point        =", repr(transformedPoint)
-    print "transform gradient at point     =", repr(cleanMatrix(transform.gradient(point)))
-    print "transform gradient at point (FD)=", repr(cleanMatrix(CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluationImplementation()).gradient(point)))
+    print "transform gradient at point     =", repr(transform.gradient(point).clean(1e-6))
+    print "transform gradient at point (FD)=", repr(CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluationImplementation()).gradient(point).clean(1e-6))
     print "transform hessian at point      =", repr(cleanSymmetricTensor(transform.hessian(point)))
     print "transform hessian at point (FD) =", repr(cleanSymmetricTensor(CenteredFiniteDifferenceHessian(1.0e-4, transform.getEvaluationImplementation()).hessian(point)))
     print "inverse transform value at transformed point        =", repr(inverseTransform(transformedPoint))
-    print "inverse transform gradient at transformed point     =", repr(cleanMatrix(inverseTransform.gradient(transformedPoint)))
-    print "inverse transform gradient at transformed point (FD)=", repr(cleanMatrix(CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluationImplementation()).gradient(transformedPoint)))
+    print "inverse transform gradient at transformed point     =", repr(inverseTransform.gradient(transformedPoint).clean(1e-6))
+    print "inverse transform gradient at transformed point (FD)=", repr(CenteredFiniteDifferenceGradient(1.0e-5, inverseTransform.getEvaluationImplementation()).gradient(transformedPoint).clean(1e-6))
     print "inverse transform hessian at transformed point      =", repr(cleanSymmetricTensor(inverseTransform.hessian(transformedPoint)))
     print "inverse transform hessian at transformed point (FD) =", repr(cleanSymmetricTensor(CenteredFiniteDifferenceHessian(1.0e-4, inverseTransform.getEvaluationImplementation()).hessian(transformedPoint)))
 

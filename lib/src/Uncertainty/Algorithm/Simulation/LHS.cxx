@@ -40,22 +40,22 @@ CLASSNAMEINIT(LHS);
 static Factory<LHS> RegisteredFactory("LHS");
 
 /* Default constructor */
-LHS::LHS():
-  Simulation(),
-  dimension_(0),
-  blockIndex_(0)
+LHS::LHS()
+  : Simulation()
+  , dimension_(0)
+  , blockIndex_(0)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-LHS::LHS(const Event & event):
-  Simulation(event),
-  dimension_(event.getImplementation()->getAntecedent()->getDimension()),
-  blockIndex_(0)
+LHS::LHS(const Event & event)
+  : Simulation(event)
+  , dimension_(event.getImplementation()->getAntecedent()->getDimension())
+  , blockIndex_(0)
 {
   // Check if the distribution associated to the antecedent of the antecedent of the event has independent components
-  //      if(!Event.getAntecedent()->getAntecedent()->getDistribution().hasIndependentComponents()) throw InvalidArgumentExeception(HERE) << "Error the LHS simulation method requires independent components for the event second antecedent";
+  if(!event.getImplementation()->getAntecedent()->getDistribution().hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error the LHS simulation method requires independent components for the event second antecedent";
   // Get the marginals
   for (UnsignedInteger index = 0; index < dimension_; index++) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
 }

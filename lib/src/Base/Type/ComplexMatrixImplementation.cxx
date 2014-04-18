@@ -103,6 +103,8 @@ ComplexMatrixImplementation * ComplexMatrixImplementation::clone() const
 /* Set small elements to zero */
 ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalScalar threshold) const
 {
+  // Nothing to do for nonpositive threshold
+  if (threshold <= 0.0) return *this;
   ComplexMatrixImplementation result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
@@ -111,7 +113,9 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
       NumericalScalar realPart(std::real(value));
       NumericalScalar imagPart(std::imag(value));
       if (fabs(realPart) <= threshold) realPart = 0.0;
+      else realPart = threshold * (round(realPart / threshold));
       if (fabs(imagPart) <= threshold) imagPart = 0.0;
+      else imagPart = threshold * (round(imagPart / threshold));
       result(i, j) = NumericalComplex(realPart, imagPart);
     }
   return result;
@@ -120,6 +124,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
 /* Set small elements to zero */
 ComplexMatrixImplementation ComplexMatrixImplementation::cleanHerm(const NumericalScalar threshold) const
 {
+  // Nothing to do for nonpositive threshold
+  if (threshold <= 0.0) return *this;
   ComplexMatrixImplementation result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = j; i < nbRows_; ++i)
@@ -128,7 +134,9 @@ ComplexMatrixImplementation ComplexMatrixImplementation::cleanHerm(const Numeric
       NumericalScalar realPart(std::real(value));
       NumericalScalar imagPart(std::imag(value));
       if (fabs(realPart) <= threshold) realPart = 0.0;
+      else realPart = threshold * (round(realPart / threshold));
       if (fabs(imagPart) <= threshold) imagPart = 0.0;
+      else imagPart = threshold * (round(imagPart / threshold));
       result(i, j) = NumericalComplex(realPart, imagPart);
     }
   return result;

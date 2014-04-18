@@ -12,18 +12,6 @@ def cleanScalar(inScalar):
     return inScalar
 
 
-def cleanMatrix(inMatrix):
-    tmp = inMatrix.__str__()
-    inMatrix = ComplexMatrix(inMatrix.getImplementation())
-    dim = inMatrix.getNbRows()
-    for i in range(dim):
-        for j in range(dim):
-            realIJ = cleanScalar(inMatrix[i, j].real)
-            imagIJ = cleanScalar(inMatrix[i, j].imag)
-            inMatrix[i, j] = realIJ + 1j * imagIJ
-    return inMatrix
-
-
 try:
 
         # Default constructor
@@ -65,8 +53,8 @@ try:
     for i in range(samplingGrid.getN()):
         frequency = samplingGrid.getValue(i)
         print "frequency= %g myModel=" % cleanScalar(frequency)
-        print cleanMatrix(myModel(frequency)), ", referenceModel="
-        print cleanMatrix(referenceModel(frequency))
+        print myModel(frequency).clean(1e-6), ", referenceModel="
+        print referenceModel(frequency).clean(1e-6)
 
 except:
     import sys

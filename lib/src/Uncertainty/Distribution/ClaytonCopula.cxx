@@ -39,6 +39,7 @@ ClaytonCopula::ClaytonCopula()
   , theta_(2.0)
 {
   setDimension( 2 );
+  computeRange();
 }
 
 /* Parameters constructor */

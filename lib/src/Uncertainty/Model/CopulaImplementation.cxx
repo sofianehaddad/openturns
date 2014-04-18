@@ -320,26 +320,4 @@ void CopulaImplementation::computeRange()
   setRange(Interval(getDimension()));
 }
 
-/* Draw the PDF of the copula when its dimension is 2 */
-Graph CopulaImplementation::drawPDF(const Indices & pointNumber) const
-{
-  Graph graph(drawPDF(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0), pointNumber));
-  Drawable drawable(graph.getDrawable(0));
-  NumericalSample data(5, 2);
-  data[1][0] = 1.0;
-  data[2]    = NumericalPoint(2, 1.0);
-  data[3][1] = 1.0;
-  Curve square(data);
-  square.setColor("blue");
-  graph.setDrawable(square, 0);
-  graph.add(drawable);
-  return graph;
-}
-
-/* Draw the CDF of the copula when its dimension is 2 */
-Graph CopulaImplementation::drawCDF(const Indices & pointNumber) const
-{
-  return drawCDF(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0), pointNumber);
-}
-
 END_NAMESPACE_OPENTURNS

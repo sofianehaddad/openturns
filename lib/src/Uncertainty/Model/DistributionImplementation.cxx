@@ -2343,14 +2343,38 @@ Graph DistributionImplementation::drawPDF(const NumericalPoint & xMin,
 /* Draw the PDF of the distribution when its dimension is 2 */
 Graph DistributionImplementation::drawPDF(const Indices & pointNumber) const
 {
+  if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: pointNumber must be of size 2, here size=" << pointNumber.getSize();
   NumericalPoint xMin(2);
-  xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
-  xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+  if (isCopula()) xMin = NumericalPoint(2, 0.0);
+  else
+    {
+      xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+      xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+    }
   NumericalPoint xMax(2);
-  xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
-  xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
-  const NumericalPoint delta(2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
-  return drawPDF(xMin - delta, xMax + delta, pointNumber);
+  if (isCopula()) xMax = NumericalPoint(2, 1.0);
+  else
+    {
+      xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
+      xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
+    }
+  NumericalPoint delta(2, 0.0);
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
+  Graph graph(drawPDF(xMin - delta, xMax + delta, pointNumber));
+  // Add a border for a copula
+  if (isCopula())
+    {
+      const Drawable drawable(graph.getDrawable(0));
+      NumericalSample data(5, 2);
+      data[1][0] = 1.0;
+      data[2]    = NumericalPoint(2, 1.0);
+      data[3][1] = 1.0;
+      Curve square(data);
+      square.setColor("blue");
+      graph.setDrawable(square, 0);
+      graph.add(drawable);
+    }
+  return graph;
 }
 
 /* Draw the PDF of a 2D marginal */
@@ -2471,6 +2495,9 @@ Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
                                           const NumericalPoint & xMax,
                                           const Indices & pointNumber) const
 {
+  if (xMin.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: expected xMin to be of dimension 2, here dimension=" << xMin.getDimension();
+  if (xMax.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: expected xMax to be of dimension 2, here dimension=" << xMax.getDimension();
+  if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected pointNumber to be of size 2, here size=" << pointNumber.getSize();
   if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   NumericalPoint discretization(2);
   NumericalPoint scaling(2);
@@ -2518,13 +2545,23 @@ Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
 /* Draw the CDF of the distribution when its dimension is 2 */
 Graph DistributionImplementation::drawCDF(const Indices & pointNumber) const
 {
+  if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected pointNumber to be of size 2, here size=" << pointNumber.getSize();
   NumericalPoint xMin(2);
-  xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
-  xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+  if (isCopula()) xMin = NumericalPoint(2, 0.0);
+  else
+    {
+      xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+      xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0];
+    }
   NumericalPoint xMax(2);
-  xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
-  xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
-  const NumericalPoint delta(2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
+  if (isCopula()) xMax = NumericalPoint(2, 1.0);
+  else
+    {
+      xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
+      xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0];
+    }
+  NumericalPoint delta(2, 0.0);
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
   return drawCDF(xMin - delta, xMax + delta, pointNumber);
 }
 

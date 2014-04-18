@@ -20,12 +20,6 @@ def cleanNumericalPoint(inNumericalPoint):
             inNumericalPoint[i] = 0.0
     return inNumericalPoint
 
-
-def cleanMatrix(inMatrix):
-    inMatrix.clean(1.0e-10)
-    return inMatrix
-
-
 try:
     PlatformInfo.SetNumericalPrecision(5)
     # Instanciate one distribution object
@@ -196,10 +190,10 @@ try:
 
     chol = distribution.getCholesky()
     invChol = distribution.getInverseCholesky()
-    print "chol=", repr(cleanMatrix(chol))
-    print "invchol=", repr(cleanMatrix(invChol))
-    print "chol*t(chol)=", repr(cleanMatrix(chol * chol.transpose()))
-    print "chol*invchol=", repr(cleanMatrix(chol * invChol))
+    print "chol=", repr(chol.clean(1e-6))
+    print "invchol=", repr(invChol.clean(1e-6))
+    print "chol*t(chol)=", repr((chol * chol.transpose()).clean(1e-6))
+    print "chol*invchol=", repr((chol * invChol).clean(1e-6))
 
 except:
     import sys

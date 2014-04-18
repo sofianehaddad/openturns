@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @file  SubSquareCopula.hxx
- *  @brief A class that implements a subSquare copula
+ *  @brief A class that implements a SubSquare copula
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -25,10 +25,6 @@
 #define OPENTURNS_SUBSQUARECOPULA_HXX
 
 #include "CopulaImplementation.hxx"
-#include "CorrelationMatrix.hxx"
-#include "SubSquare.hxx"
-#include "DistFunc.hxx"
-#include "TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,10 +41,10 @@ class SubSquareCopula
 public:
 
   /** Default constructor */
-  explicit SubSquareCopula(const UnsignedInteger dim = 1);
+  explicit SubSquareCopula();
 
   /** Default constructor */
-  explicit SubSquareCopula(const CorrelationMatrix & correlation);
+  explicit SubSquareCopula(const NumericalMathFunction & phi);
 
 
   /** Comparison operator */
@@ -65,14 +61,6 @@ public:
 
   /** Get one realization of the SubSquareCopula distribution */
   NumericalPoint getRealization() const;
-protected:
-  NumericalSample getSampleParallel(const UnsignedInteger size) const;
-public:
-  NumericalSample getSample(const UnsignedInteger size) const;
-
-  /** Get the DDF of the SubSquareCopula distribution */
-  using CopulaImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
 
   /** Get the PDF of the SubSquareCopula distribution */
   using CopulaImplementation::computePDF;
@@ -81,26 +69,6 @@ public:
   /** Get the CDF of the SubSquareCopula distribution */
   using CopulaImplementation::computeCDF;
   NumericalScalar computeCDF(const NumericalPoint & point) const;
-  using CopulaImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
-
-  /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
-
-  /** Get the shape matrix of the copula */
-  CorrelationMatrix getShapeMatrix() const;
-
-  /** Get the Spearman correlation of the distribution */
-  CorrelationMatrix getSpearmanCorrelation() const;
-
-  /** Get the Kendall concordance of the distribution */
-  CorrelationMatrix getKendallTau() const;
-
-  /** Get the PDF gradient of the distribution */
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
-
-  /** Get the CDF gradient of the distribution */
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   NumericalScalar computeConditionalPDF(const NumericalScalar x,
@@ -114,29 +82,20 @@ public:
   NumericalScalar computeConditionalQuantile(const NumericalScalar q,
       const NumericalPoint & y) const;
 
-  /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
-  Implementation getMarginal(const Indices & indices) const;
-
-  /** Get the isoprobabilist transformation */
-  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
-
-  /** Get the inverse isoprobabilist transformation */
-  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
-
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
+
+  /** Phi accessors */
+  void setPhi(const NumericalMathFunction & phi);
+  NumericalMathFunction getPhi() const;
+
+  /** Mass accessor */
+  NumericalScalar getMass();
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;
   using CopulaImplementation::setParametersCollection;
   void setParametersCollection(const NumericalPointCollection & parametersCollection);
-
-  /** Compute the correlation matrix of a SubSquare Copula from its Spearman correlation matrix */
-  static CorrelationMatrix GetCorrelationFromSpearmanCorrelation(const CorrelationMatrix & matrix);
-
-  /** Compute the correlation matrix of a SubSquare Copula from its Kendall correlation matrix */
-  static CorrelationMatrix GetCorrelationFromKendallCorrelation(const CorrelationMatrix & matrix);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -149,32 +108,17 @@ protected:
 
 private:
 
-  struct ComputeSamplePolicy
-  {
-    const NumericalSample input_;
-    NumericalSample & output_;
-    UnsignedInteger dimension_;
-
-    ComputeSamplePolicy( const NumericalSample & input,
-                         NumericalSample & output)
-      : input_(input)
-      , output_(output)
-      , dimension_(input.getDimension())
-    {}
-
-    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-    {
-      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-        for (UnsignedInteger j = 0; j < dimension_; ++j)
-          output_[i][j] = DistFunc::pSubSquare(input_[i][j]);
-    }
-
-  }; /* end struct ComputeSamplePolicy */
+  // Compute the mass associated to phi
+  void computeMass() const;
 
   // SubSquare copula parameter
-  CorrelationMatrix correlation_;
-  // Underlying generic representative
-  SubSquare subSquare_;
+  NumericalMathFunction phi_;
+
+  // Flag to tell if phi is zero
+  Bool nullPhi_;
+
+  // Mass
+  NumericalScalar mass_;
 
 }; /* class SubSquareCopula */
 

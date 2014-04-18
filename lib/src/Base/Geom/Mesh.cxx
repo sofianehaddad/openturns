@@ -141,11 +141,11 @@ SquareMatrix Mesh::buildSimplexMatrix(const UnsignedInteger index) const
   const Indices vertexIndices(simplices_[index]);
   // Loop over the vertices of the simplex
   for (UnsignedInteger j = 0; j <= dimension_; ++j)
-  {
-    const NumericalPoint vertexJ(vertices_[vertexIndices[j]]);
-    for (UnsignedInteger i = 0; i < dimension_; ++i) matrix(i, j) = vertexJ[i];
-    matrix(dimension_, j) = 1.0;
-  }
+    {
+      const NumericalPoint vertexJ(vertices_[vertexIndices[j]]);
+      for (UnsignedInteger i = 0; i < dimension_; ++i) matrix(i, j) = vertexJ[i];
+      matrix(dimension_, j) = 1.0;
+    }
   return matrix;
 }
 
@@ -190,23 +190,23 @@ struct NearestFunctor
   void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const NumericalScalar d((point_ - mesh_.getVertices()[i]).normSquare());
-      if (d < minDistance_)
       {
-        minDistance_ = d;
-        minIndex_ = i;
+        const NumericalScalar d((point_ - mesh_.getVertices()[i]).normSquare());
+        if (d < minDistance_)
+          {
+            minDistance_ = d;
+            minIndex_ = i;
+          }
       }
-    }
   }
 
   void join(const NearestFunctor & other)
   {
     if (other.minDistance_ < minDistance_)
-    {
-      minDistance_ = other.minDistance_;
-      minIndex_ = other.minIndex_;
-    }
+      {
+        minDistance_ = other.minDistance_;
+        minIndex_ = other.minIndex_;
+      }
   }
 
 }; /* end struct NearestFunctor */
@@ -225,14 +225,14 @@ UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
 NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
 {
   // First special case: 1D simplex
-  if (getDimension() == 1) 
+  if (getDimension() == 1)
     {
       const NumericalScalar x0(vertices_[simplices_[index][0]][0]);
       const NumericalScalar x1(vertices_[simplices_[index][1]][0]);
       return fabs(x1 - x0);
     }
   // Second special case: 2D simplex
-  if (getDimension() == 2) 
+  if (getDimension() == 2)
     {
       const NumericalScalar x0(vertices_[simplices_[index][0]][0]);
       const NumericalScalar y0(vertices_[simplices_[index][0]][1]);
@@ -267,10 +267,10 @@ Bool Mesh::isRegular() const
   const NumericalScalar epsilon(ResourceMap::GetAsNumericalScalar("Mesh-VertexEpsilon"));
   const NumericalScalar step(vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0]);
   for (UnsignedInteger i = 1; i < size; ++i)
-  {
-    regular = regular && (abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
-    if (!regular) break;
-  }
+    {
+      regular = regular && (abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
+      if (!regular) break;
+    }
   return regular;
 }
 
@@ -285,10 +285,10 @@ Bool Mesh::operator == (const Mesh & other) const
 String Mesh::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-         << " name=" << getName()
-         << " dimension=" << getDimension()
-         << " vertices=" << vertices_.__repr__()
-         << " simplices=" << simplices_.__repr__();
+                   << " name=" << getName()
+                   << " dimension=" << getDimension()
+                   << " vertices=" << vertices_.__repr__()
+                   << " simplices=" << simplices_.__repr__();
 }
 
 String Mesh::__str__(const String & offset) const
@@ -319,15 +319,15 @@ Graph Mesh::draw1D() const
   vertices.setLegend(String(OSS() << verticesSize << " node" << (verticesSize > 1 ? "s" : "")));
   // The simplices
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
-  {
-    NumericalSample data(2, 2);
-    data[0][0] = vertices_[simplices_[i][0]][0];
-    data[1][0] = vertices_[simplices_[i][1]][0];
-    Curve simplex(data);
-    simplex.setColor("blue");
-    if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
-    graph.add(simplex);
-  }
+    {
+      NumericalSample data(2, 2);
+      data[0][0] = vertices_[simplices_[i][0]][0];
+      data[1][0] = vertices_[simplices_[i][1]][0];
+      Curve simplex(data);
+      simplex.setColor("blue");
+      if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
+      graph.add(simplex);
+    }
   graph.add(vertices);
   return graph;
 }
@@ -345,17 +345,17 @@ Graph Mesh::draw2D() const
   vertices.setLegend(String(OSS() << verticesSize << " node" << (verticesSize > 1 ? "s" : "")));
   // The simplices
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
-  {
-    NumericalSample data(4, 2);
-    data[0] = vertices_[simplices_[i][0]];
-    data[1] = vertices_[simplices_[i][1]];
-    data[2] = vertices_[simplices_[i][2]];
-    data[3] = vertices_[simplices_[i][0]];
-    Curve simplex(data);
-    simplex.setColor("blue");
-    if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
-    graph.add(simplex);
-  }
+    {
+      NumericalSample data(4, 2);
+      data[0] = vertices_[simplices_[i][0]];
+      data[1] = vertices_[simplices_[i][1]];
+      data[2] = vertices_[simplices_[i][2]];
+      data[3] = vertices_[simplices_[i][0]];
+      Curve simplex(data);
+      simplex.setColor("blue");
+      if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
+      graph.add(simplex);
+    }
   graph.add(vertices);
   return graph;
 }
@@ -381,116 +381,116 @@ Graph Mesh::draw3D(const Bool drawEdge,
   NumericalPoint ac;
   NumericalPoint triWithDepth(4);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
-  {
-    const UnsignedInteger i0(simplices_[i][0]);
-    const UnsignedInteger i1(simplices_[i][1]);
-    const UnsignedInteger i2(simplices_[i][2]);
-    const UnsignedInteger i3(simplices_[i][3]);
-    // First face: AB=p0p1, AC=p0p2.
-    triWithDepth[0] = i0;
-    triWithDepth[1] = i1;
-    triWithDepth[2] = i2;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i1][2] + vertices_[i2][2];
-    trianglesAndDepth.add(triWithDepth);
+    {
+      const UnsignedInteger i0(simplices_[i][0]);
+      const UnsignedInteger i1(simplices_[i][1]);
+      const UnsignedInteger i2(simplices_[i][2]);
+      const UnsignedInteger i3(simplices_[i][3]);
+      // First face: AB=p0p1, AC=p0p2.
+      triWithDepth[0] = i0;
+      triWithDepth[1] = i1;
+      triWithDepth[2] = i2;
+      triWithDepth[3] = vertices_[i0][2] + vertices_[i1][2] + vertices_[i2][2];
+      trianglesAndDepth.add(triWithDepth);
 
-    // Second face: AB=p0p2, AC=p0p3.
-    triWithDepth[0] = i0;
-    triWithDepth[1] = i2;
-    triWithDepth[2] = i3;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i2][2] + vertices_[i3][2];
-    trianglesAndDepth.add(triWithDepth);
+      // Second face: AB=p0p2, AC=p0p3.
+      triWithDepth[0] = i0;
+      triWithDepth[1] = i2;
+      triWithDepth[2] = i3;
+      triWithDepth[3] = vertices_[i0][2] + vertices_[i2][2] + vertices_[i3][2];
+      trianglesAndDepth.add(triWithDepth);
 
-    // Third face: AB=p0p3, AC=p0p1.
-    triWithDepth[0] = i0;
-    triWithDepth[1] = i3;
-    triWithDepth[2] = i1;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i3][2] + vertices_[i1][2];
-    trianglesAndDepth.add(triWithDepth);
+      // Third face: AB=p0p3, AC=p0p1.
+      triWithDepth[0] = i0;
+      triWithDepth[1] = i3;
+      triWithDepth[2] = i1;
+      triWithDepth[3] = vertices_[i0][2] + vertices_[i3][2] + vertices_[i1][2];
+      trianglesAndDepth.add(triWithDepth);
 
-    // Fourth face: AB=p1p3, AC=p1p2.
-    triWithDepth[0] = i1;
-    triWithDepth[1] = i3;
-    triWithDepth[2] = i2;
-    triWithDepth[3] = vertices_[i1][2] + vertices_[i3][2] + vertices_[i2][2];
-    trianglesAndDepth.add(triWithDepth);
-  }
+      // Fourth face: AB=p1p3, AC=p1p2.
+      triWithDepth[0] = i1;
+      triWithDepth[1] = i3;
+      triWithDepth[2] = i2;
+      triWithDepth[3] = vertices_[i1][2] + vertices_[i3][2] + vertices_[i2][2];
+      trianglesAndDepth.add(triWithDepth);
+    }
   // Fourth, draw the triangles in decreasing depth
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
   trianglesAndDepth = trianglesAndDepth.sortAccordingToAComponent(3);
   NumericalScalar clippedRho(std::min(1.0, std::max(0.0, rho)));
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
   for (UnsignedInteger i = trianglesAndDepth.getSize(); i > 0; --i)
-  {
-    const UnsignedInteger i0(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][0]));
-    const UnsignedInteger i1(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][1]));
-    const UnsignedInteger i2(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][2]));
-    NumericalSample data(3, 2);
-    if (clippedRho < 1.0)
     {
-      const NumericalPoint center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
-      data[0][0] = center[0];
-      data[0][1] = center[1];
-      data[1][0] = center[0];
-      data[1][1] = center[1];
-      data[2][0] = center[0];
-      data[2][1] = center[1];
-      if (clippedRho > 0.0)
-      {
-        data[0][0] += clippedRho * (visuVertices[i0][0] - center[0]);
-        data[0][1] += clippedRho * (visuVertices[i0][1] - center[1]);
-        data[1][0] += clippedRho * (visuVertices[i1][0] - center[0]);
-        data[1][1] += clippedRho * (visuVertices[i1][1] - center[1]);
-        data[2][0] += clippedRho * (visuVertices[i2][0] - center[0]);
-        data[2][1] += clippedRho * (visuVertices[i2][1] - center[1]);
-      }
+      const UnsignedInteger i0(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][0]));
+      const UnsignedInteger i1(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][1]));
+      const UnsignedInteger i2(static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][2]));
+      NumericalSample data(3, 2);
+      if (clippedRho < 1.0)
+        {
+          const NumericalPoint center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
+          data[0][0] = center[0];
+          data[0][1] = center[1];
+          data[1][0] = center[0];
+          data[1][1] = center[1];
+          data[2][0] = center[0];
+          data[2][1] = center[1];
+          if (clippedRho > 0.0)
+            {
+              data[0][0] += clippedRho * (visuVertices[i0][0] - center[0]);
+              data[0][1] += clippedRho * (visuVertices[i0][1] - center[1]);
+              data[1][0] += clippedRho * (visuVertices[i1][0] - center[0]);
+              data[1][1] += clippedRho * (visuVertices[i1][1] - center[1]);
+              data[2][0] += clippedRho * (visuVertices[i2][0] - center[0]);
+              data[2][1] += clippedRho * (visuVertices[i2][1] - center[1]);
+            }
+        }
+      else
+        {
+          data[0][0] = visuVertices[i0][0];
+          data[0][1] = visuVertices[i0][1];
+          data[1][0] = visuVertices[i1][0];
+          data[1][1] = visuVertices[i1][1];
+          data[2][0] = visuVertices[i2][0];
+          data[2][1] = visuVertices[i2][1];
+        }
+      Polygon triangle(data);
+
+      NumericalScalar redFace(0.0);
+      NumericalScalar greenFace(0.0);
+      NumericalScalar blueFace(1.0);
+
+      NumericalScalar redEdge(1.0);
+      NumericalScalar greenEdge(0.0);
+      NumericalScalar blueEdge(0.0);
+
+      NumericalScalar redLight(1.0);
+      NumericalScalar greenLight(1.0);
+      NumericalScalar blueLight(1.0);
+
+      if (shading)
+        {
+          const NumericalPoint ab(visuVertices[i1] - visuVertices[i0]);
+          const NumericalPoint ac(visuVertices[i2] - visuVertices[i0]);
+          NumericalPoint N(3);
+          N[0] = ab[1] * ac[2] - ab[2] * ac[1];
+          N[1] = ab[2] * ac[0] - ab[0] * ac[2];
+          N[2] = ab[0] * ac[1] - ab[1] * ac[0];
+          const NumericalScalar cosTheta(fabs(N[2]) / N.norm());
+          NumericalPoint R(N * (2.0 * cosTheta));
+          R[2] -= 1.0;
+          const NumericalScalar cosPhi(fabs(R[2] / R.norm()));
+          redFace     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
+          greenFace   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
+          blueFace    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;
+          redEdge     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
+          greenEdge   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
+          blueEdge    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;
+        }
+      triangle.setColor(triangle.ConvertFromRGB(redFace, greenFace, blueFace));
+      if (drawEdge) triangle.setEdgeColor(triangle.ConvertFromRGB(redEdge, greenEdge, blueEdge));
+      else triangle.setEdgeColor(triangle.ConvertFromRGB(redFace, greenFace, blueFace));
+      graph.add(triangle);
     }
-    else
-    {
-      data[0][0] = visuVertices[i0][0];
-      data[0][1] = visuVertices[i0][1];
-      data[1][0] = visuVertices[i1][0];
-      data[1][1] = visuVertices[i1][1];
-      data[2][0] = visuVertices[i2][0];
-      data[2][1] = visuVertices[i2][1];
-    }
-    Polygon triangle(data);
-
-    NumericalScalar redFace(0.0);
-    NumericalScalar greenFace(0.0);
-    NumericalScalar blueFace(1.0);
-
-    NumericalScalar redEdge(1.0);
-    NumericalScalar greenEdge(0.0);
-    NumericalScalar blueEdge(0.0);
-
-    NumericalScalar redLight(1.0);
-    NumericalScalar greenLight(1.0);
-    NumericalScalar blueLight(1.0);
-
-    if (shading)
-    {
-      const NumericalPoint ab(visuVertices[i1] - visuVertices[i0]);
-      const NumericalPoint ac(visuVertices[i2] - visuVertices[i0]);
-      NumericalPoint N(3);
-      N[0] = ab[1] * ac[2] - ab[2] * ac[1];
-      N[1] = ab[2] * ac[0] - ab[0] * ac[2];
-      N[2] = ab[0] * ac[1] - ab[1] * ac[0];
-      const NumericalScalar cosTheta(fabs(N[2]) / N.norm());
-      NumericalPoint R(N * (2.0 * cosTheta));
-      R[2] -= 1.0;
-      const NumericalScalar cosPhi(fabs(R[2] / R.norm()));
-      redFace     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
-      greenFace   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
-      blueFace    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;
-      redEdge     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
-      greenEdge   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
-      blueEdge    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;
-    }
-    triangle.setColor(triangle.ConvertFromRGB(redFace, greenFace, blueFace));
-    if (drawEdge) triangle.setEdgeColor(triangle.ConvertFromRGB(redEdge, greenEdge, blueEdge));
-    else triangle.setEdgeColor(triangle.ConvertFromRGB(redFace, greenFace, blueFace));
-    graph.add(triangle);
-  }
   return graph;
 }
 
@@ -501,10 +501,10 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
   // Bording case: empty file
   if (file.eof())
-  {
-    Log::Info(OSS() << "File " << fileName << " is empty.");
-    return Mesh();
-  }
+    {
+      Log::Info(OSS() << "File " << fileName << " is empty.");
+      return Mesh();
+    }
   // First, the header: it is made of 3 integers, the number of vertices, the number of simplices and the number of elements on the boundary, currently not used by OT
   UnsignedInteger verticesNumber(0);
   UnsignedInteger simplicesNumber(0);
@@ -516,25 +516,25 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
   // Parse the vertices
   NumericalSample vertices(verticesNumber, 2);
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
-  {
-    file >> vertices[i][0];
-    file >> vertices[i][1];
-    file >> scratch;
-    LOGINFO(OSS() << "vertex " << i << "=" << vertices[i]);
-  }
+    {
+      file >> vertices[i][0];
+      file >> vertices[i][1];
+      file >> scratch;
+      LOGINFO(OSS() << "vertex " << i << "=" << vertices[i]);
+    }
   // Parse the simplices
   IndicesCollection simplices(simplicesNumber, Indices(3));
   for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
-  {
-    file >> simplices[i][0];
-    file >> simplices[i][1];
-    file >> simplices[i][2];
-    --simplices[i][0];
-    --simplices[i][1];
-    --simplices[i][2];
-    file >> scratch;
-    LOGINFO(OSS() << "simplex " << i << "=" << simplices[i]);
-  }
+    {
+      file >> simplices[i][0];
+      file >> simplices[i][1];
+      file >> simplices[i][2];
+      --simplices[i][0];
+      --simplices[i][1];
+      --simplices[i][2];
+      file >> scratch;
+      LOGINFO(OSS() << "simplex " << i << "=" << simplices[i]);
+    }
   file.close();
   return Mesh(vertices, simplices);
 }
@@ -557,34 +557,62 @@ String Mesh::streamToVTKFormat() const
   oss << "DATASET UNSTRUCTURED_GRID\n";
   // Fifth, the geometrical and topological data
   // The vertices
-  oss << "POINTS " << getVerticesNumber() << " float\n";
-  for (UnsignedInteger i = 0; i < getVerticesNumber(); ++i)
-  {
-    String separator("");
-    for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
-      oss << separator << vertices_[i][j];
-    for (UnsignedInteger j = dimension_; j < 3; ++j)
-      oss << separator << "0.0";
-    oss << "\n";
-  }
+  const UnsignedInteger numVertices(getVerticesNumber());
+  oss << "POINTS " << numVertices << " float\n";
+  for (UnsignedInteger i = 0; i < numVertices; ++i)
+    {
+      String separator("");
+      for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
+        oss << separator << vertices_[i][j];
+      for (UnsignedInteger j = dimension_; j < 3; ++j)
+        oss << separator << "0.0";
+      oss << "\n";
+    }
   // The simplices
   oss << "\n";
-  oss << "CELLS " << getSimplicesNumber() << " " << (dimension_ + 2) * getSimplicesNumber() << "\n";
-  for (UnsignedInteger i = 0; i < getSimplicesNumber(); ++i)
-  {
-    oss << dimension_ + 1;
-    for (UnsignedInteger j = 0; j <= dimension_; ++j)
-      oss << " " << simplices_[i][j];
-    oss << "\n";
-  }
+  const UnsignedInteger numSimplices(getSimplicesNumber());
+  // If no simplex, assume that it is a cloud of points
+  if (numSimplices == 0)
+    {
+      oss << "CELLS " << numVertices << " " << 3 * numSimplices << "\n";
+      for (UnsignedInteger i = 0; i < numVertices; ++i) oss << "1 " << i << "\n";
+      oss << "\n";
+      oss << "CELL_TYPES " << numVertices << "\n";
+      for (UnsignedInteger i = 0; i < numVertices; ++i) oss << "1\n";
+      PlatformInfo::SetNumericalPrecision(oldPrecision);
+      return oss;
+    }
+  // There is at least on simplex. Assume homogeneous simplices,
+  // ie all the simplices are of the same kind as the first one
+  UnsignedInteger verticesPerSimplex(1);
+  UnsignedInteger lastIndex(simplices_[0][0]);
+  while ((verticesPerSimplex <= dimension_ + 1) && (simplices_[0][verticesPerSimplex] != lastIndex))
+    {
+      lastIndex = simplices_[0][verticesPerSimplex];
+      ++verticesPerSimplex;
+    }
+  oss << "CELLS " << numSimplices << " " << (verticesPerSimplex + 1) * numSimplices << "\n";
+  for (UnsignedInteger i = 0; i < numSimplices; ++i)
+    {
+      oss << verticesPerSimplex;
+      for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j)
+        oss << " " << simplices_[i][j];
+      oss << "\n";
+    }
   oss << "\n";
-  oss << "CELL_TYPES " << getSimplicesNumber() << "\n";
+  // If no simplices, assume vertices type
+  oss << "CELL_TYPES " << numSimplices << "\n";
   UnsignedInteger cellType;
-  if (dimension_ == 1) cellType = 3;
-  if (dimension_ == 2) cellType = 5;
-  if (dimension_ == 3) cellType = 10;
-  for (UnsignedInteger i = 0; i < getSimplicesNumber(); ++i)
-    oss << cellType << "\n";
+  // Cell type is:
+  // 1 for vertex
+  // 3 for line
+  // 5 for triangle
+  // 10 for tetrahedron
+  if (verticesPerSimplex == 1) cellType = 1;
+  if (verticesPerSimplex == 2) cellType = 3;
+  if (verticesPerSimplex == 3) cellType = 5;
+  if (verticesPerSimplex == 4) cellType = 10;
+  for (UnsignedInteger i = 0; i < numSimplices; ++i) oss << cellType << "\n";
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   return oss;
 }
