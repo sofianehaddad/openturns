@@ -955,6 +955,13 @@ NumericalScalar MatrixImplementation::computeDeterminantSym (const Bool keepInta
   return sign * exp(logAbsoluteDeterminant);
 }
 
+/* Compute trace */
+NumericalScalar MatrixImplementation::computeTrace() const
+{
+  NumericalScalar trace(0.0);
+  for (UnsignedInteger i = 0; i < nbRows_; ++i) trace += (*this)(i, i);
+  return trace;
+}
 
 /* Compute the eigenvalues of a square matrix */
 MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)

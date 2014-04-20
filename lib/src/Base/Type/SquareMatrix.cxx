@@ -186,6 +186,12 @@ NumericalScalar SquareMatrix::computeDeterminant(const Bool keepIntact)
   return getImplementation()->computeDeterminant(keepIntact);
 }
 
+/* Compute trace */
+NumericalScalar SquareMatrix::computeTrace() const
+{
+  return getImplementation()->computeTrace();
+}
+
 /* Compute eigenvalues */
 SquareMatrix::NumericalComplexCollection SquareMatrix::computeEigenValues(const Bool keepIntact)
 {

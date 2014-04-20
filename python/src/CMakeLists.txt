@@ -557,6 +557,7 @@ ot_add_python_module( dist_bundle3 dist_bundle3_module.i
                       UserDefinedFactory.i
                       Weibull.i
                       WeibullFactory.i
+                      Wishart.i
                       ZipfMandelbrot.i
                       UncertaintyDistTemplateDefs.i
                       PythonWrappingFunctions.hxx

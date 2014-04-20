@@ -133,6 +133,7 @@
 #include "UserDefinedFactory.hxx"
 #include "Weibull.hxx"
 #include "WeibullFactory.hxx"
+#include "Wishart.hxx"
 #include "ZipfMandelbrot.hxx"
 
 #endif /* OPENTURNS_OTDISTRIBUTION_HXX */

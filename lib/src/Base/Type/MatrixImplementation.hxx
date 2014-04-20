@@ -201,6 +201,9 @@ public:
       const Bool keepIntact = true);
   NumericalScalar computeDeterminantSym(const Bool keepIntact = true);
 
+  /** Compute trace */
+  NumericalScalar computeTrace() const;
+
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
   NumericalComplexCollection computeEigenValuesSquare(ComplexMatrixImplementation & v,

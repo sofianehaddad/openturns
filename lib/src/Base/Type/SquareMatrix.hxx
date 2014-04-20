@@ -128,6 +128,9 @@ public:
       const Bool keepIntact = true);
   NumericalScalar computeDeterminant(const Bool keepIntact = true);
 
+  /** Compute trace */
+  NumericalScalar computeTrace() const;
+
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValues(const Bool keepIntact = true);
   NumericalComplexCollection computeEigenValues(SquareComplexMatrix & v,
