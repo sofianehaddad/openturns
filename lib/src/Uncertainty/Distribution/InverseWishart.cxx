@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @file  Wishart.cxx
- *  @brief The Wishart distribution
+ *  @file  InverseWishart.cxx
+ *  @brief The InverseWishart distribution
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -22,7 +22,7 @@
  *  @date   2009-10-27 17:42:46 +0100 (mar. 27 oct. 2009)
  */
 #include <cmath>
-#include "Wishart.hxx"
+#include "InverseWishart.hxx"
 #include "DistFunc.hxx"
 #include "SpecFunc.hxx"
 #include "PersistentObjectFactory.hxx"
@@ -30,14 +30,14 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Wishart);
+CLASSNAMEINIT(InverseWishart);
 
-static Factory<Wishart> RegisteredFactory("Wishart");
+static Factory<InverseWishart> RegisteredFactory("InverseWishart");
 
 
 /* Default constructor */
-Wishart::Wishart()
-  : ContinuousDistribution("Wishart")
+InverseWishart::InverseWishart()
+  : ContinuousDistribution("InverseWishart")
   , cholesky_()
   , nu_(1.0)
 {
@@ -46,9 +46,9 @@ Wishart::Wishart()
 }
 
 /* Parameters constructor */
-Wishart::Wishart(const CovarianceMatrix & v,
+InverseWishart::InverseWishart(const CovarianceMatrix & v,
                  const NumericalScalar nu)
-  : ContinuousDistribution("Wishart")
+  : ContinuousDistribution("InverseWishart")
   , cholesky_()
   , nu_(nu)
 {
@@ -57,17 +57,17 @@ Wishart::Wishart(const CovarianceMatrix & v,
 }
 
 /* Comparison operator */
-Bool Wishart::operator ==(const Wishart & other) const
+Bool InverseWishart::operator ==(const InverseWishart & other) const
 {
   if (this == &other) return true;
   return (nu_ == other.nu_) && (cholesky_ == other.cholesky_);
 }
 
 /* String converter */
-String Wishart::__repr__() const
+String InverseWishart::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << Wishart::GetClassName()
+  oss << "class=" << InverseWishart::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " cholesky=" << cholesky_
@@ -75,7 +75,7 @@ String Wishart::__repr__() const
   return oss;
 }
 
-String Wishart::__str__(const String & offset) const
+String InverseWishart::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset << getClassName() << "(V = \n" << getV() << ", nu = " << nu_ << ")";
@@ -83,13 +83,13 @@ String Wishart::__str__(const String & offset) const
 }
 
 /* Virtual constructor */
-Wishart * Wishart::clone() const
+InverseWishart * InverseWishart::clone() const
 {
-  return new Wishart(*this);
+  return new InverseWishart(*this);
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void Wishart::computeRange()
+void InverseWishart::computeRange()
 {
   const UnsignedInteger p(cholesky_.getDimension());
   const NumericalScalar bound(ChiSquare(1.0).getRange().getUpperBound()[0]);
@@ -107,7 +107,7 @@ void Wishart::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Wishart::getRealization() const
+NumericalPoint InverseWishart::getRealization() const
 {
   const CovarianceMatrix X(getRealizationAsMatrix());
   const UnsignedInteger p(X.getDimension());
@@ -123,7 +123,7 @@ NumericalPoint Wishart::getRealization() const
 }
 
 /* Get one realization of the distribution as a covariance matrix */
-CovarianceMatrix Wishart::getRealizationAsMatrix() const
+CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
 {
   const UnsignedInteger p(cholesky_.getDimension());
   TriangularMatrix A(p);
@@ -140,7 +140,7 @@ CovarianceMatrix Wishart::getRealizationAsMatrix() const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Wishart::computePDF(const CovarianceMatrix & m) const
+NumericalScalar InverseWishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const NumericalScalar logPDF(computeLogPDF(m));
@@ -148,7 +148,7 @@ NumericalScalar Wishart::computePDF(const CovarianceMatrix & m) const
   return pdf;  
 }
 
-NumericalScalar Wishart::computePDF(const NumericalPoint & point) const
+NumericalScalar InverseWishart::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const NumericalScalar logPDF(computeLogPDF(point));
@@ -156,7 +156,7 @@ NumericalScalar Wishart::computePDF(const NumericalPoint & point) const
   return pdf;  
 }
 
-NumericalScalar Wishart::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar InverseWishart::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const UnsignedInteger p(cholesky_.getDimension());
@@ -172,7 +172,7 @@ NumericalScalar Wishart::computeLogPDF(const NumericalPoint & point) const
   return computeLogPDF(m);
 }
 
-NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
+NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const UnsignedInteger p(cholesky_.getDimension());
@@ -200,7 +200,7 @@ NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Wishart::computeCDF(const NumericalPoint & point) const
+NumericalScalar InverseWishart::computeCDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -208,7 +208,7 @@ NumericalScalar Wishart::computeCDF(const NumericalPoint & point) const
 }
 
 /* Compute the mean of the distribution */
-void Wishart::computeMean() const
+void InverseWishart::computeMean() const
 {
   const CovarianceMatrix V((cholesky_ * cholesky_.transpose()).getImplementation());
   const UnsignedInteger p(cholesky_.getDimension());
@@ -217,14 +217,14 @@ void Wishart::computeMean() const
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        mean_[index] = nu_ * V(i, j);
+        mean_[index] = V(i, j) / (nu - p - 1.0);
         ++index;
       }
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Wishart::getStandardDeviation() const /*throw(NotDefinedException)*/
+NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
   const UnsignedInteger p(cholesky_.getDimension());
   NumericalPoint sigma(getDimension());
@@ -241,7 +241,7 @@ NumericalPoint Wishart::getStandardDeviation() const /*throw(NotDefinedException
 
 
 /* Parameters value and description accessor */
-Wishart::NumericalPointWithDescriptionCollection Wishart::getParametersCollection() const
+InverseWishart::NumericalPointWithDescriptionCollection InverseWishart::getParametersCollection() const
 {
   NumericalPointWithDescription point(getDimension() + 1);
   Description description(point.getDimension());
@@ -262,7 +262,7 @@ Wishart::NumericalPointWithDescriptionCollection Wishart::getParametersCollectio
   return parameters;
 }
 
-void Wishart::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void InverseWishart::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
   const NumericalScalar w(getWeight());
   const NumericalScalar pReal(0.5 * sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5);
@@ -277,13 +277,13 @@ void Wishart::setParametersCollection(const NumericalPointCollection & parameter
 	++index;
       }
   const NumericalScalar nu(parametersCollection[0][index]);
-  *this = Wishart(V, nu);
+  *this = InverseWishart(V, nu);
   setWeight(w);
 }
 
 
 /* V accessor */
-void Wishart::setV(const CovarianceMatrix & v)
+void InverseWishart::setV(const CovarianceMatrix & v)
 {
   try
     {
@@ -300,14 +300,14 @@ void Wishart::setV(const CovarianceMatrix & v)
   computeRange();
 }
 
-CovarianceMatrix Wishart::getV() const
+CovarianceMatrix InverseWishart::getV() const
 {
   return (cholesky_ * cholesky_.transpose()).getImplementation();
 }
 
 
 /* Nu accessor */
-void Wishart::setNu(const NumericalScalar nu)
+void InverseWishart::setNu(const NumericalScalar nu)
 {
   if (nu + 1.0 <= cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: nu must be greater than V dimension - 1";
   if (nu != nu_)
@@ -320,13 +320,13 @@ void Wishart::setNu(const NumericalScalar nu)
     }
 }
 
-NumericalScalar Wishart::getNu() const
+NumericalScalar InverseWishart::getNu() const
 {
   return nu_;
 }
 
 /* Compute the normalization factor on log-scale */
-void Wishart::update()
+void InverseWishart::update()
 {
   const UnsignedInteger p(cholesky_.getDimension());
   logNormalizationFactor_ = -0.5 * p * (nu_ * M_LN2 + 0.5 * (p - 1) * log(M_PI));
@@ -334,7 +334,7 @@ void Wishart::update()
 }
 
 /* Method save() stores the object through the StorageManager */
-void Wishart::save(Advocate & adv) const
+void InverseWishart::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "cholesky_", cholesky_ );
@@ -343,7 +343,7 @@ void Wishart::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void Wishart::load(Advocate & adv)
+void InverseWishart::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
   adv.loadAttribute( "cholesky_", cholesky_ );
