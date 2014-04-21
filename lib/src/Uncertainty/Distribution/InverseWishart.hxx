@@ -114,6 +114,9 @@ private:
   /** Compute the mean of the distribution */
   void computeMean() const;
 
+  /** Compute the covariance of the distribution */
+  void computeCovariance() const;
+
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 

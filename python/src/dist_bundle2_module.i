@@ -31,6 +31,7 @@
 %include HistogramFactory.i
 %include InverseNormal.i
 %include InverseNormalFactory.i
+%include InverseWishart.i
 %include KPermutationsDistribution.i
 %include KernelMixture.i
 %include KernelSmoothing.i

@@ -122,7 +122,9 @@ NumericalPoint Wishart::getRealization() const
   return realization;
 }
 
-/* Get one realization of the distribution as a covariance matrix */
+/* Get one realization of the distribution as a covariance matrix
+We use the Barlett decomposition X = LAA'L' where LL' = V is the covariance parameter of the distribution and A is a lower triangular matrix
+ */
 CovarianceMatrix Wishart::getRealizationAsMatrix() const
 {
   const UnsignedInteger p(cholesky_.getDimension());

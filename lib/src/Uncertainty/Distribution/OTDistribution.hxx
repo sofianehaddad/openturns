@@ -76,6 +76,7 @@
 #include "IndependentCopula.hxx"
 #include "InverseNormal.hxx"
 #include "InverseNormalFactory.hxx"
+#include "InverseWishart.hxx"
 #include "KPermutationsDistribution.hxx"
 #include "KernelMixture.hxx"
 #include "KernelSmoothing.hxx"

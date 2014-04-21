@@ -506,6 +506,7 @@ ot_add_python_module( dist_bundle2 dist_bundle2_module.i
                       HistogramFactory.i
                       InverseNormal.i
                       InverseNormalFactory.i
+                      InverseWishart.i
                       KPermutationsDistribution.i
                       KernelMixture.i
                       KernelSmoothing.i

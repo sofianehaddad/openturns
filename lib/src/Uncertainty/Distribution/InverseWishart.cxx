@@ -122,7 +122,10 @@ NumericalPoint InverseWishart::getRealization() const
   return realization;
 }
 
-/* Get one realization of the distribution as a covariance matrix */
+/* Get one realization of the distribution as a covariance matrix
+We use the Barlett decomposition and the fact that if X is distributed according to the inverse Wishart distribution with covariance matrix V, then X^{-1} is distributed according to the Wishart distribution with parameter V^{-1}
+X^{-1} = LAA'L' with LL'=V^{-1} gives X = L'^{-1}A'^{-1}A^{-1}L^{-1}
+ */
 CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
 {
   const UnsignedInteger p(cholesky_.getDimension());
@@ -134,8 +137,8 @@ CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
       // The off-diagonal elements are normaly distributed
       for (UnsignedInteger j = 0; j < i; ++j) A(i, j) = DistFunc::rNormal();
     }
-  const TriangularMatrix M((cholesky_ * A).getImplementation());
-  return (M * M.transpose()).getImplementation();
+  const TriangularMatrix M((A.solveLinearSystem(cholesky_)).getImplementation());
+  return (M.transpose() * M).getImplementation();
 }
 
 
@@ -183,13 +186,13 @@ NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
       // Compute the determinant of the Cholesky factor, ie the square-root of the determinant of M
       NumericalScalar logPDF(logNormalizationFactor_);
       // Here, the diagonal of X is positive
-      for (UnsignedInteger i = 0; i < p; ++i) logPDF += log(X(i, i));
-      logPDF *= nu_ - p - 1.0;
+      for (UnsignedInteger i = 0; i < p; ++i) logPDF -= log(X(i, i));
+      logPDF *= nu_ + p + 1.0;
       // V^{-1}M = (CC')^{-1}(XX')
       // = C'^{-1}(C^{-1}X)X'
-      TriangularMatrix A(cholesky_.solveLinearSystem(X).getImplementation());
-      SquareMatrix B((A * X.transpose()).getImplementation());
-      SquareMatrix C(cholesky_.transpose().solveLinearSystem(B).getImplementation());
+      TriangularMatrix A(X.solveLinearSystem(cholesky_).getImplementation());
+      SquareMatrix B((A * cholesky_.transpose()).getImplementation());
+      SquareMatrix C(X.transpose().solveLinearSystem(B).getImplementation());
       logPDF -= 0.5 * C.computeTrace();
       return logPDF;
     }
@@ -217,23 +220,56 @@ void InverseWishart::computeMean() const
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        mean_[index] = V(i, j) / (nu - p - 1.0);
+        mean_[index] = V(i, j) / (nu_ - p - 1.0);
         ++index;
       }
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the covariance of the distribution */
+void InverseWishart::computeCovariance() const
+{
+  const UnsignedInteger p(cholesky_.getDimension());
+  const NumericalScalar den((nu_ - p) * pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0));
+  if (den <= 0.0) throw NotDefinedException(HERE) << "Error: the covariance of the inverse Wishart distribution is defined only if nu > p+3";
+  const CovarianceMatrix V(getV());
+  covariance_ = CovarianceMatrix(getDimension());
+  UnsignedInteger indexRow(0);
+  for (UnsignedInteger i = 0; i < p; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      {
+	UnsignedInteger indexColumn(0);
+	for (UnsignedInteger m = 0; m < i; ++m)
+	  for (UnsignedInteger n = 0; n <= j; ++n)
+	    {
+	      covariance_(indexRow, indexColumn) = (2.0 * V(i, j) * V(m, n) + (nu_ - p - 1.0) * (V(i, m) * V(j, n) + V(i, n) * V(m, j))) / den; 
+	      ++indexColumn;
+	    }
+	++indexRow;
+      }
+  isAlreadyComputedCovariance_ = true;
+}
+
 /* Get the standard deviation of the distribution */
 NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
-  const UnsignedInteger p(cholesky_.getDimension());
   NumericalPoint sigma(getDimension());
+  // If the covariance has already been computed, use it
+  if (isAlreadyComputedCovariance_)
+    {
+      for (UnsignedInteger i = 0; i < getDimension(); ++i) sigma[i] = sqrt(covariance_(i, i));
+      return sigma;
+    }
+  // else compute only the standard deviation as the covariance may be huge
+  const UnsignedInteger p(cholesky_.getDimension());
+  const NumericalScalar den((nu_ - p) * pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0));
+  if (den <= 0.0) throw NotDefinedException(HERE) << "Error: the standard deviation of the inverse Wishart distribution is defined only if nu > p+3";
   const CovarianceMatrix V(getV());
   UnsignedInteger index(0);
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        sigma[index] = sqrt(nu_ * (V(i, j) * V(j, i) + V(i, i) * V(j, j)));
+        sigma[index] = sqrt((2.0 * V(i, j) * V(i, j) + (nu_ - p - 1.0) * (V(i, i) * V(j, j) + V(i, j) * V(i, j))) / den);
         ++index;
       }
   return sigma;
@@ -330,7 +366,7 @@ void InverseWishart::update()
 {
   const UnsignedInteger p(cholesky_.getDimension());
   logNormalizationFactor_ = -0.5 * p * (nu_ * M_LN2 + 0.5 * (p - 1) * log(M_PI));
-  for (UnsignedInteger i = 0; i < p; ++i) logNormalizationFactor_ -= SpecFunc::LogGamma(0.5 * (nu_ - i)) + nu_ * log(cholesky_(i, i));
+  for (UnsignedInteger i = 0; i < p; ++i) logNormalizationFactor_ -= SpecFunc::LogGamma(0.5 * (nu_ - i)) - nu_ * log(cholesky_(i, i));
 }
 
 /* Method save() stores the object through the StorageManager */
