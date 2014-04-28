@@ -286,7 +286,7 @@ public:
   inline
   UnsignedInteger getSize() const
   {
-    return coll__.size();
+    return static_cast<UnsignedInteger>(coll__.size());
   }
 
   /** Method resize() changes the size of the Collection. If the new size is smaller than the older one, the last elements are thrown away, else the new elements are setted to the default value of the element type */
