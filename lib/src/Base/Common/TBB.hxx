@@ -29,6 +29,14 @@
 #include <algorithm>
 
 #ifdef OPENTURNS_HAVE_TBB
+#ifdef OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
+# ifndef __TBB_NO_IMPLICIT_LINKAGE
+#  define __TBB_NO_IMPLICIT_LINKAGE 1
+# endif
+# ifndef __TBBMALLOC_NO_IMPLICIT_LINKAGE
+#  define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
+# endif
+#endif
 #include "tbb/tbb.h"
 #include "OTwindows.h"
 #else /* OPENTURNS_HAVE_TBB */

@@ -135,6 +135,9 @@ find_program ( BC_EXECUTABLE NAMES bc )
 
 if ( USE_TBB )
   find_package ( TBB )
+  if ( TBB_FOUND AND (MSVC OR WINTEL ))
+    set (OPENTURNS_TBB_NO_IMPLICIT_LINKAGE ON CACHE BOOL "Prevent implicit linkage against tbb.lib ")
+  endif ()
 endif ()
 
 if ( USE_SYSTEM_LAPACK )
