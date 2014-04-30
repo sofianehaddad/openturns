@@ -360,6 +360,7 @@ ot_add_python_module( algo algo_module.i
                       FittingAlgorithmImplementation.i
                       FittingAlgorithm.i
                       CorrectedLeaveOneOut.i
+                      KDTree.i
                       KFold.i
                       LeastSquaresMetaModelSelection.i
                       LeastSquaresMetaModelSelectionFactory.i

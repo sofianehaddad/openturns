@@ -65,7 +65,10 @@ public:
   using CovarianceModelImplementation::operator();
   CovarianceMatrix operator() (const NumericalPoint & s,
                                const NumericalPoint & t) const;
-
+private:
+  CovarianceMatrix operator() (const UnsignedInteger i,
+                               const UnsignedInteger j) const;
+public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   using CovarianceModelImplementation::discretize;

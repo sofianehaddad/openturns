@@ -89,9 +89,15 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
   const UnsignedInteger N(p_mesh_->getVerticesNumber());
   if (N == 1) return covarianceCollection_[0];
 
-  // We look for the two vertices of the mesh the nearest to s and t resp.
-  UnsignedInteger sIndex(p_mesh_->getNearestVertexIndex(s));
-  UnsignedInteger tIndex(p_mesh_->getNearestVertexIndex(t));
+  // Use the evaluation based on indices
+  return operator()(p_mesh_->getNearestVertexIndex(s), p_mesh_->getNearestVertexIndex(t));
+}
+
+CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
+    const UnsignedInteger j) const
+{
+  UnsignedInteger sIndex(i);
+  UnsignedInteger tIndex(j);
   // The covariance matrices correspond to sIndex >= tIndex.
   // As C(s, t) = C(t, s), we swap sIndex and tIndex if sIndex < tIndex
   if (sIndex < tIndex) std::swap(sIndex, tIndex);
@@ -109,18 +115,51 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
 
 CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
 {
+  const UnsignedInteger verticesNumber(mesh.getVerticesNumber());
+  CovarianceMatrix covariance(verticesNumber * dimension_);
   // It is better to check vertices as the simplces don't play a role in the discretization
-  if (p_mesh_->getVertices() != mesh.getVertices()) return CovarianceModelImplementation::discretize(mesh);
-  // Here we know that the given mesh is exactly the one defining the covariance model
-  CovarianceMatrix covariance(mesh.getVerticesNumber() * dimension_);
-  for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
+  if (p_mesh_->getVertices() == mesh.getVertices())
     {
-      const UnsignedInteger jBase(static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5));
-      const UnsignedInteger kBase(i - (jBase * (jBase + 1)) / 2);
-      for (UnsignedInteger k = 0; k < dimension_; ++k)
-	for (UnsignedInteger j = 0; j < dimension_; ++j)
-	  covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
+      // Here we know that the given mesh is exactly the one defining the covariance model
+      for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
+	{
+	  const UnsignedInteger jBase(static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5));
+	  const UnsignedInteger kBase(i - (jBase * (jBase + 1)) / 2);
+	  for (UnsignedInteger k = 0; k < dimension_; ++k)
+	    for (UnsignedInteger j = 0; j < dimension_; ++j)
+	      covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
+	}
+      return covariance;
     }
+  // Here we have to project the given mesh on the underlying mesh
+  // We try to call the getNearestVertexIndex() method a minimum number
+  // of time as it is the most costly part of the discretization
+  Indices nearestIndex(verticesNumber);
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    {
+      nearestIndex[i] = p_mesh_->getNearestVertexIndex(mesh.getVertex(i));
+      LOGINFO(OSS() << "The vertex " << i << " over " << verticesNumber-1 << " in the given mesh corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << mesh.getVertex(i).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
+    }
+  // Now, we use a set of loops similar to the default algorithm
+  // Fill-in the matrix by blocks
+  for (UnsignedInteger rowIndex = 0; rowIndex < verticesNumber; ++rowIndex)
+    {
+      // Only the lower part has to be filled-in
+      for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
+	{
+	  const CovarianceMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
+	  // We fill the covariance matrix using the previous local one
+	  // The full local covariance matrix has to be copied as it is
+	  // not copied on a symmetric position
+	  for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
+	    {
+	      for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
+		{
+		  covariance(columnIndex + columnIndexLocal * verticesNumber, rowIndex + rowIndexLocal * verticesNumber ) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
+		} // column index within the block
+	    } // row index within the block
+	} // column index of the block
+    } // row index of the block
   return covariance;
 }
 

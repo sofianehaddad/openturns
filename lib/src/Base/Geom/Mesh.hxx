@@ -34,6 +34,7 @@
 #include "DomainImplementation.hxx"
 #include "Graph.hxx"
 #include "TBB.hxx"
+#include "KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -177,6 +178,8 @@ protected:
   // The simplices
   IndicesPersistentCollection simplices_;
 
+  // The kd-tree associated to the vertices
+  KDTree tree_;
 }; /* class Mesh */
 
 END_NAMESPACE_OPENTURNS

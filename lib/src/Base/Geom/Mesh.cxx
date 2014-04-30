@@ -46,6 +46,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
+  , tree_(NumericalSample(0, 0))
 {
   // Nothing to do
 }
@@ -54,10 +55,12 @@ Mesh::Mesh(const UnsignedInteger dimension)
 Mesh::Mesh(const NumericalSample & vertices,
            const IndicesCollection & simplices)
   : DomainImplementation(vertices.getDimension())
-  , vertices_(vertices)
+  , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
+  , tree_(NumericalSample(0, 0))
 {
-  // Nothing to do
+  // Use the vertices accessor to initialize the kd-tree
+  setVertices(vertices);
 }
 
 /* Clone method */
@@ -82,6 +85,7 @@ void Mesh::setVertices(const NumericalSample & vertices)
 {
   isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
+  if (ResourceMap::GetAsUnsignedInteger("Mesh-UseKDTree") != 0) tree_ = KDTree(vertices_);
 }
 
 /* Vertex accessor */
@@ -196,9 +200,9 @@ struct NearestFunctor
           {
             minDistance_ = d;
             minIndex_ = i;
-          }
-      }
-  }
+          } // d < minDistance_
+      } // i
+  } // operator
 
   void join(const NearestFunctor & other)
   {
@@ -206,8 +210,8 @@ struct NearestFunctor
       {
         minDistance_ = other.minDistance_;
         minIndex_ = other.minIndex_;
-      }
-  }
+      } // minDistance
+  } // join
 
 }; /* end struct NearestFunctor */
 
@@ -215,7 +219,7 @@ struct NearestFunctor
 UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-
+  if (!tree_.isEmpty()) return tree_.getNearestNeighbourIndex(point);
   NearestFunctor functor( *this, point );
   TBB::ParallelReduce( 0, getVerticesNumber(), functor );
   return functor.minIndex_;
@@ -586,7 +590,7 @@ String Mesh::streamToVTKFormat() const
   // ie all the simplices are of the same kind as the first one
   UnsignedInteger verticesPerSimplex(1);
   UnsignedInteger lastIndex(simplices_[0][0]);
-  while ((verticesPerSimplex <= dimension_ + 1) && (simplices_[0][verticesPerSimplex] != lastIndex))
+  while ((verticesPerSimplex <= dimension_) && (simplices_[0][verticesPerSimplex] != lastIndex))
     {
       lastIndex = simplices_[0][verticesPerSimplex];
       ++verticesPerSimplex;
@@ -595,8 +599,7 @@ String Mesh::streamToVTKFormat() const
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
     {
       oss << verticesPerSimplex;
-      for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j)
-        oss << " " << simplices_[i][j];
+      for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j) oss << " " << simplices_[i][j];
       oss << "\n";
     }
   oss << "\n";
