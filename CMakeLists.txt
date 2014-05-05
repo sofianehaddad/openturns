@@ -92,11 +92,11 @@ set ( TEMPDIR ${OPENTURNS_TEMPDIR} )
 
 # WARNING: This is where variables without OPENTURNS_ prefix are defined !
 foreach ( _var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH WRAPPER_PATH EXAMPLE_PATH SAMPLE_PATH VALIDATION_PATH DOC_PATH )
-  if ( IS_ABSOLUTE ${OPENTURNS_${_var}} )
-    set(${_var} ${OPENTURNS_${_var}})
-  else ( IS_ABSOLUTE ${OPENTURNS_${_var}} )
-    set(${_var} ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_${_var}})
-  endif ( IS_ABSOLUTE ${OPENTURNS_${_var}} )
+  file ( TO_NATIVE_PATH "${OPENTURNS_${_var}}" NATIVE_OPENTURNS_${_var} )
+  if ( NOT IS_ABSOLUTE ${NATIVE_OPENTURNS_${_var}} )
+    file ( TO_NATIVE_PATH ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_${_var}} NATIVE_OPENTURNS_${_var} )
+  endif ()
+  string(REPLACE "\\" "\\\\" ${_var} ${NATIVE_OPENTURNS_${_var}})
 endforeach ( _var )
 
 # CMake 2.x does not define MSVC when using Intel compiler on Windows, see
