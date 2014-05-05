@@ -73,6 +73,8 @@ public:
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   using CovarianceModelImplementation::discretize;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
+  virtual NumericalSample discretizeRow(const NumericalSample & vertices,
+					const UnsignedInteger p) const;
 
   /** Mesh accessor */
   Mesh getMesh() const;

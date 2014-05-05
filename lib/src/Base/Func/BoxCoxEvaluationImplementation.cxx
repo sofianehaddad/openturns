@@ -17,6 +17,7 @@
 
 #include "BoxCoxEvaluationImplementation.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -100,14 +101,33 @@ NumericalPoint BoxCoxEvaluationImplementation::getShift() const
 }
 
 /* Operator () */
+NumericalSample BoxCoxEvaluationImplementation::operator() (const NumericalSample & inS) const
+{
+  if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
+  const UnsignedInteger size(inS.getSize());
+  NumericalSample result(size, getInputDimension());
+  const BoxCoxEvaluationImplementation::ComputeSamplePolicy policy( inS, result, *this );
+  TBB::ParallelFor( 0, size, policy );
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inS);
+    outputStrategy_.store(result);
+  }
+  result.setDescription(getOutputDescription());
+  return result;
+}
+
+/* Operator () */
 NumericalPoint BoxCoxEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  if (inP.getDimension() != lambda_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  const UnsignedInteger dimension(getInputDimension());
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
   NumericalPoint result(lambda_.getDimension());
 
   // There is no check of positive variables
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
-  for (UnsignedInteger index = 0; index < inP.getDimension(); ++index)
+  for (UnsignedInteger index = 0; index < dimension; ++index)
   {
     const NumericalScalar x(inP[index] + shift_[index]);
     if (x <= 0.0)

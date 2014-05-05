@@ -29,6 +29,7 @@
 #include "CovarianceMatrix.hxx"
 #include "DistFunc.hxx"
 #include "TriangularMatrix.hxx"
+#include "RandomGenerator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -51,9 +52,9 @@ TemporalNormalProcess::TemporalNormalProcess(const String & name)
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
-    const SecondOrderModel & model,
-    const Mesh & mesh,
-    const String & name)
+                                             const SecondOrderModel & model,
+                                             const Mesh & mesh,
+                                             const String & name)
   : ProcessImplementation(name)
   , covarianceModel_(model.getCovarianceModel())
   , choleskyFactorCovarianceMatrix_(0)
@@ -70,9 +71,9 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
-    const CovarianceModel & covarianceModel,
-    const Mesh & mesh,
-    const String & name)
+                                             const CovarianceModel & covarianceModel,
+                                             const Mesh & mesh,
+                                             const String & name)
   : ProcessImplementation(name)
   , covarianceModel_(covarianceModel)
   , choleskyFactorCovarianceMatrix_(0)
@@ -89,8 +90,8 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
-    const Mesh & mesh,
-    const String & name)
+                                             const Mesh & mesh,
+                                             const String & name)
   : ProcessImplementation(name)
   , covarianceModel_(model.getCovarianceModel())
   , choleskyFactorCovarianceMatrix_(0)
@@ -107,8 +108,8 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceModel,
-    const Mesh & mesh,
-    const String & name)
+                                             const Mesh & mesh,
+                                             const String & name)
   : ProcessImplementation(name)
   , covarianceModel_(covarianceModel)
   , choleskyFactorCovarianceMatrix_(0)
@@ -146,23 +147,23 @@ void TemporalNormalProcess::initialize() const
 
   NumericalScalar scaling(startingScaling);
   while (continuationCondition && (cumulatedScaling < maximalScaling))
-  {
-    try
     {
-      LOGINFO(OSS() << "Factor the covariance matrix");
-      choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
-      continuationCondition = false;
+      try
+        {
+          LOGINFO(OSS() << "Factor the covariance matrix");
+          choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
+          continuationCondition = false;
+        }
+      // If it has not yet been computed, compute it and store it
+      catch (InternalException & ex)
+        {
+          cumulatedScaling += scaling ;
+          // Unroll the regularization to optimize the computation
+          for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
+          LOGWARN(OSS() << "Must regularize the covariance matrix, factor=" << cumulatedScaling);
+          scaling *= 2.0;
+        }
     }
-    // If it has not yet been computed, compute it and store it
-    catch (InternalException & ex)
-    {
-      cumulatedScaling += scaling ;
-      // Unroll the regularization to optimize the computation
-      for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
-      LOGWARN(OSS() << "Must regularize the covariance matrix, factor=" << cumulatedScaling);
-      scaling *= 2.0;
-    }
-  }
 
   if (scaling >= maximalScaling)
     throw InvalidArgumentException(HERE) << "Error; Could not compute the Cholesky factor"
@@ -209,8 +210,44 @@ void TemporalNormalProcess::setMesh(const Mesh & mesh)
   ProcessImplementation::setMesh(mesh);
 }
 
-/* Realization accessor */
+/* Realization generator */
 Field TemporalNormalProcess::getRealization() const
+{
+  NumericalSample values;
+  if ((getDimension() == 1) && ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-UseGibbsGenerator") == 1) values = getRealizationGibbs();
+  else values = getRealizationCholesky();
+  // If constant trend
+  if (isTrendStationary())
+    {
+      // If zero trend
+      if (stationaryTrendValue_.norm() == 0.0) return Field(mesh_, values);
+      // If nonzero trend
+      return Field(mesh_, values + stationaryTrendValue_);
+    }
+  // else apply the trend
+  return trend_(Field(mesh_, values));
+}
+
+NumericalSample TemporalNormalProcess::getRealizationGibbs() const
+{
+  const NumericalSample vertices(getMesh().getVertices());
+  const UnsignedInteger size(vertices.getSize());
+  const UnsignedInteger nMax(ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-GibbsMaximumIteration"));
+  NumericalSample values(size, 1);
+  for (UnsignedInteger n = 0; n < nMax; ++n)
+    {
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const NumericalPoint delta(1, DistFunc::rNormal() - values[i][0]);
+	  NumericalSample covarianceRow(covarianceModel_.discretizeRow(vertices, i));
+	  values += covarianceRow * delta;
+	}
+      LOGINFO(OSS() << "Gibbs sampler - iteration " << n+1 << " over " << nMax);
+    }
+  return values;
+}
+
+NumericalSample TemporalNormalProcess::getRealizationCholesky() const
 {
   if (!isInitialized_) initialize();
   // Constantes values
@@ -222,18 +259,9 @@ Field TemporalNormalProcess::getRealization() const
 
   gaussianPoint = choleskyFactorCovarianceMatrix_ * gaussianPoint;
 
-  NumericalSample gaussianSample(size, dimension_);
-  gaussianSample.getImplementation()->setData(gaussianPoint);
-  // If constant trend
-  if (isTrendStationary())
-    {
-      // If zero trend
-      if (stationaryTrendValue_.norm() == 0.0) return Field(mesh_, gaussianSample);
-      // If nonzero trend
-      return Field(mesh_, gaussianSample + stationaryTrendValue_);
-    }
-  // else apply the trend
-  return trend_(Field(mesh_, gaussianSample));
+  NumericalSample values(size, dimension_);
+  values.getImplementation()->setData(gaussianPoint);
+  return values;
 }
 
 /* Covariance model accessor */
@@ -270,13 +298,13 @@ void TemporalNormalProcess::checkStationaryTrend() const
   if (n == 0) return;
   stationaryTrendValue_ = (*trend_.getEvaluation())(mesh_.getVertices()[0]);
   for (UnsignedInteger i = 1; i < n; ++i)
-  {
-    if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)
     {
-      hasStationaryTrend_ = false;
-      return;
+      if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)
+        {
+          hasStationaryTrend_ = false;
+          return;
+        }
     }
-  }
   return;
 }
 

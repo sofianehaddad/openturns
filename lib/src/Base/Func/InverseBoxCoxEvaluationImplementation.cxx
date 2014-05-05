@@ -100,22 +100,41 @@ NumericalPoint InverseBoxCoxEvaluationImplementation::getShift() const
 }
 
 /* Operator () */
+NumericalSample InverseBoxCoxEvaluationImplementation::operator() (const NumericalSample & inS) const
+{
+  if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
+  const UnsignedInteger size(inS.getSize());
+  NumericalSample result(size, getInputDimension());
+  const InverseBoxCoxEvaluationImplementation::ComputeSamplePolicy policy( inS, result, *this );
+  TBB::ParallelFor( 0, size, policy );
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inS);
+    outputStrategy_.store(result);
+  }
+  result.setDescription(getOutputDescription());
+  return result;
+}
+
+
+/* Operator () */
 NumericalPoint InverseBoxCoxEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  if (inP.getDimension() != lambda_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
-  NumericalPoint result(lambda_.getDimension());
+  const UnsignedInteger dimension(getInputDimension());
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
+  NumericalPoint result(dimension);
 
   // There is no check of positive variables
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
-  for (UnsignedInteger index = 0; index < inP.getDimension(); ++index)
+  for (UnsignedInteger index = 0; index < dimension; ++index)
   {
-    // Applying the Box-Cox function
+    const NumericalScalar x(inP[index] - shift_[index]);
     const NumericalScalar lambda_i(lambda_[index]);
-    if (lambda_i == 0)
-      result[index] = exp(inP[index]);
+    if (lambda_i == 0) result[index] = exp(x);
     else
     {
-      const NumericalScalar evaluation(lambda_i * inP[index] + 1.0);
+      const NumericalScalar evaluation(lambda_i * x + 1.0);
       if (evaluation <= 0) throw InvalidArgumentException(HERE) << "Can not apply the inverse Box Cox function " ;
       result[index] = pow((evaluation), 1.0 / lambda_i);
     }

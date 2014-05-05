@@ -50,28 +50,26 @@ StationaryCovarianceModel * StationaryCovarianceModel::clone() const
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix StationaryCovarianceModel::computeCovariance(const NumericalPoint & s,
-    const NumericalPoint & t) const
-{
-  LOGUSER(OSS() << "The computeCovariance(const NumericalPoint & s, const NumericalPoint & t) method is deprecated in favor of the operator() (const NumericalPoint & s, const NumericalPoint & t) method.");
-  return operator() (t - s);
-}
-
-CovarianceMatrix StationaryCovarianceModel::computeCovariance(const NumericalPoint & tau) const
-{
-  LOGUSER(OSS() << "The computeCovariance(const NumericalPoint & tau) method is deprecated in favor of the operator() (const NumericalPoint & tau) method.");
-  return operator() (tau);
-}
-
 CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+							const NumericalPoint & t) const
 {
-  return operator() (t - s);
+  return (*this)(t - s);
 }
 
 CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & tau) const
 {
   throw NotYetImplementedException(HERE);
+}
+
+NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint & s,
+						  const NumericalPoint & t) const
+{
+  return computeAsScalar(t - s);
+}
+
+NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint & tau) const
+{
+  return (*this)(tau)(0, 0);
 }
 
 /* Discretize the covariance function on a given TimeGrid */

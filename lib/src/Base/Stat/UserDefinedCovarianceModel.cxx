@@ -46,8 +46,8 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const String & name)
 
 // For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
 UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
-    const CovarianceMatrixCollection & covarianceFunction,
-    const String & name)
+                                                       const CovarianceMatrixCollection & covarianceFunction,
+                                                       const String & name)
   : CovarianceModelImplementation(name)
   , covarianceCollection_(0)
   , p_mesh_(0)
@@ -66,11 +66,11 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   dimension_ = covarianceCollection_[0].getDimension();
   // put the next elements if dimension is ok
   for (UnsignedInteger k = 1; k < size; ++k)
-  {
-    if (covarianceFunction[k].getDimension() != dimension_)
-      throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
-    covarianceCollection_[k] = covarianceFunction[k];
-  }
+    {
+      if (covarianceFunction[k].getDimension() != dimension_)
+        throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
+      covarianceCollection_[k] = covarianceFunction[k];
+    }
 }
 
 /* Virtual constructor */
@@ -82,7 +82,7 @@ UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
 
 /* Computation of the covariance density function */
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+                                                         const NumericalPoint & t) const
 {
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values
@@ -94,7 +94,7 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & 
 }
 
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                                         const UnsignedInteger j) const
 {
   UnsignedInteger sIndex(i);
   UnsignedInteger tIndex(j);
@@ -122,13 +122,13 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
     {
       // Here we know that the given mesh is exactly the one defining the covariance model
       for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
-	{
-	  const UnsignedInteger jBase(static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5));
-	  const UnsignedInteger kBase(i - (jBase * (jBase + 1)) / 2);
-	  for (UnsignedInteger k = 0; k < dimension_; ++k)
-	    for (UnsignedInteger j = 0; j < dimension_; ++j)
-	      covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
-	}
+        {
+          const UnsignedInteger jBase(static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5));
+          const UnsignedInteger kBase(i - (jBase * (jBase + 1)) / 2);
+          for (UnsignedInteger k = 0; k < dimension_; ++k)
+            for (UnsignedInteger j = 0; j < dimension_; ++j)
+              covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
+        }
       return covariance;
     }
   // Here we have to project the given mesh on the underlying mesh
@@ -146,21 +146,54 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
     {
       // Only the lower part has to be filled-in
       for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
-	{
-	  const CovarianceMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
-	  // We fill the covariance matrix using the previous local one
-	  // The full local covariance matrix has to be copied as it is
-	  // not copied on a symmetric position
-	  for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
-	    {
-	      for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
-		{
-		  covariance(columnIndex + columnIndexLocal * verticesNumber, rowIndex + rowIndexLocal * verticesNumber ) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
-		} // column index within the block
-	    } // row index within the block
-	} // column index of the block
+        {
+          const CovarianceMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
+          // We fill the covariance matrix using the previous local one
+          // The full local covariance matrix has to be copied as it is
+          // not copied on a symmetric position
+          for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
+            {
+              for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
+                {
+                  covariance(columnIndex + columnIndexLocal * verticesNumber, rowIndex + rowIndexLocal * verticesNumber ) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
+                } // column index within the block
+            } // row index within the block
+        } // column index of the block
     } // row index of the block
   return covariance;
+}
+
+NumericalSample UserDefinedCovarianceModel::discretizeRow(const NumericalSample & vertices,
+                                                             const UnsignedInteger p) const
+{
+  if (dimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if dimension is not 1. Here, dimension=" << dimension_;
+  const UnsignedInteger size(vertices.getSize());
+  NumericalSample result(size, 1);
+  if (vertices == p_mesh_->getVertices())
+    {
+      UnsignedInteger index((p * (p + 1)) / 2);
+      for (UnsignedInteger i = 0; i < p; ++i)
+        {
+          result[i][0] = covarianceCollection_[index](0, 0);
+          ++index;
+        }
+      UnsignedInteger shift(p);
+      for (UnsignedInteger i = p; i < size; ++i)
+        {
+          result[i][0] = covarianceCollection_[index](0, 0);
+          ++shift;
+          index += shift;
+        }
+      return result;
+    }
+  Indices nearestIndex(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
+      LOGINFO(OSS() << "The vertex " << i << " over " << size-1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << NumericalPoint(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
+    }
+  for (UnsignedInteger i = 0; i < size; ++i) result[i][0] = operator()(nearestIndex[p], nearestIndex[i])(0, 0);
+  return result;
 }
 
 /* Mesh accessor */

@@ -85,6 +85,10 @@ public:
 
   /** Realization accessor */
   Field getRealization() const;
+private:
+  NumericalSample getRealizationCholesky() const;
+  NumericalSample getRealizationGibbs() const;
+public:
 
   /** Covariance model accessor */
   CovarianceModel getCovarianceModel() const;

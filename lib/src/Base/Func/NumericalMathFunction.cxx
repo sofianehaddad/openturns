@@ -40,8 +40,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(NumericalMathFunction);
 
 

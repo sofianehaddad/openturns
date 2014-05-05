@@ -387,7 +387,7 @@
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual    value="1.0e-6"  />
   
-  <!-- OT::TemporalNormalProcess parameters -->
+  <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />
   <KrigingAlgorithm-MaximalScaling  value="1.0e5"   />
 
@@ -439,8 +439,10 @@
   <WhiteNoise-MeanEpsilon value="1.0e-14" />
 
   <!-- OT::TemporalNormalProcess parameters -->
-  <TemporalNormalProcess-StartingScaling value="1.0e-13" />
-  <TemporalNormalProcess-MaximalScaling  value="1.0e5"   />
+  <TemporalNormalProcess-StartingScaling       value="1.0e-13" />
+  <TemporalNormalProcess-MaximalScaling        value="1.0e5"   />
+  <TemporalNormalProcess-UseGibbsGenerator     value="0"       />
+  <TemporalNormalProcess-GibbsMaximumIteration value="100"     />
 
   <!-- OT::SpectralNormalProcess parameters -->
   <SpectralNormalProcess-StartingScaling   value="1.0e-13" />

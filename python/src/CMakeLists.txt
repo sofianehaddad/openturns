@@ -168,6 +168,7 @@ ot_add_python_module( statistics statistics_module.i
                       SecondOrderModelImplementation.i
                       SecondOrderModel.i
                       ExponentialCauchy.i
+                      SphericalModel.i
                       FilteringWindowsImplementation.i
                       FilteringWindows.i
                       Hamming.i

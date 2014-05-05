@@ -83,5 +83,6 @@
 #include "SquaredExponential.hxx"
 #include "GeneralizedExponential.hxx"
 #include "AbsoluteExponential.hxx"
+#include "SphericalModel.hxx"
 
 #endif /* OPENTURNS_OTSTAT_HXX */

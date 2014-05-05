@@ -73,10 +73,15 @@ ExponentiallyDampedCosineModel * ExponentiallyDampedCosineModel::clone() const
 CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const NumericalPoint & tau) const
 {
   CovarianceMatrix covarianceMatrix(dimension_);
-  // Absolute value of tau
-  const NumericalScalar absTau(tau.norm());
-  covarianceMatrix(0, 0) = amplitude_ * exp(-absTau / scale_) * cos(2.0 * M_PI * absTau);
+  covarianceMatrix(0, 0) = computeAsScalar(tau);
   return covarianceMatrix;
+}
+
+NumericalScalar ExponentiallyDampedCosineModel::computeAsScalar(const NumericalPoint & tau) const
+{
+  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
+  const NumericalScalar absTau(tau.norm());
+  return amplitude_ * exp(-absTau / scale_) * cos(2.0 * M_PI * absTau);
 }
 
 /* Discretize the covariance function on a given TimeGrid */
@@ -97,9 +102,9 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
 
   for (UnsignedInteger diag = 0; diag < size; ++diag)
     {
-      const CovarianceMatrix covTau( operator()( diag * timeStep ) );
+      const NumericalScalar covTau( operator()( diag * timeStep )(0, 0) );
       for (UnsignedInteger i = 0; i < size - diag; ++i)
-	cov( i, i + diag ) = covTau(0, 0);
+	cov( i, i + diag ) = covTau;
     }
 
   return cov;

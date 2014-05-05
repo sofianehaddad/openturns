@@ -90,7 +90,7 @@ int BoxCoxFactory::ComputeObjectiveAndConstraint(int n,
   const NumericalScalar lambda(x[0]);
 
   const BoxCoxFactory * factory = static_cast<BoxCoxFactory *>(state);
-  *f = - factory->computeLogLikelihood( lambda );
+  *f = -factory->computeLogLikelihood( lambda );
 
   return 0;
 }

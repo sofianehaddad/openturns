@@ -60,7 +60,7 @@ public:
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & t) const;
+  CovarianceMatrix operator() (const NumericalPoint & tau) const;
 
   /** Time grid/mesh accessor */
   Mesh getMesh() const;

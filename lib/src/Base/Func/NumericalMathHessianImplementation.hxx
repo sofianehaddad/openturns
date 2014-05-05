@@ -34,9 +34,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 /**
  * @class NumericalMathHessianImplementation
  *
@@ -65,10 +62,6 @@ public:
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
 
-
-  /** Description Accessor */
-  void setDescription(const Description & description);
-  Description getDescription() const;
 
   /** Test for actual implementation */
   virtual Bool isActualImplementation() const;
@@ -107,9 +100,6 @@ protected:
   mutable UnsignedInteger callsNumber_;
 
 private:
-
-  /** The description of all components */
-  Description description_;
 
 
 }; /* class NumericalMathHessianImplementation */

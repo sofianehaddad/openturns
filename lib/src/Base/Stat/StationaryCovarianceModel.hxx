@@ -41,7 +41,6 @@ class StationaryCovarianceModel
 
 public:
 
-
   /** Default constructor without parameters */
   explicit StationaryCovarianceModel(const String & name = DefaultName);
 
@@ -49,18 +48,14 @@ public:
   virtual StationaryCovarianceModel * clone() const;
 
   /** Computation of the covariance matrix */
-  /** @deprecated */
-  using CovarianceModelImplementation::computeCovariance;
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
-      const NumericalPoint & t) const;
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
-
   using CovarianceModelImplementation::operator();
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
-                                       const NumericalPoint & t) const;
+				       const NumericalPoint & t) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  using CovarianceModelImplementation::computeAsScalar;
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
+					   const NumericalPoint & t) const;
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using CovarianceModelImplementation::discretize;

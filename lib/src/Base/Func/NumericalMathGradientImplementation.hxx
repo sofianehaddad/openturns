@@ -35,9 +35,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 /**
  * @class NumericalMathGradientImplementation
  *
@@ -68,10 +65,6 @@ public:
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
 
-
-  /** Description Accessor */
-  void setDescription(const Description & description);
-  Description getDescription() const;
 
   /** Get the i-th marginal evaluation */
   virtual Implementation getMarginal(const UnsignedInteger i) const;

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @file  ExponentiallyDampedCosineModel.hxx
+ *  @file  SphericalModel.hxx
  *  @brief This class is enables to build an exponential covariance
  *  model, a second order model's implementation
  *
@@ -22,8 +22,8 @@
  *  @author schueller
  *  @date   2012-04-18 17:56:46 +0200 (Wed, 18 Apr 2012)
  */
-#ifndef OPENTURNS_EXPONENTIALLYDAMPEDCOSINEMODEL_HXX
-#define OPENTURNS_EXPONENTIALLYDAMPEDCOSINEMODEL_HXX
+#ifndef OPENTURNS_SPHERICALMODEL_HXX
+#define OPENTURNS_SPHERICALMODEL_HXX
 
 #include "PersistentObject.hxx"
 #include "StationaryCovarianceModel.hxx"
@@ -36,10 +36,10 @@ BEGIN_NAMESPACE_OPENTURNS
 class RegularGrid;
 
 /**
- * @class ExponentiallyDampedCosineModel
+ * @class SphericalModel
  */
 
-class ExponentiallyDampedCosineModel
+class SphericalModel
   : public StationaryCovarianceModel
 {
 
@@ -49,16 +49,14 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit ExponentiallyDampedCosineModel(const String & name = DefaultName);
+  SphericalModel();
 
-  /** Standard constructor with amplitude and scale parameters parameters */
-  ExponentiallyDampedCosineModel(const NumericalScalar amplitude,
-                   const NumericalScalar scale,
-                   const NumericalScalar frequency,
-                   const String & name = DefaultName);
+  /** Standard constructor with amplitude and range parameters parameters */
+  SphericalModel(const NumericalScalar amplitude,
+                 const NumericalScalar range);
 
   /** Virtual copy constructor */
-  virtual ExponentiallyDampedCosineModel * clone() const;
+  virtual SphericalModel * clone() const;
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::operator();
@@ -81,29 +79,12 @@ public:
   /** Amplitude accessor */
   NumericalScalar getAmplitude() const;
 
-protected:
-
   void setAmplitude(const NumericalScalar amplitude);
 
-public:
+  /** Range accessor */
+  NumericalScalar getRange() const;
 
-  /** Scale accessor */
-  NumericalScalar getScale() const;
-
-protected:
-
-  void setScale(const NumericalScalar scale);
-
-public:
-
-  /** Frequency accessor */
-  NumericalScalar getFrequency() const;
-
-protected:
-
-  void setFrequency(const NumericalScalar frequency);
-
-public:
+  void setRange(const NumericalScalar range);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -116,14 +97,11 @@ private :
   /** Amplitude  */
   NumericalScalar amplitude_;
 
-  /** Scale */
-  NumericalScalar scale_;
+  /** Range */
+  NumericalScalar range_;
 
-  /** Frequency */
-  NumericalScalar frequency_;
-
-} ; /* class ExponentiallyDampedCosineModel */
+} ; /* class SphericalModel */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_EXPONENTIALLYDAMPEDCOSINEMODEL_HXX */
+#endif /* OPENTURNS_SPHERICALMODEL_HXX */

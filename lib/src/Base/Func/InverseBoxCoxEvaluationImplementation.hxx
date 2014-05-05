@@ -61,6 +61,7 @@ public:
   /** Operator () */
   using NumericalMathEvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
+  NumericalSample operator() (const NumericalSample & inS) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
@@ -81,6 +82,42 @@ public:
   void load(Advocate & adv);
 
 protected:
+
+  struct ComputeSamplePolicy
+  {
+    const NumericalSample & input_;
+    NumericalSample & output_;
+    const InverseBoxCoxEvaluationImplementation & evaluation_;
+
+    ComputeSamplePolicy(const NumericalSample & input,
+                        NumericalSample & output,
+                        const InverseBoxCoxEvaluationImplementation & evaluation)
+      : input_(input)
+      , output_(output)
+      , evaluation_(evaluation)
+    {}
+
+    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+    {
+      for (UnsignedInteger i = 0; i < evaluation_.getInputDimension(); ++i)
+	{
+	  const NumericalScalar lambdaI(evaluation_.getLambda()[i]);
+	  const NumericalScalar shiftI(evaluation_.getShift()[i]);
+	  if (lambdaI != 0.0) evaluateNonZeroLambda(r, i, shiftI, lambdaI);
+	  else evaluateZeroLambda(r, i, shiftI);
+	}
+    }
+
+    inline void evaluateZeroLambda( const TBB::BlockedRange<UnsignedInteger> & r, const UnsignedInteger dimension, const NumericalScalar shiftI ) const
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][dimension] = exp(input_[i][dimension] - shiftI);
+    }
+
+    inline void evaluateNonZeroLambda( const TBB::BlockedRange<UnsignedInteger> & r, const UnsignedInteger dimension, const NumericalScalar shiftI, const NumericalScalar lambdaI ) const
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][dimension] = pow(lambdaI * (input_[i][dimension] - shiftI) + 1.0, 1.0 / lambdaI);
+    }
+  }; /* end struct ComputeSamplePolicy */
 
   /** lambda vector of the box cox transform */
   NumericalPoint lambda_;

@@ -66,15 +66,15 @@ static Factory<NumericalMathEvaluationImplementation> RegisteredFactory("Numeric
 
 /* Default constructor */
 NumericalMathEvaluationImplementation::NumericalMathEvaluationImplementation()
-  : PersistentObject(),
-    callsNumber_(0),
-    p_cache_(new CacheType),
-    inputStrategy_(Full()),
-    outputStrategy_(Full()),
-    isHistoryEnabled_(false),
-    inputDescription_(0),
-    outputDescription_(0),
-    parameters_(0)
+  : PersistentObject()
+  , callsNumber_(0)
+  , p_cache_(new CacheType)
+  , inputStrategy_(Full())
+  , outputStrategy_(Full())
+  , isHistoryEnabled_(false)
+  , inputDescription_(0)
+  , outputDescription_(0)
+  , parameters_(0)
 {
   // We disable the cache by default
   p_cache_->disable();

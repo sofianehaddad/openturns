@@ -74,9 +74,6 @@ public:
 
 private:
 
-  /** Internal setDefaultDescription method */
-  void setDefaultDescription();
-
 }; /* class InverseBoxCoxTransform */
 
 

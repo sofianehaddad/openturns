@@ -27,8 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ConstantNumericalMathHessianImplementation);
 
 static Factory<ConstantNumericalMathHessianImplementation> RegisteredFactory("ConstantNumericalMathHessianImplementation");
@@ -43,8 +41,8 @@ ConstantNumericalMathHessianImplementation::ConstantNumericalMathHessianImplemen
 
 /* Parameter constructor */
 ConstantNumericalMathHessianImplementation::ConstantNumericalMathHessianImplementation(const SymmetricTensor & constant)
-  : NumericalMathHessianImplementation(),
-    constant_(constant)
+  : NumericalMathHessianImplementation()
+  , constant_(constant)
 {
   /* Check if the dimensions of the constant term is compatible with the linear term */
 }
@@ -76,8 +74,7 @@ String ConstantNumericalMathHessianImplementation::__str__(const String & offset
 {
   OSS oss(false);
   const UnsignedInteger inputDimension(getInputDimension());
-  Description description(getDescription());
-  if (description.getSize() == 0) for (UnsignedInteger i = 0; i < inputDimension; ++i) description.add(OSS() << "x" << i);
+  const Description description(Description::BuildDefault(inputDimension, "x"));
   if (hasVisibleName()) oss << offset << getName() << ":" << Os::GetEndOfLine();
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {

@@ -60,28 +60,19 @@ public:
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
 
-  /** Computation of the covariance matrix */
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar s,
-      const NumericalScalar t) const;
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
-      const NumericalPoint & t) const;
-
+  /** Compute the covariance function */
   virtual CovarianceMatrix operator() (const NumericalScalar s,
                                        const NumericalScalar t) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
                                        const NumericalPoint & t) const;
-
-  /** Computation of the covariance matrix for stationnary models */
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
-
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
+  // Special case for 1D model
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
+					   const NumericalPoint & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  // Special case for 1D model
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
 
   /** Gradient */
   virtual SymmetricTensor partialGradient(const NumericalPoint & s,
@@ -91,6 +82,8 @@ public:
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
+  virtual NumericalSample discretizeRow(const NumericalSample & vertices,
+					const UnsignedInteger p) const;
 
   /** Partial discretization with respect to the second argument */
   Basis getPartialDiscretization(const NumericalSample & secondLocation) const;
@@ -115,6 +108,30 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
+
+  struct DiscretizePolicy
+  {
+    const NumericalSample & input_;
+    const NumericalPoint p_;
+    NumericalSample & output_;
+    const CovarianceModelImplementation & model_;
+
+    DiscretizePolicy(const NumericalSample & input,
+		     const UnsignedInteger p,
+		     NumericalSample & output,
+		     const CovarianceModelImplementation & model)
+      : input_(input)
+      , p_(input[p])
+      , output_(output)
+      , model_(model)
+    {}
+
+    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][0] = model_.computeAsScalar(p_, input_[i]);
+    }
+
+  }; /* end struct DiscretizePolicy */
 
   /** dimension parameter */
   UnsignedInteger dimension_;

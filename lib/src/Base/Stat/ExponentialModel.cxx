@@ -128,8 +128,9 @@ CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
   NumericalPoint exponentialTerms(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    exponentialTerms[i] = amplitude_[i] * exp(-0.5 * absTau / scale_[i]);
-    covarianceMatrix(i, i) = exponentialTerms[i] * exponentialTerms[i];
+    const NumericalScalar value(amplitude_[i] * exp(-0.5 * absTau / scale_[i]));
+    exponentialTerms[i] = value;
+    covarianceMatrix(i, i) = value * value;
   }
   if (!isDiagonal_)
     for (UnsignedInteger i = 0; i < dimension_ ; ++i)
@@ -137,6 +138,12 @@ CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
         covarianceMatrix(i, j) = exponentialTerms[i] * spatialCorrelation_(i, j) * exponentialTerms[j];
 
   return covarianceMatrix;
+}
+
+NumericalScalar ExponentialModel::computeAsScalar(const NumericalPoint & tau) const
+{
+  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
+  return amplitude_[0] * exp(-tau.norm() / scale_[0]);
 }
 
 /* Discretize the covariance function on a given TimeGrid */
