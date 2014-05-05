@@ -147,7 +147,7 @@ ot-test: ot-install
 ifeq ($(CHECK_OT),y)
 	cp $(OT_BUILD)/lib/src/*.dll $(OT_BUILD)/lib/test
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/*.dll $(OT_BUILD)/lib/test
-	cp $(OT_BUILD)/lib/src/*.dll $(OT_BUILD)/python/test
+	cp $(OT_PREFIX)/bin/libOT*.dll $(OT_BUILD)/python/test
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/*.dll $(OT_BUILD)/python/test
 	cd $(OT_BUILD) && ctest -j$(JOBS)
 	touch ot-test
