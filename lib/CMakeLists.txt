@@ -67,6 +67,7 @@ else ( CMAKE_VERSION VERSION_LESS 2.8.8 )
                                 )
 
   install ( FILES ${PROJECT_SOURCE_DIR}/lib/UseOpenTURNS.cmake
+                  ${PROJECT_BINARY_DIR}/lib/OpenTURNSConfig.cmake
             DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH}
           )
 endif ( CMAKE_VERSION VERSION_LESS 2.8.8 )
