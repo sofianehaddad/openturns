@@ -32,6 +32,7 @@
    across many files.  */
 #ifdef _MSC_VER
 #include <boost/math/special_functions.hpp>
+#include <boost/numeric/conversion/converter_policies.hpp>
 
 using boost::math::asinh;
 using boost::math::acosh;
@@ -50,9 +51,9 @@ using boost::math::round;
 /* log2 is not defined */
 static inline double log2(double x) { return log(x)/log(2.); }
 /* rint is not defined */
-static inline double rint(double x) { return (x > 0.0)? floor(x + 0.5) : ceil(x - 0.5); }
+static inline double rint(double x) { return boost::numeric::RoundEven<double>::nearbyint(x); }
 /* nearbyint is not defined */
-static inline double nearbyint(double x) { return (x > 0.0)? floor(x + 0.5) : ceil(x - 0.5); }
+static inline double nearbyint(double x) { return boost::numeric::RoundEven<double>::nearbyint(x); }
 
 #endif /* _MSC_VER */
 
