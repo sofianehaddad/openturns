@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Binomial
 {
 public:
-  explicit TestObject() : Binomial(15, 0.7) {}
-  explicit TestObject(const String & name) : Binomial(15, 0.7)
-  {
-    setName(name);
-  }
+  TestObject() : Binomial(15, 0.7) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Binomial distribution(15, 0.7);

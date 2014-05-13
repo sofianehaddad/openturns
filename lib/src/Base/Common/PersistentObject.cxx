@@ -27,18 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/*
- * The default name of any object
- */
-const String DefaultName = String(
-#ifdef OBJECT_DEFAULT_NAME
-                             OBJECT_DEFAULT_NAME
-#else
-                             "Unnamed"
-#endif
-                           );
-
-
 
 CLASSNAMEINIT(PersistentObject);
 
@@ -72,7 +60,7 @@ void PersistentObject::save(Advocate & adv) const
 {
   adv.saveAttribute( "class", getClassName() );
   adv.saveAttribute( "id", id_ );
-  if ( hasName() )
+  if ( hasVisibleName() )
   {
     adv.saveAttribute( "name", getName() );
   }

@@ -36,9 +36,10 @@ static Factory<TracyWidomGSE> RegisteredFactory("TracyWidomGSE");
 
 /* Default constructor */
 TracyWidomGSE::TracyWidomGSE()
-  : ContinuousDistribution("TracyWidomGSE")
+  : ContinuousDistribution()
 {
   throw NotYetImplementedException(HERE);
+  setName("TracyWidomGSE");
   setDimension(1);
   setRange(Interval(-1.0, 1.0));
 }

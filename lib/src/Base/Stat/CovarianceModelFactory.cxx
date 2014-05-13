@@ -31,34 +31,31 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(CovarianceModelFactory);
 
 /* Default constructor */
-CovarianceModelFactory::CovarianceModelFactory(const String & name)
-  : TypedInterfaceObject<CovarianceModelFactoryImplementation>(new CovarianceModelFactoryImplementation(name))
+CovarianceModelFactory::CovarianceModelFactory()
+  : TypedInterfaceObject<CovarianceModelFactoryImplementation>(new CovarianceModelFactoryImplementation())
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-CovarianceModelFactory::CovarianceModelFactory(const CovarianceModelFactoryImplementation & implementation,
-    const String & name)
+CovarianceModelFactory::CovarianceModelFactory(const CovarianceModelFactoryImplementation & implementation)
   : TypedInterfaceObject<CovarianceModelFactoryImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-CovarianceModelFactory::CovarianceModelFactory(const Implementation & p_implementation,
-    const String & name)
+CovarianceModelFactory::CovarianceModelFactory(const Implementation & p_implementation)
   : TypedInterfaceObject<CovarianceModelFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-CovarianceModelFactory::CovarianceModelFactory(CovarianceModelFactoryImplementation * p_implementation,
-    const String & name)
+CovarianceModelFactory::CovarianceModelFactory(CovarianceModelFactoryImplementation * p_implementation)
   : TypedInterfaceObject<CovarianceModelFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 

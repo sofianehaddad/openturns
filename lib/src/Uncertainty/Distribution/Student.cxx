@@ -51,10 +51,11 @@ Student::Student(const NumericalScalar nu,
                  const UnsignedInteger dimension)
   : EllipticalDistribution(NumericalPoint(dimension, 0.0),
                            NumericalPoint(dimension, 1.0),
-                           IdentityMatrix(dimension), -1.0, "Student")
+                           IdentityMatrix(dimension), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
+  setName("Student");
   setDimension( dimension );
   // This call set also the range
   setNu(nu);
@@ -64,10 +65,11 @@ Student::Student(const NumericalScalar nu,
 Student::Student(const NumericalScalar nu,
                  const NumericalScalar mu,
                  const NumericalScalar sigma)
-  : EllipticalDistribution(NumericalPoint(1, mu), NumericalPoint(1, sigma), IdentityMatrix(1), -1.0, "Student")
+  : EllipticalDistribution(NumericalPoint(1, mu), NumericalPoint(1, sigma), IdentityMatrix(1), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
+  setName("Student");
   setDimension(1);
   // Set nu with checks. This call set also the range.
   setNu(nu);
@@ -78,10 +80,11 @@ Student::Student(const NumericalScalar nu,
                  const NumericalPoint & mu,
                  const NumericalPoint & sigma,
                  const CorrelationMatrix & R)
-  : EllipticalDistribution(mu, sigma, R, -1.0, "Student")
+  : EllipticalDistribution(mu, sigma, R, -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
+  setName("Student");
   setDimension(mu.getDimension());
   // Set nu with checks. This call set also the range.
   setNu(nu);
@@ -174,7 +177,7 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
   {
     int nu(static_cast<int>(round(nu_)));
     double r(R_(0, 1));
-    return BVTL_F77(&nu, &(u[0]), &(u[1]), &r);
+    return bvtl_(&nu, &(u[0]), &(u[1]), &r);
   }
   // For the tridimensional case, use specialized high precision routine for integral degrees of freedom
   if ((dimension == 3) && (nu_ == round(nu_)))
@@ -186,7 +189,7 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
     r[2] = R_(2, 1);
     double eps(ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) * ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ));
     cdfEpsilon_ = eps;
-    return TVTL_F77(&nu, &(u[0]), &r[0], &eps);
+    return tvtl_(&nu, &(u[0]), &r[0], &eps);
   }
   // For moderate dimension, use a Gauss-Legendre integration
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
@@ -221,7 +224,7 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
     int dim(static_cast<UnsignedInteger>( dimension ));
     do
     {
-      MVTDST_F77(&dim, &nu, &lower[0], &u[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
+      mvtdst_(&dim, &nu, &lower[0], &u[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
       if (inform == 1)
       {
         LOGWARN(OSS() << "Warning, in Student::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
@@ -334,7 +337,7 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
     int dim = static_cast<UnsignedInteger>( dimension );
     do
     {
-      MVTDST_F77(&dim, &nu, &lower[0], &upper[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
+      mvtdst_(&dim, &nu, &lower[0], &upper[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
       if (inform == 1)
       {
         LOGWARN(OSS() << "Warning, in Student::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class TruncatedNormalFactory
  */
-class TruncatedNormalFactory
+class OT_API TruncatedNormalFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

@@ -27,6 +27,7 @@
 #include "PersistentObjectFactory.hxx"
 #include "Description.hxx"
 #include "Exception.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

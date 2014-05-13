@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Description is a collection of string for human usage
  */
 
-class Description :
+class OT_API Description :
   public TypedCollectionInterfaceObject<DescriptionImplementation>
 {
   CLASSNAME;

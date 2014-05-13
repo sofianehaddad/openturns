@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The ChiSquare distribution.
  */
-class ChiSquare
+class OT_API ChiSquare
   : public ContinuousDistribution
 {
   CLASSNAME;

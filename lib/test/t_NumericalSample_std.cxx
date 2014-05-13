@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public NumericalSample
 {
 public:
-  explicit TestObject() : NumericalSample(1, 1) {}
-  explicit TestObject(const String & name) : NumericalSample(1, 1)
-  {
-    setName(name);
-  }
+  TestObject() : NumericalSample(1, 1) {}
   virtual ~TestObject() {}
 };
 
@@ -48,9 +44,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // We create an empty NumericalSample
     NumericalSample sample1(0, 2);

@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implements an event based on a composite random vector whose
  * antecedent has a spherical distribution
  */
-class StandardEvent
+class OT_API StandardEvent
   : public Event
 {
   CLASSNAME;
@@ -53,12 +53,10 @@ public:
   /** Constructor from RandomVector */
   StandardEvent(const RandomVector & antecedent,
                 const ComparisonOperator & op,
-                const NumericalScalar threshold,
-                const String & name = DefaultName);
+                const NumericalScalar threshold);
 
   /** Constructor from Event */
-  StandardEvent(const Event & event,
-                const String & name = DefaultName);
+  StandardEvent(const Event & event);
 
 
 protected:

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IdentityMatrix
  */
 
-class IdentityMatrix
+class OT_API IdentityMatrix
   : public CorrelationMatrix
 {
   CLASSNAME;
@@ -64,12 +64,18 @@ public:
 #endif
 
   /** Multiplications */
+#ifdef _MSC_VER   // VS2010 does not like 'using' being called after overloads
+  using CorrelationMatrix::operator *;
+#endif
+
   Matrix operator * (const Matrix & m) const;
   SquareMatrix operator * (const SquareMatrix & m) const;
   SymmetricMatrix operator * (const SymmetricMatrix & m) const;
   CovarianceMatrix operator * (const CovarianceMatrix & m) const;
   CorrelationMatrix operator * (const CorrelationMatrix & m) const;
+#ifndef _MSC_VER
   using CorrelationMatrix::operator *;
+#endif
 
   /** Resolution of a linear system */
   NumericalPoint solveLinearSystem(const NumericalPoint & b,

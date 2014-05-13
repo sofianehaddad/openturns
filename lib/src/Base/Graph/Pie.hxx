@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-class Pie : public DrawableImplementation
+class OT_API Pie : public DrawableImplementation
 {
 
   CLASSNAME;

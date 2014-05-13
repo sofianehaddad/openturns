@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 // Forward declaration of ComplexMatrixImplementation
 class ComplexMatrixImplementation;
 
-class MatrixImplementation
+class OT_API MatrixImplementation
   : public PersistentCollection<NumericalScalar>
 
 {

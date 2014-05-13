@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SobolSequence
  */
 
-class SobolSequence :
+class OT_API SobolSequence :
   public LowDiscrepancySequenceImplementation
 {
   CLASSNAME;

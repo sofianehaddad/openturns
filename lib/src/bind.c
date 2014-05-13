@@ -78,12 +78,13 @@
  */
 
 #include "OTconfig.hxx" // Only needed for test wrappers
+#include "OTdebug.h"
 #include "WrapperInterface.h"
 #include "WrapperCommon_macros.h"
 #include "WrapperCommon_static.h"
 #include "WrapperMacros.h"
 
-extern RETURNCODE BIND_METHODS_FUNCTION_HIDDEN ( METHODS methods[] )
+OT_API RETURNCODE BIND_METHODS_FUNCTION_HIDDEN ( METHODS methods[] )
 {
   static int first = 1;
 

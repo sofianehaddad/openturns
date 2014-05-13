@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class NearestPointCheckerResult
  * NearestPointCheckerResult stores the test result
  */
-class NearestPointCheckerResult:
+class OT_API NearestPointCheckerResult:
   public PersistentObject
 {
   CLASSNAME;

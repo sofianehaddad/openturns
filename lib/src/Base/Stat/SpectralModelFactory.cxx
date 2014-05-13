@@ -30,34 +30,31 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(SpectralModelFactory);
 
 /* Default constructor */
-SpectralModelFactory::SpectralModelFactory(const String & name)
-  : TypedInterfaceObject<SpectralModelFactoryImplementation>(new SpectralModelFactoryImplementation(name))
+SpectralModelFactory::SpectralModelFactory()
+  : TypedInterfaceObject<SpectralModelFactoryImplementation>(new SpectralModelFactoryImplementation())
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-SpectralModelFactory::SpectralModelFactory(const SpectralModelFactoryImplementation & implementation,
-    const String & name)
+SpectralModelFactory::SpectralModelFactory(const SpectralModelFactoryImplementation & implementation)
   : TypedInterfaceObject<SpectralModelFactoryImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-SpectralModelFactory::SpectralModelFactory(const Implementation & p_implementation,
-    const String & name)
+SpectralModelFactory::SpectralModelFactory(const Implementation & p_implementation)
   : TypedInterfaceObject<SpectralModelFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-SpectralModelFactory::SpectralModelFactory(SpectralModelFactoryImplementation * p_implementation,
-    const String & name)
+SpectralModelFactory::SpectralModelFactory(SpectralModelFactoryImplementation * p_implementation)
   : TypedInterfaceObject<SpectralModelFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CorrelationMatrix
  */
 
-class CorrelationMatrix
+class OT_API CorrelationMatrix
   : public CovarianceMatrix
 {
   CLASSNAME;

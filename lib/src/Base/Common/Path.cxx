@@ -29,8 +29,13 @@
 #ifdef WIN32
 #include <fstream>                // for ofstream
 #include "OTwindows.h"            // for GetTempFileName, GetModuleFileName
+#ifdef _MSC_VER
+# include <direct.h>
+#define mkdir(p)  _mkdir(p)
+#else  /* _MSC_VER */
 #include <libgen.h>               // for dirname
-#endif
+#endif /* _MSC_VER */
+#endif /* WIN32 */
 #include <sys/types.h>            // for stat
 #include <sys/stat.h>             // for stat
 #include <unistd.h>               // for stat
@@ -136,8 +141,23 @@ FileName Path::GetWinDirectory()
   // get python.exe absolute path
   TCHAR szPath[MAX_PATH];
   GetModuleFileName(NULL, szPath, MAX_PATH);
-  // add path to openturns module
+#ifdef _MSC_VER
+  // remove executable name
+  String otModulePath(szPath);
+  if (otModulePath.empty()) return otModulePath;
+  for(UnsignedInteger i = otModulePath.size() - 1; i >= 0; --i)
+  {
+    /* We do not care about escaped backslashes */
+    if(otModulePath.at(i) == '\\')
+    {
+      otModulePath.at(i) = '\0';
+      break;
+    }
+  }
+#else
   String otModulePath(dirname(szPath));
+#endif
+  // add path to openturns module
   otModulePath += "\\Lib\\site-packages\\openturns";
   return otModulePath;
 }
@@ -541,11 +561,8 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
  */
 void Path::DeleteTemporaryDirectory (const FileName & directoryName)
 {
-  struct WrapperError wrapperError;
-  if (deleteDirectory( directoryName.c_str(), &wrapperError ))
-    LOGWARN( OSS() << "Can't remove temporary directory  " << directoryName
-             << ". Reason: " << getWrapperError(&wrapperError) );
-
+  if (Os::DeleteDirectory( directoryName))
+    LOGWARN( OSS() << "Can't remove temporary directory  " << directoryName );
 }
 
 

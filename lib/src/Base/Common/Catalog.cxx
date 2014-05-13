@@ -91,6 +91,7 @@ Catalog & Catalog::GetInstance()
 
 void Catalog::Initialize()
 {
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
@@ -102,6 +103,9 @@ void Catalog::Initialize()
     perror("Catalog::Initialize mutex initialization failed");
     exit(1);
   }
+#else
+  pthread_mutex_init( &Catalog_InstanceMutex_, NULL );
+#endif
   Catalog_P_instance_ = new Catalog;
   assert(Catalog_P_instance_);
 }

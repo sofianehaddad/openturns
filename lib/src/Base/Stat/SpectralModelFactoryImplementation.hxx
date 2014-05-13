@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SpectralModelFactoryImplementation
  */
-class SpectralModelFactoryImplementation
+class OT_API SpectralModelFactoryImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -45,7 +45,7 @@ public:
   typedef Pointer<SpectralModelFactoryImplementation>    Implementation;
 
   /** Default constructor */
-  SpectralModelFactoryImplementation(const String & name = DefaultName);
+  SpectralModelFactoryImplementation();
 
   /** Virtual constructor */
   virtual SpectralModelFactoryImplementation * clone() const;

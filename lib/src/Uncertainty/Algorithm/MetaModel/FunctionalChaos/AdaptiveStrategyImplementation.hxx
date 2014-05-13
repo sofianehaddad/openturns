@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is a abstract class for adaptive strategy implementations
  */
 
-class AdaptiveStrategyImplementation
+class OT_API AdaptiveStrategyImplementation
   : public PersistentObject
 {
   CLASSNAME;

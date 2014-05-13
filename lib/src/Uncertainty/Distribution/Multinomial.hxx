@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Multinomial distribution.
  */
-class Multinomial
+class OT_API Multinomial
   : public DiscreteDistribution
 {
   CLASSNAME;

@@ -36,7 +36,7 @@ static Factory<TruncatedNormal> RegisteredFactory("TruncatedNormal");
 
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
-  : ContinuousDistribution("TruncatedNormal"),
+  : ContinuousDistribution(),
     mu_(0.0),
     sigma_(1.0),
     a_(-1.0),
@@ -53,6 +53,7 @@ TruncatedNormal::TruncatedNormal()
     // 1.46479477349154407761 = 1 / (Phi(1) - Phi(-1))
     normalizationFactor_(1.46479477349154407761)
 {
+  setName("TruncatedNormal");
   setDimension(1);
   computeRange();
 }
@@ -62,7 +63,7 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
                                  const NumericalScalar sigma,
                                  const NumericalScalar a,
                                  const NumericalScalar b)
-  : ContinuousDistribution("TruncatedNormal"),
+  : ContinuousDistribution(),
     mu_(mu),
     sigma_(0.0),
     a_(a),
@@ -75,6 +76,7 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
     PhiBNorm_(0.0),
     normalizationFactor_(0.0)
 {
+  setName("TruncatedNormal");
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with sigma <=0. Here, sigma=" << sigma;
   if (a >= b) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with a >= b. Here, a=" << a << " and b=" << b;
   setSigma(sigma);
@@ -211,7 +213,7 @@ NumericalComplex TruncatedNormal::computeCharacteristicFunction(const NumericalS
   const NumericalScalar beta((b_ - mu_) * iSigma2);
   const NumericalScalar erf1(SpecFunc::Erf(alpha));
   const NumericalScalar erf2(SpecFunc::Erf(beta));
-  const NumericalScalar t(x * sigma_ / sqrt(2));
+  const NumericalScalar t(x * sigma_ / sqrt(2.0));
   const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
   const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
   return exp(NumericalComplex(0.0, x * mu_)) * (w2 * exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) / (erf2 - erf1);
@@ -224,7 +226,7 @@ NumericalComplex TruncatedNormal::computeLogCharacteristicFunction(const Numeric
   const NumericalScalar beta((b_ - mu_) * iSigma2);
   const NumericalScalar erf1(SpecFunc::Erf(alpha));
   const NumericalScalar erf2(SpecFunc::Erf(beta));
-  const NumericalScalar t(x * sigma_ / sqrt(2));
+  const NumericalScalar t(x * sigma_ / sqrt(2.0));
   const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
   const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
   return NumericalComplex(0.0, x * mu_) + log(w2 * exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) - log(erf2 - erf1);

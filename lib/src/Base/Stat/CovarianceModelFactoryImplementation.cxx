@@ -36,8 +36,8 @@ static Factory<CovarianceModelFactoryImplementation> RegisteredFactory("Covarian
 typedef NotYetImplementedException NotYetImplementedException;
 
 /* Default constructor */
-CovarianceModelFactoryImplementation::CovarianceModelFactoryImplementation(const String & name)
-  : PersistentObject(name)
+CovarianceModelFactoryImplementation::CovarianceModelFactoryImplementation()
+  : PersistentObject()
 {
   // Nothing to do
 }

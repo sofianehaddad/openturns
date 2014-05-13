@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is abstract so it can not be instanciated. It must be derived.
  * @see Sampler
  */
-class MCMC
+class OT_API MCMC
   : public SamplerImplementation
 {
   CLASSNAME;

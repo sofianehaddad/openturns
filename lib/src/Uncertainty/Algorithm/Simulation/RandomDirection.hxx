@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RandomDirection
  */
 
-class RandomDirection :
+class OT_API RandomDirection :
   public SamplingStrategyImplementation
 {
 

@@ -50,7 +50,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * distribution, can compute PDF or CDF, etc.
  * They are the actual key component of RandomVectors.
  */
-class DistributionImplementation
+class OT_API DistributionImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -63,10 +63,13 @@ public:
   typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
 
   /** Default constructor */
-  DistributionImplementation(const String & name = DefaultName);
+  DistributionImplementation();
 
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;
+
+  /** Comparison operator */
+  Bool operator !=(const DistributionImplementation & other) const;
 
   /** String converter */
   virtual String __repr__() const;

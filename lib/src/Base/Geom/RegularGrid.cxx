@@ -24,6 +24,7 @@
 
 #include "RegularGrid.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -93,6 +94,11 @@ Bool RegularGrid::operator == (const RegularGrid & rhs) const
 {
   const RegularGrid & lhs = *this;
   return (lhs.start_ == rhs.start_) && (lhs.step_ == rhs.step_) && (lhs.n_ == rhs.n_);
+}
+
+Bool RegularGrid::operator != (const RegularGrid & rhs) const
+{
+  return !operator==(rhs);
 }
 
 NumericalScalar RegularGrid::getStart() const

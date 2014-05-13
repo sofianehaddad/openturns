@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Cross-validation algorithm implementation
  */
-class ODESolverImplementation
+class OT_API ODESolverImplementation
   : public PersistentObject
 {
   CLASSNAME;

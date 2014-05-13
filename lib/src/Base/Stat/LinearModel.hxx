@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * LinearModel implements the notion of linear model
  */
 
-class LinearModel :
+class OT_API LinearModel :
   public PersistentObject
 {
   CLASSNAME;
@@ -114,7 +114,7 @@ private:
 
 
 /** Comparison operator */
-Bool operator ==(const LinearModel & lhs, const LinearModel & rhs);
+OT_API Bool operator ==(const LinearModel & lhs, const LinearModel & rhs);
 
 END_NAMESPACE_OPENTURNS
 

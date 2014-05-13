@@ -38,16 +38,14 @@ Distribution::Distribution()
 }
 
 /* Default constructor */
-Distribution::Distribution(const DistributionImplementation & implementation,
-                           const String & name)
+Distribution::Distribution(const DistributionImplementation & implementation)
   : TypedInterfaceObject<DistributionImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-Distribution::Distribution(const Implementation & p_implementation,
-                           const String & name)
+Distribution::Distribution(const Implementation & p_implementation)
   : TypedInterfaceObject<DistributionImplementation>(p_implementation)
 {
   // Initialize any other class members here
@@ -56,8 +54,7 @@ Distribution::Distribution(const Implementation & p_implementation,
 
 
 /* Constructor from implementation pointer */
-Distribution::Distribution(DistributionImplementation * p_implementation,
-                           const String & name)
+Distribution::Distribution(DistributionImplementation * p_implementation)
   : TypedInterfaceObject<DistributionImplementation>(p_implementation)
 {
   // Initialize any other class members here
@@ -69,6 +66,12 @@ Distribution::Distribution(DistributionImplementation * p_implementation,
 Bool Distribution::operator ==(const Distribution & other) const
 {
   return (this == &other);
+}
+
+/* Comparison operator */
+Bool Distribution::operator !=(const Distribution & other) const
+{
+  return !operator==(other);
 }
 
 /* String converter */

@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * BoundConstrainedAlgorithmImplementationResult implements the result of a BoundConstrainedAlgorithmImplementation, i.e. the location of a point that minimize or maximize a given objective function over an interval, as well as the optimal value, the number of evaluations of the objective function, the kind of optimization and the various errors achieved at the optimum.
  */
 
-class BoundConstrainedAlgorithmImplementationResult
+class OT_API BoundConstrainedAlgorithmImplementationResult
   : public PersistentObject
 {
   CLASSNAME;

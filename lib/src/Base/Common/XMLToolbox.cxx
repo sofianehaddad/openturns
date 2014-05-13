@@ -238,7 +238,11 @@ char * XML::MakeMessage(const char *fmt, va_list args)
   while (1)
   {
     /* Try to print in the allocated space. */
+#ifdef _MSC_VER
+    args_copy = args;
+#else
     va_copy(args_copy, args);
+#endif
     n = vsnprintf (p, size, fmt, args_copy);
     va_end(args_copy);
     /* If that worked, return the string. */

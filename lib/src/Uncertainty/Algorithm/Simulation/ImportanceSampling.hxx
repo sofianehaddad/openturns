@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ImportanceSampling
  */
 
-class ImportanceSampling :
+class OT_API ImportanceSampling :
   public Simulation
 {
 

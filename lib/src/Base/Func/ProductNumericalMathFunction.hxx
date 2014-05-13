@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ProductNumericalMathFunction
  */
 
-class ProductNumericalMathFunction
+class OT_API ProductNumericalMathFunction
   : public NumericalMathFunctionImplementation
 {
   CLASSNAME;

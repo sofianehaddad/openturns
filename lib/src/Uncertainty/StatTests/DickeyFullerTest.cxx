@@ -41,8 +41,8 @@ static Factory<DickeyFullerTest> RegisteredFactory("DickeyFullerTest");
 
 
 /* Default constructor */
-DickeyFullerTest::DickeyFullerTest(const String & name)
-  : PersistentObject(name)
+DickeyFullerTest::DickeyFullerTest()
+  : PersistentObject()
   , timeSeries_()
   , T_()
   , verbose_(false)
@@ -70,9 +70,8 @@ DickeyFullerTest::DickeyFullerTest(const String & name)
 
 /* Standard constructor */
 DickeyFullerTest::DickeyFullerTest(const TimeSeries & series,
-                                   const Bool verbose,
-                                   const String & name)
-  : PersistentObject(name)
+                                   const Bool verbose)
+  : PersistentObject()
   , timeSeries_()
   , T_()
   , verbose_(verbose)

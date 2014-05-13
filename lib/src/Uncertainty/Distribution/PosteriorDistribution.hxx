@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The PosteriorDistribution distribution.
  */
-class PosteriorDistribution
+class OT_API PosteriorDistribution
   : public ContinuousDistribution
 {
   CLASSNAME;

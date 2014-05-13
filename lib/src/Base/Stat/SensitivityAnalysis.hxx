@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class SensitivityAnalysis
+class OT_API SensitivityAnalysis
 {
 public:
 

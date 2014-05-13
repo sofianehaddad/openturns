@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Hamming
  */
 
-class Hamming
+class OT_API Hamming
   : public FilteringWindowsImplementation
 {
 
@@ -44,7 +44,7 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit Hamming(const String & name = DefaultName);
+  Hamming();
 
   /** Virtual copy constructor */
   virtual Hamming * clone() const;

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implements all processs
  */
-class ARMAFactory
+class OT_API ARMAFactory
   : public TypedInterfaceObject<ARMAFactoryImplementation>
 {
   CLASSNAME;
@@ -49,18 +49,15 @@ public:
   ARMAFactory();
 
   /** Copy constructors */
-  ARMAFactory(const ARMAFactoryImplementation & implementation,
-              const String & name = DefaultName);
+  ARMAFactory(const ARMAFactoryImplementation & implementation);
 
 
   /** Constructor from implementation */
-  ARMAFactory(const Implementation & p_implementation,
-              const String & name = DefaultName);
+  ARMAFactory(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  ARMAFactory(ARMAFactoryImplementation * p_implementation,
-              const String & name = DefaultName);
+  ARMAFactory(ARMAFactoryImplementation * p_implementation);
 #endif
 
   /** Virtual constructor */

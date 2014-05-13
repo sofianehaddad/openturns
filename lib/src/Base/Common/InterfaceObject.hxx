@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * that returns a pointer to a PersistentObject. See TypedInterfaceObject for concrete implementation.
  */
 
-class InterfaceObject
+class OT_API InterfaceObject
   : public Object
 {
   CLASSNAME;

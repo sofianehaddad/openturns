@@ -34,10 +34,11 @@ static Factory<Uniform> RegisteredFactory("Uniform");
 
 /* Default constructor */
 Uniform::Uniform()
-  : ContinuousDistribution("Uniform")
+  : ContinuousDistribution()
   , a_(-1.0)
   , b_(1.0)
 {
+  setName( "Uniform" );
   setDimension( 1 );
   computeRange();
 }
@@ -45,10 +46,11 @@ Uniform::Uniform()
 /* Parameters constructor */
 Uniform::Uniform(const NumericalScalar a,
                  const NumericalScalar b)
-  : ContinuousDistribution("Uniform")
+  : ContinuousDistribution()
   , a_(a)
   , b_(b)
 {
+  setName( "Uniform" );
   setB(b);
   setDimension( 1 );
   computeRange();

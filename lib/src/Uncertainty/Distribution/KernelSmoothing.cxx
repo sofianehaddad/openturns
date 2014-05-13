@@ -50,27 +50,28 @@ CLASSNAMEINIT(KernelSmoothing);
 static Factory<KernelSmoothing> RegisteredFactory("KernelSmoothing");
 
 /* Default constructor */
-KernelSmoothing::KernelSmoothing(const String & name)
-  : PersistentObject(name)
+KernelSmoothing::KernelSmoothing()
+  : PersistentObject()
   , bandwidth_(NumericalPoint(0))
   , kernel_(Normal())
   , bined_(true)
   , binNumber_(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ))
 {
+  setName("KernelSmoothing");
   if (binNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: The default number of bins=" << binNumber_ << " is less than 2. Check the ResourceMap or the openturns.conf file.";
 }
 
 /* Default constructor */
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
                                  const Bool & bined,
-                                 const UnsignedInteger binNumber,
-                                 const String & name)
-  : PersistentObject(name)
+                                 const UnsignedInteger binNumber)
+  : PersistentObject()
   , bandwidth_(NumericalPoint(0))
   , kernel_(kernel)
   , bined_(bined)
   , binNumber_(binNumber)
 {
+  setName("KernelSmoothing");
   // Only 1D kernel allowed here
   if (kernel.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: only 1D kernel allowed for product kernel smoothing";
   if (bined && (binNumber < 2)) throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";
@@ -127,7 +128,7 @@ struct PluginConstraint
         if (fabs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * exp(-0.5 * x * x);
       }
     }
-    const NumericalScalar res(phi / ((N_ * (N_ - 1.0)) * pow(h, order_ + 1) * sqrt(2.0 * M_PI)));
+    const NumericalScalar res(phi / ((N_ * (N_ - 1.0)) * pow(h, order_ + 1.0) * sqrt(2.0 * M_PI)));
     return res;
   }
 
@@ -232,7 +233,7 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
   setBandwidth(bandwidth);
   UnsignedInteger size(sample.getSize());
   // The usual case: no boundary correction, no binning
-  const Bool mustBin(bined_ && (dimension * log(binNumber_) < log(size)));
+  const Bool mustBin(bined_ && (dimension * log(1.0 * binNumber_) < log(1.0 * size)));
   if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
   if ((dimension > 2) || ((!mustBin) && (!boundaryCorrection)))
   {

@@ -230,7 +230,7 @@ NumericalScalar SpecFunc::IncompleteBeta(const NumericalScalar a,
     const NumericalScalar x,
     const Bool tail)
 {
-  return IncompleteBeta(a, b, x, tail) * Beta(a, b);
+  return RegularizedIncompleteBeta(a, b, x, tail) * Beta(a, b);
 }
 
 // Incomplete Beta function inverse
@@ -279,7 +279,7 @@ NumericalScalar SpecFunc::Debye(const NumericalScalar x,
   if (x < 0.0) return 0.0;
   // The threshold is such that the overall error is less than 1.0e-16
   if (x < 1.0e-8) return 1.0 - n * x / (2.0 * (n + 1.0));
-  return debyen(x, static_cast<int>(n)) * n / pow(x, n);
+  return debyen(x, static_cast<int>(n)) * n / pow(x, static_cast<int>(n));
 }
 
 // DiLog function: DiLog(x) = -\int_0^x \log(1-t)/t dt
@@ -796,7 +796,7 @@ NumericalScalar SpecFunc::LambertW(const NumericalScalar x,
   // Second real branch, defined over [-1/e, 0[, LambertW <= -1
   else
   {
-    if (x >= 0.0) return -INFINITY;
+    if (x >= 0.0) return - std::numeric_limits<NumericalScalar>::infinity();
     if (x < -0.1) w = -2.0;
     else
     {

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IntegrationAlgorithmImplementation
  */
 
-class IntegrationAlgorithmImplementation
+class OT_API IntegrationAlgorithmImplementation
   : public PersistentObject
 {
 
@@ -43,7 +43,7 @@ class IntegrationAlgorithmImplementation
 public:
 
   /** Default constructor without parameters */
-  explicit IntegrationAlgorithmImplementation(const String & name = DefaultName);
+  IntegrationAlgorithmImplementation();
 
   /** Virtual copy constructor */
   virtual IntegrationAlgorithmImplementation * clone() const;

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The LogNormal distribution.
  */
-class LogNormal
+class OT_API LogNormal
   : public ContinuousDistribution
 {
   CLASSNAME;

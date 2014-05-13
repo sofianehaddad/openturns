@@ -32,8 +32,8 @@ CLASSNAMEINIT(SpectralModelImplementation);
 static Factory<SpectralModelImplementation> RegisteredFactory("SpectralModelImplementation");
 
 /* Constructor with parameters */
-SpectralModelImplementation::SpectralModelImplementation(const String & name)
-  : PersistentObject(name),
+SpectralModelImplementation::SpectralModelImplementation()
+  : PersistentObject(),
     dimension_(0),
     frequencyGrid_()
 {

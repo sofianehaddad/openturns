@@ -27,19 +27,14 @@
 
 #include "OTprivate.hxx"
 #include "OTconfig.hxx"
-#ifdef HAVE_FORTRANCINTERFACE
-#  include "FortranCInterface.h"
-#endif /* HAVE_FORTRANCINTERFACE */
 
 BEGIN_C_DECLS
 
 /** Function that evaluates 2-dimensional normal and student CDF. Nu=0 for normal CDF */
-#define BVTL_F77 F77_FUNC(bvtl,BVTL)
-double BVTL_F77(int *nu, double *dh, double *dk, double *r);
+double bvtl_(int *nu, double *dh, double *dk, double *r);
 
 /** Function that evaluates 3-dimensional normal and student CDF. Nu=0 for normal CDF */
-#define TVTL_F77 F77_FUNC(tvtl,TVTL)
-double TVTL_F77(int *nu, double *h, double *r, double *epsi);
+double tvtl_(int *nu, double *h, double *r, double *epsi);
 
 END_C_DECLS
 

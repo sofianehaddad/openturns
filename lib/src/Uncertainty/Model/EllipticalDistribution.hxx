@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A subclass for elliptical usual distributions.
  */
-class EllipticalDistribution
+class OT_API EllipticalDistribution
   : public ContinuousDistribution
 {
   CLASSNAME;
@@ -44,15 +44,13 @@ public:
   // Numerical precision for computing the quantile
 
   /** Default constructor */
-  explicit EllipticalDistribution(const NumericalPoint & mean,
-                                  const NumericalPoint & sigma,
-                                  const CorrelationMatrix & R,
-                                  const NumericalScalar covarianceNormalizationFactor,
-                                  const String & name = DefaultName);
+  EllipticalDistribution();
 
   /** Parameter constructor */
-  explicit EllipticalDistribution(const String & name = DefaultName);
-
+  EllipticalDistribution(const NumericalPoint & mean,
+                         const NumericalPoint & sigma,
+                         const CorrelationMatrix & R,
+                         const NumericalScalar covarianceNormalizationFactor);
 
   /** Virtual copy constructor */
   virtual EllipticalDistribution * clone() const;

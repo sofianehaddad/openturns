@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class GumbelCopulaFactory
  */
-class GumbelCopulaFactory
+class OT_API GumbelCopulaFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

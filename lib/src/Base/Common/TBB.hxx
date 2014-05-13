@@ -29,6 +29,14 @@
 #include <algorithm>
 
 #ifdef OPENTURNS_HAVE_TBB
+#ifdef OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
+# ifndef __TBB_NO_IMPLICIT_LINKAGE
+#  define __TBB_NO_IMPLICIT_LINKAGE 1
+# endif
+# ifndef __TBBMALLOC_NO_IMPLICIT_LINKAGE
+#  define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
+# endif
+#endif
 #include "tbb/tbb.h"
 #include "OTwindows.h"
 #else /* OPENTURNS_HAVE_TBB */
@@ -100,7 +108,7 @@ void parallel_sort( ITERATOR first, ITERATOR last )
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class TBB
+class OT_API TBB
 {
 public:
 #ifdef OPENTURNS_HAVE_TBB
@@ -157,7 +165,7 @@ private:
 
 
 /** This struct initializes all static members of TBB */
-struct TBB_init
+struct OT_API TBB_init
 {
   TBB_init();
   ~TBB_init();

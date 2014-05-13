@@ -31,7 +31,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /** A couple (internal state array, picking index) */
-class RandomGeneratorState
+class OT_API RandomGeneratorState
   : public PersistentObject
 {
   CLASSNAME;

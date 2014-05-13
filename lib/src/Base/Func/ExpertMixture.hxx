@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class building chaos expansions
  */
 
-class ExpertMixture
+class OT_API ExpertMixture
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

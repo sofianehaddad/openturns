@@ -48,9 +48,8 @@ StandardEvent::StandardEvent()
 /* Constructor from a RandomVector */
 StandardEvent::StandardEvent(const RandomVector & antecedent,
                              const ComparisonOperator & op,
-                             const NumericalScalar threshold,
-                             const String & name)
-  : Event(antecedent, op, threshold, name)
+                             const NumericalScalar threshold)
+  : Event(antecedent, op, threshold)
 {
   // StandardEvent can only be constructed from composite random vector whose antecedent has a spherical distribution. As we cannot check it, we just check that the distribution is elliptical
   if (!antecedent.getImplementation()->getAntecedent()->getDistribution().isElliptical()) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << antecedent.getImplementation()->getAntecedent()->getDistribution().getImplementation()->__str__();
@@ -64,8 +63,7 @@ StandardEvent::StandardEvent(const RandomVector & antecedent,
 }
 
 /* Constructor from an Event */
-StandardEvent::StandardEvent(const Event & event,
-                             const String & name)
+StandardEvent::StandardEvent(const Event & event)
   : Event(event)
 {
   // Get the isoprobabilistic inverse transformation from the antecedent distribution
@@ -80,7 +78,8 @@ StandardEvent::StandardEvent(const Event & event,
   const NumericalMathFunction composed(function, inverse);
   const RandomVector vect(composed, antecedent);
   // Set the random vector implementation
-  (*this) = StandardEvent(vect, event.getOperator(), event.getThreshold(), event.getName());
+  (*this) = StandardEvent(vect, event.getOperator(), event.getThreshold());
+  setName(event.getName());
 }
 
 END_NAMESPACE_OPENTURNS

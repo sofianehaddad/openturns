@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The gradient part of linear combination of polynomials
  */
 
-class AggregatedNumericalMathGradientImplementation
+class OT_API AggregatedNumericalMathGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

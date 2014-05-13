@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the Hessian of analytical functions.
  */
-class AnalyticalNumericalMathHessianImplementation
+class OT_API AnalyticalNumericalMathHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

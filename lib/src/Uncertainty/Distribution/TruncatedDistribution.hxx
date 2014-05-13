@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The TruncatedDistribution distribution.
  */
-class TruncatedDistribution
+class OT_API TruncatedDistribution
   : public DistributionImplementation
 {
   CLASSNAME;

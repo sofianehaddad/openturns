@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A sequence of numerical math function collection.
  */
-class BasisSequenceImplementation
+class OT_API BasisSequenceImplementation
   : public PersistentCollection<Indices>
 {
   CLASSNAME;

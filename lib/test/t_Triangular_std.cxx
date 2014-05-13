@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Triangular
 {
 public:
-  explicit TestObject() : Triangular(-0.5, 1.5, 2.5) {}
-  explicit TestObject(const String & name) : Triangular(-0.5, 1.5, 2.5)
-  {
-    setName(name);
-  }
+  TestObject() : Triangular(-0.5, 1.5, 2.5) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Triangular distribution(-0.5, 1.5, 2.5);

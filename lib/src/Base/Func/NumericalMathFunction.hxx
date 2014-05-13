@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * the function, the gradient or the hessian.
  * @see NumericalMathFunctionImplementation
  */
-class NumericalMathFunction
+class OT_API NumericalMathFunction
   : public TypedInterfaceObject<NumericalMathFunctionImplementation>
 {
   CLASSNAME;

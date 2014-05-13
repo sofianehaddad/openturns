@@ -41,7 +41,7 @@ class MersenneTwister;
  * RandomGenerator implements methods to control the random generator
  */
 
-class RandomGenerator
+class OT_API RandomGenerator
 {
 public:
 

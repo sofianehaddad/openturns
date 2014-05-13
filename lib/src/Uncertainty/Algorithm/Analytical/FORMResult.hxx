@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FORMResult
  * FORMResult stores the FORM result
  */
-class FORMResult:
+class OT_API FORMResult:
   public AnalyticalResult
 {
   CLASSNAME;
@@ -44,8 +44,7 @@ public:
   /** Standard constructor */
   FORMResult(const NumericalPoint & standardSpaceDesignPoint,
              const Event & limitStateVariable,
-             const Bool isStandardPointOriginInFailureSpace,
-             const String & name = DefaultName);
+             const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor */
   FORMResult();

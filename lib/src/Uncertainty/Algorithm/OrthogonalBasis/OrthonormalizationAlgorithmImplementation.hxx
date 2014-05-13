@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class OrthonormalizationAlgorithmImplementation
  */
 
-class OrthonormalizationAlgorithmImplementation
+class OT_API OrthonormalizationAlgorithmImplementation
   : public PersistentObject
 {
   CLASSNAME;

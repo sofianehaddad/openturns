@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for functionalChaos random vectors
  */
-class PosteriorRandomVector
+class OT_API PosteriorRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;

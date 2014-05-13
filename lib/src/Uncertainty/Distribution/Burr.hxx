@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Burr distribution.
  */
-class Burr
+class OT_API Burr
   : public ContinuousDistribution
 {
   CLASSNAME;

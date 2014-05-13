@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class NearestPointAlgorithmImplementationResult
  * NearestPointAlgorithmImplementationResult stores the optimization result
  */
-class NearestPointAlgorithmImplementationResult
+class OT_API NearestPointAlgorithmImplementationResult
   : public PersistentObject
 {
   CLASSNAME;

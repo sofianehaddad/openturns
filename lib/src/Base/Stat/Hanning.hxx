@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Hanning
  */
 
-class Hanning
+class OT_API Hanning
   : public FilteringWindowsImplementation
 {
 
@@ -44,7 +44,7 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit Hanning(const String & name = DefaultName);
+  Hanning();
 
   /** Virtual copy constructor */
   virtual Hanning * clone() const;

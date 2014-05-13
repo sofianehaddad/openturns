@@ -44,10 +44,11 @@ static Factory<KPermutationsDistribution> RegisteredFactory("KPermutationsDistri
 
 /* Default constructor */
 KPermutationsDistribution::KPermutationsDistribution()
-  : DiscreteDistribution("KPermutationsDistribution")
+  : DiscreteDistribution()
   , k_(0)
   , n_(0)
 {
+  setName("KPermutationsDistribution");
   setK(1);
   setN(1);
 }
@@ -55,10 +56,11 @@ KPermutationsDistribution::KPermutationsDistribution()
 /* Parameters constructor */
 KPermutationsDistribution::KPermutationsDistribution(const UnsignedInteger k,
     const UnsignedInteger n)
-  : DiscreteDistribution("KPermutationsDistribution")
+  : DiscreteDistribution()
   , k_(0)
   , n_(0)
 {
+  setName("KPermutationsDistribution");
   // This method compute the range also
   setK(k);
   setN(n);

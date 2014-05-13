@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Instance of Drawable
  */
 
-class Staircase : public DrawableImplementation
+class OT_API Staircase : public DrawableImplementation
 {
 
   CLASSNAME;

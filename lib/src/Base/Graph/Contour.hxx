@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-class Contour : public DrawableImplementation
+class OT_API Contour : public DrawableImplementation
 {
   CLASSNAME;
 

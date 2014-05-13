@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of bootstrapExperiment plan
  */
-class BootstrapExperiment
+class OT_API BootstrapExperiment
   : public WeightedExperiment
 {
   CLASSNAME;
@@ -43,11 +43,10 @@ public:
 
 
   /** Default constructor */
-  explicit BootstrapExperiment(const String & name = DefaultName);
+  BootstrapExperiment();
 
   /** Parameters constructor */
-  explicit BootstrapExperiment(const NumericalSample & sample,
-                               const String & name = DefaultName);
+  explicit BootstrapExperiment(const NumericalSample & sample);
 
   /** Virtual constructor */
   virtual BootstrapExperiment * clone() const;

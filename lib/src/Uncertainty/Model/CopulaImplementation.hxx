@@ -32,14 +32,14 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class CopulaImplementation
  */
-class CopulaImplementation
+class OT_API CopulaImplementation
   : public ContinuousDistribution
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  explicit CopulaImplementation(const String & name = DefaultName);
+  CopulaImplementation();
 
   /** Virtual constructor */
   virtual CopulaImplementation * clone() const;

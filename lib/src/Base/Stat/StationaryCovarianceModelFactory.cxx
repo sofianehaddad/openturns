@@ -35,12 +35,14 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(StationaryCovarianceModelFactory);
 static Factory<StationaryCovarianceModelFactory> RegisteredFactory("StationaryCovarianceModelFactory");
 
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalComplex>);
+static Factory<PersistentCollection<NumericalComplex> > RegisteredFactory2("PersistentCollection<NumericalComplex>");
+
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 
 /* Default constructor */
-StationaryCovarianceModelFactory::StationaryCovarianceModelFactory(const SpectralModelFactory & factory,
-    const String & name)
-  : CovarianceModelFactoryImplementation(name)
+StationaryCovarianceModelFactory::StationaryCovarianceModelFactory(const SpectralModelFactory & factory)
+  : CovarianceModelFactoryImplementation()
 {
   setSpectralModelFactory(factory);
 }

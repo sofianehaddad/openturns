@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  *
  */
-class EventDomainImplementation
+class OT_API EventDomainImplementation
   : public CompositeRandomVector
 {
   CLASSNAME;
@@ -53,8 +53,7 @@ public:
 
   /** Constructor from RandomVector */
   EventDomainImplementation(const RandomVectorImplementation & antecedent,
-                            const Domain & domain,
-                            const String & name = DefaultName);
+                            const Domain & domain);
 
   /** Virtual contructor */
   virtual EventDomainImplementation * clone() const;

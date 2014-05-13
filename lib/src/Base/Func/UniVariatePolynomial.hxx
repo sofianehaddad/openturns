@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is a 1D polynomial
  */
 
-class UniVariatePolynomial
+class OT_API UniVariatePolynomial
   : public TypedInterfaceObject<UniVariatePolynomialImplementation>
 {
   CLASSNAME;

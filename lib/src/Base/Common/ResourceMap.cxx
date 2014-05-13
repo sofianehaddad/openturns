@@ -95,6 +95,7 @@ ResourceMapInstance ResourceMap::GetInstance()
 
 void ResourceMap::Initialize()
 {
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
@@ -106,6 +107,9 @@ void ResourceMap::Initialize()
     perror("ResourceMap::Initialize mutex initialization failed");
     exit(1);
   }
+#else
+  pthread_mutex_init( &ResourceMap_InstanceMutex_, NULL );
+#endif
 #ifdef BOGUS_PTHREAD_LIBRARY
   ResourceMap_P_instance_ = 0;
 #else

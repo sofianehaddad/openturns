@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Compact
  */
 
-class Compact
+class OT_API Compact
   : public HistoryStrategyImplementation
 {
 

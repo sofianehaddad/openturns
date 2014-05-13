@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of fixedExperiment plan
  */
-class FixedExperiment
+class OT_API FixedExperiment
   : public WeightedExperiment
 {
   CLASSNAME;
@@ -43,16 +43,14 @@ public:
 
 
   /** Default constructor */
-  explicit FixedExperiment(const String & name = DefaultName);
+  FixedExperiment();
 
   /** Parameters constructor */
-  explicit FixedExperiment(const NumericalSample & sample,
-                           const String & name = DefaultName);
+  explicit FixedExperiment(const NumericalSample & sample);
 
   /** Parameters constructor */
   FixedExperiment(const NumericalSample & sample,
-                  const NumericalPoint & weights,
-                  const String & name = DefaultName);
+                  const NumericalPoint & weights);
 
   /** Virtual constructor */
   virtual FixedExperiment * clone() const;

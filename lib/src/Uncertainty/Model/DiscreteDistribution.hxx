@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A subclass for Discrete usual distributions.
  */
-class DiscreteDistribution
+class OT_API DiscreteDistribution
   : public DistributionImplementation
 {
   CLASSNAME;
@@ -43,7 +43,7 @@ public:
 
 
   /** Default constructor */
-  explicit DiscreteDistribution(const String & name = DefaultName);
+  DiscreteDistribution();
 
 
   /** Virtual constructor */

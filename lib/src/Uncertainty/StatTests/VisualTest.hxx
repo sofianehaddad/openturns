@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class VisualTest
+class OT_API VisualTest
 {
 public:
 

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Chi distribution.
  */
-class Chi
+class OT_API Chi
   : public ContinuousDistribution
 {
   CLASSNAME;

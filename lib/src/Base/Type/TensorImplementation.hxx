@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * TensorImplementation implements the Tensor classes
  */
 
-class TensorImplementation
+class OT_API TensorImplementation
   : public PersistentCollection<NumericalScalar>
 
 {

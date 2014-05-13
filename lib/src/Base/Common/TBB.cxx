@@ -66,6 +66,7 @@ TBB_init::~TBB_init()
 
 void TBB::Initialization()
 {
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
@@ -77,6 +78,9 @@ void TBB::Initialization()
     perror("TBB::Initialization mutex initialization failed");
     exit(1);
   }
+#else
+  pthread_mutex_init( &TBB_InstanceMutex_, NULL );
+#endif
 #ifdef BOGUS_PTHREAD_LIBRARY
   TBB_P_instance_ = 0;
 #else

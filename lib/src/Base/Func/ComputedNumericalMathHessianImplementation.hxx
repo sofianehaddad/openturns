@@ -46,7 +46,7 @@ class WrapperObject;
  * of a vector (aka NumericalPoint) through the hessian. The
  * hessian may be loaded in an external way through a wrapper.
  */
-class ComputedNumericalMathHessianImplementation
+class OT_API ComputedNumericalMathHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

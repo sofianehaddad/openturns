@@ -26,6 +26,7 @@
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,9 +36,10 @@ static Factory<Bernoulli> RegisteredFactory("Bernoulli");
 
 /* Default constructor */
 Bernoulli::Bernoulli()
-  : DiscreteDistribution("Bernoulli"),
+  : DiscreteDistribution(),
     p_(0.5)
 {
+  setName( "Bernoulli" );
   // We set the dimension of the Bernoulli distribution
   setDimension( 1 );
   computeRange();
@@ -45,9 +47,10 @@ Bernoulli::Bernoulli()
 
 /* Parameters constructor */
 Bernoulli::Bernoulli(const NumericalScalar p)
-  : DiscreteDistribution("Bernoulli"),
+  : DiscreteDistribution(),
     p_(-1.0)
 {
+  setName( "Bernoulli" );
   // This call sets also the range
   setP(p);
   // We set the dimension of the Bernoulli distribution

@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * of a vector (aka NumericalPoint) through the gradient. The
  * gradient may be loaded in an external way through a wrapper.
  */
-class LinearNumericalMathGradientImplementation
+class OT_API LinearNumericalMathGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

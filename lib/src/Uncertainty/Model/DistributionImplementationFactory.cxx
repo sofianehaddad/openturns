@@ -39,9 +39,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(DistributionImplementationFactory);
 
 /* Default constructor */
-DistributionImplementationFactory::DistributionImplementationFactory(const UnsignedInteger bootstrapSize,
-    const String & name)
-  : PersistentObject(name)
+DistributionImplementationFactory::DistributionImplementationFactory(const UnsignedInteger bootstrapSize)
+  : PersistentObject()
   , bootstrapSize_(bootstrapSize)
 {
   // Nothing to do

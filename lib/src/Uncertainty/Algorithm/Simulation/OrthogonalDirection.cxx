@@ -101,7 +101,7 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
     NumericalSample & result) const
 {
   // Normalization factor of the linear combination
-  NumericalScalar factor(1.0 / sqrt(size_));
+  NumericalScalar factor(1.0 / sqrt(1.0 * size_));
   // We have 2^size linear combinations to generate
   UnsignedInteger indexLinearCombinationMax(2 << size_);
   // For each combination

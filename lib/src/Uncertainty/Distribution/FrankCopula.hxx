@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The FrankCopula distribution.
  */
-class FrankCopula
+class OT_API FrankCopula
   : public ArchimedeanCopula
 {
   CLASSNAME;

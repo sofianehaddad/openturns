@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The evaluation part of an aggregation of functions from R^n to R^p_1,...,R^n to R^p_k
  */
 
-class AggregatedNumericalMathEvaluationImplementation
+class OT_API AggregatedNumericalMathEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

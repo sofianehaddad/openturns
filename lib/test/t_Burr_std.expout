@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Burr name=Burr dimension=1 c=1.5 k=4.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Burr name=myName dimension=1 c=1.5 k=4.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Burr name=myNewName dimension=1 c=1.5 k=4.5
 Distribution class=Burr name=Burr dimension=1 c=1.5 k=4.5
 Distribution Burr(c = 1.5, k = 4.5)
 Elliptical = false

@@ -39,7 +39,7 @@ class RegularGrid;
  * @class ExponentialModel
  */
 
-class ExponentialModel
+class OT_API ExponentialModel
   : public StationaryCovarianceModel
 {
 
@@ -49,23 +49,20 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit ExponentialModel(const String & name = DefaultName);
+  ExponentialModel();
 
   /** Standard constructor with amplitude and scale parameters parameters */
   ExponentialModel(const NumericalPoint & amplitude,
-                   const NumericalPoint & scale,
-                   const String & name = DefaultName);
+                   const NumericalPoint & scale);
 
   /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
   ExponentialModel(const NumericalPoint & amplitude,
                    const NumericalPoint & scale,
-                   const CorrelationMatrix & spatialCorrelation,
-                   const String & name = DefaultName);
+                   const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */
   ExponentialModel(const NumericalPoint & scale,
-                   const CovarianceMatrix & spatialCovariance,
-                   const String & name = DefaultName);
+                   const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
   virtual ExponentialModel * clone() const;

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is the interface class for projection strategies
  */
 
-class ProjectionStrategy
+class OT_API ProjectionStrategy
   : public TypedInterfaceObject<ProjectionStrategyImplementation>
 {
   CLASSNAME;

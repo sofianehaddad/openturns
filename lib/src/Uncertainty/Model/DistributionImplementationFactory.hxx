@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class DistributionImplementationFactory
  */
-class DistributionImplementationFactory
+class OT_API DistributionImplementationFactory
   : public PersistentObject
 {
   CLASSNAME;
@@ -47,8 +47,7 @@ public:
   typedef DistributionImplementation::Implementation Implementation;
 
   /** Default constructor */
-  explicit DistributionImplementationFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"),
-      const String & name = DefaultName);
+  explicit DistributionImplementationFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"));
 
   /** Virtual constructor */
   virtual DistributionImplementationFactory * clone() const;

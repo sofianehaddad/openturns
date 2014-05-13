@@ -36,8 +36,8 @@ typedef Collection<Distribution> DistributionCollection;
 CLASSNAMEINIT(LHSExperiment);
 
 /* Default constructor */
-LHSExperiment::LHSExperiment(const String & name):
-  WeightedExperiment(name),
+LHSExperiment::LHSExperiment():
+  WeightedExperiment(),
   shuffle_(0, 0),
   isAlreadyComputedShuffle_(false)
 {
@@ -45,9 +45,8 @@ LHSExperiment::LHSExperiment(const String & name):
 }
 
 /* Constructor with parameters */
-LHSExperiment::LHSExperiment(const UnsignedInteger size,
-                             const String & name):
-  WeightedExperiment(size, name),
+LHSExperiment::LHSExperiment(const UnsignedInteger size):
+  WeightedExperiment(size),
   shuffle_(0, 0),
   isAlreadyComputedShuffle_(false)
 {
@@ -56,9 +55,8 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
 
 /* Constructor with parameters */
 LHSExperiment::LHSExperiment(const Distribution & distribution,
-                             const UnsignedInteger size,
-                             const String & name):
-  WeightedExperiment(distribution, size, name),
+                             const UnsignedInteger size):
+  WeightedExperiment(distribution, size),
   shuffle_(0, 0),
   isAlreadyComputedShuffle_(false)
 {

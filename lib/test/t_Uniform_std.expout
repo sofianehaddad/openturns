@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Uniform name=Uniform dimension=1 a=-0.5 b=1.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Uniform name=myName dimension=1 a=-0.5 b=1.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Uniform name=myNewName dimension=1 a=-0.5 b=1.5
 Distribution class=Uniform name=Uniform dimension=1 a=-0.5 b=1.5
 Distribution Uniform(a = -0.5, b = 1.5)
 Elliptical = true

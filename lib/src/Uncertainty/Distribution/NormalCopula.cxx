@@ -36,6 +36,7 @@
 #include "Exception.hxx"
 #include "Description.hxx"
 #include "DistFunc.hxx"
+#include "SpecFunc.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "TBB.hxx"
 
@@ -47,10 +48,11 @@ static Factory<NormalCopula> RegisteredFactory("NormalCopula");
 
 /* Default constructor */
 NormalCopula::NormalCopula(const UnsignedInteger dim)
-  : CopulaImplementation("NormalCopula")
+  : CopulaImplementation()
   , correlation_(dim)
   , normal_(dim)
 {
+  setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(dim);
   computeRange();
@@ -58,10 +60,11 @@ NormalCopula::NormalCopula(const UnsignedInteger dim)
 
 /* Default constructor */
 NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
-  : CopulaImplementation("NormalCopula")
+  : CopulaImplementation()
   , correlation_(correlation)
   , normal_(NumericalPoint(correlation.getNbRows(), 0.0), NumericalPoint(correlation.getNbRows(), 1.0), correlation)
 {
+  setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(correlation.getNbRows());
   computeRange();
@@ -201,7 +204,7 @@ NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
     value += yi * yi;
   }
   // 0.398942280401432677939946059934 = 1 / sqrt(2.pi)
-  value = pow(0.398942280401432677939946059934, dimension) * exp(-0.5 * value);
+  value = pow(0.398942280401432677939946059934, static_cast<int>(dimension)) * exp(-0.5 * value);
   return normal_.computePDF(normalPoint) / value;
 }
 

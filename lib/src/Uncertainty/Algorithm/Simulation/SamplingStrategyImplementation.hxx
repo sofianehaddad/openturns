@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SamplingStrategyImplementation
  */
 
-class SamplingStrategyImplementation
+class OT_API SamplingStrategyImplementation
   : public PersistentObject
 {
 

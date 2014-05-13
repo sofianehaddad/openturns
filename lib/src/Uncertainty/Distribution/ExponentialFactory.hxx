@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ExponentialFactory
  */
-class ExponentialFactory
+class OT_API ExponentialFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

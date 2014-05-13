@@ -40,7 +40,7 @@ class RegularGrid;
  * @class SecondOrderModelImplementation
  */
 
-class SecondOrderModelImplementation
+class OT_API SecondOrderModelImplementation
   : public PersistentObject
 {
 
@@ -49,12 +49,11 @@ class SecondOrderModelImplementation
 public:
 
   /** Default constructor without parameters */
-  SecondOrderModelImplementation(const String & name = DefaultName);
+  SecondOrderModelImplementation();
 
   /** Constructor with covariance model and spectral model */
   SecondOrderModelImplementation(const CovarianceModel & covarianceModel,
-                                 const SpectralModel & spectralModel,
-                                 const String & name = DefaultName);
+                                 const SpectralModel & spectralModel);
 
   /** Virtual copy constructor */
   virtual SecondOrderModelImplementation * clone() const;

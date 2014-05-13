@@ -40,10 +40,11 @@ static Factory<PosteriorDistribution> RegisteredFactory("PosteriorDistribution")
 
 /* Default constructor */
 PosteriorDistribution::PosteriorDistribution()
-  : ContinuousDistribution("PosteriorDistribution"),
+  : ContinuousDistribution(),
     conditionalDistribution_(),
     observations_()
 {
+  setName("PosteriorDistribution");
   // First, set the observations
   observations_ = NumericalSample(1, conditionalDistribution_.getConditionedDistribution().getMean());
   // Then, set the conditional distribution. It also set the dimension.
@@ -54,10 +55,11 @@ PosteriorDistribution::PosteriorDistribution()
 /* Parameters constructor */
 PosteriorDistribution::PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
     const NumericalSample & observations)
-  : ContinuousDistribution("PosteriorDistribution"),
+  : ContinuousDistribution(),
     conditionalDistribution_(),
     observations_(observations)
 {
+  setName("PosteriorDistribution");
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a posterior distribution with no observation.";
   setConditionalDistribution(conditionalDistribution);
 }

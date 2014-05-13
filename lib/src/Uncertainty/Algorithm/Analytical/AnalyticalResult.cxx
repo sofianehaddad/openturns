@@ -54,9 +54,8 @@ static Factory<AnalyticalResult> RegisteredFactory("AnalyticalResult");
  */
 AnalyticalResult::AnalyticalResult(const NumericalPoint & standardSpaceDesignPoint,
                                    const Event & limitStateVariable,
-                                   const Bool isStandardPointOriginInFailureSpace,
-                                   const String & name):
-  PersistentObject(name),
+                                   const Bool isStandardPointOriginInFailureSpace):
+  PersistentObject(),
   standardSpaceDesignPoint_(standardSpaceDesignPoint.getDimension()),
   physicalSpaceDesignPoint_(standardSpaceDesignPoint.getDimension()),
   limitStateVariable_(limitStateVariable),

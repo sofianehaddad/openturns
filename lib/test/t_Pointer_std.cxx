@@ -30,8 +30,9 @@ using namespace OT::Test;
 class TestClass : public PersistentObject
 {
 public:
-  explicit TestClass(const String & name) : PersistentObject(name)
+  explicit TestClass(const String & name) : PersistentObject()
   {
+    setName(name);
     //     fullprint << "TestClass(const String & name) ("
     //                << getName() << ")" << std::endl;
   }

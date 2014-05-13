@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of box experiment plan
  */
-class Box
+class OT_API Box
   : public StratifiedExperiment
 {
   CLASSNAME;
@@ -43,14 +43,12 @@ public:
 
 
   /** Default constructor */
-  explicit Box(const String & name = DefaultName);
+  Box();
 
   /** Constructor with parameters */
-  explicit Box(const NumericalPoint & levels,
-               const String & name = DefaultName);
+  explicit Box(const NumericalPoint & levels);
 
-  explicit Box(const Indices & levels,
-               const String & name = DefaultName);
+  explicit Box(const Indices & levels);
 
   /** Virtual constructor */
   virtual Box * clone() const;

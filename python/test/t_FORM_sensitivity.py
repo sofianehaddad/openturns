@@ -79,7 +79,7 @@ try:
         output.setDescription(outputDescription)
 
         # We create an Event from this RandomVector
-        myEvent = Event(output, Greater(), 0.0, "Event 1")
+        myEvent = Event(output, Greater(), 0.0)
 
         # We create a NearestPoint algorithm
         myCobyla = Cobyla()

@@ -189,7 +189,7 @@ NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const U
   SquareMatrix z(n);
   NumericalPoint work(2 * n - 2);
   int info;
-  DSTEV_F77(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
+  dstev_(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
   weights = NumericalPoint(n);
   for (UnsignedInteger i = 0; i < n; ++i) weights[i] = z(0, i) * z(0, i);

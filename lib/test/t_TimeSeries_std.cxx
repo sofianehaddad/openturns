@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public TimeSeries
 {
 public:
-  explicit TestObject() : TimeSeries(1, 1) {}
-  explicit TestObject(const String & name) : TimeSeries(1, 1)
-  {
-    setName(name);
-  }
+  TestObject() : TimeSeries(1, 1) {}
   virtual ~TestObject() {}
 };
 
@@ -48,9 +44,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     const UnsignedInteger DIM = 2;
 

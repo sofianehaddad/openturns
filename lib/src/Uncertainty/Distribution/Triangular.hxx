@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Triangular distribution.
  */
-class Triangular
+class OT_API Triangular
   : public ContinuousDistribution
 {
   CLASSNAME;

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class MonteCarlo
  */
 
-class MonteCarlo :
+class OT_API MonteCarlo :
   public Simulation
 {
 

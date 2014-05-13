@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class is an interface for the 1D nonlinear solverImplementations
  */
-class SolverImplementation :
+class OT_API SolverImplementation :
   public PersistentObject
 {
   CLASSNAME;

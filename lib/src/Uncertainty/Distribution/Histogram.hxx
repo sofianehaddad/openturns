@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Histogram distribution.
  */
-class Histogram
+class OT_API Histogram
   : public ContinuousDistribution
 {
   CLASSNAME;

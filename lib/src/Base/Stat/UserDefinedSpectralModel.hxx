@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class UserDefinedSpectralModel
  */
 
-class UserDefinedSpectralModel
+class OT_API UserDefinedSpectralModel
   : public SpectralModelImplementation
 {
 
@@ -49,12 +49,11 @@ public:
   typedef Collection<HermitianMatrix>                     HermitianMatrixCollection;
 
   /** Default onstructor */
-  explicit UserDefinedSpectralModel(const String & name = DefaultName);
+  UserDefinedSpectralModel();
 
   /** Standard onstructor */
   UserDefinedSpectralModel(const RegularGrid & frequencyGrid,
-                           const HermitianMatrixCollection & spectralFunction,
-                           const String & name = DefaultName);
+                           const HermitianMatrixCollection & spectralFunction);
 
   /** Virtual copy constructor */
   virtual UserDefinedSpectralModel * clone() const;

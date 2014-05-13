@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class is an interface for the 1D nonlinear solvers
  */
-class Solver :
+class OT_API Solver :
   public TypedInterfaceObject<SolverImplementation>
 {
   CLASSNAME;

@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * and manages drawables to be plotted on the same window
  */
 
-class GraphImplementation :
+class OT_API GraphImplementation :
   public PersistentObject
 {
 

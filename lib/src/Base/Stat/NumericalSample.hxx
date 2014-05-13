@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class NumericalSample
  */
 
-class NumericalSample
+class OT_API NumericalSample
   : public TypedInterfaceObject<NumericalSampleImplementation>
 {
   CLASSNAME;
@@ -101,6 +101,9 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const NumericalSample & other) const;
+
+  /** Comparison operator */
+  Bool operator !=(const NumericalSample & other) const;
 
 #ifndef SWIG
   NSI_point operator [] (const UnsignedInteger index);

@@ -31,7 +31,7 @@
 
 #if defined OPENTURNS_HAVE_LIBXML2
 
-#if GCC_VERSION < 30400 /* below GCC 3.4.0 */
+#if defined(__GNUC__) && GCC_VERSION < 30400 /* below GCC 3.4.0 */
 #include <libxml/xmlstring.h>
 
 namespace std

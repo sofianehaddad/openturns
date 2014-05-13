@@ -55,6 +55,15 @@ Bool operator == (const Collection<T> & lhs,
 }
 
 
+/** Comparison operator (friend) */
+template <class T> inline
+Bool operator != (const Collection<T> & lhs,
+                  const Collection<T> & rhs)
+{
+  return !(lhs == rhs);
+}
+
+
 /** Ordering operator (friend) */
 template <class T> inline
 Bool operator < (const Collection<T> & lhs,
@@ -185,14 +194,14 @@ public:
 #ifndef SWIG
   /** Operator[]() gives access to the elements of the collection */
   inline
-  virtual T & operator [] (UnsignedInteger i)
+  virtual T & operator [] (const UnsignedInteger i)
   {
     return coll__[i];
   }
 
   /** Operator[]() gives access to the elements of the const collection */
   inline
-  virtual const T & operator [] (UnsignedInteger i) const
+  virtual const T & operator [] (const UnsignedInteger i) const
   {
     return coll__[i];
   }
@@ -277,7 +286,7 @@ public:
   inline
   UnsignedInteger getSize() const
   {
-    return coll__.size();
+    return static_cast<UnsignedInteger>(coll__.size());
   }
 
   /** Method resize() changes the size of the Collection. If the new size is smaller than the older one, the last elements are thrown away, else the new elements are setted to the default value of the element type */
@@ -378,6 +387,11 @@ public:
   /* Friend operator */
   template <class U> friend inline
   Bool operator == (const Collection<U> & lhs,
+                    const Collection<U> & rhs);
+
+  /* Friend operator */
+  template <class U> friend inline
+  Bool operator != (const Collection<U> & lhs,
                     const Collection<U> & rhs);
 
   /* Friend operator */

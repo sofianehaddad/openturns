@@ -35,8 +35,8 @@ static Factory<SpectralModelFactoryImplementation> RegisteredFactory("SpectralMo
 typedef NotYetImplementedException NotYetImplementedException;
 
 /* Default constructor */
-SpectralModelFactoryImplementation::SpectralModelFactoryImplementation(const String & name)
-  : PersistentObject(name),
+SpectralModelFactoryImplementation::SpectralModelFactoryImplementation()
+  : PersistentObject(),
     frequencyGrid_(),
     fftAlgorithm_()
 {

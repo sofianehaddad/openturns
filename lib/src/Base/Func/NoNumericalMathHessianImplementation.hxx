@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * of a vector (aka NumericalPoint) through the hessian. The
  * hessian may be loaded in an external way through a wrapper.
  */
-class NoNumericalMathHessianImplementation
+class OT_API NoNumericalMathHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

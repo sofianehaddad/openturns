@@ -181,6 +181,23 @@ FUNC_INFO( WRAPPERNAME ,
 FUNC_INIT( WRAPPERNAME , {} )
 
 
+// These commands should be inserted in FUNC_EXEC argument
+// just below.  But Microsoft compiler (at least Visual Studio 2010)
+// chokes on '#ifdef WIN32' because of the hash sign. 
+#ifdef WIN32
+#define TEST_SET_PATH_ON_WINDOWS \
+      char * cmd = p_exchangedData->parameters_->command_; \
+      char * autotest_path = getenv("AUTOTEST_PATH"); \
+      if (autotest_path != NULL) \
+      { \
+        char * abs_cmd = (char *) calloc(strlen(autotest_path) + strlen(cmd) + 60, sizeof(char)); \
+        sprintf(abs_cmd, "set PATH=%s;%%PATH%% & %s > NUL", autotest_path, cmd); \
+        free(cmd); \
+        p_exchangedData->parameters_->command_ = abs_cmd; \
+      }
+#else
+#define TEST_SET_PATH_ON_WINDOWS
+#endif
 
 
 /**
@@ -235,18 +252,8 @@ FUNC_EXEC( WRAPPERNAME,
       /* We create the input files for the external code in the temporary directory */
       if (createInputFiles(temporaryDirectory, p_internalState->p_exchangedData, inPoint, p_error)) return WRAPPER_EXECUTION_ERROR;
 
-#if WIN32
       // Autotest only set the PATH for Linux, so we have to manually set the windows PATH.
-      char * cmd = p_exchangedData->parameters_->command_;
-      char * autotest_path = getenv("AUTOTEST_PATH");
-      if (autotest_path != NULL)
-      {
-        char * abs_cmd = (char *) calloc(strlen(autotest_path) + strlen(cmd) + 60, sizeof(char));
-        sprintf(abs_cmd, "set PATH=%s;%%PATH%% & %s > NUL", autotest_path, cmd);
-        free(cmd);
-        p_exchangedData->parameters_->command_ = abs_cmd;
-      }
-#endif
+      TEST_SET_PATH_ON_WINDOWS
 
       /* The real computation is here */
       long rc = runInsulatedCommand( temporaryDirectory, p_exchangedData, inPoint, p_error );

@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of linear taylor response surface
  */
-class LinearTaylor
+class OT_API LinearTaylor
   : public PersistentObject
 {
   CLASSNAME;
@@ -48,12 +48,11 @@ public:
 
 
   /** Default constructor */
-  explicit LinearTaylor(const String & name = DefaultName);
+  LinearTaylor();
 
   /** Constructor with parameters */
   LinearTaylor(const NumericalPoint & center,
-               const NumericalMathFunction & inputFunction,
-               const String & name = DefaultName);
+               const NumericalMathFunction & inputFunction);
 
 
   /** Virtual constructor */

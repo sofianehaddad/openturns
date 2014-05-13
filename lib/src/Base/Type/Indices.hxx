@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a collection of indices
  */
-class Indices :
+class OT_API Indices :
   public PersistentCollection<UnsignedInteger>
 {
 public:

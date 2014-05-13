@@ -25,7 +25,13 @@ cmake_minimum_required ( VERSION 2.8 )
 
 #include ( CTest )
 
-set ( NEW_PATH "$ENV{PATH}:${INSTALL_DESTDIR}${EXAMPLE_PATH}" )
+if (UNIX)
+  set ( NEW_PATH "${INSTALL_DESTDIR}${EXAMPLE_PATH}:$ENV{PATH}" )
+else ()
+  #  Escape semicolons on Windows, this variable is used within a list
+  set ( NEW_PATH "${INSTALL_DESTDIR}${EXAMPLE_PATH};$ENV{PATH}" )
+  string(REPLACE ";" "\\;" NEW_PATH "${NEW_PATH}")
+endif ()
 
 set ( ADAPT_CHECK_TESTS_EXPONENT )
 set ( REPLACE_EOL " | cat " )

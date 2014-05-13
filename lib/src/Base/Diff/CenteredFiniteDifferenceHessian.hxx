@@ -46,7 +46,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * form a numerical math evaluation implementation by using centered
  * finite difference formula
  */
-class CenteredFiniteDifferenceHessian
+class OT_API CenteredFiniteDifferenceHessian
   : public FiniteDifferenceHessian
 {
   CLASSNAME;

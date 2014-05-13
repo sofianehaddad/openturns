@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements the Whittle likelihood for estimating ARMA coefficients
  */
-class WhittleFactory
+class OT_API WhittleFactory
   : public ARMAFactoryImplementation
 {
   CLASSNAME;
@@ -43,19 +43,17 @@ class WhittleFactory
 public:
 
   /** Default constructor */
-  explicit WhittleFactory(const String & name = DefaultName);
+  WhittleFactory();
 
   /** Default constructor */
   WhittleFactory(const UnsignedInteger p,
                  const UnsignedInteger q,
-                 const Bool invertible = true,
-                 const String & name = DefaultName);
+                 const Bool invertible = true);
 
   /** Default constructor */
   WhittleFactory(const Indices & p,
                  const Indices & q,
-                 const Bool invertible = true,
-                 const String & name = DefaultName);
+                 const Bool invertible = true);
 
   /** Virtual constructor */
   virtual WhittleFactory * clone() const;

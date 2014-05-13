@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Gamma distribution.
  */
-class Gamma
+class OT_API Gamma
   : public ContinuousDistribution
 {
   CLASSNAME;

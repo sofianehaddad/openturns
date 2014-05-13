@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of quadratic response surface
  */
-class QuadraticLeastSquares
+class OT_API QuadraticLeastSquares
   : public PersistentObject
 {
   CLASSNAME;
@@ -48,13 +48,11 @@ public:
 
   /** Constructor with parameters */
   QuadraticLeastSquares(const NumericalSample & dataIn,
-                        const NumericalMathFunction & inputFunction,
-                        const String & name = DefaultName);
+                        const NumericalMathFunction & inputFunction);
 
   /** Constructor with parameters */
   QuadraticLeastSquares(const NumericalSample & dataIn,
-                        const NumericalSample & dataOut,
-                        const String & name = DefaultName);
+                        const NumericalSample & dataOut);
 
 
   /** Virtual constructor */

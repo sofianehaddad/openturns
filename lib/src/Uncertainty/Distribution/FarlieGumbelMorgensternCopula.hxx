@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The FarlieGumbelMorgensternCopula distribution.
  */
-class FarlieGumbelMorgensternCopula
+class OT_API FarlieGumbelMorgensternCopula
   : public CopulaImplementation
 {
   CLASSNAME;

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The implementation of the Normal process class
  */
-class TemporalNormalProcess
+class OT_API TemporalNormalProcess
   : public ProcessImplementation
 {
   CLASSNAME;
@@ -47,29 +47,25 @@ public:
   /** Some typedefs to ease reading */
 
   /** Default constructor */
-  explicit TemporalNormalProcess(const String & name = DefaultName);
+  TemporalNormalProcess();
 
   /** Standard constructor  */
   TemporalNormalProcess(const TrendTransform & trend,
                         const SecondOrderModel  & model,
-                        const Mesh & mesh,
-                        const String & name = DefaultName);
+                        const Mesh & mesh);
 
   /** Standard constructor  */
   TemporalNormalProcess(const TrendTransform & trend,
                         const CovarianceModel & covarianceModel,
-                        const Mesh & mesh,
-                        const String & name = DefaultName);
+                        const Mesh & mesh);
 
   /** Standard constructor  */
   TemporalNormalProcess(const SecondOrderModel  & model,
-                        const Mesh & mesh,
-                        const String & name = DefaultName);
+                        const Mesh & mesh);
 
   /** Standard constructor  */
   TemporalNormalProcess(const CovarianceModel & covarianceModel,
-                        const Mesh & mesh,
-                        const String & name = DefaultName);
+                        const Mesh & mesh);
 
   /** Virtual constructor */
   virtual TemporalNormalProcess * clone() const;

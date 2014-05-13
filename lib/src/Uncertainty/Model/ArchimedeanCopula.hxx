@@ -39,14 +39,14 @@ BEGIN_NAMESPACE_OPENTURNS
  * Classes derived from ArchimedeanCopula are known by themselves,
  * without being reconstructed or built in any way.
  */
-class ArchimedeanCopula
+class OT_API ArchimedeanCopula
   : public CopulaImplementation
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  explicit ArchimedeanCopula(const String & name = DefaultName);
+  ArchimedeanCopula();
 
 
   /** Virtual constructor */

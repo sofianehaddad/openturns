@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class WelchFactory
  */
-class WelchFactory
+class OT_API WelchFactory
   : public SpectralModelFactoryImplementation
 {
   CLASSNAME;
@@ -41,13 +41,12 @@ public:
 
 
   /** Default constructor */
-  explicit WelchFactory(const String & name = DefaultName);
+  WelchFactory();
 
   /** Standard constructor using a filtering windows and a frequency limit*/
   WelchFactory(const FilteringWindows & window,
                const UnsignedInteger blockNumber,
-               const NumericalScalar overlap = 0.5,
-               const String & name = DefaultName);
+               const NumericalScalar overlap = 0.5);
 
   /** Virtual constructor */
   virtual WelchFactory * clone() const;

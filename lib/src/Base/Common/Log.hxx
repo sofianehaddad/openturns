@@ -61,7 +61,7 @@ struct _Prefix
  * @internal
  */
 
-class Log
+class OT_API Log
 {
 public:
 
@@ -98,7 +98,7 @@ public:
   static void Debug(const String & msg);
   static inline Bool HasDebug()
   {
-    return Flags() & Log::DBG;
+    return 0 != (Flags() & Log::DBG);
   }
 
   /** Log messages according to the WRAPPER level
@@ -107,7 +107,7 @@ public:
   static void Wrapper(const String & msg);
   static inline Bool HasWrapper()
   {
-    return Flags() & Log::WRAPPER;
+    return 0 != (Flags() & Log::WRAPPER);
   }
 
   /** Log messages according to the INFO level
@@ -116,7 +116,7 @@ public:
   static void Info(const String & msg);
   static inline Bool HasInfo()
   {
-    return Flags() & Log::INFO;
+    return 0 != (Flags() & Log::INFO);
   }
 
   /** Log messages according to the USER level
@@ -125,7 +125,7 @@ public:
   static void User(const String & msg);
   static inline Bool HasUser()
   {
-    return Flags() & Log::USER;
+    return 0 != (Flags() & Log::USER);
   }
 
   /** Log messages according to the WARN level
@@ -134,7 +134,7 @@ public:
   static void Warn(const String & msg);
   static inline Bool HasWarn()
   {
-    return Flags() & Log::WARN;
+    return 0 != (Flags() & Log::WARN);
   }
 
   /** Log messages according to the ERROR level
@@ -143,7 +143,7 @@ public:
   static void Error(const String & msg);
   static inline Bool HasError()
   {
-    return Flags() & Log::ERROR;
+    return 0 != (Flags() & Log::ERROR);
   }
 
   /** Log messages according to the TRACE level
@@ -152,7 +152,7 @@ public:
   static void Trace(const String & msg);
   static inline Bool HasTrace()
   {
-    return Flags() & Log::TRACE;
+    return 0 != (Flags() & Log::TRACE);
   }
 
   /** Divert the output to a file
@@ -192,7 +192,7 @@ public:
   static String GetColor(const Log::Severity severity);
 
 #ifndef SWIG
-  struct Entry
+  struct OT_API Entry
   {
     Severity sev_;
     String msg_;
@@ -242,7 +242,7 @@ private:
 
 
 /** This struct initializes all static members of Log */
-struct Log_init
+struct OT_API Log_init
 {
   Log_init();
   ~Log_init();

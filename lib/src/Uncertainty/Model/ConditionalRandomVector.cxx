@@ -35,9 +35,8 @@ static Factory<ConditionalRandomVector> RegisteredFactory("ConditionalRandomVect
 
 /* Default constructor */
 ConditionalRandomVector::ConditionalRandomVector(const Distribution & distribution,
-    const RandomVector & randomParameters,
-    const String & name)
-  : RandomVectorImplementation(name),
+    const RandomVector & randomParameters)
+  : RandomVectorImplementation(),
     distribution_(distribution),
     randomParameters_(randomParameters)
 {

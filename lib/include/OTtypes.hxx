@@ -104,22 +104,6 @@ typedef void * LibrarySymbol;
 typedef void (*LogFunctionPointer) (const String &);
 
 
-
-/**
- * @fn Bool operator !=(const T & lhs, const T & rhs)
- *
- * @brief Templated inequality comparison operator
- * @param lhs The left hand side of the comparison
- * @param rhs The right hand side of the comparison
- * @return True if \em lhs is different from \em rhs
- */
-
-template <class T> inline
-Bool operator !=(const T & lhs, const T & rhs)
-{
-  return !(lhs == rhs);
-}
-
 END_NAMESPACE_OPENTURNS
 
 /**

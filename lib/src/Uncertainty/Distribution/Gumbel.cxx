@@ -35,9 +35,10 @@ static Factory<Gumbel> RegisteredFactory("Gumbel");
 
 /* Default constructor */
 Gumbel::Gumbel()
-  : ContinuousDistribution("Gumbel"),
+  : ContinuousDistribution(),
     alpha_(1.0), beta_(0.0)
 {
+  setName( "Gumbel" );
   setDimension( 1 );
   computeRange();
 }
@@ -46,10 +47,11 @@ Gumbel::Gumbel()
 Gumbel::Gumbel(const NumericalScalar arg1,
                const NumericalScalar arg2,
                const ParameterSet set)
-  : ContinuousDistribution("Gumbel"),
+  : ContinuousDistribution(),
     alpha_(0.0),
     beta_(arg2)
 {
+  setName( "Gumbel" );
   switch (set)
   {
     case ALPHABETA:

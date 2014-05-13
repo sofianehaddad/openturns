@@ -20,9 +20,18 @@
 
 #include <WrapperInterface.h>
 #include <WrapperCommon_macros.h>
+#include <OTdebug.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #undef BIND_ACTION
-#define BIND_ACTION(rtype, name, args) extern rtype (* name) args;
+#define BIND_ACTION(rtype, name, args) OT_API rtype (* name) args;
 BIND_METHODS;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* OPENTURNS_WRAPPERCOMMON_STATIC_H */

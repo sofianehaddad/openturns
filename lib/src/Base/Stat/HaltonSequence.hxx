@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HaltonSequence
  */
 
-class HaltonSequence :
+class OT_API HaltonSequence :
   public LowDiscrepancySequenceImplementation
 {
   CLASSNAME;

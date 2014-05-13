@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The NonCentralChiSquare distribution.
  */
-class NonCentralChiSquare
+class OT_API NonCentralChiSquare
   : public ContinuousDistribution
 {
   CLASSNAME;

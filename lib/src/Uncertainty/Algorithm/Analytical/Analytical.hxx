@@ -48,7 +48,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * and computes the results of an analytical result
  */
 
-class Analytical
+class OT_API Analytical
   : public PersistentObject
 {
 

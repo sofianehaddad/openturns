@@ -37,11 +37,12 @@ static Factory<FisherSnedecor> RegisteredFactory("FisherSnedecor");
 
 /* Default constructor */
 FisherSnedecor::FisherSnedecor()
-  : ContinuousDistribution("FisherSnedecor")
+  : ContinuousDistribution()
   , d1_(1.0)
   , d2_(1.0)
   , normalizationFactor_(0.0)
 {
+  setName( "FisherSnedecor" );
   setDimension( 1 );
   update();
   computeRange();
@@ -50,11 +51,12 @@ FisherSnedecor::FisherSnedecor()
 /* Parameters constructor */
 FisherSnedecor::FisherSnedecor(const NumericalScalar d1,
                                const NumericalScalar d2)
-  : ContinuousDistribution("FisherSnedecor")
+  : ContinuousDistribution()
   , d1_(d1)
   , d2_(0.0)
   , normalizationFactor_(0.0)
 {
+  setName( "FisherSnedecor" );
   setD1(d1);
   // This call sets also the range
   setD2(d2);

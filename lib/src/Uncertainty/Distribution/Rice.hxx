@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Rice distribution.
  */
-class Rice
+class OT_API Rice
   : public ContinuousDistribution
 {
   CLASSNAME;

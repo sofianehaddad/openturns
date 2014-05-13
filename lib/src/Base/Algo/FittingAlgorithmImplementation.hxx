@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Cross-validation algorithm implementation
  */
-class FittingAlgorithmImplementation
+class OT_API FittingAlgorithmImplementation
   : public PersistentObject
 {
   CLASSNAME;

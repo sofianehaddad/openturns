@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The evaluation part of linear combination of polynomials
  */
 
-class LinearCombinationEvaluationImplementation
+class OT_API LinearCombinationEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

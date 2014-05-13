@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class DirichletFactory
  */
-class DirichletFactory
+class OT_API DirichletFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

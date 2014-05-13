@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     {
       for (UnsignedInteger j = 0; j < chainDim; ++ j)
       {
-        p[i][j] = pow(-2 + 5.*i / 9., j);
+        p[i][j] = pow(-2 + 5.*i / 9., 1.0 * j);
       }
     }
     std::cout << "p=" << p << std::endl;

@@ -47,14 +47,14 @@ class NSI_const_point;
 /****************************************/
 
 
-class NSI_point
+class OT_API NSI_point
 {
   NumericalSampleImplementation * p_nsi_;
   UnsignedInteger index_;
   UnsignedInteger dimension_;
 
   friend class NSI_const_point;
-  friend std::ostream & operator << (std::ostream & os, const NSI_point & point);
+  friend OT_API std::ostream & operator << (std::ostream & os, const NSI_point & point);
 
 public:
   typedef       NumericalScalar *       iterator;
@@ -104,7 +104,7 @@ public:
   }
   inline iterator end()
   {
-    return &operator[](dimension_);
+    return &operator[](0) + dimension_;
   }
   inline const_iterator begin() const
   {
@@ -112,7 +112,7 @@ public:
   }
   inline const_iterator end() const
   {
-    return &operator[](dimension_);
+    return &operator[](0) + dimension_;
   }
 
   NSI_point & operator += (const NSI_point & other);
@@ -123,20 +123,20 @@ public:
   NSI_point & operator /= (const NumericalScalar val);
 };
 
-bool operator == (const NSI_point & lhs, const NSI_point & rhs);
-bool operator != (const NSI_point & lhs, const NSI_point & rhs);
-bool operator <  (const NSI_point & lhs, const NSI_point & rhs);
-bool operator >  (const NSI_point & lhs, const NSI_point & rhs);
-bool operator <= (const NSI_point & lhs, const NSI_point & rhs);
-bool operator >= (const NSI_point & lhs, const NSI_point & rhs);
+OT_API bool operator == (const NSI_point & lhs, const NSI_point & rhs);
+OT_API bool operator != (const NSI_point & lhs, const NSI_point & rhs);
+OT_API bool operator <  (const NSI_point & lhs, const NSI_point & rhs);
+OT_API bool operator >  (const NSI_point & lhs, const NSI_point & rhs);
+OT_API bool operator <= (const NSI_point & lhs, const NSI_point & rhs);
+OT_API bool operator >= (const NSI_point & lhs, const NSI_point & rhs);
 
-inline
+OT_API inline
 std::ostream & operator <<(std::ostream & os, const NSI_point & point)
 {
   return os << NumericalPoint( point );
 }
 
-inline
+OT_API inline
 OStream & operator << (OStream & OS, const NSI_point & point)
 {
   OS.getStream() << NumericalPoint( point ).__repr__();
@@ -144,13 +144,13 @@ OStream & operator << (OStream & OS, const NSI_point & point)
 }
 
 
-class NSI_const_point
+class OT_API NSI_const_point
 {
   const NumericalSampleImplementation * p_nsi_;
   UnsignedInteger index_;
   UnsignedInteger dimension_;
 
-  friend std::ostream & operator << (std::ostream & os, const NSI_const_point & point);
+  friend OT_API std::ostream & operator << (std::ostream & os, const NSI_const_point & point);
 
 public:
   typedef       NumericalScalar *       iterator;
@@ -183,24 +183,24 @@ public:
   }
   inline const_iterator end() const
   {
-    return &operator[](dimension_);
+    return &operator[](0) + dimension_;
   }
 };
 
-bool operator == (const NSI_const_point & lhs, const NSI_const_point & rhs);
-bool operator != (const NSI_const_point & lhs, const NSI_const_point & rhs);
-bool operator <  (const NSI_const_point & lhs, const NSI_const_point & rhs);
-bool operator >  (const NSI_const_point & lhs, const NSI_const_point & rhs);
-bool operator <= (const NSI_const_point & lhs, const NSI_const_point & rhs);
-bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs);
+OT_API bool operator == (const NSI_const_point & lhs, const NSI_const_point & rhs);
+OT_API bool operator != (const NSI_const_point & lhs, const NSI_const_point & rhs);
+OT_API bool operator <  (const NSI_const_point & lhs, const NSI_const_point & rhs);
+OT_API bool operator >  (const NSI_const_point & lhs, const NSI_const_point & rhs);
+OT_API bool operator <= (const NSI_const_point & lhs, const NSI_const_point & rhs);
+OT_API bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs);
 
-inline
+OT_API inline
 std::ostream & operator <<(std::ostream & os, const NSI_const_point & point)
 {
   return os << NumericalPoint( point );
 }
 
-inline
+OT_API inline
 OStream & operator << (OStream & OS, const NSI_const_point & point)
 {
   OS.getStream() << NumericalPoint( point ).__repr__();
@@ -245,7 +245,7 @@ NumericalPoint operator * (const NumericalScalar val,
 /****************************************/
 
 
-class NSI_iterator
+class OT_API NSI_iterator
 {
   NumericalSampleImplementation * p_nsi_;
   UnsignedInteger current_;
@@ -352,7 +352,7 @@ NSI_iterator::difference_type operator - (const NSI_iterator & lhs, const NSI_it
 
 
 
-class NSI_const_iterator
+class OT_API NSI_const_iterator
 {
   const NumericalSampleImplementation * p_nsi_;
   UnsignedInteger current_;
@@ -467,7 +467,7 @@ NSI_const_iterator::difference_type operator - (const NSI_const_iterator & lhs, 
  * @class NumericalSampleImplementation
  */
 
-class NumericalSampleImplementation
+class OT_API NumericalSampleImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -479,7 +479,7 @@ class NumericalSampleImplementation
   friend class BuildMethodMap;
   friend class ExportMethodMap;
 #ifndef SWIG
-  friend Bool operator ==(const NumericalSampleImplementation & lhs, const NumericalSampleImplementation & rhs);
+  friend OT_API Bool operator ==(const NumericalSampleImplementation & lhs, const NumericalSampleImplementation & rhs);
 #endif
 
 public:
@@ -809,7 +809,7 @@ private:
 
 
 /* Comparison function */
-Bool operator ==(const NumericalSampleImplementation & lhs, const NumericalSampleImplementation & rhs);
+OT_API Bool operator ==(const NumericalSampleImplementation & lhs, const NumericalSampleImplementation & rhs);
 
 
 END_NAMESPACE_OPENTURNS

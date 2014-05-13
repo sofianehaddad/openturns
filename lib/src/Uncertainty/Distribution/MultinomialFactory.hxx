@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class MultinomialFactory
  */
-class MultinomialFactory
+class OT_API MultinomialFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

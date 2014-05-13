@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ComposedNumericalMathFunction
  */
 
-class ComposedNumericalMathFunction
+class OT_API ComposedNumericalMathFunction
   : public NumericalMathFunctionImplementation
 {
   CLASSNAME;

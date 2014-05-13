@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * point of a manifold defined implicitely the nearest to the origin
  */
 
-class NearestPointAlgorithm
+class OT_API NearestPointAlgorithm
   : public TypedInterfaceObject<NearestPointAlgorithmImplementation>
 {
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Meixner polynomial factory
  */
 
-class MeixnerFactory
+class OT_API MeixnerFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
   CLASSNAME;

@@ -30,14 +30,15 @@
 #include "ResourceMap.hxx"
 #include "MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "GaussKronrod.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ContinuousDistribution);
 
 /* Default constructor */
-ContinuousDistribution::ContinuousDistribution(const String & name)
-  : DistributionImplementation(name)
+ContinuousDistribution::ContinuousDistribution()
+  : DistributionImplementation()
 {
   // Nothing to do
 }
@@ -133,7 +134,7 @@ NumericalScalar ContinuousDistribution::computeProbability(const Interval & inte
   NumericalSample nodesAndWeights(getGaussNodesAndWeights());
   // Perform the integration
   const UnsignedInteger marginalNodesNumber(getIntegrationNodesNumber());
-  const UnsignedInteger size(static_cast< UnsignedInteger >(round(pow(marginalNodesNumber, dimension))));
+  const UnsignedInteger size(static_cast< UnsignedInteger >(round(pow(static_cast<double>(marginalNodesNumber), static_cast<int>(dimension)))));
   NumericalScalar probability(0.0);
   Indices indices(dimension, 0);
   for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)

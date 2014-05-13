@@ -35,18 +35,17 @@ CLASSNAMEINIT(WhiteNoise);
 static Factory<WhiteNoise> RegisteredFactory("WhiteNoise");
 
 /* Standard constructor */
-WhiteNoise::WhiteNoise(const String & name)
-  : ProcessImplementation(name)
+WhiteNoise::WhiteNoise()
+  : ProcessImplementation()
   , distribution_(Normal())
 {
   // Nothing to do
 }
 
 /* Standard constructor */
-WhiteNoise::WhiteNoise(const Distribution & distribution,
-                       const String & name)
+WhiteNoise::WhiteNoise(const Distribution & distribution)
 /* throw (InvalidArgumentException) */
-  : ProcessImplementation(name)
+  : ProcessImplementation()
   , distribution_()
 {
   // Check if the given distribution has a null mean
@@ -55,9 +54,8 @@ WhiteNoise::WhiteNoise(const Distribution & distribution,
 
 /* Standard constructor */
 WhiteNoise::WhiteNoise(const Distribution & distribution,
-                       const Mesh & mesh,
-                       const String & name)
-  : ProcessImplementation(name)
+                       const Mesh & mesh)
+  : ProcessImplementation()
   , distribution_()
 {
   // Set the dimension of the process

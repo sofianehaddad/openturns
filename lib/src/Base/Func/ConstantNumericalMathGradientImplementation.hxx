@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * of a vector (aka NumericalPoint) through the gradient. The
  * gradient may be loaded in an external way through a wrapper.
  */
-class ConstantNumericalMathGradientImplementation
+class OT_API ConstantNumericalMathGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

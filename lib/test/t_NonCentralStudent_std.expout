@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=NonCentralStudent name=NonCentralStudent dimension=1 nu=7.2 delta=4.8 gamma=-3.7
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=NonCentralStudent name=myName dimension=1 nu=7.2 delta=4.8 gamma=-3.7
-checkNameAccessors()
-streamObject(const T & anObject)
-class=NonCentralStudent name=myNewName dimension=1 nu=7.2 delta=4.8 gamma=-3.7
 Distribution class=NonCentralStudent name=NonCentralStudent dimension=1 nu=7.2 delta=4.8 gamma=-3.7
 Distribution NonCentralStudent(nu = 7.2, delta = 4.8, gamma = -3.7)
 Elliptical = false

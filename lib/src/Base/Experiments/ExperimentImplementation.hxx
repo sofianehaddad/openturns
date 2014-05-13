@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of experimentImplementation plan
  */
-class ExperimentImplementation
+class OT_API ExperimentImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -46,7 +46,7 @@ public:
   typedef Pointer<ExperimentImplementation> Implementation;
 
   /** Default constructor */
-  explicit ExperimentImplementation(const String & name = DefaultName);
+  ExperimentImplementation();
 
   /** Virtual constructor */
   virtual ExperimentImplementation * clone() const;

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-class BlendedStep
+class OT_API BlendedStep
   : public FiniteDifferenceStepImplementation
 {
   CLASSNAME;

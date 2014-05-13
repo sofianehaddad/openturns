@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TrendFactory
  */
 
-class TrendFactory
+class OT_API TrendFactory
   : public PersistentObject
 {
 
@@ -51,8 +51,7 @@ public:
 
   /** Standard constructor  */
   explicit TrendFactory(const BasisSequenceFactory & basisSequenceFactory = LAR(),
-                        const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut(),
-                        const String & name = DefaultName);
+                        const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** BasisSequenceFactory accessors */
   BasisSequenceFactory getBasisSequenceFactory() const;

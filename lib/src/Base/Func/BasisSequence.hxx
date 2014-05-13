@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A sequence of numerical math function collection.
  */
-class BasisSequence
+class OT_API BasisSequence
   : public TypedCollectionInterfaceObject<BasisSequenceImplementation>
 {
   CLASSNAME;

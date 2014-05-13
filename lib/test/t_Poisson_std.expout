@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Poisson name=Poisson dimension=1 lambda=10
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Poisson name=myName dimension=1 lambda=10
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Poisson name=myNewName dimension=1 lambda=10
 Distribution class=Poisson name=Poisson dimension=1 lambda=10
 Distribution Poisson(lambda = 10)
 Elliptical = false

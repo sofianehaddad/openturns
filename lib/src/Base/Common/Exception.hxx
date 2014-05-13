@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * A helper class that saves the position where it was instanciated in file.
  * This class works in conjonction with the preprocessor (cpp). See HERE macro
  */
-class PointInSourceFile
+class OT_API PointInSourceFile
 {
 public:
   PointInSourceFile(const  char * file, int line
@@ -90,7 +90,7 @@ private:
  * so Open TURNS' exceptions can be catched as standard exceptions.
  */
 
-class Exception :
+class OT_API Exception :
   public std::exception
 {
 
@@ -171,9 +171,9 @@ private:
  * Operator << converts the Exception object to an output stream
  * so it is easy to show the reason of the exception.
  */
-std::ostream & operator <<(std::ostream & os, const Exception & obj);
+OT_API std::ostream & operator <<(std::ostream & os, const Exception & obj);
 #ifndef SWIG
-OStream & operator <<(OStream & OS, const Exception & obj);
+OT_API OStream & operator <<(OStream & OS, const Exception & obj);
 #endif
 
 
@@ -187,7 +187,7 @@ OStream & operator <<(OStream & OS, const Exception & obj);
  */
 
 
-#define NEW_EXCEPTION( CName ) class CName : public Exception   \
+#define NEW_EXCEPTION( CName ) class OT_API CName : public Exception   \
   {                                                             \
   public:                                                       \
     CName (const PointInSourceFile & point);                    \

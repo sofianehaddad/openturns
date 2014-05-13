@@ -122,6 +122,12 @@ Bool NumericalSample::operator ==(const NumericalSample & other) const
   return *getImplementation() == *(other.getImplementation());
 }
 
+/* Comparison operator */
+Bool NumericalSample::operator !=(const NumericalSample & other) const
+{
+  return !operator==(other);
+}
+
 
 NSI_point NumericalSample::operator [] (const UnsignedInteger index)
 {

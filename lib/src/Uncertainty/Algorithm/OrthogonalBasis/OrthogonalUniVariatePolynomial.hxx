@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is an orthogonal 1D polynomial. The polynomial P0 is constant equal to 1.0, and by convention we note P-1(x) the null polynomial. For n>=1 we have: Pn+1(x) = (an * x + bn) * Pn(x) + cn * Pn-1(x)
  */
 
-class OrthogonalUniVariatePolynomial
+class OT_API OrthogonalUniVariatePolynomial
   : public UniVariatePolynomialImplementation
 {
   CLASSNAME;

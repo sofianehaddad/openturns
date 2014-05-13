@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-struct NO_MATCH_ON_ReturnTypeAdapter {};
+struct OT_API NO_MATCH_ON_ReturnTypeAdapter {};
 
 template <typename Tp_> struct ReturnTypeAdapter
 {
@@ -60,7 +60,7 @@ template <> struct ReturnTypeAdapter< NumericalPoint >
 
 
 
-struct NO_MATCH_ON_ArgumentTypeAdapter {};
+struct OT_API NO_MATCH_ON_ArgumentTypeAdapter {};
 
 template <typename Tp_> struct ArgumentTypeAdapter
 {

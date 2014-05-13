@@ -35,8 +35,10 @@
 #ifndef WIN32
 #include <sys/wait.h>  // for waitpid(2)
 #endif
+#ifndef _MSC_VER
 #include <libgen.h>    // for dirname(3)
 #include <dirent.h>    // for scandir(3)
+#endif
 #include <sys/stat.h>  // for stat(2)
 #ifndef WIN32
 #include <ftw.h>       // for stat(2)
@@ -47,6 +49,50 @@
 #include "ResourceMap.hxx"
 #include "Exception.hxx"
 #include "TTY.hxx"
+
+
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+#include <io.h>
+
+
+typedef SSIZE_T ssize_t;
+# define open  _open
+# define close _close
+# define creat _creat
+# define read  _read
+# define write _write
+# define S_ISDIR(mode)	(((mode) & S_IFDIR) != 0)
+
+# define va_copy(d,s) ((d) = (s))
+# define snprintf c99_snprintf
+
+static inline int c99_vsnprintf(char* str, size_t size, const char* format, va_list ap)
+{
+    int count = -1;
+
+    if (size != 0)
+        count = _vsnprintf_s(str, size, _TRUNCATE, format, ap);
+    if (count == -1)
+        count = _vscprintf(format, ap);
+
+    return count;
+}
+
+static inline int c99_snprintf(char* str, size_t size, const char* format, ...)
+{
+    int count;
+    va_list ap;
+
+    va_start(ap, format);
+    count = c99_vsnprintf(str, size, format, ap);
+    va_end(ap);
+
+    return count;
+}
+
+#endif /* _MSC_VER */
+
 
 #define SHELL_NAME "sh"
 #define SHELL_PATH "/bin/sh"
@@ -86,6 +132,7 @@ static pthread_once_t FileSystemMutex_once = PTHREAD_ONCE_INIT;
 
 
 
+#ifdef SLOW_FILESYSTEM
 FileSystemMutex_init::FileSystemMutex_init()
 {
   int rc = pthread_once( &FileSystemMutex_once, FileSystemMutex_init::Initialization );
@@ -100,6 +147,7 @@ FileSystemMutex_init::FileSystemMutex_init()
 
 void FileSystemMutex_init::Initialization()
 {
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
@@ -111,8 +159,11 @@ void FileSystemMutex_init::Initialization()
     perror("FileSystemMutex_init::Initialization mutex initialization failed");
     exit(1);
   }
+#else
+  pthread_mutex_init( &FileSystemMutex, NULL );
+#endif
 }
-
+#endif
 
 
 using OT::ResourceMap;
@@ -429,12 +480,16 @@ void initMutex(const struct WrapperExchangedData * p_exchangedData)
   ptr->p_lock_ = new pthread_mutex_t;
   assert(ptr->p_lock_);
 
+#ifndef OT_MUTEXINIT_NOCHECK
   pthread_mutexattr_t attr;
   pthread_mutexattr_init( &attr );
   //pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_NORMAL );
   pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
   pthread_mutex_init( const_cast<pthread_mutex_t *>(ptr->p_lock_), &attr );
   pthread_mutexattr_destroy( &attr );
+#else
+  pthread_mutex_init( const_cast<pthread_mutex_t *>(ptr->p_lock_), NULL );
+#endif
 }
 
 
@@ -543,102 +598,13 @@ int createDirectory(const char * directory,
     return 1;
   }
 
-  // Root directory (/) and current directory (.) are supposed to exists
-  if (!strcmp( directory, "/" )) return 0;
-  if (!strcmp( directory, "." )) return 0;
-#ifdef WIN32
-  // Root directory (e.g. C:\) are supposed to exists
-  if ((strlen( directory ) == 3) &&
-      (directory[1] == ':') &&
-      (directory[2] == '\\' || directory[2] == '/'))
-    return 0;
-#endif
-
-
-  char * parent = strdup( directory );
-  parent = dirname( parent );
-  int rc = createDirectory( parent, p_error );
-  free( parent );
-  if (rc) return 1;
-
-  //IDM
-  // LOGTRACE( OT::String("IDM - ??? dir  : ") + directory );
-
-  struct stat file_stat;
-  FSLOCK( rc = stat( directory, &file_stat ) );
-  if (rc == 0)
-  {
-    if (! S_ISDIR(file_stat.st_mode))
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(createDirectory) %s exists and is NOT a directory", directory );
-      setWrapperError( p_error, msg );
-      return 1;
-    }
-
+  const String path(directory);
+  if (Os::MakeDirectory(path)) {
+    setWrapperError( p_error, "(createDirectory) Unable to create directory" );
+    return 1;
   }
-  else
-  {
-#ifndef WIN32
-    FSLOCK( rc = mkdir( directory, 0777 ) );
-#else
-    FSLOCK( rc = mkdir( directory ) );
-#endif
-    if (rc < 0)
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(createDirectory) Can't create directory %s", directory );
-      setWrapperError( p_error, msg );
-      return 1;
-    } // else LOGTRACE( OT::String("IDM - Add dir  : ") + directory );
-
-  }
-
   return 0;
 }
-
-
-
-#ifndef WIN32
-static int deleteRegularFileOrDirectory(const char * path,
-                                        const struct stat * p_sb,
-                                        int typeflag,
-                                        struct FTW * ftwbuf)
-{
-  int rc;
-
-  switch (typeflag)
-  {
-    case FTW_DP:
-      FSLOCK( rc = rmdir( path ); );
-      if ( rc < 0 )
-      {
-        char * msg = newFormattedString( "(deleteRegularFileOrDirectory) Can NOT remove directory %s", path );
-        LOGWRAPPER( msg );
-        free( msg );
-        return 1;
-      }
-      break;
-
-    case FTW_SL:
-    case FTW_SLN:
-    case FTW_F:
-      FSLOCK( rc = unlink( path ); );
-      if ( rc < 0 )
-      {
-        char * msg = newFormattedString( "(deleteRegularFileOrDirectory) Can NOT remove file %s", path );
-        LOGWRAPPER( msg );
-        free( msg );
-        return 1;
-      }
-      break;
-
-  } /* end switch */
-
-  return 0;
-}
-#endif /* WIN32 */
-
 
 
 
@@ -652,104 +618,11 @@ int deleteDirectory(const char * directory,
     return 1;
   }
 
-  // Root directory (/) and current directory (.) are supposed to exists
-  if (!strcmp( directory, "/" ))
-  {
-    setWrapperError( p_error, "(deleteDirectory) Can't delete / directory" );
+  const String path(directory);
+  if (Os::DeleteDirectory(path)) {
+    setWrapperError( p_error, "(deleteDirectory) Unable to delete directory" );
     return 1;
   }
-  if (!strcmp( directory, "." ))
-  {
-    setWrapperError( p_error, "(deleteDirectory) Can't delete . directory" );
-    return 1;
-  }
-#ifdef WIN32
-  if ( ((strlen( directory ) == 3) && (directory[1] == ':') && (directory[2] == '\\' || directory[2] == '/')) ||
-       ((strlen( directory ) == 2) && (directory[1] == ':')) )
-  {
-    setWrapperError( p_error, OT::String("(deleteDirectory) Can't delete ") + directory + " drive directory" );
-    return 1;
-  }
-#endif
-
-  struct stat file_stat;
-  int rc = 0;
-  FSLOCK( rc = stat( directory, &file_stat ) );
-  if (rc == 0)
-  {
-    if (! S_ISDIR(file_stat.st_mode))
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) %s exists and is NOT a directory", directory );
-      setWrapperError( p_error, msg );
-      return 1;
-    }
-  }
-
-#ifndef WIN32
-
-  rc = nftw( directory, deleteRegularFileOrDirectory, 20, FTW_DEPTH );
-  if ( rc != 0 )
-  {
-    char msg[BUFFER_LENGTH];
-    snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) Can't delete directory %s",
-              directory );
-    setWrapperError( p_error, msg );
-    return 1;
-  }
-
-#else /* WIN32 */
-
-  size_t timeout = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
-  size_t countdown = timeout;
-  OT::String rmdirCmd = OT::String("rmdir /Q /S \"") + directory + "\"";
-  int directoryExists;
-
-  do
-  {
-    // only show the output of the last try
-    if ( countdown <= 0 )
-      rc = system( rmdirCmd.c_str() );
-    else
-      rc = system( (rmdirCmd + " > NUL 2>&1").c_str() );
-    if ( rc != 0 )
-    {
-      char msg[BUFFER_LENGTH];
-      snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) Can't delete directory %s. Command rmdir failed to execute. "
-                "Retry still %d times.", directory, countdown );
-      if ( countdown <= 0 )
-        printToLogWarn( msg );
-      else
-        printToLogDebug( msg );
-    }
-
-    // check if directory still there (rmdir dos command always return 0)
-    struct stat dir_stat;
-    directoryExists = stat( directory, &dir_stat );
-    if( directoryExists == 0 )
-    {
-      if  ( countdown <= 0 )
-      {
-        char msg[BUFFER_LENGTH];
-        snprintf( msg, BUFFER_LENGTH, "(deleteDirectory) Can't delete directory %s (after %i retry)",
-                  directory, timeout );
-        printToLogWarn( msg );
-        setWrapperError( p_error, msg );
-        return 1;
-      }
-      else
-      {
-        printToLogDebug( "(deleteDirectory) Can't delete directory %s. Wait the directory still %d times.",
-                         directory, countdown );
-        --countdown;
-      }
-    }
-    Sleep( 1000 );
-  }
-  while( directoryExists == 0 );
-
-#endif /* WIN32 */
-
   return 0;
 }
 
@@ -945,8 +818,17 @@ int writeFile(const char * path,
 
   /* Create all upper directories */
   char * copypath = strdup( path );
+#ifdef _MSC_VER
+  char * parent = strdup( copypath );
+  char * cp = parent + strlen(parent);
+  while (*cp != '\\' && *cp != '/' && cp != parent) --cp;
+  if (cp != parent) *cp = '\0';
+  rc = createDirectory( parent, p_error );
+  free( parent );
+#else
   char * parent = dirname( copypath );
   rc = createDirectory( parent, p_error );
+#endif
   free( copypath );
   if (rc)
   {
@@ -2152,9 +2034,10 @@ int retrieveVariables(char * buf,
         if ( origFormat.size() == 0 )
         {
           size_t width = ResourceMap::GetAsUnsignedInteger( "regexp-shortcut-width" );
-          char NNN[width + 2];
+          char * NNN = new char[width + 2];
           snprintf( NNN, width + 2, "\\%0*u", static_cast<int>(width), 1 );
           origFormat = NNN;
+          delete [] NNN;
           //LOGTRACE(OSS() << "origFormat='" << origFormat << "'");
         }
 
@@ -2399,9 +2282,11 @@ int runCommand(const char * command,
     stdout = freopen( newStdout.c_str(), "w", stdout );
     stderr = freopen( newStderr.c_str(), "w", stderr );
 
+#ifdef SLOW_FILESYSTEM
     // Filesystem lock destroyed to avoid future deadlocks in case fork() happened during critical section and
     // mutex remains locked
     pthread_mutex_destroy( &FileSystemMutex );
+#endif
 
     // Wait for 1ms to ensure that the filesystem has been updated.
     //     struct timeval tv;

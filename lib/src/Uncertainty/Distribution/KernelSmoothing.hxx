@@ -36,19 +36,18 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of KernelSmoothing.
  */
-class KernelSmoothing : public PersistentObject
+class OT_API KernelSmoothing : public PersistentObject
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  explicit KernelSmoothing(const String & name = "KernelSmoothing");
+  KernelSmoothing();
 
   /** Default constructor */
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool & bined = true,
-                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ),
-                           const String & name = "KernelSmoothing");
+                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ));
 
   /** Virtual constructor */
   virtual KernelSmoothing * clone() const;

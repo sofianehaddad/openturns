@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ClaytonCopulaFactory
  */
-class ClaytonCopulaFactory
+class OT_API ClaytonCopulaFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

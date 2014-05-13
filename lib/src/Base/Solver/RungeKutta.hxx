@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Fourth order fixed-step Runge-Kutta ODE integrator
  */
-class RungeKutta
+class OT_API RungeKutta
   : public ODESolverImplementation
 {
   CLASSNAME;

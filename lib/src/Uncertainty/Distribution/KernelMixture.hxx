@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of KernelMixture.
  */
-class KernelMixture
+class OT_API KernelMixture
   : public ContinuousDistribution
 {
   CLASSNAME;

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Rayleigh distribution.
  */
-class Rayleigh
+class OT_API Rayleigh
   : public ContinuousDistribution
 {
   CLASSNAME;

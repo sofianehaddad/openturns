@@ -40,7 +40,7 @@ class TensorImplementation;
  * Tensor implements the classical mathematical Tensor
  */
 
-class Tensor :
+class OT_API Tensor :
   public TypedInterfaceObject<TensorImplementation>
 
 {

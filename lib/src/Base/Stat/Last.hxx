@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Last
  */
 
-class Last
+class OT_API Last
   : public HistoryStrategyImplementation
 {
 

@@ -37,8 +37,8 @@ CLASSNAMEINIT(FunctionalBasisProcess);
 static Factory<FunctionalBasisProcess> RegisteredFactory("FunctionalBasisProcess");
 
 /* Standard constructor */
-FunctionalBasisProcess::FunctionalBasisProcess(const String & name)
-  : ProcessImplementation(name)
+FunctionalBasisProcess::FunctionalBasisProcess()
+  : ProcessImplementation()
   , distribution_(Normal())
   , basis_(Collection<NumericalMathFunction>(1, NumericalMathFunction("t", "t")))
   , state_(1, 0.0)
@@ -49,9 +49,8 @@ FunctionalBasisProcess::FunctionalBasisProcess(const String & name)
 
 /* Standard constructor */
 FunctionalBasisProcess::FunctionalBasisProcess(const Distribution & distribution,
-    const Basis & basis,
-    const String & name)
-  : ProcessImplementation(name)
+    const Basis & basis)
+  : ProcessImplementation()
   , distribution_(distribution)
   , basis_()
   , state_(distribution.getDimension(), 0.0)
@@ -64,9 +63,8 @@ FunctionalBasisProcess::FunctionalBasisProcess(const Distribution & distribution
 /* Standard constructor */
 FunctionalBasisProcess::FunctionalBasisProcess(const Distribution & distribution,
     const Basis & basis,
-    const Mesh & mesh,
-    const String & name)
-  : ProcessImplementation(name)
+    const Mesh & mesh)
+  : ProcessImplementation()
   , distribution_(distribution)
   , basis_()
   , state_(distribution.getDimension(), 0.0)

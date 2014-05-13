@@ -25,6 +25,7 @@
 #include "Triangular.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,11 +35,12 @@ static Factory<Triangular> RegisteredFactory("Triangular");
 
 /* Default constructor */
 Triangular::Triangular()
-  : ContinuousDistribution("Triangular")
+  : ContinuousDistribution()
   , a_(-1.0)
   , m_(0.0)
   , b_(1.0)
 {
+  setName( "Triangular" );
   setDimension( 1 );
   computeRange();
 }
@@ -47,11 +49,12 @@ Triangular::Triangular()
 Triangular::Triangular(const NumericalScalar a,
                        const NumericalScalar m,
                        const NumericalScalar b)
-  : ContinuousDistribution("Triangular")
+  : ContinuousDistribution()
   , a_(0.0)
   , m_(0.0)
   , b_(0.0)
 {
+  setName( "Triangular" );
   // This call set also the range
   setAMB(a, m, b);
   setDimension( 1 );
@@ -298,12 +301,12 @@ NumericalPoint Triangular::getStandardMoment(const UnsignedInteger n) const
     // Vertical part?
     if (1.0 - fabs(mu) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 1.0));
     // Usual case
-    return NumericalPoint(1, 2.0 * (1.0 - pow(mu, n + 2)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+    return NumericalPoint(1, 2.0 * (1.0 - pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
   }
   // Odd order
   // Vertical part?
   if (1.0 - fabs(mu) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 2.0));
-  return NumericalPoint(1, 2.0 * mu * (1.0 - pow(mu, n + 1)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+  return NumericalPoint(1, 2.0 * mu * (1.0 - pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

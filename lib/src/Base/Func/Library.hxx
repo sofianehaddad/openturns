@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * gives access to its symbols.
  */
 
-class Library
+class OT_API Library
   : public PersistentObject
 {
   CLASSNAME;

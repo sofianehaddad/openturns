@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
       // constant amplitude
       amplitude[index] = 1.0 ;
       scale[index] = (index + 1.0) / defaultDimension ;
-      for (UnsignedInteger k = 0; k < index; ++k) spatialCorrelation(index, k) = 1.0 / pow(1.0 + index + k, 2);
+      for (UnsignedInteger k = 0; k < index; ++k) spatialCorrelation(index, k) = 1.0 / pow(1.0 + index + k, 2.0);
     }
     //fullprint << "spatialCorrelation=" << spatialCorrelation << std::endl;
     /* checking the cast*/

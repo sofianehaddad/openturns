@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is the interface class for orthogonal basis
  */
 
-class OrthogonalBasis
+class OT_API OrthogonalBasis
   : public TypedInterfaceObject<OrthogonalFunctionFactory>
 {
   CLASSNAME;

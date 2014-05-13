@@ -23,6 +23,7 @@
  */
 #include <cmath>
 #include "MultinomialFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

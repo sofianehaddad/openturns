@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the InverseNataf gradient for elliptical distributions
  */
-class InverseNatafEllipticalDistributionGradient
+class OT_API InverseNatafEllipticalDistributionGradient
   : public ConstantNumericalMathGradientImplementation
 {
   CLASSNAME;

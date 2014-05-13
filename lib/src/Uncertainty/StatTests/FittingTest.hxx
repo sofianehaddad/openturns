@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class FittingTest
+class OT_API FittingTest
 {
 public:
 

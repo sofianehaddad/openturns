@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *  Care that x should be positive
  */
 
-class InverseBoxCoxEvaluationImplementation
+class OT_API InverseBoxCoxEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

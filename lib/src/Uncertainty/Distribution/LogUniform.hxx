@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The LogUniform distribution.
  */
-class LogUniform
+class OT_API LogUniform
   : public ContinuousDistribution
 {
   CLASSNAME;

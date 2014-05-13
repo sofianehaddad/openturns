@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class building chaos expansions
  */
 
-class FunctionalChaosAlgorithm
+class OT_API FunctionalChaosAlgorithm
   : public MetaModelAlgorithm
 {
   CLASSNAME;

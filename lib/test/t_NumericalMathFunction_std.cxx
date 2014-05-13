@@ -38,10 +38,6 @@ int main(int argc, char *argv[])
     // Test basic functionnalities
     //checkClassWithClassName<ComputedNumericalMathEvaluationImplementation>();
 
-    // Test some extra functionnalities
-    //checkNameFeature<ComputedNumericalMathEvaluationImplementation>();
-
-
     /** Instance creation */
     Description input(2);
     input[0] = "x1";

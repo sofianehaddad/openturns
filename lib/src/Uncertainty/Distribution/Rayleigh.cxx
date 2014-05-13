@@ -38,10 +38,11 @@ static Factory<Rayleigh> RegisteredFactory("Rayleigh");
 
 /* Default constructor */
 Rayleigh::Rayleigh()
-  : ContinuousDistribution("Rayleigh"),
+  : ContinuousDistribution(),
     sigma_(1.0),
     gamma_(0.0)
 {
+  setName("Rayleigh");
   setDimension(1);
   computeRange();
 }
@@ -49,9 +50,10 @@ Rayleigh::Rayleigh()
 /* Parameters constructor */
 Rayleigh::Rayleigh(const NumericalScalar sigma,
                    const NumericalScalar gamma)
-  : ContinuousDistribution("Rayleigh"),
+  : ContinuousDistribution(),
     sigma_(0.0), gamma_(gamma)
 {
+  setName("Rayleigh");
   // This call set also the range
   setSigma(sigma);
   setDimension(1);

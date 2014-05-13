@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * brief This class manages a MPI communicator between parallel instances.
  */
 
-class MPICommunicator
+class OT_API MPICommunicator
 {
   friend class MPI;
 
@@ -74,7 +74,7 @@ private:
  * brief This class is a singleton that initializes the MPI universe.
  */
 
-class MPI
+class OT_API MPI
 {
   /** The communicator used to send and receive message between instances */
   MPICommunicator comm_;

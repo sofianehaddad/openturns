@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FilteringWindowsImplementation
  */
 
-class FilteringWindows
+class OT_API FilteringWindows
   : public TypedInterfaceObject<FilteringWindowsImplementation>
 {
 
@@ -47,17 +47,14 @@ public:
   FilteringWindows();
 
   /** Copy constructors */
-  FilteringWindows(const FilteringWindowsImplementation & implementation,
-                   const String & name = DefaultName);
+  FilteringWindows(const FilteringWindowsImplementation & implementation);
 
   /** Constructor from implementation */
-  FilteringWindows(const Implementation & p_implementation,
-                   const String & name = DefaultName);
+  FilteringWindows(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  FilteringWindows(FilteringWindowsImplementation * p_implementation,
-                   const String & name = DefaultName);
+  FilteringWindows(FilteringWindowsImplementation * p_implementation);
 
 #endif
 

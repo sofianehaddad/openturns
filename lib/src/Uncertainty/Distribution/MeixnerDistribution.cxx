@@ -40,13 +40,14 @@ static Factory<MeixnerDistribution> RegisteredFactory("MeixnerDistribution");
 
 /* Default constructor */
 MeixnerDistribution::MeixnerDistribution()
-  : ContinuousDistribution("MeixnerDistribution")
+  : ContinuousDistribution()
   , alpha_(0.0)
   , beta_(0.0)
   , delta_(0.0)
   , mu_(0.0)
   , logNormalizationFactor_(0.0)
 {
+  setName("MeixnerDistribution");
   setAlphaBetaDelta(1.0, 0.0, 1.0);
   setDimension(1);
 }
@@ -56,13 +57,14 @@ MeixnerDistribution::MeixnerDistribution(const NumericalScalar alpha,
     const NumericalScalar beta,
     const NumericalScalar delta,
     const NumericalScalar mu)
-  : ContinuousDistribution("MeixnerDistribution")
+  : ContinuousDistribution()
   , alpha_(0.0)
   , beta_(0.0)
   , delta_(0.0)
   , mu_(mu)
   , logNormalizationFactor_(0.0)
 {
+  setName("MeixnerDistribution");
   setAlphaBetaDelta(alpha, beta, delta);
   setDimension(1);
 }

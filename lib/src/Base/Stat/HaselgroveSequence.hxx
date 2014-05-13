@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HaselgroveSequence
  */
 
-class HaselgroveSequence :
+class OT_API HaselgroveSequence :
   public LowDiscrepancySequenceImplementation
 {
   CLASSNAME;

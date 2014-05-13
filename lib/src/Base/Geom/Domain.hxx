@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a domain
  */
-class Domain
+class OT_API Domain
   : public TypedInterfaceObject<DomainImplementation>
 {
   CLASSNAME;

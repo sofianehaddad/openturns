@@ -50,7 +50,7 @@ class BinaryStorageManagerState;
  * @see Study
  */
 
-class BinaryStorageManager
+class OT_API BinaryStorageManager
   : public StorageManager
 {
   CLASSNAME;

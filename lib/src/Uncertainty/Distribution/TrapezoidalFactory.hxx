@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class TrapezoidalFactory
  */
-class TrapezoidalFactory
+class OT_API TrapezoidalFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

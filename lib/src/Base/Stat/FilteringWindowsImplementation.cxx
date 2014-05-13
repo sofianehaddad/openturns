@@ -36,8 +36,8 @@ CLASSNAMEINIT(FilteringWindowsImplementation);
 static Factory<FilteringWindowsImplementation> RegisteredFactory("FilteringWindowsImplementation");
 
 /* Constructor without parameters */
-FilteringWindowsImplementation::FilteringWindowsImplementation(const String & name)
-  : PersistentObject(name)
+FilteringWindowsImplementation::FilteringWindowsImplementation()
+  : PersistentObject()
 {
   // Nothing to do
 }

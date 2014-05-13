@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Weibull distribution.
  */
-class Weibull
+class OT_API Weibull
   : public ContinuousDistribution
 {
   CLASSNAME;

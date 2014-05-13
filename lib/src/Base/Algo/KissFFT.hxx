@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class KissFFT
  */
 
-class KissFFT
+class OT_API KissFFT
   : public FFTImplementation
 {
 
@@ -45,7 +45,7 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit KissFFT(const String & name = DefaultName);
+  KissFFT();
 
   /** Virtual copy constructor */
   KissFFT * clone() const;

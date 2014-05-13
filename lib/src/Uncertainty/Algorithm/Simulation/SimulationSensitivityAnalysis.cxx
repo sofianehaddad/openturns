@@ -260,7 +260,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
       i = iTies;
     }
     // We must draw the point if the first index associated with the threshold value is equal or after (greater if step = 1, less if step = -1) iStartDrawing.
-    mustDraw += (iThreshold == iStartDrawing);
+    mustDraw |= (iThreshold == iStartDrawing);
     if (mustDraw)
     {
       // Now, augmente the data in the collection

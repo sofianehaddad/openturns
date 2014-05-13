@@ -71,8 +71,8 @@ typedef Collection<Distribution>                                      Distributi
 static Factory<DistributionImplementation> RegisteredFactory("DistributionImplementation");
 
 /* Default constructor */
-DistributionImplementation::DistributionImplementation(const String & name)
-  : PersistentObject(name)
+DistributionImplementation::DistributionImplementation()
+  : PersistentObject()
   , mean_(NumericalPoint(0))
   , covariance_(CovarianceMatrix(0))
   , gaussNodesAndWeights_()
@@ -109,6 +109,12 @@ Bool DistributionImplementation::operator ==(const DistributionImplementation & 
 {
   if (this == &other) return true;
   return (dimension_ == other.dimension_) && (weight_ == other.weight_) && (range_ == other.range_);
+}
+
+/* Comparison operator */
+Bool DistributionImplementation::operator !=(const DistributionImplementation & other) const
+{
+  return !operator==(other);
 }
 
 /* String converter */
@@ -1651,7 +1657,7 @@ void DistributionImplementation::computeGaussNodesAndWeights() const
   SquareMatrix z(integrationNodesNumber);
   NumericalPoint work(2 * integrationNodesNumber - 2);
   int info;
-  DSTEV_F77(&jobz, &integrationNodesNumber, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
+  dstev_(&jobz, &integrationNodesNumber, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
   for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(integrationNodesNumber); ++i)
   {
@@ -1735,7 +1741,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentContinuous(const 
       const NumericalScalar w(nodesAndWeights[1][i]);
       const NumericalScalar xi(nodesAndWeights[0][i]);
       const NumericalScalar z(a + (1.0 + xi) * halfLength);
-      value += w * pow(z - shiftComponent, n) * marginalDistribution->computePDF(z);
+      value += w * pow(z - shiftComponent, static_cast<int>(n)) * marginalDistribution->computePDF(z);
     } // Integration nodes
     moment[component] = value * halfLength;
   } // End of each component
@@ -1752,7 +1758,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentDiscrete(const Un
   const NumericalSample pdfSupport(computePDF(support));
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
-      moment[j] += pow(support[i][j] - shift[j], n) * pdfSupport[i][0];
+      moment[j] += pow(support[i][j] - shift[j], static_cast<int>(n)) * pdfSupport[i][0];
   return moment;
 }
 
@@ -1772,7 +1778,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentGeneral(const Uns
     const Implementation marginalDistribution(getMarginal(component));
     const NumericalScalar shiftComponent(shift[component]);
     // Central term
-    moment[component] = h * 0.5 * pow(marginalDistribution->computeQuantile(0.5)[0], n);
+    moment[component] = h * 0.5 * pow(marginalDistribution->computeQuantile(0.5)[0], static_cast<int>(n));
     // First block
     for (UnsignedInteger j = 1; j <= N; ++j)
     {
@@ -1786,7 +1792,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentGeneral(const Uns
       const NumericalScalar xjm(iexpSinhHj * iTwoCoshSinhHj);
       const NumericalScalar xjp(expSinhHj * iTwoCoshSinhHj);
       const NumericalScalar wj((expHj + iexpHj) * iTwoCoshSinhHj * iTwoCoshSinhHj);
-      moment[component] += h * wj * (pow(marginalDistribution->computeQuantile(xjm)[0] - shiftComponent, n) + pow(marginalDistribution->computeQuantile(xjp)[0] - shiftComponent, n));
+      moment[component] += h * wj * (pow(marginalDistribution->computeQuantile(xjm)[0] - shiftComponent, static_cast<int>(n)) + pow(marginalDistribution->computeQuantile(xjp)[0] - shiftComponent, static_cast<int>(n)));
     } // End of first block
     //values[0] = moment[component];
     // Sequential addition of half-blocks
@@ -1810,7 +1816,7 @@ NumericalPoint DistributionImplementation::computeShiftedMomentGeneral(const Uns
         const NumericalScalar xjm(iexpSinhHj * iTwoCoshSinhHj);
         const NumericalScalar xjp(expSinhHj * iTwoCoshSinhHj);
         NumericalScalar wj((expHj + iexpHj) * iTwoCoshSinhHj * iTwoCoshSinhHj);
-        delta += h * wj * (pow(marginalDistribution->computeQuantile(xjm)[0] - shiftComponent, n) + pow(marginalDistribution->computeQuantile(xjp)[0] - shiftComponent, n));
+        delta += h * wj * (pow(marginalDistribution->computeQuantile(xjm)[0] - shiftComponent, static_cast<int>(n)) + pow(marginalDistribution->computeQuantile(xjp)[0] - shiftComponent, static_cast<int>(n)));
       }
       error = fabs((delta - moment[component]) / (1.0 + fabs(delta)));
       moment[component] += delta;

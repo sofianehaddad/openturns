@@ -35,12 +35,13 @@ static Factory<Trapezoidal> RegisteredFactory("Trapezoidal");
 
 /* Default constructor */
 Trapezoidal::Trapezoidal()
-  : ContinuousDistribution("Trapezoidal")
+  : ContinuousDistribution()
   , a_(-2.0)
   , b_(-1.0)
   , c_(1.0)
   , d_(2.0)
 {
+  setName("Trapezoidal");
   update();
 }
 
@@ -49,12 +50,13 @@ Trapezoidal::Trapezoidal(const NumericalScalar a,
                          const NumericalScalar b,
                          const NumericalScalar c,
                          const NumericalScalar d)
-  : ContinuousDistribution("Trapezoidal")
+  : ContinuousDistribution()
   , a_(a)
   , b_(b)
   , c_(c)
   , d_(d)
 {
+  setName("Trapezoidal");
   update();
 }
 
@@ -346,8 +348,8 @@ NumericalPoint Trapezoidal::getStandardMoment(const UnsignedInteger n) const
   const NumericalScalar beta(1.0 - 2.0 * (d_ - b_) / (d_ - a_));
   const NumericalScalar gamma(1.0 - 2.0 * (d_ - c_) / (d_ - a_));
   const NumericalScalar eta(2.0 / (2.0 - beta + gamma));
-  const NumericalScalar betaPow(pow(beta, n + 1));
-  const NumericalScalar gammaPow(pow(gamma, n + 1));
+  const NumericalScalar betaPow(pow(beta, n + 1.0));
+  const NumericalScalar gammaPow(pow(gamma, n + 1.0));
   NumericalScalar value(eta * (gammaPow - betaPow) / (n + 1));
   if (beta > -1.0)
   {

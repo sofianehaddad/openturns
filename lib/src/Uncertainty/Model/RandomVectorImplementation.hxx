@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface for all implementation class of random vectors
  */
-class RandomVectorImplementation
+class OT_API RandomVectorImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -55,7 +55,7 @@ public:
   typedef Antecedent                          Implementation;
 
   /** Default constructor */
-  RandomVectorImplementation(const String & name = DefaultName);
+  RandomVectorImplementation();
 
   /** Virtual constructor */
   virtual RandomVectorImplementation * clone() const;

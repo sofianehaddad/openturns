@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The implementation of ARMA State
  */
-class ARMAState
+class OT_API ARMAState
   : public PersistentObject
 {
   CLASSNAME;

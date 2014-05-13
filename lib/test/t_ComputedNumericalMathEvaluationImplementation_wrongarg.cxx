@@ -40,9 +40,6 @@ int main(int argc, char *argv[])
       // Test basic functionnalities
       //checkClassWithClassName<ComputedNumericalMathEvaluationImplementation>();
 
-      // Test some extra functionnalities
-      //checkNameFeature<ComputedNumericalMathEvaluationImplementation>();
-
 
       // Test function operator ()
       // ComputedNumericalMathEvaluationImplementation myFunction("wrapper");

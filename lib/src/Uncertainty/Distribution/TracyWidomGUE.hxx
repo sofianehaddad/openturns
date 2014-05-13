@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The TracyWidomGUE distribution.
  */
-class TracyWidomGUE
+class OT_API TracyWidomGUE
   : public ContinuousDistribution
 {
   CLASSNAME;

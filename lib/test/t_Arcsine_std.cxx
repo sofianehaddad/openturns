@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Arcsine
 {
 public:
-  explicit TestObject() : Arcsine(-1.0, 1.0) {}
-  explicit TestObject(const String & name) : Arcsine(-1.0, 1.0)
-  {
-    setName(name);
-  }
+  TestObject() : Arcsine(-1.0, 1.0) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Arcsine distribution(5.2, 11.6);

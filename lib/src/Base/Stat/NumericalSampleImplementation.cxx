@@ -1365,7 +1365,7 @@ NumericalPoint NumericalSampleImplementation::computeSkewnessPerComponent() cons
   ReductionFunctor<SkewnessPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
   NumericalPoint skewness(dimension_);
-  const NumericalScalar factor(size_ * sqrt(size_ - 1) / (size_ - 2));
+  const NumericalScalar factor(size_ * sqrt(size_ - 1.0) / (size_ - 2));
   for (UnsignedInteger i = 0; i < dimension_; ++i) skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
   return skewness;
 }
@@ -1446,7 +1446,7 @@ struct CenteredMomentPerComponentPolicy
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       const NumericalScalar val(point[i] - mean_[i]);
-      var[i] += pow(val, k_);
+      var[i] += pow(val, static_cast<int>(k_));
     }
     return var;
   }
@@ -1717,7 +1717,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator + (const N
 {
   NumericalSampleImplementation sample(*this);
   sample += translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1725,7 +1725,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator + (const N
 {
   NumericalSampleImplementation sample(*this);
   sample += translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1733,7 +1733,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator - (const N
 {
   NumericalSampleImplementation sample(*this);
   sample -= translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1741,7 +1741,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator - (const N
 {
   NumericalSampleImplementation sample(*this);
   sample -= translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1854,7 +1854,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator * (const N
 {
   NumericalSampleImplementation nsi(*this);
   nsi *= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1862,7 +1862,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator / (const N
 {
   NumericalSampleImplementation nsi(*this);
   nsi /= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1912,7 +1912,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator * (const S
 {
   NumericalSampleImplementation nsi(*this);
   nsi *= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1920,7 +1920,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator / (const S
 {
   NumericalSampleImplementation nsi(*this);
   nsi /= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1943,7 +1943,7 @@ void NumericalSampleImplementation::exportToCSVFile(const FileName & filename,
     {
       String label(description[i]);
       Bool isBlank(true);
-      for (UnsignedInteger j = 0; j < label.size(); ++j) isBlank = isBlank && isblank(label[j]);
+      for (UnsignedInteger j = 0; isBlank && j < label.size(); ++j) isBlank = (label[j] == ' ') || (label[j] == '\t');
       if (isBlank) csvFile << separator << "\"NoDescription\"";
       else csvFile << separator << "\"" << description[i] << "\"";
     }

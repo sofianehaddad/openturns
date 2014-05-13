@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A collection of numerical math function.
  */
-class Basis
+class OT_API Basis
   : public PersistentCollection<NumericalMathFunction>
 {
   CLASSNAME;

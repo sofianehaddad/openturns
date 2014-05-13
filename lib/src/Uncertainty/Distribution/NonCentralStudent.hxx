@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The NonCentralStudent distribution.
  */
-class NonCentralStudent
+class OT_API NonCentralStudent
   : public ContinuousDistribution
 {
   CLASSNAME;

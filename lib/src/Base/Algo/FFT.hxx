@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FFT
  */
 
-class FFT
+class OT_API FFT
   : public TypedInterfaceObject<FFTImplementation>
 {
 
@@ -51,17 +51,14 @@ public:
   FFT();
 
   /** Copy constructors */
-  FFT(const FFTImplementation & implementation,
-      const String & name = DefaultName);
+  FFT(const FFTImplementation & implementation);
 
   /** Constructor from implementation */
-  FFT(const Implementation & p_implementation,
-      const String & name = DefaultName);
+  FFT(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  FFT(FFTImplementation * p_implementation,
-      const String & name = DefaultName);
+  FFT(FFTImplementation * p_implementation);
 #endif
 
   /** FFT transformation on real

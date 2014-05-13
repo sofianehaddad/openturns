@@ -75,14 +75,14 @@ int main(int argc, char *argv[])
     --covTh_Sobol;
     // Reference analytical values
     NumericalScalar meanTh_Ishigami(a / 2);
-    NumericalScalar covTh_Ishigami((pow(b, 2) * pow(M_PI, 8)) / 18.0 + (b * pow(M_PI, 4)) / 5.0 + (pow(a, 2)) / 8.0 + 1.0 / 2.0);
+    NumericalScalar covTh_Ishigami((pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0);
     NumericalPoint sob_1_Ishigami(3);
-    sob_1_Ishigami[0] = (b * pow(M_PI, 4) / 5.0 + pow(b, 2) * pow(M_PI, 8) / 50.0 + 1.0 / 2.0) / covTh_Ishigami;
-    sob_1_Ishigami[1] = (pow(a, 2) / 8.0) / covTh_Ishigami;
+    sob_1_Ishigami[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh_Ishigami;
+    sob_1_Ishigami[1] = (pow(a, 2.0) / 8.0) / covTh_Ishigami;
     sob_1_Ishigami[2] = 0.0;
     NumericalPoint sob_2_Ishigami(3);
     sob_2_Ishigami[0] = 0.0;
-    sob_2_Ishigami[1] = (pow(b, 2) * pow(M_PI, 8) / 18.0 - pow(b, 2) * pow(M_PI, 8) / 50.0) / covTh_Ishigami;
+    sob_2_Ishigami[1] = (pow(b, 2.0) * pow(M_PI, 8.0) / 18.0 - pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / covTh_Ishigami;
     sob_2_Ishigami[2] = 0.0;
     NumericalPoint sob_3_Ishigami(1, 0.0);
     // Multidimensional reference values

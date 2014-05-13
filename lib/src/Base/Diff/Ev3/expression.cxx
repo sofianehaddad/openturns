@@ -15,6 +15,8 @@
 #include <cassert>
 #include <iomanip>
 
+#include "SpecFunc.hxx"
+
 #include "expression.h"
 
 namespace Ev3

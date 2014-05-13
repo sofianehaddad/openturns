@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class LowDiscrepancySequenceImplementation
  */
 
-class LowDiscrepancySequenceImplementation
+class OT_API LowDiscrepancySequenceImplementation
   : public PersistentObject
 {
 

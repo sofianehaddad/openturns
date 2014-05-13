@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class DistFunc
+class OT_API DistFunc
 {
 public:
   static const UnsignedInteger NumberOfBandNormalZigurrat;

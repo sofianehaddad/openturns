@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  *
  */
-class EventRandomVectorImplementation
+class OT_API EventRandomVectorImplementation
   : public CompositeRandomVector
 {
   CLASSNAME;
@@ -56,8 +56,7 @@ public:
   /** Constructor from RandomVector */
   EventRandomVectorImplementation(const RandomVectorImplementation & antecedent,
                                   const ComparisonOperator & op,
-                                  const NumericalScalar threshold,
-                                  const String & name = DefaultName);
+                                  const NumericalScalar threshold);
 
   /** Virtual constructor */
   virtual EventRandomVectorImplementation * clone() const;
@@ -80,7 +79,7 @@ public:
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(UnsignedInteger size) const;
+  virtual NumericalSample getSample(const UnsignedInteger size) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

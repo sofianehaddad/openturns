@@ -26,15 +26,11 @@
 #define OPENTURNS_MVTDSTPACK_HXX
 
 #include "OTconfig.hxx"
-#ifdef HAVE_FORTRANCINTERFACE
-#  include "FortranCInterface.h"
-#endif /* HAVE_FORTRANCINTERFACE */
 
 BEGIN_C_DECLS
 
 /** Function that evaluates n-dimensional normal CDF */
-#define MVTDST_F77 F77_FUNC(mvtdst,MVTDST)
-void MVTDST_F77(int *n, int *nu, double *lower, double *upper, int *infin, double *correl, double *delta, int *maxpts, double *abseps, double *releps, double *error, double *value, int *inform);
+void mvtdst_(int *n, int *nu, double *lower, double *upper, int *infin, double *correl, double *delta, int *maxpts, double *abseps, double *releps, double *error, double *value, int *inform);
 
 END_C_DECLS
 

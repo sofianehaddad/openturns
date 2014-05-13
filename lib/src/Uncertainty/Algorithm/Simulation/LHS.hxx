@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class LHS
  */
 
-class LHS: public Simulation
+class OT_API LHS: public Simulation
 {
 
   CLASSNAME;

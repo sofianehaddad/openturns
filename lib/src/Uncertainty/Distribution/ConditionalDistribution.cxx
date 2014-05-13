@@ -29,6 +29,7 @@
 #include "Box.hxx"
 #include "GaussProductExperiment.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

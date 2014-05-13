@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The GeneralizedPareto distribution.
  */
-class GeneralizedPareto
+class OT_API GeneralizedPareto
   : public ContinuousDistribution
 {
   CLASSNAME;

@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=InverseNormal name=InverseNormal dimension=1 lambda=0.5 mu=2
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=InverseNormal name=myName dimension=1 lambda=0.5 mu=2
-checkNameAccessors()
-streamObject(const T & anObject)
-class=InverseNormal name=myNewName dimension=1 lambda=0.5 mu=2
 Distribution class=InverseNormal name=InverseNormal dimension=1 lambda=0.5 mu=2
 Distribution InverseNormal(lambda = 0.5, mu = 2)
 Elliptical = false

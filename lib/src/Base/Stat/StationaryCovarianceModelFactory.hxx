@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class StationaryCovarianceModelFactory
  */
-class StationaryCovarianceModelFactory
+class OT_API StationaryCovarianceModelFactory
   : public CovarianceModelFactoryImplementation
 {
   CLASSNAME;
@@ -43,8 +43,7 @@ public:
 
 
   /** Default constructor */
-  StationaryCovarianceModelFactory(const SpectralModelFactory & factory = WelchFactory(),
-                                   const String & name = OT::DefaultName);
+  StationaryCovarianceModelFactory(const SpectralModelFactory & factory = WelchFactory());
 
   /** Virtual constructor */
   virtual StationaryCovarianceModelFactory * clone() const;

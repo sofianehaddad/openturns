@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of Mixture.
  */
-class Mixture
+class OT_API Mixture
   : public DistributionImplementation
 {
   CLASSNAME;

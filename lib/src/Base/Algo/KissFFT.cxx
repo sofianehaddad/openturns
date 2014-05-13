@@ -39,8 +39,8 @@ CLASSNAMEINIT(KissFFT);
 static Factory<KissFFT> RegisteredFactory("KissFFT");
 
 /* Constructor with parameters */
-KissFFT::KissFFT(const String & name)
-  : FFTImplementation(name)
+KissFFT::KissFFT()
+  : FFTImplementation()
 {
   // Nothing to do
 }

@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Regression from a data sample upon a particular basis
  */
-class ApproximationAlgorithmImplementation
+class OT_API ApproximationAlgorithmImplementation
   : public PersistentObject
 {
   CLASSNAME;

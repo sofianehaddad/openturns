@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Student distribution.
  */
-class Student
+class OT_API Student
   : public EllipticalDistribution
 {
 

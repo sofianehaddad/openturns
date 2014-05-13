@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is a 1D polynomial
  */
 
-class UniVariatePolynomialImplementation
+class OT_API UniVariatePolynomialImplementation
   : public PersistentObject
 {
   CLASSNAME;

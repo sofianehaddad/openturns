@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SimulationSensitivityAnalysis
  * Implementation of Simulation sensitivity analysis, it means computation of standardized importance factors
  */
-class SimulationSensitivityAnalysis
+class OT_API SimulationSensitivityAnalysis
   : public PersistentObject
 {
 

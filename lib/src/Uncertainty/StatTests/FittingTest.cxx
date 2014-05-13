@@ -233,7 +233,7 @@ NumericalScalar FittingTest::BIC(const NumericalSample & sample,
     if (logPDF[i][0] == -SpecFunc::MaxNumericalScalar) return SpecFunc::MaxNumericalScalar;
     logLikelihood += logPDF[i][0];
   }
-  return (-2.0 * logLikelihood + estimatedParameters * log(size)) / size;
+  return (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
 }
 
 /* Bayesian Information Criterion computation */

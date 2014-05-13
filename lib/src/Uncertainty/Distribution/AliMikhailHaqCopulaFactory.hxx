@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class AliMikhailHaqCopulaFactory
  */
-class AliMikhailHaqCopulaFactory
+class OT_API AliMikhailHaqCopulaFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

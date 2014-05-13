@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the InverseNataf function for elliptical distributions
  */
-class InverseNatafEllipticalDistributionEvaluation
+class OT_API InverseNatafEllipticalDistributionEvaluation
   : public LinearNumericalMathEvaluationImplementation
 {
   CLASSNAME;

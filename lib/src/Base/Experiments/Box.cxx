@@ -26,22 +26,22 @@
 #include "Box.hxx"
 #include "Indices.hxx"
 #include "Tuples.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Box);
 
 /* Default constructor */
-Box::Box(const String & name)
-  : StratifiedExperiment(name)
+Box::Box()
+  : StratifiedExperiment()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-Box::Box(const NumericalPoint & levels,
-         const String & name)
-  : StratifiedExperiment(NumericalPoint(levels.getDimension(), 0.0), levels, name)
+Box::Box(const NumericalPoint & levels)
+  : StratifiedExperiment(NumericalPoint(levels.getDimension(), 0.0), levels)
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   if (levels.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
@@ -49,9 +49,8 @@ Box::Box(const NumericalPoint & levels,
 }
 
 /* Constructor with parameters */
-Box::Box(const Indices & levels,
-         const String & name)
-  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0), name)
+Box::Box(const Indices & levels)
+  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size(levels.getSize());

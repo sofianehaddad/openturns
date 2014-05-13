@@ -51,11 +51,11 @@ Normal::Normal(const UnsignedInteger dimension)
   : EllipticalDistribution(NumericalPoint(dimension, 0.0)
                            , NumericalPoint(dimension, 1.0)
                            , CorrelationMatrix(dimension),
-                           1.0,
-                           "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, dimension)))
+                           1.0)
+  , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(dimension))))
   , hasIndependentCopula_(true)
 {
+  setName("Normal");
   // Compute the range, the upper class cannot do it.
   computeRange();
 }
@@ -66,11 +66,11 @@ Normal::Normal(const NumericalScalar mu,
   : EllipticalDistribution(NumericalPoint(1, mu)
                            , NumericalPoint(1, sd)
                            , CorrelationMatrix(1)
-                           , 1.0
-                           , "Normal")
+                           , 1.0)
   , normalizationFactor_(1.0 / sqrt(2 * M_PI))
   , hasIndependentCopula_(true)
 {
+  setName("Normal");
   // Compute the range, the upper class cannot do it.
   computeRange();
 }
@@ -82,11 +82,11 @@ Normal::Normal(const NumericalPoint & mean,
   : EllipticalDistribution(mean
                            , sigma
                            , R
-                           , 1.0
-                           , "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, mean.getDimension())))
+                           , 1.0)
+  , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
   , hasIndependentCopula_(false)
 {
+  setName("Normal");
   // Compute the range, the upper class cannot do it.
   computeRange();
   checkIndependentCopula();
@@ -97,11 +97,11 @@ Normal::Normal(const NumericalPoint & mean,
   : EllipticalDistribution(mean
                            , NumericalPoint(mean.getDimension(), 1.0)
                            , IdentityMatrix(mean.getDimension())
-                           , 1.0
-                           , "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, mean.getDimension())))
+                           , 1.0)
+  , normalizationFactor_(1.0 / sqrt(pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
   , hasIndependentCopula_(false)
 {
+  setName("Normal");
   UnsignedInteger dimension(mean.getDimension());
   if (C.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mean vector and the covariance matrix have incompatible dimensions";
   if (!const_cast<CovarianceMatrix*>(&C)->isPositiveDefinite()) throw InvalidArgumentException(HERE) << "Error: the covariance matrix is not positive definite";
@@ -257,7 +257,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     int dim = static_cast<UnsignedInteger>( dimension );
     do
     {
-      MVNDST_F77(&dim, &lower[0], &u[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
+      mvndst_(&dim, &lower[0], &u[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
       if (inform == 1)
       {
         LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
@@ -412,7 +412,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     int dim = static_cast<UnsignedInteger>( dimension );
     do
     {
-      MVNDST_F77(&dim, &lower[0], &upper[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
+      mvndst_(&dim, &lower[0], &upper[0], &infin[0], &correl[0], &maxpts, &abseps, &releps, &error, &value, &inform);
       if (inform == 1)
       {
         LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);

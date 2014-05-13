@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0.5 sigma=3 a=-2 b=2
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=TruncatedNormal name=myName dimension=1 mu=0.5 sigma=3 a=-2 b=2
-checkNameAccessors()
-streamObject(const T & anObject)
-class=TruncatedNormal name=myNewName dimension=1 mu=0.5 sigma=3 a=-2 b=2
 Distribution class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0.5 sigma=3 a=-2 b=2
 Distribution TruncatedNormal(mu = 0.5, sigma = 3, a = -2, b = 2)
 Elliptical = false

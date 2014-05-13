@@ -33,8 +33,8 @@ static Factory<WhittleFactoryState> RegisteredFactory("WhittleFactoryState");
 
 
 /* Default constructor */
-WhittleFactoryState::WhittleFactoryState(const String & name)
-  : PersistentObject(name)
+WhittleFactoryState::WhittleFactoryState()
+  : PersistentObject()
   , p_(0)
   , theta_(0)
   , sigma2_(0.0)
@@ -49,9 +49,8 @@ WhittleFactoryState::WhittleFactoryState(const UnsignedInteger p,
     const NumericalPoint & theta,
     const NumericalScalar sigma2,
     const NumericalPoint & informationCriteria,
-    const RegularGrid & timeGrid,
-    const String & name)
-  : PersistentObject(name)
+    const RegularGrid & timeGrid)
+  : PersistentObject()
   , p_(p)
   , theta_(theta)
   , sigma2_(sigma2)

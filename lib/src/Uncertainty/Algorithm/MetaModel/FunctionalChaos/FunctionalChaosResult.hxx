@@ -45,7 +45,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The result of a chaos expansion
  */
 
-class FunctionalChaosResult
+class OT_API FunctionalChaosResult
   : public MetaModelResult
 {
   CLASSNAME;

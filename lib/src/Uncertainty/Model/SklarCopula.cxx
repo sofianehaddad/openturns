@@ -46,20 +46,22 @@ static Factory<SklarCopula> RegisteredFactory("SklarCopula");
 
 /* Default constructor */
 SklarCopula::SklarCopula()
-  : CopulaImplementation("SklarCopula")
+  : CopulaImplementation()
   , distribution_()
   , marginalCollection_()
 {
+  setName( "SklarCopula" );
   setDimension( 1 );
   computeRange();
 }
 
 /* Parameters constructor */
 SklarCopula::SklarCopula(const Distribution & distribution)
-  : CopulaImplementation("SklarCopula")
+  : CopulaImplementation()
   , distribution_(distribution)
   , marginalCollection_(distribution.getDimension())
 {
+  setName( "SklarCopula" );
   // We set the dimension of the SklarCopula distribution
   const UnsignedInteger dimension(distribution.getDimension());
   setDimension( dimension );

@@ -38,11 +38,12 @@ static Factory<NonCentralChiSquare> RegisteredFactory("NonCentralChiSquare");
 /* Default constructor */
 NonCentralChiSquare::NonCentralChiSquare(const NumericalScalar nu,
     const NumericalScalar lambda)
-  : ContinuousDistribution("NonCentralChiSquare")
+  : ContinuousDistribution()
   , nu_(0.0)
   , lambda_(0.0)
   , maximumIteration_(ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"))
 {
+  setName("NonCentralChiSquare");
   // This call set also the range.
   setNuLambda(nu, lambda);
   setDimension(1);

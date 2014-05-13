@@ -45,7 +45,7 @@ class PersistentObjectFactory;
  * that record themselves within their constructor.
  */
 
-class Catalog
+class OT_API Catalog
 {
 private:
 
@@ -92,7 +92,7 @@ private:
 }; /* end class Catalog */
 
 /** This class initializes all static members of Catalog */
-struct Catalog_init
+struct OT_API Catalog_init
 {
   Catalog_init();
   ~Catalog_init();

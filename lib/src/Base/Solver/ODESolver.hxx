@@ -36,7 +36,7 @@ class ODESolverImplementation;
  *
  * Cross-validation algorithm interface
  */
-class ODESolver
+class OT_API ODESolver
   : public TypedInterfaceObject<ODESolverImplementation>
 {
   CLASSNAME;

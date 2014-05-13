@@ -43,9 +43,8 @@ EventProcess::EventProcess()
 
 /* Constructor from RandomVector */
 EventProcess::EventProcess(const Process & process,
-                           const Domain & domain,
-                           const String & name)
-  : RandomVectorImplementation(name)
+                           const Domain & domain)
+  : RandomVectorImplementation()
   , process_(process)
   , domain_(domain)
 {

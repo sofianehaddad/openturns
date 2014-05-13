@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements the state of the WhittleFactory class that results form a particular fitting
  */
-class WhittleFactoryState
+class OT_API WhittleFactoryState
   : public PersistentObject
 {
   CLASSNAME;
@@ -45,15 +45,14 @@ class WhittleFactoryState
 public:
 
   /** Default constructor */
-  explicit WhittleFactoryState(const String & name = DefaultName);
+  WhittleFactoryState();
 
   /** Default constructor */
   WhittleFactoryState(const UnsignedInteger p,
                       const NumericalPoint & theta,
                       const NumericalScalar sigma2,
                       const NumericalPoint & informationCriteria,
-                      const RegularGrid & timeGrid,
-                      const String & name = DefaultName);
+                      const RegularGrid & timeGrid);
 
   /** Virtual constructor */
   virtual WhittleFactoryState * clone() const;

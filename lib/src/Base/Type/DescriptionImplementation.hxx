@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * DescriptionImplementation is the active part of Description
  */
 
-class DescriptionImplementation
+class OT_API DescriptionImplementation
   : public PersistentCollection<String>
 {
   CLASSNAME;
@@ -65,6 +65,9 @@ public:
 
   /** Check if the content is all blank */
   Bool isBlank() const;
+
+  /** Check if the content is all blank */
+  UnsignedInteger getDimension() const { return PersistentCollection<String>::getSize(); }
 
   /** String converter */
   virtual String __repr__() const;

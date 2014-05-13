@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implements all processs
  */
-class Process
+class OT_API Process
   : public TypedInterfaceObject<ProcessImplementation>
 {
   CLASSNAME;
@@ -49,18 +49,15 @@ public:
   Process();
 
   /** Copy constructors */
-  Process(const ProcessImplementation & implementation,
-          const String & name = DefaultName);
+  Process(const ProcessImplementation & implementation);
 
 
   /** Constructor from implementation */
-  Process(const Implementation & p_implementation,
-          const String & name = DefaultName);
+  Process(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  Process(ProcessImplementation * p_implementation,
-          const String & name = DefaultName);
+  Process(ProcessImplementation * p_implementation);
 #endif
 
   /** String converter */

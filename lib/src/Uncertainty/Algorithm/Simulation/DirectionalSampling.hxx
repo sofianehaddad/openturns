@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class DirectionalSampling
  */
 
-class DirectionalSampling :
+class OT_API DirectionalSampling :
   public Simulation
 {
   CLASSNAME;
