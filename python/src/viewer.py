@@ -38,12 +38,12 @@
 import openturns as ot
 import numpy as np
 import matplotlib
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 from distutils.version import LooseVersion
 import os
 import re
 import warnings
-
+import io
 
 class View(object):
 
@@ -55,7 +55,7 @@ class View(object):
     Parameters
     ----------
     graph:
-        An OpenTURNS Graph object, or else a Drawable object.
+        A Graph or Drawable object.
 
     figure:
         The figure to draw on, as matplotlib.figure.Figure
@@ -132,7 +132,7 @@ class View(object):
         # prevent Qt from stopping the interpreter, see matplotlib PR #1905
         if LooseVersion(matplotlib.__version__) < LooseVersion('1.3'):
             # check for DISPLAY env variable on X11 build of Qt
-            if pyplot.get_backend().startswith('Qt4'):
+            if plt.get_backend().startswith('Qt4'):
                 from matplotlib.backends.qt4_compat import QtGui
                 if hasattr(QtGui, 'QX11Info'):
                     display = os.environ.get('DISPLAY')
@@ -184,7 +184,7 @@ class View(object):
 
         # set figure
         if figure is None:
-            self._fig = pyplot.figure()
+            self._fig = plt.figure()
         else:
             self._fig = figure
             if len(axes) == 0:
@@ -289,7 +289,7 @@ class View(object):
                     # items
                     if (i == 1) and ('label' in bar_kwargs):
                         bar_kwargs.pop('label')
-                    pyplot.bar(
+                    plt.bar(
                         xi, height=y[i][0], width=x[i][0], **bar_kwargs)
                     xi += x[i][0]
 
@@ -315,7 +315,7 @@ class View(object):
                 pie_kwargs.setdefault('labels', drawable.getLabels())
                 pie_kwargs.setdefault('colors', drawable.getPalette())
                 self._ax[0].set_aspect('equal')
-                pyplot.pie(x, **pie_kwargs)
+                plt.pie(x, **pie_kwargs)
 
             elif drawableKind == 'Contour':
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
@@ -329,14 +329,14 @@ class View(object):
                             drawable.getLineStyle()]
                     except:
                         warnings.warn('-- Unknown line style')
-                contourset = pyplot.contour(X, Y, Z, **contour_kwargs)
+                contourset = plt.contour(X, Y, Z, **contour_kwargs)
 
                 clabel_kwargs.setdefault('fontsize', 8)
                 clabel_kwargs.setdefault('fmt', '%g')
-                pyplot.clabel(contourset, **clabel_kwargs)
+                plt.clabel(contourset, **clabel_kwargs)
 
             elif drawableKind == 'Staircase':
-                pyplot.step(x, y, **step_kwargs)
+                plt.step(x, y, **step_kwargs)
 
             elif drawableKind == 'Pairs':
                 # disable axis : grid, ticks, axis
@@ -424,7 +424,7 @@ class View(object):
             These parameters are passed to matplotlib.pyplot.show()
         """
 
-        pyplot.show(**kwargs)
+        plt.show(**kwargs)
 
     def save(self, fname, **kwargs):
         """
@@ -462,3 +462,31 @@ class View(object):
         Refer to matplotlib.axes.Axes for further information.
         """
         return self._ax
+        
+        
+def ToSVGString(graph):
+    """
+    ToSVGString(graph)
+    
+    Parameters
+    ----------
+    graph:
+        A Graph or Drawable object.
+
+    Returns a SVG representation as string
+    """
+    
+    output = io.BytesIO()
+    
+    # save interactive mode state
+    ision = plt.isinteractive()
+    plt.ioff()
+    
+    View(graph).save(output, format='svg')
+    
+    # restore interactive mode state
+    if ision:
+        plt.ion()
+        
+    return output.getvalue()
+

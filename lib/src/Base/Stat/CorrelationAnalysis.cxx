@@ -75,7 +75,11 @@ NumericalPoint CorrelationAnalysis::SRC(const NumericalSample & inputSample,
   const NumericalPoint linear(regressionAlgorithm.getLinear() * NumericalPoint(1, 1.0));
   const NumericalScalar varOutput(outputSample.computeVariancePerComponent()[0]);
   NumericalPoint src(inputSample.computeVariancePerComponent());
-  for (UnsignedInteger i = 0; i < dimension; ++i) src[i] *= linear[i] * linear[i] / varOutput;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    src[i] *= linear[i] * linear[i] / varOutput;
+    if (src[i] > 1.) LOGWARN(OSS() << "SRC coefficient for component "<<i<<" value ("<<src[i]<<") is > 1. Check the variance of the samples." );
+  }
   return src;
 }
 

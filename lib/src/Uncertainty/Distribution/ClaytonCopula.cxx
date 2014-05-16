@@ -172,8 +172,6 @@ NumericalScalar ClaytonCopula::computeCDF(const NumericalPoint & point) const
 CorrelationMatrix ClaytonCopula::getSpearmanCorrelation() const
 {
   return CopulaImplementation::getSpearmanCorrelation();
-  CorrelationMatrix rho(2);
-  return rho;
 }
 
 /* Get the Kendall concordance of the distribution */

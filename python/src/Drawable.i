@@ -13,6 +13,16 @@ OTTypedCollectionInterfaceObjectHelper(Drawable)
 
 %include Drawable.hxx
 
+
+%pythoncode %{
+def Drawable__repr_svg_(self):
+    """ svg representation """
+    from .viewer import ToSVGString
+    return ToSVGString(self)
+
+Drawable._repr_svg_ = Drawable__repr_svg_
+%}
+
 namespace OT{  
 
 %extend Drawable {

@@ -202,19 +202,19 @@ const NumericalComplex & ComplexMatrixImplementation::operator () (const Unsigne
 
 
 /* Get the dimensions of the ComplexMatrixImplementation : number of rows */
-const UnsignedInteger ComplexMatrixImplementation::getNbRows() const
+UnsignedInteger ComplexMatrixImplementation::getNbRows() const
 {
   return nbRows_;
 }
 
 /* Get the dimensions of the ComplexMatrixImplementation : number of columns */
-const UnsignedInteger ComplexMatrixImplementation::getNbColumns() const
+UnsignedInteger ComplexMatrixImplementation::getNbColumns() const
 {
   return nbColumns_;
 }
 
 /* Get the dimensions of the ComplexMatrixImplementation : dimension (square matrix : nbRows_) */
-const UnsignedInteger ComplexMatrixImplementation::getDimension() const
+UnsignedInteger ComplexMatrixImplementation::getDimension() const
 {
   return nbRows_;
 }
@@ -321,13 +321,13 @@ MatrixImplementation ComplexMatrixImplementation::imagSym() const
 
 
 /* Empty returns true if there is no element in theComplexMatrixImplementation */
-const Bool ComplexMatrixImplementation::isEmpty() const
+Bool ComplexMatrixImplementation::isEmpty() const
 {
   return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<NumericalComplex>::isEmpty()));
 }
 
 /* Returns true if triangular lower or upper */
-const Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
+Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
 {
   if ( nbRows_ == nbColumns_ )
   {

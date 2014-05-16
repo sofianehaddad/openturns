@@ -42,8 +42,6 @@
 %include Less.i
 %include LessOrEqual.i
 %include PlatformInfo.i
-%include MPI.i
-
 
 /* At last we include template definitions */
 %include BaseCommonTemplateDefs.i

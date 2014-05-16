@@ -77,7 +77,7 @@ String TriangularMatrix::__str__(const String & offset) const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedInteger TriangularMatrix::getDimension() const
+UnsignedInteger TriangularMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }

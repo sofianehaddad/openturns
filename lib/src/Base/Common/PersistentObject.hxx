@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 class StorageManager;
-class StorageManagerAdvocate;
+class Advocate;
 template <class PERSISTENT> class Factory;
 
 /**

@@ -1090,7 +1090,6 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
   NumericalSample dataY;
   const NumericalSample dataX(computeCDF(xMin, xMax, size, dataY));
   // Create a NumericalMathFunction to use the TNC algorithm for finding the best candidate for projection
-  Distribution bestCandidate;
   KolmogorovProjection projection(dataX, dataY, factoryCollection[0]);
   // Loop over the factories
   for (UnsignedInteger i = 0; i < factorySize; ++i)

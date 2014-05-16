@@ -79,7 +79,6 @@ ot_add_python_module( common common_module.i
                       StorageManager.i
                       XMLStorageManager.i
                       Log.i
-                      MPI.i
                       TTY.i
                       Path.i
                       Catalog.i

@@ -143,13 +143,13 @@ String ComplexMatrix::__str__(const String & offset) const
 
 
 /* Get the dimensions of the matrix : number of rows */
-const UnsignedInteger ComplexMatrix::getNbRows() const
+UnsignedInteger ComplexMatrix::getNbRows() const
 {
   return getImplementation()->getNbRows();
 }
 
 /* Get the dimensions of the matrix : number of columns */
-const UnsignedInteger ComplexMatrix::getNbColumns() const
+UnsignedInteger ComplexMatrix::getNbColumns() const
 {
   return getImplementation()->getNbColumns();
 }
@@ -298,7 +298,7 @@ ComplexMatrix ComplexMatrix::operator/ (const NumericalComplex s) const
 
 
 /* Empty returns true if there is no element in the matrix */
-const Bool ComplexMatrix::isEmpty() const
+Bool ComplexMatrix::isEmpty() const
 {
   return getImplementation()->isEmpty() ;
 }

@@ -63,6 +63,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   if (inputSample_.getSize() != outputSample_.getSize())
     throw InvalidArgumentException(HERE) << "Input sample size (" << inputSample_.getSize() << ") does not match output sample size (" << outputSample_.getSize() << ").";
 
+  if (inputSample_.getDimension() != covarianceModel.getDimension())
+    throw InvalidArgumentException(HERE) << "Input sample dimension (" << inputSample_.getDimension() << ") does not match covariance model dimension (" << covarianceModel.getDimension() << ").";
+  
   // normalize the sample
   UnsignedInteger dimension(inputSample.getDimension());
   NumericalPoint mean(inputSample.computeMean());
@@ -95,6 +98,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   if (inputSample_.getSize() != outputSample_.getSize())
     throw InvalidArgumentException(HERE) << "Input sample size (" << inputSample_.getSize() << ") does not match output sample size (" << outputSample_.getSize() << ").";
 
+  if (inputSample_.getDimension() != covarianceModel.getDimension())
+    throw InvalidArgumentException(HERE) << "Input sample dimension (" << inputSample_.getDimension() << ") does not match covariance model dimension (" << covarianceModel.getDimension() << ").";
+  
   // use the isoprobabilistic transformation
   setInputTransformation(inputDistribution.getIsoProbabilisticTransformation());
 }

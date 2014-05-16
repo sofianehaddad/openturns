@@ -384,8 +384,6 @@ Graph Mesh::draw3D(const Bool drawEdge,
   if (!rotation.isDiagonal()) visuVertices *= rotation;
   // Third, split all the simplices into triangles and compute their mean depth
   NumericalSample trianglesAndDepth(0, 4);
-  NumericalPoint ab;
-  NumericalPoint ac;
   NumericalPoint triWithDepth(4);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {

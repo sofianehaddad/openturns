@@ -116,7 +116,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
   {
     // Newton iteration
     ++iteration;
-    NumericalScalar sumTheta(0.0);
+    sumTheta = 0.0;
     for (UnsignedInteger i = 0; i <= dimension; ++i) sumTheta += theta[i];
     const NumericalScalar diGammaSumTheta(SpecFunc::DiGamma(sumTheta));
     const NumericalScalar triGammaSumTheta(SpecFunc::TriGamma(sumTheta));
@@ -142,7 +142,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
   iteration = 0;
   while (!convergence && (iteration < ResourceMap::GetAsUnsignedInteger( "DirichletFactory-MaximumIteration" )))
   {
-    NumericalScalar sumTheta(0.0);
+    sumTheta = 0.0;
     for (UnsignedInteger i = 0; i <= dimension; ++i) sumTheta += theta[i];
     const NumericalScalar psiSumTheta(SpecFunc::DiGamma(sumTheta));
     NumericalScalar delta(0.0);

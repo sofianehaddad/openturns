@@ -70,7 +70,7 @@ template <typename Tp_> struct ArgumentTypeAdapter
 template <> struct ArgumentTypeAdapter< NumericalScalar >
 {
   typedef const NumericalScalar Type_;
-  static inline const NumericalScalar fromPoint( const NumericalPoint & val )
+  static inline NumericalScalar fromPoint( const NumericalPoint & val )
   {
     return val[0] ;
   }
