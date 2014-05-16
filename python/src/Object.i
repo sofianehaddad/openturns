@@ -50,4 +50,13 @@ def Object___setstate__(self, state):
     os.remove(filename)
     
 Object.__setstate__ = Object___setstate__
+
+def Object__repr_html_(self):
+    lines = str(self).splitlines()
+    html = '<p>'
+    for i in range(len(lines)):
+            html += lines[i]+'<br>'+'\n'
+    html += '</p>'
+    return html
+Object._repr_html_ = Object__repr_html_
 %}
