@@ -174,7 +174,7 @@ NumericalComplex Multinomial::computeGlobalPhi(const NumericalComplex & z,
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     value *= computeLocalPhi(z, n_ * p_[i], x[i]);
-    if (abs(value) == 0.0)
+    if (std::abs(value) == 0.0)
     {
       LOGWARN("Underflow in Multinomial::computePhi");
       return 0.0;
@@ -207,7 +207,7 @@ NumericalComplex Multinomial::computeLocalPhi(const NumericalComplex & z,
   NumericalComplex value(exp(-lambda + u));
   UnsignedInteger i(iMax + 1);
   NumericalComplex term(exp(-lambda + NumericalComplex(i) * log(u) - lgamma(i + 1.0)));
-  while (abs(term) > SpecFunc::Precision * abs(value))
+  while (std::abs(term) > SpecFunc::Precision * std::abs(value))
   {
     value -= term;
     ++i;
@@ -278,7 +278,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   NumericalComplex phiKp1(computeGlobalPhi(r_ * zetaN, point));
   NumericalComplex delta(phiK - phiKp1);
   NumericalScalar value(delta.real());
-  const NumericalScalar dv0(abs(delta));
+  const NumericalScalar dv0(std::abs(delta));
   if (dv0 == 0.0)
   {
     LOGWARN("Underflow in Multinomial::computeCDF");
@@ -293,7 +293,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
     phiKp1 = computeGlobalPhi(r_ * t, point);
     delta = phiK - phiKp1;
     value += sign * delta.real();
-    const NumericalScalar dv(abs(delta));
+    const NumericalScalar dv(std::abs(delta));
     if (dv < SpecFunc::Precision * dv0) break;
     sign = -sign;
   }

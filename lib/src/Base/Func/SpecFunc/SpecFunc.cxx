@@ -600,7 +600,8 @@ NumericalComplex SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
     eps = term / sum;
     ++k;
   }
-  while ((abs(eps) > 0.0) && (k < SpecFunc::MaximumIteration));
+  // std::abs() for complex argument
+  while ((std::abs(eps) > 0.0) && (k < SpecFunc::MaximumIteration));
   return sum;
 }
 

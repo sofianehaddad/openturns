@@ -26,6 +26,7 @@
 
 #include "TypedInterfaceObject.hxx"
 #include "NumericalMathFunctionImplementation.hxx"
+#include "ProductNumericalMathFunction.hxx"
 #include "ComparisonOperator.hxx"
 #include "Collection.hxx"
 
@@ -150,6 +151,16 @@ public:
   NumericalMathFunction(const NumericalSample & inputSample,
                         const NumericalSample & outputSample);
 
+  /** Constructor by splitting the input of a function between variables and parameters */
+  NumericalMathFunction(const NumericalMathFunction & function,
+			const Indices & set,
+			const Bool parametersSet = true);
+
+  NumericalMathFunction(const NumericalMathFunction & function,
+			const Indices & set,
+			const NumericalPoint & referencePoint,
+			const Bool parametersSet = true);
+
   /** Comparison operator */
   Bool operator ==(const NumericalMathFunction & other) const;
 
@@ -273,10 +284,18 @@ public:
 
 
   /** Multiplication of two 1D output functions with the same input dimension */
-  virtual NumericalMathFunction operator * (const NumericalMathFunction & right) const;
+  virtual ProductNumericalMathFunction operator * (const NumericalMathFunction & right) const;
+
+  /** Addition of two functions with the same input and output dimensions */
+  virtual NumericalMathFunction operator + (const NumericalMathFunction & right) const;
+
+  /** Soustraction of two functions with the same input and output dimensions */
+  virtual NumericalMathFunction operator - (const NumericalMathFunction & right) const;
 
   /** Operator () */
   NumericalPoint operator() (const NumericalPoint & inP) const;
+  NumericalPoint operator() (const NumericalPoint & inP,
+			     const NumericalPoint & parameters);
 
   NumericalSample operator() (const NumericalSample & inS) const;
 
@@ -285,12 +304,18 @@ public:
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const NumericalPoint & inP,
+		  const NumericalPoint & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const NumericalPoint & inP,
+			  const NumericalPoint & parameters);
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parametersGradient(const NumericalPoint & inP) const;
+  virtual Matrix parametersGradient(const NumericalPoint & inP,
+				    const NumericalPoint & parameters);
 
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameters() const;

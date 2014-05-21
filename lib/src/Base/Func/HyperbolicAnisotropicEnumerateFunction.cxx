@@ -35,9 +35,9 @@ static Factory<HyperbolicAnisotropicEnumerateFunction> RegisteredFactory("Hyperb
 
 /* Default constructor */
 HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction()
-  : EnumerateFunctionImplementation(),
-    weight_(),
-    q_(0.0)
+  : EnumerateFunctionImplementation()
+  , weight_()
+  , q_(0.0)
 {
   // Nothing to do
 }
@@ -45,8 +45,8 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction()
 /* Parameter constructor */
 HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const UnsignedInteger dimension,
     const NumericalScalar q)
-  : EnumerateFunctionImplementation(dimension),
-    weight_(dimension, 1.0)
+  : EnumerateFunctionImplementation(dimension)
+  , weight_(dimension, 1.0)
 {
   setQ(q);
   initialize();
@@ -56,9 +56,9 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(c
 /* Parameter constructor */
 HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const NumericalPoint & weight,
     const NumericalScalar q)
-  : EnumerateFunctionImplementation(weight.getDimension()),
-    weight_(weight),
-    q_(q)
+  : EnumerateFunctionImplementation(weight.getDimension())
+  , weight_(weight)
+  , q_(q)
 {
   initialize();
 }

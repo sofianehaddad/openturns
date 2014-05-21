@@ -137,6 +137,13 @@ void DTRMV_F77(char *uplo, char *trans, char *diag, int *n, double *A, int *lda,
 #define DTRMM_F77 F77_FUNC(dtrmm,DTRMM)
 void DTRMM_F77(char *side, char *uplo, char *trans, char *diag, int *m, int *n, double *alpha , double *A, int *lda, double *B, int *ldb, int *lside, int *luplo, int *ltrans, int *ldiag);
 
+/** Function dtrmv is to be used to compute the product of a triangular (upper or lower) matrix with a vector  */
+void DTRMV_F77(char *uplo, char *trans, char *diag, int *n, double *A, int *lda, double *X, int *incx, int *luplo, int *ltrans, int *ldiag);
+
+/** Function dposv is to be used to solve a linear system with a symmetric definite positive matrix */
+#define DPOSV_F77 F77_FUNC(dposv,DPOSV)
+void DPOSV_F77(char *uplo, int *n, int *nrhs, double *A, int *lda, double *B, int *ldb, int *info, int *luplo);
+
 /** BLAS routines for complex values */
 
 /** Function zaxpy is to be used to compute the sum or the difference of two complex matrices
@@ -198,12 +205,9 @@ void ZTRMV_F77(char *uplo, char *trans, char *diag, int *n, std::complex<double>
 void ZTRMM_F77(char *side, char *uplo, char *trans, char *diag, int *m, int *n, std::complex<double> *alpha , std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb,
                int *lside , int *luplo, int *ltrans, int *ldiag);
 
-/** Function dtrmv is to be used to compute the product of a triangular (upper or lower) matrix with a vector  */
-void DTRMV_F77(char *uplo, char *trans, char *diag, int *n, double *A, int *lda, double *X, int *incx, int *luplo, int *ltrans, int *ldiag);
-
-/** Function dposv is to be used to solve a linear system with a symmetric definite positive matrix */
-#define DPOSV_F77 F77_FUNC(dposv,DPOSV)
-void DPOSV_F77(char *uplo, int *n, int *nrhs, double *A, int *lda, double *B, int *ldb, int *info, int *luplo);
+/** Function dgelsy is used to solve the linear system corresponding to a matrix */
+#define ZGELSY_F77 F77_FUNC(zgelsy,ZGELSY)
+void ZGELSY_F77(int *m, int *n, int *nrhs, std::complex<double> *a, int *lda, std::complex<double> *b, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, int *info);
 
 END_C_DECLS
 

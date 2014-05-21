@@ -2248,7 +2248,7 @@ Graph DistributionImplementation::drawPDF(const NumericalScalar xMin,
                                           const UnsignedInteger pointNumber) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PDF only if dimension equals 1, here dimension=" << dimension_;
-  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with a point number < 2";
   if (isDiscrete()) return drawDiscretePDF(xMin, xMax, pointNumber);
   // Discretization of the x axis

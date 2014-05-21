@@ -48,7 +48,7 @@ public:
 
 
   /** Default constructor */
-  explicit Interval(const UnsignedInteger dimension = 1);
+  explicit Interval(const UnsignedInteger dimension = 0);
 
   /** Parameters constructor, simplified for 1D case */
   Interval(const NumericalScalar lowerBound,

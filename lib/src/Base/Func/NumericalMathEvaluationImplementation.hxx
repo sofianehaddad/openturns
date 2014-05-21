@@ -146,6 +146,8 @@ public:
 
   /** Operator () */
   virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual NumericalPoint operator() (const NumericalPoint & inP,
+				     const NumericalPoint & parameters);
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
   virtual NumericalSample operator() (const NumericalSample & inSample) const;
@@ -159,6 +161,9 @@ public:
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
 
+  /** Accessor for parameters dimension */
+  virtual UnsignedInteger getParametersDimension() const;
+
   /** Get the i-th marginal evaluation */
   virtual Implementation getMarginal(const UnsignedInteger i) const;
 
@@ -171,6 +176,7 @@ public:
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameters() const;
   virtual void setParameters(const NumericalPointWithDescription & parameters);
+  virtual void setParameters(const NumericalPoint & parameters);
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
@@ -225,6 +231,9 @@ protected:
   /** Flag to activate or deactivate the history mechanism */
   mutable Bool isHistoryEnabled_;
 
+  /** The value and description of all the parameters */
+  NumericalPointWithDescription parameters_;
+
 private:
 
   /** The description of the input components */
@@ -232,9 +241,6 @@ private:
 
   /** The description of the input components */
   Description outputDescription_;
-
-  /** The value and description of all the parameters */
-  NumericalPointWithDescription parameters_;
 
 }; /* class NumericalMathEvaluationImplementation */
 

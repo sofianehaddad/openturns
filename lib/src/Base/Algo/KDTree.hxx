@@ -122,6 +122,13 @@ protected:
 						   NumericalScalar & bestSquaredDistance,
 						   const UnsignedInteger activeDimension) const;
 
+  /** Get the indices of the k nearest neighbours of the given point */
+  virtual Indices getNearestNeighboursIndices(const KDNode::KDNodePointer & p_node,
+					      const NumericalPoint & x,
+					      const UnsignedInteger k,
+					      NumericalPoint & bestSquaredDistance,
+					      const UnsignedInteger activeDimension) const;
+
   /** The data organized by the tree */
   NumericalSample points_;
 

@@ -344,7 +344,7 @@ NumericalScalar BPSER(const NumericalScalar a,
   {
     term *= x * (0.5 + (0.5 - b / j));
     sum += term / (a + j);
-    if (abs(term) < epsilon) break;
+    if (fabs(term) < epsilon) break;
   }
   return value * (1.0 + a * sum);
 }

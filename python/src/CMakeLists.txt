@@ -277,9 +277,9 @@ ot_add_python_module( func func_module.i
                       PiecewiseLinearEvaluationImplementation.i
                       PiecewiseHermiteEvaluationImplementation.i
                       ProductPolynomialEvaluationImplementation.i
-                      RestrictedEvaluationImplementation.i
-                      RestrictedGradientImplementation.i
-                      RestrictedHessianImplementation.i
+                      ParametricEvaluationImplementation.i
+                      ParametricGradientImplementation.i
+                      ParametricHessianImplementation.i
                       Basis.i
                       BasisSequenceImplementation.i
                       BasisSequence.i

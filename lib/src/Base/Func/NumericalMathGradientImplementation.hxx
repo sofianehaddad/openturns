@@ -26,6 +26,7 @@
 
 #include "PersistentObject.hxx"
 #include "NumericalPoint.hxx"
+#include "NumericalPointWithDescription.hxx"
 #include "Description.hxx"
 #include "Indices.hxx"
 #include "Matrix.hxx"
@@ -81,12 +82,18 @@ public:
 
   /** Gradient method */
   virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const NumericalPoint & inP,
+			  const NumericalPoint & parameters);
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
+
+  /** Parameters value and description accessor */
+  virtual NumericalPointWithDescription getParameters() const;
+  virtual void setParameters(const NumericalPointWithDescription & parameters);
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
@@ -104,9 +111,8 @@ protected:
 
 private:
 
-  /** The description of all components */
-  Description description_;
-
+  /** The value and description of all the parameters */
+  NumericalPointWithDescription parameters_;
 
 }; /* class NumericalMathGradientImplementation */
 

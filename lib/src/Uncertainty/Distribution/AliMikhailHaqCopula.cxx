@@ -172,7 +172,7 @@ NumericalScalar AliMikhailHaqCopula::computeCDF(const NumericalPoint & point) co
 CorrelationMatrix AliMikhailHaqCopula::getSpearmanCorrelation() const
 {
   CorrelationMatrix rho(2);
-  if (abs(theta_) < 0.005633787383) rho(0, 1) = (1.0 / 3.0 + (1.0 / 12.0 + (3.0 / 100.0 + (1.0 / 75.0 + (1.0 / 147.0 + (3.0 / 784.0 + theta_ / 432.0) / theta_) / theta_) / theta_) / theta_) / theta_) / theta_;
+  if (fabs(theta_) < 0.005633787383) rho(0, 1) = (1.0 / 3.0 + (1.0 / 12.0 + (3.0 / 100.0 + (1.0 / 75.0 + (1.0 / 147.0 + (3.0 / 784.0 + theta_ / 432.0) / theta_) / theta_) / theta_) / theta_) / theta_) / theta_;
   else rho(0, 1) = 12.0 * ((((1.0 + theta_) * SpecFunc::DiLog(theta_) - 2.0 * (1.0 - theta_) * log1p(-theta_)) / theta_) - 3.0) / theta_ - 3.0;
   return rho;
 }
@@ -181,7 +181,7 @@ CorrelationMatrix AliMikhailHaqCopula::getSpearmanCorrelation() const
 CorrelationMatrix AliMikhailHaqCopula::getKendallTau() const
 {
   CorrelationMatrix tau(2);
-  if (abs(theta_) < 0.005149755205) tau(0, 1) = (2.0 / 9.0 + (1.0 / 18.0 + (1.0 / 45.0 + (1.0 / 90.0 + (2.0 / 315.0 + (1.0 / 252.0 + theta_ / 378.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_;
+  if (fabs(theta_) < 0.005149755205) tau(0, 1) = (2.0 / 9.0 + (1.0 / 18.0 + (1.0 / 45.0 + (1.0 / 90.0 + (2.0 / 315.0 + (1.0 / 252.0 + theta_ / 378.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_;
   else tau(0, 1) = 1.0 - 2.0 / (3.0 * theta_) + log1p(-theta_) * (-2.0 / 3.0 + 4.0 / (3.0 * theta_) - 2.0 / (3.0 * theta_ * theta_));
   return tau;
 }

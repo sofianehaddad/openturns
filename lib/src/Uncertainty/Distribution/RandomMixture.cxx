@@ -684,7 +684,7 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
     const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
     const NumericalComplex deltaLog(logNormalCF - logCF);
     NumericalComplex value;
-    if (abs(deltaLog) < 1.0e-5) value = exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
+    if (std::abs(deltaLog) < 1.0e-5) value = exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
     else value = exp(logCF) - exp(logNormalCF);
     LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << exp(logNormalCF) << ", value=" << value);
     return value;
@@ -699,7 +699,7 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
       const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
       const NumericalComplex deltaLog(logNormalCF - logCF);
       NumericalComplex value;
-      if (abs(deltaLog) < 1.0e-5) value = exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
+      if (std::abs(deltaLog) < 1.0e-5) value = exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
       else value = exp(logCF) - exp(logNormalCF);
       LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << exp(logNormalCF) << ", value=" << value);
       characteristicValuesCache_.add(value);

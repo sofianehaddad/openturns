@@ -46,6 +46,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
   , samplesNumber_(0)
   , acceptedNumber_(0)
 {
+  // Nthing to do
 }
 
 

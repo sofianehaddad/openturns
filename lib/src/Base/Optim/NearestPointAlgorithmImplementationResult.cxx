@@ -312,7 +312,7 @@ Graph NearestPointAlgorithmImplementationResult::drawErrorHistory() const
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve constraintErrorCurve( data, "constraint error" );
     constraintErrorCurve.setLegend("constraint error");
-    constraintErrorCurve.setColor("yellow");
+    constraintErrorCurve.setColor("magenta");
     result.add( constraintErrorCurve );
   }
 

@@ -87,6 +87,19 @@ ComplexMatrix::ComplexMatrix(const ComplexMatrixImplementation & i)
   // Nothing to do
 }
 
+/* Resolution of a linear system */
+ComplexMatrix::NumericalComplexCollection ComplexMatrix::solveLinearSystem(const NumericalComplexCollection & b,
+    const Bool keepIntact)
+{
+  return getImplementation()->solveLinearSystemRect(b, keepIntact);
+}
+
+ComplexMatrix ComplexMatrix::solveLinearSystem(const ComplexMatrix & b,
+					       const Bool keepIntact)
+{
+  return Implementation(getImplementation()->solveLinearSystemRect(*(b.getImplementation()), keepIntact).clone());
+}
+
 /* Set small elements to zero */
 ComplexMatrix ComplexMatrix::clean(const NumericalScalar threshold) const
 {

@@ -272,7 +272,7 @@ Bool Mesh::isRegular() const
   const NumericalScalar step(vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0]);
   for (UnsignedInteger i = 1; i < size; ++i)
     {
-      regular = regular && (abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
+      regular = regular && (fabs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
       if (!regular) break;
     }
   return regular;

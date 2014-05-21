@@ -302,10 +302,22 @@ void NumericalMathEvaluationImplementation::setParameters(const NumericalPointWi
   parameters_ = parameters;
 }
 
+void NumericalMathEvaluationImplementation::setParameters(const NumericalPoint & parameters)
+{
+  parameters_ = parameters;
+}
+
 /* Operator () */
 NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
   throw NotYetImplementedException(HERE);
+}
+
+NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
+								  const NumericalPoint & parameters)
+{
+  setParameters(parameters);
+  return (*this)(inP);
 }
 
 /* Accessor for input point dimension */
@@ -318,6 +330,12 @@ UnsignedInteger NumericalMathEvaluationImplementation::getInputDimension() const
 UnsignedInteger NumericalMathEvaluationImplementation::getOutputDimension() const
 {
   throw NotYetImplementedException(HERE);
+}
+
+/* Accessor for input point dimension */
+UnsignedInteger NumericalMathEvaluationImplementation::getParametersDimension() const
+{
+  return parameters_.getDimension();
 }
 
 /* Get the i-th marginal function */

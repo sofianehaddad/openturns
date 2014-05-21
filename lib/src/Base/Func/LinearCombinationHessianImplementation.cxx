@@ -46,8 +46,8 @@ LinearCombinationHessianImplementation::LinearCombinationHessianImplementation()
 
 /* Parameters constructor */
 LinearCombinationHessianImplementation::LinearCombinationHessianImplementation(const LinearCombinationEvaluationImplementation & evaluation)
-  : NumericalMathHessianImplementation(),
-    evaluation_(evaluation)
+  : NumericalMathHessianImplementation()
+  , evaluation_(evaluation)
 {
   // Nothing to do
 }

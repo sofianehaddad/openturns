@@ -400,6 +400,7 @@ String Interval::__repr__() const
 
 String Interval::__str__(const String & offset) const
 {
+  if (getDimension() == 0) return "empty";
   OSS oss(false);
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     {

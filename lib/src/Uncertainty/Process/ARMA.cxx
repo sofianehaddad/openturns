@@ -214,8 +214,8 @@ UnsignedInteger ARMA::computeNThermalization(const NumericalScalar epsilon) cons
   const NumericalComplexCollection eigenValues(matrix.computeEigenValues(false));
 
   // Find the largest eigenvalue module
-  NumericalScalar s(abs(eigenValues[0]));
-  for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, abs(eigenValues[i]));
+  NumericalScalar s(std::abs(eigenValues[0]));
+  for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::abs(eigenValues[i]));
   // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
   if (s >= 1.0) throw InvalidArgumentException(HERE) << "Error: the ARMA process is not stationary with the given coefficients. Here, AR coefficients=" << ARCoefficients_ << " and MA coefficients=" << MACoefficients_ << " with largest eigenvalue s=" << s;
   return static_cast<UnsignedInteger>(ceil( log(epsilon) / log(s) ) );

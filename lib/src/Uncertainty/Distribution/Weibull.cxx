@@ -166,7 +166,52 @@ NumericalScalar Weibull::computeCDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0] - gamma_);
   if (x <= 0.0) return 0.0;
-  return 1.0 - exp(-pow(x / alpha_, beta_));
+  return -expm1(-pow(x / alpha_, beta_));
+}
+
+NumericalScalar Weibull::computeComplementaryCDF(const NumericalPoint & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const NumericalScalar x(point[0] - gamma_);
+  if (x <= 0.0) return 1.0;
+  return exp(-pow(x / alpha_, beta_));
+}
+
+/* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
+NumericalComplex Weibull::computeCharacteristicFunction(const NumericalScalar x) const
+{
+  /*
+  X=mu+sigma*Y;
+  phi_X(u)=E(exp(I*u*(mu+sigma*Y)))=exp(I*u*mu)*E(I*u*sigma*Y)=exp(I*u*mu)*phi_Y(sigma*u)
+phi_Y(u)=1+(\sum_{r=1}^{\infty}(iu)^r\frac{\Gamma(r/\lambda)}{\Gamma(r)}
+  */
+  if (x == 0.0) return 1.0;
+  NumericalComplex value(1.0);
+  NumericalScalar u(x * alpha_);
+  NumericalScalar logAbsU(log(fabs(u)));
+  NumericalScalar oldNorm(0.0);
+  NumericalScalar norm(oldNorm);
+  UnsignedInteger r(1);
+  Bool increasing(true);
+  while (increasing || (norm > std::abs(value) * SpecFunc::NumericalScalarEpsilon))
+    {
+      const NumericalScalar term1(exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+      ++r;
+      const NumericalScalar term2(exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+      ++r;
+      const NumericalScalar term3(exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+      ++r;
+      const NumericalScalar term4(exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+      ++r;
+      const NumericalComplex term((term4 - term2) / beta_, (term1 - term3) / beta_);
+      oldNorm = norm;
+      norm = std::abs(term);
+      value += term;
+      increasing = norm > oldNorm;
+    }
+  value *= exp(NumericalComplex(0.0, x * gamma_));
+  return value;
 }
 
 /* Get the PDFGradient of the distribution */

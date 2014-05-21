@@ -29,16 +29,13 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(AbdoRackwitz);
 
 static Factory<AbdoRackwitz> RegisteredFactory("AbdoRackwitz");
 
 /* Default constructor */
-AbdoRackwitz::AbdoRackwitz():
-  NearestPointAlgorithmImplementation()
+AbdoRackwitz::AbdoRackwitz()
+  : NearestPointAlgorithmImplementation()
 {
   initialize();
 }
@@ -48,12 +45,12 @@ AbdoRackwitz::AbdoRackwitz():
  *         and a level value
  */
 AbdoRackwitz::AbdoRackwitz(const AbdoRackwitzSpecificParameters & specificParameters,
-                           const NumericalMathFunction & levelFunction):
-  NearestPointAlgorithmImplementation(levelFunction),
-  specificParameters_(specificParameters),
-  currentPoint_(getStartingPoint().getDimension()),
-  currentDirection_(getStartingPoint().getDimension()),
-  currentGradient_(getStartingPoint().getDimension())
+                           const NumericalMathFunction & levelFunction)
+  : NearestPointAlgorithmImplementation(levelFunction)
+  , specificParameters_(specificParameters)
+  , currentPoint_(getStartingPoint().getDimension())
+  , currentDirection_(getStartingPoint().getDimension())
+  , currentGradient_(getStartingPoint().getDimension())
 {
   initialize();
 }

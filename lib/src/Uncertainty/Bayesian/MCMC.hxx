@@ -31,9 +31,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 /**
  * @class MCMC
  *
@@ -116,7 +113,7 @@ private:
   Distribution prior_;
   Distribution conditional_;
 
-  NumericalMathFunction model_;
+  mutable NumericalMathFunction model_;
   NumericalSample observations_;
 
   UnsignedInteger burnIn_; // number of first samples discarded to reach stationary regime

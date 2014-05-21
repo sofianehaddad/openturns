@@ -89,6 +89,13 @@ SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint
   throw NotYetImplementedException(HERE);
 }
 
+SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint & inP,
+							    const NumericalPoint & parameters)
+{
+  setParameters(parameters);
+  return hessian(inP);
+}
+
 /* Accessor for input point dimension */
 UnsignedInteger NumericalMathHessianImplementation::getInputDimension() const
 {
@@ -106,6 +113,18 @@ UnsignedInteger NumericalMathHessianImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }
+
+/* Parameters value and description accessor */
+NumericalPointWithDescription NumericalMathHessianImplementation::getParameters() const
+{
+  return parameters_;
+}
+
+void NumericalMathHessianImplementation::setParameters(const NumericalPointWithDescription & parameters)
+{
+  parameters_ = parameters;
+}
+
 
 /* Get the i-th marginal function */
 NumericalMathHessianImplementation::Implementation NumericalMathHessianImplementation::getMarginal(const UnsignedInteger i) const

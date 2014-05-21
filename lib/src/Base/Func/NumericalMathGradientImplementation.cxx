@@ -42,6 +42,7 @@ static Factory<NumericalMathGradientImplementation> RegisteredFactory("Numerical
 NumericalMathGradientImplementation::NumericalMathGradientImplementation()
   : PersistentObject()
   , callsNumber_(0)
+  , parameters_(0)
 {
   // Nothing to do
 }
@@ -88,6 +89,14 @@ Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP)
   throw NotYetImplementedException(HERE);
 }
 
+/* Gradient method */
+Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP,
+						     const NumericalPoint & parameters)
+{
+  setParameters(parameters);
+  return gradient(inP);
+}
+
 /* Accessor for input point dimension */
 UnsignedInteger NumericalMathGradientImplementation::getInputDimension() const
 {
@@ -104,6 +113,17 @@ UnsignedInteger NumericalMathGradientImplementation::getOutputDimension() const
 UnsignedInteger NumericalMathGradientImplementation::getCallsNumber() const
 {
   return callsNumber_;
+}
+
+/* Parameters value and description accessor */
+NumericalPointWithDescription NumericalMathGradientImplementation::getParameters() const
+{
+  return parameters_;
+}
+
+void NumericalMathGradientImplementation::setParameters(const NumericalPointWithDescription & parameters)
+{
+  parameters_ = parameters;
 }
 
 /* Get the i-th marginal function */

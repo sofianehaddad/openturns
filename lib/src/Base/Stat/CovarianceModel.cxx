@@ -155,6 +155,7 @@ String CovarianceModel::__str__(const String & offset) const
 
 void CovarianceModel::setParameters(const NumericalPointWithDescription& parameters)
 {
+  copyOnWrite();
   getImplementation()->setParameters(parameters);
 }
 

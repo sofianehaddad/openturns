@@ -97,9 +97,9 @@
 %include DatabaseNumericalMathEvaluationImplementation.i
 %include IndicatorNumericalMathEvaluationImplementation.i
 %include ProductPolynomialEvaluationImplementation.i
-%include RestrictedEvaluationImplementation.i
-%include RestrictedGradientImplementation.i
-%include RestrictedHessianImplementation.i
+%include ParametricEvaluationImplementation.i
+%include ParametricGradientImplementation.i
+%include ParametricHessianImplementation.i
 %include Basis.i
 %include BasisSequenceImplementation.i
 %include BasisSequence.i

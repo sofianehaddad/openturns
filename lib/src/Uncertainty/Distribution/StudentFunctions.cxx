@@ -275,7 +275,7 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
 
   // Estimate the position of the modus MOD of the FUNC
   mode = (x * sqrt(4 * nu * nuMinus2 + xSquare * (delta * delta + 4 * nuMinus2)) - delta * (xSquare + 2 * nu)) / (2 * (xSquare + nu));
-  const NumericalScalar dZ(std::min(0.5 * abs(mode + delta), 0.01));
+  const NumericalScalar dZ(std::min(0.5 * fabs(mode + delta), 0.01));
   NumericalPoint dMode(3);
   dMode[0] = mode - dZ;
   dMode[1] = mode;

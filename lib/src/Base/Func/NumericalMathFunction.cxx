@@ -35,6 +35,9 @@
 #include "LinearCombinationHessianImplementation.hxx"
 #include "NoNumericalMathGradientImplementation.hxx"
 #include "NoNumericalMathHessianImplementation.hxx"
+#include "ParametricEvaluationImplementation.hxx"
+#include "ParametricGradientImplementation.hxx"
+#include "ParametricHessianImplementation.hxx"
 #include "Log.hxx"
 #include "Os.hxx"
 
@@ -129,7 +132,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
-  AggregatedNumericalMathEvaluationImplementation evaluation(functionCollection);
+  const AggregatedNumericalMathEvaluationImplementation evaluation(functionCollection);
   setEvaluationImplementation(evaluation.clone());
   setGradientImplementation(new AggregatedNumericalMathGradientImplementation(evaluation));
   setHessianImplementation(new AggregatedNumericalMathHessianImplementation(evaluation));
@@ -140,7 +143,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
     const NumericalPoint & coefficients)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
-  LinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
+  const LinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
   setEvaluationImplementation(evaluation.clone());
   setGradientImplementation(new LinearCombinationGradientImplementation(evaluation));
   setHessianImplementation(new LinearCombinationHessianImplementation(evaluation));
@@ -151,7 +154,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
     const NumericalSample & coefficients)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
-  DualLinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
+  const DualLinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
   setEvaluationImplementation(evaluation.clone());
   setGradientImplementation(new DualLinearCombinationGradientImplementation(evaluation));
   setHessianImplementation(new DualLinearCombinationHessianImplementation(evaluation));
@@ -188,6 +191,31 @@ NumericalMathFunction::NumericalMathFunction(const NumericalSample & inputSample
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation( inputSample, outputSample ))
 {
   // Nothing to do
+}
+
+  /* Constructor by splitting the input of a function between variables and parameters */
+NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
+			const Indices & set,
+			const Bool parametersSet)
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+{
+  const ParametricEvaluationImplementation evaluation(function, set, NumericalPoint(function.getInputDimension()), parametersSet);
+  setEvaluationImplementation(evaluation.clone());
+  setGradientImplementation(new ParametricGradientImplementation(evaluation));
+  setHessianImplementation(new ParametricHessianImplementation(evaluation));
+}
+
+
+NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
+					     const Indices & set,
+					     const NumericalPoint & referencePoint,
+					     const Bool parametersSet)
+: TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+{
+  const ParametricEvaluationImplementation evaluation(function, set, NumericalPoint(function.getInputDimension()), parametersSet);
+  setEvaluationImplementation(evaluation.clone());
+  setGradientImplementation(new ParametricGradientImplementation(evaluation));
+  setHessianImplementation(new ParametricHessianImplementation(evaluation));
 }
 
 /* Comparison operator */
@@ -308,9 +336,32 @@ HistoryStrategy NumericalMathFunction::getOutputHistory() const
 }
 
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
-NumericalMathFunction NumericalMathFunction::operator * (const NumericalMathFunction & right) const
+ProductNumericalMathFunction NumericalMathFunction::operator * (const NumericalMathFunction & right) const
 {
-  return getImplementation()->operator * (*(right.getImplementation()));
+  return ProductNumericalMathFunction(getImplementation(), right.getImplementation());
+}
+
+/* Addition operator between two functions with the same input dimension and output dimension */
+NumericalMathFunction NumericalMathFunction::operator + (const NumericalMathFunction & right) const
+{
+  const NumericalPoint coefficients(2, 1.0);
+  NumericalMathFunctionCollection collection(2);
+  collection[0] = *this;
+  collection[1] = right;
+  const LinearCombinationEvaluationImplementation evaluation(collection, coefficients);
+  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradientImplementation(evaluation).clone(), LinearCombinationHessianImplementation(evaluation).clone());
+}
+
+/* Soustraction operator between two functions with the same input dimension and output dimension */
+NumericalMathFunction NumericalMathFunction::operator - (const NumericalMathFunction & right) const
+{
+  NumericalPoint coefficients(2, 1.0);
+  coefficients[1] = -1.0;
+  NumericalMathFunctionCollection collection(2);
+  collection[0] = *this;
+  collection[1] = right;
+  const LinearCombinationEvaluationImplementation evaluation(collection, coefficients);
+  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradientImplementation(evaluation).clone(), LinearCombinationHessianImplementation(evaluation).clone());
 }
 
 /* Function implementation accessors */
@@ -416,6 +467,13 @@ Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP) con
   return getImplementation()->parametersGradient(inP);
 }
 
+Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP,
+						 const NumericalPoint & parameters)
+{
+  copyOnWrite();
+  return getImplementation()->parametersGradient(inP, parameters);
+}
+
 /* Parameters value and description accessor */
 NumericalPointWithDescription NumericalMathFunction::getParameters() const
 {
@@ -433,6 +491,13 @@ void NumericalMathFunction::setParameters(const NumericalPointWithDescription & 
 NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP) const
 {
   return getImplementation()->operator()(inP);
+}
+
+NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP,
+						  const NumericalPoint & parameters)
+{
+  copyOnWrite();
+  return getImplementation()->operator()(inP, parameters);
 }
 
 /* Operator () */
@@ -453,13 +518,25 @@ Matrix NumericalMathFunction::gradient(const NumericalPoint & inP) const
   return getImplementation()->gradient(inP);
 }
 
+Matrix NumericalMathFunction::gradient(const NumericalPoint & inP,
+				       const NumericalPoint & parameters)
+{
+  copyOnWrite();
+  return getImplementation()->gradient(inP, parameters);
+}
+
 /* Method hessian() returns the symmetric tensor of the function at point */
 SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP) const
 {
   return getImplementation()->hessian(inP);
 }
 
-
+SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP,
+					       const NumericalPoint & parameters)
+{
+  copyOnWrite();
+  return getImplementation()->hessian(inP, parameters);
+}
 
 
 /* Accessor for input point dimension */

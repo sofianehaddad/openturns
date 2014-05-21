@@ -100,6 +100,69 @@ ComplexMatrixImplementation * ComplexMatrixImplementation::clone() const
   return new ComplexMatrixImplementation(*this);
 }
 
+/* Resolution of a linear system : rectangular matrix
+ * MX = b, M is an mxn matrix, b is an mxq matrix and
+ * X is an nxq matrix */
+ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (const ComplexMatrixImplementation & b,
+    const Bool keepIntact)
+{
+  if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE);
+  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE);
+  int m(nbRows_);
+  int n(nbColumns_);
+  // B is an extended copy of b, it must be large enought to store the solution, see LAPACK documentation
+  int p(std::max(m, n));
+  int q(b.nbColumns_);
+  ComplexMatrixImplementation B(p, q);
+  for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
+    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(m); ++i)
+      B(i, j) = b(i, j);
+  int nrhs(q);
+  int lwork(-1);
+  std::complex<double> lwork_d;
+  int info;
+  std::vector<int> jpiv(n);
+  double rcond(ResourceMap::GetAsNumericalScalar("MatrixImplementation-DefaultSmallPivot"));
+  int rank;
+  // We must copy the matrix as it will be overwritten by the operation
+  if (keepIntact)
+  {
+    ComplexMatrixImplementation A(*this);
+    ZGELSY_F77(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
+    lwork = static_cast<int>(std::real(lwork_d));
+    NumericalComplexCollection work(lwork);
+    ZGELSY_F77(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
+  }
+  else
+  {
+    ZGELSY_F77(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
+    lwork = static_cast<int>(std::real(lwork_d));
+    NumericalComplexCollection work(lwork);
+    ZGELSY_F77(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
+  }
+  ComplexMatrixImplementation result(n, q);
+  for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
+    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
+      result(i, j) = B(i, j);
+  return result;
+}
+
+/* Resolution of a linear system : rectangular matrix
+ * Mx = b, M is an mxn matrix, b is an m-dimensional
+ * vector and x is an n-dimensional vector */
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::solveLinearSystemRect (const NumericalComplexCollection & b,
+    const Bool keepIntact)
+{
+  const UnsignedInteger m(b.getSize());
+  if (nbRows_ != m) throw InvalidDimensionException(HERE);
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE);
+  // Solve the matrix linear system
+  // A ComplexMatrixImplementation is also a collection of NumericalComplex, so it is automatically converted into a NumericalComplexCollection
+  return solveLinearSystemRect(ComplexMatrixImplementation(m, 1, b), keepIntact);
+}
+
+
+
 /* Set small elements to zero */
 ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalScalar threshold) const
 {
@@ -341,7 +404,7 @@ const Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
   {
     for ( UnsignedInteger j = 1; j < nbColumns_; ++ j )
       for ( UnsignedInteger i = 0; i < j; ++ i )
-        if ( std::abs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0. )
+        if ( std::abs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0.0 )
           return false;
     return true;
   }

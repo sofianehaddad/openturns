@@ -30,11 +30,7 @@
 #include "Interval.hxx"
 #include "ResourceMap.hxx"
 
-
 BEGIN_NAMESPACE_OPENTURNS
-
-
-
 
 /**
  * @class RandomWalkMetropolisHastings
