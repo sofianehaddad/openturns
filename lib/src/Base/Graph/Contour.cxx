@@ -190,8 +190,8 @@ String Contour::draw() const
   {
     xFileName_ = x_.storeToTemporaryFile();
     yFileName_ = y_.storeToTemporaryFile();
-    oss << "x <- dataOT.matrix(read.table(\"" << xFileName_ << "\"))\n"
-        << "y <- dataOT.matrix(read.table(\"" << yFileName_ << "\"))\n";
+    oss << "x <- dataOT.matrix(read.table(\"" << xFileName_ << "\", stringsAsFactors = F))\n"
+        << "y <- dataOT.matrix(read.table(\"" << yFileName_ << "\", stringsAsFactors = F))\n";
   }
   else
   {

@@ -351,6 +351,7 @@ TestResult FittingTest::RunRTest(const NumericalSample & sample,
   cmdFile << "library(rot)" << std::endl;
   cmdFile << "options(digits=17)" << std::endl;
   cmdFile << "options(warn=-1)" << std::endl;
+  cmdFile << "options(stringsAsFactors = F)" << std::endl;
   cmdFile << "sample <- data.matrix(read.table(\"" << dataFileName << "\"))" << std::endl;
   cmdFile << "res <- computeTest" << testName << distribution.getImplementation()->getClassName();
   cmdFile << "(sample, ";
