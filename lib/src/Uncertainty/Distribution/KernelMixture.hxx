@@ -100,9 +100,11 @@ public:
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the PDF gradient of the distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDF gradient of the distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the i-th marginal distribution */

@@ -935,10 +935,29 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
   throw NotYetImplementedException(HERE) << "in DistributionImplementation::computePDFGradient()";
 }
 
+/* ComputePDFGradient On a NumericalSample */
+NumericalSample DistributionImplementation::computePDFGradient(const NumericalSample & inSample) const
+{
+  const UnsignedInteger size(inSample.getSize());
+  NumericalSample outSample(size, getParametersNumber());
+  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computePDFGradient(inSample[i]);
+  return outSample;
+}
+
+
 /* Get the CDF gradient of the distribution */
 NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoint & point) const
 {
   throw NotYetImplementedException(HERE) << "in DistributionImplementation::computeCDFGradient()";
+}
+
+/* ComputeCDFGradient On a NumericalSample */
+NumericalSample DistributionImplementation::computeCDFGradient(const NumericalSample & inSample) const
+{
+  const UnsignedInteger size(inSample.getSize());
+  NumericalSample outSample(size, getParametersNumber());
+  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeCDFGradient(inSample[i]);
+  return outSample;
 }
 
 /* Build a C1 interpolation of the CDF function for 1D continuous distributions */

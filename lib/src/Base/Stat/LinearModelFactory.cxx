@@ -56,6 +56,7 @@ LinearModel LinearModelFactory::build(const NumericalSample & samplePred,
   cmdFile << "library(rot)" << std::endl;
   cmdFile << "options(digits=17)" << std::endl;
   cmdFile << "options(warn=-1)" << std::endl;
+  cmdFile << "options(stringsAsFactors = F)" << std::endl;
   cmdFile << "samplePred <- data.matrix(read.table(\"" << predictorFileName << "\"))" << std::endl;
   cmdFile << "sampleLab <- data.matrix(read.table(\"" << laboratoryFileName << "\"))" << std::endl;
   cmdFile << "res <- computeLinearModel(samplePred, sampleLab, " << levelValue << ")" << std::endl;

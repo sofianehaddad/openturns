@@ -93,6 +93,7 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const NumericalSample & firstSampl
   cmdFile << "library(rot)" << std::endl;
   cmdFile << "options(digits=17)" << std::endl;
   cmdFile << "options(warn=-1)" << std::endl;
+  cmdFile << "options(stringsAsFactors = F)" << std::endl;
   cmdFile << "firstSample <- data.matrix(read.table(\"" << firstDataFileName << "\"))" << std::endl;
   cmdFile << "secondSample <- data.matrix(read.table(\"" << secondDataFileName << "\"))" << std::endl;
   cmdFile << "res <- computeTest" << testName;
@@ -223,6 +224,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   cmdFile << "library(rot)" << std::endl;
   cmdFile << "options(digits=17)" << std::endl;
   cmdFile << "options(warn=-1)" << std::endl;
+  cmdFile << "options(stringsAsFactors = F)" << std::endl;
   cmdFile << "firstSample <- data.matrix(read.table(\"" << firstDataFileName << "\"))" << std::endl;
   cmdFile << "secondSample <- data.matrix(read.table(\"" << secondDataFileName << "\"))" << std::endl;
   cmdFile << "selection <- data.matrix(read.table(\"" << selectionFileName << "\"))" << std::endl;

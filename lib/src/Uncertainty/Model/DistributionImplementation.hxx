@@ -191,9 +191,12 @@ public:
 
   /** Get the PDF gradient of the distribution */
   virtual NumericalPoint computePDFGradient(const NumericalPoint & point) const;
-
+  virtual NumericalSample computePDFGradient(const NumericalSample & inSample) const;
+public:
   /** Get the CDF gradient of the distribution */
   virtual NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  virtual NumericalSample computeCDFGradient(const NumericalSample & inSample) const;
+public:
 
   /** Get the quantile of the distributionImplementation */
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,

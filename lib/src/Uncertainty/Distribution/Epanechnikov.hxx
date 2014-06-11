@@ -73,9 +73,11 @@ public:
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
   /** Get the PDFGradient of the distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */

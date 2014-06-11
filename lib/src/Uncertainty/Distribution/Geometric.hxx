@@ -75,9 +75,11 @@ public:
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
   /** Get the PDFGradient of the distribution */
+  using DiscreteDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the distribution */
+  using DiscreteDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
