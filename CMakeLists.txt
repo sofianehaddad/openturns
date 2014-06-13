@@ -6,6 +6,10 @@ option ( USE_BISON                    "Looks for Bison if true and then build pa
 option ( USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON )
 option ( USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ON )
 option ( USE_SYSTEM_LAPACK            "Use system LAPACK libraries"                                           ON )
+
+# still a bit new: provided by 3.5.0 but the cmake config file is only in the dev version
+option ( USE_LAPACKE                  "Use LAPACKE C interface to LAPACK"                                     OFF )
+
 option ( USE_MUPARSER                 "Use muParser libraries"                                                ON )
 option ( USE_MUPARSER2                "Use muParser2 features"                                                OFF )
 option ( USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON )
@@ -78,11 +82,14 @@ set ( OPENTURNS_DOC_PATH
       CACHE PATH "The directory where the license files are installed"
     )
 
+
 if ( WIN32 )
   set ( DEFAULT_TMP TEMP )
-else ( WIN32 )
+  set ( PATH_SEP "\\;" )
+else ()
   set( DEFAULT_TMP /tmp )
-endif( WIN32 )
+  set ( PATH_SEP ":" )
+endif()
 
 set ( OPENTURNS_TEMPDIR
       ${DEFAULT_TMP}
@@ -109,6 +116,32 @@ endif()
 if ( BUILD_LIB )
 
 enable_language ( C )
+
+if ( USE_SYSTEM_LAPACK )
+  if ( USE_LAPACKE )
+    find_package ( LAPACKE NO_MODULE )
+  endif ()
+  if ( NOT LAPACKE_FOUND )
+    enable_language( Fortran )
+    find_package ( LAPACK REQUIRED )
+  endif ()
+endif ()
+if ( NOT LAPACK_FOUND AND NOT LAPACKE_FOUND )
+  include ( ExternalProject )
+  enable_language( Fortran )
+  set ( LAPACK_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/lapack-prefix )
+  ExternalProject_Add ( lapack
+    URL http://www.netlib.org/lapack/lapack-3.5.0.tgz
+    URL_MD5 b1d3e3e425b2e44a06760ff173104bdf
+    CMAKE_ARGS
+      -DCMAKE_INSTALL_PREFIX=${LAPACK_PREFIX}
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBUILD_TESTING=OFF
+      "-DCMAKE_Fortran_FLAGS=-g -O2 -fPIC"
+  )
+  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/libblas.a )
+  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/liblapack.a )
+endif ()
 
 if ( MSVC OR WINTEL )
   set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
@@ -138,30 +171,6 @@ if ( USE_TBB )
   if ( TBB_FOUND AND (MSVC OR WINTEL ))
     set (OPENTURNS_TBB_NO_IMPLICIT_LINKAGE ON CACHE BOOL "Prevent implicit linkage against tbb.lib ")
   endif ()
-endif ()
-
-if ( USE_SYSTEM_LAPACK )
-  find_package ( LAPACKE NO_MODULE )
-  if ( NOT LAPACKE_FOUND )
-    enable_language( Fortran )
-    find_package ( LAPACK REQUIRED )
-  endif ()
-endif ()
-if ( NOT LAPACK_FOUND AND NOT LAPACKE_FOUND )
-  include ( ExternalProject )
-  enable_language( Fortran )
-  set ( LAPACK_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/lapack-prefix )
-  ExternalProject_Add ( lapack
-    URL http://www.netlib.org/lapack/lapack-3.5.0.tgz
-    URL_MD5 b1d3e3e425b2e44a06760ff173104bdf
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${LAPACK_PREFIX}
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBUILD_TESTING=OFF
-      "-DCMAKE_Fortran_FLAGS=-g -O2 -fPIC"
-  )
-  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/libblas.a )
-  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/liblapack.a )
 endif ()
 
 if ( USE_MUPARSER )
@@ -426,6 +435,11 @@ endif ()
 
 set ( OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/swig )
 set ( OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=openturns )
+
+# necessary to link against Py_InitModule64
+if ( MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8 )
+  set (OPENTURNS_SWIG_DEFINITIONS "-DMS_WIN64 ${OPENTURNS_SWIG_DEFINITIONS}" )
+endif ()
 
 # The tests can't be run if this function is absent
 enable_testing ()

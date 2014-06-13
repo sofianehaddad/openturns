@@ -11,6 +11,10 @@ RequestExecutionLevel user
   !error "OPENTURNS_PREFIX must be defined"
 !endif
 
+!ifndef ARCH
+  !error "ARCH must be defined"
+!endif
+
 !include "WordFunc.nsh" ; for ${WordAdd}, ${WordReplace}
 !include "FileFunc.nsh" ; for ${DirState} , ${GetParent}, ${ConfigWrite}, ${GetFileAttributes}
 !include "TextFunc.nsh" ; for ${ConfigRead}
@@ -27,6 +31,13 @@ RequestExecutionLevel user
 
 ; Where win specific things reside : examples, dedendancies installers and headers... (relative path)
 !define WINDEPS openturns-developers-windeps-${PRODUCT_VERSION}
+
+
+!macro CHECK_REG_VIEW
+  ${If} "${ARCH}" == "x86_64"
+     SetRegView 64
+  ${EndIf}
+!macroend
 
 
 !macro PRINT MSG
@@ -90,7 +101,7 @@ Var UserInstall
 !macroend
 
 
-; Set whether OpenTURNS shortcutes will be in every user menu or only in current user menu.
+; Set whether OpenTURNS shortcuts will be in every user menu or only in current user menu.
 ; CHECK_USER_INSTALL must have been called first
 !macro SET_MENU_CONTEXT
   ${If} "$UserInstall" == "0"
@@ -104,7 +115,7 @@ Var UserInstall
 
 Var OT_INSTALL_PATH
 
-!define Python_default_INSTALL_PATH "C:\Python${PYBASEVER}"
+!define Python_default_INSTALL_PATH "C:\Python${PYBASEVER_NODOT}"
 !define Default_OT_INSTALL_PATH "${Python_default_INSTALL_PATH}\Lib\site-packages\openturns"
 
 

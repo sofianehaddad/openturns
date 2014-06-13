@@ -39,13 +39,13 @@ try:
     elementaryFunctions.add("abs")
     # Check the creation of the elementary functions
     for i in range(elementaryFunctions.getSize()):
-        x = NumericalPoint(1, 0.4 / 3)
+        x = NumericalPoint(1, 0.4)
         # acosh only defined for 1 <= x <= pi
         if elementaryFunctions[i] == "acosh":
-            x[0] = 1.4 / 3
+            x[0] = 1.4
 
         f = NumericalMathFunction(
-            "x", "2.0*" + elementaryFunctions[i] + "(3*x)", "y")
+            "x", "2.0*" + elementaryFunctions[i] + "(x)", "y")
         print "f=", f
         print "f(", x[0], ")=%.4e" % f(x)[0]
         analytical_grad = True

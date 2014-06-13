@@ -6,13 +6,11 @@ set ( NEW_PATH "$ENV{PATH}:${INSTALL_DESTDIR}${EXAMPLE_PATH}" )
 
 set ( ADAPT_CHECK_TESTS_EXPONENT )
 set ( REPLACE_EOL " | cat " )
-set ( PATH_SEP ":" )
 if ( MINGW )
   # replace dos eols
   set ( REPLACE_EOL " | tr -d '\\\\015' " )
   # By default, Mingw-g++ puts 3 digits to real exponent whereas g++ puts 2.
   set ( ADAPT_CHECK_TESTS_EXPONENT "PRINTF_EXPONENT_DIGITS=2" )
-  set ( PATH_SEP "\\;" )
 endif ()
 
 
@@ -628,7 +626,10 @@ if ( MATPLOTLIB_FOUND )
 endif ()
 ot_pyinstallcheck_test ( QuickTest IGNOREOUT )
 
-ot_pyinstallcheck_test ( coupling_tools )
+# FIXME: check_get_line_col fails through wine on newer native version
+if ( NOT WIN32 )
+  ot_pyinstallcheck_test ( coupling_tools )
+endif ()
 
 if (MATPLOTLIB_FOUND AND R_rot_FOUND)
   ot_pyinstallcheck_test ( docstring )

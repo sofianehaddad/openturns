@@ -55,6 +55,8 @@ ShowUnInstDetails show
 
 ; Launch before the section are displayed
 Function .onInit
+  !insertmacro CHECK_REG_VIEW
+  
   !insertmacro MUI_LANGDLL_DISPLAY
 
   !insertmacro CHECK_USER_INSTALL "Installation switched to user install."

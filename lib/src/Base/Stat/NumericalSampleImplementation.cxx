@@ -205,7 +205,17 @@ bool operator >= (const NSI_point & lhs, const NSI_point & rhs)
 }
 
 
+std::ostream & operator <<(std::ostream & os, const NSI_point & point)
+{
+  return os << NumericalPoint( point );
+}
 
+
+OStream & operator << (OStream & OS, const NSI_point & point)
+{
+  OS.getStream() << NumericalPoint( point ).__repr__();
+  return OS;
+}
 
 
 NSI_const_point::NSI_const_point(const NumericalSampleImplementation * p_nsi, const UnsignedInteger index)
@@ -259,6 +269,18 @@ bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs)
   return !( lhs < rhs );
 }
 
+
+std::ostream & operator <<(std::ostream & os, const NSI_const_point & point)
+{
+  return os << NumericalPoint( point );
+}
+
+
+OStream & operator << (OStream & OS, const NSI_const_point & point)
+{
+  OS.getStream() << NumericalPoint( point ).__repr__();
+  return OS;
+}
 
 typedef NumericalSampleImplementation (*BuildMethod) (const FileName & fileName, const String & parameters);
 

@@ -130,18 +130,8 @@ OT_API bool operator >  (const NSI_point & lhs, const NSI_point & rhs);
 OT_API bool operator <= (const NSI_point & lhs, const NSI_point & rhs);
 OT_API bool operator >= (const NSI_point & lhs, const NSI_point & rhs);
 
-OT_API inline
-std::ostream & operator <<(std::ostream & os, const NSI_point & point)
-{
-  return os << NumericalPoint( point );
-}
-
-OT_API inline
-OStream & operator << (OStream & OS, const NSI_point & point)
-{
-  OS.getStream() << NumericalPoint( point ).__repr__();
-  return OS;
-}
+OT_API std::ostream & operator <<(std::ostream & os, const NSI_point & point);
+OT_API OStream & operator << (OStream & OS, const NSI_point & point);
 
 
 class OT_API NSI_const_point
@@ -194,18 +184,9 @@ OT_API bool operator >  (const NSI_const_point & lhs, const NSI_const_point & rh
 OT_API bool operator <= (const NSI_const_point & lhs, const NSI_const_point & rhs);
 OT_API bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs);
 
-OT_API inline
-std::ostream & operator <<(std::ostream & os, const NSI_const_point & point)
-{
-  return os << NumericalPoint( point );
-}
+OT_API std::ostream & operator <<(std::ostream & os, const NSI_const_point & point);
+OT_API OStream & operator << (OStream & OS, const NSI_const_point & point);
 
-OT_API inline
-OStream & operator << (OStream & OS, const NSI_const_point & point)
-{
-  OS.getStream() << NumericalPoint( point ).__repr__();
-  return OS;
-}
 
 inline
 NumericalPoint operator * (const NSI_point & point,

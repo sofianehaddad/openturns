@@ -26,7 +26,6 @@
 
 #include <iostream>              // for std::ostream
 #include <iomanip>               // for manipulators like setw, setprecision, etc.
-#include "OTprivate.hxx"
 #include "Object.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,145 +45,65 @@ public:
 }; // end class OStream
 
 // This operator writes Object derived objects to OStream
-OT_API inline
-OStream & operator << (OStream & OS, const Object & obj)
-{
-  OS.getStream() << obj.__repr__();
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, const Object & obj);
 
-OT_API inline
-OStream & operator << (OStream & OS, const String & st)
-{
-  OS.getStream() << st;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, const String & st);
 
-OT_API inline
-OStream & operator << (OStream & OS, const char * ch)
-{
-  OS.getStream() << ch;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, const char * ch);
 
-OT_API inline
-OStream & operator << (OStream & OS, int val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, int val);
 
-OT_API inline
-OStream & operator << (OStream & OS, long val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, long val);
 
-OT_API inline
-OStream & operator << (OStream & OS, long long val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, long long val);
 
-OT_API inline
-OStream & operator << (OStream & OS, short val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, short val);
 
-OT_API inline
-OStream & operator << (OStream & OS, unsigned int val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, unsigned int val);
 
-OT_API inline
-OStream & operator << (OStream & OS, unsigned long val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, unsigned long val);
 
-OT_API inline
-OStream & operator << (OStream & OS, unsigned long long val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, unsigned long long val);
 
-OT_API inline
-OStream & operator << (OStream & OS, unsigned short val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, unsigned short val);
 
-OT_API inline
-OStream & operator << (OStream & OS, char val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, char val);
 
-OT_API inline
-OStream & operator << (OStream & OS, bool val)
-{
-  OS.getStream() << (val ? "true" : "false");
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, bool val);
 
-OT_API inline
-OStream & operator << (OStream & OS, float val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, float val);
 
-OT_API inline
-OStream & operator << (OStream & OS, double val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, double val);
 
-OT_API inline
-OStream & operator << (OStream & OS, long double val)
-{
-  OS.getStream() << val;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, long double val);
 
-OT_API inline
-OStream & operator << (OStream & OS, const NumericalComplex & c)
-{
-  OS.getStream() << c;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, const NumericalComplex & c);
 
-OT_API inline
-OStream & operator << (OStream & OS, const void * ptr)
-{
-  OS.getStream() << ptr;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, const void * ptr);
 
-OT_API inline
-OStream & operator << (OStream & OS, std::ostream & (*manip)(std::ostream &))
-{
-  OS.getStream() << manip;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, std::ostream & (*manip)(std::ostream &));
 
-OT_API inline
-OStream & operator << (OStream & OS, std::ios_base & (*manip)(std::ios_base &))
-{
-  OS.getStream() << manip;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, std::ios_base & (*manip)(std::ios_base &));
 
 #ifdef _MSC_VER
 
@@ -204,48 +123,23 @@ inline OStream & operator << (OStream & OS, std::_Fillobj<T> manip)
 
 #elif defined(__GNUC__)
 
-OT_API inline
-OStream & operator << (OStream & OS, std::_Setw manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, std::_Setw manip);
 
-OT_API inline
-OStream & operator << (OStream & OS, std::_Setprecision manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, std::_Setprecision manip);
 
-OT_API inline
-OStream & operator << (OStream & OS, std::_Setbase manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, std::_Setbase manip);
 
+OT_API
+OStream & operator << (OStream & OS, std::_Resetiosflags manip);
 
-OT_API inline
-OStream & operator << (OStream & OS, std::_Resetiosflags manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, std::_Setiosflags manip);
 
-OT_API inline
-OStream & operator << (OStream & OS, std::_Setiosflags manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
-
-OT_API inline
-OStream & operator << (OStream & OS, std::_Setfill<char> manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
+OT_API
+OStream & operator << (OStream & OS, std::_Setfill<char> manip);
 #endif
 
 

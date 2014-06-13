@@ -30,19 +30,19 @@ echo "./start_pythoninstallcheck_test.sh"
 check_error "./start_pythoninstallcheck_test.sh"
 
 
-echo "test C++ compilation against ot lib"
-cd simple_cxx_example
-start //B //WAIT make.bat
-cd ..
-check_error "C++ compilation against ot lib"
+#echo "test C++ compilation against ot lib"
+#cd simple_cxx_example
+#start //B //WAIT make.bat
+#cd ..
+#check_error "C++ compilation against ot lib"
 
 
-echo "test compilation of C wrapper"
-cd WrapperTemplates/mingw_wrapper_calling_shell_command 
-start //B //WAIT make.bat
-start //B //WAIT launch.bat
-cd ../..
-check_error "test compilation of C wrapper"
+#echo "test compilation of C wrapper"
+#cd WrapperTemplates/mingw_wrapper_calling_shell_command 
+#start //B //WAIT make.bat
+#start //B //WAIT launch.bat
+#cd ../..
+#check_error "test compilation of C wrapper"
 
 
 RC=0

@@ -40,21 +40,21 @@ endmacro(set_and_check _var _value)
   endforeach ()
 
 
-  configure_file ( ${PROJECT_SOURCE_DIR}/lib/OpenTURNSConfig.cmake.in
-                   ${PROJECT_BINARY_DIR}/lib/OpenTURNSConfig.cmake
+  configure_file ( OpenTURNSConfig.cmake.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfig.cmake
                    @ONLY
                  )
-
-  install ( FILES ${PROJECT_SOURCE_DIR}/lib/UseOpenTURNS.cmake
-                  ${PROJECT_BINARY_DIR}/lib/OpenTURNSConfig.cmake
+                 
+  install ( FILES UseOpenTURNS.cmake
+                  ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfig.cmake
             DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH}
       )
 
 else ( CMAKE_VERSION VERSION_LESS 2.8.8 )
   include(CMakePackageConfigHelpers)
   configure_package_config_file (
-    ${PROJECT_SOURCE_DIR}/lib/OpenTURNSConfig.cmake.in
-    ${PROJECT_BINARY_DIR}/lib/OpenTURNSConfig.cmake
+    OpenTURNSConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfig.cmake
     INSTALL_DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH}
     PATH_VARS
       OPENTURNS_USE_FILE
@@ -64,10 +64,12 @@ else ( CMAKE_VERSION VERSION_LESS 2.8.8 )
       OPENTURNS_LIBRARY_DIRS
       OPENTURNS_SWIG_INCLUDE_DIRS
     NO_CHECK_REQUIRED_COMPONENTS_MACRO
-                                )
+                                )                   
+  write_basic_package_version_file( OpenTURNSConfigVersion.cmake VERSION ${OPENTURNS_VERSION_STRING} COMPATIBILITY AnyNewerVersion )               
 
-  install ( FILES ${PROJECT_SOURCE_DIR}/lib/UseOpenTURNS.cmake
-                  ${PROJECT_BINARY_DIR}/lib/OpenTURNSConfig.cmake
+  install ( FILES UseOpenTURNS.cmake
+                  ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfig.cmake
+                  ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfigVersion.cmake
             DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH}
           )
 endif ( CMAKE_VERSION VERSION_LESS 2.8.8 )
