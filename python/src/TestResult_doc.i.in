@@ -23,9 +23,9 @@ Examples
 >>> sample = distribution.getSample(30)
 >>> test_result = ot.FittingTest_Kolmogorov(sample, ot.NormalFactory(), .99)
 >>> print(test_result.getPValue())
-0.846896117528
+0.846896...
 >>> print(test_result.getThreshold())
-0.01
+0.01...
 >>> print(test_result.getBinaryQualityMeasure())
 True"
 

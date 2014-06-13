@@ -32,7 +32,7 @@ for py_file in py_files:
     else:
         py_basename = os.path.splitext(os.path.basename(py_file))[0]
         module = __import__('openturns.' + py_basename, fromlist=[py_basename])
-        failure_count, test_count = doctest.testmod(module, verbose=False)
+        failure_count, test_count = doctest.testmod(module, verbose=False, optionflags=doctest.ELLIPSIS)
 
     total_failure_count += failure_count
     total_test_count += test_count
