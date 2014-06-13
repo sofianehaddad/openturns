@@ -21,9 +21,16 @@ def Drawable__repr_svg_(self):
     return ToSVGString(self)
 
 Drawable._repr_svg_ = Drawable__repr_svg_
+
+
+def Drawable__repr_html_(self):
+    """ html representation """
+    raise
+
+Drawable._repr_html_ = Drawable__repr_html_
 %}
 
-namespace OT{  
+namespace OT{
 
 %extend Drawable {
 
@@ -31,7 +38,7 @@ Drawable(const Drawable & other) { return new OT::Drawable(other); }
 
 Drawable(PyObject * pyObj)
 {
- return new OT::Drawable( OT::convert<OT::_PyObject_,OT::Drawable>(pyObj) );
+  return new OT::Drawable( OT::convert<OT::_PyObject_,OT::Drawable>(pyObj) );
 }
 
 }
