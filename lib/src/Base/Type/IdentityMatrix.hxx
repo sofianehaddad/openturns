@@ -91,8 +91,8 @@ public:
 
   /** Compute eigenvalues */
   NumericalPoint computeEigenValues(const Bool keepIntact = true);
-  NumericalPoint computeEigenValues(SquareMatrix & v,
-                                    const Bool keepIntact = true);
+  NumericalPoint computeEVD(SquareMatrix & v,
+                            const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
   virtual Bool isPositiveDefinite(const Bool keepIntact = true);
@@ -103,10 +103,10 @@ public:
   /** Compute singular values */
   NumericalPoint computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSingularValues(Matrix & u,
-                                       Matrix & vT,
-                                       const Bool fullSVD = false,
-                                       const Bool keepIntact = true);
+  NumericalPoint computeSVD(Matrix & u,
+                            Matrix & vT,
+                            const Bool fullSVD = false,
+                            const Bool keepIntact = true);
 
 protected:
 

@@ -179,7 +179,7 @@ public:
    *  If repeat is false then Log shows every messages it receives
    *  even if they are identical to the previous ones.
    *  If repeat is true then Log only shows the first message
-   *  and a message couting how much identical messages were
+   *  and a message counting how much identical messages were
    *  received after that.
    */
   static void Repeat( Bool repeat );

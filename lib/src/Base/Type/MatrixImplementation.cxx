@@ -973,7 +973,7 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEi
   return eigenValues;
 }
 
-MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEigenValuesSquare (ComplexMatrixImplementation & v,
+MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEVDSquare (ComplexMatrixImplementation & v,
     const Bool keepIntact)
 {
   int n(nbRows_);
@@ -1070,7 +1070,7 @@ NumericalPoint MatrixImplementation::computeEigenValuesSym (const Bool keepIntac
   return w;
 }
 
-NumericalPoint MatrixImplementation::computeEigenValuesSym (MatrixImplementation & v,
+NumericalPoint MatrixImplementation::computeEVDSym (MatrixImplementation & v,
     const Bool keepIntact)
 {
   int n(nbRows_);
@@ -1145,10 +1145,10 @@ NumericalPoint MatrixImplementation::computeSingularValues(const Bool keepIntact
 }
 
 /* Compute the singular values and singular decomposition of a matrix */
-NumericalPoint MatrixImplementation::computeSingularValues(MatrixImplementation & u,
-    MatrixImplementation & vT,
-    const Bool fullSVD,
-    const Bool keepIntact)
+NumericalPoint MatrixImplementation::computeSVD(MatrixImplementation & u,
+                                                MatrixImplementation & vT,
+                                                const Bool fullSVD,
+                                                const Bool keepIntact)
 {
   int m(nbRows_);
   int n(nbColumns_);
@@ -1298,7 +1298,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
 
     // rebuild R
     for ( UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(k) ; ++ i )
-      for ( UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(n); ++ j )
+      for ( UnsignedInteger j = i; j < static_cast<UnsignedInteger>(n); ++ j )
         R(i, j) = Q(i, j);
 
     lwork = -1;
@@ -1324,7 +1324,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, c
 
     // rebuild R
     for ( UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(k) ; ++ i )
-      for ( UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(n); ++ j )
+      for ( UnsignedInteger j = i; j < static_cast<UnsignedInteger>(n); ++ j )
         R(i, j) = (*this)(i, j);
 
     lwork = -1;

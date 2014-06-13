@@ -54,7 +54,7 @@ void testM(UnsignedInteger m, UnsignedInteger n)
   Matrix vT;
 //   Matrix S;
 
-  result1 = matrix1.computeSingularValues(u, vT, true);
+  result1 = matrix1.computeSVD(u, vT, true);
   fullprint << "svd (svd + u, vT full)= " << result1 << std::endl;
 
 //   S = Matrix(m, n);
@@ -62,7 +62,7 @@ void testM(UnsignedInteger m, UnsignedInteger n)
 //     S(i,i) = result1[i];
 //   fullprint << "u*vT= " << ((u*S)*vT).__str__() << std::endl;
 
-  result1 = matrix1.computeSingularValues(u, vT, false);
+  result1 = matrix1.computeSVD(u, vT, false);
   fullprint << "svd (svd + u, vT small)= " << result1 << std::endl << "u= " << u.__str__() << std::endl << "vT= " << vT.__str__() << std::endl;
 
 //   S = Matrix(std::min(m,n), std::min(m,n));

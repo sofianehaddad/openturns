@@ -46,7 +46,7 @@ MeixnerFactory::MeixnerFactory()
 }
 
 
-/* Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the Poisson(lambda) distribution */
+/* Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the NegativeBinomial(r, p) distribution */
 MeixnerFactory::MeixnerFactory(const NumericalScalar r,
                                const NumericalScalar p)
   : OrthogonalUniVariatePolynomialFactory( NegativeBinomial(r, p) ),

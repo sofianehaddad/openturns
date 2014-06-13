@@ -28,8 +28,6 @@
 #include "NumericalSample.hxx"
 #include "LinearModel.hxx"
 #include "Distribution.hxx"
-#include "DistributionImplementation.hxx"
-#include "Normal.hxx"
 #include "Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -68,6 +66,10 @@ public:
 
   /** Draw the Henry curve for one Sample when its dimension is 1 */
   static Graph DrawHenryLine(const NumericalSample & sample);
+
+  /** Draw the Henry line for a sample and a given normal distribution when its dimension is 1 */
+  static Graph DrawHenryLine(const NumericalSample & sample,
+                             const Distribution & normal);
 
   /** Draw the clouds of one Sample and one model when its dimension is 2 */
   static Graph DrawClouds(const NumericalSample & sample1,

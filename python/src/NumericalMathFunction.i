@@ -56,7 +56,7 @@ class OpenTURNSPythonFunction(object):
     _exec(X): single evaluation, X is a sequence of scalars
     _exec_sample(X): multiple evaluations, X is a 2-d sequence of scalars
     """
-    def __init__(self, n=0, p=0) :
+    def __init__(self, n=0, p=0):
         try:
             self.__n = int(n)
         except:
@@ -65,13 +65,13 @@ class OpenTURNSPythonFunction(object):
             self.__p = int(p)
         except:
             raise TypeError('p argument is not an integer.')
-        self.__descIn  = list(map(lambda i: 'x' + str(i), range(n)))
+        self.__descIn = list(map(lambda i: 'x' + str(i), range(n)))
         self.__descOut = list(map(lambda i: 'y' + str(i), range(p)))
         
     def setInputDescription(self, descIn):
         if (len(descIn) != self.__n):
             raise ValueError('Input description size does NOT match input dimension')
-        self.__descIn  = descIn
+        self.__descIn = descIn
 
     def getInputDescription(self):
         return self.__descIn
@@ -79,15 +79,15 @@ class OpenTURNSPythonFunction(object):
     def setOutputDescription(self, descOut):
         if (len(descOut) != self.__p):
             raise ValueError('Output description size does NOT match output dimension')
-        self.__descOut  = descOut
+        self.__descOut = descOut
 
     def getOutputDescription(self):
         return self.__descOut
 
-    def getInputDimension(self) :
+    def getInputDimension(self):
         return self.__n
 
-    def getOutputDimension(self) :
+    def getOutputDimension(self):
         return self.__p
 
     def __str__(self):
@@ -96,7 +96,7 @@ class OpenTURNSPythonFunction(object):
     def __repr__(self):
         return self.__str__()
 
-    def __call__(self, X) :
+    def __call__(self, X):
         Y = None
         try:
             pt = openturns.typ.NumericalPoint(X)
@@ -105,16 +105,16 @@ class OpenTURNSPythonFunction(object):
                 ns = openturns.typ.NumericalSample(X)
             except TypeError:
                 raise TypeError('Expect a 1-d or 2-d float sequence as argument')
-            else :
+            else:
                 Y = self._exec_sample(ns)
-        else :
+        else:
             Y = self._exec(pt)
         return Y
 
-    def _exec(self, X) :
+    def _exec(self, X):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X and Y are 1-d float sequence objects')
 
-    def _exec_sample(self, X) :
+    def _exec_sample(self, X):
         res = list()
         for point in X:
             res.append(self._exec(point))

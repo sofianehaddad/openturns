@@ -26,6 +26,8 @@ namespace OT {
 
 %}
 
+%include UniVariatePolynomial_doc.i
+
 OTTypedInterfaceObjectHelper(UniVariatePolynomial)
 
 %include UniVariatePolynomial.hxx

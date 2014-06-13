@@ -57,10 +57,8 @@ DirectionalSampling::DirectionalSampling(const Event & event,
   , standardFunction_(standardEvent_.getImplementation()->getFunction())
   , inputDistribution_(standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation())
   , rootStrategy_(rootStrategy)
-  , samplingStrategy_(samplingStrategy)
 {
-  // To force the sampling strategy to have the correct dimension
-  samplingStrategy_.setDimension(inputDistribution_->getDimension());
+  setSamplingStrategy(samplingStrategy);
 }
 
 /* Virtual constructor */
@@ -201,8 +199,10 @@ RootStrategy DirectionalSampling::getRootStrategy() const
 /* Sampling strategy */
 void DirectionalSampling::setSamplingStrategy(const SamplingStrategy & samplingStrategy)
 {
-  if (samplingStrategy.getDimension() != getEvent().getImplementation()->getAntecedent()->getDimension()) throw InvalidArgumentException(HERE) << "Error: the sampling strategy dimension is not compatible with the antecedent dimension";
   samplingStrategy_ = samplingStrategy;
+  
+  // To force the sampling strategy to have the correct dimension
+  samplingStrategy_.setDimension(inputDistribution_->getDimension());
 }
 
 SamplingStrategy DirectionalSampling::getSamplingStrategy() const

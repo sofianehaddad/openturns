@@ -42,8 +42,7 @@ try:
     ev = matrix1.computeEigenValues()
     print "ev=", ev
 
-    evect = SquareMatrix()
-    ev = matrix1.computeEigenValues(evect)
+    ev, evect = matrix1.computeEVD()
     print "ev=", ev
     print "evect=", repr(evect)
     print "evect="

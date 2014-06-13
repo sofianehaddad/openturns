@@ -34,6 +34,8 @@
 #include "ResourceMap.hxx"
 #include "UserDefined.hxx"
 #include "SpecFunc.hxx"
+#include "Normal.hxx"
+#include "NormalFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -145,13 +147,11 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample1,
     data[i][0] = sample1.computeQuantilePerComponent(q)[0];
     data[i][1] = sample2.computeQuantilePerComponent(q)[0];
   }
-  OSS oss;
-  oss << sample1.getName() << " qqplot";
-  Cloud cloudQQplot(data, oss);
+  Cloud cloudQQplot(data, "Data");
   if (pointNumber < 100) cloudQQplot.setPointStyle("fcircle");
   else if (pointNumber < 1000) cloudQQplot.setPointStyle("bullet");
   else cloudQQplot.setPointStyle("dot");
-  Graph graphQQplot("two sample QQplot", "sample1", "sample2", true, "topleft");
+  Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisectrice
   NumericalSample diagonal(2, 2);
   NumericalPoint point(2);
@@ -159,7 +159,7 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample1,
   diagonal[0][1] = data[0][0];
   diagonal[1][0] = data[pointNumber - 1][0];
   diagonal[1][1] = data[pointNumber - 1][0];
-  Curve bisectrice(diagonal);
+  Curve bisectrice(diagonal, "Test line");
   bisectrice.setColor("red");
   bisectrice.setLineStyle("dashed");
   graphQQplot.add(bisectrice);
@@ -192,13 +192,11 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample,
     data[i][0] = sortedSample[i][0];
     data[i][1] = dist.computeQuantile((i + 0.5) * step)[0];
   }
-  OSS oss;
-  oss << sample.getName() << " qqplot";
-  Cloud cloudQQplot(data, oss);
+  Cloud cloudQQplot(data, "Data");
   if (size < 100) cloudQQplot.setPointStyle("fcircle");
   else if (size < 1000) cloudQQplot.setPointStyle("bullet");
   else cloudQQplot.setPointStyle("dot");
-  Graph graphQQplot("sample versus model QQplot", "sample", "model", true, "topleft");
+  Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisectrice
   NumericalSample diagonal(2, 2);
   NumericalPoint point(2);
@@ -206,7 +204,7 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample,
   diagonal[0][1] = data[0][0];
   diagonal[1][0] = data[size - 1][0];
   diagonal[1][1] = data[size - 1][0];
-  Curve bisectrice(diagonal);
+  Curve bisectrice(diagonal, "Test line");
   bisectrice.setColor("red");
   bisectrice.setLineStyle("dashed");
   graphQQplot.add(bisectrice);
@@ -224,39 +222,49 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample,
   return graphQQplot;
 }
 
-
-/* Draw the Henry curve for one Sample when its dimension is 1 */
+/* Draw the Henry line for a sample when its dimension is 1 */
 Graph VisualTest::DrawHenryLine(const NumericalSample & sample)
 {
-  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry line only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry line only if the sample dimension equals 1, here dimension=" << sample.getDimension();
+  return DrawHenryLine(sample, NormalFactory().buildAsNormal(sample));
+}
 
-  const UnsignedInteger size(sample.getSize());
-  const Normal dist;
+/* Draw the Henry line for a sample and a given normal distribution when its dimension is 1 */
+Graph VisualTest::DrawHenryLine(const NumericalSample & sample, const Distribution & normal)
+{
+  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry plot only if the sample dimension equals 1, here dimension=" << sample.getDimension();
+  if (normal.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry plot only if the normal distribution dimension equals 1, here dimension=" << normal.getDimension();
+  if (normal.getImplementation()->getClassName() != "Normal") throw InvalidArgumentException(HERE) << "Normal distribution expected";
 
+  Graph graphHenry("Henry plot", "Sample", "Standard normal quantiles", true, "topleft");
+  const NumericalScalar size(sample.getSize());
   const NumericalSample sortedSample(sample.sort(0));
+
+  // First, the Henry line: y = (x - mu) / sigma
+  const NumericalScalar mu = normal.getMean()[0];
+  const NumericalScalar sigma = normal.getStandardDeviation()[0];
+  NumericalSample henryLinePoints(2, 2);
+  henryLinePoints[0][0] = sortedSample[0][0]; // sample.getMin()[0];
+  henryLinePoints[0][1] = (henryLinePoints[0][0] - mu) / sigma;
+  henryLinePoints[1][0] = sortedSample[size - 1][0]; // sample.getMax()[0];
+  henryLinePoints[1][1] = (henryLinePoints[1][0] - mu) / sigma;
+  Curve henryLine(henryLinePoints, "Henry line");
+  henryLine.setColor("red");
+  henryLine.setLineStyle("dashed");
+  graphHenry.add(henryLine);
+
+  // Then, the data
+  const Normal standard_normal(0.0, 1.0);
   NumericalSample data(size, 2);
   const NumericalScalar step(1.0 / size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = sortedSample[i][0];
-    data[i][1] = dist.computeQuantile((i + 0.5) * step)[0];
+    data[i][1] = standard_normal.computeQuantile((i + 0.5) * step)[0];
   }
-  OSS oss;
-  oss << sample.getName() << " Henry Curve";
-  Curve curveHenry(data, oss);
-  Graph graphHenry("Henry Curve", "sample", "model", true, "topleft");
-  // First, the diagonal
-  NumericalSample diagonal(2, 2);
-  diagonal[0][0] = data[0][0];
-  diagonal[0][1] = data[0][0];
-  diagonal[1][0] = data[size - 1][0];
-  diagonal[1][1] = data[size - 1][0];
-  Curve bisectrice(diagonal);
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphHenry.add(bisectrice);
-  // Then, the Henry line
-  graphHenry.add(curveHenry);
+  Cloud dataCloud(data, "Data");
+  graphHenry.add(dataCloud);
+
   return graphHenry;
 }
 

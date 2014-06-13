@@ -3,7 +3,7 @@
 // @date   2010-11-09 13:44:00 +0100 (Tue, 09 Nov 2010)
 
 %module(package="openturns", docstring="Approximation algorithms.") algo
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

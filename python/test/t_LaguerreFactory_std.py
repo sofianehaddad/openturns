@@ -15,8 +15,7 @@ try:
         print "laguerre(", i, ")=", laguerre.build(i)
     roots = laguerre.getRoots(10)
     print "laguerre(10) roots=", repr(roots)
-    weights = NumericalPoint()
-    nodes = laguerre.getNodesAndWeights(10, weights)
+    nodes, weights = laguerre.getNodesAndWeights(10)
     print "laguerre(10) nodes=", nodes, "and weights=", weights
 except:
     import sys

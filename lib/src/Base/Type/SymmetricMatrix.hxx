@@ -143,8 +143,8 @@ public:
 
   /** Compute eigenvalues */
   NumericalPoint computeEigenValues(const Bool keepIntact = true);
-  NumericalPoint computeEigenValues(SquareMatrix & v,
-                                    const Bool keepIntact = true);
+  NumericalPoint computeEVD(SquareMatrix & v,
+                            const Bool keepIntact = true);
 
   /** Constructor with implementation */
   SymmetricMatrix(const Implementation & i);

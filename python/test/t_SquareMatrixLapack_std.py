@@ -26,8 +26,7 @@ try:
 
     ev = matrix1.computeEigenValues()
     print "ev = ", ev
-    evect = SquareComplexMatrix(2)
-    ev = matrix1.computeEigenValues(evect)
+    ev, evect = matrix1.computeEVD()
     print "ev=", ev
     print "evect=", evect
     print "evect="

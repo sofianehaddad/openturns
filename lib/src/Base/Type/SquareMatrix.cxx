@@ -185,10 +185,10 @@ SquareMatrix::NumericalComplexCollection SquareMatrix::computeEigenValues(const 
   return getImplementation()->computeEigenValuesSquare(keepIntact);
 }
 
-SquareMatrix::NumericalComplexCollection SquareMatrix::computeEigenValues(SquareComplexMatrix & v,
+SquareMatrix::NumericalComplexCollection SquareMatrix::computeEVD(SquareComplexMatrix & v,
     const Bool keepIntact)
 {
-  return getImplementation()->computeEigenValuesSquare(*(v.getImplementation()), keepIntact);
+  return getImplementation()->computeEVDSquare(*(v.getImplementation()), keepIntact);
 }
 
 /* Check if the matrix is diagonal */

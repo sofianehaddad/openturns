@@ -131,8 +131,8 @@ public:
 
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValues(const Bool keepIntact = true);
-  NumericalComplexCollection computeEigenValues(SquareComplexMatrix & v,
-      const Bool keepIntact = true);
+  NumericalComplexCollection computeEVD(SquareComplexMatrix & v,
+                                        const Bool keepIntact = true);
 
   /** Constructor with implementation */
   SquareMatrix(const Implementation & i);

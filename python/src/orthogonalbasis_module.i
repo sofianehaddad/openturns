@@ -4,7 +4,7 @@
 
 %module(package="openturns", docstring="Polynomial primitives.") orthogonalbasis
 #pragma SWIG nowarn=302,509
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

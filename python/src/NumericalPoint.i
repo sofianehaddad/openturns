@@ -2,9 +2,14 @@
 // @author schueller
 // @date   2012-07-16 12:24:33 +0200 (Mon, 16 Jul 2012)
 
+%ignore OT::NumericalPoint::at; // Use __getitem__ instead
+%ignore OT::NumericalPoint::getCollection;
+
 %{
 #include "NumericalPoint.hxx"
 %}
+
+%include NumericalPoint_doc.i
 
 %template(NumericalScalarCollection)           OT::Collection<OT::NumericalScalar>;
 %template(NumericalScalarPersistentCollection) OT::PersistentCollection<OT::NumericalScalar>;

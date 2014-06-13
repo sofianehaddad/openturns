@@ -255,10 +255,10 @@ NumericalPoint SymmetricMatrix::computeEigenValues(const Bool keepIntact)
 {
   return getImplementation()->computeEigenValuesSym(keepIntact);
 }
-NumericalPoint SymmetricMatrix::computeEigenValues(SquareMatrix & v,
+NumericalPoint SymmetricMatrix::computeEVD(SquareMatrix & v,
     const Bool keepIntact)
 {
-  return getImplementation()->computeEigenValuesSym(*(v.getImplementation()), keepIntact);
+  return getImplementation()->computeEVDSym(*(v.getImplementation()), keepIntact);
 }
 
 

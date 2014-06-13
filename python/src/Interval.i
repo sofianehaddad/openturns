@@ -12,7 +12,8 @@
 # We have to make sure the submodule is loaded with absolute path
 import openturns.wrapper
 
-class BoolCollection(openturns.wrapper.UnsignedIntegerCollection): pass
+class BoolCollection(openturns.wrapper.UnsignedIntegerCollection):
+    pass
 %}
 
 // we check for boolean type but they are stored as integers

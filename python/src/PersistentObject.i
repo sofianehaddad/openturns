@@ -9,4 +9,6 @@
 %ignore OT::PersistentObject::operator=(const PersistentObject &);
 %rename(Is) is;
 
+%include PersistentObject_doc.i
+
 %include PersistentObject.hxx

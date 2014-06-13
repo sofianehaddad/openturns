@@ -4,7 +4,7 @@
 
 %module(package="openturns", docstring="Statistical tests.") stattests
 #pragma SWIG nowarn=302,509
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

@@ -87,7 +87,7 @@ String Dirac::__repr__() const
 String Dirac::__str__(const String & offset) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(point = " << point_ << ")";
+  oss << offset << getClassName() << "(point = " << point_.__str__() << ")";
   return oss;
 }
 

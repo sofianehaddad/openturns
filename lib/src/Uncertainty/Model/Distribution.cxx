@@ -495,6 +495,33 @@ NumericalSample Distribution::getSupport() const
   return getImplementation()->getSupport();
 }
 
+/* Compute the density generator of the elliptical generator, i.e.
+  *  the function phi such that the density of the distribution can
+  *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
+NumericalScalar Distribution::computeDensityGenerator(const NumericalScalar betaSquare) const
+{
+  return getImplementation()->computeDensityGenerator(betaSquare);
+}
+
+/* Compute the derivative of the density generator */
+NumericalScalar Distribution::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
+{
+  return getImplementation()->computeDensityGeneratorDerivative(betaSquare);
+}
+
+/* Compute the seconde derivative of the density generator */
+NumericalScalar Distribution::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
+{
+  return getImplementation()->computeDensityGeneratorSecondDerivative(betaSquare);
+}
+
+/* Compute the radial distribution CDF */
+NumericalScalar Distribution::computeRadialDistributionCDF (const NumericalScalar radius,
+                                                            const Bool tail) const
+{
+  return getImplementation()->computeRadialDistributionCDF(radius, tail);
+}
+
 /* Get the i-th marginal distribution */
 Distribution Distribution::getMarginal(const UnsignedInteger i) const
 {

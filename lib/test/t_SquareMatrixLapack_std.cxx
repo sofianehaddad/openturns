@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     ev = matrix1.computeEigenValues();
     fullprint << "ev = " << ev << std::endl;
     SquareComplexMatrix evect(2);
-    ev = matrix1.computeEigenValues(evect);
+    ev = matrix1.computeEVD(evect);
     fullprint << "ev=" << ev << std::endl;
     fullprint << "evect=" << evect << std::endl;
     fullprint << "evect=\n" << evect.__str__() << std::endl;

@@ -24,6 +24,16 @@
 # @date   2012-08-28
 #
 
+"""
+    OpenTURNS coupling tools
+    =============================
+    Provides several functions to ease wrapping of an external code:
+    - replace: allows to replace a value in template file
+    - execute: run an external code
+    - get: parse values from a result file
+
+"""
+
 import re
 import shutil
 import os

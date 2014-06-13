@@ -40,6 +40,8 @@ namespace OT {
 
 %}
 
+%include TestResult_doc.i
+
 %include TestResult.hxx
 namespace OT{  
 

@@ -6,6 +6,8 @@
 #include "HermitianMatrix.hxx"
 %}
 
+%ignore OT::HermitianMatrix::checkSymmetry;
+
 %include HermitianMatrix.hxx
 
 namespace OT {
@@ -16,8 +18,8 @@ namespace OT {
 
   HermitianMatrix(PyObject * pyObj) { return new OT::HermitianMatrix( OT::convert<OT::_PySequence_,OT::HermitianMatrix>(pyObj) ); }
 
-  OTMatrixAccessors(HermitianMatrix, NumericalComplex)
-
+  OTComplexMatrixGetAccessors()
+    
   HermitianMatrix __rmul__(NumericalComplex s) { return s * (*self); }
   
   HermitianMatrix __truediv__(NumericalComplex s) { return (*self) / s; }

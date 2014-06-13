@@ -22,11 +22,9 @@ try:
     result1 = matrix1.computeSingularValues()
     print "svd (svd only)= ", repr(result1)
 
-    u = Matrix()
-    v = Matrix()
-    result1 = matrix1.computeSingularValues(u, v, True)
+    result1, u, v = matrix1.computeSVD(True)
     print "svd (svd + U, V full)= ", repr(result1)
-    result1 = matrix1.computeSingularValues(u, v, False)
+    result1, u, v = matrix1.computeSVD(False)
     print "svd (svd + U, V small)= ", repr(result1), ", U=", repr(u), ", v=", repr(v)
 
     # Rectangular case, m < n
@@ -52,11 +50,9 @@ try:
     result1 = matrix1.computeSingularValues()
     print "svd (svd only)= ", repr(result1)
 
-    u = Matrix()
-    v = Matrix()
-    result1 = matrix1.computeSingularValues(u, v, True)
+    result1, u, v = matrix1.computeSVD(True)
     print "svd (svd + U, V full)= ", repr(result1)
-    result1 = matrix1.computeSingularValues(u, v, False)
+    result1, u, v = matrix1.computeSVD(False)
     print "svd (svd + U, V small)= ", repr(result1), ", U=", repr(u), ", v=", repr(v)
 
     # Rectangular case, m > n
@@ -82,11 +78,9 @@ try:
     result1 = matrix1.computeSingularValues()
     print "svd (svd only)= ", repr(result1)
 
-    u = Matrix()
-    v = Matrix()
-    result1 = matrix1.computeSingularValues(u, v, True)
+    result1, u, v = matrix1.computeSVD(True)
     print "svd (svd + U, V full)= ", repr(result1)
-    #result1 = matrix1.computeSingularValues(u, v, False)
+    #result1, u, v = matrix1.computeSVD(False)
     # print "svd (svd + U, V small)= ", repr(result1), ", U=", repr(u), ",
     # v=", repr(v)
 

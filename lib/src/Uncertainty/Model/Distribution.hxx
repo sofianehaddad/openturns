@@ -246,6 +246,21 @@ public:
   /** Get the support on the whole range */
   NumericalSample getSupport() const;
 
+  /** Compute the density generator of the elliptical generator, i.e.
+   *  the function phi such that the density of the distribution can
+   *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
+  virtual NumericalScalar computeDensityGenerator(const NumericalScalar betaSquare) const;
+
+  /** Compute the derivative of the density generator */
+  virtual NumericalScalar computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const;
+
+  /** Compute the seconde derivative of the density generator */
+  virtual NumericalScalar computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const;
+
+  /** Compute the radial distribution CDF */
+  virtual NumericalScalar computeRadialDistributionCDF (const NumericalScalar radius,
+                                                        const Bool tail = false) const;
+  
   /** Get the i-th marginal distribution */
   Distribution getMarginal(const UnsignedInteger i) const;
 

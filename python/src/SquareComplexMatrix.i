@@ -16,8 +16,8 @@ namespace OT {
 
   SquareComplexMatrix(PyObject * pyObj) { return new OT::SquareComplexMatrix( OT::convert<OT::_PySequence_,OT::SquareComplexMatrix>(pyObj) ); }
 
-  OTMatrixAccessors(SquareComplexMatrix, NumericalComplex)
-
+  OTComplexMatrixGetAccessors()
+    
   SquareComplexMatrix __rmul__(NumericalComplex s) { return s * (*self); }
   
   SquareComplexMatrix __truediv__(NumericalComplex s) { return (*self) / s; }

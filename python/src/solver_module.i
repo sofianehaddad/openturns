@@ -3,7 +3,7 @@
 // @date   2011-07-06 12:03:57 +0200 (Wed, 06 Jul 2011)
 
 %module(package="openturns", docstring="Solvers.") solver
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

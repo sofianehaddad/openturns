@@ -4,7 +4,7 @@
 
 %module(package="openturns", docstring="Simulation uncertainty propagation algorithms.") simulation
 #pragma SWIG nowarn=302,509
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

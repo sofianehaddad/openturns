@@ -4,7 +4,7 @@
 
 %module(package="openturns", docstring="Classification algorithms.") classification
 #pragma SWIG nowarn=302,509
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

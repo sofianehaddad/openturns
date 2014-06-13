@@ -78,7 +78,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   // Compute the reduced SVD (first 'false' flag) trashing the psiAk matrix (second 'false' flag) as it is no more needed
   Matrix u;
   Matrix vT;
-  const NumericalPoint svd( psiAk.computeSingularValues(u, vT, false, false) );
+  const NumericalPoint svd( psiAk.computeSVD(u, vT, false, false) );
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   NumericalPoint b( sampleSize );
   for (UnsignedInteger i = 0; i < sampleSize; ++i) b[i] = y[i][0];

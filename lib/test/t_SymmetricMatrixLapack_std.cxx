@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     fullprint << "ev=" << ev << std::endl;
 
     SquareMatrix evect(2);
-    ev = matrix1.computeEigenValues(evect);
+    ev = matrix1.computeEVD(evect);
     fullprint << "ev=" << ev << std::endl;
     fullprint << "evect=" << evect << std::endl;
     fullprint << "evect=\n" << evect.__str__() << std::endl;

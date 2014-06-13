@@ -177,6 +177,8 @@ ot_pyinstallcheck_test ( ComplexMatrix_std )
 ot_pyinstallcheck_test ( SquareComplexMatrix_std )
 ot_pyinstallcheck_test ( HermitianMatrix_std )
 ot_pyinstallcheck_test ( TriangularComplexMatrix_std )
+ot_pyinstallcheck_test ( Matrix_slice )
+ot_pyinstallcheck_test ( Matrix_operators )
 
 # Func
 ot_pyinstallcheck_test ( WrapperFile_std )
@@ -628,6 +630,9 @@ ot_pyinstallcheck_test ( QuickTest IGNOREOUT )
 
 ot_pyinstallcheck_test ( coupling_tools )
 
+if (MATPLOTLIB_FOUND AND R_rot_FOUND)
+  ot_pyinstallcheck_test ( docstring )
+endif ()
 
 add_custom_target ( pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"
                     DEPENDS ${PYINSTALLCHECK_TO_BE_RUN}

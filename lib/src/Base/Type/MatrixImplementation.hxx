@@ -200,19 +200,20 @@ public:
 
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
-  NumericalComplexCollection computeEigenValuesSquare(ComplexMatrixImplementation & v,
-      const Bool keepIntact = true);
+  NumericalComplexCollection computeEVDSquare(ComplexMatrixImplementation & v,
+                                              const Bool keepIntact = true);
   NumericalPoint computeEigenValuesSym(const Bool keepIntact = true);
-  NumericalPoint computeEigenValuesSym(MatrixImplementation & v,
-                                       const Bool keepIntact = true);
+  NumericalPoint computeEVDSym(MatrixImplementation & v,
+                               const Bool keepIntact = true);
 
   /** Compute singular values */
   NumericalPoint computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSingularValues(MatrixImplementation & u,
-                                       MatrixImplementation & vT,
-                                       const Bool fullSVD = false,
-                                       const Bool keepIntact = true);
+  /** Build the singular value decomposition */
+  NumericalPoint computeSVD(MatrixImplementation & u,
+                            MatrixImplementation & vT,
+                            const Bool fullSVD = false,
+                            const Bool keepIntact = true);
 
   /** Check if the matrix is symmetric */
   virtual Bool isSymmetric() const;

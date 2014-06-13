@@ -11,6 +11,7 @@
 ==== API changes ====
  * Removed deprecated types UnsignedLong, IndexType in favor of UnsignedInteger, SignedInteger
  * Deprecated method ResourceMap::SetAsUnsignedLong|GetAsUnsignedLong  in favor of ResourceMap::SetAsUnsignedInteger|GetAsUnsignedInteger
+ * Renamed Matrix::computeSingularValues(u, vT) to Matrix::computeSVD(u, vT)
  
 === Python module ===
  * Added Drawable|Graph::_repr_svg_ for automatic graphing within IPython notebook

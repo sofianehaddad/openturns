@@ -1,4 +1,4 @@
-distribution= ConditionalDistribution(X|Theta = ComposedDistribution, Theta = ComposedDistribution(Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[1]), Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+distribution= ConditionalDistribution(X|Theta = ComposedDistribution, Theta = ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
 Parameters  [[point_0_marginal_0 : 1],[point_0_marginal_1 : 2],[p_marginal_2 : 0.7],[a_marginal_3 : 3, b_marginal_3 : 4],[]]
 Mean  [1.5,2.1]
 Covariance  [[ 0.0833333 0         ]
@@ -74,8 +74,8 @@ anotherSample covariance= [[ 3.16541 ]]
 Zero point=  [0]  pdf=0.156744  cdf=0.192205
 Quantile= [4.38019]
 CDF(quantile)= 0.95
-conditioning distribution= ComposedDistribution(Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
-Distribution  ConditionalDistribution(X|Theta = Normal, Theta = ComposedDistribution(Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+conditioning distribution= ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  ConditionalDistribution(X|Theta = Normal, Theta = ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters  [[point_0_marginal_0 : 0.5],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
 Mean  [0.5]
 Covariance  [[ 2.33333 ]]

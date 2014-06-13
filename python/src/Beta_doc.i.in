@@ -1,0 +1,167 @@
+%feature("docstring") OT::Beta
+"Beta distribution.
+
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{(x - a)^{r - 1} (b - x)^{t - r - 1}}
+                  {(b - a)^{t - 1} {\rm B}(r, t - r)},
+                  \quad x \in [a; b]
+
+with :math:`r < t` and :math:`a < b` and where :math:`\rm B` denotes
+Euler's beta function.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & a + \frac{(b-a)\,r}{t} \\
+        \Var{X} & = & \left(\frac{b-a}{t}\right)^2 \frac{r\,(t-r)}{t+1}
+    \end{eqnarray*}
+
+Parameters
+----------
+arg1 : float
+    If `parameters_set == ot.Beta.RT`: the shape parameter :math:`r > 0`.
+
+    If `parameters_set == ot.Beta.MUSIGMA`: the distribution's mean.
+arg2 : float
+    If `parameters_set == ot.Beta.RT`: the shape parameter :math:`t > r`.
+
+    If `parameters_set == ot.Beta.MUSIGMA`: the distribution's standard
+    deviation.
+a : float
+    The lower bound.
+b : float, :math:`b > a`
+    The upper bound.
+parameters_set : int, optional
+    An integer telling which parameters set is used for definining the
+    distribution (amongst `ot.Beta.RT, ot.Beta.MUSIGMA`).
+
+    Default assumes `ot.Beta.RT`.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Beta(2., 4., -1., 1.)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(1000)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getR
+"Accessor to the distribution's shape parameter :math:`r`.
+
+Returns
+-------
+r : float
+    Shape parameter :math:`r`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getT
+"Accessor to the distribution's shape parameter :math:`t`.
+
+Returns
+-------
+t : float
+    Shape parameter :math:`t`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getA
+"Accessor to the distribution's lower bound.
+
+Returns
+-------
+a : float
+    The lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getB
+"Accessor to the distribution's upper bound.
+
+Returns
+-------
+b : float
+    The upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getMu
+"Accessor to the distribution's mean.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::getSigma
+"Accessor to the distribution's standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setR
+"Accessor to the distribution's shape parameter :math:`r`.
+
+Parameters
+----------
+r : float, :math:`r > 0`
+    Shape parameter :math:`r`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setT
+"Accessor to the distribution's shape parameter :math:`t`.
+
+Parameters
+----------
+t : float, :math:`t > r`
+    Shape parameter :math:`t`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setA
+"Accessor to the distribution's lower bound.
+
+Parameters
+----------
+a : float
+    The lower bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setB
+"Accessor to the distribution's upper bound.
+
+Parameters
+----------
+b : float, :math:`b > a`
+    The upper bound."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Beta::setMuSigma
+"Accessor to the distribution's mean and standard deviation.
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."

@@ -3,7 +3,7 @@
 // @date   2011-11-17 13:46:13 +0100 (Thu, 17 Nov 2011)
 
 %module(package="openturns", docstring="Graphical output.") graph
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

@@ -593,6 +593,7 @@ protected:
   mutable Bool isAlreadyCreatedGeneratingFunction_;
   mutable UniVariatePolynomial generatingFunction_;
 
+#ifndef SWIG
   // Structure used to wrap the computePDF() method for interpolation purpose
   struct PDFWrapper
   {
@@ -672,6 +673,7 @@ protected:
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
+#endif
 
   /** The dimension of the distributionImplementation */
   UnsignedInteger dimension_;

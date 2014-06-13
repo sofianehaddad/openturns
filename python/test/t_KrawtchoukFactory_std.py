@@ -10,8 +10,7 @@ try:
         print "krawtchouk(", i, ")=", krawtchouk.build(i)
     roots = krawtchouk.getRoots(10)
     print "krawtchouk(10) roots=", repr(roots)
-    weights = NumericalPoint()
-    nodes = krawtchouk.getNodesAndWeights(10, weights)
+    nodes, weights = krawtchouk.getNodesAndWeights(10)
     print "krawtchouk(10) nodes=", nodes, "and weights=", weights
 except:
     import sys

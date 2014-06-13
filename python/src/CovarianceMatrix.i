@@ -28,6 +28,8 @@ namespace OT {
 
 %}
 
+%include CovarianceMatrix_doc.i
+
 %apply const NumericalScalarCollection & { const OT::CovarianceMatrix::NumericalScalarCollection & };
 %template(CovarianceMatrixCollection) OT::Collection<OT::CovarianceMatrix>;
 %template(CovarianceMatrixPersistentCollection) OT::PersistentCollection<OT::CovarianceMatrix>;
@@ -51,10 +53,10 @@ namespace OT {
 %extend CovarianceMatrix {
 
   CovarianceMatrix(const CovarianceMatrix & other) { return new OT::CovarianceMatrix(other); }
-
+  
   CovarianceMatrix(PyObject * pyObj) { return new OT::CovarianceMatrix( OT::convert<OT::_PySequence_,OT::CovarianceMatrix>(pyObj) ); }
-
-  OTMatrixAccessors(CovarianceMatrix, NumericalScalar)
-
+  
+  OTMatrixAccessors()
+  
 } // CovarianceMatrix
 } // OT

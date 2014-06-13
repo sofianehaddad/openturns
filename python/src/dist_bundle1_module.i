@@ -4,7 +4,7 @@
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle1
 #pragma SWIG nowarn=302,509
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

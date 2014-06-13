@@ -49,7 +49,7 @@ try:
     ## collection = TimeSeriesCollection()
     # collection.add(timeSeries)
 
-    ## sample.scale(NumericalPoint(1, 0.1))
+    ## sample *= [0.1]
     ## newtimeSeries = TimeSeries(timeGrid, sample)
     # collection.add(newtimeSeries)
 

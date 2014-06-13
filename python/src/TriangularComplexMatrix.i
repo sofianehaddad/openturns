@@ -16,8 +16,8 @@ namespace OT {
 
   TriangularComplexMatrix(PyObject * pyObj) { return new OT::TriangularComplexMatrix( OT::convert<OT::_PySequence_,OT::TriangularComplexMatrix>(pyObj) ); }
 
-  OTMatrixAccessors(TriangularComplexMatrix, NumericalComplex)
-
+  OTComplexMatrixGetAccessors()  
+    
   TriangularComplexMatrix __rmul__(NumericalComplex s) { return s * (*self); }
   
   TriangularComplexMatrix __truediv__(NumericalComplex s) { return (*self) / s; }

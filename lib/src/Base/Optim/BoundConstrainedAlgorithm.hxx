@@ -44,13 +44,9 @@ class OT_API BoundConstrainedAlgorithm
   CLASSNAME;
 public:
 
-  typedef Pointer<BoundConstrainedAlgorithmImplementation>          Implementation;
+  typedef Pointer<BoundConstrainedAlgorithmImplementation>                  Implementation;
   typedef BoundConstrainedAlgorithmImplementation::OptimizationProblem      OptimizationProblem;
-#ifndef SWIG
-  typedef BoundConstrainedAlgorithmImplementation::Result                   Result;
-#else
   typedef BoundConstrainedAlgorithmImplementationResult                     Result;
-#endif
 
   /** Default constructor */
   BoundConstrainedAlgorithm();

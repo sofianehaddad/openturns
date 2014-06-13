@@ -3,7 +3,7 @@
 // @date   2011-08-01 13:42:13 +0200 (Mon, 01 Aug 2011)
 
 %module(package="openturns", docstring="Optimization routines.") optim
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

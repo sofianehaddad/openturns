@@ -30,7 +30,7 @@ namespace OT {
 
   CorrelationMatrix(PyObject * pyObj) { return new OT::CorrelationMatrix( OT::convert<OT::_PySequence_,OT::CorrelationMatrix>(pyObj) ); }
 
-  OTMatrixAccessors(CorrelationMatrix, NumericalScalar)
+  OTMatrixAccessors()
   
   // These should be inherited from CovarianceMatrix
   NumericalPoint __mul__(NumericalPoint p) { return (*self) * p; }

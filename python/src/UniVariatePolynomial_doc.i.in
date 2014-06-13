@@ -1,0 +1,20 @@
+// UniVariatePolynomial docstrings are defined in UniVariatePolynomial_doc.i.in
+
+%feature("docstring") OT::UniVariatePolynomialImplementation
+OT_UniVariatePolynomial_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::derivate
+OT_UniVariatePolynomial_derivate_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::derivative
+OT_UniVariatePolynomial_derivative_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::draw
+OT_UniVariatePolynomial_draw_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::getCoefficients
+OT_UniVariatePolynomial_getCoefficients_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::getDegree
+OT_UniVariatePolynomial_getDegree_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::getRoots
+OT_UniVariatePolynomial_getRoots_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::incrementDegree
+OT_UniVariatePolynomial_incrementDegree_doc
+%feature("docstring") OT::UniVariatePolynomialImplementation::setCoefficients
+OT_UniVariatePolynomial_setCoefficients_doc

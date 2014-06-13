@@ -33,9 +33,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
-class IdentityMatrix;
+class SquareMatrix;
 class SymmetricMatrix;
+class IdentityMatrix;
 
 /**
  * @class Matrix
@@ -131,6 +131,7 @@ public:
 
   /** Matrix multiplications (must have consistent dimensions) */
   Matrix operator * (const Matrix & m) const;
+  Matrix operator * (const SquareMatrix & m) const;
   Matrix operator * (const SymmetricMatrix & m) const;
   Matrix operator * (const IdentityMatrix & m) const;
 
@@ -152,10 +153,11 @@ public:
   /** Compute singular values */
   NumericalPoint computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSingularValues(Matrix & u,
-                                       Matrix & vT,
-                                       const Bool fullSVD = false,
-                                       const Bool keepIntact = true);
+  /** Build the singular value decomposition */
+  NumericalPoint computeSVD(Matrix & u,
+                            Matrix & vT,
+                            const Bool fullSVD = false,
+                            const Bool keepIntact = true);
 
   /** Build the QR factorization of the matrix */
   virtual Matrix computeQR(Matrix & R, const Bool keepIntact = true);
