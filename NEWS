@@ -7,19 +7,36 @@
 ==== Major changes ====
  * Native windows support
  * 64bits windows support
- * Python docstrings (in-progress)
+ * Python docstrings
 
+==== New distributions ====
+ * Wishart
+ * InverseWishart
+ * CompositeDistribution
+ * SubSquareCopula
+ 
 ==== New classes ==== 
+ * KrigingResult
+ * LevelSet
+ * KDTree
+ * ExponentiallyDampedCosineMOdel
+ * SphericalModel
+ * MeshFactory
+ * IntervalMesher
 
 ==== API changes ====
  * Removed deprecated types UnsignedLong, IndexType in favor of UnsignedInteger, SignedInteger
  * Deprecated method ResourceMap::SetAsUnsignedLong|GetAsUnsignedLong  in favor of ResourceMap::SetAsUnsignedInteger|GetAsUnsignedInteger
  * Renamed Matrix::computeSingularValues(u, vT) to computeSVD(u, vT)
  * Renamed Matrix::computeEigenValues(v) to computeEVD(v)
-
+ * Added Matrix::computeTrace
+ 
 === Python module ===
- * Added Drawable|Graph::_repr_svg_|_repr_html_ for automatic graphing within IPython notebook
-
+ * Docstring documentation, can be used in combination with sphinx (in-progress)
+ * Added Drawable|Graph::_repr_svg_ for automatic graphing within IPython notebook
+ * Added Object::_repr_html_ to get html string representation of OpenTURNS objects
+ * Some methods no longer return argument by reference, return tuple items instead (see #712)
+ 
 === Miscellaneous ===
  * DrawHenryLine now works for any Normal sample/distribution.
  * Added a DrawHenryLine prototype with given Normal distribution.
