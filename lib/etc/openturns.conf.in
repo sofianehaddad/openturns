@@ -424,7 +424,7 @@
   <DistributionImplementation-DefaultIntegrationNodesNumber value="255"     />
   <DistributionImplementation-DefaultLevelNumber            value="10"      />
   <DistributionImplementation-DefaultQuantileCacheSize      value="128"     />
-  <DistributionImplementation-Parallel                      value="0"       />
+  <DistributionImplementation-Parallel                      value="1"       />
 
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />

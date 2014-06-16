@@ -64,7 +64,7 @@ Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar gamma(xMin - fabs(xMin) / (2.0 + size));
+  const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar mu(sample.computeMean()[0]);
   const NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only if sigma >= 0, here sigma=" << sigma;

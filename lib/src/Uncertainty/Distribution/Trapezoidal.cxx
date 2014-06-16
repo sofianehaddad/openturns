@@ -163,20 +163,20 @@ NumericalComplex Trapezoidal::computeCharacteristicFunction(const NumericalScala
   NumericalScalar imag(0.0);
   NumericalComplex phi;
 
-  if (fabs(u) <= 1.0e-10) phi = NumericalComplex((-a_ + 3.0 * b_ - 3.0 * c_ + d_) * h_ / 2.0, 1.0);
+  if (std::abs(u) <= 1.0e-10) phi = NumericalComplex((-a_ + 3.0 * b_ - 3.0 * c_ + d_) * h_ / 2.0, 1.0);
   else
   {
     if (a_ < b_)
     {
-      real += ((b_ - a_) * u * sin(bu) + cos(bu) - cos(au)) * h_ / ((b_ - a_) * u * u);
-      imag += (sin(bu) + (a_ - b_) * u * cos(bu) - sin(au)) * h_ / ((b_ - a_) * u * u);
+      real += ((b_ - a_) * u * std::sin(bu) + std::cos(bu) - std::cos(au)) * h_ / ((b_ - a_) * u * u);
+      imag += (std::sin(bu) + (a_ - b_) * u * std::cos(bu) - std::sin(au)) * h_ / ((b_ - a_) * u * u);
     }
-    real +=  (sin(cu) - sin(bu)) * h_ / u;
-    imag += -(cos(cu) - cos(bu)) * h_ / u;
+    real +=  (std::sin(cu) - std::sin(bu)) * h_ / u;
+    imag += -(std::cos(cu) - std::cos(bu)) * h_ / u;
     if(c_ < d_)
     {
-      real += -(cos(du) + (d_ - c_) * u * sin(cu) - cos(cu)) * h_ / ((d_ - c_) * u * u);
-      imag += -(sin(du) - sin(cu) - (d_ - c_) * u * cos(cu)) * h_ / ((d_ - c_) * u * u);
+      real += -(std::cos(du) + (d_ - c_) * u * std::sin(cu) - std::cos(cu)) * h_ / ((d_ - c_) * u * u);
+      imag += -(std::sin(du) - std::sin(cu) - (d_ - c_) * u * std::cos(cu)) * h_ / ((d_ - c_) * u * u);
     }
     phi = NumericalComplex (real, imag);
   }
@@ -254,11 +254,11 @@ NumericalScalar Trapezoidal::computeScalarQuantile(const NumericalScalar prob,
   NumericalScalar c2(c1 + (c_ - b_) * h_);
   NumericalScalar proba( tail ? 1.0 - prob : prob);
   // p in (0, c1)
-  if (prob <= c1) return a_ + sqrt(2.0 * (b_ - a_) * proba / h_);
+  if (prob <= c1) return a_ + std::sqrt(2.0 * (b_ - a_) * proba / h_);
   // p in (c1, c2)
   if (prob <= c2) return b_ + (proba - c1) / h_;
   // p in (c2, 1)
-  return d_ - sqrt(2.0 * (1.0 - proba) * (d_ - c_) / h_);
+  return d_ - std::sqrt(2.0 * (1.0 - proba) * (d_ - c_) / h_);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
@@ -346,8 +346,8 @@ NumericalPoint Trapezoidal::getStandardMoment(const UnsignedInteger n) const
   const NumericalScalar beta(1.0 - 2.0 * (d_ - b_) / (d_ - a_));
   const NumericalScalar gamma(1.0 - 2.0 * (d_ - c_) / (d_ - a_));
   const NumericalScalar eta(2.0 / (2.0 - beta + gamma));
-  const NumericalScalar betaPow(pow(beta, n + 1));
-  const NumericalScalar gammaPow(pow(gamma, n + 1));
+  const NumericalScalar betaPow(std::pow(beta, n + 1));
+  const NumericalScalar gammaPow(std::pow(gamma, n + 1));
   NumericalScalar value(eta * (gammaPow - betaPow) / (n + 1));
   if (beta > -1.0)
   {
@@ -421,7 +421,7 @@ NumericalScalar Trapezoidal::getSigma() const
 
   NumericalScalar SecondMoment((d4 + 2 * c_ * d3 - 3 * b_ * d3 - 3 * a_ * d3 - 3 * b_ * c_ * d2 - 3 * a_ * c_ * d2 + 4 * b2 * d2 + 4 * a_ * b_ * d2 + 4 * a2 * d2 + 2 * c3 * d_ - 3 * b_ * c2 * d_ - 3 * a_ * c2 * d_ + 4 * b2 * c_ * d_ + 4 * a_ * b_ * c_ * d_ + 4 * a2 * c_ * d_ - 3 * b3 * d_ - 3 * a_ * b2 * d_ - 3 * a2 * b_ * d_ - 3 * a3 * d_ + c4 - 3 * b_ * c3 - 3 * a_ * c3 + 4 * b2 * c2 + 4 * a_ * b_ * c2 + 4 * a2 * c2 - 3 * b3 * c_ - 3 * a_ * b2 * c_ - 3 * a2 * b_ * c_ - 3 * a3 * c_ + b4 + 2 * a_ * b3 + 2 * a3 * b_ + a4) * h_ * h_ / 72.0);
 
-  return sqrt(SecondMoment);
+  return std::sqrt(SecondMoment);
 }
 
 /* A accessor */

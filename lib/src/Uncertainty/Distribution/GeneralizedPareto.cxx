@@ -108,8 +108,8 @@ void GeneralizedPareto::computeRange()
 NumericalPoint GeneralizedPareto::getRealization() const
 {
   const NumericalScalar u(RandomGenerator::Generate());
-  if (xi_ == 0.0) return NumericalPoint(1, -sigma_ * log(u));
-  return NumericalPoint(1, sigma_ * expm1(-xi_ * log(u)) / xi_);
+  if (xi_ == 0.0) return NumericalPoint(1, -sigma_ * std::log(u));
+  return NumericalPoint(1, sigma_ * expm1(-xi_ * std::log(u)) / xi_);
 }
 
 
@@ -120,13 +120,13 @@ NumericalPoint GeneralizedPareto::computeDDF(const NumericalPoint & point) const
   const NumericalScalar z(point[0] / sigma_);
   NumericalPoint result(1);
   if (z < 0.0) return result;
-  if (fabs(sqrt(fabs(xi_)) * z) < 1.0e-8)
+  if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8)
   {
-    result[0] = -0.5 * exp(-z) * (1.0 + xi_ * z * (0.5 * z - 1.0)) / (sigma_ * sigma_);
+    result[0] = -0.5 * std::exp(-z) * (1.0 + xi_ * z * (0.5 * z - 1.0)) / (sigma_ * sigma_);
     return result;
   }
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return result;
-  result[0] = -(1.0 + xi_) * exp(-(2.0 + 1.0 / xi_) * log1p(xi_ * z)) / (sigma_ * sigma_);
+  result[0] = -(1.0 + xi_) * std::exp(-(2.0 + 1.0 / xi_) * log1p(xi_ * z)) / (sigma_ * sigma_);
   return result;
 }
 
@@ -137,9 +137,9 @@ NumericalScalar GeneralizedPareto::computePDF(const NumericalPoint & point) cons
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const NumericalScalar z(point[0] / sigma_);
   if (z < 0.0) return 0.0;
-  if (fabs(z) * sqrt(fabs(xi_)) < 1.0e-8) return exp(-z) * (1.0 + z * xi_ * (0.5 * z - 1.0)) / sigma_;
+  if (std::abs(z) * std::sqrt(std::abs(xi_)) < 1.0e-8) return std::exp(-z) * (1.0 + z * xi_ * (0.5 * z - 1.0)) / sigma_;
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return 0.0;
-  return exp(-(1.0 + 1.0 / xi_) * log1p(xi_ * z)) / sigma_;
+  return std::exp(-(1.0 + 1.0 / xi_) * log1p(xi_ * z)) / sigma_;
 }
 
 NumericalScalar GeneralizedPareto::computeLogPDF(const NumericalPoint & point) const
@@ -147,9 +147,9 @@ NumericalScalar GeneralizedPareto::computeLogPDF(const NumericalPoint & point) c
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const NumericalScalar z(point[0] / sigma_);
   if (z < 0.0) return -SpecFunc::MaxNumericalScalar;
-  if (fabs(sqrt(fabs(xi_)) * z) < 1.0e-8) return -z + log1p(z * xi_ * (0.5 * z - 1.0)) - log(sigma_);
+  if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8) return -z + log1p(z * xi_ * (0.5 * z - 1.0)) - std::log(sigma_);
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return -SpecFunc::MaxNumericalScalar;
-  return -(1.0 + 1.0 / xi_) * log1p(xi_ * z) - log(sigma_);
+  return -(1.0 + 1.0 / xi_) * log1p(xi_ * z) - std::log(sigma_);
 }
 
 /* Get the CDF of the distribution */
@@ -158,7 +158,7 @@ NumericalScalar GeneralizedPareto::computeCDF(const NumericalPoint & point) cons
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const NumericalScalar z(point[0] / sigma_);
   if (z <= 0.0) return 0.0;
-  if (fabs(sqrt(xi_) * z) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * exp(-z);
+  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * std::exp(-z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 1.0;
   return -expm1(-log1p(xi_ * z) / xi_);
 }
@@ -169,9 +169,9 @@ NumericalScalar GeneralizedPareto::computeComplementaryCDF(const NumericalPoint 
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const NumericalScalar z(point[0] / sigma_);
   if (z <= 0.0) return 1.0;
-  if (fabs(sqrt(xi_) * z) < 1.0e-8) return exp(-z) * (1.0 + 0.5 * xi_ * z * z);
+  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return std::exp(-z) * (1.0 + 0.5 * xi_ * z * z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 0.0;
-  return exp(-log1p(xi_ * z) / xi_);
+  return std::exp(-log1p(xi_ * z) / xi_);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -183,8 +183,8 @@ NumericalComplex GeneralizedPareto::computeCharacteristicFunction(const Numerica
 
 NumericalComplex GeneralizedPareto::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  if (xi_ == 0.0) return -log(NumericalComplex(1.0, -x));
-  return log(computeCharacteristicFunction(x));
+  if (xi_ == 0.0) return -std::log(NumericalComplex(1.0, -x));
+  return std::log(computeCharacteristicFunction(x));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -214,8 +214,8 @@ NumericalPoint GeneralizedPareto::computeCDFGradient(const NumericalPoint & poin
 NumericalScalar GeneralizedPareto::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (xi_ == 0.0) return -sigma_ * (tail ? log(prob) : log1p(-prob));
-  return sigma_ * expm1(-xi_ * (tail ? log(-prob) : log1p(-prob))) / xi_;
+  if (xi_ == 0.0) return -sigma_ * (tail ? std::log(prob) : log1p(-prob));
+  return sigma_ * expm1(-xi_ * (tail ? std::log(-prob) : log1p(-prob))) / xi_;
 }
 
 /* Compute the mean of the distribution */
@@ -229,14 +229,14 @@ void GeneralizedPareto::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint GeneralizedPareto::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(getCovariance()(0, 0)));
+  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint GeneralizedPareto::getSkewness() const
 {
   if (xi_ >= 1.0 / 3.0) throw NotDefinedException(HERE) << "Error: the skewness is defined only for xi<1/3, here xi=" << xi_;
-  return NumericalPoint(1, 2.0 * (1.0 + xi_) * sqrt(1.0 - 2.0 * xi_) / (1.0 - 3.0 * xi_));
+  return NumericalPoint(1, 2.0 * (1.0 + xi_) * std::sqrt(1.0 - 2.0 * xi_) / (1.0 - 3.0 * xi_));
 }
 
 /* Get the kurtosis of the distribution */
@@ -253,10 +253,10 @@ NumericalPoint GeneralizedPareto::getStandardMoment(const UnsignedInteger n) con
   if (xi_ == 0.0) return NumericalPoint(1, SpecFunc::Gamma(n + 1.0));
   if (xi_ > 0.0)
   {
-    if (n < trunc(1.0 / xi_)) return NumericalPoint(1, exp(-log(xi_) * (n + 1.0) + SpecFunc::LogGamma(1.0 / xi_ - n) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(1.0 + 1.0 / xi_)));
+    if (n < trunc(1.0 / xi_)) return NumericalPoint(1, std::exp(-std::log(xi_) * (n + 1.0) + SpecFunc::LogGamma(1.0 / xi_ - n) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(1.0 + 1.0 / xi_)));
     throw NotDefinedException(HERE) << "Error: the standard moments are defined up to order " << trunc(1.0 / xi_) << " and n=" << n;
   }
-  return NumericalPoint(1, exp(-(n + 1.0) * log(-xi_) + SpecFunc::LogGamma(-1.0 / xi_) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(-1.0 / xi_ + n + 1.0)));
+  return NumericalPoint(1, std::exp(-(n + 1.0) * std::log(-xi_) + SpecFunc::LogGamma(-1.0 / xi_) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(-1.0 / xi_ + n + 1.0)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

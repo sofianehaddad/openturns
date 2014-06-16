@@ -146,17 +146,17 @@ NumericalScalar Histogram::computePDF(const NumericalPoint & point) const
 
   NumericalScalar x(point[0] - first_);
   const UnsignedInteger size(collection_.getSize());
-  if ((x <= 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
-  NumericalScalar lower(0.0);
-  // We shift x bin by bin until x falls in the current bin.
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    x -= lower;
-    lower = collection_[i].getWidth();
-    if (x < lower) return collection_[i].getHeight();
-  }
-  // Should never go there
-  return 0.0;
+  if ((x < 0.0) || (x >= cumulatedWidth_[size - 1])) return 0.0;
+  // Find the bin index by bisection
+  UnsignedInteger iMin(0);
+  UnsignedInteger iMax(size-1);
+  while (iMax > iMin + 1)
+    {
+      const UnsignedInteger i((iMin + iMax) / 2);
+      if (x < cumulatedWidth_[i]) iMax = i;
+      else iMin = i;
+    }
+  return collection_[iMax].getHeight();
 }
 
 
@@ -169,25 +169,49 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
   const UnsignedInteger size(collection_.getSize());
   if (x <= 0.0) return 0.0;
   if (x >= cumulatedWidth_[size - 1]) return 1.0;
-  NumericalScalar lower(0.0);
-  NumericalScalar cdf(0.0);
-  // We shift x bin by bin until x falls in the current bin. We aggregate the contribution of all the bins and make a proportional contribution for the last bin.
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    x -= lower;
-    lower = collection_[i].getWidth();
-    cdf += collection_[i].getSurface();
-    if (x <= lower)
+  // Find the bin index by bisection
+  // Must start at -1 as both cumulatedWidth_ and cumulatedSurface_ start with positive values
+  SignedInteger iMin(-1);
+  UnsignedInteger iMax(size - 1);
+  while (iMax > iMin + 1)
     {
-      const NumericalScalar value(cdf + (x - lower) * collection_[i].getHeight());
-      return value;
+      const UnsignedInteger i((iMin + iMax) / 2);
+      if (x < cumulatedWidth_[i]) iMax = i;
+      else iMin = i;
     }
-  }
-  // Should never go there
-  return 1.0;
+  // Here, we use only iMax as iMin can be -1
+  return cumulatedSurface_[iMax] + (x - cumulatedWidth_[iMax]) * collection_[iMax].getHeight();
 }
 
-/** Get the PDFGradient of the distribution */
+/* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
+NumericalComplex Histogram::computeCharacteristicFunction(const NumericalScalar x) const
+{
+  const NumericalComplex generic(DistributionImplementation::computeCharacteristicFunction(x));
+  NumericalComplex result(0.0);
+  if (x == 0.0) result = 1.0;
+  const UnsignedInteger size(collection_.getSize());
+  if (std::abs(x) < 1e-10)
+    {
+      result = NumericalComplex(collection_[0].getHeight() * collection_[0].getWidth());
+      for (UnsignedInteger k = 1; k < size; ++k)
+	{
+	  result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * collection_[k].getWidth();
+	}
+      result *= std::exp(NumericalComplex(0.0, first_));
+    }
+  else
+    {
+      for (UnsignedInteger k = 1; k < size; ++k)
+	{
+	  result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * (std::exp(NumericalComplex(0.0, x * collection_[k].getWidth())) - 1.0);
+	}
+      result *= std::exp(NumericalComplex(0.0, first_)) / NumericalComplex(0.0, x);
+    }
+  if (std::abs(result - generic) > 1.0e-6) std::cerr << "for x=" << x << ", generic=" << generic << ", comp=" << result << std::endl;
+  return result;
+}
+
+/* Get the PDFGradient of the distribution */
 NumericalPoint Histogram::computePDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
@@ -195,7 +219,7 @@ NumericalPoint Histogram::computePDFGradient(const NumericalPoint & point) const
   throw NotYetImplementedException(HERE);
 }
 
-/** Get the CDFGradient of the distribution */
+/* Get the CDFGradient of the distribution */
 NumericalPoint Histogram::computeCDFGradient(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
@@ -209,7 +233,7 @@ NumericalScalar Histogram::computeScalarQuantile(const NumericalScalar prob,
 {
   const NumericalScalar p(tail ? 1.0 - prob : prob);
   const UnsignedInteger size(collection_.getSize());
-  // Research of the containing bin
+  // Search of the bin
   UnsignedInteger  index(p * size);
   NumericalScalar currentProba(cumulatedSurface_[index]);
   UnsignedInteger currentIndex(index);
@@ -285,7 +309,7 @@ NumericalPoint Histogram::getStandardMoment(const UnsignedInteger n) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x(xPrec + collection_[i].getWidth() * factor);
-    value += (pow(x, n + 1) - pow(xPrec, n + 1)) * collection_[i].getHeight();
+    value += (std::pow(x, n + 1) - std::pow(xPrec, n + 1)) * collection_[i].getHeight();
     xPrec = x;
   }
   value /= (n + 1) * factor;
@@ -394,7 +418,7 @@ Histogram::HistogramPairCollection Histogram::getPairCollection() const
   return collection_;
 }
 
-/** Draw the PDF of the Histogram using a specific presentation */
+/* Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF() const
 {
   const UnsignedInteger lastIndex(cumulatedWidth_.getSize() - 1);
@@ -402,7 +426,7 @@ Graph Histogram::drawPDF() const
   return Histogram::drawPDF(first_ - 0.5 * collection_[0].getWidth(), first_ + cumulatedWidth_[lastIndex] + 0.5 * collection_[lastIndex].getWidth());
 }
 
-/** Draw the PDF of the Histogram using a specific presentation */
+/* Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF(const NumericalScalar xMin,
                          const NumericalScalar xMax,
                          const UnsignedInteger pointNumber) const

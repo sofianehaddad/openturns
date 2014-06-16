@@ -29,6 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /* Check that no value is repeated and no value exceed the given bound */
 Bool Indices::check(const UnsignedInteger bound) const
 {
+  if (getSize() == 0) return true;
   // Check if the values are all different
   Indices copy(*this);
   std::sort(copy.begin(), copy.end());

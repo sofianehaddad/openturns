@@ -35,8 +35,9 @@ static Factory<Gumbel> RegisteredFactory("Gumbel");
 
 /* Default constructor */
 Gumbel::Gumbel()
-  : ContinuousDistribution("Gumbel"),
-    alpha_(1.0), beta_(0.0)
+  : ContinuousDistribution("Gumbel")
+  , alpha_(1.0)
+  , beta_(0.0)
 {
   setDimension( 1 );
   computeRange();
@@ -46,9 +47,9 @@ Gumbel::Gumbel()
 Gumbel::Gumbel(const NumericalScalar arg1,
                const NumericalScalar arg2,
                const ParameterSet set)
-  : ContinuousDistribution("Gumbel"),
-    alpha_(0.0),
-    beta_(arg2)
+  : ContinuousDistribution("Gumbel")
+  , alpha_(0.0)
+  , beta_(arg2)
 {
   switch (set)
   {
@@ -107,7 +108,7 @@ Gumbel * Gumbel::clone() const
 /* Get one realization of the distribution */
 NumericalPoint Gumbel::getRealization() const
 {
-  return NumericalPoint(1, beta_ - log(-log(RandomGenerator::Generate())) / alpha_);
+  return NumericalPoint(1, beta_ - std::log(-std::log(RandomGenerator::Generate())) / alpha_);
 }
 
 
@@ -117,8 +118,8 @@ NumericalPoint Gumbel::computeDDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar expX(exp(-alpha_ * (point[0] - beta_)));
-  return NumericalPoint(1, alpha_ * alpha_ * (expX - 1.0) * expX * exp(-expX));
+  const NumericalScalar expX(std::exp(-alpha_ * (point[0] - beta_)));
+  return NumericalPoint(1, alpha_ * alpha_ * (expX - 1.0) * expX * std::exp(-expX));
 }
 
 
@@ -127,8 +128,8 @@ NumericalScalar Gumbel::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar expX(exp(-alpha_ * (point[0] - beta_)));
-  return alpha_ * expX * exp(-expX);
+  const NumericalScalar expX(std::exp(-alpha_ * (point[0] - beta_)));
+  return alpha_ * expX * std::exp(-expX);
 }
 
 NumericalScalar Gumbel::computeLogPDF(const NumericalPoint & point) const
@@ -136,7 +137,7 @@ NumericalScalar Gumbel::computeLogPDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar X(-alpha_ * (point[0] - beta_));
-  return log(alpha_) + X - exp(X);
+  return std::log(alpha_) + X - std::exp(X);
 }
 
 
@@ -146,8 +147,8 @@ NumericalScalar Gumbel::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x(-alpha_ * (point[0] - beta_));
-  const NumericalScalar expX(exp(x));
-  return exp(-expX);
+  const NumericalScalar expX(std::exp(x));
+  return std::exp(-expX);
 }
 
 NumericalScalar Gumbel::computeComplementaryCDF(const NumericalPoint & point) const
@@ -155,7 +156,7 @@ NumericalScalar Gumbel::computeComplementaryCDF(const NumericalPoint & point) co
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x(-alpha_ * (point[0] - beta_));
-  const NumericalScalar expX(exp(x));
+  const NumericalScalar expX(std::exp(x));
   // -2.419227917539996841 = numerical bound for which the approximation has a relative error less than 1e-16
   if (x < -2.419227917539996841)
   {
@@ -168,18 +169,18 @@ NumericalScalar Gumbel::computeComplementaryCDF(const NumericalPoint & point) co
     }
     return value;
   }
-  return 1.0 - exp(-expX);
+  return 1.0 - std::exp(-expX);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Gumbel::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return SpecFunc::Gamma(NumericalComplex(1.0, -x / alpha_)) * exp(NumericalComplex(0.0, beta_ * x));
+  return SpecFunc::Gamma(NumericalComplex(1.0, -x / alpha_)) * std::exp(NumericalComplex(0.0, beta_ * x));
 }
 
 NumericalComplex Gumbel::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  return log(SpecFunc::Gamma(NumericalComplex(1.0, -x / alpha_))) + NumericalComplex(0.0, beta_ * x);
+  return std::log(SpecFunc::Gamma(NumericalComplex(1.0, -x / alpha_))) + NumericalComplex(0.0, beta_ * x);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -188,8 +189,8 @@ NumericalPoint Gumbel::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x(point[0] - beta_);
-  const NumericalScalar expX(exp(-alpha_ * x));
-  const NumericalScalar pdf(alpha_ * expX * exp(-expX));
+  const NumericalScalar expX(std::exp(-alpha_ * x));
+  const NumericalScalar pdf(alpha_ * expX * std::exp(-expX));
   NumericalPoint pdfGradient(2);
   pdfGradient[0] = (1.0 / alpha_ - x * (1.0 - expX)) * pdf;
   pdfGradient[1] = alpha_ * (1.0 - expX) * pdf;
@@ -202,8 +203,8 @@ NumericalPoint Gumbel::computeCDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x(point[0] - beta_);
-  const NumericalScalar expX(exp(-alpha_ * x));
-  const NumericalScalar cdf(exp(-expX));
+  const NumericalScalar expX(std::exp(-alpha_ * x));
+  const NumericalScalar cdf(std::exp(-expX));
   NumericalPoint cdfGradient(2);
   cdfGradient[0] = x * expX * cdf;
   cdfGradient[1] = -alpha_ * expX * cdf;
@@ -214,8 +215,8 @@ NumericalPoint Gumbel::computeCDFGradient(const NumericalPoint & point) const
 NumericalScalar Gumbel::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (tail) return beta_ - log(-log1p(-prob)) / alpha_;
-  return beta_ - log(-log(prob)) / alpha_;
+  if (tail) return beta_ - std::log(-log1p(-prob)) / alpha_;
+  return beta_ - std::log(-std::log(prob)) / alpha_;
 }
 
 /* Compute the mean of the distribution */

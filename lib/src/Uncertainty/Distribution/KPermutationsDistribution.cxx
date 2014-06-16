@@ -132,7 +132,7 @@ NumericalScalar KPermutationsDistribution::computeLogPDF(const NumericalPoint & 
     const NumericalScalar k(point[i]);
     if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return -SpecFunc::MaxNumericalScalar;
     const UnsignedInteger ik(static_cast< UnsignedInteger > (round(k)));
-    if (fabs(k - ik) > supportEpsilon_) return -SpecFunc::MaxNumericalScalar;
+    if (std::abs(k - ik) > supportEpsilon_) return -SpecFunc::MaxNumericalScalar;
     x[i] = ik;
   }
   if (!x.check(n_ - 1)) return 0.0;
@@ -143,7 +143,7 @@ NumericalScalar KPermutationsDistribution::computePDF(const NumericalPoint & poi
 {
   const NumericalScalar logPDF(computeLogPDF(point));
   if (logPDF == -SpecFunc::MaxNumericalScalar) return 0.0;
-  return exp(logPDF);
+  return std::exp(logPDF);
 }
 
 /* Get the CDF of the distribution */

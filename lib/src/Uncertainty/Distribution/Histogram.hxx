@@ -88,6 +88,9 @@ public:
   using ContinuousDistribution::computeCDF;
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
+  /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
+  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+
   /** Get the PDFGradient of the Histogram distribution */
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 

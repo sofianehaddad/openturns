@@ -142,9 +142,11 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
   Interval::BoolCollection finiteUpperBound(size);
   if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty";
   // First, check that all the marginal distributions are of dimension 1
+  Bool isParallel(copula_.getImplementation()->isParallel());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coll[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "The marginal distribution " << i << " is of dimension " << coll[i].getDimension() << ", which is different from 1.";
+    isParallel = isParallel && coll[i].getImplementation()->isParallel();
     const Interval marginalRange(coll[i].getRange());
     lowerBound[i] = marginalRange.getLowerBound()[0];
     upperBound[i] = marginalRange.getUpperBound()[0];
@@ -161,6 +163,7 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
       description[i] = marginalName;
     }
   }
+  setParallel(isParallel);
   // Everything is ok, store the collection
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;

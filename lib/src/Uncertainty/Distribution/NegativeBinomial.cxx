@@ -105,8 +105,8 @@ NumericalScalar NegativeBinomial::computePDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k(point[0]);
-  if ((k < -supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return 0.0;
-  return exp(SpecFunc::LnGamma(k + r_) - SpecFunc::LnGamma(r_) - SpecFunc::LnGamma(k + 1.0) + k * log(p_) + r_ * log1p(-p_));
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
+  return std::exp(SpecFunc::LnGamma(k + r_) - SpecFunc::LnGamma(r_) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + r_ * log1p(-p_));
 }
 
 
@@ -139,7 +139,7 @@ NumericalPoint NegativeBinomial::computePDFGradient(const NumericalPoint & point
 
   const NumericalScalar k(point[0]);
   NumericalPoint pdfGradient(1, 0.0);
-  if ((k < -supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return pdfGradient;
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   throw NotYetImplementedException(HERE);
 }
 
@@ -164,26 +164,26 @@ void NegativeBinomial::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint NegativeBinomial::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(r_ * p_) / (1.0 - p_));
+  return NumericalPoint(1, std::sqrt(r_ * p_) / (1.0 - p_));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint NegativeBinomial::getSkewness() const
 {
-  return NumericalPoint(1, (1.0 + p_) / sqrt(p_ * r_));
+  return NumericalPoint(1, (1.0 + p_) / std::sqrt(p_ * r_));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint NegativeBinomial::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + 6.0 / r_ + pow(1.0 - p_, 2.0) / (p_ * r_));
+  return NumericalPoint(1, 3.0 + 6.0 / r_ + std::pow(1.0 - p_, 2.0) / (p_ * r_));
 }
 
 /* Compute the covariance of the distribution */
 void NegativeBinomial::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = r_ * p_ / pow(1.0 - p_, 2.0);
+  covariance_(0, 0) = r_ * p_ / std::pow(1.0 - p_, 2.0);
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -313,27 +313,27 @@ NumericalScalar NegativeBinomial::computeScalarQuantile(const NumericalScalar pr
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex NegativeBinomial::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * exp(NumericalComplex(0.0, x))));
-  return pow(value, r_);
+  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * std::exp(NumericalComplex(0.0, x))));
+  return std::pow(value, r_);
 }
 
 NumericalComplex NegativeBinomial::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * exp(NumericalComplex(0.0, x))));
-  return NumericalComplex(r_) * log(value);
+  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * std::exp(NumericalComplex(0.0, x))));
+  return NumericalComplex(r_) * std::log(value);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
 NumericalComplex NegativeBinomial::computeGeneratingFunction(const NumericalComplex & z) const
 {
   const NumericalComplex value((1.0 - p_) / (1.0 - p_ * z));
-  return pow(value, r_);
+  return std::pow(value, r_);
 }
 
 NumericalComplex NegativeBinomial::computeLogGeneratingFunction(const NumericalComplex & z) const
 {
   const NumericalComplex value((1.0 - p_) / (1.0 - p_ * z));
-  return NumericalComplex(r_) * log(value);
+  return NumericalComplex(r_) * std::log(value);
 }
 
 /* Method save() stores the object through the StorageManager */

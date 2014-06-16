@@ -65,9 +65,9 @@ Triangular TriangularFactory::buildAsTriangular(const NumericalSample & sample) 
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Triangular distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar a(xMin - fabs(xMin) / (size + 2));
+  const NumericalScalar a(xMin - std::abs(xMin) / (size + 2));
   const NumericalScalar xMax(sample.getMax()[0]);
-  const NumericalScalar b(xMax + fabs(xMax) / (size + 2));
+  const NumericalScalar b(xMax + std::abs(xMax) / (size + 2));
   const NumericalScalar m(3.0 * sample.computeMean()[0] - a - b);
   Triangular result(a, m, b);
   result.setDescription(sample.getDescription());

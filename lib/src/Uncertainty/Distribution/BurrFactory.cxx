@@ -67,8 +67,8 @@ struct BurrFactoryParameterConstraint
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const NumericalScalar x(sample_[i][0]);
-      const NumericalScalar xC(pow(x , c));
-      const NumericalScalar logX(log(x));
+      const NumericalScalar xC(std::pow(x , c));
+      const NumericalScalar logX(std::log(x));
       const NumericalScalar ratio(logX / (1.0 + xC));
       sumRatio += ratio;
       sumScaledRatio += xC * ratio;
@@ -131,7 +131,7 @@ Burr BurrFactory::buildAsBurr(const NumericalSample & sample) const
   const NumericalScalar c(solver.solve(f, 0.0, a, b, fA, fB));
   // Corresponding k estimate
   NumericalScalar sumLogXC(0.0);
-  for (UnsignedInteger i = 0; i < size; ++i) sumLogXC += log1p(pow(sample[i][0], c));
+  for (UnsignedInteger i = 0; i < size; ++i) sumLogXC += log1p(std::pow(sample[i][0], c));
   const NumericalScalar k(size / sumLogXC);
   Burr result(c, k);
   result.setDescription(sample.getDescription());

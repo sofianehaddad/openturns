@@ -412,5 +412,5 @@ marginal 1=NumericalMathFunction :
   | d^2(y1) / d(x1)d(x0) = 0 
   |    d^2(y1) / d(x1)^2 = 0 
 
-First reference value : 5.8946e+00
-First result calculated : 5.8946e+00
+First reference value : 2.8794e+00
+First result calculated : 2.8794e+00

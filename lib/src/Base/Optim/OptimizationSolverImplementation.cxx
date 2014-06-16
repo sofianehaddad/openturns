@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @file  NearestPointAlgorithmImplementation.cxx
- *  @brief NearestPointAlgorithmImplementation implements an algorithm for finding the
+ *  @file  OptimizationSolverImplementation.cxx
+ *  @brief OptimizationSolverImplementation implements an algorithm for finding the
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -21,201 +21,177 @@
  *  @author schueller
  *  @date   2012-02-17 19:35:43 +0100 (Fri, 17 Feb 2012)
  */
-#include <cstdlib>
 
-#include "NearestPointAlgorithmImplementation.hxx"
-#include "ResourceMap.hxx"
+#include "OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-CLASSNAMEINIT(NearestPointAlgorithmImplementation);
+CLASSNAMEINIT(OptimizationSolverImplementation);
 
 /* Default constructor */
-NearestPointAlgorithmImplementation::NearestPointAlgorithmImplementation() :
-  PersistentObject(),
-  levelFunction_(NumericalMathFunction()),
-  startingPoint_(NumericalPoint(0)),
-  levelValue_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultLevelValue" )),
-  maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "NearestPointAlgorithmImplementation-DefaultMaximumIteration" )),
-  maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumAbsoluteError" )),
-  maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumRelativeError" )),
-  maximumResidualError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumResidualError" )),
-  maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumConstraintError" )),
-  verbose_(false)
+OptimizationSolverImplementation::OptimizationSolverImplementation()
+  : PersistentObject()
+  , levelFunction_(NumericalMathFunction())
+  , startingPoint_(NumericalPoint(0))
+  , levelValue_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultLevelValue" ))
+  , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
+  , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
+  , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
+  , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
+  , maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError" ))
 {
-  result_ = Result(startingPoint_, 0, -1.0, -1.0, -1.0, -1.0);
+  // Nothing to do
 }
 
 /*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
- *         and a level value
+ * @brief Standard constructor: the optimization problem is managed by the optimization solver, and the actual solver is in charge to check if it is able to solve it.
  */
-NearestPointAlgorithmImplementation::NearestPointAlgorithmImplementation(const NumericalMathFunction & levelFunction,
-    const Bool verbose):
-  PersistentObject(),
-  levelFunction_(levelFunction),
-  startingPoint_(NumericalPoint(levelFunction.getInputDimension(), 0.0)),
-  levelValue_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultLevelValue" )),
-  maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "NearestPointAlgorithmImplementation-DefaultMaximumIteration" )),
-  maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumAbsoluteError" )),
-  maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumRelativeError" )),
-  maximumResidualError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumResidualError" )),
-  maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "NearestPointAlgorithmImplementation-DefaultMaximumConstraintError" )),
-  verbose_(verbose)
+OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem,
+								   const NumericalPoint & startingPoint)
+  : PersistentObject()
+  , problem_(problem)
+  , startingPoint_(startingPoint)
+  , maximumIterationsNumber_(ResourceMap::GetAsUnsignedInteger( "OptimizationSolverImplementation-DefaultMaximumIteration" ))
+  , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumAbsoluteError" ))
+  , maximumRelativeError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumRelativeError" ))
+  , maximumResidualError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumResidualError" ))
+  , maximumConstraintError_(ResourceMap::GetAsNumericalScalar( "OptimizationSolverImplementation-DefaultMaximumConstraintError" ))
 {
-  result_ = Result(startingPoint_, 0, -1.0, -1.0, -1.0, -1.0);
+  // Nothing to do
 }
 
 /* Starting point accessor */
-NumericalPoint NearestPointAlgorithmImplementation::getStartingPoint() const
+NumericalPoint OptimizationSolverImplementation::getStartingPoint() const
 {
   return startingPoint_;
 }
 
 /* Starting point accessor */
-void NearestPointAlgorithmImplementation::setStartingPoint(const NumericalPoint & startingPoint)
+void OptimizationSolverImplementation::setStartingPoint(const NumericalPoint & startingPoint)
 {
   startingPoint_ = startingPoint;
 }
 
 /* Level value accessor */
-NumericalScalar NearestPointAlgorithmImplementation::getLevelValue() const
+NumericalScalar OptimizationSolverImplementation::getLevelValue() const
 {
   return levelValue_;
 }
 
 /* Level value accessor */
-void NearestPointAlgorithmImplementation::setLevelValue(const NumericalScalar levelValue)
+void OptimizationSolverImplementation::setLevelValue(const NumericalScalar levelValue)
 {
   levelValue_ = levelValue;
 }
 
 /* Result accessor */
-NearestPointAlgorithmImplementation::Result NearestPointAlgorithmImplementation::getResult() const
+OptimizationSolverImplementation::Result OptimizationSolverImplementation::getResult() const
 {
   return result_;
 }
 
 /* Result accessor */
-void NearestPointAlgorithmImplementation::setResult(const Result & result)
+void OptimizationSolverImplementation::setResult(const Result & result)
 {
   result_ = result;
 }
 
 /* Maximum iterations number accessor */
-UnsignedInteger NearestPointAlgorithmImplementation::getMaximumIterationsNumber() const
+UnsignedInteger OptimizationSolverImplementation::getMaximumIterationsNumber() const
 {
   return maximumIterationsNumber_;
 }
 
 /* Maximum iterations number accessor */
-void NearestPointAlgorithmImplementation::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
+void OptimizationSolverImplementation::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
 {
   maximumIterationsNumber_ = maximumIterationsNumber;
 }
 
 /* Maximum absolute error accessor */
-NumericalScalar NearestPointAlgorithmImplementation::getMaximumAbsoluteError() const
+NumericalScalar OptimizationSolverImplementation::getMaximumAbsoluteError() const
 {
   return maximumAbsoluteError_;
 }
 
 /* Maximum absolute error accessor */
-void NearestPointAlgorithmImplementation::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
+void OptimizationSolverImplementation::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
 {
   maximumAbsoluteError_ = maximumAbsoluteError;
 }
 
 /* Maximum relative error accessor */
-NumericalScalar NearestPointAlgorithmImplementation::getMaximumRelativeError() const
+NumericalScalar OptimizationSolverImplementation::getMaximumRelativeError() const
 {
   return maximumRelativeError_;
 }
 
 /* Maximum relative error accessor */
-void NearestPointAlgorithmImplementation::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
+void OptimizationSolverImplementation::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
 {
   maximumRelativeError_ = maximumRelativeError;
 }
 
 /* Maximum residual error accessor */
-NumericalScalar NearestPointAlgorithmImplementation::getMaximumResidualError() const
+NumericalScalar OptimizationSolverImplementation::getMaximumResidualError() const
 {
   return maximumResidualError_;
 }
 
 /* Maximum residual error accessor */
-void NearestPointAlgorithmImplementation::setMaximumResidualError(const NumericalScalar maximumResidualError)
+void OptimizationSolverImplementation::setMaximumResidualError(const NumericalScalar maximumResidualError)
 {
   maximumResidualError_ = maximumResidualError;
 }
 
 /* Maximum constraint error accessor */
-NumericalScalar NearestPointAlgorithmImplementation::getMaximumConstraintError() const
+NumericalScalar OptimizationSolverImplementation::getMaximumConstraintError() const
 {
   return maximumConstraintError_;
 }
 
 /* Maximum constraint error accessor */
-void NearestPointAlgorithmImplementation::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
+void OptimizationSolverImplementation::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
 {
   maximumConstraintError_ = maximumConstraintError;
 }
 
 /* String converter */
-String NearestPointAlgorithmImplementation::__repr__() const
+String OptimizationSolverImplementation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << NearestPointAlgorithmImplementation::GetClassName()
+  oss << "class=" << OptimizationSolverImplementation::GetClassName()
+      << " problem=" << problem_
       << " startingPoint=" << startingPoint_
-      << " levelFunction=" << levelFunction_
-      << " levelValue=" << levelValue_
       << " maximumIterationsNumber=" << maximumIterationsNumber_
       << " maximumAbsoluteError=" << maximumAbsoluteError_
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
-      << " maximumConstraintError=" << maximumConstraintError_
-      << " verbose=" << (verbose_ ? "true" : "false");
+      << " maximumConstraintError=" << maximumConstraintError_;
   return oss;
 }
 
-/* Level function accessor */
-NumericalMathFunction NearestPointAlgorithmImplementation::getLevelFunction() const
+/* Problem accessor */
+OptimizationProblem OptimizationSolverImplementation::getProblem() const
 {
-  return levelFunction_;
+  return problem_;
 }
 
-/* Level function accessor */
-void NearestPointAlgorithmImplementation::setLevelFunction(const NumericalMathFunction & levelFunction)
+void OptimizationSolverImplementation::setProblem(const OptimizationProblem & problem)
 {
-  levelFunction_ = levelFunction;
+  problem_ = problem;
 }
 
 /* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-void NearestPointAlgorithmImplementation::run()
+void OptimizationSolverImplementation::run()
 {
-  // To be overloaded
+  throw NotYetImplementedException(HERE);
 }
 
 /* Virtual constructor */
-NearestPointAlgorithmImplementation * NearestPointAlgorithmImplementation::clone() const
+OptimizationSolverImplementation * OptimizationSolverImplementation::clone() const
 {
-  return new NearestPointAlgorithmImplementation(*this);
+  return new OptimizationSolverImplementation(*this);
 }
-
-/* Verbose accessor */
-Bool NearestPointAlgorithmImplementation::getVerbose() const
-{
-  return verbose_;
-}
-
-/* Verbose accessor */
-void NearestPointAlgorithmImplementation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
 
 END_NAMESPACE_OPENTURNS

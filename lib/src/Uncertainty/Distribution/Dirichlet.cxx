@@ -40,26 +40,26 @@ static Factory<Dirichlet> RegisteredFactory("Dirichlet");
 
 /* Default constructor */
 Dirichlet::Dirichlet()
-  : ContinuousDistribution("Dirichlet"),
-    theta_(0),
-    sumTheta_(0.0),
-    normalizationFactor_(0.0),
-    isInitializedCDF_(false),
-    integrationNodes_(0),
-    integrationWeights_(0)
+  : ContinuousDistribution("Dirichlet")
+  , theta_(0)
+  , sumTheta_(0.0)
+  , normalizationFactor_(0.0)
+  , isInitializedCDF_(false)
+  , integrationNodes_(0)
+  , integrationWeights_(0)
 {
   setTheta(NumericalPoint(2, 1.0));
 }
 
 /* Parameters constructor */
 Dirichlet::Dirichlet(const NumericalPoint & theta)
-  : ContinuousDistribution("Dirichlet"),
-    theta_(0),
-    sumTheta_(0.0),
-    normalizationFactor_(0.0),
-    isInitializedCDF_(false),
-    integrationNodes_(0),
-    integrationWeights_(0)
+  : ContinuousDistribution("Dirichlet")
+  , theta_(0)
+  , sumTheta_(0.0)
+  , normalizationFactor_(0.0)
+  , isInitializedCDF_(false)
+  , integrationNodes_(0)
+  , integrationWeights_(0)
 {
   setTheta(theta);
 }
@@ -128,7 +128,7 @@ NumericalScalar Dirichlet::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar logPDF(computeLogPDF(point));
   if (logPDF == -SpecFunc::MaxNumericalScalar) return 0.0;
-  return exp(logPDF);
+  return std::exp(logPDF);
 }
 
 NumericalScalar Dirichlet::computeLogPDF(const NumericalPoint & point) const
@@ -145,7 +145,7 @@ NumericalScalar Dirichlet::computeLogPDF(const NumericalPoint & point) const
   }
   if (sum >= 1.0) return -SpecFunc::MaxNumericalScalar;
   NumericalScalar logPDF(normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum));
-  for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * log(point[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * std::log(point[i]);
   return logPDF;
 }
 
@@ -204,7 +204,7 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
     Indices indices(dimension, 0);
     NumericalScalar value(0.0);
     NumericalScalar logFactor(normalizationFactor_);
-    for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * log(point[i]) - log(theta_[i]);
+    for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * std::log(point[i]) - std::log(theta_[i]);
     // Initialize the integration data
     initializeIntegration();
     UnsignedInteger size(1);
@@ -222,7 +222,7 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
         sumX += (integrationNodes_[i][indexI] + 1.0) * lI;
         w *= integrationWeights_[i][indexI];
       }
-      const NumericalScalar dCDF(w * exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX)));
+      const NumericalScalar dCDF(w * std::exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX)));
       value += dCDF;
       // Update the indices
       ++indices[0];
@@ -306,7 +306,7 @@ NumericalScalar Dirichlet::computeConditionalPDF(const NumericalScalar x,
   const NumericalScalar r(theta_[conditioningDimension]);
   const NumericalScalar s(sumTheta_ - sum - r);
   const NumericalScalar z(x / (1.0 - sum));
-  return exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
+  return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -350,7 +350,7 @@ NumericalPoint Dirichlet::getStandardDeviation() const
 {
   const UnsignedInteger dimension(getDimension());
   NumericalPoint sigma(dimension);
-  NumericalScalar factor(1.0 / (sumTheta_ * sqrt(1.0 + sumTheta_)));
+  NumericalScalar factor(1.0 / (sumTheta_ * std::sqrt(1.0 + sumTheta_)));
   for (UnsignedInteger i = 0; i < dimension; ++i) sigma[i] = theta_[i] * (sumTheta_ - theta_[i]) * factor;
   return sigma;
 }
@@ -363,7 +363,7 @@ NumericalPoint Dirichlet::getSkewness() const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar thetaI(theta_[i]);
-    skewness[i] = 2.0 * (sumTheta_ - 2.0 * thetaI) / (sumTheta_ + 2.0) * sqrt(sumTheta_ + 1.0) / (thetaI * (sumTheta_ - thetaI));
+    skewness[i] = 2.0 * (sumTheta_ - 2.0 * thetaI) / (sumTheta_ + 2.0) * std::sqrt(sumTheta_ + 1.0) / (thetaI * (sumTheta_ - thetaI));
   }
   return skewness;
 }

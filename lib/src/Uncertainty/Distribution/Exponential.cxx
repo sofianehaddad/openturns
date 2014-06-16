@@ -35,9 +35,9 @@ static Factory<Exponential> RegisteredFactory("Exponential");
 
 /* Default constructor */
 Exponential::Exponential()
-  : ContinuousDistribution("Exponential"),
-    lambda_(1.0),
-    gamma_(0.0)
+  : ContinuousDistribution("Exponential")
+  , lambda_(1.0)
+  , gamma_(0.0)
 {
   setDimension( 1 );
   computeRange();
@@ -46,9 +46,9 @@ Exponential::Exponential()
 /* Parameters constructor */
 Exponential::Exponential(const NumericalScalar lambda,
                          const NumericalScalar gamma)
-  : ContinuousDistribution("Exponential"),
-    lambda_(0.0),
-    gamma_(gamma)
+  : ContinuousDistribution("Exponential")
+  , lambda_(0.0)
+  , gamma_(gamma)
 {
   // We set the dimension of the Exponential distribution
   setDimension( 1 );
@@ -91,7 +91,7 @@ Exponential * Exponential::clone() const
 /* Get one realization of the distribution */
 NumericalPoint Exponential::getRealization() const
 {
-  return NumericalPoint(1, gamma_ - log(RandomGenerator::Generate()) / lambda_);
+  return NumericalPoint(1, gamma_ - std::log(RandomGenerator::Generate()) / lambda_);
 }
 
 
@@ -112,7 +112,7 @@ NumericalScalar Exponential::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0] - gamma_);
   if (x < 0.0) return 0.0;
-  return lambda_ * exp(-lambda_ * x);
+  return lambda_ * std::exp(-lambda_ * x);
 }
 
 NumericalScalar Exponential::computeLogPDF(const NumericalPoint & point) const
@@ -121,7 +121,7 @@ NumericalScalar Exponential::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0] - gamma_);
   if (x < 0.0) return -SpecFunc::MaxNumericalScalar;
-  return log(lambda_) - lambda_ * x;
+  return std::log(lambda_) - lambda_ * x;
 }
 
 /* Get the CDF of the distribution */
@@ -141,18 +141,18 @@ NumericalScalar Exponential::computeComplementaryCDF(const NumericalPoint & poin
 
   const NumericalScalar x(point[0] - gamma_);
   if (x < 0.0) return 1.0;
-  return exp(-lambda_ * x);
+  return std::exp(-lambda_ * x);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Exponential::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return exp(NumericalComplex(0.0, x * gamma_)) / NumericalComplex(1.0, -x / lambda_);
+  return std::exp(NumericalComplex(0.0, x * gamma_)) / NumericalComplex(1.0, -x / lambda_);
 }
 
 NumericalComplex Exponential::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  return NumericalComplex(0.0, x * gamma_) - log(NumericalComplex(1.0, - x / lambda_));
+  return NumericalComplex(0.0, x * gamma_) - std::log(NumericalComplex(1.0, - x / lambda_));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -163,7 +163,7 @@ NumericalPoint Exponential::computePDFGradient(const NumericalPoint & point) con
   const NumericalScalar x(point[0] - gamma_);
   NumericalPoint pdfGradient(2, 0.0);
   if (x < 0.0) return pdfGradient;
-  const NumericalScalar expX(exp(-lambda_ * x));
+  const NumericalScalar expX(std::exp(-lambda_ * x));
   pdfGradient[0] = (1.0 - lambda_ * x) * expX;
   pdfGradient[1] = lambda_ * lambda_ * expX;
   return pdfGradient;
@@ -177,7 +177,7 @@ NumericalPoint Exponential::computeCDFGradient(const NumericalPoint & point) con
   const NumericalScalar x(point[0] - gamma_);
   NumericalPoint cdfGradient(2, 0.0);
   if (x < 0.0) return cdfGradient;
-  const NumericalScalar expX(exp(-lambda_ * x));
+  const NumericalScalar expX(std::exp(-lambda_ * x));
   cdfGradient[0] = x * expX;
   cdfGradient[1] = -lambda_ * expX;
   return cdfGradient;
@@ -187,7 +187,7 @@ NumericalPoint Exponential::computeCDFGradient(const NumericalPoint & point) con
 NumericalScalar Exponential::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (tail) return gamma_ - log(prob) / lambda_;
+  if (tail) return gamma_ - std::log(prob) / lambda_;
   return gamma_ - log1p(-prob) / lambda_;
 }
 

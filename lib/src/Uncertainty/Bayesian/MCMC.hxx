@@ -62,6 +62,7 @@ public:
   MCMC(const Distribution & prior,
        const Distribution & conditional,
        const NumericalMathFunction & model,
+       const NumericalSample & parameters,
        const NumericalSample & observations,
        const NumericalPoint & initialState);
 
@@ -74,7 +75,7 @@ public:
   /** Prior accessor */
   void setPrior(const Distribution & prior);
   Distribution getPrior() const;
-
+  
   /** Conditional accessor */
   Distribution getConditional() const;
 
@@ -84,6 +85,10 @@ public:
   /** Obervations accessor */
   void setObservations(const NumericalSample & observations);
   NumericalSample getObservations() const;
+
+  /** Parameters accessor */
+  void setParameters(const NumericalSample & parameters);
+  NumericalSample getParameters() const;
 
   /// Burning accessor
   void setBurnIn(UnsignedInteger burnIn);
@@ -114,6 +119,7 @@ private:
   Distribution conditional_;
 
   mutable NumericalMathFunction model_;
+  NumericalSample parameters_;
   NumericalSample observations_;
 
   UnsignedInteger burnIn_; // number of first samples discarded to reach stationary regime

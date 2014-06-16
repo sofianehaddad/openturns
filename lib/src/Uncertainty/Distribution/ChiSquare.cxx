@@ -147,7 +147,7 @@ NumericalScalar ChiSquare::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return 0.0;
-  return exp(computeLogPDF(point));
+  return std::exp(computeLogPDF(point));
 }
 
 NumericalScalar ChiSquare::computeLogPDF(const NumericalPoint & point) const
@@ -156,7 +156,7 @@ NumericalScalar ChiSquare::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  return normalizationFactor_ + (0.5 * nu_ - 1) * log(x) - 0.5 * x;
+  return normalizationFactor_ + (0.5 * nu_ - 1) * std::log(x) - 0.5 * x;
 }
 
 /* Get the CDF of the distribution */
@@ -183,12 +183,12 @@ NumericalScalar ChiSquare::computeComplementaryCDF(const NumericalPoint & point)
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex ChiSquare::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return pow(NumericalComplex(1.0, -2.0 * x), -0.5 * nu_);
+  return std::pow(NumericalComplex(1.0, -2.0 * x), -0.5 * nu_);
 }
 
 NumericalComplex ChiSquare::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  return -0.5 * nu_ * log(NumericalComplex(1.0, -2.0 * x));
+  return -0.5 * nu_ * std::log(NumericalComplex(1.0, -2.0 * x));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -200,7 +200,7 @@ NumericalPoint ChiSquare::computePDFGradient(const NumericalPoint & point) const
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return pdfGradient;
   NumericalScalar pdf(computePDF(point));
-  pdfGradient[0] = 0.5 * (log(0.5 * x) - SpecFunc::Psi(0.5 * nu_)) * pdf;
+  pdfGradient[0] = 0.5 * (std::log(0.5 * x) - SpecFunc::Psi(0.5 * nu_)) * pdf;
   return pdfGradient;
 }
 
@@ -212,7 +212,7 @@ NumericalPoint ChiSquare::computeCDFGradient(const NumericalPoint & point) const
   NumericalPoint cdfGradient(1, 0.0);
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return cdfGradient;
-  NumericalScalar eps(pow(cdfEpsilon_, 1.0 / 3.0));
+  NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
   cdfGradient[0] = (DistFunc::pGamma(0.5 * (nu_ + eps), 0.5 * x) - DistFunc::pGamma(0.5 * (nu_ - eps), 0.5 * x)) / (2.0 * eps);
   return cdfGradient;
 }
@@ -234,13 +234,13 @@ void ChiSquare::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint ChiSquare::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(2.0 * nu_));
+  return NumericalPoint(1, std::sqrt(2.0 * nu_));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint ChiSquare::getSkewness() const
 {
-  return NumericalPoint(1, sqrt(8.0 / nu_));
+  return NumericalPoint(1, std::sqrt(8.0 / nu_));
 }
 
 /* Get the kurtosis of the distribution */
@@ -260,7 +260,7 @@ void ChiSquare::computeCovariance() const
 /* Get the moments of the standardized distribution */
 NumericalPoint ChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
+  return NumericalPoint(1, std::exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
 }
 
 /* Parameters value and description accessor */

@@ -69,6 +69,161 @@ Bool Distribution::operator ==(const Distribution & other) const
   return (this == &other);
 }
 
+/* Addition operator */
+Distribution Distribution::operator + (const Distribution & other) const
+{
+  return getImplementation()->operator +(other.getImplementation());
+}
+
+Distribution Distribution::operator + (const NumericalScalar value) const
+{
+  return getImplementation()->operator +(value);
+}
+
+/* Substraction operator */
+Distribution Distribution::operator - (const Distribution & other) const
+{
+  return getImplementation()->operator -(other.getImplementation());
+}
+
+Distribution Distribution::operator - (const NumericalScalar value) const
+{
+  return getImplementation()->operator -(value);
+}
+
+/* Multiplication operator */
+Distribution Distribution::operator * (const Distribution & other) const
+{
+  return getImplementation()->operator *(other.getImplementation());
+}
+
+Distribution Distribution::operator * (const NumericalScalar value) const
+{
+  return getImplementation()->operator *(value);
+}
+
+/* Division operator */
+Distribution Distribution::operator / (const Distribution & other) const
+{
+  return getImplementation()->operator /(other.getImplementation());
+}
+
+Distribution Distribution::operator / (const NumericalScalar value) const
+{
+  return getImplementation()->operator /(value);
+}
+
+/* Transformation of distributions by usual functions */
+Distribution Distribution::cos() const
+{
+  return getImplementation()->cos();
+}
+
+Distribution Distribution::sin() const
+{
+  return getImplementation()->sin();
+}
+
+Distribution Distribution::tan() const
+{
+  return getImplementation()->tan();
+}
+
+Distribution Distribution::acos() const
+{
+  return getImplementation()->acos();
+}
+
+Distribution Distribution::asin() const
+{
+  return getImplementation()->asin();
+}
+
+Distribution Distribution::atan() const
+{
+  return getImplementation()->atan();
+}
+
+Distribution Distribution::cosh() const
+{
+  return getImplementation()->cosh();
+}
+
+Distribution Distribution::sinh() const
+{
+  return getImplementation()->sinh();
+}
+
+Distribution Distribution::tanh() const
+{
+  return getImplementation()->tanh();
+}
+
+Distribution Distribution::acosh() const
+{
+  return getImplementation()->acosh();
+}
+
+Distribution Distribution::asinh() const
+{
+  return getImplementation()->asinh();
+}
+
+Distribution Distribution::atanh() const
+{
+  return getImplementation()->atanh();
+}
+
+Distribution Distribution::exp() const
+{
+  return getImplementation()->exp();
+}
+
+Distribution Distribution::log() const
+{
+  return getImplementation()->log();
+}
+
+Distribution Distribution::ln() const
+{
+  return getImplementation()->ln();
+}
+
+Distribution Distribution::pow(const NumericalScalar & exponent) const
+{
+  return getImplementation()->pow(exponent);
+}
+
+Distribution Distribution::pow(const SignedInteger & exponent) const
+{
+  return getImplementation()->pow(exponent);
+}
+
+Distribution Distribution::sqr() const
+{
+  return getImplementation()->sqr();
+}
+
+Distribution Distribution::inverse() const
+{
+  return getImplementation()->inverse();
+}
+
+Distribution Distribution::sqrt() const
+{
+  return getImplementation()->sqrt();
+}
+
+Distribution Distribution::cbrt() const
+{
+  return getImplementation()->cbrt();
+}
+
+Distribution Distribution::abs() const
+{
+  return getImplementation()->abs();
+}
+
 /* String converter */
 String Distribution::__repr__() const
 {

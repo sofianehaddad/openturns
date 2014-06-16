@@ -47,7 +47,6 @@ class OptimizationProblem
 public:
 
   typedef Pointer<OptimizationProblemImplementation>   Implementation;
-  typedef Collection< NumericalMathFunction >          NumericalMathFunctionCollection;
 
   /** Default constructor */
   OptimizationProblem();
@@ -59,28 +58,33 @@ public:
   OptimizationProblem(const Implementation & p_implementation);
 
   /** Constructor with parameters */
-  OptimizationProblem(const NumericalMathFunctionCollection & objectives,
-		      const NumericalMathFunctionCollection & equalityConstraints,
-		      const NumericalMathFunctionCollection & inequalityConstraints,
+  OptimizationProblem(const NumericalMathFunction & objective,
+		      const NumericalMathFunction & equalityConstraint,
+		      const NumericalMathFunction & inequalityConstraint,
 		      const Interval & bounds);
   
   /** Objective functions accessor */
   NumericalMathFunction getObjective() const;
   void setObjective(const NumericalMathFunction & objective);
-  NumericalMathFunctionCollection getObjectives() const;
-  void setObjective(const NumericalMathFunctionCollection & objectives);
+  Bool hasMultipleObjective() const;
 
-  /** Equality constraint functions accessor */
-  NumericalMathFunctionCollection getEqualityConstraints() const;
-  void setEqualityConstraints(const NumericalMathFunctionCollection & equalityConstraints);
+  /** Equality constraint function accessor */
+  NumericalMathFunction getEqualityConstraint() const;
+  void setEqualityConstraint(const NumericalMathFunction & equalityConstraint);
+  Bool hasEqualityConstraint() const;
 
-  /** Inequality constraint functions accessor */
-  NumericalMathFunctionCollection getInequalityConstraints() const;
-  void setInequalityConstraints(const NumericalMathFunctionCollection & inequalityConstraints);
+  /** Inequality constraint function accessor */
+  NumericalMathFunction getInequalityConstraint() const;
+  void setInequalityConstraint(const NumericalMathFunction & inequalityConstraint);
+  Bool hasInequalityConstraint() const;
 
   /** Bounds accessor */
   Interval getBounds() const;
   void setBounds(const Interval & bounds);
+  Bool hasBounds() const;
+
+  /** Dimension accessor */
+  UnsignedInteger getDimension() const;
 
   /** String converter */
   virtual String __repr__() const;

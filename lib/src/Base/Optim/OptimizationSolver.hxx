@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @file  NearestPointAlgorithm.hxx
- *  @brief NearestPointAlgorithm implements an algorithm for finding the
+ *  @file  OptimizationSolver.hxx
+ *  @brief OptimizationSolver provides capabilities to solve optimization problems
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -21,101 +21,76 @@
  *  @author schueller
  *  @date   2012-07-16 10:12:54 +0200 (Mon, 16 Jul 2012)
  */
-#ifndef OPENTURNS_NEARESTPOINTALGORITHM_HXX
-#define OPENTURNS_NEARESTPOINTALGORITHM_HXX
+#ifndef OPENTURNS_OPTIMIZATIONSOLVER_HXX
+#define OPENTURNS_OPTIMIZATIONSOLVER_HXX
 
 #include "OTprivate.hxx"
 #include "TypedInterfaceObject.hxx"
 #include "NumericalMathFunction.hxx"
-#include "NearestPointAlgorithmImplementation.hxx"
+#include "OptimizationSolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
- * @class NearestPointAlgorithm
- * NearestPointAlgorithm implements an interface to an algorithm for finding the
- * point of a manifold defined implicitely the nearest to the origin
+ * @class OptimizationSolver
+ * This class provides capabilities to solve optimization problems
  */
 
-class NearestPointAlgorithm
-  : public TypedInterfaceObject<NearestPointAlgorithmImplementation>
+class OptimizationSolver
+  : public TypedInterfaceObject<OptimizationSolverImplementation>
 {
 
   CLASSNAME;
 public:
 
-  typedef Pointer<NearestPointAlgorithmImplementation>   Implementation;
-  typedef NearestPointAlgorithmImplementationResult              Result;
+  typedef Pointer<OptimizationSolverImplementation>   Implementation;
+  typedef OptimizationSolverImplementationResult              Result;
 
   /** Default constructor */
-  NearestPointAlgorithm();
+  OptimizationSolver();
 
   /** Constructor from an implementation */
-  NearestPointAlgorithm(const NearestPointAlgorithmImplementation & implementation);
+  OptimizationSolver(const OptimizationSolverImplementation & implementation);
 
   /** Constructor from a Pointer to an implementation */
-  NearestPointAlgorithm(const Implementation & p_implementation);
+  OptimizationSolver(const Implementation & p_implementation);
 
   /** Constructor with parameters */
-  explicit NearestPointAlgorithm(const NumericalMathFunction & levelFunction);
+  explicit OptimizationSolver(const OptimizationProblem & problem);
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
 
   /** Starting point accessor */
   NumericalPoint getStartingPoint() const;
-
-  /** Starting point accessor */
   void setStartingPoint(const NumericalPoint & startingPoint);
 
-  /** Level function accessor */
-  NumericalMathFunction getLevelFunction() const;
-
-  /** Level function accessor */
-  void setLevelFunction(const NumericalMathFunction & levelFunction);
-
-  /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-
-  /** Level value accessor */
-  void setLevelValue(const NumericalScalar levelValue);
+  /** Problem accessor */
+  OptimizationProblem getProblem() const;
+  void setProblem(const OptimizationProblem & problem);
 
   /** Result accessor */
   Result getResult() const;
-
-  /** Result accessor */
   void setResult(const Result & result);
 
   /** Maximum iterations number accessor */
   UnsignedInteger getMaximumIterationsNumber() const;
-
-  /** Maximum iterations number accessor */
   void setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber);
 
   /** Maximum absolute error accessor */
   NumericalScalar getMaximumAbsoluteError() const;
-
-  /** Maximum absolute error accessor */
   void setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError);
 
   /** Maximum relative error accessor */
   NumericalScalar getMaximumRelativeError() const;
-
-  /** Maximum relative error accessor */
   void setMaximumRelativeError(const NumericalScalar maximumRelativeError);
 
   /** Maximum residual error accessor */
   NumericalScalar getMaximumResidualError() const;
-
-  /** Maximum residual error accessor */
   void setMaximumResidualError(const NumericalScalar maximumResidualError);
 
   /** Maximum constraint error accessor */
   NumericalScalar getMaximumConstraintError() const;
-
-  /** Maximum constraint error accessor */
   void setMaximumConstraintError(const NumericalScalar maximumConstraintError);
 
   /** String converter */
@@ -124,12 +99,8 @@ public:
   /** String converter */
   virtual String __str__(const String & offset = "") const;
 
-  /** Verbose accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
-
-} ; /* class NearestPointAlgorithm */
+} ; /* class OptimizationSolver */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NEARESTPOINTALGORITHM_HXX */
+#endif /* OPENTURNS_OPTIMIZATIONSOLVER_HXX */

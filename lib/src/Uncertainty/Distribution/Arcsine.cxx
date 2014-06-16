@@ -121,7 +121,7 @@ NumericalPoint Arcsine::computeDDF(const NumericalPoint & point) const
   NumericalScalar ddf(0.0);
   if ((a_ < x) && (x <= b_))
   {
-    ddf = (x - 0.5 * (a_ + b_)) / (M_PI * (x - a_) * (b_ - x) * sqrt((x - a_) * (b_ - x)));
+    ddf = (x - 0.5 * (a_ + b_)) / (M_PI * (x - a_) * (b_ - x) * std::sqrt((x - a_) * (b_ - x)));
   }
   return NumericalPoint(1, ddf);
 }
@@ -134,7 +134,7 @@ NumericalScalar Arcsine::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if ((x <= a_) || (x >= b_)) return 0.0;
-  return exp(computeLogPDF(point));
+  return std::exp(computeLogPDF(point));
 }
 
 NumericalScalar Arcsine::computeLogPDF(const NumericalPoint & point) const
@@ -143,7 +143,7 @@ NumericalScalar Arcsine::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if ((x <= a_) || (x >= b_)) return -SpecFunc::MaxNumericalScalar;
-  return -log(M_PI) - 0.5 * (log(b_ - x) + log(x - a_));
+  return -std::log(M_PI) - 0.5 * (std::log(b_ - x) + std::log(x - a_));
 }
 
 /* Get the CDF of the distribution */
@@ -154,7 +154,7 @@ NumericalScalar Arcsine::computeCDF(const NumericalPoint & point) const
   const NumericalScalar x(point[0]);
   if (x <= a_) return 0.0;
   if (x >= b_) return 1.0;
-  const NumericalScalar value(asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI);
+  const NumericalScalar value(std::asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI);
   return 0.5 + value;
 }
 
@@ -165,15 +165,15 @@ NumericalScalar Arcsine::computeComplementaryCDF(const NumericalPoint & point) c
   const NumericalScalar x(point[0]);
   if (x <= a_) return 1.0;
   if (x > b_) return 0.0;
-  const NumericalScalar value(asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI);
+  const NumericalScalar value(std::asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI);
   return 0.5 - value;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Arcsine::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  //  return exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
-  return exp(NumericalComplex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
+  //  return std::exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
+  return std::exp(NumericalComplex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -187,8 +187,8 @@ NumericalPoint Arcsine::computePDFGradient(const NumericalPoint & point) const
 
   if ((a_ < x) && (x <= b_))
   {
-    pdfGradient[0] = -0.5 * (b_ - a_) * sqrt((b_ - x) * (x - a_)) / (M_PI * (x - b_) * (x - b_) * (x - a_) * (x - a_));
-    pdfGradient[1] = (0.5 * (a_ + b_) - x) * sqrt((b_ - x) * (x - a_)) / (M_PI * (x - a_) * (x - a_) * (b_ - x) * (b_ - x));
+    pdfGradient[0] = -0.5 * (b_ - a_) * std::sqrt((b_ - x) * (x - a_)) / (M_PI * (x - b_) * (x - b_) * (x - a_) * (x - a_));
+    pdfGradient[1] = (0.5 * (a_ + b_) - x) * std::sqrt((b_ - x) * (x - a_)) / (M_PI * (x - a_) * (x - a_) * (b_ - x) * (b_ - x));
     pdfGradient2[0] = -0.5 * pdfGradient[0] + 0.5 * pdfGradient[1];
     pdfGradient2[1] =  0.5 * pdfGradient[0] + 0.5 * pdfGradient[1];
   }
@@ -205,8 +205,8 @@ NumericalPoint Arcsine::computeCDFGradient(const NumericalPoint & point) const
   const NumericalScalar x(point[0]);
   if ((a_ < x) && (x <= b_))
   {
-    cdfGradient[0] = (0.5 * (a_ + b_) - x) / (M_PI * 0.5 * (b_ - a_) * sqrt((b_ - x) * (x - a_)));
-    cdfGradient[1]  = -1.0 / (M_PI * sqrt((b_ - x) * (x - a_)));
+    cdfGradient[0] = (0.5 * (a_ + b_) - x) / (M_PI * 0.5 * (b_ - a_) * std::sqrt((b_ - x) * (x - a_)));
+    cdfGradient[1]  = -1.0 / (M_PI * std::sqrt((b_ - x) * (x - a_)));
     cdfGradient2[0] = -0.5 * cdfGradient[0] + 0.5 * cdfGradient[1];
     cdfGradient2[1] =  0.5 * cdfGradient[0] + 0.5 * cdfGradient[1];
   }
@@ -218,7 +218,7 @@ NumericalScalar Arcsine::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   const NumericalScalar proba(tail ? 1.0 - prob : prob);
-  const NumericalScalar quantile(0.5 * (b_ - a_) * sin(M_PI * (proba - 0.5)) + 0.5 * (a_ + b_));
+  const NumericalScalar quantile(0.5 * (b_ - a_) * std::sin(M_PI * (proba - 0.5)) + 0.5 * (a_ + b_));
   return quantile;
 }
 
@@ -262,7 +262,7 @@ NumericalPoint Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
 NumericalPoint Arcsine::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / sqrt(M_PI));
+  return NumericalPoint(1, std::exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / std::sqrt(M_PI));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -380,7 +380,7 @@ void Arcsine::setMuSigma(const NumericalScalar mu,
                          const NumericalScalar sigma)
 {
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "in Arcsine : sigma must be positive";
-  setAB(mu - sigma * sqrt(2.0), mu + sigma * sqrt(2.0));
+  setAB(mu - sigma * std::sqrt(2.0), mu + sigma * std::sqrt(2.0));
 }
 
 /* Method save() stores the object through the StorageManager */

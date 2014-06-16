@@ -163,7 +163,7 @@ NumericalPoint NormalCopula::computeDDF(const NumericalPoint & point) const
     const NumericalScalar xi(DistFunc::qNormal(point[i]));
     x[i] = xi;
     // .398942280401432677939946059934 = 1 / sqrt(2.pi)
-    const NumericalScalar pdfI(0.398942280401432677939946059934 * exp(-0.5 * xi * xi));
+    const NumericalScalar pdfI(0.398942280401432677939946059934 * std::exp(-0.5 * xi * xi));
     marginalPDF[i] = pdfI;
     marginalPDFProduct *= pdfI;
   }
@@ -201,7 +201,7 @@ NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
     value += yi * yi;
   }
   // 0.398942280401432677939946059934 = 1 / sqrt(2.pi)
-  value = pow(0.398942280401432677939946059934, dimension) * exp(-0.5 * value);
+  value = std::pow(0.398942280401432677939946059934, dimension) * std::exp(-0.5 * value);
   return normal_.computePDF(normalPoint) / value;
 }
 
@@ -315,7 +315,7 @@ CorrelationMatrix NormalCopula::getSpearmanCorrelation() const
   const UnsignedInteger dimension(getDimension());
   CorrelationMatrix rho(dimension);
   for (UnsignedInteger i = 1; i < dimension; ++i)
-    for (UnsignedInteger j = 0; j < i; ++j) rho(i, j) = asin(0.5 * correlation_(i, j)) * 6.0 / M_PI;
+    for (UnsignedInteger j = 0; j < i; ++j) rho(i, j) = std::asin(0.5 * correlation_(i, j)) * 6.0 / M_PI;
   return rho;
 }
 
@@ -325,7 +325,7 @@ CorrelationMatrix NormalCopula::getKendallTau() const
   const UnsignedInteger dimension(getDimension());
   CorrelationMatrix tau(dimension);
   for (UnsignedInteger i = 1; i < dimension; ++i)
-    for (UnsignedInteger j = 0; j < i; ++j) tau(i, j) = asin(correlation_(i, j)) * 2.0 / M_PI;
+    for (UnsignedInteger j = 0; j < i; ++j) tau(i, j) = std::asin(correlation_(i, j)) * 2.0 / M_PI;
   return tau;
 }
 
@@ -505,7 +505,7 @@ CorrelationMatrix NormalCopula::GetCorrelationFromSpearmanCorrelation(const Corr
   const UnsignedInteger dimension(matrix.getNbRows());
   CorrelationMatrix result(dimension);
   for (UnsignedInteger i = 1; i < dimension; ++i)
-    for (UnsignedInteger j = 0; j < i; ++j) result(i, j) = 2.0 * sin(M_PI * matrix(i, j) / 6.0);
+    for (UnsignedInteger j = 0; j < i; ++j) result(i, j) = 2.0 * std::sin(M_PI * matrix(i, j) / 6.0);
   if (!result.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the normal copula correlation matrix built from the given Spearman correlation matrix is not definite positive";
   return result;
 }
@@ -516,7 +516,7 @@ CorrelationMatrix NormalCopula::GetCorrelationFromKendallCorrelation(const Corre
   const UnsignedInteger dimension(matrix.getNbRows());
   CorrelationMatrix result(dimension);
   for (UnsignedInteger i = 1; i < dimension; ++i)
-    for (UnsignedInteger j = 0; j < i; ++j) result(i, j) = sin(M_PI_2 * matrix(i, j));
+    for (UnsignedInteger j = 0; j < i; ++j) result(i, j) = std::sin(M_PI_2 * matrix(i, j));
   if (!result.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the normal copula correlation matrix built from the given Kendall correlation matrix is not definite positive";
   return result;
 }

@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
     // observations
     UnsignedInteger size = 10;
-    Normal realDist(31., 1.2);
+    Normal realDist(31.0, 1.2);
 
     NumericalSample data(realDist.getSample(size));
 

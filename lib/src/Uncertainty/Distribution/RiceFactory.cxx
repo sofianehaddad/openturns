@@ -63,9 +63,9 @@ struct RiceFactoryParameterConstraint
   NumericalScalar computeXi(const NumericalScalar u) const
   {
     const NumericalScalar logI0(SpecFunc::LogBesselI0(0.25 * u));
-    const NumericalScalar logI1(SpecFunc::LogBesselI1(0.25 * fabs(u)));
+    const NumericalScalar logI1(SpecFunc::LogBesselI1(0.25 * std::abs(u)));
 
-    return 2.0 + u - 0.125 * M_PI * exp(-0.5 * u + 2.0 * logI0) * pow(2.0 + u + fabs(u) * exp(logI1 - logI0), 2);
+    return 2.0 + u - 0.125 * M_PI * std::exp(-0.5 * u + 2.0 * logI0) * std::pow(2.0 + u + std::abs(u) * std::exp(logI1 - logI0), 2);
   }
 
   NumericalScalar r2_;
@@ -103,11 +103,11 @@ Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
   NumericalScalar b(2.0);
   NumericalScalar fA(f(NumericalPoint(1, a))[0]);
   NumericalScalar fB(f(NumericalPoint(1, b))[0]);
-  const NumericalScalar largeValue(sqrt(SpecFunc::MaxNumericalScalar));
+  const NumericalScalar largeValue(std::sqrt(SpecFunc::MaxNumericalScalar));
   const UnsignedInteger maximumIteration(ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" ));
   UnsignedInteger iteration(0);
   // While f has the same sign at the two bounds, update the interval
-  while ((fA * fB > 0.0) && (fabs(fA) < largeValue) && (fabs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
+  while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
   {
     a = 0.5 * a;
     fA = f(NumericalPoint(1, a))[0];
@@ -117,16 +117,16 @@ Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
     LOGINFO(OSS() << "a=" << a << ", fa=" << fA << ", b=" << b << ", fb=" << fB);
     ++iteration;
   }
-  if ((fabs(fA) > largeValue) || (fabs(fB) > largeValue) || (fabs(b) > largeValue) || (iteration == maximumIteration)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rice distribution from the given sample";
+  if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rice distribution from the given sample";
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar( "RiceFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "RiceFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "RiceFactory-ResidualPrecision" ), maximumIteration);
   // u estimate
   const NumericalScalar u(solver.solve(f, 0.0, a, b, fA, fB));
   const NumericalScalar xiU(constraint.computeXi(u));
   // Corresponding sigma estimate
-  const NumericalScalar sigma(std / sqrt(xiU));
+  const NumericalScalar sigma(std / std::sqrt(xiU));
   // Corresponding nu estimate
-  const NumericalScalar nu(sqrt(mu * mu + sigma * sigma * (xiU - 2.0)));
+  const NumericalScalar nu(std::sqrt(mu * mu + sigma * sigma * (xiU - 2.0)));
   try
   {
     Rice result(sigma, nu);

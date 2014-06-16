@@ -62,11 +62,11 @@ MCMC::MCMC( const Distribution & prior,
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
 {
   const NumericalMathFunction fullFunction(Description::BuildDefault(initialState.getDimension(), "x"), Description::BuildDefault(initialState.getDimension(), "x"));
-  Indices indices(initialState.getDimension());
-  indices.fill();
+  const Indices indices(0);
   model_ = NumericalMathFunction(fullFunction, indices);
   setPrior(prior);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
+  setParameters(NumericalSample(observations.getSize(), 0));
   setObservations(observations);
   if (conditional.getParametersNumber() != model_.getOutputDimension()) throw InvalidDimensionException(HERE) << "The parameter dimension" << conditional.getParametersNumber() << " does not match the output dimension of the model (" << model_.getOutputDimension() << ").";
   if (initialState.getDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The initialState state dimension (" << initialState.getDimension() << ") does not match the prior dimension (" << prior.getDimension() << ").";
@@ -78,6 +78,7 @@ MCMC::MCMC( const Distribution & prior,
 MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
             const NumericalMathFunction & model,
+            const NumericalSample & parameters,
             const NumericalSample & observations,
             const NumericalPoint & initialState)
   : SamplerImplementation()
@@ -90,6 +91,7 @@ MCMC::MCMC( const Distribution & prior,
 {
   setPrior(prior);
   if (model.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
+  setParameters(parameters);
   setObservations(observations);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
   if (initialState.getDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The initialState state dimension (" << initialState.getDimension() << ") does not match the prior dimension (" << prior.getDimension() << ").";
@@ -103,6 +105,7 @@ String MCMC::__repr__() const
          << " prior=" << prior_
          << " conditional=" << conditional_
          << " model=" << model_
+         << " parameters=" << parameters_
          << " observations=" << observations_
          << " burnIn=" << burnIn_
          << " thinning=" << thinning_;
@@ -132,7 +135,7 @@ NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
   for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     // retrieve model data if available
-    const NumericalPoint zi( model_(xi, observations_[i]) );
+    const NumericalPoint zi( model_(xi, parameters_[i]) );
 
     Distribution pI( conditional_ );
     pI.setParametersCollection( zi );
@@ -170,7 +173,7 @@ NumericalMathFunction MCMC::getModel() const
 
 void MCMC::setObservations(const NumericalSample& observations)
 {
-  if (!(observations.getSize() > 0)) throw InvalidArgumentException(HERE) << "No observations provided.";
+  if (!(observations.getSize() > 0)) throw InvalidArgumentException(HERE) << "No observation provided.";
   observations_ = observations;
 }
 
@@ -178,6 +181,19 @@ void MCMC::setObservations(const NumericalSample& observations)
 NumericalSample MCMC::getObservations() const
 {
   return observations_;
+}
+
+
+void MCMC::setParameters(const NumericalSample& parameters)
+{
+  if (!(parameters.getSize() > 0)) throw InvalidArgumentException(HERE) << "No parameter provided.";
+  parameters_ = parameters;
+}
+
+
+NumericalSample MCMC::getParameters() const
+{
+  return parameters_;
 }
 
 
@@ -214,6 +230,7 @@ void MCMC::save(Advocate & adv) const
   adv.saveAttribute("prior_", prior_);
   adv.saveAttribute("conditional_", conditional_);
   adv.saveAttribute("model_", model_);
+  adv.saveAttribute("parameters_", parameters_);
   adv.saveAttribute("observations_", observations_);
   adv.saveAttribute("burnIn_", burnIn_);
   adv.saveAttribute("thinning_", thinning_);
@@ -228,6 +245,7 @@ void MCMC::load(Advocate & adv)
   adv.loadAttribute("prior_", prior_);
   adv.loadAttribute("conditional_", conditional_);
   adv.loadAttribute("model_", model_);
+  adv.loadAttribute("parameters_", parameters_);
   adv.loadAttribute("observations_", observations_);
   adv.loadAttribute("burnIn_", burnIn_);
   adv.loadAttribute("thinning_", thinning_);

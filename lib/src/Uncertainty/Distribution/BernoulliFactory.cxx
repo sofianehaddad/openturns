@@ -72,7 +72,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalSample & sample) con
   {
     const NumericalScalar x(sample[i][0]);
     const int iX(static_cast<int>(round(x)));
-    if ((fabs(x - iX) > supportEpsilon) || ((iX != 0) && (iX != 1))) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample made of 0 and 1.";
+    if ((std::abs(x - iX) > supportEpsilon) || ((iX != 0) && (iX != 1))) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample made of 0 and 1.";
     sum += x;
   }
   Bernoulli result(sum / size);

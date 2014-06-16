@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @file  OptimizationProblemImplementation.cxx
- *  @brief OptimizationProblemImplementation implements an algorithm for finding the
+ *  @brief OptimizationProblemImplementation allows to describe an optimization problem
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -25,19 +25,22 @@
 
 #include "OptimizationProblemImplementation.hxx"
 #include "ResourceMap.hxx"
+#include "PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationProblemImplementation);
 
+static Factory<OptimizationProblemImplementation> RegisteredFactory("OptimizationProblemImplementation");
+
 /* Default constructor */
 OptimizationProblemImplementation::OptimizationProblemImplementation()
- : PersistentObject()
- , objective_()
- , equalityContraint_()
- , inequalityConstraint_()
- , bounds_()
- , dimension_(0)
+  : PersistentObject()
+  , objective_()
+  , equalityConstraint_()
+  , inequalityConstraint_()
+  , bounds_()
+  , dimension_(0)
 {
   // Nothing to do
 }
@@ -45,10 +48,10 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
 /*
  * @brief General multi-objective equality, inequality and bound constraints
  */
-OptimizationProblemImplementation::OptimizationProblemImplementation(NumericalMathFunction & objective,
-								     NumericalMathFunction & equalityConstraint,
-								     NumericalMathFunction & inequalityConstraint,
-								     Interval & bounds)
+OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & objective,
+                                                                     const NumericalMathFunction & equalityConstraint,
+                                                                     const NumericalMathFunction & inequalityConstraint,
+                                                                     const Interval & bounds)
   : PersistentObject()
   , objective_(objective)
   , equalityConstraint_(equalityConstraint)
@@ -62,6 +65,28 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(NumericalMa
   if (hasInequalityConstraint() && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 }
 
+/* Virtual constructor */
+OptimizationProblemImplementation * OptimizationProblemImplementation::clone() const
+{
+  return new OptimizationProblemImplementation(*this);
+}
+
+/* Objective accessor */
+NumericalMathFunction OptimizationProblemImplementation::getObjective() const
+{
+  return objective_;
+}
+
+void OptimizationProblemImplementation::setObjective(const NumericalMathFunction & objective)
+{
+  objective_ = objective;
+}
+
+Bool OptimizationProblemImplementation::hasMultipleObjective() const
+{
+  return objective_.getOutputDimension() > 1;
+}
+
 /* Equality constraint accessor */
 NumericalMathFunction OptimizationProblemImplementation::getEqualityConstraint() const
 {
@@ -73,88 +98,47 @@ void OptimizationProblemImplementation::setEqualityConstraint(const NumericalMat
   equalityConstraint_ = equalityConstraint;
 }
 
-/* Level value accessor */
-NumericalScalar OptimizationProblemImplementation::getLevelValue() const
+Bool OptimizationProblemImplementation::hasEqualityConstraint() const
 {
-  return levelValue_;
+  return equalityConstraint_.getEvaluationImplementation()->isActualImplementation();
 }
 
-/* Level value accessor */
-void OptimizationProblemImplementation::setLevelValue(const NumericalScalar levelValue)
+/* Inequality constraint accessor */
+NumericalMathFunction OptimizationProblemImplementation::getInequalityConstraint() const
 {
-  levelValue_ = levelValue;
+  return inequalityConstraint_;
 }
 
-/* Result accessor */
-OptimizationProblemImplementation::Result OptimizationProblemImplementation::getResult() const
+void OptimizationProblemImplementation::setInequalityConstraint(const NumericalMathFunction & inequalityConstraint)
 {
-  return result_;
+  inequalityConstraint_ = inequalityConstraint;
 }
 
-/* Result accessor */
-void OptimizationProblemImplementation::setResult(const Result & result)
+Bool OptimizationProblemImplementation::hasInequalityConstraint() const
 {
-  result_ = result;
+  return inequalityConstraint_.getEvaluationImplementation()->isActualImplementation();
 }
 
-/* Maximum iterations number accessor */
-UnsignedInteger OptimizationProblemImplementation::getMaximumIterationsNumber() const
+/* Bounds accessor */
+Interval OptimizationProblemImplementation::getBounds() const
 {
-  return maximumIterationsNumber_;
+  return bounds_;
 }
 
-/* Maximum iterations number accessor */
-void OptimizationProblemImplementation::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
+void OptimizationProblemImplementation::setBounds(const Interval & bounds)
 {
-  maximumIterationsNumber_ = maximumIterationsNumber;
+  bounds_ = bounds;
 }
 
-/* Maximum absolute error accessor */
-NumericalScalar OptimizationProblemImplementation::getMaximumAbsoluteError() const
+Bool OptimizationProblemImplementation::hasBounds() const
 {
-  return maximumAbsoluteError_;
+  return bounds_.getDimension() == dimension_;
 }
 
-/* Maximum absolute error accessor */
-void OptimizationProblemImplementation::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
+/* Dimension accessor */
+UnsignedInteger OptimizationProblemImplementation::getDimension() const
 {
-  maximumAbsoluteError_ = maximumAbsoluteError;
-}
-
-/* Maximum relative error accessor */
-NumericalScalar OptimizationProblemImplementation::getMaximumRelativeError() const
-{
-  return maximumRelativeError_;
-}
-
-/* Maximum relative error accessor */
-void OptimizationProblemImplementation::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
-{
-  maximumRelativeError_ = maximumRelativeError;
-}
-
-/* Maximum residual error accessor */
-NumericalScalar OptimizationProblemImplementation::getMaximumResidualError() const
-{
-  return maximumResidualError_;
-}
-
-/* Maximum residual error accessor */
-void OptimizationProblemImplementation::setMaximumResidualError(const NumericalScalar maximumResidualError)
-{
-  maximumResidualError_ = maximumResidualError;
-}
-
-/* Maximum constraint error accessor */
-NumericalScalar OptimizationProblemImplementation::getMaximumConstraintError() const
-{
-  return maximumConstraintError_;
-}
-
-/* Maximum constraint error accessor */
-void OptimizationProblemImplementation::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
-{
-  maximumConstraintError_ = maximumConstraintError;
+  return dimension_;
 }
 
 /* String converter */
@@ -162,53 +146,34 @@ String OptimizationProblemImplementation::__repr__() const
 {
   OSS oss;
   oss << "class=" << OptimizationProblemImplementation::GetClassName()
-      << " startingPoint=" << startingPoint_
-      << " levelFunction=" << levelFunction_
-      << " levelValue=" << levelValue_
-      << " maximumIterationsNumber=" << maximumIterationsNumber_
-      << " maximumAbsoluteError=" << maximumAbsoluteError_
-      << " maximumRelativeError=" << maximumRelativeError_
-      << " maximumResidualError=" << maximumResidualError_
-      << " maximumConstraintError=" << maximumConstraintError_
-      << " verbose=" << (verbose_ ? "true" : "false");
+      << " objective=" << objective_
+      << " equality constraint=" << (hasEqualityConstraint() ? equalityConstraint_.__repr__() : "none")
+      << " inequality constraint=" << (hasInequalityConstraint() ? inequalityConstraint_.__repr__() : "none")
+      << " bounds=" << (hasBounds() ? bounds_.__repr__() : "none")
+      << " dimension=" << dimension_;
   return oss;
 }
 
-/* Level function accessor */
-NumericalMathFunction OptimizationProblemImplementation::getLevelFunction() const
+/* Method save() stores the object through the StorageManager */
+void OptimizationProblemImplementation::save(Advocate & adv) const
 {
-  return levelFunction_;
+  PersistentObject::save(adv);
+  adv.saveAttribute( "objective_", objective_ );
+  adv.saveAttribute( "equalityConstraint_", equalityConstraint_ );
+  adv.saveAttribute( "inequalityConstraint_", inequalityConstraint_ );
+  adv.saveAttribute( "bounds_", bounds_ );
+  adv.saveAttribute( "dimension_", dimension_ );
 }
 
-/* Level function accessor */
-void OptimizationProblemImplementation::setLevelFunction(const NumericalMathFunction & levelFunction)
+/* Method load() reloads the object from the StorageManager */
+void OptimizationProblemImplementation::load(Advocate & adv)
 {
-  levelFunction_ = levelFunction;
+  PersistentObject::load(adv);
+  adv.loadAttribute( "objective_", objective_ );
+  adv.loadAttribute( "equalityConstraint_", equalityConstraint_ );
+  adv.loadAttribute( "inequalityConstraint_", inequalityConstraint_ );
+  adv.loadAttribute( "bounds_", bounds_ );
+  adv.loadAttribute( "dimension_", dimension_ );
 }
-
-/* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-void OptimizationProblemImplementation::run()
-{
-  // To be overloaded
-}
-
-/* Virtual constructor */
-OptimizationProblemImplementation * OptimizationProblemImplementation::clone() const
-{
-  return new OptimizationProblemImplementation(*this);
-}
-
-/* Verbose accessor */
-Bool OptimizationProblemImplementation::getVerbose() const
-{
-  return verbose_;
-}
-
-/* Verbose accessor */
-void OptimizationProblemImplementation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
 
 END_NAMESPACE_OPENTURNS

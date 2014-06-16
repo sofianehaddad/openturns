@@ -140,7 +140,7 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula() const
 NumericalScalar FrankCopulaFactory::KendallTauFromParameter(const NumericalScalar theta) const
 {
   // Third order expansion for small theta, to avoid roundoff error for theta=0
-  if (fabs(theta) < 8.75677785080733459909609107099e-4) return theta * (1.0 - 0.01 * theta * theta) / 9.0;
+  if (std::abs(theta) < 8.75677785080733459909609107099e-4) return theta * (1.0 - 0.01 * theta * theta) / 9.0;
   return 1.0 - 4.0 * (1.0 - SpecFunc::Debye(theta, 1)) / theta;
 }
 

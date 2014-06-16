@@ -50,13 +50,14 @@ CompositeDistribution::CompositeDistribution()
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
   setDimension(1);
+  setParallel(true);
   // Update the derivative attributes. It also recompute the range
   update();
 }
 
-/* Parameters constructor to use when the two bounds are finite */
+/* Parameters constructor */
 CompositeDistribution::CompositeDistribution(const NumericalMathFunction & function,
-					     const Distribution & antecedent)
+                                             const Distribution & antecedent)
   : DistributionImplementation("CompositeDistribution")
   , function_(function)
   , antecedent_(antecedent)
@@ -66,13 +67,53 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
   , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
+  setParallel(antecedent.getImplementation()->isParallel());
   // This method check everything and call the update() method.
   setFunctionAndAntecedent(function, antecedent);
 }
 
+/* Parameters constructor */
+CompositeDistribution::CompositeDistribution(const NumericalMathFunction & function,
+                                             const Distribution & antecedent,
+                                             const NumericalPoint & bounds,
+                                             const NumericalPoint & values)
+  : DistributionImplementation("CompositeDistribution")
+  , function_(function)
+  , antecedent_(antecedent)
+  , bounds_(bounds)
+  , values_(values)
+  , probabilities_(0)
+  , increasing_(0)
+  , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
+{
+  if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
+  if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
+  if (!function.getGradientImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the function must have a gradient. Consider using finite difference.";
+  if (antecedent.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the antecedent must have dimension 1. Here dimension=" << antecedent.getDimension();
+  const UnsignedInteger size( bounds.getSize());
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least two bounds.";
+  if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the size of the bounds=" << bounds.getSize() << " is not equal to the size of the values=" << values.getSize();
+  probabilities_ = NumericalPoint(size, 0.0);
+  // Compute the probabilities
+  for (UnsignedInteger i = 0; i < size; ++i) probabilities_[i] = antecedent.computeCDF(bounds[i]);
+  increasing_ = Indices(size - 1);
+  // Compute the variations
+  for (UnsignedInteger i = 0; i < size - 1; ++i) increasing_[i] = values_[i + 1] > values[i];
+  // Compute the range
+  NumericalScalar xMin(values[0]);
+  NumericalScalar xMax(xMin);
+  for (UnsignedInteger i = 1; i < size; ++i)
+    {
+      xMin = std::min(xMin, values[i]);
+      xMax = std::max(xMax, values[i]);
+    }
+  setParallel(antecedent.getImplementation()->isParallel());
+  setRange(Interval(xMin, xMax));
+}
+
 /* Set the function and antecedent with check */
 void CompositeDistribution::setFunctionAndAntecedent(const NumericalMathFunction & function,
-						     const Distribution & antecedent)
+                                                     const Distribution & antecedent)
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
@@ -88,7 +129,7 @@ void CompositeDistribution::setFunctionAndAntecedent(const NumericalMathFunction
 struct DerivativeWrapper
 {
   const NumericalMathFunction & function_;
-  
+
   DerivativeWrapper(const NumericalMathFunction & function)
     : function_(function)
   {}
@@ -108,15 +149,33 @@ void CompositeDistribution::update()
   const NumericalScalar xMin(antecedent_.getRange().getLowerBound()[0]);
   const NumericalScalar xMax(antecedent_.getRange().getUpperBound()[0]);
   bounds_ = NumericalPoint(1, xMin);
-  values_ = function_(NumericalPoint(1, xMin));
+  try
+    {
+      values_ = function_(NumericalPoint(1, xMin));
+    }
+  catch (...)
+    {
+      throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
+    }
+  if (isinf(values_[0]) || isnan(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
   probabilities_ = NumericalPoint(1, antecedent_.computeCDF(xMin));
+  increasing_ = Indices(0);
   NumericalScalar fMin(values_[0]);
   NumericalScalar fMax(values_[0]);
   const UnsignedInteger n(ResourceMap::GetAsUnsignedInteger("CompositeDistribution-StepNumber"));
   const DerivativeWrapper derivativeWrapper(function_);
   const NumericalMathFunction derivative(bindMethod<DerivativeWrapper, NumericalPoint, NumericalPoint>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
   NumericalScalar a(xMin);
-  NumericalScalar fpA(derivative(NumericalPoint(1, a))[0]);
+  NumericalScalar fpA;
+  try
+    {
+      fpA = derivative(NumericalPoint(1, a))[0];
+    }
+  catch (...)
+    {
+      throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
+    }
+  if (isinf(fpA) || isnan(fpA)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
   NumericalScalar b(a);
   NumericalScalar fpB(fpA);
   for (UnsignedInteger i = 0; i < n; ++i)
@@ -124,25 +183,51 @@ void CompositeDistribution::update()
       a = b;
       fpA = fpB;
       b = ((i + 1) * xMax + (n - i) * xMin) / (n + 1);
-      fpB = derivative(NumericalPoint(1, b))[0];
       try
-	{
-	  const NumericalScalar root(solver_.solve(derivative, 0.0, a, b, fpA, fpB));
-	  bounds_.add(root);
-	  const NumericalScalar value(function_(NumericalPoint(1, root))[0]);
-	  increasing_.add(value > values_[values_.getSize() - 1]);
-	  values_.add(value);
-	  probabilities_.add(antecedent_.computeCDF(root));
-	  fMin = std::min(value, fMin);
-	  fMax = std::max(value, fMax);
-	}
+        {
+          fpB = derivative(NumericalPoint(1, b))[0];
+        }
+      catch (...)
+        {
+          throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
+        }
+      if (isinf(fpB) || isnan(fpB)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
+      try
+        {
+          const NumericalScalar root(solver_.solve(derivative, 0.0, a, b, fpA, fpB));
+          bounds_.add(root);
+          NumericalScalar value;
+          try
+            {
+              value = function_(NumericalPoint(1, root))[0];
+            }
+          catch (...)
+            {
+              throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << root;
+            }
+          if (isinf(root) || isnan(root)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << root;
+          increasing_.add(value > values_[values_.getSize() - 1]);
+          values_.add(value);
+          probabilities_.add(antecedent_.computeCDF(root));
+          fMin = std::min(value, fMin);
+          fMax = std::max(value, fMax);
+        }
       catch(...)
-	{
-	  // Nothing to do
-	}
+        {
+          // Nothing to do
+        }
     }
   bounds_.add(xMax);
-  const NumericalScalar value(function_(NumericalPoint(1, xMax))[0]);
+  NumericalScalar value;
+  try
+    {
+      value = function_(NumericalPoint(1, xMax))[0];
+    }
+  catch (...)
+    {
+      throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
+    }
+  if (isinf(value) || isnan(value)) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
   increasing_.add(value > values_[values_.getSize() - 1]);
   values_.add(value);
   probabilities_.add(NumericalPoint(1, antecedent_.computeCDF(xMax)));
@@ -246,12 +331,12 @@ NumericalScalar CompositeDistribution::computePDF(const NumericalPoint & point) 
       b = bounds_[i];
       fB = values_[i];
       if (( increasing_[i - 1] && (fA <= x) && (x < fB)) ||
-	  (!increasing_[i - 1] && (fB <= x) && (x < fA)))
-	{
-	  const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
-	  const NumericalScalar denom(fabs(function_.gradient(fInvX)(0, 0)));
-	  pdf += antecedent_.computePDF(fInvX) / denom;
-	}
+          (!increasing_[i - 1] && (fB <= x) && (x < fA)))
+        {
+          const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
+          const NumericalScalar denom(std::abs(function_.gradient(fInvX)(0, 0)));
+          pdf += antecedent_.computePDF(fInvX) / denom;
+        }
     } // i
   return pdf;
 }
@@ -280,29 +365,29 @@ NumericalScalar CompositeDistribution::computeCDF(const NumericalPoint & point) 
       // Fantecedent(b) - Fantecedent(a) if x >= f(b)
       // Fantecedent(t) - Fantecedent(a) if f(a) < x < f(b) where f(t) = x
       if (increasing_[i - 1])
-	{
-	  if (x >= fB) cdf += probabilities_[i] - probabilities_[i - 1];
-	  else if (x > fA)
-	    {
-	      const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
-	      cdf += antecedent_.computeCDF(fInvX) - probabilities_[i - 1];
-	    }
-	} // increasing
+        {
+          if (x >= fB) cdf += probabilities_[i] - probabilities_[i - 1];
+          else if (x > fA)
+            {
+              const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
+              cdf += antecedent_.computeCDF(fInvX) - probabilities_[i - 1];
+            }
+        } // increasing
       // If f is decreasing, f([a, b]) = [f(b), f(a)] and the contribution is:
       // 0 if x <= f(b)
       // Fantecedent(b) - Fantecedent(a) if x >= f(a)
       // Fantecedent(b) - Fantecedent(t) if f(b) < x < f(a) where f(t) = x
       else
-	{
-	  if (x >= fA) cdf += probabilities_[i] - probabilities_[i - 1];
-	  else if (x > fB)
-	    {
-	      const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
-	      cdf += probabilities_[i] - antecedent_.computeCDF(fInvX);
-	    }
-	} // decreasing
+        {
+          if (x >= fA) cdf += probabilities_[i] - probabilities_[i - 1];
+          else if (x > fB)
+            {
+              const NumericalPoint fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
+              cdf += probabilities_[i] - antecedent_.computeCDF(fInvX);
+            }
+        } // decreasing
     } // i
-  return cdf;  
+  return cdf;
 }
 
 /* Parameters value and description accessor */
@@ -354,5 +439,6 @@ void CompositeDistribution::load(Advocate & adv)
   adv.loadAttribute( "solver_", solver_ );
   update();
 }
+
 
 END_NAMESPACE_OPENTURNS

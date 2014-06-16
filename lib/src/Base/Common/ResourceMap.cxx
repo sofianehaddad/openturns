@@ -753,6 +753,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "DistributionImplementation-DefaultLevelNumber", 10 );
   setAsUnsignedInteger( "DistributionImplementation-DefaultQuantileCacheSize", 128 );
   setAsUnsignedInteger( "DistributionImplementation-Parallel", 0 );
+  setAsUnsignedInteger( "DistributionImplementation-CharacteristicFunctionBlockMax", 20 );
 
   // ContinuousDistribution parameters //
   setAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber", 256 );

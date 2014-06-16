@@ -22,11 +22,8 @@
  *  @date   2012-07-16 10:12:54 +0200 (Mon, 16 Jul 2012)
  */
 #include "OptimizationProblem.hxx"
-#include "Cobyla.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-
 
 CLASSNAMEINIT(OptimizationProblem);
 
@@ -55,114 +52,87 @@ OptimizationProblem::OptimizationProblem(const Implementation & p_implementation
  * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
  *         and a level value
  */
-OptimizationProblem::OptimizationProblem(const NumericalMathFunction & levelFunction):
-  TypedInterfaceObject<OptimizationProblemImplementation>(new Cobyla(levelFunction))
+OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective,
+					 const NumericalMathFunction & equalityConstraint,
+					 const NumericalMathFunction & inequalityConstraint,
+					 const Interval & bounds):
+  TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective, equalityConstraint, inequalityConstraint, bounds))
 {
   // Nothing to do
 }
 
-/* Starting point accessor */
-NumericalPoint OptimizationProblem::getStartingPoint() const
+/* Objective accessor */
+NumericalMathFunction OptimizationProblem::getObjective() const
 {
-  return getImplementation()->getStartingPoint();
+  return getImplementation()->getObjective();
 }
 
-/* Starting point accessor */
-void OptimizationProblem::setStartingPoint(const NumericalPoint & startingPoint)
+void OptimizationProblem::setObjective(const NumericalMathFunction & objective)
 {
   copyOnWrite();
-  getImplementation()->setStartingPoint(startingPoint);
+  getImplementation()->setObjective(objective);
 }
 
-/* Level value accessor */
-NumericalScalar OptimizationProblem::getLevelValue() const
+Bool OptimizationProblem::hasMultipleObjective() const
 {
-  return getImplementation()->getLevelValue();
+  return getImplementation()->hasMultipleObjective();
 }
 
-/* Level value accessor */
-void OptimizationProblem::setLevelValue(const NumericalScalar levelValue)
+/* Equality constraint accessor */
+NumericalMathFunction OptimizationProblem::getEqualityConstraint() const
 {
-  copyOnWrite();
-  getImplementation()->setLevelValue(levelValue);
+  return getImplementation()->getEqualityConstraint();
 }
 
-/* Result accessor */
-OptimizationProblem::Result OptimizationProblem::getResult() const
-{
-  return getImplementation()->getResult();
-}
-
-/* Result accessor */
-void OptimizationProblem::setResult(const Result & result)
+void OptimizationProblem::setEqualityConstraint(const NumericalMathFunction & equalityConstraint)
 {
   copyOnWrite();
-  getImplementation()->setResult(result);
+  getImplementation()->setEqualityConstraint(equalityConstraint);
 }
 
-/* Maximum iterations number accessor */
-UnsignedInteger OptimizationProblem::getMaximumIterationsNumber() const
+Bool OptimizationProblem::hasEqualityConstraint() const
 {
-  return getImplementation()->getMaximumIterationsNumber();
+  return getImplementation()->hasEqualityConstraint();
 }
 
-/* Maximum iterations number accessor */
-void OptimizationProblem::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
+/* Inequality constraint accessor */
+NumericalMathFunction OptimizationProblem::getInequalityConstraint() const
 {
-  copyOnWrite();
-  getImplementation()->setMaximumIterationsNumber(maximumIterationsNumber);
+  return getImplementation()->getInequalityConstraint();
 }
 
-/* Maximum absolute error accessor */
-NumericalScalar OptimizationProblem::getMaximumAbsoluteError() const
-{
-  return getImplementation()->getMaximumAbsoluteError();
-}
-
-/* Maximum absolute error accessor */
-void OptimizationProblem::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
+void OptimizationProblem::setInequalityConstraint(const NumericalMathFunction & inequalityConstraint)
 {
   copyOnWrite();
-  getImplementation()->setMaximumAbsoluteError(maximumAbsoluteError);
+  getImplementation()->setInequalityConstraint(inequalityConstraint);
 }
 
-/* Maximum relative error accessor */
-NumericalScalar OptimizationProblem::getMaximumRelativeError() const
+Bool OptimizationProblem::hasInequalityConstraint() const
 {
-  return getImplementation()->getMaximumRelativeError();
+  return getImplementation()->hasInequalityConstraint();
 }
 
-/* Maximum relative error accessor */
-void OptimizationProblem::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
+/* Bounds accessor */
+Interval OptimizationProblem::getBounds() const
 {
-  copyOnWrite();
-  getImplementation()->setMaximumRelativeError(maximumRelativeError);
+  return getImplementation()->getBounds();
 }
 
-/* Maximum residual error accessor */
-NumericalScalar OptimizationProblem::getMaximumResidualError() const
-{
-  return getImplementation()->getMaximumResidualError();
-}
-
-/* Maximum residual error accessor */
-void OptimizationProblem::setMaximumResidualError(const NumericalScalar maximumResidualError)
+void OptimizationProblem::setBounds(const Interval & bounds)
 {
   copyOnWrite();
-  getImplementation()->setMaximumResidualError(maximumResidualError);
+  getImplementation()->setBounds(bounds);
 }
 
-/* Maximum constraint error accessor */
-NumericalScalar OptimizationProblem::getMaximumConstraintError() const
+Bool OptimizationProblem::hasBounds() const
 {
-  return getImplementation()->getMaximumConstraintError();
+  return getImplementation()->hasBounds();
 }
 
-/* Maximum constraint error accessor */
-void OptimizationProblem::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
+/* Dimension accessor */
+UnsignedInteger OptimizationProblem::getDimension() const
 {
-  copyOnWrite();
-  getImplementation()->setMaximumConstraintError(maximumConstraintError);
+  return getImplementation()->getDimension();
 }
 
 /* String converter */
@@ -178,38 +148,6 @@ String OptimizationProblem::__repr__() const
 String OptimizationProblem::__str__(const String & offset) const
 {
   return __repr__();
-}
-
-/* Level function accessor */
-NumericalMathFunction OptimizationProblem::getLevelFunction() const
-{
-  return getImplementation()->getLevelFunction();
-}
-
-/* Level function accessor */
-void OptimizationProblem::setLevelFunction(const NumericalMathFunction & levelFunction)
-{
-  copyOnWrite();
-  getImplementation()->setLevelFunction(levelFunction);
-}
-
-/* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-void OptimizationProblem::run()
-{
-  getImplementation()->run();
-}
-
-/* Verbose accessor */
-Bool OptimizationProblem::getVerbose() const
-{
-  return getImplementation()->getVerbose();
-}
-
-/* Verbose accessor */
-void OptimizationProblem::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose(verbose);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -110,9 +110,9 @@ NumericalScalar Normal3DCDF(const NumericalScalar x1,
                             const NumericalScalar rho23,
                             const Bool tail)
 {
-  if (fabs(rho12) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
-  if (fabs(rho13) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho12=" << rho13;
-  if (fabs(rho23) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho23 must be in [-1, 1], here rho23=" << rho23;
+  if (std::abs(rho12) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
+  if (std::abs(rho13) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho12=" << rho13;
+  if (std::abs(rho23) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho23 must be in [-1, 1], here rho23=" << rho23;
   const NumericalScalar delta(rho12 * rho12 + rho13 * rho13 + rho23 * rho23 - 2.0 * rho12 * rho13 * rho23);
   if (delta > 1.0) throw InvalidArgumentException(HERE) << "Error: delta=rho12^2+rho13^2+rho23^2-2*rho12*rho13*rho23 must be in less or equal to 1, here delta=" << delta;
   if (tail) return Normal3DCDF(-x1, -x2, -x3, rho12, rho13, rho23, false);
@@ -138,7 +138,7 @@ NumericalScalar Normal3DCDF(const NumericalScalar x1,
   if (x3 >= NORMAL3DCDF_PLUS_INF) return DistFunc::pNormal2D(x1, x2, rho12);
   // Here, we have to do some work!
   // Probability of the negative orthant
-  if (fabs(x1) + fabs(x2) + fabs(x3) < NORMAL3DCDF_EPS) return std::max(0.0, std::min(1.0, 0.125 * (1.0 + 2.0 * (asin(rho12) + asin(rho13) + asin(rho23)) / M_PI)));
+  if (std::abs(x1) + std::abs(x2) + std::abs(x3) < NORMAL3DCDF_EPS) return std::max(0.0, std::min(1.0, 0.125 * (1.0 + 2.0 * (std::asin(rho12) + std::asin(rho13) + std::asin(rho23)) / M_PI)));
   NumericalScalar h1(x1);
   NumericalScalar h2(x2);
   NumericalScalar h3(x3);
@@ -146,28 +146,28 @@ NumericalScalar Normal3DCDF(const NumericalScalar x1,
   NumericalScalar r13(rho13);
   NumericalScalar r23(rho23);
   // Sort R's and check for special correlation structure
-  if (fabs(r12) > fabs(r13))
+  if (std::abs(r12) > std::abs(r13))
   {
     h2 = h3;
     h3 = x2;
     r12 = r13;
     r13 = rho12;
   }
-  if (fabs(r13) > fabs(r23))
+  if (std::abs(r13) > std::abs(r23))
   {
     h1 = h2;
     h2 = x1;
     r23 = r13;
     r13 = rho23;
   }
-  if (fabs(r12) + fabs(r13) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h1) * DistFunc::pNormal2D(h2, h3, r23);
-  if (fabs(r13) + fabs(r23) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h3) * DistFunc::pNormal2D(h1, h2, r12);
-  if (fabs(r12) + fabs(r23) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h2) * DistFunc::pNormal2D(h1, h3, r13);
+  if (std::abs(r12) + std::abs(r13) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h1) * DistFunc::pNormal2D(h2, h3, r23);
+  if (std::abs(r13) + std::abs(r23) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h3) * DistFunc::pNormal2D(h1, h2, r12);
+  if (std::abs(r12) + std::abs(r23) < NORMAL3DCDF_EPS) return DistFunc::pNormal(h2) * DistFunc::pNormal2D(h1, h3, r13);
   if (1.0 - r23 < NORMAL3DCDF_EPS) return DistFunc::pNormal2D(h1, std::min(h2, h3), r12);
   if ((r23 + 1.0 < NORMAL3DCDF_EPS) &&  (h2 > -h3)) return std::max(0.0, std::min(1.0, DistFunc::pNormal2D(h1, h2, r12) - DistFunc::pNormal2D(h1, -h3, r12)));
   // At last, the general case
-  const NumericalScalar a12(asin(r12));
-  const NumericalScalar a13(asin(r13));
+  const NumericalScalar a12(std::asin(r12));
+  const NumericalScalar a13(std::asin(r13));
   return std::max(0.0, std::min(1.0, adonet(h1, h2, h3, r23, a12, a13) / (2.0 * M_PI) + DistFunc::pNormal(h1) * DistFunc::pNormal2D(h2, h3, r23)));
 }
 
@@ -189,8 +189,8 @@ NumericalScalar tvnf(const NumericalScalar x,
   NumericalScalar r13;
   NumericalScalar rr3;
   sincs(a13 * x, r13, rr3);
-  if (fabs(a12) > 0.0) result  = a12 * pntgnd(h1, h2, h3, r13, r23, r12, rr2);
-  if (fabs(a13) > 0.0) result += a13 * pntgnd(h1, h3, h2, r12, r23, r13, rr3);
+  if (std::abs(a12) > 0.0) result  = a12 * pntgnd(h1, h2, h3, r13, r23, r12, rr2);
+  if (std::abs(a13) > 0.0) result += a13 * pntgnd(h1, h3, h2, r12, r23, r13, rr3);
   return result;
 }
 
@@ -201,7 +201,7 @@ void sincs(const NumericalScalar x,
            NumericalScalar & sx,
            NumericalScalar & cs)
 {
-  const NumericalScalar e(0.5 * M_PI - fabs(x));
+  const NumericalScalar e(0.5 * M_PI - std::abs(x));
   const NumericalScalar ee(e * e);
   if (ee < 5.0e-5)
   {
@@ -210,7 +210,7 @@ void sincs(const NumericalScalar x,
     if (x < 0.0) sx = -sx;
     return;
   }
-  sx = sin(x);
+  sx = std::sin(x);
   cs = 1.0 - sx * sx;
 }
 
@@ -229,12 +229,12 @@ NumericalScalar pntgnd(const NumericalScalar ba,
   const NumericalScalar dt(rr * (rr - (ra - rb) * (ra - rb) - 2.0 * ra * rb * (1.0 - r)));
   if (dt > 0.0)
   {
-    const NumericalScalar bt((bc * rr + ba * (r * rb - ra) + bb * (r * ra - rb)) / sqrt(dt));
+    const NumericalScalar bt((bc * rr + ba * (r * rb - ra) + bb * (r * ra - rb)) / std::sqrt(dt));
     const NumericalScalar delta(ba - r * bb);
     const NumericalScalar ft(delta * delta / rr + bb * bb);
     if ((ft < -2.0 * NORMAL3DCDF_MIN_LOG) && (bt > NORMAL3DCDF_MINUS_INF))
     {
-      result = exp(-0.5 * ft);
+      result = std::exp(-0.5 * ft);
       if (bt < NORMAL3DCDF_PLUS_INF) result *= DistFunc::pNormal(bt);
     }
   }
@@ -285,7 +285,7 @@ NumericalScalar adonet(const NumericalScalar h1,
       }
     }
     ip = iErrMax;
-    err = sqrt(err);
+    err = std::sqrt(err);
   } // while (err >...)
   return result;
 }
@@ -328,7 +328,7 @@ void krnrdt(const NumericalScalar a,
   t = wid * xgk[10];
   fc = tvnf(cen - t, h1, h2, h3, r23, a12, a13) + tvnf(cen + t, h1, h2, h3, r23, a12, a13);
   resk = wid * (resk + wgk[10] * fc);
-  err = fabs(resk - wid * resg);
+  err = std::abs(resk - wid * resg);
 }
 
 #undef NORMAL3DCDF_INF

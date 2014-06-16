@@ -44,6 +44,7 @@ Mixture::Mixture()
   , ccdfApproximation_()
   , useApproximatePDFCDF_(false)
 {
+  setParallel(true);
   // Set an empty range
   setRange(Interval(1.0, 0.0));
 }
@@ -238,12 +239,15 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
 
   // We set the member with the collection passed as argument and we renormalize it in place
   UserDefined::UserDefinedPairCollection pairCollection(size, UserDefinedPair(NumericalPoint(1, 0.0), 0.0));
+  Bool isParallel(true);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar normalizedWeight(distributionCollection_[i].getWeight() / weightSum);
     distributionCollection_[i].setWeight(normalizedWeight);
     pairCollection[i] = UserDefinedPair(NumericalPoint(1, NumericalScalar(i)), normalizedWeight);
+    isParallel = isParallel && distributionCollection_[i].getImplementation()->isParallel();
   } /* end for */
+  setParallel(isParallel);
   setWeightsDistribution(UserDefined(pairCollection));
   setDimension(dimension);
   isAlreadyComputedMean_ = false;

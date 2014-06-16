@@ -119,7 +119,7 @@ NumericalScalar MeixnerDistribution::getAlpha() const
 /* Beta accessor */
 void MeixnerDistribution::setBeta(const NumericalScalar beta)
 {
-  if (fabs(beta) >= M_PI) throw InvalidArgumentException(HERE) << "Beta MUST be in (-pi, pi)";
+  if (std::abs(beta) >= M_PI) throw InvalidArgumentException(HERE) << "Beta MUST be in (-pi, pi)";
   if (beta != beta_)
   {
     beta_ = beta;
@@ -153,7 +153,7 @@ void MeixnerDistribution::setAlphaBetaDelta(const NumericalScalar alpha,
     const NumericalScalar delta)
 {
   if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (fabs(beta) >= M_PI) throw InvalidArgumentException(HERE) << "Beta MUST be in (-pi, pi)";
+  if (std::abs(beta) >= M_PI) throw InvalidArgumentException(HERE) << "Beta MUST be in (-pi, pi)";
   if (delta <= 0.0) throw InvalidArgumentException(HERE) << "Delta MUST be positive";
   if ((alpha != alpha_) || (beta != beta_) || (delta != delta_))
   {
@@ -191,7 +191,7 @@ void MeixnerDistribution::computeRange()
   const NumericalPoint mu(getMean());
   const NumericalPoint sigma(getStandardDeviation());
   const NumericalScalar logPDF(computeLogPDF(mu));
-  const NumericalScalar logPDFEpsilon(log(getPDFEpsilon()));
+  const NumericalScalar logPDFEpsilon(std::log(getPDFEpsilon()));
   NumericalPoint lowerBound(mu);
   // Find the numerical lower bound based on the PDF value
   NumericalScalar logPDFLower(logPDF);
@@ -224,12 +224,12 @@ struct MeixnerBounds
 
   NumericalPoint computeObjectiveB(const NumericalPoint & point) const
   {
-    return NumericalPoint(1, sqrt(distribution_.computePDF(point)));
+    return NumericalPoint(1, std::sqrt(distribution_.computePDF(point)));
   }
 
   NumericalPoint computeObjectiveCD(const NumericalPoint & point) const
   {
-    return NumericalPoint(1, point[0] * sqrt(distribution_.computePDF(point)));
+    return NumericalPoint(1, point[0] * std::sqrt(distribution_.computePDF(point)));
   }
 
   const MeixnerDistribution & distribution_;
@@ -239,7 +239,7 @@ struct MeixnerBounds
 void MeixnerDistribution::update()
 {
   // First, the parameters of the distribution
-  logNormalizationFactor_ = 2.0 * delta_ * log(2.0 * cos(0.5 * beta_)) - log(2.0 * M_PI * alpha_) - SpecFunc::LogGamma(2.0 * delta_);
+  logNormalizationFactor_ = 2.0 * delta_ * std::log(2.0 * std::cos(0.5 * beta_)) - std::log(2.0 * M_PI * alpha_) - SpecFunc::LogGamma(2.0 * delta_);
   computeRange();
   // Second, the moments
   isAlreadyComputedMean_ = false;
@@ -295,7 +295,7 @@ NumericalPoint MeixnerDistribution::getRealization() const
     if (u == 0.0) continue;
     const NumericalScalar v(c_ + dc_ * RandomGenerator::Generate());
     const NumericalScalar rho(v / u);
-    if (2.0 * log(u) <= computeLogPDF(rho)) return NumericalPoint(1, rho);
+    if (2.0 * std::log(u) <= computeLogPDF(rho)) return NumericalPoint(1, rho);
   }
 }
 
@@ -304,7 +304,7 @@ NumericalScalar MeixnerDistribution::computePDF(const NumericalPoint & point) co
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return exp(computeLogPDF(point));
+  return std::exp(computeLogPDF(point));
 }
 
 NumericalScalar MeixnerDistribution::computeLogPDF(const NumericalPoint & point) const
@@ -360,37 +360,37 @@ NumericalScalar MeixnerDistribution::computeScalarQuantile(const NumericalScalar
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex MeixnerDistribution::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return exp(computeLogCharacteristicFunction(x));
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
 NumericalComplex MeixnerDistribution::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  return NumericalComplex(2.0 * delta_ * log(cos(0.5 * beta_)), mu_ * x) - 2.0 * delta_ * log(cosh(NumericalComplex(0.5 * alpha_ * x, -0.5 * mu_)));
+  return NumericalComplex(2.0 * delta_ * std::log(std::cos(0.5 * beta_)), mu_ * x) - 2.0 * delta_ * std::log(std::cosh(NumericalComplex(0.5 * alpha_ * x, -0.5 * mu_)));
 }
 
 /* Compute the mean of the distribution */
 void MeixnerDistribution::computeMean() const
 {
-  mean_ = NumericalPoint(1, alpha_ * delta_ * tan(0.5 * beta_) + mu_);
+  mean_ = NumericalPoint(1, alpha_ * delta_ * std::tan(0.5 * beta_) + mu_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 NumericalPoint MeixnerDistribution::getStandardDeviation() const
 {
-  return NumericalPoint(1, alpha_ * sqrt(delta_ / (1.0 + cos(beta_))));
+  return NumericalPoint(1, alpha_ * std::sqrt(delta_ / (1.0 + std::cos(beta_))));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint MeixnerDistribution::getSkewness() const
 {
-  return NumericalPoint(1, sin(0.5 * beta_) * sqrt(2.0 / delta_));
+  return NumericalPoint(1, std::sin(0.5 * beta_) * std::sqrt(2.0 / delta_));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint MeixnerDistribution::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + (2.0 - cos(beta_)) / delta_);
+  return NumericalPoint(1, 3.0 + (2.0 - std::cos(beta_)) / delta_);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -403,7 +403,7 @@ MeixnerDistribution::Implementation MeixnerDistribution::getStandardRepresentati
 void MeixnerDistribution::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = alpha_ * alpha_ * delta_ / (1.0 + cos(beta_));
+  covariance_(0, 0) = alpha_ * alpha_ * delta_ / (1.0 + std::cos(beta_));
   isAlreadyComputedCovariance_ = true;
 }
 

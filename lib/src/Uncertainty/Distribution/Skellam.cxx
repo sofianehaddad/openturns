@@ -105,7 +105,7 @@ NumericalScalar Skellam::computePDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k(point[0]);
-  if (fabs(k - round(k)) > supportEpsilon_) return 0.0;
+  if (std::abs(k - round(k)) > supportEpsilon_) return 0.0;
   if (k < 0) return 2 * DistFunc::dNonCentralChiSquare(2.0 * (1.0 - k), 2.0 * lambda1_, 2.0 * lambda2_, pdfEpsilon_, maximumIteration_);
   return 2 * DistFunc::dNonCentralChiSquare(2.0 * (k + 1.0), 2.0 * lambda2_, 2.0 * lambda1_, pdfEpsilon_, maximumIteration_);
 }
@@ -139,18 +139,18 @@ NumericalPoint Skellam::computeCDFGradient(const NumericalPoint & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Skellam::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return exp(computeLogCharacteristicFunction(x));
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
 NumericalComplex Skellam::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  return lambda1_ * exp(NumericalComplex(0.0, x)) + lambda2_ * exp(NumericalComplex(0.0, -x)) - (lambda1_ + lambda2_);
+  return lambda1_ * std::exp(NumericalComplex(0.0, x)) + lambda2_ * std::exp(NumericalComplex(0.0, -x)) - (lambda1_ + lambda2_);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
 NumericalComplex Skellam::computeGeneratingFunction(const NumericalComplex & z) const
 {
-  return exp(computeLogGeneratingFunction(z));
+  return std::exp(computeLogGeneratingFunction(z));
 }
 
 NumericalComplex Skellam::computeLogGeneratingFunction(const NumericalComplex & z) const
@@ -175,13 +175,13 @@ void Skellam::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Skellam::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(lambda1_ + lambda2_));
+  return NumericalPoint(1, std::sqrt(lambda1_ + lambda2_));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint Skellam::getSkewness() const
 {
-  return NumericalPoint(1, (lambda1_ - lambda2_) * pow(lambda1_ + lambda2_, -1.5));
+  return NumericalPoint(1, (lambda1_ - lambda2_) * std::pow(lambda1_ + lambda2_, -1.5));
 }
 
 /* Get the kurtosis of the distribution */

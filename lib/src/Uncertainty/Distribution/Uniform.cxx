@@ -158,11 +158,11 @@ NumericalComplex Uniform::computeCharacteristicFunction(const NumericalScalar x)
   NumericalComplex result;
   const NumericalScalar ax(a_ * x);
   const NumericalScalar bx(b_ * x);
-  if (fabs(x) <= 1.0e-10) result = NumericalComplex(1.0, 0.5 * (ax + bx));
+  if (std::abs(x) <= 1.0e-10) result = NumericalComplex(1.0, 0.5 * (ax + bx));
   else
   {
     const NumericalScalar idenom(1.0 / (bx - ax));
-    result = NumericalComplex(idenom * (sin(bx) - sin(ax)), idenom * (cos(ax) - cos(bx)));
+    result = NumericalComplex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
   return result;
 }
@@ -221,7 +221,7 @@ void Uniform::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Uniform::getStandardDeviation() const
 {
-  return NumericalPoint(1, (b_ - a_) / sqrt(12.0));
+  return NumericalPoint(1, (b_ - a_) / std::sqrt(12.0));
 }
 
 /* Get the skewness of the distribution */

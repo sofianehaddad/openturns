@@ -35,9 +35,9 @@ static Factory<Laplace> RegisteredFactory("Laplace");
 
 /* Default constructor */
 Laplace::Laplace()
-  : ContinuousDistribution("Laplace"),
-    lambda_(1.0),
-    mu_(0.0)
+  : ContinuousDistribution("Laplace")
+  , lambda_(1.0)
+  , mu_(0.0)
 {
   setDimension( 1 );
   computeRange();
@@ -46,9 +46,9 @@ Laplace::Laplace()
 /* Parameters constructor */
 Laplace::Laplace(const NumericalScalar lambda,
                  const NumericalScalar mu)
-  : ContinuousDistribution("Laplace"),
-    lambda_(lambda),
-    mu_(mu)
+  : ContinuousDistribution("Laplace")
+  , lambda_(lambda)
+  , mu_(mu)
 {
   // We set the dimension of the Laplace distribution
   setDimension( 1 );
@@ -112,14 +112,14 @@ NumericalScalar Laplace::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return 0.5 * lambda_ * exp(-lambda_ * fabs(point[0] - mu_));
+  return 0.5 * lambda_ * std::exp(-lambda_ * std::abs(point[0] - mu_));
 }
 
 NumericalScalar Laplace::computeLogPDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return log(0.5 * lambda_) - lambda_ * fabs(point[0] - mu_);
+  return std::log(0.5 * lambda_) - lambda_ * std::abs(point[0] - mu_);
 }
 
 /* Get the CDF of the distribution */
@@ -128,8 +128,8 @@ NumericalScalar Laplace::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar u(lambda_ * (point[0] - mu_));
-  if (u < 0.0) return 0.5 * exp(u);
-  return 1.0 - 0.5 * exp(-u);
+  if (u < 0.0) return 0.5 * std::exp(u);
+  return 1.0 - 0.5 * std::exp(-u);
 }
 
 /* Get the complementary CDF of the distribution */
@@ -138,15 +138,15 @@ NumericalScalar Laplace::computeComplementaryCDF(const NumericalPoint & point) c
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar u(lambda_ * (point[0] - mu_));
-  if (u < 0.0) return 1.0 - 0.5 * exp(u);
-  return 0.5 * exp(-u);
+  if (u < 0.0) return 1.0 - 0.5 * std::exp(u);
+  return 0.5 * std::exp(-u);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Laplace::computeCharacteristicFunction(const NumericalScalar x) const
 {
   const NumericalScalar t(x / lambda_);
-  return exp(NumericalComplex(0.0, mu_ * x)) / (1.0 + t * t);
+  return std::exp(NumericalComplex(0.0, mu_ * x)) / (1.0 + t * t);
 }
 
 NumericalComplex Laplace::computeLogCharacteristicFunction(const NumericalScalar x) const
@@ -161,8 +161,8 @@ NumericalPoint Laplace::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint pdfGradient(2, 0.0);
-  const NumericalScalar factor(fabs(point[0] - mu_) * lambda_);
-  const NumericalScalar expFactor(exp(-factor));
+  const NumericalScalar factor(std::abs(point[0] - mu_) * lambda_);
+  const NumericalScalar expFactor(std::exp(-factor));
   pdfGradient[0] = 0.5 * expFactor * (1.0 - factor);
   pdfGradient[1] = (point[0] > mu_ ? 0.5 * lambda_ * lambda_ * expFactor : -0.5 * lambda_ * lambda_ * expFactor);
   return pdfGradient;
@@ -174,8 +174,8 @@ NumericalPoint Laplace::computeCDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar factor(fabs(point[0] - mu_) * lambda_);
-  const NumericalScalar expFactor(exp(-factor));
+  const NumericalScalar factor(std::abs(point[0] - mu_) * lambda_);
+  const NumericalScalar expFactor(std::exp(-factor));
   cdfGradient[0] = 0.5 * factor / lambda_ * expFactor;
   cdfGradient[1] = -0.5 * lambda_ * expFactor;
   return cdfGradient;
@@ -200,7 +200,7 @@ void Laplace::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Laplace::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(2.0) / lambda_);
+  return NumericalPoint(1, std::sqrt(2.0) / lambda_);
 }
 
 /* Get the skewness of the distribution */

@@ -110,7 +110,7 @@ NumericalPoint NonCentralStudent::computePDFGradient(const NumericalPoint & poin
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar eps(pow(pdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar eps(std::pow(pdfEpsilon_, 1.0 / 3.0));
   NumericalPoint pdfGradient(3);
   pdfGradient[0] = (DistFunc::dNonCentralStudent(nu_ + eps, delta_, point[0] - gamma_) - DistFunc::dNonCentralStudent(nu_ - eps, delta_, point[0] - gamma_)) / (2.0 * eps);
   pdfGradient[1] = (DistFunc::dNonCentralStudent(nu_, delta_ + eps, point[0] - gamma_) - DistFunc::dNonCentralStudent(nu_, delta_ - eps, point[0] - gamma_)) / (2.0 * eps);
@@ -123,7 +123,7 @@ NumericalPoint NonCentralStudent::computeCDFGradient(const NumericalPoint & poin
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar eps(pow(cdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
   NumericalPoint cdfGradient(3);
   cdfGradient[0] = (DistFunc::pNonCentralStudent(nu_ + eps, delta_, point[0] - gamma_, false) - DistFunc::pNonCentralStudent(nu_ - eps, delta_, point[0] - gamma_, false)) / (2.0 * eps);
   cdfGradient[1] = (DistFunc::pNonCentralStudent(nu_, delta_ + eps, point[0] - gamma_, false) - DistFunc::pNonCentralStudent(nu_, delta_ - eps, point[0] - gamma_, false)) / (2.0 * eps);
@@ -135,7 +135,7 @@ NumericalPoint NonCentralStudent::computeCDFGradient(const NumericalPoint & poin
 void NonCentralStudent::computeMean() const
 {
   if (nu_ <= 1.0) throw NotDefinedException(HERE) << "Error: the mean is defined only for nu > 1 for a non central Student distribution";
-  mean_ = NumericalPoint(1, sqrt(0.5 * nu_) * exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
+  mean_ = NumericalPoint(1, std::sqrt(0.5 * nu_) * std::exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
   isAlreadyComputedMean_ = true;
 }
 
@@ -143,7 +143,7 @@ void NonCentralStudent::computeMean() const
 NumericalPoint NonCentralStudent::getStandardDeviation() const
 {
   if (nu_ <= 2.0) throw NotDefinedException(HERE) << "Error: the standard deviation is defined only for nu > 2 for a non central Student distribution";
-  return NumericalPoint(1, sqrt(getCovariance().operator()(0, 0)));
+  return NumericalPoint(1, std::sqrt(getCovariance().operator()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
@@ -151,7 +151,7 @@ NumericalPoint NonCentralStudent::getSkewness() const
 {
   NumericalScalar mup1(getMean()[0] - gamma_);
   NumericalScalar mu2(getCovariance().operator()(0, 0));
-  return NumericalPoint(1, mup1 * (nu_ * (2.0 * nu_ - 3.0 + delta_ * delta_) / ((nu_ - 2.0) * (nu_ - 3.0)) - 2.0 * mu2) * pow(mu2, -1.5));
+  return NumericalPoint(1, mup1 * (nu_ * (2.0 * nu_ - 3.0 + delta_ * delta_) / ((nu_ - 2.0) * (nu_ - 3.0)) - 2.0 * mu2) * std::pow(mu2, -1.5));
 }
 
 /* Get the kurtosis of the distribution */
@@ -160,7 +160,7 @@ NumericalPoint NonCentralStudent::getKurtosis() const
   NumericalScalar mup1(getMean()[0] - gamma_);
   NumericalScalar mu2(getCovariance().operator()(0, 0));
   NumericalScalar delta2(delta_ * delta_);
-  return NumericalPoint(1, (nu_ * nu_ * (3.0 + 6.0 * delta2 + delta2 * delta2) / ((nu_ - 2.0) * (nu_ - 4.0)) - mup1 * mup1 * (nu_ * ((nu_ + 1.0) * delta2 + 3.0 * (3.0 * nu_ - 5.0)) / ((nu_ - 2.0) * (nu_ - 3.0)) - 3.0 * mu2)) * pow(mu2, -2.0));
+  return NumericalPoint(1, (nu_ * nu_ * (3.0 + 6.0 * delta2 + delta2 * delta2) / ((nu_ - 2.0) * (nu_ - 4.0)) - mup1 * mup1 * (nu_ * ((nu_ + 1.0) * delta2 + 3.0 * (3.0 * nu_ - 5.0)) / ((nu_ - 2.0) * (nu_ - 3.0)) - 3.0 * mu2)) * std::pow(mu2, -2.0));
 }
 
 /* Get the moments of the standardized distribution */
@@ -169,7 +169,7 @@ NumericalPoint NonCentralStudent::getStandardMoment(const UnsignedInteger n) con
   if (n >= nu_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to the number of degrees of freedom";
   UniVariatePolynomial p(NumericalPoint(1, 1.0));
   for (UnsignedInteger k = 0; k < n; ++k) p = p.derivate() + p.incrementDegree(1);
-  return NumericalPoint(1, p(delta_) * exp(0.5 * n * log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
+  return NumericalPoint(1, p(delta_) * std::exp(0.5 * n * std::log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

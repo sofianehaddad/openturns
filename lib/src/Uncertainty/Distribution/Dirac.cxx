@@ -35,8 +35,8 @@ static Factory<Dirac> RegisteredFactory("Dirac");
 
 /* Default constructor */
 Dirac::Dirac()
-  : DiscreteDistribution("Dirac"),
-    point_(1, 0.0)
+  : DiscreteDistribution("Dirac")
+  , point_(1, 0.0)
 {
   // We set the dimension of the Dirac distribution
   setDimension( 1 );
@@ -45,8 +45,8 @@ Dirac::Dirac()
 
 /* Parameters constructor */
 Dirac::Dirac(const NumericalScalar p)
-  : DiscreteDistribution("Dirac"),
-    point_(1, p)
+  : DiscreteDistribution("Dirac")
+  , point_(1, p)
 {
   // We set the dimension of the Dirac distribution
   setDimension( 1 );
@@ -55,8 +55,8 @@ Dirac::Dirac(const NumericalScalar p)
 
 /* Parameters constructor */
 Dirac::Dirac(const NumericalPoint & point)
-  : DiscreteDistribution("Dirac"),
-    point_(point)
+  : DiscreteDistribution("Dirac")
+  , point_(point)
 {
   // We set the dimension of the Dirac distribution
   setDimension( point.getDimension() );
@@ -159,7 +159,7 @@ NumericalScalar Dirac::computeScalarQuantile(const NumericalScalar prob,
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Dirac::computeCharacteristicFunction(const NumericalScalar u) const
 {
-  return exp(computeLogCharacteristicFunction(u));
+  return std::exp(computeLogCharacteristicFunction(u));
 }
 
 NumericalComplex Dirac::computeLogCharacteristicFunction(const NumericalScalar u) const
@@ -172,13 +172,13 @@ NumericalComplex Dirac::computeLogCharacteristicFunction(const NumericalScalar u
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
 NumericalComplex Dirac::computeGeneratingFunction(const NumericalComplex & z) const
 {
-  return exp(computeLogGeneratingFunction(z));
+  return std::exp(computeLogGeneratingFunction(z));
 }
 
 NumericalComplex Dirac::computeLogGeneratingFunction(const NumericalComplex & z) const
 {
   if (getDimension() != 1) throw NotYetImplementedException(HERE) << "Error: the computeGeneratingFunction() method is implemented for 1D distributions only.";
-  return point_[0] * log(z);
+  return point_[0] * std::log(z);
 }
 
 /* Compute the mean of the distribution */
@@ -211,7 +211,7 @@ NumericalPoint Dirac::getStandardMoment(const UnsignedInteger n) const
 {
   const UnsignedInteger dimension(getDimension());
   NumericalPoint result(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = pow(point_[i], n);
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = std::pow(point_[i], n);
   return result;
 }
 

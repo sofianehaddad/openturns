@@ -89,8 +89,8 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
   if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
   if (denominator <= 0.0) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
   normalizationFactor_ = 1.0 / denominator;
-  phiANorm_ = SpecFunc::ISQRT2PI * exp(-0.5 * aNorm_ * aNorm_);
-  phiBNorm_ = SpecFunc::ISQRT2PI * exp(-0.5 * bNorm_ * bNorm_);
+  phiANorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * aNorm_ * aNorm_);
+  phiBNorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * bNorm_ * bNorm_);
   computeRange();
 }
 
@@ -164,7 +164,7 @@ NumericalPoint TruncatedNormal::computeDDF(const NumericalPoint & point) const
   if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
   const NumericalScalar iSigma(1.0 / sigma_);
   const NumericalScalar xNorm((x - mu_) * iSigma);
-  return NumericalPoint(1, -normalizationFactor_ * xNorm * SpecFunc::ISQRT2PI * exp(-0.5 * xNorm * xNorm) * iSigma * iSigma);
+  return NumericalPoint(1, -normalizationFactor_ * xNorm * SpecFunc::ISQRT2PI * std::exp(-0.5 * xNorm * xNorm) * iSigma * iSigma);
 }
 
 
@@ -177,7 +177,7 @@ NumericalScalar TruncatedNormal::computePDF(const NumericalPoint & point) const
   if ((x <= a_) || (x > b_)) return 0.0;
   const NumericalScalar iSigma(1.0 / sigma_);
   const NumericalScalar xNorm((x - mu_) * iSigma);
-  return normalizationFactor_ * exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI * iSigma;
+  return normalizationFactor_ * std::exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI * iSigma;
 }
 
 
@@ -206,28 +206,28 @@ NumericalScalar TruncatedNormal::computeComplementaryCDF(const NumericalPoint & 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex TruncatedNormal::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar iSigma2(1.0 / (sigma_ * sqrt(2.0)));
+  const NumericalScalar iSigma2(1.0 / (sigma_ * std::sqrt(2.0)));
   const NumericalScalar alpha((a_ - mu_) * iSigma2);
   const NumericalScalar beta((b_ - mu_) * iSigma2);
   const NumericalScalar erf1(SpecFunc::Erf(alpha));
   const NumericalScalar erf2(SpecFunc::Erf(beta));
-  const NumericalScalar t(x * sigma_ / sqrt(2));
+  const NumericalScalar t(x * sigma_ / std::sqrt(2));
   const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
   const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
-  return exp(NumericalComplex(0.0, x * mu_)) * (w2 * exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) / (erf2 - erf1);
+  return std::exp(NumericalComplex(0.0, x * mu_)) * (w2 * std::exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) / (erf2 - erf1);
 }
 
 NumericalComplex TruncatedNormal::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar iSigma2(1.0 / (sigma_ * sqrt(2.0)));
+  const NumericalScalar iSigma2(1.0 / (sigma_ * std::sqrt(2.0)));
   const NumericalScalar alpha((a_ - mu_) * iSigma2);
   const NumericalScalar beta((b_ - mu_) * iSigma2);
   const NumericalScalar erf1(SpecFunc::Erf(alpha));
   const NumericalScalar erf2(SpecFunc::Erf(beta));
-  const NumericalScalar t(x * sigma_ / sqrt(2));
+  const NumericalScalar t(x * sigma_ / std::sqrt(2));
   const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
   const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
-  return NumericalComplex(0.0, x * mu_) + log(w2 * exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) - log(erf2 - erf1);
+  return NumericalComplex(0.0, x * mu_) + std::log(w2 * std::exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) - std::log(erf2 - erf1);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -242,7 +242,7 @@ NumericalPoint TruncatedNormal::computePDFGradient(const NumericalPoint & point)
   const NumericalScalar xNorm((x - mu_) * iSigma);
   const NumericalScalar iDenom(normalizationFactor_ * iSigma);
   const NumericalScalar iDenom2(iDenom * iDenom);
-  const NumericalScalar factPhiXNorm(exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI * iDenom2);
+  const NumericalScalar factPhiXNorm(std::exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI * iDenom2);
   pdfGradient[0] = factPhiXNorm * (xNorm * (PhiBNorm_ - PhiANorm_) + phiBNorm_ - phiANorm_);
   pdfGradient[1] = factPhiXNorm * ((xNorm * xNorm - 1.0) * (PhiBNorm_ - PhiANorm_) + bNorm_ * phiBNorm_ - aNorm_ * phiANorm_);
   pdfGradient[2] = factPhiXNorm * phiANorm_;
@@ -261,7 +261,7 @@ NumericalPoint TruncatedNormal::computeCDFGradient(const NumericalPoint & point)
   const NumericalScalar iSigma(1.0 / sigma_);
   const NumericalScalar xNorm((x - mu_) * iSigma);
   const NumericalScalar iDenom(normalizationFactor_ * normalizationFactor_ * iSigma);
-  const NumericalScalar phiXNorm(exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI);
+  const NumericalScalar phiXNorm(std::exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI);
   const NumericalScalar PhiXNorm(DistFunc::pNormal(xNorm));
   cdfGradient[0] = (phiANorm_ * PhiBNorm_ - PhiANorm_ * phiBNorm_ + phiXNorm * PhiANorm_ - PhiXNorm * phiANorm_ + phiBNorm_ * PhiXNorm - PhiBNorm_ * phiXNorm) * iDenom;
   cdfGradient[1] = (phiANorm_ * aNorm_ * PhiBNorm_ - PhiANorm_ * phiBNorm_ * bNorm_ + phiXNorm * xNorm * PhiANorm_ - PhiXNorm * phiANorm_ * aNorm_ + phiBNorm_ * bNorm_ * PhiXNorm - PhiBNorm_ * phiXNorm * xNorm) * iDenom;
@@ -289,7 +289,7 @@ void TruncatedNormal::computeMean() const
 NumericalPoint TruncatedNormal::getStandardDeviation() const
 {
   const NumericalScalar ratio((phiBNorm_ - phiANorm_) * normalizationFactor_);
-  return NumericalPoint(1, sigma_ * sqrt(1.0 - (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_ - ratio * ratio));
+  return NumericalPoint(1, sigma_ * std::sqrt(1.0 - (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_ - ratio * ratio));
 }
 
 /* Get the skewness of the distribution */
@@ -299,7 +299,7 @@ NumericalPoint TruncatedNormal::getSkewness() const
   const NumericalScalar ratio2(ratio * ratio);
   const NumericalScalar crossTerm1((bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_);
   const NumericalScalar crossTerm2((bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_);
-  return NumericalPoint(1, (-2.0 * ratio * ratio2 - 3.0 * ratio * crossTerm1 + ratio - crossTerm2) / pow(1.0 - crossTerm1 - ratio2, 1.5));
+  return NumericalPoint(1, (-2.0 * ratio * ratio2 - 3.0 * ratio * crossTerm1 + ratio - crossTerm2) / std::pow(1.0 - crossTerm1 - ratio2, 1.5));
 }
 
 /* Get the kurtosis of the distribution */
@@ -310,7 +310,7 @@ NumericalPoint TruncatedNormal::getKurtosis() const
   const NumericalScalar crossTerm1((bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_);
   const NumericalScalar crossTerm2((bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_);
   const NumericalScalar crossTerm3((bNorm_ * bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_);
-  return NumericalPoint(1, (3.0 - 3.0 * ratio2 * ratio2 - 6.0 * ratio2 * crossTerm1 - 2.0 * ratio * (ratio + 2.0 * crossTerm2) - 3.0 * crossTerm1 - crossTerm3) / pow(1.0 - crossTerm1 - ratio2, 2.0));
+  return NumericalPoint(1, (3.0 - 3.0 * ratio2 * ratio2 - 6.0 * ratio2 * crossTerm1 - 2.0 * ratio * (ratio + 2.0 * crossTerm2) - 3.0 * crossTerm1 - crossTerm3) / std::pow(1.0 - crossTerm1 - ratio2, 2.0));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -407,7 +407,7 @@ void TruncatedNormal::setA(const NumericalScalar a)
     if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
     if (denominator <= 0.0) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
     normalizationFactor_ = 1.0 / denominator;
-    phiANorm_ = SpecFunc::ISQRT2PI * exp(-0.5 * aNorm_ * aNorm_);
+    phiANorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * aNorm_ * aNorm_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -432,7 +432,7 @@ void TruncatedNormal::setB(const NumericalScalar b)
     NumericalScalar denominator(PhiBNorm_ - PhiANorm_);
     if (denominator <= 0.0) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
     normalizationFactor_ = 1.0 / denominator;
-    phiBNorm_ = SpecFunc::ISQRT2PI * exp(-0.5 * bNorm_ * bNorm_);
+    phiBNorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * bNorm_ * bNorm_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();

@@ -169,7 +169,7 @@ NumericalScalar Gamma::getMu() const
 
 NumericalScalar Gamma::getSigma() const
 {
-  return sqrt(k_) / lambda_;
+  return std::sqrt(k_) / lambda_;
 }
 
 
@@ -215,9 +215,9 @@ void Gamma::update()
     static const NumericalScalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
     const NumericalScalar ik(1.0 / k_);
     const NumericalScalar ik2(ik * ik);
-    normalizationFactor_ = log(lambda_) + k_ - 0.5 * log(k_) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
+    normalizationFactor_ = std::log(lambda_) + k_ - 0.5 * std::log(k_) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
   }
-  else normalizationFactor_ = log(lambda_) - SpecFunc::LnGamma(k_);
+  else normalizationFactor_ = std::log(lambda_) - SpecFunc::LnGamma(k_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
@@ -248,7 +248,7 @@ NumericalScalar Gamma::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0] - gamma_);
   if (x <= 0.0) return 0.0;
-  return exp(computeLogPDF(point));
+  return std::exp(computeLogPDF(point));
 }
 
 NumericalScalar Gamma::computeLogPDF(const NumericalPoint & point) const
@@ -258,8 +258,8 @@ NumericalScalar Gamma::computeLogPDF(const NumericalPoint & point) const
   const NumericalScalar u(lambda_ * (point[0] - gamma_));
   if (u <= 0.0) return -SpecFunc::MaxNumericalScalar;
   // Use asymptotic expansion for large k
-  if (k_ >= 6.9707081224932495879) return normalizationFactor_ - u + (k_ - 1.0) * log(u / k_);
-  return normalizationFactor_ + (k_ - 1) * log(u) - u;
+  if (k_ >= 6.9707081224932495879) return normalizationFactor_ - u + (k_ - 1.0) * std::log(u / k_);
+  return normalizationFactor_ + (k_ - 1) * std::log(u) - u;
 }
 
 /* Get the CDF of the distribution */
@@ -286,12 +286,12 @@ NumericalScalar Gamma::computeComplementaryCDF(const NumericalPoint & point) con
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Gamma::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return exp(NumericalComplex(0.0, x * gamma_)) * pow(NumericalComplex(1.0, -x / lambda_), -k_);
+  return std::exp(NumericalComplex(0.0, x * gamma_)) * std::pow(NumericalComplex(1.0, -x / lambda_), -k_);
 }
 
 NumericalComplex Gamma::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  return NumericalComplex(0.0, x * gamma_) - k_ * log(NumericalComplex(1.0, -x / lambda_));
+  return NumericalComplex(0.0, x * gamma_) - k_ * std::log(NumericalComplex(1.0, -x / lambda_));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -303,7 +303,7 @@ NumericalPoint Gamma::computePDFGradient(const NumericalPoint & point) const
   const NumericalScalar x(point[0] - gamma_);
   if (x <= 0.0) return pdfGradient;
   const NumericalScalar pdf(computePDF(point));
-  pdfGradient[0] = (log(x) + log(lambda_) - SpecFunc::Psi(k_)) * pdf;
+  pdfGradient[0] = (std::log(x) + std::log(lambda_) - SpecFunc::Psi(k_)) * pdf;
   pdfGradient[1] = (k_ / lambda_ - x) * pdf;
   pdfGradient[2] = ((1.0 - k_) / x + lambda_) * pdf;
   return pdfGradient;
@@ -318,8 +318,8 @@ NumericalPoint Gamma::computeCDFGradient(const NumericalPoint & point) const
   const NumericalScalar x(point[0] - gamma_);
   if (x <= 0.0) return cdfGradient;
   const NumericalScalar lambdaX(lambda_ * x);
-  const NumericalScalar factor(exp(k_ * log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX));
-  const NumericalScalar eps(pow(cdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar factor(std::exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX));
+  const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambda_ * x) - DistFunc::pGamma(k_ - eps, lambda_ * x)) / (2.0 * eps);
   cdfGradient[1] = factor / lambda_;
   cdfGradient[2] = -factor / x;
@@ -349,7 +349,7 @@ NumericalPoint Gamma::getStandardDeviation() const
 /* Get the skewness of the distribution */
 NumericalPoint Gamma::getSkewness() const
 {
-  return NumericalPoint(1, 2.0 / sqrt(k_));
+  return NumericalPoint(1, 2.0 / std::sqrt(k_));
 }
 
 /* Get the kurtosis of the distribution */
@@ -361,7 +361,7 @@ NumericalPoint Gamma::getKurtosis() const
 /* Get the moments of the standardized distribution */
 NumericalPoint Gamma::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
+  return NumericalPoint(1, std::exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

@@ -213,7 +213,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributions(const D
   if (continuousDimension > 0)
   {
     const ComposedDistribution measure(Collection< Distribution >(continuousDimension, Uniform()));
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(pow(ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber" ), 1.0 / continuousDimension))));
+    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber" ), 1.0 / continuousDimension))));
     const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "ConditionalDistribution-MarginalIntegrationNodesNumber" ));
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"ConditionalDistribution-MaximumIntegrationNodesNumber\"");
 

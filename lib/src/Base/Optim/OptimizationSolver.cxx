@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @file  NearestPointAlgorithm.cxx
- *  @brief NearestPointAlgorithm implements an algorithm for finding the
+ *  @file  OptimizationSolver.cxx
+ *  @brief OptimizationSolver provides capabilities to solve optimization problems
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
@@ -21,195 +21,164 @@
  *  @author schueller
  *  @date   2012-07-16 10:12:54 +0200 (Mon, 16 Jul 2012)
  */
-#include "NearestPointAlgorithm.hxx"
-#include "Cobyla.hxx"
+#include "OptimizationSolver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-CLASSNAMEINIT(NearestPointAlgorithm);
+CLASSNAMEINIT(OptimizationSolver);
 
 /* Default constructor */
-NearestPointAlgorithm::NearestPointAlgorithm() :
-  TypedInterfaceObject<NearestPointAlgorithmImplementation>(new NearestPointAlgorithmImplementation())
+OptimizationSolver::OptimizationSolver() :
+  TypedInterfaceObject<OptimizationSolverImplementation>(new OptimizationSolverImplementation())
 {
   // Nothing to do
 }
 
 /* Constructor from an implementation */
-NearestPointAlgorithm::NearestPointAlgorithm(const NearestPointAlgorithmImplementation & implementation) :
-  TypedInterfaceObject<NearestPointAlgorithmImplementation>(implementation.clone())
+OptimizationSolver::OptimizationSolver(const OptimizationSolverImplementation & implementation) :
+  TypedInterfaceObject<OptimizationSolverImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
 /* Constructor from a Pointer to an implementation */
-NearestPointAlgorithm::NearestPointAlgorithm(const Implementation & p_implementation) :
-  TypedInterfaceObject<NearestPointAlgorithmImplementation>(p_implementation)
+OptimizationSolver::OptimizationSolver(const Implementation & p_implementation) :
+  TypedInterfaceObject<OptimizationSolverImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 /*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
- *         and a level value
+ * @brief  Standard constructor: the problem is defined by an OptimizationProblem
  */
-NearestPointAlgorithm::NearestPointAlgorithm(const NumericalMathFunction & levelFunction):
-  TypedInterfaceObject<NearestPointAlgorithmImplementation>(new Cobyla(levelFunction))
+OptimizationSolver::OptimizationSolver(const OptimizationProblem & problem):
+  TypedInterfaceObject<OptimizationSolverImplementation>(new Cobyla(problem))
 {
   // Nothing to do
 }
 
 /* Starting point accessor */
-NumericalPoint NearestPointAlgorithm::getStartingPoint() const
+NumericalPoint OptimizationSolver::getStartingPoint() const
 {
   return getImplementation()->getStartingPoint();
 }
 
-/* Starting point accessor */
-void NearestPointAlgorithm::setStartingPoint(const NumericalPoint & startingPoint)
+void OptimizationSolver::setStartingPoint(const NumericalPoint & startingPoint)
 {
   copyOnWrite();
   getImplementation()->setStartingPoint(startingPoint);
 }
 
-/* Level value accessor */
-NumericalScalar NearestPointAlgorithm::getLevelValue() const
+/* Problem accessor */
+OptimizationProblem OptimizationSolver::getProblem() const
 {
-  return getImplementation()->getLevelValue();
+  return getImplementation()->getProblem();
 }
 
-/* Level value accessor */
-void NearestPointAlgorithm::setLevelValue(const NumericalScalar levelValue)
+void OptimizationSolver::setLevelValue(const OptimizationProblem & problem)
 {
   copyOnWrite();
-  getImplementation()->setLevelValue(levelValue);
+  getImplementation()->setProblem(problem);
 }
 
 /* Result accessor */
-NearestPointAlgorithm::Result NearestPointAlgorithm::getResult() const
+OptimizationSolver::Result OptimizationSolver::getResult() const
 {
   return getImplementation()->getResult();
 }
 
 /* Result accessor */
-void NearestPointAlgorithm::setResult(const Result & result)
+void OptimizationSolver::setResult(const Result & result)
 {
   copyOnWrite();
   getImplementation()->setResult(result);
 }
 
 /* Maximum iterations number accessor */
-UnsignedInteger NearestPointAlgorithm::getMaximumIterationsNumber() const
+UnsignedInteger OptimizationSolver::getMaximumIterationsNumber() const
 {
   return getImplementation()->getMaximumIterationsNumber();
 }
 
 /* Maximum iterations number accessor */
-void NearestPointAlgorithm::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
+void OptimizationSolver::setMaximumIterationsNumber(const UnsignedInteger maximumIterationsNumber)
 {
   copyOnWrite();
   getImplementation()->setMaximumIterationsNumber(maximumIterationsNumber);
 }
 
 /* Maximum absolute error accessor */
-NumericalScalar NearestPointAlgorithm::getMaximumAbsoluteError() const
+NumericalScalar OptimizationSolver::getMaximumAbsoluteError() const
 {
   return getImplementation()->getMaximumAbsoluteError();
 }
 
 /* Maximum absolute error accessor */
-void NearestPointAlgorithm::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
+void OptimizationSolver::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
 {
   copyOnWrite();
   getImplementation()->setMaximumAbsoluteError(maximumAbsoluteError);
 }
 
 /* Maximum relative error accessor */
-NumericalScalar NearestPointAlgorithm::getMaximumRelativeError() const
+NumericalScalar OptimizationSolver::getMaximumRelativeError() const
 {
   return getImplementation()->getMaximumRelativeError();
 }
 
 /* Maximum relative error accessor */
-void NearestPointAlgorithm::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
+void OptimizationSolver::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
 {
   copyOnWrite();
   getImplementation()->setMaximumRelativeError(maximumRelativeError);
 }
 
 /* Maximum residual error accessor */
-NumericalScalar NearestPointAlgorithm::getMaximumResidualError() const
+NumericalScalar OptimizationSolver::getMaximumResidualError() const
 {
   return getImplementation()->getMaximumResidualError();
 }
 
 /* Maximum residual error accessor */
-void NearestPointAlgorithm::setMaximumResidualError(const NumericalScalar maximumResidualError)
+void OptimizationSolver::setMaximumResidualError(const NumericalScalar maximumResidualError)
 {
   copyOnWrite();
   getImplementation()->setMaximumResidualError(maximumResidualError);
 }
 
 /* Maximum constraint error accessor */
-NumericalScalar NearestPointAlgorithm::getMaximumConstraintError() const
+NumericalScalar OptimizationSolver::getMaximumConstraintError() const
 {
   return getImplementation()->getMaximumConstraintError();
 }
 
 /* Maximum constraint error accessor */
-void NearestPointAlgorithm::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
+void OptimizationSolver::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
 {
   copyOnWrite();
   getImplementation()->setMaximumConstraintError(maximumConstraintError);
 }
 
 /* String converter */
-String NearestPointAlgorithm::__repr__() const
+String OptimizationSolver::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << NearestPointAlgorithm::GetClassName()
+  oss << "class=" << OptimizationSolver::GetClassName()
       << " implementation=" << getImplementation()->__repr__();
   return oss;
 }
 
 /* String converter */
-String NearestPointAlgorithm::__str__(const String & offset) const
+String OptimizationSolver::__str__(const String & offset) const
 {
   return __repr__();
 }
 
-/* Level function accessor */
-NumericalMathFunction NearestPointAlgorithm::getLevelFunction() const
-{
-  return getImplementation()->getLevelFunction();
-}
-
-/* Level function accessor */
-void NearestPointAlgorithm::setLevelFunction(const NumericalMathFunction & levelFunction)
-{
-  copyOnWrite();
-  getImplementation()->setLevelFunction(levelFunction);
-}
-
 /* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-void NearestPointAlgorithm::run()
+void OptimizationSolver::run()
 {
   getImplementation()->run();
 }
 
-/* Verbose accessor */
-Bool NearestPointAlgorithm::getVerbose() const
-{
-  return getImplementation()->getVerbose();
-}
-
-/* Verbose accessor */
-void NearestPointAlgorithm::setVerbose(const Bool verbose)
-{
-  copyOnWrite();
-  getImplementation()->setVerbose(verbose);
-}
 
 END_NAMESPACE_OPENTURNS

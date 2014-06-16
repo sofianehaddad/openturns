@@ -153,7 +153,7 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
     const CorrelationMatrix shape(getShapeMatrix());
     for (UnsignedInteger i = 0; i < dimension; ++i)
       for(UnsignedInteger j = 0; j < i; ++j)
-        tau(i, j) = asin(shape(i, j)) * (2.0 / M_PI);
+        tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
     return tau;
   }
   // Compute the weights and nodes of the 1D gauss quadrature over [-1, 1]

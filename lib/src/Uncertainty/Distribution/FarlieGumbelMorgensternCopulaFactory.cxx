@@ -68,11 +68,11 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula distribution from a sample of dimension not equal to 2";
   NumericalScalar theta(4.5 * sample.computeKendallTau().operator()(0, 1));
   // If it is not possible to use Kendall's tau to build the copula, try Spearman's rho
-  if (fabs(theta) > 1.0)
+  if (std::abs(theta) > 1.0)
   {
     LOGWARN(OSS() << "Warning! Unable to build a FarlieGumbelMorgensternCopula based on Kendall's tau: it leads to theta=" << theta << ". Trying to use Spearman's rho instead.");
     theta = 3.0 * sample.computeSpearmanCorrelation().operator()(0, 1);
-    if (fabs(theta) > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula from Spearman's rho either: it leads to theta=" << theta;
+    if (std::abs(theta) > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula from Spearman's rho either: it leads to theta=" << theta;
   }
   FarlieGumbelMorgensternCopula result(theta);
   result.setDescription(sample.getDescription());

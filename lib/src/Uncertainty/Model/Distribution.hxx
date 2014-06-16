@@ -70,6 +70,55 @@ public:
   /** Comparison operator */
   Bool operator ==(const Distribution & other) const;
 
+  /** Addition operator */
+  Distribution operator + (const Distribution & other) const;
+
+  Distribution operator + (const NumericalScalar value) const;
+
+  /** Substraction operator */
+  Distribution operator - (const Distribution & other) const;
+
+  Distribution operator - (const NumericalScalar value) const;
+
+  /** Multiplication operator */
+  Distribution operator * (const Distribution & other) const;
+
+  Distribution operator * (const NumericalScalar value) const;
+
+  /** Division operator */
+  Distribution operator / (const Distribution & other) const;
+
+  Distribution operator / (const NumericalScalar value) const;
+
+  /** Static methods to transform distributions by usual functions */
+  Distribution cos() const;
+  Distribution sin() const;
+  Distribution tan() const;
+
+  Distribution acos() const;
+  Distribution asin() const;
+  Distribution atan() const;
+
+  Distribution cosh() const;
+  Distribution sinh() const;
+  Distribution tanh() const;
+
+  Distribution acosh() const;
+  Distribution asinh() const;
+  Distribution atanh() const;
+
+  Distribution exp() const;
+  Distribution log() const;
+  Distribution ln() const;
+
+  Distribution pow(const SignedInteger & exponent) const;
+  Distribution pow(const NumericalScalar & exponent) const;
+  Distribution inverse() const;
+  Distribution sqr() const;
+  Distribution sqrt() const;
+  Distribution cbrt() const;
+  Distribution abs() const;
+
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
@@ -255,19 +304,19 @@ public:
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalDDF(const NumericalScalar x,
-      const NumericalPoint & y) const;
+                                                const NumericalPoint & y) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
-      const NumericalPoint & y) const;
+                                                const NumericalPoint & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
-      const NumericalPoint & y) const;
+                                                const NumericalPoint & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
-      const NumericalPoint & y) const;
+                                                     const NumericalPoint & y) const;
 
   /** Get the isoprobabilist transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;

@@ -99,8 +99,8 @@ NumericalScalar Poisson::computePDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k(point[0]);
-  if ((k < -supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return 0.0;
-  return exp(k * log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0));
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
+  return std::exp(k * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0));
 }
 
 
@@ -130,8 +130,8 @@ NumericalPoint Poisson::computePDFGradient(const NumericalPoint & point) const
 
   const NumericalScalar k(point[0]);
   NumericalPoint pdfGradient(1, 0.0);
-  if ((k < -supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  return NumericalPoint(1, (k - lambda_) * exp((k - 1.0) * log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
+  return NumericalPoint(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
 }
 
 
@@ -142,7 +142,7 @@ NumericalPoint Poisson::computeCDFGradient(const NumericalPoint & point) const
 
   const NumericalScalar k(point[0]);
   if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, -exp(floor(k) * log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
+  return NumericalPoint(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
 }
 
 /* Get the quantile of the distribution */
@@ -155,18 +155,18 @@ NumericalScalar Poisson::computeScalarQuantile(const NumericalScalar prob,
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Poisson::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return exp(computeLogCharacteristicFunction(x));
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
 NumericalComplex Poisson::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  return lambda_ * (exp(NumericalComplex(0.0, x)) - 1.0);
+  return lambda_ * (std::exp(NumericalComplex(0.0, x)) - 1.0);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
 NumericalComplex Poisson::computeGeneratingFunction(const NumericalComplex & z) const
 {
-  return exp(computeLogGeneratingFunction(z));
+  return std::exp(computeLogGeneratingFunction(z));
 }
 
 NumericalComplex Poisson::computeLogGeneratingFunction(const NumericalComplex & z) const
@@ -184,13 +184,13 @@ void Poisson::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Poisson::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(lambda_));
+  return NumericalPoint(1, std::sqrt(lambda_));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint Poisson::getSkewness() const
 {
-  return NumericalPoint(1, 1.0 / sqrt(lambda_));
+  return NumericalPoint(1, 1.0 / std::sqrt(lambda_));
 }
 
 /* Get the kurtosis of the distribution */

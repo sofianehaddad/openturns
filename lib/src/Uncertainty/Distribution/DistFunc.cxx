@@ -160,8 +160,8 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
   // If (a > 1 and b > 1) Cheng.
   if ((p1 == 1.0) && (p2 == 1.0)) return RandomGenerator::Generate();
   // Special case for p1 = 1 or p2 = 1
-  if (p1 == 1.0) return 1.0 - pow(RandomGenerator::Generate(), 1.0 / p2);
-  if (p2 == 1.0) return pow(RandomGenerator::Generate(), 1.0 / p1);
+  if (p1 == 1.0) return 1.0 - std::pow(RandomGenerator::Generate(), 1.0 / p2);
+  if (p2 == 1.0) return std::pow(RandomGenerator::Generate(), 1.0 / p1);
   // Now, the more general cases
   const NumericalScalar minp(std::min(p1, p2));
   const NumericalScalar maxp(std::max(p1, p2));
@@ -170,18 +170,18 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
   {
     // Use of logarithms to avoid underflow if minp << 1 (here 1e-3, quite arbitrary). It is the
     // only case where this kind of trick is useful. It should not be much slower than the usual
-    // version using pow()
+    // version using std::pow()
     if (minp < 1e-3)
     {
       for (;;)
       {
         const NumericalScalar u(RandomGenerator::Generate());
         const NumericalScalar v(RandomGenerator::Generate());
-        const NumericalScalar logx(log(u) / p1);
-        const NumericalScalar logy(log(v) / p2);
-        const NumericalScalar logsum((logx > logy) ? logx + log1p(exp(logy - logx)) : logy + log1p(exp(logx - logy)));
+        const NumericalScalar logx(std::log(u) / p1);
+        const NumericalScalar logy(std::log(v) / p2);
+        const NumericalScalar logsum((logx > logy) ? logx + log1p(std::exp(logy - logx)) : logy + log1p(std::exp(logx - logy)));
         // Acceptation step
-        if (logsum <= 0.0) return exp(logy - logsum);
+        if (logsum <= 0.0) return std::exp(logy - logsum);
       }
     }
     // Usual form of the algorithm
@@ -189,8 +189,8 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
     {
       const NumericalScalar u(RandomGenerator::Generate());
       const NumericalScalar v(RandomGenerator::Generate());
-      const NumericalScalar x(pow(u, 1.0 / p1));
-      const NumericalScalar y(pow(v, 1.0 / p2));
+      const NumericalScalar x(std::pow(u, 1.0 / p1));
+      const NumericalScalar y(std::pow(v, 1.0 / p2));
       // Acceptation step
       if (x + y <= 1.0) return x / (x + y);
     }
@@ -198,14 +198,14 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
   // Now, sum > 1 for all the remaining cases
   if (minp > 1.0) // Cheng
   {
-    const NumericalScalar lambda(sqrt((sum - 2.0) / (2.0 * p1 * p2 - sum)));
+    const NumericalScalar lambda(std::sqrt((sum - 2.0) / (2.0 * p1 * p2 - sum)));
     const NumericalScalar c(minp + 1.0 / lambda);
     for (;;)
     {
       const NumericalScalar u1(RandomGenerator::Generate());
       const NumericalScalar u2(RandomGenerator::Generate());
-      const NumericalScalar v(lambda * log(u1 / (1.0 - u1)));
-      const NumericalScalar w(minp * exp(v));
+      const NumericalScalar v(lambda * std::log(u1 / (1.0 - u1)));
+      const NumericalScalar w(minp * std::exp(v));
       const NumericalScalar z(u1 * u1 * u2);
       // 1.386294361119890618834464 = log(4)
       const NumericalScalar r(c * v - 1.386294361119890618834464);
@@ -213,52 +213,52 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
       // Quick acceptance steps
       // 2.609437912434100374600759 = 1 + log(5)
       if (s + 2.609437912434100374600759 >= 5.0 * z) return (p1 == minp) ? w / (maxp + w) : maxp / (maxp + w);
-      const NumericalScalar t(log(z));
+      const NumericalScalar t(std::log(z));
       if (s > t) return (p1 == minp) ? w / (maxp + w) : maxp / (maxp + w);
       // Acceptance step
-      if (r + sum * log(sum / (maxp + w)) >= t) return (p1 == minp) ? w / (maxp + w) : maxp / (maxp + w);
+      if (r + sum * std::log(sum / (maxp + w)) >= t) return (p1 == minp) ? w / (maxp + w) : maxp / (maxp + w);
     }
   } // End Cheng
   if (maxp < 1.0) // Atkinson and Whittaker 1
   {
-    const NumericalScalar t(1.0 / (1.0 + sqrt(maxp * (1.0 - maxp) / (minp * (1.0 - minp)))));
+    const NumericalScalar t(1.0 / (1.0 + std::sqrt(maxp * (1.0 - maxp) / (minp * (1.0 - minp)))));
     const NumericalScalar tc(1.0 - t);
     const NumericalScalar p(maxp * t / (maxp * t + minp * tc));
     for (;;)
     {
       const NumericalScalar u(RandomGenerator::Generate());
-      const NumericalScalar e(-log(RandomGenerator::Generate()));
+      const NumericalScalar e(-std::log(RandomGenerator::Generate()));
       if (u <= p)
       {
-        const NumericalScalar x(t * pow(u / p, 1.0 / minp));
+        const NumericalScalar x(t * std::pow(u / p, 1.0 / minp));
         // Acceptation test
-        if (e >= (1.0 - maxp) * log((1.0 - x) / tc)) return ((p1 == minp) ? x : 1.0 - x);
+        if (e >= (1.0 - maxp) * std::log((1.0 - x) / tc)) return ((p1 == minp) ? x : 1.0 - x);
       }
       else
       {
-        const NumericalScalar x(1.0 - tc * exp(log1p((p - u) / (1.0 - p)) / maxp));
+        const NumericalScalar x(1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp));
         // Acceptation test
-        if (e >= (1.0 - minp) * log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
+        if (e >= (1.0 - minp) * std::log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
       }
     }
   } // End Atkinson and Whittaker 1
   // Remaining case, Atkinson and Whittaker 2
   const NumericalScalar t((minp > 1) ? (1.0 - minp) / (maxp + 1.0 - minp) : 0.5);
   const NumericalScalar tc(1.0 - t);
-  const NumericalScalar p(maxp * t / (maxp * t + minp * pow(tc, maxp)));
+  const NumericalScalar p(maxp * t / (maxp * t + minp * std::pow(tc, maxp)));
   for (;;)
   {
     const NumericalScalar u(RandomGenerator::Generate());
-    const NumericalScalar e(-log(RandomGenerator::Generate()));
+    const NumericalScalar e(-std::log(RandomGenerator::Generate()));
     if (u <= p)
     {
-      const NumericalScalar x(t * pow(u / p, 1.0 / minp));
+      const NumericalScalar x(t * std::pow(u / p, 1.0 / minp));
       if (e >= (1.0 - maxp) * log1p(-x)) return ((p1 == minp) ? x : 1.0 - x);
     }
     else
     {
-      const NumericalScalar x(1.0 - tc * exp(log1p((p - u) / (1.0 - p)) / maxp));
-      if (e >= (1.0 - minp) * log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
+      const NumericalScalar x(1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp));
+      if (e >= (1.0 - minp) * std::log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
     }
   } // End Atkinson and Whittaker 2
 } // End of rBeta
@@ -307,7 +307,7 @@ NumericalScalar DistFunc::fcBinomial(const UnsignedInteger k)
       return 0.008330563433362871;
       break;
     default:
-      const NumericalScalar kp1Sq(pow(k + 1, 2));
+      const NumericalScalar kp1Sq(std::pow(k + 1, 2));
       return (1.0 / 12.0 - (1.0 / 360.0 - 1.0 / 1260. / kp1Sq) / kp1Sq) / (k + 1);
       break;
   } // switch
@@ -328,7 +328,7 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
   if (n * q <= 15)
   {
     const NumericalScalar r(q / (1.0 - q));
-    NumericalScalar t(pow(1.0 - q, n));
+    NumericalScalar t(std::pow(1.0 - q, n));
     NumericalScalar s(t);
     const NumericalScalar u(RandomGenerator::Generate());
     for (UnsignedInteger k = 0; k <= n; ++k)
@@ -346,7 +346,7 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
   const NumericalScalar r(q / (1.0 - q));
   const NumericalScalar nr((n + 1) * r);
   const NumericalScalar npq(n * q * (1.0 - q));
-  const NumericalScalar npqSqrt(sqrt(npq));
+  const NumericalScalar npqSqrt(std::sqrt(npq));
   const NumericalScalar b(1.15 + 2.53 * npqSqrt);
   const NumericalScalar a(-0.0873 + 0.0248 * b + 0.01 * q);
   const NumericalScalar c(n * q + 0.5);
@@ -362,7 +362,7 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
     if (v <= urvr)
     {
       u = v / vr - 0.43;
-      k = floor((2 * a / (0.5 - fabs(u)) + b) * u + c);
+      k = floor((2 * a / (0.5 - std::abs(u)) + b) * u + c);
       return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     } // v <= urvr
     if (v >= vr)
@@ -375,11 +375,11 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
       u = (u < 0.0 ? -0.5 : 0.5) - u;
       v = RandomGenerator::Generate() * vr;
     } // v < vr
-    const NumericalScalar us(0.5 - fabs(u));
+    const NumericalScalar us(0.5 - std::abs(u));
     k = floor((2.0 * a / us + b) * u + c);
     if ((k < 0.0) || (k > n)) continue;
     v = v * alpha / (a / (us * us) + b);
-    const NumericalScalar km(fabs(k - m));
+    const NumericalScalar km(std::abs(k - m));
     // Recursive evaluation of f(k)
     if (km <= 15)
     {
@@ -408,16 +408,16 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
       continue;
     } // km <= 15
     // Squeeze-acceptance or rejection
-    v = log(v);
+    v = std::log(v);
     const NumericalScalar rho(km / npq * (((km / 3.0 + 0.625) * km + 1.0 / 6.0) / npq + 0.5));
     const NumericalScalar t(-km * km / (2.0 * npq));
     if (v < t - rho) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     if (v > t + rho) continue;
     const NumericalScalar nm(n - m + 1);
-    const NumericalScalar h((m + 0.5) * log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedInteger>(m)) + fcBinomial(static_cast<UnsignedInteger>(n - m)));
+    const NumericalScalar h((m + 0.5) * std::log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedInteger>(m)) + fcBinomial(static_cast<UnsignedInteger>(n - m)));
     // Final acceptance-rejection
     const NumericalScalar nk(n - k + 1);
-    if (v <= h + (n + 1) * log(nm / nk) + (k + 0.5) * log(nk * r / (k + 1)) - fcBinomial(static_cast<UnsignedInteger>(k)) - fcBinomial(static_cast<UnsignedInteger>(n - k))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+    if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - fcBinomial(static_cast<UnsignedInteger>(k)) - fcBinomial(static_cast<UnsignedInteger>(n - k))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
   } // for(;;)
 } // rBinomial
 
@@ -454,11 +454,11 @@ NumericalScalar DistFunc::rGamma(const NumericalScalar k)
   NumericalScalar alpha(k);
   if (alpha < 1.0)
   {
-    correction = pow(RandomGenerator::Generate(), 1.0 / alpha);
+    correction = std::pow(RandomGenerator::Generate(), 1.0 / alpha);
     ++alpha;
   }
   const NumericalScalar d(alpha - 0.3333333333333333333333333);
-  const NumericalScalar c(1.0 / sqrt(9.0 * d));
+  const NumericalScalar c(1.0 / std::sqrt(9.0 * d));
   NumericalScalar x;
   NumericalScalar v;
   for (;;)
@@ -477,7 +477,7 @@ NumericalScalar DistFunc::rGamma(const NumericalScalar k)
     // problem described in
     if (u < 1.0 - 0.03431688782875261396035499 * x2 * x2) return correction * d * v;
     // Acceptation test
-    if (log(u) < 0.5 * x2 + d * (1.0 - v + log(v))) return correction * d * v;
+    if (std::log(u) < 0.5 * x2 + d * (1.0 - v + std::log(v))) return correction * d * v;
   }
 } // End of rGamma
 
@@ -528,14 +528,14 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
   if (x <= 0.0) return 0.0;
   const NumericalScalar halfNu(0.5 * nu);
   // Early exit for lambda == 0, central ChiSquare PDF
-  if (fabs(lambda) < precision) return exp((halfNu - 1.0) * log(x) - 0.5 * x - SpecFunc::LnGamma(halfNu) - halfNu * M_LN2);
+  if (std::abs(lambda) < precision) return std::exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LnGamma(halfNu) - halfNu * M_LN2);
   // Case lambda <> 0
   const NumericalScalar halfLambda(0.5 * lambda);
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
   const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfLambda))));
   // Loop forward and backward starting from k
   // Initialization
-  NumericalScalar pForward(exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * log(lambda)));
+  NumericalScalar pForward(std::exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * std::log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * std::log(lambda)));
   NumericalScalar pBackward(pForward);
   NumericalScalar value(pForward);
   NumericalScalar error(SpecFunc::MaxNumericalScalar);
@@ -551,7 +551,7 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
   // Here, i is an UnsignedInteger as it is only a loop counter
   UnsignedInteger i(1);
   const UnsignedInteger imax(std::min(k, maximumIteration));
-  //        while((error > precision * (fabs(value) + precision)) && (i <= imax))
+  //        while((error > precision * (std::abs(value) + precision)) && (i <= imax))
   while((error > 0.0) && (i <= imax))
   {
     FORWARD_ITERATION;
@@ -562,7 +562,7 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
     ++i;
   }
   // Do we have to perform further forward iterations?
-  //        while ((error > precision * (fabs(value) + precision)) && (i <= MaximumIteration))
+  //        while ((error > precision * (std::abs(value) + precision)) && (i <= MaximumIteration))
   while ((error > 0.0) && (i <= maximumIteration))
   {
     FORWARD_ITERATION;
@@ -572,7 +572,7 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
   }
 #undef FORWARD_ITERATION
 #undef BACKWARD_ITERATION
-  if (error > precision * (fabs(value) + precision)) LOGWARN(OSS() << "Warning: in DistFunc::dNonCentralChiSquare(nu, lambda, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", lambda=" << lambda << " and x=" << x);
+  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in DistFunc::dNonCentralChiSquare(nu, lambda, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", lambda=" << lambda << " and x=" << x);
   // Clip to [0,+inf[ in order to get rid of small rounding error
   return (value <= 0.0 ? 0.0 : value);
 }
@@ -595,16 +595,16 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
   const NumericalScalar halfNu(0.5 * nu);
   const NumericalScalar halfX(0.5 * x);
   // Early exit for lambda == 0, central ChiSquare PDF
-  if (fabs(lambda) < precision) return pGamma(halfNu, halfX, tail);
+  if (std::abs(lambda) < precision) return pGamma(halfNu, halfX, tail);
   // Case lambda <> 0
   const NumericalScalar halfLambda(0.5 * lambda);
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
   const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfLambda))));
   // Loop forward and backward starting from k
   // Initialization
-  const NumericalScalar logHalfX(log(halfX));
-  NumericalScalar xForward(exp((halfNu + k - 1) * logHalfX - halfX - SpecFunc::LogGamma(halfNu + k)));
-  NumericalScalar expForward(exp(-halfLambda + k * log(halfLambda) - SpecFunc::LogGamma(k + 1.0)));
+  const NumericalScalar logHalfX(std::log(halfX));
+  NumericalScalar xForward(std::exp((halfNu + k - 1) * logHalfX - halfX - SpecFunc::LogGamma(halfNu + k)));
+  NumericalScalar expForward(std::exp(-halfLambda + k * std::log(halfLambda) - SpecFunc::LogGamma(k + 1.0)));
   NumericalScalar gammaForward(pGamma(halfNu + k, halfX));
   NumericalScalar pForward(expForward * gammaForward);
   NumericalScalar xBackward(xForward);
@@ -631,7 +631,7 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
   // Here, i is an UnsignedInteger as it is only a loop counter
   UnsignedInteger i(1);
   const UnsignedInteger imax(std::min(k, maximumIteration));
-  //        while((error > precision * (fabs(value) + precision)) && (i <= imax))
+  //        while((error > precision * (std::abs(value) + precision)) && (i <= imax))
   while((error > 0.0) && (i <= imax))
   {
     FORWARD_ITERATION;
@@ -642,7 +642,7 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
     ++i;
   }
   // Do we have to perform further forward iterations?
-  //        while ((error > precision * (fabs(value) + precision)) && (i <= MaximumIteration))
+  //        while ((error > precision * (std::abs(value) + precision)) && (i <= MaximumIteration))
   while ((error > 0.0) && (i <= maximumIteration))
   {
     FORWARD_ITERATION;
@@ -652,7 +652,7 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
   }
 #undef FORWARD_ITERATION
 #undef BACKWARD_ITERATION
-  if (error > precision * (fabs(value) + precision)) LOGWARN(OSS() << "Warning: in DistFunc::dNonCentralChiSquare(nu, lambda, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", lambda=" << lambda << " and x=" << x);
+  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in DistFunc::dNonCentralChiSquare(nu, lambda, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", lambda=" << lambda << " and x=" << x);
   // Clip to [0,1] in order to get rid of small rounding error
   value = (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
   // Check if we are asked for the tail CDF
@@ -807,7 +807,7 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
   if (p < 0.02425)
   {
     /* Rational approximation for tail region. */
-    const NumericalScalar q(sqrt(-2.0 * log(p)));
+    const NumericalScalar q(std::sqrt(-2.0 * std::log(p)));
     x = (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
         / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
   }
@@ -824,7 +824,7 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
   else
   {
     /* Rational approximation for tail region. */
-    const NumericalScalar q(sqrt(-2.0 * log1p(-p)));
+    const NumericalScalar q(std::sqrt(-2.0 * log1p(-p)));
     x = -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
         / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
   }
@@ -833,7 +833,7 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
      order) gives full machine precision... */
   // 2.50662827463100050241576528481 = sqrt(2.pi)
   const NumericalScalar e(pNormal(x) - p);
-  const NumericalScalar u(e * 2.50662827463100050241576528481 * exp(0.5 * x * x));
+  const NumericalScalar u(e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x));
   x -= u / (1.0 + 0.5 * x * u);
   return (tail ? -x : x);
 }
@@ -851,7 +851,7 @@ NumericalScalar DistFunc::rNormal()
     const NumericalScalar u(2.0 * RandomGenerator::Generate() - 1.0);
     const UnsignedInteger index(RandomGenerator::IntegerGenerate(DistFunc::NumberOfBandNormalZigurrat));
     /* Are we in a rectangular band of the ziggurat? */
-    if (fabs(u) < DistFunc::NormalZigguratRatio[index]) return u * NormalZigguratAbscissa[index + 1];
+    if (std::abs(u) < DistFunc::NormalZigguratRatio[index]) return u * NormalZigguratAbscissa[index + 1];
     /* No, we are either on a wedge or in the upper tail of the Normal distribution */
     /* Are we in the bottom band? Sample from the tail of the Normal distribution */
     if (index == DistFunc::NumberOfBandNormalZigurrat - 1)
@@ -861,8 +861,8 @@ NumericalScalar DistFunc::rNormal()
       /* Marsaglia method */
       do
       {
-        x = log(RandomGenerator::Generate()) / DistFunc::NormalZigguratTail;
-        y = log(RandomGenerator::Generate());
+        x = std::log(RandomGenerator::Generate()) / DistFunc::NormalZigguratTail;
+        y = std::log(RandomGenerator::Generate());
       }
       while (-(y + y) < x * x);
       return (u > 0.0) ? x - DistFunc::NormalZigguratTail : DistFunc::NormalZigguratTail - x;
@@ -871,9 +871,9 @@ NumericalScalar DistFunc::rNormal()
     const NumericalScalar xI(NormalZigguratAbscissa[index]);
     const NumericalScalar xIp1(NormalZigguratAbscissa[index + 1]);
     const NumericalScalar x(u * xIp1);
-    const NumericalScalar pdfX(  exp(-0.5 * x * x));
-    const NumericalScalar pdfI(  exp(-0.5 * xI * xI));
-    const NumericalScalar pdfIp1(exp(-0.5 * xIp1 * xIp1));
+    const NumericalScalar pdfX(  std::exp(-0.5 * x * x));
+    const NumericalScalar pdfI(  std::exp(-0.5 * xI * xI));
+    const NumericalScalar pdfIp1(std::exp(-0.5 * xIp1 * xIp1));
     if (RandomGenerator::Generate() * (pdfI - pdfIp1) < pdfX - pdfIp1) return x;
   }
 }
@@ -912,7 +912,7 @@ NumericalScalar DistFunc::rPoisson(const NumericalScalar lambda)
   if (mu < 6)
   {
     NumericalScalar x(0.0);
-    NumericalScalar sum(exp(-lambda));
+    NumericalScalar sum(std::exp(-lambda));
     NumericalScalar prod(sum);
     const NumericalScalar u(RandomGenerator::Generate());
     for (;;)
@@ -926,11 +926,11 @@ NumericalScalar DistFunc::rPoisson(const NumericalScalar lambda)
   // Large case
   const NumericalScalar hatCenter(lambda + 0.5);
   const NumericalScalar mode(floor(lambda));
-  const NumericalScalar logLambda(log(lambda));
+  const NumericalScalar logLambda(std::log(lambda));
   const NumericalScalar pdfMode(mode * logLambda - SpecFunc::LnGamma(mode + 1.0));
   // 2.943035529371538572764190 = 8 / e
   // 0.898916162058898740826254 = 3 - 2 sqr(3 / e)
-  const NumericalScalar hatWidth(sqrt(2.943035529371538572764190 * (lambda + 0.5)) + 0.898916162058898740826254);
+  const NumericalScalar hatWidth(std::sqrt(2.943035529371538572764190 * (lambda + 0.5)) + 0.898916162058898740826254);
   const NumericalScalar safetyBound(hatCenter + 6.0 * hatWidth);
   for (;;)
   {
@@ -944,7 +944,7 @@ NumericalScalar DistFunc::rPoisson(const NumericalScalar lambda)
     // Quick rejection
     if (u * (u - logPdf) > 1.0) continue;
     // Acceptance
-    if (2.0 * log(u) <= logPdf) return k;
+    if (2.0 * std::log(u) <= logPdf) return k;
   }
 }
 
@@ -984,10 +984,10 @@ NumericalScalar DistFunc::eZ1(const UnsignedInteger n)
   static NumericalScalar weights[128] = {7.7880553112849072198766294e-02, 7.4943512919414536910806816e-02, 6.9397141749149403969696237e-02, 6.1836746879648318333389484e-02, 5.3020239572973708333178304e-02, 4.3743820721247411296800373e-02, 3.4726352391828770445416924e-02, 2.6524913163345550162895103e-02, 1.9493216056892157244261750e-02, 1.3782486012401120501189296e-02, 9.3748300171492664629503913e-03, 6.1343092263553692729419654e-03, 3.8610584455446167914723509e-03, 2.3375177719222513086212317e-03, 1.3610623554229154160050607e-03, 7.6214868374154758836225128e-04, 4.1039424914329114912560963e-04, 2.1248156236438935169486303e-04, 1.0576827089812413493907134e-04, 5.0612366034536501431668631e-05, 2.3279572286335517177399318e-05, 1.0291000375452160655354603e-05, 4.3716822258132265765633340e-06, 1.7843872447157496838756722e-06, 6.9970863752445993319645415e-07, 2.6355296294457982485801659e-07, 9.5339500076719088603559665e-08, 3.3117736286643680141438096e-08, 1.1044763292458927772742952e-08, 3.5357534962409985484084265e-09, 1.0863147662329805097318140e-09, 3.2025234569583239758235623e-10, 9.0573898119730292539244887e-11, 2.4569445682930553563482259e-11, 6.3910595568724711910845065e-12, 1.5938054964152907343039923e-12, 3.8095919232928330906238773e-13, 8.7255716548816521833151253e-14, 1.9145600624729613090422991e-14, 4.0233405909344399451473717e-15, 8.0951675009613752719948473e-16, 1.5590499798725125935141981e-16, 2.8731516823222887474066625e-17, 5.0650721565888260826310931e-18, 8.5388712150794321468581963e-19, 1.3761221211258663377847429e-19, 2.1193549695588593255142755e-20, 3.1180535562838082396978111e-21, 4.3806011311093044092563723e-22, 5.8746940037473806331850174e-23, 7.5173209054033447555417709e-24, 9.1745690698535897008652337e-25, 1.0674922835552105657158543e-25, 1.1836003268604515384321003e-26, 1.2499832905811924753397716e-27, 1.2567593992729679307393964e-28, 1.2023503699854981391237349e-29, 1.0939938866854915092942988e-30, 9.4616999410627741962246371e-32, 7.7741057498528684818055696e-33, 6.0646535975418060617176232e-34, 4.4892461173993180351676461e-35, 3.1512300703857921867014789e-36, 2.0962490291314412221073794e-37, 1.3205879942102419576039463e-38, 7.8731309724410339834852054e-40, 4.4387936139837483446171576e-41, 2.3647681386310266830599492e-42, 1.1895249269031468696051071e-43, 5.6449598528648601040867566e-45, 2.5250874009530786161544321e-46, 1.0637272217126616433515017e-47, 4.2161469063242967027862854e-49, 1.5707547975689386981401980e-50, 5.4949672861369168167697578e-52, 1.8031127826300551915850409e-53, 5.5436741208780826872988904e-55, 1.5950823588115267095636623e-56, 4.2899178785744838761108310e-58, 1.0770598014915502881777703e-59, 2.5210019210640023596252402e-61, 5.4933568192556171804844677e-63, 1.1127348357056033046953705e-64, 2.0919910037640666023889327e-66, 3.6444488891998227750903798e-68, 5.8729939242428208168494011e-70, 8.7388392883152991177346810e-72, 1.1983435235137524938450365e-73, 1.5113381294896973696530902e-75, 1.7492932046071090072619502e-77, 1.8539433227865165645693191e-79, 1.7947949751038629650034721e-81, 1.5830825023894390544815014e-83, 1.2687510116986886750192806e-85, 9.2123101777701364185032765e-88, 6.0412782427518176337230762e-90, 3.5662449072374121768733826e-92, 1.8882726818582926654010717e-94, 8.9335232334505241260528038e-97, 3.7608844095106074694647086e-99, 1.4025800177880556273945875e-101, 4.6114419052210857911207097e-104, 1.3296527917278135803395156e-106, 3.3431060612647631418663216e-109, 7.2838408325905858803792272e-112, 1.3658255130442080104321089e-114, 2.1876645330156469909347131e-117, 2.9682322505121909735883514e-120, 3.3800825692122852526903147e-123, 3.1972924782982543066350585e-126, 2.4832856265123329861700072e-129, 1.5630453427246388490165028e-132, 7.8550152086622435117816579e-136, 3.0983962164454199109222893e-139, 9.4051577447557691199185888e-143, 2.1469376259019048933868626e-146, 3.5864591066294724118391333e-150, 4.2436752264252758983575152e-154, 3.4184301509636211134786682e-158, 1.7847924896743181968557422e-162, 5.6754752717640951349146435e-167, 1.0136208941909344983031939e-171, 9.1144573618340727008462260e-177, 3.5359397081504360617642767e-182, 4.6913583190766486697804951e-188, 1.4509334500270392274530570e-194, 5.0208177568884358829526795e-202, 2.9540145871800834681710394e-211};
   NumericalScalar value(0.0);
   // Least square approximation of eZ1
-  const NumericalScalar z0(-1.5270815222604243733 - 0.25091814704012410653 * log(n));
+  const NumericalScalar z0(-1.5270815222604243733 - 0.25091814704012410653 * std::log(n));
   for (UnsignedInteger i = 0; i < 128; ++i)
-    value += weights[i] * ((z0 + nodes[i]) * exp(-z0 * nodes[i]) * pow(pNormal(z0 + nodes[i], true), n - 1) + (z0 - nodes[i]) * exp(z0 * nodes[i]) * pow(pNormal(z0 - nodes[i], true), n - 1));
-  return n * exp(-0.5 * z0 * z0) * value;
+    value += weights[i] * ((z0 + nodes[i]) * std::exp(-z0 * nodes[i]) * std::pow(pNormal(z0 + nodes[i], true), n - 1) + (z0 - nodes[i]) * std::exp(z0 * nodes[i]) * std::pow(pNormal(z0 - nodes[i], true), n - 1));
+  return n * std::exp(-0.5 * z0 * z0) * value;
 }
 
 

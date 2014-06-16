@@ -147,14 +147,14 @@ NumericalScalar EllipticalDistribution::computeLogDensityGenerator(const Numeric
 {
   const NumericalScalar densityGenerator(computeDensityGenerator(betaSquare));
   if (densityGenerator == 0.0) return -SpecFunc::MaxNumericalScalar;
-  return log(densityGenerator);
+  return std::log(densityGenerator);
 }
 
 /* Compute the derivative of the density generator */
 NumericalScalar EllipticalDistribution::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
 {
   // Use centered finite difference
-  const NumericalScalar epsilon(pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 1.0 / 3.0));
+  const NumericalScalar epsilon(std::pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 1.0 / 3.0));
   return (computeDensityGenerator(betaSquare + epsilon) - computeDensityGenerator(betaSquare - epsilon)) / epsilon;
 }
 
@@ -162,7 +162,7 @@ NumericalScalar EllipticalDistribution::computeDensityGeneratorDerivative(const 
 NumericalScalar EllipticalDistribution::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
 {
   // Use centered finite difference
-  const NumericalScalar epsilon(pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 0.25));
+  const NumericalScalar epsilon(std::pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 0.25));
   return (computeDensityGenerator(betaSquare + epsilon) - 2.0 * computeDensityGenerator(betaSquare) + computeDensityGenerator(betaSquare - epsilon)) / (epsilon * epsilon);
 }
 
@@ -328,7 +328,7 @@ NumericalPoint EllipticalDistribution::getSigma() const
    distribution with nu < 2 */
 NumericalPoint EllipticalDistribution::getStandardDeviation() const
 {
-  return sqrt(covarianceScalingFactor_) * sigma_;
+  return std::sqrt(covarianceScalingFactor_) * sigma_;
 }
 
 /* Correlation matrix accessor */

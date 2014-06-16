@@ -28,14 +28,12 @@
 #include "PersistentObject.hxx"
 #include "NumericalMathFunction.hxx"
 #include "Interval.hxx"
-#include "OptimizationProblemImplementationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class OptimizationProblemImplementation
- * OptimizationProblemImplementation implements an algorithm for finding the
- * point the nearest to the origin of an implicitely defined manifold
+ * OptimizationProblemImplementation allows to describe an optimization problem
  */
 
 class OptimizationProblemImplementation
@@ -55,27 +53,40 @@ public:
                                     const NumericalMathFunction & inequalityConstraint,
                                     const Interval & bounds);
 
+  /** Virtual constructor */
+  virtual OptimizationProblemImplementation * clone() const;
+
   /** Objective functions accessor */
   NumericalMathFunction getObjective() const;
   void setObjective(const NumericalMathFunction & objective);
+  Bool hasMultipleObjective() const;
 
   /** Equality constraint function accessor */
   NumericalMathFunction getEqualityConstraint() const;
   void setEqualityConstraint(const NumericalMathFunction & equalityConstraint);
+  Bool hasEqualityConstraint() const;
 
   /** Inequality constraint function accessor */
   NumericalMathFunction getInequalityConstraint() const;
   void setInequalityConstraint(const NumericalMathFunction & inequalityConstraint);
+  Bool hasInequalityConstraint() const;
 
   /** Bounds accessor */
   Interval getBounds() const;
   void setBounds(const Interval & bounds);
+  Bool hasBounds() const;
+
+  /** Dimension accessor */
+  UnsignedInteger getDimension() const;
 
   /** String converter */
   virtual String __repr__() const;
 
-  /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
 
 private:
   // The objective function

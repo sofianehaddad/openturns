@@ -63,6 +63,7 @@ public:
   RandomWalkMetropolisHastings(const Distribution & prior,
                                const Distribution & conditional,
                                const NumericalMathFunction & model,
+                               const NumericalSample & parameters,
                                const NumericalSample & observations,
                                const NumericalPoint & initialState,
                                const DistributionCollection & proposal);

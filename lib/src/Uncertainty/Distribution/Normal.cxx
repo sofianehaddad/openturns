@@ -52,7 +52,7 @@ Normal::Normal(const UnsignedInteger dimension)
                            , CorrelationMatrix(dimension),
                            1.0,
                            "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, dimension)))
+  , normalizationFactor_(1.0 / std::sqrt(std::pow(2 * M_PI, dimension)))
   , hasIndependentCopula_(true)
 {
   // Compute the range, the upper class cannot do it.
@@ -67,7 +67,7 @@ Normal::Normal(const NumericalScalar mu,
                            , CorrelationMatrix(1)
                            , 1.0
                            , "Normal")
-  , normalizationFactor_(1.0 / sqrt(2 * M_PI))
+  , normalizationFactor_(1.0 / std::sqrt(2 * M_PI))
   , hasIndependentCopula_(true)
 {
   // Compute the range, the upper class cannot do it.
@@ -83,7 +83,7 @@ Normal::Normal(const NumericalPoint & mean,
                            , R
                            , 1.0
                            , "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, mean.getDimension())))
+  , normalizationFactor_(1.0 / std::sqrt(std::pow(2 * M_PI, mean.getDimension())))
   , hasIndependentCopula_(false)
 {
   // Compute the range, the upper class cannot do it.
@@ -98,7 +98,7 @@ Normal::Normal(const NumericalPoint & mean,
                            , IdentityMatrix(mean.getDimension())
                            , 1.0
                            , "Normal")
-  , normalizationFactor_(1.0 / sqrt(pow(2 * M_PI, mean.getDimension())))
+  , normalizationFactor_(1.0 / std::sqrt(std::pow(2 * M_PI, mean.getDimension())))
   , hasIndependentCopula_(false)
 {
   UnsignedInteger dimension(mean.getDimension());
@@ -108,11 +108,8 @@ Normal::Normal(const NumericalPoint & mean,
   CorrelationMatrix R(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    sigma[i] = sqrt(C(i, i));
-    for (UnsignedInteger j = 0; j < i; ++j)
-    {
-      R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
-    }
+    sigma[i] = std::sqrt(C(i, i));
+    for (UnsignedInteger j = 0; j < i; ++j) R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
   }
   // To check that the values are > 0. This call also compute the range.
   setSigma(sigma);
@@ -189,19 +186,19 @@ NumericalSample Normal::getSample(const UnsignedInteger size) const
  *  be written as p(x) = phi(t(x-mu)S^(-1)(x-mu))                      */
 NumericalScalar Normal::computeDensityGenerator(const NumericalScalar betaSquare) const
 {
-  return normalizationFactor_ * exp(-0.5 * betaSquare);
+  return normalizationFactor_ * std::exp(-0.5 * betaSquare);
 }
 
 /* Compute the derivative of the density generator */
 NumericalScalar Normal::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
 {
-  return -0.5 * normalizationFactor_ * exp(-0.5 * betaSquare);
+  return -0.5 * normalizationFactor_ * std::exp(-0.5 * betaSquare);
 }
 
 /* Compute the seconde derivative of the density generator */
 NumericalScalar Normal::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
 {
-  return 0.25 * normalizationFactor_ * exp(-0.5 * betaSquare);
+  return 0.25 * normalizationFactor_ * std::exp(-0.5 * betaSquare);
 }
 
 /* Get the CDF of the distribution */
@@ -229,7 +226,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Normal-SmallDimension
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
+    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
     const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" ));
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
@@ -269,7 +266,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
     if ((value >= 1.0 - ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
-    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
+    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
@@ -282,12 +279,12 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Normal::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return exp(computeLogCharacteristicFunction(x));
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
 NumericalComplex Normal::computeCharacteristicFunction(const NumericalPoint & x) const
 {
-  return exp(computeLogCharacteristicFunction(x));
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
 NumericalComplex Normal::computeLogCharacteristicFunction(const NumericalScalar x) const
@@ -336,7 +333,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Normal-SmallDimension
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
+    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
     const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber" ));
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Normal-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
@@ -366,7 +363,7 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
     if ((value >= 1.0 - ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
-    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
+    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
@@ -417,10 +414,10 @@ NumericalScalar Normal::computeConditionalPDF(const NumericalScalar x,
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
+    meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
   }
-  meanRos = mean_[conditioningDimension] - sigmaRos * sqrt(sigma_[conditioningDimension]) * meanRos;
-  return exp(-0.5 * pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * sqrt(2.0 * M_PI));
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+  return std::exp(-0.5 * std::pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * std::sqrt(2.0 * M_PI));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -436,9 +433,9 @@ NumericalScalar Normal::computeConditionalCDF(const NumericalScalar x,
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
+    meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
   }
-  meanRos = mean_[conditioningDimension] - sigmaRos * sqrt(sigma_[conditioningDimension]) * meanRos;
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
   return DistFunc::pNormal((x - meanRos) / sigmaRos);
 }
 
@@ -456,11 +453,11 @@ NumericalScalar Normal::computeConditionalQuantile(const NumericalScalar q,
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
+    meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
   }
-  meanRos = mean_[conditioningDimension] - sigmaRos * sqrt(sigma_[conditioningDimension]) * meanRos;
-  if (q == 0.0) return meanRos - 0.5 * sigmaRos * sqrt(4.0 * (log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
-  if (q == 1.0) return meanRos + 0.5 * sigmaRos * sqrt(4.0 * (log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+  if (q == 0.0) return meanRos - 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
+  if (q == 1.0) return meanRos + 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
   return meanRos + sigmaRos * DistFunc::qNormal(q);
 }
 

@@ -51,14 +51,14 @@ NumericalScalar StudentCDF(const NumericalScalar nu,
 {
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   if (x == 0.0) return 0.5;
-  if (nu == 1.0) return (tail ? 0.5 - (atan(x) * M_1_PI) : 0.5 + (atan(x) * M_1_PI));
+  if (nu == 1.0) return (tail ? 0.5 - (std::atan(x) * M_1_PI) : 0.5 + (std::atan(x) * M_1_PI));
   const NumericalScalar x2(x * x);
-  if (nu == 2.0) return (tail ? 0.5 - 0.5 * (x / sqrt(2.0 + x2)) : 0.5 + 0.5 * (x / sqrt(2.0 + x2)));
-  if (nu == 3.0) return (tail ? 0.5 - (atan(x / sqrt(3.0)) * M_1_PI + x * sqrt(3.0) / (M_PI * (3.0 + x2))) : 0.5 + (atan(x / sqrt(3.0)) * M_1_PI + x * sqrt(3.0) / (M_PI * (3.0 + x2))));
-  if (nu == 4.0) return (tail ? 0.5 - (0.5 * x * (x2 + 6.0) * pow(4.0 + x2, -1.5)) : 0.5 + (0.5 * x * (x2 + 6.0) * pow(4.0 + x2, -1.5)));
-  if (nu == 5.0) return (tail ? 0.5 - (atan(x / sqrt(5.0)) * M_1_PI + x * sqrt(5.0) * (3.0 * x2 + 25.0) / (3.0 * M_PI * pow(5.0 + x2, 2))) : 0.5 + (atan(x / sqrt(5.0)) * M_1_PI + x * sqrt(5) * (3.0 * x2 + 25.0) / (3.0 * M_PI * pow(5.0 + x2, 2))));
-  if (nu == 6.0) return (tail ? 0.5 - (0.25 * x * (135.0 + x2 * (30.0 + 2.0 * x2)) * pow(6.0 + x2, -2.5)) : 0.5 + (0.25 * x * (135.0 + x2 * (30.0 + 2.0 * x2)) * pow(6.0 + x2, -2.5)));
-  if (nu == 7.0) return (tail ? 0.5 - (atan(x / sqrt(7.0)) * M_1_PI + x * sqrt(7.0) * (1617.0 + x2 * (280.0 + 15.0 * x2)) / (15.0 * M_PI * pow(7.0 + x2, 3))) : 0.5 + (atan(x / sqrt(7.0)) * M_1_PI + x * sqrt(7.0) * (1617.0 + x2 * (280.0 + 15.0 * x2)) / (15.0 * M_PI * pow(7.0 + x2, 3))));
+  if (nu == 2.0) return (tail ? 0.5 - 0.5 * (x / std::sqrt(2.0 + x2)) : 0.5 + 0.5 * (x / std::sqrt(2.0 + x2)));
+  if (nu == 3.0) return (tail ? 0.5 - (std::atan(x / std::sqrt(3.0)) * M_1_PI + x * std::sqrt(3.0) / (M_PI * (3.0 + x2))) : 0.5 + (std::atan(x / std::sqrt(3.0)) * M_1_PI + x * std::sqrt(3.0) / (M_PI * (3.0 + x2))));
+  if (nu == 4.0) return (tail ? 0.5 - (0.5 * x * (x2 + 6.0) * std::pow(4.0 + x2, -1.5)) : 0.5 + (0.5 * x * (x2 + 6.0) * std::pow(4.0 + x2, -1.5)));
+  if (nu == 5.0) return (tail ? 0.5 - (std::atan(x / std::sqrt(5.0)) * M_1_PI + x * std::sqrt(5.0) * (3.0 * x2 + 25.0) / (3.0 * M_PI * std::pow(5.0 + x2, 2))) : 0.5 + (std::atan(x / std::sqrt(5.0)) * M_1_PI + x * std::sqrt(5) * (3.0 * x2 + 25.0) / (3.0 * M_PI * std::pow(5.0 + x2, 2))));
+  if (nu == 6.0) return (tail ? 0.5 - (0.25 * x * (135.0 + x2 * (30.0 + 2.0 * x2)) * std::pow(6.0 + x2, -2.5)) : 0.5 + (0.25 * x * (135.0 + x2 * (30.0 + 2.0 * x2)) * std::pow(6.0 + x2, -2.5)));
+  if (nu == 7.0) return (tail ? 0.5 - (std::atan(x / std::sqrt(7.0)) * M_1_PI + x * std::sqrt(7.0) * (1617.0 + x2 * (280.0 + 15.0 * x2)) / (15.0 * M_PI * std::pow(7.0 + x2, 3))) : 0.5 + (std::atan(x / std::sqrt(7.0)) * M_1_PI + x * std::sqrt(7.0) * (1617.0 + x2 * (280.0 + 15.0 * x2)) / (15.0 * M_PI * std::pow(7.0 + x2, 3))));
 #ifdef HAVE_BOOST
   return (tail ? boost::math::cdf(boost::math::complement(boost::math::students_t(nu), x)) : boost::math::cdf(boost::math::students_t(nu), x)) ;
 #endif
@@ -71,15 +71,15 @@ NumericalScalar StudentCDF(const NumericalScalar nu,
     // ~ \phi(x)/x+x\phi(x)[c1/nu + ... + c4/nu^4]
     // -> \epsilon/x = x * c4 /nu^4 -> nu=(x^2*c4/\epsilon)^{1/4}
     const NumericalScalar c4((21.0 / 2048.0 + (61.0 / 6144.0 + (-71.0 / 30720.0 + (-313.0 / 30720.0 + (-2141.0 / 92160.0 + (445.0 / 18432.0 + (-25.0 / 6144.0 + x2 / 6144.0) * x2) * x2) * x2) * x2) * x2) * x2) * x2);
-    const NumericalScalar lastContribution(fabs(c4 * inu * inu * inu * inu * x));
-    NumericalScalar normalPDF(SpecFunc::ISQRT2PI * exp(-0.5 * x2));
-    NumericalScalar normalCCDF(DistFunc::pNormal(fabs(x), true));
+    const NumericalScalar lastContribution(std::abs(c4 * inu * inu * inu * inu * x));
+    NumericalScalar normalPDF(SpecFunc::ISQRT2PI * std::exp(-0.5 * x2));
+    NumericalScalar normalCCDF(DistFunc::pNormal(std::abs(x), true));
     if (normalCCDF > SpecFunc::NumericalScalarEpsilon * normalPDF * lastContribution)
     {
       const NumericalScalar c1(0.25 * (1.0 + x2));
       const NumericalScalar c2((-3.0 + x2 * (-5.0 + x2 * (-7.0 + 3.0 * x2))) / 96.0);
       const NumericalScalar c3((-15.0 + x2 * (-3.0 + x2 * (6.0 + x2 * (14.0 + x2 * (-11.0 + x2))))) / 384.0);
-      const NumericalScalar correction(fabs(x) * (inu * (c1 + inu * (c2 + inu * (c3 + inu * c4)))));
+      const NumericalScalar correction(std::abs(x) * (inu * (c1 + inu * (c2 + inu * (c3 + inu * c4)))));
       const NumericalScalar value(normalCCDF + normalPDF * correction);
       return (((x >= 0.0) == tail) ? value : 0.5 + (0.5 - value));
     }
@@ -105,24 +105,24 @@ NumericalScalar StudentQuantile(const NumericalScalar nu,
   if (nu == 1.0)
   {
     NumericalScalar value(0.0);
-    if (fabs(u) < 0.025373628595705897178)
+    if (std::abs(u) < 0.025373628595705897178)
     {
       const NumericalScalar u2(u * u);
       value = (-0.31830988618379067153 + (1.0471975511965977462 + (0.68902837067332933726 + (0.64766070854027820799 + 0.63921549794217821540 * u2) * u2) * u2) * u2) / u;
     }
-    else value = tan((u - 0.5) * M_PI);
+    else value = std::tan((u - 0.5) * M_PI);
     return (tail == (p < 0.5) ? -value : value);
   }
   if (nu == 2.0)
   {
     const NumericalScalar alpha(2.0 * u - 1.0);
-    const NumericalScalar value(alpha * sqrt(2.0 / (0.5 + (0.5 - alpha * alpha))));
+    const NumericalScalar value(alpha * std::sqrt(2.0 / (0.5 + (0.5 - alpha * alpha))));
     return (tail == (p < 0.5) ? -value : value);
   }
   if (nu == 4.0)
   {
-    const NumericalScalar alphaSqrt(2.0 * sqrt(p * (0.5 + (0.5 - p))));
-    const NumericalScalar value(2.0 * sqrt((cos(acos(alphaSqrt) / 3.0) / alphaSqrt - 0.5) - 0.5));
+    const NumericalScalar alphaSqrt(2.0 * std::sqrt(p * (0.5 + (0.5 - p))));
+    const NumericalScalar value(2.0 * std::sqrt((std::cos(std::acos(alphaSqrt) / 3.0) / alphaSqrt - 0.5) - 0.5));
     // Warning! Here the test is different from the other ones
     return (tail == (p > 0.5) ? -value : value);
   }
@@ -132,10 +132,10 @@ NumericalScalar StudentQuantile(const NumericalScalar nu,
 #ifdef USE_NEW_ALGO
   // Central part
   const NumericalScalar delta(1.0 / nu);
-  const NumericalScalar normalizationFactor(sqrt(nu * M_PI) * exp(SpecFunc::LogGamma(0.5 * nu) - SpecFunc::LogGamma(0.5 * (nu + 1.0))));
+  const NumericalScalar normalizationFactor(std::sqrt(nu * M_PI) * std::exp(SpecFunc::LogGamma(0.5 * nu) - SpecFunc::LogGamma(0.5 * (nu + 1.0))));
   const NumericalScalar v((p - 0.5) * normalizationFactor);
   const NumericalScalar c30(0.11362104808202311779e-7 + (-0.10994648871905821641e-6 + (0.52754948010031397619e-6 + (-0.16579190541298212282e-5 + (0.37966880029665235514e-5 + (-0.66596982230496113818e-5 + (0.91156850995515265275e-5 + (-0.96136067004897554437e-5 + (0.72052743951206692720e-5 + (-0.23729574256549482204e-5 + (-0.31083841717988836362e-5 + (0.72241563770271714564e-5 + (-0.88503346702785761842e-5 + (0.81494033025679967378e-5 + (-0.61299787607422707781e-5 + (0.38918328140793891542e-5 + (-0.21177061849789713922e-5 + (0.99481889094179105397e-6 + (-0.40449311472598426761e-6 + (0.14225421139331034806e-6 + (-0.43122948806183507233e-7 + (0.11198634674338365791e-7 + (-0.24684919226898448232e-8 + (0.45586959658322983050e-9 + (-0.69253251498584479106e-10 + (0.84307519236004815165e-11 + (-0.79095838183517833726e-12 + (0.53696817752523318081e-13 + (-0.23480084614199964747e-14 + (0.49659938970935851773e-16 + 0.19701319568021683118e-83 * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta) * delta);
-  if (c30 * pow(fabs(v), 30) < SpecFunc::Precision)
+  if (c30 * std::pow(std::abs(v), 30) < SpecFunc::Precision)
   {
     const NumericalScalar v2(v * v);
     const NumericalScalar c1(0.16666666666666666667e0 + 0.16666666666666666667e0 * delta);
@@ -172,22 +172,22 @@ NumericalScalar StudentQuantile(const NumericalScalar nu,
   // Here we try to use an asymptotic tail expansion. We limit the expansion to the fifth term as the evaluation of the d coefficients becomes unstable for moderate to large nu
   //  const NumericalScalar d5(-nu / (nu + 2.0) * (nu + 1.0) / (nu + 2.0) * (nu + 3.0) / (nu + 2.0) * (nu + 9.0) / (nu + 2.0) * (-0.1 + (0.725 + (-1.578125 + (0.46875 + (1.22890625 + (0.353125 + 0.02734375 * nu) * nu) * nu) * nu) * nu) * nu) / ((nu + 2.0) * (nu + 4.0) * (nu + 4.0) * (nu + 6.0) * (nu + 8.0) * (nu + 10.0)));
   const NumericalScalar d4(-nu / (nu + 2.0) * (nu + 1.0) / (nu + 2.0) * (nu + 7.0) / (nu + 2.0) * (0.16666666666666666667 + (-0.875 + (0.74479166666666666667 + (1.2109375 + (0.40104166666666666667 + 0.0390625 * nu) * nu) * nu) * nu) * nu) / ((nu + 2.0) * (nu + 4.0) * (nu + 4.0) * (nu + 6.0) * (nu + 8.0)));
-  const NumericalScalar z(pow(sqrt(nu) * u * normalizationFactor, 1.0 / nu));
+  const NumericalScalar z(std::pow(std::sqrt(nu) * u * normalizationFactor, 1.0 / nu));
   const NumericalScalar z2(z * z);
-  //  if (fabs(d5 * pow(z2, 5)) < SpecFunc::Precision)
-  if (fabs(d4 * pow(z2, 4)) < SpecFunc::Precision)
+  //  if (std::abs(d5 * std::pow(z2, 5)) < SpecFunc::Precision)
+  if (std::abs(d4 * std::pow(z2, 4)) < SpecFunc::Precision)
   {
     const NumericalScalar d1(-0.5 * (nu + 1.0) / (nu + 2.0));
     const NumericalScalar d2(-0.125 * (nu / (nu + 2.0) * (nu + 1.0) / (nu + 2.0) * (nu + 3.0) / (nu + 4.0)));
     const NumericalScalar d3(-nu / (nu + 2.0) * (nu + 1.0) / (nu + 2.0) * (nu + 5.0) / (nu + 2.0) * (-0.041666666666666666667 + (0.14583333333333333333 + 0.0625 * nu) * nu) / ((nu + 2.0) * (nu + 6.0)));
     //      const NumericalScalar d4(-nu / (nu + 2.0) * (nu + 1.0) / (nu + 2.0) * (nu + 7.0) / (nu + 2.0) * (0.16666666666666666667 + (-0.875 + (0.74479166666666666667 + (1.2109375 + (0.40104166666666666667 + 0.0390625 * nu) * nu) * nu) * nu) * nu) / ((nu + 2.0) * (nu + 4.0) * (nu + 4.0) * (nu + 6.0) * (nu + 8.0)));
-    //      const NumericalScalar value(sqrt(nu) / z * (1.0 + (d1 + (d2 + (d3 + (d4 + d5 * z2) * z2) * z2) * z2) * z2));
-    const NumericalScalar value(sqrt(nu) / z * (1.0 + (d1 + (d2 + (d3 + d4 * z2) * z2) * z2) * z2));
+    //      const NumericalScalar value(std::sqrt(nu) / z * (1.0 + (d1 + (d2 + (d3 + (d4 + d5 * z2) * z2) * z2) * z2) * z2));
+    const NumericalScalar value(std::sqrt(nu) / z * (1.0 + (d1 + (d2 + (d3 + d4 * z2) * z2) * z2) * z2));
     return (tail == (p < 0.5) ? value : -value);
   }
 #endif
   // Finally, if neither the central series nor the tail series apply, use the incomplete beta inverse function
-  const NumericalScalar omega(sqrt(nu * (1.0 / SpecFunc::RegularizedIncompleteBetaInverse(0.5 * nu, 0.5, 2.0 * u) - 1.0)));
+  const NumericalScalar omega(std::sqrt(nu * (1.0 / SpecFunc::RegularizedIncompleteBetaInverse(0.5 * nu, 0.5, 2.0 * u) - 1.0)));
   return ((p > 0.5) == tail ? -omega : omega);
 }
 
@@ -206,7 +206,7 @@ NumericalScalar StudentRealization(const NumericalScalar nu)
     g = DistFunc::rGamma(0.5 * nu);
   }
   while (g == 0.0);
-  return sqrt(0.5 * nu / g) * n;
+  return std::sqrt(0.5 * nu / g) * n;
 }
 
 /************************************************************************************************************/
@@ -231,11 +231,11 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   // Check nu
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Special case when |delta| << 1
-  if (fabs(delta) < 4.0 * SpecFunc::Precision * nu) return DistFunc::pStudent(nu, x, tail);
+  if (std::abs(delta) < 4.0 * SpecFunc::Precision * nu) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
   if (nu > 1.0 / SpecFunc::Precision) return DistFunc::pNormal(x - nu);
   // Special case when |x| << 1
-  if (fabs(x) < SpecFunc::Precision) return DistFunc::pNormal(-delta, tail);
+  if (std::abs(x) < SpecFunc::Precision) return DistFunc::pNormal(-delta, tail);
   // Small nu
   if (delta < 100.0)
   {
@@ -274,41 +274,41 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   const NumericalScalar halfNu(0.5 * nu);
 
   // Estimate the position of the modus MOD of the FUNC
-  mode = (x * sqrt(4 * nu * nuMinus2 + xSquare * (delta * delta + 4 * nuMinus2)) - delta * (xSquare + 2 * nu)) / (2 * (xSquare + nu));
-  const NumericalScalar dZ(std::min(0.5 * fabs(mode + delta), 0.01));
+  mode = (x * std::sqrt(4 * nu * nuMinus2 + xSquare * (delta * delta + 4 * nuMinus2)) - delta * (xSquare + 2 * nu)) / (2 * (xSquare + nu));
+  const NumericalScalar dZ(std::min(0.5 * std::abs(mode + delta), 0.01));
   NumericalPoint dMode(3);
   dMode[0] = mode - dZ;
   dMode[1] = mode;
   dMode[2] = mode + dZ;
   const NumericalScalar theta(nu / xSquare);
   NumericalPoint q(3);
-  q[0] = theta * pow(dMode[0] + delta, 2);
-  q[1] = theta * pow(dMode[1] + delta, 2);
-  q[2] = theta * pow(dMode[2] + delta, 2);
+  q[0] = theta * std::pow(dMode[0] + delta, 2);
+  q[1] = theta * std::pow(dMode[1] + delta, 2);
+  q[2] = theta * std::pow(dMode[2] + delta, 2);
   // Estimate the value of log(FUNC) around the mode point
   NumericalPoint logFMode(3);
-  logFMode[0] = const1 + 0.5 * (nuMinus2 * log(q[0] / nu) + nu - q[0] - dMode[0] * dMode[0]);
-  logFMode[1] = const1 + 0.5 * (nuMinus2 * log(q[1] / nu) + nu - q[1] - dMode[1] * dMode[1]);
-  logFMode[2] = const1 + 0.5 * (nuMinus2 * log(q[2] / nu) + nu - q[2] - dMode[2] * dMode[2]);
+  logFMode[0] = const1 + 0.5 * (nuMinus2 * std::log(q[0] / nu) + nu - q[0] - dMode[0] * dMode[0]);
+  logFMode[1] = const1 + 0.5 * (nuMinus2 * std::log(q[1] / nu) + nu - q[1] - dMode[1] * dMode[1]);
+  logFMode[2] = const1 + 0.5 * (nuMinus2 * std::log(q[2] / nu) + nu - q[2] - dMode[2] * dMode[2]);
   // For given logRelTolBound estimate the logAbsoluteToleranceBound
   const NumericalScalar logAbsoluteToleranceBound(logFMode[1] + logRelTolBound);
   // Estimate the integration limits by quadratic approximation
   const NumericalScalar a(0.5 * ((logFMode[0] - logFMode[1]) + (logFMode[2] - logFMode[1])) / (dZ * dZ));
   const NumericalScalar b(0.5 * (logFMode[0] - logFMode[2]) / dZ);
-  const NumericalScalar discriminantSqrt(sqrt(b * b + 4 * a * logRelTolBound));
+  const NumericalScalar discriminantSqrt(std::sqrt(b * b + 4 * a * logRelTolBound));
   const NumericalScalar denominator(2 * a);
   NumericalScalar lowerBound0(std::max(-zUpperBound, (discriminantSqrt - b) / denominator));
   NumericalScalar upperBound0(std::max(-zUpperBound, std::min(zUpperBound, -(discriminantSqrt + b) / denominator)));
   // Find zAbsoluteToleranceBound by solving: logAbsoluteToleranceBound = log(normpdf(z))
-  const NumericalScalar zAbsoluteToleranceBound(std::min(zUpperBound, sqrt(-1.8378770664093454835606594728112352 - 2 * logAbsoluteToleranceBound)));
+  const NumericalScalar zAbsoluteToleranceBound(std::min(zUpperBound, std::sqrt(-1.8378770664093454835606594728112352 - 2 * logAbsoluteToleranceBound)));
   if (!useChiSquareTail)
   {
     NumericalScalar quantileUpper(0.0);
     // Estimate quantile of chi^2 distribution
     // with nu degrees of freedom, see INGLOT (2010, Eqn. A.3)
-    if (nu > 1) quantileUpper = std::max(0.0, nu + 2 * tUpper + 1.62 * sqrt(nu * tUpper) + 0.63012 * sqrt(nu) * log(tUpper) - 1.12032 * sqrt(nu) - 2.48 * sqrt(tUpper) - 0.65381 * log(tUpper) - 0.22872);
+    if (nu > 1) quantileUpper = std::max(0.0, nu + 2 * tUpper + 1.62 * std::sqrt(nu * tUpper) + 0.63012 * std::sqrt(nu) * std::log(tUpper) - 1.12032 * std::sqrt(nu) - 2.48 * std::sqrt(tUpper) - 0.65381 * std::log(tUpper) - 0.22872);
     else quantileUpper = 6.739648382445014e+01;
-    const NumericalScalar zQuantileUpper(sqrt((quantileUpper / nu) * xSquare) - delta);
+    const NumericalScalar zQuantileUpper(std::sqrt((quantileUpper / nu) * xSquare) - delta);
     // Conservative estimate of the upper integration limit upperBound:
     // NORMPDF is sufficiently small OR CHI2CDF is close to 1.
     upperBound = std::min(zAbsoluteToleranceBound, zQuantileUpper);
@@ -319,9 +319,9 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   else
   {
     NumericalScalar quantileLower(0.0);
-    if (nu > 1) quantileLower = std::max(0.0, nu + 2 * tLower + 1.62 * sqrt(nu * tLower) + 0.63012 * sqrt(nu) * log(tLower) - 1.12032 * sqrt(nu) - 2.48 * sqrt(tLower) - 0.65381 * log(tLower) - 0.22872);
+    if (nu > 1) quantileLower = std::max(0.0, nu + 2 * tLower + 1.62 * std::sqrt(nu * tLower) + 0.63012 * std::sqrt(nu) * std::log(tLower) - 1.12032 * std::sqrt(nu) - 2.48 * std::sqrt(tLower) - 0.65381 * std::log(tLower) - 0.22872);
     else quantileLower = 0.0;
-    const NumericalScalar zQuantileLower(sqrt((quantileLower / nu) * xSquare) - delta);
+    const NumericalScalar zQuantileLower(std::sqrt((quantileLower / nu) * xSquare) - delta);
     const NumericalScalar lowerBound1(std::max(-zAbsoluteToleranceBound, zQuantileLower));
     lowerBound = std::max(-delta, lowerBound1);
     if ((nu > 1e4) && (mode > -zUpperBound) && (mode < zUpperBound)) upperBound0 = mode + (mode - lowerBound);
@@ -346,21 +346,21 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   {
     // Ith interval at the left of the mode
     const NumericalScalar ci(lowerBound + (i + 0.5) * dLowerBound);
-    NumericalScalar contributionLeft(wg0 * DistFunc::pGamma(halfNu, omega * pow(ci + delta, 2), useChiSquareTail) * exp(-0.5 * ci * ci) * SpecFunc::ISQRT2PI);
+    NumericalScalar contributionLeft(wg0 * DistFunc::pGamma(halfNu, omega * std::pow(ci + delta, 2), useChiSquareTail) * std::exp(-0.5 * ci * ci) * SpecFunc::ISQRT2PI);
     // Ith interval at the right of the mode
     const NumericalScalar xii(upperBound + (i + 0.5) * dUpperBound);
-    NumericalScalar contributionRight(wg0 * DistFunc::pGamma(halfNu, omega * pow(xii + delta, 2), useChiSquareTail) * exp(-0.5 * xii * xii) * SpecFunc::ISQRT2PI);
+    NumericalScalar contributionRight(wg0 * DistFunc::pGamma(halfNu, omega * std::pow(xii + delta, 2), useChiSquareTail) * std::exp(-0.5 * xii * xii) * SpecFunc::ISQRT2PI);
     for (UnsignedInteger j = 0; j < xg.getSize() / 2; ++j)
     {
       const NumericalScalar zetaj(xg[2 * j + 1]);
       // Contribution of the left interval
       const NumericalScalar zj_m(ci - wLowerBound * zetaj);
       const NumericalScalar zj_p(ci + wLowerBound * zetaj);
-      contributionLeft += wg[j] * SpecFunc::ISQRT2PI * (DistFunc::pGamma(halfNu, omega * pow(zj_m + delta, 2), useChiSquareTail) * exp(-0.5 * zj_m * zj_m) + DistFunc::pGamma(halfNu, omega * pow(zj_p + delta, 2), useChiSquareTail) * exp(-0.5 * zj_p * zj_p));
+      contributionLeft += wg[j] * SpecFunc::ISQRT2PI * (DistFunc::pGamma(halfNu, omega * std::pow(zj_m + delta, 2), useChiSquareTail) * std::exp(-0.5 * zj_m * zj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zj_p + delta, 2), useChiSquareTail) * std::exp(-0.5 * zj_p * zj_p));
       // Contribution of the right interval
       const NumericalScalar zetaj_m(xii - wUpperBound * zetaj);
       const NumericalScalar zetaj_p(xii + wUpperBound * zetaj);
-      contributionRight += wg[j] * SpecFunc::ISQRT2PI * (DistFunc::pGamma(halfNu, omega * pow(zetaj_m + delta, 2), useChiSquareTail) * exp(-0.5 * zetaj_m * zetaj_m) + DistFunc::pGamma(halfNu, omega * pow(zetaj_p + delta, 2), useChiSquareTail) * exp(-0.5 * zetaj_p * zetaj_p));
+      contributionRight += wg[j] * SpecFunc::ISQRT2PI * (DistFunc::pGamma(halfNu, omega * std::pow(zetaj_m + delta, 2), useChiSquareTail) * std::exp(-0.5 * zetaj_m * zetaj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zetaj_p + delta, 2), useChiSquareTail) * std::exp(-0.5 * zetaj_p * zetaj_p));
     } // Loop over j, the integration points
     value += contributionLeft * wLowerBound - contributionRight * wUpperBound;
   } // Loop over i, the integration subintervals
@@ -384,11 +384,11 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
   // Check nu
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Special case when |delta| << 1
-  if (fabs(delta / (4.0 * nu)) < precision) return DistFunc::pStudent(nu, x, tail);
+  if (std::abs(delta / (4.0 * nu)) < precision) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
   if (nu > 1.0 / precision) return DistFunc::pNormal(x - nu);
   // Special case when |x| << 1
-  if (fabs(x) < precision) return DistFunc::pNormal(-delta, tail);
+  if (std::abs(x) < precision) return DistFunc::pNormal(-delta, tail);
   NumericalScalar t(x);
   NumericalScalar del(delta);
   // Must use the complementary function for negative arguments
@@ -400,10 +400,10 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
   // Some useful quantities
   const NumericalScalar x2(t * t);
   const NumericalScalar xi(x2 / (nu + x2));
-  const NumericalScalar logXi(log(xi));
+  const NumericalScalar logXi(std::log(xi));
   const NumericalScalar halfNu(0.5 * nu);
   const NumericalScalar halfDelta2(0.5 * del * del);
-  const NumericalScalar logHalfDelta2(log(halfDelta2));
+  const NumericalScalar logHalfDelta2(std::log(halfDelta2));
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
   const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfDelta2))));
   // Index of the forward iterations
@@ -415,8 +415,8 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
   // The initialization corresponds to the terme of index k.
   const NumericalScalar commonExponent(-halfDelta2 + k * logHalfDelta2);
   LOGDEBUG(OSS() << "commonExponent=" << commonExponent);
-  NumericalScalar pForward(0.5 * exp(commonExponent - SpecFunc::LnGamma(k + 1)));
-  NumericalScalar qForward(0.5 * del / M_SQRT2 * exp(commonExponent - SpecFunc::LnGamma(k + 1.5)));
+  NumericalScalar pForward(0.5 * std::exp(commonExponent - SpecFunc::LnGamma(k + 1)));
+  NumericalScalar qForward(0.5 * del / M_SQRT2 * std::exp(commonExponent - SpecFunc::LnGamma(k + 1.5)));
   LOGDEBUG(OSS() << "pForward=" << pForward << ", qForward=" << qForward);
   NumericalScalar betaPForward(DistFunc::pBeta(k + 0.5, halfNu, xi));
   NumericalScalar betaQForward(DistFunc::pBeta(k + 1, halfNu, xi));
@@ -425,12 +425,12 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
   // the corresponding betaP and betaQ factors to go to the value associated with the current iteration.
   // They are thus initialized such that after one update, they will change the betaP and betaQ factors
   // to their values associated with the iteration (k-1):
-  const NumericalScalar commonFactor((k - 0.5) * logXi + halfNu * log(nu / (nu + x2)) - SpecFunc::LnGamma(halfNu));
+  const NumericalScalar commonFactor((k - 0.5) * logXi + halfNu * std::log(nu / (nu + x2)) - SpecFunc::LnGamma(halfNu));
   LOGDEBUG(OSS() << "commonFactor=" << commonFactor);
   // correctionBetaPForward = Gamma(k - 1/2 + nu/2) / Gamma(k + 1/2) / Gamma(nu/2) * xi^(k - 1/2) * (1 - xi)^(nu/2)
-  NumericalScalar correctionBetaPForward(-exp(SpecFunc::LnGamma(k - 0.5 + halfNu) - SpecFunc::LnGamma(k + 0.5) + commonFactor));
+  NumericalScalar correctionBetaPForward(-std::exp(SpecFunc::LnGamma(k - 0.5 + halfNu) - SpecFunc::LnGamma(k + 0.5) + commonFactor));
   // correctionBetaPForward = Gamma(k + nu/2) / Gamma(k + 1) / Gamma(nu/2) * xi^k * (1 - xi)^(nu/2)
-  NumericalScalar correctionBetaQForward(-exp(SpecFunc::LnGamma(k + halfNu) - SpecFunc::LnGamma(k + 1) + commonFactor + 0.5 * logXi));
+  NumericalScalar correctionBetaQForward(-std::exp(SpecFunc::LnGamma(k + halfNu) - SpecFunc::LnGamma(k + 1) + commonFactor + 0.5 * logXi));
   LOGDEBUG(OSS() << "correctionBetaPForward=" << correctionBetaPForward << ", correctionBetaQForward=" << correctionBetaQForward);
   NumericalScalar pBackward(pForward);
   NumericalScalar qBackward(qForward);
@@ -500,7 +500,7 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
   }
 #undef FORWARD_ITERATION
 #undef BACKWARD_ITERATION
-  if (error > precision * (fabs(value) + precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentAlt0(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
+  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentAlt0(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
   // Clip to [0,1] in order to get rid of small rounding error
   value = (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
   // Check if we had to change the sign of the argument or if we are asked for the tail CDF
@@ -517,9 +517,9 @@ NumericalScalar NonCentralStudentPDF(const NumericalScalar nu,
   // Check nu
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Early exit for delta == 0, central Student PDF
-  if (fabs(delta / (4.0 * nu)) < SpecFunc::Precision) return exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * log(M_PI * nu) + (0.5 * nu + 0.5) * log(nu / (nu + x * x)));
-  if (fabs(x) < SpecFunc::Precision) return exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * log(M_PI * nu) - 0.5 * delta * delta);
-  return std::max(0.0, nu / x * (NonCentralStudentCDF(nu + 2, delta, x * sqrt(1.0 + 2.0 / nu)) - NonCentralStudentCDF(nu, delta, x)));
+  if (std::abs(delta / (4.0 * nu)) < SpecFunc::Precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
+  if (std::abs(x) < SpecFunc::Precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) - 0.5 * delta * delta);
+  return std::max(0.0, nu / x * (NonCentralStudentCDF(nu + 2, delta, x * std::sqrt(1.0 + 2.0 / nu)) - NonCentralStudentCDF(nu, delta, x)));
 }
 
 /************************************************************************************************************/
@@ -547,31 +547,31 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
   // Check nu
   if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Early exit for delta == 0, central Student PDF
-  if (fabs(delta / (4.0 * nu)) < precision) return exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * log(M_PI * nu) + (0.5 * nu + 0.5) * log(nu / (nu + x * x)));
+  if (std::abs(delta / (4.0 * nu)) < precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
   // Case delta <> 0
 #ifdef HAVE_BOOST
   return boost::math::pdf(boost::math::non_central_t(nu, delta), x);
 #else
   const NumericalScalar halfNu(0.5 * nu);
   const NumericalScalar halfNup1_2(halfNu + 0.5);
-  const NumericalScalar logConstant(-0.5 * delta * delta - SpecFunc::LnGamma(halfNu) - 0.5 * log(M_PI * nu));
+  const NumericalScalar logConstant(-0.5 * delta * delta - SpecFunc::LnGamma(halfNu) - 0.5 * std::log(M_PI * nu));
   // Early exit for x == 0
-  if (fabs(x) < precision) return exp(logConstant + SpecFunc::LnGamma(halfNup1_2));
+  if (std::abs(x) < precision) return std::exp(logConstant + SpecFunc::LnGamma(halfNup1_2));
   // For x <> 0
   const NumericalScalar x2(x * x);
   const NumericalScalar w(1.0 / (nu + x2));
-  NumericalScalar logFactor(logConstant + halfNup1_2 * log(nu * w));
+  NumericalScalar logFactor(logConstant + halfNup1_2 * std::log(nu * w));
   // Special treatment for very low value to avoid NaNs due to 0.Inf
-  static const NumericalScalar logPrecision(log(precision));
+  static const NumericalScalar logPrecision(std::log(precision));
   if (logFactor < logPrecision)
   {
     NumericalScalar value(0.0);
-    if (x < 0.0) value = nu / x * (NonCentralStudentCDF(nu + 2.0, delta, x * sqrt(1.0 + 2.0 / nu), false) - NonCentralStudentCDF(nu, delta, x, false));
-    else value = -nu / x * (NonCentralStudentCDF(nu + 2.0, -delta, -x * sqrt(1.0 + 2.0 / nu), false) - NonCentralStudentCDF(nu, -delta, -x));
+    if (x < 0.0) value = nu / x * (NonCentralStudentCDF(nu + 2.0, delta, x * std::sqrt(1.0 + 2.0 / nu), false) - NonCentralStudentCDF(nu, delta, x, false));
+    else value = -nu / x * (NonCentralStudentCDF(nu + 2.0, -delta, -x * std::sqrt(1.0 + 2.0 / nu), false) - NonCentralStudentCDF(nu, -delta, -x));
     return std::max(0.0, value);
   }
 
-  const NumericalScalar omega(delta * x * sqrt(2 * w));
+  const NumericalScalar omega(delta * x * std::sqrt(2 * w));
   const NumericalScalar z(omega * omega);
   // Start at even index that maximize the coefficient in the sum
   const NumericalScalar halfDelta2(0.5 * delta * delta);
@@ -579,9 +579,9 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
   const UnsignedInteger k(std::max(1UL, static_cast<UnsignedInteger>(floor(halfDelta2))));
   // Loop forward and backward starting from k
   // Initialization
-  const NumericalScalar kLogZ(k * log(z));
-  NumericalScalar pForwardEven(exp(logFactor + SpecFunc::LnGamma(halfNup1_2 + k) - SpecFunc::LnGamma(2 * k + 1) + kLogZ));
-  NumericalScalar pForwardOdd(omega * exp(logFactor + SpecFunc::LnGamma(halfNu + k + 1) - SpecFunc::LnGamma(2 * k + 2) + kLogZ));
+  const NumericalScalar kLogZ(k * std::log(z));
+  NumericalScalar pForwardEven(std::exp(logFactor + SpecFunc::LnGamma(halfNup1_2 + k) - SpecFunc::LnGamma(2 * k + 1) + kLogZ));
+  NumericalScalar pForwardOdd(omega * std::exp(logFactor + SpecFunc::LnGamma(halfNu + k + 1) - SpecFunc::LnGamma(2 * k + 2) + kLogZ));
   NumericalScalar pBackwardEven(pForwardEven);
   NumericalScalar pBackwardOdd(pForwardOdd);
   NumericalScalar value(pForwardOdd + pForwardEven);
@@ -600,7 +600,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
   // Here, i is an UnsignedInteger as it is only a loop counter
   UnsignedInteger i(1);
   const UnsignedInteger imax(std::min(k, maximumIteration));
-  //        while((error > precision * (fabs(value) + precision)) && (i <= imax))
+  //        while((error > precision * (std::abs(value) + precision)) && (i <= imax))
   while((error > 0.0) && (i <= imax))
   {
     FORWARD_ITERATION;
@@ -611,7 +611,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
     ++i;
   }
   // Do we have to perform further forward iterations?
-  //        while ((error > precision * (fabs(value) + precision)) && (i <= MaximumIteration))
+  //        while ((error > precision * (std::abs(value) + precision)) && (i <= MaximumIteration))
   while ((error > 0.0) && (i <= maximumIteration))
   {
     FORWARD_ITERATION;
@@ -621,7 +621,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
   }
 #undef FORWARD_ITERATION
 #undef BACKWARD_ITERATION
-  if (error > precision * (fabs(value) + precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentPDFAlt0(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
+  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentPDFAlt0(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
   // Clip to [0,+inf[ in order to get rid of small rounding error
   return (value <= 0.0 ? 0.0 : value);
 #endif
@@ -642,7 +642,7 @@ NumericalScalar NonCentralStudentRealization(const NumericalScalar nu,
     g = DistFunc::rGamma(0.5 * nu);
   }
   while (g == 0.0);
-  return sqrt(0.5 * nu / g) * n;
+  return std::sqrt(0.5 * nu / g) * n;
 }
 
 } // StudentFunctions

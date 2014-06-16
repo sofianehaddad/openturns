@@ -38,9 +38,9 @@ static Factory<Rayleigh> RegisteredFactory("Rayleigh");
 
 /* Default constructor */
 Rayleigh::Rayleigh()
-  : ContinuousDistribution("Rayleigh"),
-    sigma_(1.0),
-    gamma_(0.0)
+  : ContinuousDistribution("Rayleigh")
+  , sigma_(1.0)
+  , gamma_(0.0)
 {
   setDimension(1);
   computeRange();
@@ -49,8 +49,9 @@ Rayleigh::Rayleigh()
 /* Parameters constructor */
 Rayleigh::Rayleigh(const NumericalScalar sigma,
                    const NumericalScalar gamma)
-  : ContinuousDistribution("Rayleigh"),
-    sigma_(0.0), gamma_(gamma)
+  : ContinuousDistribution("Rayleigh")
+  , sigma_(0.0)
+  , gamma_(gamma)
 {
   // This call set also the range
   setSigma(sigma);
@@ -103,7 +104,7 @@ void Rayleigh::computeRange()
 /* Get one realization of the distribution */
 NumericalPoint Rayleigh::getRealization() const
 {
-  return NumericalPoint(1, gamma_ + sigma_ * sqrt(-2.0 * log(RandomGenerator::Generate())));
+  return NumericalPoint(1, gamma_ + sigma_ * std::sqrt(-2.0 * std::log(RandomGenerator::Generate())));
 }
 
 
@@ -116,7 +117,7 @@ NumericalPoint Rayleigh::computeDDF(const NumericalPoint & point) const
   if (x <= 0.0) return NumericalPoint(1, 0.0);
   const NumericalScalar y(x / sigma_);
   const NumericalScalar sigma2(sigma_ * sigma_);
-  return NumericalPoint(1, -exp(-0.5 * y * y) * (x - sigma_) * (x + sigma_) / (sigma2 * sigma2));
+  return NumericalPoint(1, -std::exp(-0.5 * y * y) * (x - sigma_) * (x + sigma_) / (sigma2 * sigma2));
 }
 
 
@@ -128,7 +129,7 @@ NumericalScalar Rayleigh::computePDF(const NumericalPoint & point) const
   const NumericalScalar x(point[0] - gamma_);
   if (x <= 0.0) return 0.0;
   const NumericalScalar y(x / (sigma_ * sigma_));
-  return y * exp(-0.5 * x * y);
+  return y * std::exp(-0.5 * x * y);
 }
 
 NumericalScalar Rayleigh::computeLogPDF(const NumericalPoint & point) const
@@ -138,7 +139,7 @@ NumericalScalar Rayleigh::computeLogPDF(const NumericalPoint & point) const
   const NumericalScalar x(point[0] - gamma_);
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
   const NumericalScalar y(x / (sigma_ * sigma_));
-  return log(y) - 0.5 * x * y;
+  return std::log(y) - 0.5 * x * y;
 }
 
 
@@ -150,7 +151,7 @@ NumericalScalar Rayleigh::computeCDF(const NumericalPoint & point) const
   const NumericalScalar x(point[0] - gamma_);
   if (x <= 0.0) return 0.0;
   const NumericalScalar y(x / sigma_);
-  return 1.0 - exp(-0.5 * y * y);
+  return 1.0 - std::exp(-0.5 * y * y);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X))
@@ -164,8 +165,8 @@ NumericalScalar Rayleigh::computeCDF(const NumericalPoint & point) const
 */
 NumericalComplex Rayleigh::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalScalar t(sigma_ * x / sqrt(2.0));
-  return NumericalComplex(1 - 2 * t * SpecFunc::Dawson(t), t * exp(-t * t) * sqrt(M_PI)) * exp(NumericalComplex(0.0, x * gamma_));
+  const NumericalScalar t(sigma_ * x / std::sqrt(2.0));
+  return NumericalComplex(1 - 2 * t * SpecFunc::Dawson(t), t * std::exp(-t * t) * std::sqrt(M_PI)) * std::exp(NumericalComplex(0.0, x * gamma_));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -202,8 +203,8 @@ NumericalPoint Rayleigh::computeCDFGradient(const NumericalPoint & point) const
 NumericalScalar Rayleigh::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (tail) return gamma_ + sigma_ * sqrt(-2.0 * log(prob));
-  return gamma_ + sigma_ * sqrt(-2.0 * log1p(-prob));
+  if (tail) return gamma_ + sigma_ * std::sqrt(-2.0 * std::log(prob));
+  return gamma_ + sigma_ * std::sqrt(-2.0 * log1p(-prob));
 }
 
 /* Compute the mean of the distribution */
@@ -238,7 +239,7 @@ NumericalPoint Rayleigh::getKurtosis() const
 /* Get the moments of the distribution */
 NumericalPoint Rayleigh::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
+  return NumericalPoint(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

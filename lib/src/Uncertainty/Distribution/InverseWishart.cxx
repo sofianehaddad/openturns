@@ -99,7 +99,7 @@ void InverseWishart::computeRange()
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
       {
-	upper[index] = sqrt(cholesky_(i, i) * cholesky_(j, j)) * bound;
+	upper[index] = std::sqrt(cholesky_(i, i) * cholesky_(j, j)) * bound;
 	lower[index] = (i == j ? 0.0 : -upper[index]);
 	++index;
       }
@@ -133,7 +133,7 @@ CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
   // The diagonal elements are chi-distributed
   for (UnsignedInteger i = 0; i < p; ++i)
     {
-      A(i, i) = sqrt(2.0 * DistFunc::rGamma(0.5 * (nu_ - i)));
+      A(i, i) = std::sqrt(2.0 * DistFunc::rGamma(0.5 * (nu_ - i)));
       // The off-diagonal elements are normaly distributed
       for (UnsignedInteger j = 0; j < i; ++j) A(i, j) = DistFunc::rNormal();
     }
@@ -147,7 +147,7 @@ NumericalScalar InverseWishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const NumericalScalar logPDF(computeLogPDF(m));
-  const NumericalScalar pdf(logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : exp(logPDF));
+  const NumericalScalar pdf(logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : std::exp(logPDF));
   return pdf;  
 }
 
@@ -155,7 +155,7 @@ NumericalScalar InverseWishart::computePDF(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const NumericalScalar logPDF(computeLogPDF(point));
-  const NumericalScalar pdf(logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : exp(logPDF));
+  const NumericalScalar pdf(logPDF == -SpecFunc::MaxNumericalScalar ? 0.0 : std::exp(logPDF));
   return pdf;  
 }
 
@@ -186,7 +186,7 @@ NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
       // Compute the determinant of the Cholesky factor, ie the square-root of the determinant of M
       NumericalScalar logPDF(logNormalizationFactor_);
       // Here, the diagonal of X is positive
-      for (UnsignedInteger i = 0; i < p; ++i) logPDF -= log(X(i, i));
+      for (UnsignedInteger i = 0; i < p; ++i) logPDF -= std::log(X(i, i));
       logPDF *= nu_ + p + 1.0;
       // V^{-1}M = (CC')^{-1}(XX')
       // = C'^{-1}(C^{-1}X)X'
@@ -230,7 +230,7 @@ void InverseWishart::computeMean() const
 void InverseWishart::computeCovariance() const
 {
   const UnsignedInteger p(cholesky_.getDimension());
-  const NumericalScalar den((nu_ - p) * pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0));
+  const NumericalScalar den((nu_ - p) * std::pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0));
   if (den <= 0.0) throw NotDefinedException(HERE) << "Error: the covariance of the inverse Wishart distribution is defined only if nu > p+3";
   const CovarianceMatrix V(getV());
   covariance_ = CovarianceMatrix(getDimension());
@@ -257,19 +257,19 @@ NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedEx
   // If the covariance has already been computed, use it
   if (isAlreadyComputedCovariance_)
     {
-      for (UnsignedInteger i = 0; i < getDimension(); ++i) sigma[i] = sqrt(covariance_(i, i));
+      for (UnsignedInteger i = 0; i < getDimension(); ++i) sigma[i] = std::sqrt(covariance_(i, i));
       return sigma;
     }
   // else compute only the standard deviation as the covariance may be huge
   const UnsignedInteger p(cholesky_.getDimension());
-  const NumericalScalar den((nu_ - p) * pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0));
+  const NumericalScalar den((nu_ - p) * std::pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0));
   if (den <= 0.0) throw NotDefinedException(HERE) << "Error: the standard deviation of the inverse Wishart distribution is defined only if nu > p+3";
   const CovarianceMatrix V(getV());
   UnsignedInteger index(0);
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        sigma[index] = sqrt((2.0 * V(i, j) * V(i, j) + (nu_ - p - 1.0) * (V(i, i) * V(j, j) + V(i, j) * V(i, j))) / den);
+        sigma[index] = std::sqrt((2.0 * V(i, j) * V(i, j) + (nu_ - p - 1.0) * (V(i, i) * V(j, j) + V(i, j) * V(i, j))) / den);
         ++index;
       }
   return sigma;
@@ -301,7 +301,7 @@ InverseWishart::NumericalPointWithDescriptionCollection InverseWishart::getParam
 void InverseWishart::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
   const NumericalScalar w(getWeight());
-  const NumericalScalar pReal(0.5 * sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5);
+  const NumericalScalar pReal(0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5);
   const UnsignedInteger p(static_cast< UnsignedInteger >(pReal));
   if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the givent parameters cannot be converted into a covariance matrix and a number of degrees of freedom.";
   CovarianceMatrix V(p);
@@ -365,8 +365,8 @@ NumericalScalar InverseWishart::getNu() const
 void InverseWishart::update()
 {
   const UnsignedInteger p(cholesky_.getDimension());
-  logNormalizationFactor_ = -0.5 * p * (nu_ * M_LN2 + 0.5 * (p - 1) * log(M_PI));
-  for (UnsignedInteger i = 0; i < p; ++i) logNormalizationFactor_ -= SpecFunc::LogGamma(0.5 * (nu_ - i)) - nu_ * log(cholesky_(i, i));
+  logNormalizationFactor_ = -0.5 * p * (nu_ * M_LN2 + 0.5 * (p - 1) * std::log(M_PI));
+  for (UnsignedInteger i = 0; i < p; ++i) logNormalizationFactor_ -= SpecFunc::LogGamma(0.5 * (nu_ - i)) - nu_ * std::log(cholesky_(i, i));
 }
 
 /* Method save() stores the object through the StorageManager */

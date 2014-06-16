@@ -204,6 +204,12 @@ public:
   // Next power of two
   static UnsignedInteger NextPowerOfTwo(const UnsignedInteger n);
 
+  // Missing functions in cmath wrt math.h as of C++98
+  static NumericalScalar acosh(const NumericalScalar x);
+  static NumericalScalar asinh(const NumericalScalar x);
+  static NumericalScalar atanh(const NumericalScalar x);
+  static NumericalScalar cbrt(const NumericalScalar x);
+
 }; /* class SpecFunc */
 
 END_NAMESPACE_OPENTURNS

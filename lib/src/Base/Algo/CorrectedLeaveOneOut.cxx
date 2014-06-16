@@ -90,7 +90,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   // Third step
   const NumericalPoint coefficients(vT.transpose() * d);
 
-  // Compute the  empirical error
+  // Compute the empirical error
   LOGINFO("Compute the empirical error");
   NumericalPoint h( sampleSize );
   for (UnsignedInteger i = 0; i < sampleSize; ++ i )

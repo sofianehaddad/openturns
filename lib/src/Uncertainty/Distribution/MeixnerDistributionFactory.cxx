@@ -70,9 +70,9 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   const NumericalScalar m(sample.computeMean()[0]);
   const NumericalScalar s2(sample.computeVariancePerComponent()[0]);
   const NumericalScalar delta(1.0 / (gamma2 - gamma1 * gamma1 - 3.0));
-  const NumericalScalar beta(((0.0 < gamma1) - (gamma1 < 0.0)) * acos(2.0 - delta * (gamma2 - 3.0)));
-  const NumericalScalar alpha(cbrt(s2 * (cos(beta) + 1.0)));
-  const NumericalScalar mu(m - alpha * delta * tan(0.5 * beta));
+  const NumericalScalar beta(((0.0 < gamma1) - (gamma1 < 0.0)) * std::acos(2.0 - delta * (gamma2 - 3.0)));
+  const NumericalScalar alpha(cbrt(s2 * (std::cos(beta) + 1.0)));
+  const NumericalScalar mu(m - alpha * delta * std::tan(0.5 * beta));
   MeixnerDistribution result(alpha, beta, delta, mu);
   result.setDescription(sample.getDescription());
   return result;

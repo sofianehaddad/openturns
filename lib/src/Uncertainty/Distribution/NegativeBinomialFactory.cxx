@@ -66,7 +66,7 @@ struct NegativeBinomialFactoryParameterConstraint
     /* \sum_{i=1}^N \psi(x_i + r) */
     NumericalScalar sumPsi(0.0);
     for (UnsignedInteger i = 0; i < size; ++i) sumPsi += SpecFunc::Psi(sample_[i][0] + r);
-    const NumericalScalar value(sumPsi + size * (log(r / (r + mean_)) - SpecFunc::Psi(r)));
+    const NumericalScalar value(sumPsi + size * (std::log(r / (r + mean_)) - SpecFunc::Psi(r)));
     return NumericalPoint(1, value);
   }
 
@@ -104,7 +104,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
     const NumericalScalar x(sample[i][0]);
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
-    if (fabs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample made of nonnegative integers, here x=" << x;
+    if (std::abs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample made of nonnegative integers, here x=" << x;
     var = i * var / (i + 1.0) + (1.0 - 1.0 / (i + 1.0)) * (mean - x) * (mean - x) / (i + 1.0);
     mean = (x + i * mean) / (i + 1.0);
   }

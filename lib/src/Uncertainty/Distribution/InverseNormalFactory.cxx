@@ -79,7 +79,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample &
     lambda = 1.0 / (sum / size - 1.0 / mu);
   }
   // Moments estimation
-  else lambda = pow(mu, 3) / sample.computeCovariance()(0, 0);
+  else lambda = std::pow(mu, 3) / sample.computeCovariance()(0, 0);
   InverseNormal result(lambda, mu);
   result.setDescription(sample.getDescription());
   return result;

@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @file  NearestPointAlgorithmImplementation.hxx
- *  @brief NearestPointAlgorithmImplementation implements an algorithm for
+ *  @file  OptimizationSolverImplementation.hxx
+ *  @brief OptimizationSolverImplementation implements an algorithm for
  *         finding the point of an implicitely defined manifold the nearest
  *         to the origin.
  *
@@ -23,43 +23,38 @@
  *  @author schueller
  *  @date   2012-02-17 19:35:43 +0100 (Fri, 17 Feb 2012)
  */
-#ifndef OPENTURNS_NEARESTPOINTALGORITHMIMPLEMENTATION_HXX
-#define OPENTURNS_NEARESTPOINTALGORITHMIMPLEMENTATION_HXX
+#ifndef OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX
+#define OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX
 
 #include "OTprivate.hxx"
 #include "PersistentObject.hxx"
-#include "NumericalMathFunction.hxx"
-#include "NearestPointAlgorithmImplementationResult.hxx"
+#include "OptimizationProblem.hxx"
+#include "OptimizationSolverImplementationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
- * @class NearestPointAlgorithmImplementation
- * NearestPointAlgorithmImplementation implements an algorithm for finding the
- * point the nearest to the origin of an implicitely defined manifold
+ * @class OptimizationSolverImplementation
+ * OptimizationSolverImplementation implements an algorithm for solving an optimization problem
  */
 
-class NearestPointAlgorithmImplementation
+class OptimizationSolverImplementation
   : public PersistentObject
 {
 
   CLASSNAME;
 public:
 
-  typedef NearestPointAlgorithmImplementationResult              Result;
-
   /** Default constructor */
-  NearestPointAlgorithmImplementation();
+  OptimizationSolverImplementation();
 
   /** Constructor with parameters */
-  explicit NearestPointAlgorithmImplementation(const NumericalMathFunction & levelFunction,
+  explicit OptimizationSolverImplementation(const NumericalMathFunction & levelFunction,
       const Bool verbose = false);
 
 
   /** Virtual constructor */
-  virtual NearestPointAlgorithmImplementation * clone() const;
+  virtual OptimizationSolverImplementation * clone() const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
@@ -139,9 +134,9 @@ private:
   NumericalScalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
   Bool verbose_;
 
-} ; /* class NearestPointAlgorithmImplementation */
+} ; /* class OptimizationSolverImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NEARESTPOINTALGORITHMIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX */

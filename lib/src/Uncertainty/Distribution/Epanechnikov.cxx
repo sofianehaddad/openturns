@@ -136,8 +136,8 @@ NumericalScalar Epanechnikov::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   // 2.094395102393195492308429 = 2 * Pi / 3
-  if (tail) return 2.0 * cos(0.3333333333333333333333333 * acos(2.0 * prob - 1.0) - 2.094395102393195492308429);
-  return 2.0 * cos(0.3333333333333333333333333 * acos(1.0 - 2.0 * prob) - 2.094395102393195492308429);
+  if (tail) return 2.0 * std::cos(0.3333333333333333333333333 * std::acos(2.0 * prob - 1.0) - 2.094395102393195492308429);
+  return 2.0 * std::cos(0.3333333333333333333333333 * std::acos(1.0 - 2.0 * prob) - 2.094395102393195492308429);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */

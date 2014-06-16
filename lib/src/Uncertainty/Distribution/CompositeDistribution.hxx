@@ -45,9 +45,15 @@ public:
   /** Default constructor */
   CompositeDistribution();
 
-  /** Parameters constructor to use when the two bounds are finite */
+  /** Parameters constructor */
   CompositeDistribution(const NumericalMathFunction & function,
-			const Distribution & antecedent);
+                        const Distribution & antecedent);
+
+  /** Parameters constructor */
+  CompositeDistribution(const NumericalMathFunction & function,
+                        const Distribution & antecedent,
+                        const NumericalPoint & bounds,
+                        const NumericalPoint & values);
 
   /** Comparison operator */
   Bool operator ==(const CompositeDistribution & other) const;
@@ -111,7 +117,7 @@ private:
 
   /** Set the function and antecedent with check */
   void setFunctionAndAntecedent(const NumericalMathFunction & function,
-				const Distribution & antecedent);
+                                const Distribution & antecedent);
 
   /** The main parameter set of the distribution */
   NumericalMathFunction function_;

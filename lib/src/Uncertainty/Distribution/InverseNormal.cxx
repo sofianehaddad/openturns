@@ -36,9 +36,9 @@ static Factory<InverseNormal> RegisteredFactory("InverseNormal");
 
 /* Default constructor */
 InverseNormal::InverseNormal()
-  : ContinuousDistribution("InverseNormal"),
-    lambda_(1.0),
-    mu_(1.0)
+  : ContinuousDistribution("InverseNormal")
+  , lambda_(1.0)
+  , mu_(1.0)
 {
   setDimension( 1 );
   computeRange();
@@ -47,9 +47,9 @@ InverseNormal::InverseNormal()
 /* Parameters constructor */
 InverseNormal::InverseNormal(const NumericalScalar lambda,
                              const NumericalScalar mu)
-  : ContinuousDistribution("InverseNormal"),
-    lambda_(0.0),
-    mu_(0.0)
+  : ContinuousDistribution("InverseNormal")
+  , lambda_(0.0)
+  , mu_(0.0)
 {
   // This call set also the range
   setLambdaMu(lambda, mu);
@@ -95,7 +95,7 @@ NumericalPoint InverseNormal::getRealization() const
   const NumericalScalar y(nu * nu);
   const NumericalScalar w(mu_ * y / lambda_);
   // Lower bound computed by Maple to insure double precision
-  const NumericalScalar x(w < 5.015e5 ? mu_ * (1.0 + 0.5 * w * (1.0 - sqrt(1.0 + 4.0 / w))) : mu_ * ((5.0 / w - 2.0) / w + 1.0) / w);
+  const NumericalScalar x(w < 5.015e5 ? mu_ * (1.0 + 0.5 * w * (1.0 - std::sqrt(1.0 + 4.0 / w))) : mu_ * ((5.0 / w - 2.0) / w + 1.0) / w);
   const NumericalScalar z(RandomGenerator::Generate());
   if (z * (mu_ + x) <= mu_) return NumericalPoint(1, x);
   return NumericalPoint(1, mu_ * mu_ / x);
@@ -109,7 +109,7 @@ NumericalScalar InverseNormal::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return 0.0;
-  return sqrt(lambda_ / (2.0 * M_PI * x * x * x)) * exp(- lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_));
+  return std::sqrt(lambda_ / (2.0 * M_PI * x * x * x)) * std::exp(- lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_));
 }
 
 NumericalScalar InverseNormal::computeLogPDF(const NumericalPoint & point) const
@@ -118,7 +118,7 @@ NumericalScalar InverseNormal::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  return 0.5 * ( log(lambda_) - log (2.0 * M_PI * x * x * x)) - lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_);
+  return 0.5 * ( std::log(lambda_) - std::log(2.0 * M_PI * x * x * x)) - lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_);
 }
 
 /* Get the CDF of the distribution */
@@ -128,27 +128,27 @@ NumericalScalar InverseNormal::computeCDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return 0.0;
-  const NumericalScalar lx(sqrt(lambda_ / x));
+  const NumericalScalar lx(std::sqrt(lambda_ / x));
   const NumericalScalar phiArg1( lx * ( x / mu_ - 1.0));
   // Quick return if in the far right tail. The pNormal() function is constant
   // equal to 1 in double precision for argument greater than 8.24, and the
   // InverseNormal CDF is greater than pNormal()
   if (phiArg1 > 8.24) return 1.0;
   const NumericalScalar phiArg2(-lx * ( x / mu_ + 1.0));
-  return DistFunc::pNormal(phiArg1) + exp(2.0 * lambda_ / mu_ + log(DistFunc::pNormal(phiArg2)));
+  return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex InverseNormal::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  if (fabs(x) < pdfEpsilon_) return 1.0;
-  return exp(computeLogCharacteristicFunction(x));
+  if (std::abs(x) < pdfEpsilon_) return 1.0;
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
 NumericalComplex InverseNormal::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  if (fabs(x) < pdfEpsilon_) return 0.0;
-  const NumericalComplex logCF(lambda_ * (1.0 - sqrt(NumericalComplex(1.0, - 2.0 * mu_ * mu_ * x / lambda_))) / mu_);
+  if (std::abs(x) < pdfEpsilon_) return 0.0;
+  const NumericalComplex logCF(lambda_ * (1.0 - std::sqrt(NumericalComplex(1.0, - 2.0 * mu_ * mu_ * x / lambda_))) / mu_);
   return logCF;
 }
 
@@ -157,7 +157,7 @@ void InverseNormal::computeRange()
 {
   const NumericalPoint lowerBound(1, 0.0);
   const NumericalScalar q(DistFunc::qNormal(cdfEpsilon_, true));
-  const NumericalPoint upperBound(1, 2.0 * lambda_ * mu_ / (2.0 * lambda_ + mu_ * q * q - q * sqrt(mu_ * (q * q * mu_ + 4.0 * lambda_))));
+  const NumericalPoint upperBound(1, 2.0 * lambda_ * mu_ / (2.0 * lambda_ + mu_ * q * q - q * std::sqrt(mu_ * (q * q * mu_ + 4.0 * lambda_))));
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -181,13 +181,13 @@ void InverseNormal::computeCovariance() const
 /* Get the standard deviation of the distribution */
 NumericalPoint InverseNormal::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(getCovariance()(0, 0)));
+  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint InverseNormal::getSkewness() const
 {
-  return NumericalPoint(1, 3.0 * sqrt(mu_ / lambda_));
+  return NumericalPoint(1, 3.0 * std::sqrt(mu_ / lambda_));
 }
 
 /* Get the kurtosis of the distribution */
@@ -208,7 +208,7 @@ NumericalPoint InverseNormal::getStandardMoment(const UnsignedInteger n) const
     product *= (n - k) * (n + k - 1) * rho / k;
     moment += product;
   }
-  return NumericalPoint(1, pow(mu_, n) * moment);
+  return NumericalPoint(1, std::pow(mu_, n) * moment);
 }
 
 /* Interface specific to InverseNormal */

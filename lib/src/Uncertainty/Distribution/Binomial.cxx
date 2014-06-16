@@ -37,9 +37,9 @@ static Factory<Binomial> RegisteredFactory("Binomial");
 
 /* Default constructor */
 Binomial::Binomial()
-  : DiscreteDistribution("Binomial"),
-    n_(1),
-    p_(0.5)
+  : DiscreteDistribution("Binomial")
+  , n_(1)
+  , p_(0.5)
 {
   // We set the dimension of the Binomial distribution
   setDimension( 1 );
@@ -49,9 +49,9 @@ Binomial::Binomial()
 /* Parameters constructor */
 Binomial::Binomial(const UnsignedInteger n,
                    const NumericalScalar p)
-  : DiscreteDistribution("Binomial"),
-    n_(n),
-    p_(-1.0)
+  : DiscreteDistribution("Binomial")
+  , n_(n)
+  , p_(-1.0)
 {
   // This call sets also the range
   setP(p);
@@ -104,8 +104,8 @@ NumericalScalar Binomial::computePDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k(point[0]);
-  if ((k < -supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
-  return exp(SpecFunc::LnGamma(n_ + 1.0) - SpecFunc::LnGamma(n_ - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * log(p_) + (n_ - k) * log1p(-p_));
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
+  return std::exp(SpecFunc::LnGamma(n_ + 1.0) - SpecFunc::LnGamma(n_ - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + (n_ - k) * log1p(-p_));
 }
 
 
@@ -140,7 +140,7 @@ NumericalPoint Binomial::computePDFGradient(const NumericalPoint & point) const
 
   const NumericalScalar k(point[0]);
   NumericalPoint pdfGradient(1, 0.0);
-  if ((k < -supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return pdfGradient;
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   throw NotYetImplementedException(HERE);
 }
 
@@ -165,14 +165,14 @@ void Binomial::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Binomial::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(n_ * p_ * (1.0 - p_)));
+  return NumericalPoint(1, std::sqrt(n_ * p_ * (1.0 - p_)));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint Binomial::getSkewness() const
 {
   if ((p_ == 0.0) || (p_ == 1.0)) throw NotDefinedException(HERE) << "Error: the skewness is not defined for the Binomial distribution when p is zero or one.";
-  return NumericalPoint(1, (1.0 - 2.0 * p_) / sqrt(n_ * p_ * (1.0 - p_)));
+  return NumericalPoint(1, (1.0 - 2.0 * p_) / std::sqrt(n_ * p_ * (1.0 - p_)));
 }
 
 /* Get the kurtosis of the distribution */
@@ -318,27 +318,27 @@ NumericalScalar Binomial::computeScalarQuantile(const NumericalScalar prob,
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Binomial::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * exp(NumericalComplex(0.0, x)));
-  return pow(value, n_);
+  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
+  return std::pow(value, n_);
 }
 
 NumericalComplex Binomial::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * exp(NumericalComplex(0.0, x)));
-  return NumericalScalar(n_) * log(value);
+  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
+  return NumericalScalar(n_) * std::log(value);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
 NumericalComplex Binomial::computeGeneratingFunction(const NumericalComplex & z) const
 {
   const NumericalComplex value(1.0 - p_ + p_ * z);
-  return pow(value, n_);
+  return std::pow(value, n_);
 }
 
 NumericalComplex Binomial::computeLogGeneratingFunction(const NumericalComplex & z) const
 {
   const NumericalComplex value(1.0 - p_ + p_ * z);
-  return NumericalComplex(n_) * log(value);
+  return NumericalComplex(n_) * std::log(value);
 }
 
 /* Method save() stores the object through the StorageManager */

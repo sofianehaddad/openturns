@@ -67,7 +67,7 @@ NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) 
 {
   const UnsignedInteger dimension(getDimension());
   NumericalPoint ddf(dimension);
-  const NumericalScalar h(pow(pdfEpsilon_, 1.0 / 3.0));
+  const NumericalScalar h(std::pow(pdfEpsilon_, 1.0 / 3.0));
   const NumericalScalar idenom(1.0 / (2.0 * h));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
