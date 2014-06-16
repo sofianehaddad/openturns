@@ -374,5 +374,7 @@ NumericalSample(PyObject * pyObj, UnsignedInteger dimension)
 
 Bool __eq__(const NumericalSample & other) { return (*self) == other; }
 
+NumericalSample __truediv__(const SquareMatrix & m) { return (*self) / m; }
+
 } // %extend
 } // namespace OT
