@@ -1,6 +1,13 @@
 %feature("docstring") OT::Dirac
 "Dirac distribution.
 
+Parameters
+----------
+x : float, :class:`~openturns.NumericalPoint` or 1d-array, :math:`\vect{x} \in \Rset^n`
+    The deterministic value.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
@@ -18,11 +25,6 @@ Its first moments are:
         \Expect{\vect{X}} & = & \vect{x} \\
         \Var{X_i} & = & 0, \quad i = 1, \ldots, n
     \end{eqnarray*}
-
-Parameters
-----------
-x : float, :class:`~openturns.NumericalPoint` or 1d-array, :math:`\vect{x} \in \Rset^n`
-    The deterministic value.
 
 Notes
 -----

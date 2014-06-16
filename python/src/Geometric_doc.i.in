@@ -1,11 +1,19 @@
 %feature("docstring") OT::Geometric
 "Geometric distribution.
 
+Parameters
+----------
+p : float, :math:`0 < p \leq 1`
+    The success probability of the Bernoulli trial.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
 
-    \Prob{X = k} = p (1 - p)^{k - 1}, \quad \forall k \in \Nset^*
+    \Prob{X = k} = p (1 - p)^{k - 1},
+                   \quad \forall k \in \Nset^*
 
 with :math:`0 < p \leq 1`.
 
@@ -18,11 +26,6 @@ Its first moments are:
         \Expect{X} & = & \frac{1}{p} \\
         \Var{X} & = & \frac{1 - p}{p^2}
     \end{eqnarray*}
-
-Parameters
-----------
-p : float, :math:`0 < p \leq 1`
-    The success probability of the Bernoulli trial.
 
 See Also
 --------

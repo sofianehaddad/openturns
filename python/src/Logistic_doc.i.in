@@ -1,12 +1,22 @@
 %feature("docstring") OT::Logistic
 "Logistic distribution.
 
+Parameters
+----------
+alpha : float, :math:`\alpha \in \Rset`
+    Location parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
 
     f_X(x) = \frac{\exp\left(\left(- \frac{x - \alpha}{\beta}\right)\right)}
-                  {\beta \left(1 + \exp\left(-\frac{x-\alpha}{\beta}\right)\right)^2},
+                  {\beta \left(1 + \exp\left(- \frac{x-\alpha}{\beta}
+                                             \right)\right)^2},
              \quad x \in \Rset
 
 with :math:`\alpha \in \Rset` and :math:`\beta > 0`.
@@ -20,13 +30,6 @@ Its first moments are:
         \Expect{X} & = & \alpha \\
         \Var{X} & = & \frac{1}{3} \pi^2 \beta^2
     \end{eqnarray*}
-
-Parameters
-----------
-alpha : float, :math:`\alpha \in \Rset`
-    Location parameter :math:`\alpha`.
-beta : float, :math:`\beta > 0`
-    Scale parameter :math:`\beta`.
 
 Examples
 --------

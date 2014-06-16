@@ -1,27 +1,6 @@
 %feature("docstring") OT::Beta
 "Beta distribution.
 
-Its probability density function is defined as:
-
-.. math::
-
-    f_X(x) = \frac{(x - a)^{r - 1} (b - x)^{t - r - 1}}
-                  {(b - a)^{t - 1} {\rm B}(r, t - r)},
-                  \quad x \in [a; b]
-
-with :math:`r < t` and :math:`a < b` and where :math:`\rm B` denotes
-Euler's beta function.
-
-Its first moments are:
-
-.. math::
-    :nowrap:
-
-    \begin{eqnarray*}
-        \Expect{X} & = & a + \frac{(b-a)\,r}{t} \\
-        \Var{X} & = & \left(\frac{b-a}{t}\right)^2 \frac{r\,(t-r)}{t+1}
-    \end{eqnarray*}
-
 Parameters
 ----------
 arg1 : float
@@ -42,6 +21,29 @@ parameters_set : int, optional
     distribution (amongst `ot.Beta.RT, ot.Beta.MUSIGMA`).
 
     Default assumes `ot.Beta.RT`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{(x - a)^{r - 1} (b - x)^{t - r - 1}}
+                  {(b - a)^{t - 1} {\rm B}(r, t - r)},
+                  \quad x \in [a; b]
+
+with :math:`r < t` and :math:`a < b` and where :math:`\rm B` denotes
+Euler's beta function.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & a + \frac{(b - a)\,r}{t} \\
+        \Var{X} & = & \left(\frac{b - a}{t}\right)^2 \frac{r\,(t - r)}{t + 1}
+    \end{eqnarray*}
 
 Examples
 --------

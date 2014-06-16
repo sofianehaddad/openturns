@@ -16,10 +16,6 @@ OT_Distribution_doc
 %define OT_Distribution_computeCDF_doc
 "Computes the cumulative distribution function.
 
-.. math::
-
-    F_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i \leq x_i}, \quad \vect{x} \in \supp{\vect{X}}
-
 Parameters
 ----------
 X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.NumericalSample` or 2d-array
@@ -28,7 +24,16 @@ X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.Numerical
 Returns
 -------
 F : float, :class:`~openturns.NumericalPoint`
-    CDF value(s) at input(s) `X`."
+    CDF value(s) at input(s) `X`.
+
+Notes
+-----
+The cumulative distribution function is defined as:
+
+.. math::
+
+    F_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i \leq x_i},
+                             \quad \vect{x} \in \supp{\vect{X}}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeCDF
 OT_Distribution_computeCDF_doc
@@ -58,9 +63,6 @@ OT_Distribution_computeCDFGradient_doc
 %define OT_Distribution_computeCharacteristicFunction_doc
 "Computes the characteristic function.
 
-.. math::
-    \phi_X(t) = \mathbb{E}\left[\exp(-i\,t\,X)\right], \quad t \in \Rset
-
 Parameters
 ----------
 t : float
@@ -73,6 +75,12 @@ phi : complex
 
 Notes
 -----
+The characteristic function is defined as:
+
+.. math::
+    \phi_X(t) = \mathbb{E}\left[\exp(- i t X)\right],
+                \quad t \in \Rset
+
 OpenTURNS features a generic implementation of the characteristic function for
 all its univariate distributions (both continuous and discrete). This default
 implementation might be time consuming, especially as the modulus of `t` gets
@@ -87,10 +95,6 @@ OT_Distribution_computeCharacteristicFunction_doc
 %define OT_Distribution_computeComplementaryCDF_doc
 "Computes the complementary cumulative distribution function.
 
-.. math::
-
-    1 - F_{\vect{X}}(\vect{x}) = 1 - \Prob{\bigcap_{i=1}^n X_i \leq x_i}, \quad \vect{x} \in \supp{\vect{X}}
-
 Parameters
 ----------
 X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.NumericalSample` or 2d-array
@@ -103,7 +107,15 @@ C : float, :class:`~openturns.NumericalPoint`
 
 Notes
 -----
-This is not the survival function (except for 1-dimensional distributions).
+The complementary cumulative distribution function.
+
+.. math::
+
+    1 - F_{\vect{X}}(\vect{x}) = 1 - \Prob{\bigcap_{i=1}^n X_i \leq x_i}, \quad \vect{x} \in \supp{\vect{X}}
+
+.. warning::
+    This is not the survival function (except for 1-dimensional
+    distributions).
 
 See Also
 --------
@@ -118,10 +130,6 @@ OT_Distribution_computeComplementaryCDF_doc
 "Computes the conditional cumulative distribution function of the last
 component with respect to the other fixed components.
 
-.. math::
-
-    F_{X_n \mid X_1, \ldots, X_{n - 1}}(x_n) = \Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}, \quad x_n \in \supp{X_n}
-
 Parameters
 ----------
 Xn : float
@@ -132,7 +140,18 @@ Xcond : :class:`~openturns.NumericalPoint` or 1d-array with dimension :math:`n-1
 Returns
 -------
 F : float
-    Conditional CDF value at input `Xn`, `Xcond`."
+    Conditional CDF value at input `Xn`, `Xcond`.
+
+Notes
+-----
+The conditional cumulative distribution function of the last component with
+respect to the other fixed components is defined as follows:
+
+.. math::
+
+    F_{X_n \mid X_1, \ldots, X_{n - 1}}(x_n) =
+        \Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}},
+        \quad x_n \in \supp{X_n}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeConditionalCDF
 OT_Distribution_computeConditionalCDF_doc
@@ -217,12 +236,6 @@ OT_Distribution_computeConditionalQuantile_doc
 %define OT_Distribution_computeDDF_doc
 "Computes the derivative density function.
 
-The derivative density function is the gradient of the probability density
-function with respect to :math:`\vect{x}`:
-
-.. math::
-    \vect{\nabla}_{\vect{x}} f_{\vect{X}}(\vect{x}) = \Tr{\left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_i}, \quad i = 1, \ldots, n\right)}, \quad \vect{x} \in \supp{\vect{X}}
-
 Parameters
 ----------
 X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.NumericalSample` or 2d-array
@@ -231,7 +244,19 @@ X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.Numerical
 Returns
 -------
 d : :class:`~openturns.NumericalPoint`, :class:`~openturns.NumericalSample`
-    DDF value(s) at input(s) `X`."
+    DDF value(s) at input(s) `X`.
+
+Notes
+-----
+The derivative density function is the gradient of the probability density
+function with respect to :math:`\vect{x}`:
+
+.. math::
+
+    \vect{\nabla}_{\vect{x}} f_{\vect{X}}(\vect{x}) =
+        \Tr{\left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial x_i},
+                  \quad i = 1, \ldots, n\right)},
+        \quad \vect{x} \in \supp{\vect{X}}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeDDF
 OT_Distribution_computeDDF_doc
@@ -241,12 +266,6 @@ OT_Distribution_computeDDF_doc
 %define OT_Distribution_computeDensityGenerator_doc
 "Computes the probability density function of the characteristic generator
 of the elliptical distribution.
-
-This is the function :math:`\phi` such that the probability density
-function rewrites:
-
-.. math::
-    f_{\vect{X}}(\vect{x}) = \phi\left(\Tr{\left(\vect{x} - \vect{\mu}\right)}\mat{\Sigma}^{-1}\left(\vect{x} - \vect{\mu}\right)\right), \quad \vect{x} \in \supp{\vect{X}}
 
 Parameters
 ----------
@@ -260,6 +279,18 @@ p : float
 
 Notes
 -----
+This is the function :math:`\phi` such that the probability density function
+rewrites:
+
+.. math::
+
+    f_{\vect{X}}(\vect{x}) =
+        \phi\left(\Tr{\left(\vect{x} - \vect{\mu}\right)}
+                      \mat{\Sigma}^{-1}
+                      \left(\vect{x} - \vect{\mu}\right)
+            \right),
+        \quad \vect{x} \in \supp{\vect{X}}
+
 This function only exists for elliptical distributions.
 
 See Also
@@ -328,9 +359,6 @@ OT_Distribution_computeDensityGeneratorSecondDerivative_doc
 %define OT_Distribution_computeGeneratingFunction_doc
 "Computes the probability-generating function.
 
-.. math::
-    G_X(z) = \Expect{z^X}, \quad z \in \Cset
-
 Parameters
 ----------
 z : float or complex
@@ -343,6 +371,12 @@ g : float
 
 Notes
 -----
+The probability-generating function is defined as follows:
+
+.. math::
+
+    G_X(z) = \Expect{z^X}, \quad z \in \Cset
+
 This function only exists for discrete distributions. OpenTURNS implements
 this method for univariate distributions only.
 
@@ -433,9 +467,6 @@ OT_Distribution_computeLogPDF_doc
 %define OT_Distribution_computePDF_doc
 "Computes the probability density function.
 
-.. math::
-    f_{\vect{X}}(\vect{x}) = \frac{\partial^n F_{\vect{X}}(\vect{x})}{\prod_{i=1}^n \partial x_i}, \quad \vect{x} \in \supp{\vect{X}}
-
 Parameters
 ----------
 X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.NumericalSample` or 2d-array
@@ -444,7 +475,17 @@ X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.Numerical
 Returns
 -------
 f : float, :class:`~openturns.NumericalPoint`
-    PDF value(s) at input(s) `X`."
+    PDF value(s) at input(s) `X`.
+
+Notes
+-----
+The probability density function is defined as follows:
+
+.. math::
+
+    f_{\vect{X}}(\vect{x}) = \frac{\partial^n F_{\vect{X}}(\vect{x})}
+                                  {\prod_{i=1}^n \partial x_i},
+                             \quad \vect{x} \in \supp{\vect{X}}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDF
 OT_Distribution_computePDF_doc
@@ -474,18 +515,6 @@ OT_Distribution_computePDFGradient_doc
 %define OT_Distribution_computeProbability_doc
 "Computes the interval probability.
 
-This computes the probability that the random vector :math:`\vect{X}` lies
-in the hyper-rectangular region formed by the vectors :math:`\vect{a}` and
-:math:`\vect{b}`:
-
-.. math::
-    \Prob{\bigcap\limits_{i=1}^n a_i < X_i \leq b_i} =
-        \sum\limits_{\vect{c}} (-1)^{n(\vect{c})} F_{\vect{X}}\left(\vect{c}\right)
-
-where the sum runs over the :math:`2^n` vectors such that :math:`\vect{c} = \Tr{(c_i, i = 1, \ldots, n)}`
-with :math:`c_i \in [a_i, b_i]`, and :math:`n(\vect{c})` is the number
-of components in :math:`\vect{c}` such that :math:`c_i = a_i`.
-
 Parameters
 ----------
 interval : :class:`~openturns.Interval`
@@ -494,7 +523,24 @@ interval : :class:`~openturns.Interval`
 Returns
 -------
 P : float
-    Interval probability."
+    Interval probability.
+
+Notes
+-----
+This computes the probability that the random vector :math:`\vect{X}` lies in
+the hyper-rectangular region formed by the vectors :math:`\vect{a}` and
+:math:`\vect{b}`:
+
+.. math::
+
+    \Prob{\bigcap\limits_{i=1}^n a_i < X_i \leq b_i} =
+        \sum\limits_{\vect{c}} (-1)^{n(\vect{c})}
+            F_{\vect{X}}\left(\vect{c}\right)
+
+where the sum runs over the :math:`2^n` vectors such that
+:math:`\vect{c} = \Tr{(c_i, i = 1, \ldots, n)}` with :math:`c_i \in [a_i, b_i]`,
+and :math:`n(\vect{c})` is the number of components in
+:math:`\vect{c}` such that :math:`c_i = a_i`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeProbability
 OT_Distribution_computeProbability_doc
@@ -504,12 +550,6 @@ OT_Distribution_computeProbability_doc
 %define OT_Distribution_computeQuantile_doc
 "Computes the quantile function.
 
-The quantile function is also known as the inverse cumulative distribution
-function:
-
-.. math::
-    Q_{\vect{X}}(p) = F_{\vect{X}}^{-1}(p), \quad p \in [0; 1]
-
 Parameters
 ----------
 p : float, :math:`0 < p < 1`
@@ -518,7 +558,17 @@ p : float, :math:`0 < p < 1`
 Returns
 -------
 X : :class:`~openturns.NumericalPoint`
-    Quantile at probability level `p`."
+    Quantile at probability level `p`.
+
+Notes
+-----
+The quantile function is also known as the inverse cumulative distribution
+function:
+
+.. math::
+
+    Q_{\vect{X}}(p) = F_{\vect{X}}^{-1}(p),
+                      \quad p \in [0; 1]"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeQuantile
 OT_Distribution_computeQuantile_doc
@@ -530,12 +580,6 @@ OT_Distribution_computeQuantile_doc
 underlying standard spherical distribution (for elliptical distributions
 only).
 
-This is indeed the CDF of the sum of the squared independent, standard,
-identically distributed components:
-
-.. math::
-    R^2 = \sqrt{\sum\limits_{i=1}^n U_i^2}
-
 Parameters
 ----------
 r2 : float, :math:`0 \leq r^2`
@@ -544,7 +588,16 @@ r2 : float, :math:`0 \leq r^2`
 Returns
 -------
 F : float
-    CDF value at input `r2`."
+    CDF value at input `r2`.
+
+Notes
+-----
+This is the CDF of the sum of the squared independent, standard, identically
+distributed components:
+
+.. math::
+
+    R^2 = \sqrt{\sum\limits_{i=1}^n U_i^2}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeRadialDistributionCDF
 OT_Distribution_computeRadialDistributionCDF_doc
@@ -553,12 +606,6 @@ OT_Distribution_computeRadialDistributionCDF_doc
 
 %define OT_Distribution_computeScalarQuantile_doc
 "Computes the quantile function for univariate distributions.
-
-The quantile function is also known as the inverse cumulative distribution
-function:
-
-.. math::
-    Q_X(p) = F_X^{-1}(p), \quad p \in [0; 1]
 
 Parameters
 ----------
@@ -569,6 +616,15 @@ Returns
 -------
 X : float
     Quantile at probability level `p`.
+
+Notes
+-----
+The quantile function is also known as the inverse cumulative distribution
+function:
+
+.. math::
+
+    Q_X(p) = F_X^{-1}(p), \quad p \in [0; 1]
 
 See Also
 --------
@@ -582,10 +638,6 @@ OT_Distribution_computeScalarQuantile_doc
 %define OT_Distribution_computeSurvivalFunction_doc
 "Computes the survival function.
 
-.. math::
-
-    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i > x_i}, \quad \vect{x} \in \supp{\vect{X}}
-
 Parameters
 ----------
 X : :class:`~openturns.NumericalPoint` or 1d-array, :class:`~openturns.NumericalSample` or 2d-array
@@ -598,8 +650,17 @@ S : float, :class:`~openturns.NumericalPoint`
 
 Notes
 -----
-This is not the complementary cumulative distribution function (except for
-1-dimensional distributions).
+The survival function is defined as follows:
+
+.. math::
+
+    S_{\vect{X}}(\vect{x}) = \Prob{\bigcap_{i=1}^n X_i > x_i},
+                             \quad \vect{x} \in \supp{\vect{X}}
+
+.. warning::
+
+    This is not the complementary cumulative distribution function (except for
+    1-dimensional distributions).
 
 See Also
 --------
@@ -939,12 +1000,6 @@ OT_Distribution_getCDFEpsilon_doc
 %define OT_Distribution_getCenteredMoment_doc
 "Accessor to the componentwise centered moments.
 
-Centered moments are centered with respect to the first-order moment:
-
-.. math::
-
-    \vect{m}^{(k)}_0 = \Tr{\left(\Expect{\left(X_i - \mu_i\right)^k}, \quad i = 1, \ldots, n\right)}
-
 Parameters
 ----------
 k : int
@@ -954,6 +1009,15 @@ Returns
 -------
 m : :class:`~openturns.NumericalPoint`
     Componentwise centered moment of order :math:`k`.
+
+Notes
+-----
+Centered moments are centered with respect to the first-order moment:
+
+.. math::
+
+    \vect{m}^{(k)}_0 = \Tr{\left(\Expect{\left(X_i - \mu_i\right)^k},
+                                 \quad i = 1, \ldots, n\right)}
 
 See Also
 --------
@@ -1009,17 +1073,20 @@ OT_Distribution_getCorrelation_doc
 %define OT_Distribution_getCovariance_doc
 "Accessor to the covariance matrix.
 
+Returns
+-------
+Sigma : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix.
+
+Notes
+-----
 The covariance is the second-order standard moment. It is defined as:
 
 .. math::
 
     \mat{\Sigma} & = \Cov{\vect{X}} \\
-                 & = \Expect{\left(\vect{X} - \vect{\mu}\right)\Tr{\left(\vect{X} - \vect{\mu}\right)}}
-
-Returns
--------
-Sigma : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix."
+                 & = \Expect{\left(\vect{X} - \vect{\mu}\right)
+                             \Tr{\left(\vect{X} - \vect{\mu}\right)}}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getCovariance
 OT_Distribution_getCovariance_doc
@@ -1084,18 +1151,21 @@ OT_Distribution_getInverseCholesky_doc
 %define OT_Distribution_getInverseIsoProbabilisticTransformation_doc
 "Accessor to the inverse iso-probabilistic transformation.
 
-.. math::
-    T^{-1}: \left|
-    \begin{array}{rcl}
-        \Rset^n & \rightarrow & \supp{\vect{X}} \\
-        \vect{u} & \mapsto & \vect{x}
-    \end{array}
-    \right.
-
 Returns
 -------
 Tinv : :class:`~openturns.NumericalMathFunction`
     Inverse iso-probabilistic transformation.
+
+Notes
+-----
+The inverse iso-probabilistic transformation is defined as follows:
+
+.. math::
+
+    T^{-1}: \left|\begin{array}{rcl}
+                \Rset^n & \rightarrow & \supp{\vect{X}} \\
+                \vect{u} & \mapsto & \vect{x}
+            \end{array}\right.
 
 See also
 --------
@@ -1109,13 +1179,21 @@ OT_Distribution_getInverseIsoProbabilisticTransformation_doc
 %define OT_Distribution_getIsoProbabilisticTransformation_doc
 "Accessor to the iso-probabilistic transformation.
 
+Returns
+-------
+T : :class:`~openturns.NumericalMathFunction`
+    Iso-probabilistic transformation.
+
+Notes
+-----
+The iso-probabilistic transformation is defined as follows:
+
 .. math::
-    T: \left|
-    \begin{array}{rcl}
-        \supp{\vect{X}} & \rightarrow & \Rset^n \\
-        \vect{x} & \mapsto & \vect{u}
-    \end{array}
-    \right.
+
+    T: \left|\begin{array}{rcl}
+            \supp{\vect{X}} & \rightarrow & \Rset^n \\
+            \vect{x} & \mapsto & \vect{u}
+       \end{array}\right.
 
 **An** iso-probabilistic transformation is a *diffeomorphism* [#diff]_ from
 :math:`\supp{\vect{X}}` to :math:`\Rset^n` that maps realizations
@@ -1127,8 +1205,10 @@ preserving probabilities. It is hence defined so that it satisfies:
     :nowrap:
 
     \begin{eqnarray*}
-        \Prob{\bigcap_{i=1}^n X_i \leq x_i} & = & \Prob{\bigcap_{i=1}^n Y_i \leq y_i} \\
-        F_{\vect{X}}(\vect{x}) & = & F_{\vect{Y}}(\vect{y})
+        \Prob{\bigcap_{i=1}^n X_i \leq x_i}
+            & = & \Prob{\bigcap_{i=1}^n Y_i \leq y_i} \\
+        F_{\vect{X}}(\vect{x})
+            & = & F_{\vect{Y}}(\vect{y})
     \end{eqnarray*}
 
 **The present** implementation of the iso-probabilistic transformation maps
@@ -1146,13 +1226,6 @@ To be more specific:
       Normal distribution and is obtained by means of the **Rosenblatt
       transformation** [Rosenblatt1952]_, [Lebrun2009c]_.
 
-Returns
--------
-T : :class:`~openturns.NumericalMathFunction`
-    Iso-probabilistic transformation.
-
-Notes
------
 .. [#diff] A differentiable map :math:`f` is called a *diffeomorphism* if it
     is a bijection and its inverse :math:`f^{-1}` is differentiable as well.
     Hence, the iso-probabilistic transformation implements a gradient (and
@@ -1163,7 +1236,9 @@ Notes
     if:
 
     .. math::
-        \mat{R}\,\vect{U} \sim \vect{U}, \quad \forall \mat{R} \in \cS\cP_n(\Rset)
+
+        \mat{R}\,\vect{U} \sim \vect{U},
+        \quad \forall \mat{R} \in \cS\cP_n(\Rset)
 
 See also
 --------
@@ -1177,16 +1252,24 @@ OT_Distribution_getIsoProbabilisticTransformation_doc
 %define OT_Distribution_getKendallTau_doc
 "Accessor to the Kendall coefficients matrix.
 
-The Kendall coefficients matrix is defined as:
-
-.. math::
-    \mat{\tau} = \Big[ & \Prob{X_i < x_i \cap X_j < x_j \cup X_i > x_i \cap X_j > x_j} \\
-                        & - \Prob{X_i < x_i \cap X_j > x_j \cup X_i > x_i \cap X_j < x_j}, \quad i,j = 1, \ldots, n\Big]
-
 Returns
 -------
 tau: :class:`~openturns.SquareMatrix`
     Kendall coefficients matrix.
+
+Notes
+-----
+The Kendall coefficients matrix is defined as:
+
+.. math::
+
+    \mat{\tau} = \Big[& \Prob{X_i < x_i \cap X_j < x_j
+                              \cup
+                              X_i > x_i \cap X_j > x_j} \\
+                      & - \Prob{X_i < x_i \cap X_j > x_j
+                                \cup
+                                X_i > x_i \cap X_j < x_j},
+                      \quad i,j = 1, \ldots, n\Big]
 
 See Also
 --------
@@ -1200,15 +1283,20 @@ OT_Distribution_getKendallTau_doc
 %define OT_Distribution_getKurtosis_doc
 "Accessor to the componentwise kurtosis.
 
-The kurtosis is the fourth-order standard moment:
-
-.. math::
-    \vect{\kappa} = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}{\sigma_i}\right)^4}, \quad i = 1, \ldots, n\right)}
-
 Returns
 -------
 k : :class:`~openturns.NumericalPoint`
-    Componentwise kurtosis."
+    Componentwise kurtosis.
+
+Notes
+-----
+The kurtosis is the fourth-order standard moment:
+
+.. math::
+
+    \vect{\kappa} = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
+                                                 {\sigma_i}\right)^4},
+                              \quad i = 1, \ldots, n\right)}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getKurtosis
 OT_Distribution_getKurtosis_doc
@@ -1244,15 +1332,18 @@ OT_Distribution_getMarginal_doc
 %define OT_Distribution_getMean_doc
 "Accessor to the mean.
 
-The mean is the first-order moment:
-
-.. math::
-    \vect{\mu} = \Tr{\left(\Expect{X_i}, \quad i = 1, \ldots, n\right)}
-
 Returns
 -------
 k : :class:`~openturns.NumericalPoint`
-    Mean."
+    Mean.
+
+Notes
+-----
+The mean is the first-order moment:
+
+.. math::
+
+    \vect{\mu} = \Tr{\left(\Expect{X_i}, \quad i = 1, \ldots, n\right)}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getMean
 OT_Distribution_getMean_doc
@@ -1262,11 +1353,6 @@ OT_Distribution_getMean_doc
 %define OT_Distribution_getMoment_doc
 "Accessor to the componentwise moments.
 
-The componentwise moment of order :math:`k` is defined as:
-
-.. math::
-    \vect{m}^{(k)} = \Tr{\left(\Expect{X_i^k}, \quad i = 1, \ldots, n\right)}
-
 Parameters
 ----------
 k : int
@@ -1275,7 +1361,15 @@ k : int
 Returns
 -------
 m : :class:`~openturns.NumericalPoint`
-    Componentwise moment of order `k`."
+    Componentwise moment of order `k`.
+
+Notes
+-----
+The componentwise moment of order :math:`k` is defined as:
+
+.. math::
+
+    \vect{m}^{(k)} = \Tr{\left(\Expect{X_i^k}, \quad i = 1, \ldots, n\right)}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getMoment
 OT_Distribution_getMoment_doc
@@ -1328,12 +1422,6 @@ OT_Distribution_getParametersNumber_doc
 %define OT_Distribution_getPearsonCorrelation_doc
 "Accessor to the Pearson correlation matrix.
 
-Pearson's correlation is defined as the normalized covariance matrix:
-
-.. math::
-    \mat{\rho} & = \left[\frac{\Cov{X_i, X_j}}{\sqrt{\Var{X_i}\Var{X_j}}}, \quad i,j = 1, \ldots, n\right] \\
-               & = \left[\frac{\Sigma_{i,j}}{\sqrt{\Sigma_{i,i}\Sigma_{j,j}}}, \quad i,j = 1, \ldots, n\right]
-
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
@@ -1341,7 +1429,18 @@ R : :class:`~openturns.CorrelationMatrix`
 
 See Also
 --------
-getCovariance"
+getCovariance
+
+Notes
+-----
+Pearson's correlation is defined as the normalized covariance matrix:
+
+.. math::
+
+    \mat{\rho} & = \left[\frac{\Cov{X_i, X_j}}{\sqrt{\Var{X_i}\Var{X_j}}},
+                         \quad i,j = 1, \ldots, n\right] \\
+               & = \left[\frac{\Sigma_{i,j}}{\sqrt{\Sigma_{i,i}\Sigma_{j,j}}},
+                         \quad i,j = 1, \ldots, n\right]"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getPearsonCorrelation
 OT_Distribution_getPearsonCorrelation_doc
@@ -1359,14 +1458,16 @@ OT_Distribution_getPositionIndicator_doc
 %define OT_Distribution_getRange_doc
 "Accessor to the range of the distribution.
 
-The *mathematical* range is the smallest closed interval outside of which the
-PDF is zero. The *numerical* range is the interval outside of which the PDF is
-rounded to zero in double precision.
-
 Returns
 -------
 range : :class:`~openturns.Interval`
     Distribution's range.
+
+Notes
+-----
+The *mathematical* range is the smallest closed interval outside of which the
+PDF is zero. The *numerical* range is the interval outside of which the PDF is
+rounded to zero in double precision.
 
 See Also
 --------
@@ -1397,16 +1498,19 @@ OT_Distribution_getRealization_doc
 %define OT_Distribution_getRoughness_doc
 "Accessor to roughness of the distribution.
 
-The roughness of the distribution is defined as the :math:`\cL^2`-norm of its
-PDF:
-
-.. math::
-    r = \int_{\supp{\vect{X}}} f_{\vect{X}}(\vect{x})^2 \di{\vect{x}}
-
 Returns
 -------
 r : float
     Distribution's roughness.
+
+Notes
+-----
+The roughness of the distribution is defined as the :math:`\cL^2`-norm of its
+PDF:
+
+.. math::
+
+    r = \int_{\supp{\vect{X}}} f_{\vect{X}}(\vect{x})^2 \di{\vect{x}}
 
 See Also
 --------
@@ -1461,17 +1565,22 @@ OT_Distribution_getShapeMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getSkewness_doc
-"Accessor to the componentwise kurtosis.
-
-The skewness is the third-order standard moment:
-
-.. math::
-    \vect{\delta} = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}{\sigma_i}\right)^3}, \quad i = 1, \ldots, n\right)}
+"Accessor to the componentwise skewness.
 
 Returns
 -------
 d : :class:`~openturns.NumericalPoint`
-    Componentwise skewness."
+    Componentwise skewness.
+
+Notes
+-----
+The skewness is the third-order standard moment:
+
+.. math::
+
+    \vect{\delta} = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
+                                                 {\sigma_i}\right)^3},
+                              \quad i = 1, \ldots, n\right)}"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getSkewness
 OT_Distribution_getSkewness_doc
@@ -1481,16 +1590,21 @@ OT_Distribution_getSkewness_doc
 %define OT_Distribution_getSpearmanCorrelation_doc
 "Accessor to the Spearman correlation matrix.
 
-Spearman's (rank) correlation is defined as the normalized covariance matrix
-of the copula (ie that of the uniform margins):
-
-.. math::
-    \mat{\rho_S} = \left[\frac{\Cov{F_{X_i}(X_i), F_{X_j}(X_j)}}{\sqrt{\Var{F_{X_i}(X_i)}\Var{F_{X_j}(X_j)}}}, \quad i,j = 1, \ldots, n\right]
-
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
     Spearman's correlation matrix.
+
+Notes
+-----
+Spearman's (rank) correlation is defined as the normalized covariance matrix
+of the copula (ie that of the uniform margins):
+
+.. math::
+
+    \mat{\rho_S} = \left[\frac{\Cov{F_{X_i}(X_i), F_{X_j}(X_j)}}
+                              {\sqrt{\Var{F_{X_i}(X_i)} \Var{F_{X_j}(X_j)}}},
+                         \quad i,j = 1, \ldots, n\right]
 
 See Also
 --------
@@ -1523,14 +1637,16 @@ OT_Distribution_getStandardDeviation_doc
 %define OT_Distribution_getStandardDistribution_doc
 "Accessor to the standard distribution.
 
-The standard distribution is determined according to the distribution
-properties. This is the target distribution achieved by the iso-probabilistic
-transformation.
-
 Returns
 -------
 standard_distribution : :class:`~openturns.Distribution`
     Standard distribution.
+
+Notes
+-----
+The standard distribution is determined according to the distribution
+properties. This is the target distribution achieved by the iso-probabilistic
+transformation.
 
 See Also
 --------
@@ -1544,12 +1660,6 @@ OT_Distribution_getStandardDistribution_doc
 %define OT_Distribution_getStandardMoment_doc
 "Accessor to the componentwise standard moments.
 
-Standard moments are centered with respect to the first-order moment and
-normalized with respect to the standard deviation:
-
-.. math::
-    \overline{\vect{m}}^{(k)}_0 = \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}{\sigma_i}\right)^k}, \quad i = 1, \ldots, n\right)}
-
 Parameters
 ----------
 k : int
@@ -1559,6 +1669,18 @@ Returns
 -------
 m : :class:`~openturns.NumericalPoint`
     Componentwise standard moment of order `k`.
+
+Notes
+-----
+Standard moments are centered with respect to the first-order moment and
+normalized with respect to the standard deviation:
+
+.. math::
+
+    \overline{\vect{m}}^{(k)}_0 =
+        \Tr{\left(\Expect{\left(\frac{X_i - \mu_i}
+                                     {\sigma_i}\right)^k},
+        \quad i = 1, \ldots, n\right)}
 
 See Also
 --------
@@ -1573,13 +1695,15 @@ OT_Distribution_getStandardMoment_doc
 "Accessor to the standard representative distribution in the parametric
 family.
 
-The standard representative distribution is the one associated with the
-standard moments.
-
 Returns
 -------
 std_repr_dist : :class:`~openturns.Distribution`
-    Standard representative distribution."
+    Standard representative distribution.
+
+Notes
+-----
+The standard representative distribution is the one associated with the
+standard moments."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getStandardRepresentative
 OT_Distribution_getStandardRepresentative_doc
@@ -1588,9 +1712,6 @@ OT_Distribution_getStandardRepresentative_doc
 
 %define OT_Distribution_getSupport_doc
 "Accessor to the distribution's support.
-
-The mathematical support :math:`\supp{\vect{X}}` of the distribution is
-the interval (or collection of intervals) where the PDF is non-zero.
 
 Parameters
 ----------
@@ -1604,6 +1725,9 @@ support : :class:`~openturns.Interval`
 
 Notes
 -----
+The mathematical support :math:`\supp{\vect{X}}` of the distribution is
+the interval (or collection of intervals) where the PDF is non-zero.
+
 This is yet implemented for discrete distributions only.
 
 See Also
@@ -1670,12 +1794,14 @@ OT_Distribution_isContinuous_doc
 %define OT_Distribution_isCopula_doc
 "Tests whether the distribution is a copula or not.
 
-A copula is a distribution with uniform margins on [0; 1].
-
 Returns
 -------
 test : bool
-    Answer."
+    Answer.
+
+Notes
+-----
+A copula is a distribution with uniform margins on [0; 1]."
 %enddef
 %feature("docstring") OT::DistributionImplementation::isCopula
 OT_Distribution_isCopula_doc
@@ -1698,21 +1824,25 @@ OT_Distribution_isDiscrete_doc
 %define OT_Distribution_isElliptical_doc
 "Tests whether the distribution is elliptical or not.
 
+Returns
+-------
+test : bool
+    Answer.
+
+Notes
+-----
 A multivariate distribution is said to be *elliptical* if its characteristic
 function is of the form:
 
 .. math::
-    \phi(\vect{t}) =  \exp\left(i \Tr{\vect{t}} \vect{\mu}\right)
-        \Psi\left(\Tr{\vect{t}} \mat{\Sigma} \vect{t}\right), \quad \vect{t} \in \Rset^n
+
+    \phi(\vect{t}) = \exp\left(i \Tr{\vect{t}} \vect{\mu}\right)
+                     \Psi\left(\Tr{\vect{t}} \mat{\Sigma} \vect{t}\right),
+                     \quad \vect{t} \in \Rset^n
 
 for specified vector :math:`\vect{\mu}` and positive-definite matrix
 :math:`\mat{\Sigma}`. The function :math:`\Psi` is known as the
-*characteristic generator* of the elliptical distribution.
-
-Returns
--------
-test : bool
-    Answer."
+*characteristic generator* of the elliptical distribution."
 %enddef
 %feature("docstring") OT::DistributionImplementation::isElliptical
 OT_Distribution_isElliptical_doc

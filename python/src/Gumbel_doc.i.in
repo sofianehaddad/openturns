@@ -1,6 +1,25 @@
 %feature("docstring") OT::Gumbel
 "Gumbel distribution.
 
+Parameters
+----------
+arg1 : float
+    If `parameters_set == ot.Gumbel.ALPHABETA`: the scale parameter :math:`\alpha`.
+
+    If `parameters_set == ot.Gumbel.MUSIGMA`: the distribution's mean.
+arg2 : float
+    If `parameters_set == ot.Gumbel.ALPHABETA`: the location parameter :math:`\beta`.
+
+    If `parameters_set == ot.Gumbel.MUSIGMA`: the distribution's standard
+    deviation.
+parameters_set : int, optional
+    An integer telling which parameters set is used for definining the
+    distribution (amongst `ot.Gumbel.ALPHABETA, ot.Gumbel.MUSIGMA`).
+
+    Default assumes `ot.Gumbel.ALPHABETA`.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
@@ -19,24 +38,10 @@ Its first moments are:
 
     \begin{eqnarray*}
         \Expect{X} & = & \beta + \frac{c}{\alpha} \\
-        \Var{X} & = & \frac{\pi^2}{6\alpha^2}
+        \Var{X} & = & \frac{\pi^2}{6 \alpha^2}
     \end{eqnarray*}
 
 where :math:`c` is the Euler-Mascheroni constant.
-
-Parameters
-----------
-arg1 : float
-    If `parameters_set == ot.Gumbel.ALPHABETA`: the scale parameter :math:`\alpha`.
-    If `parameters_set == ot.Gumbel.MUSIGMA`: the distribution's mean.
-arg2 : float
-    If `parameters_set == ot.Gumbel.ALPHABETA`: the location parameter :math:`\beta`.
-    If `parameters_set == ot.Gumbel.MUSIGMA`: the distribution's standard
-    deviation.
-parameters_set : int, optional
-    An integer telling which parameters set is used for definining the
-    distribution (amongst `ot.Gumbel.ALPHABETA, ot.Gumbel.MUSIGMA`).
-    Default assumes `ot.Gumbel.ALPHABETA`.
 
 Examples
 --------

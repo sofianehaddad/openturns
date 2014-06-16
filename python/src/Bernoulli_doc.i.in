@@ -1,6 +1,13 @@
 %feature("docstring") OT::Bernoulli
 "Bernoulli distribution.
 
+Parameters
+----------
+p : float, :math:`0 \leq p \leq 1`
+    Success probability.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
@@ -22,11 +29,6 @@ Its first moments are:
         \Expect{X} & = & p \\
         \Var{X} & = & p\,(1 - p)
     \end{eqnarray*}
-
-Parameters
-----------
-p : float, :math:`0 \leq p \leq 1`
-    Success probability.
 
 Examples
 --------

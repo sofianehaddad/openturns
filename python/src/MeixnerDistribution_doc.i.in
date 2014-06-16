@@ -1,6 +1,19 @@
 %feature("docstring") OT::MeixnerDistribution
 "Meixner distribution.
 
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Scale parameter.
+beta : float, :math:`\beta \in [-\pi; \pi]`
+    Skewness parameter.
+delta : float, :math:`\delta > 0`
+    Shape parameter.
+mu : float :math:`\mu \in \Rset`
+    Location parameter.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
@@ -8,7 +21,8 @@ Its probability density function is defined as:
     f_X(x) = \frac{\left(2 \cos(\beta / 2)\right)^{2 \delta}}
                   {2 \alpha \pi \Gamma(2 \delta)}
              \exp\left(\frac{\beta (x - \mu)}{\alpha}\right)
-             \left|\Gamma\left(\delta + i \frac{x - \mu}{\alpha}\right)\right|^2,
+             \left|\Gamma\left(\delta + i \frac{x - \mu}{\alpha}
+                               \right)\right|^2,
              \quad x \in \Rset
 
 with :math:`\alpha, \delta > 0`, :math:`\beta \in [-\pi; \pi]`,
@@ -23,17 +37,6 @@ Its first moments are:
         \Expect{X} & = & \alpha \delta \tan(\beta / 2) + \mu \\
         \Var{X} & = & \frac{\alpha^2 \delta}{1 + \cos(\beta)}
     \end{eqnarray*}
-
-Parameters
-----------
-alpha : float, :math:`\alpha > 0`
-    Scale parameter.
-beta : float, :math:`\beta \in [-\pi; \pi]`
-    Skewness parameter.
-delta : float, :math:`\delta > 0`
-    Shape parameter.
-mu : float :math:`\mu \in \Rset`
-    Location parameter.
 
 Examples
 --------

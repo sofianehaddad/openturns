@@ -1,24 +1,6 @@
 %feature("docstring") OT::Arcsine
 "Arcsine distribution.
 
-Its probability density function is defined as:
-
-.. math::
-
-    f_X(x) = \frac{1}{\pi\frac{b-a}{2}\sqrt{1-\left(\frac{x-\frac{a+b}{2}}{\frac{b-a}{2}}\right)^2}}, \quad x \in [a; b]
-
-with :math:`a < b`.
-
-Its first moments are:
-
-.. math::
-    :nowrap:
-
-    \begin{eqnarray*}
-        \Expect{X} & = & \frac{a+b}{2} \\
-        \Var{X} & = & \frac{b-a}{2\sqrt{2}}
-    \end{eqnarray*}
-
 Parameters
 ----------
 arg1 : float
@@ -32,6 +14,29 @@ parameters_set : int, optional
     An integer telling which parameters set is used for definining the
     distribution (amongst `ot.Arcsine.AB, ot.Arcsine.MUSIGMA`).
     Default assumes `ot.Arcsine.AB`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_X(x) = \frac{1}{\pi \frac{b - a}{2}
+                      \sqrt{1 - \left(\frac{x - \frac{a + b}{2}}
+                                           {\frac{b - a}{2}}\right)^2}},
+             \quad x \in [a; b]
+
+with :math:`a < b`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \frac{a + b}{2} \\
+        \Var{X} & = & \frac{b - a}{2 \sqrt{2}}
+    \end{eqnarray*}
 
 Examples
 --------

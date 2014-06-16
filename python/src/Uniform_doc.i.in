@@ -1,6 +1,15 @@
 %feature("docstring") OT::Uniform
 "Uniform distribution.
 
+Parameters
+----------
+a : float
+    The lower bound.
+b : float, :math:`b > a`
+    The upper bound.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
@@ -18,13 +27,6 @@ Its first moments are defined as:
         \Expect{X} & = & \frac{a+b}{2} \\
         \Var{X} & = & \frac{b-a}{2\sqrt{3}}
     \end{eqnarray*}
-
-Parameters
-----------
-a : float
-    The lower bound.
-b : float, :math:`b > a`
-    The upper bound.
 
 Examples
 --------

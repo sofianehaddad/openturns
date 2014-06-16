@@ -1,6 +1,15 @@
 %feature("docstring") OT::Multinomial
 "Multinomial distribution.
 
+Parameters
+----------
+N : int, :math:`\sum_{i = 1}^n x_i \leq N`
+    Number of experiments.
+P : :class:`~openturns.NumericalPoint` or 1d array, list or tuple, :math:`0 \leq p_i, i = 1, \ldots, n` and :math:`\sum_{i = 1}^n p_i \leq 1`
+    Component probabilities (all positive with sum less than unity).
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
@@ -23,13 +32,6 @@ Its first moments are:
         \Var{X_i} & = & N p_i (1 - p_i), \quad i = 1, \ldots, n \\
         \Cov{X_i, X_j} & = & - N p_i p_j, \quad i, j = 1, \ldots, n, i \neq j
     \end{eqnarray*}
-
-Parameters
-----------
-N : int, :math:`\sum_{i = 1}^n x_i \leq N`
-    Number of experiments.
-P : :class:`~openturns.NumericalPoint` or 1d array, list or tuple, :math:`0 \leq p_i, i = 1, \ldots, n` and :math:`\sum_{i = 1}^n p_i \leq 1`
-    Component probabilities (all positive with sum less than unity).
 
 See Also
 --------

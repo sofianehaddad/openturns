@@ -1,6 +1,25 @@
 %feature("docstring") OT::Gamma
 "Gamma distribution.
 
+Parameters
+----------
+arg1 : float
+    If `parameters_set == ot.Gamma.KLAMBDA`: the shape parameter :math:`k > 0`.
+    If `parameters_set == ot.Gamma.MUSIGMA`: the distribution's mean.
+arg2 : float
+    If `parameters_set == ot.Gamma.KLAMBDA`: the scale parameter :math:`\lambda > 0`.
+    If `parameters_set == ot.Gamma.MUSIGMA`: the distribution's standard
+    deviation.
+gamma : float, optional, :math:`\gamma \in \Rset`
+    Shift parameter.
+    Default is 0.
+parameters_set : int, optional
+    An integer telling which parameters set is used for definining the
+    distribution (amongst `ot.Gamma.KLAMBDA, ot.Gamma.MUSIGMA`).
+    Default assumes `ot.Gamma.KLAMBDA`.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
@@ -21,23 +40,6 @@ Its first moments are:
         \Expect{X} & = & \frac{k}{\lambda} + \gamma \\
         \Var{X} & = & \frac{\sqrt{k}}{\lambda}
     \end{eqnarray*}
-
-Parameters
-----------
-arg1 : float
-    If `parameters_set == ot.Gamma.KLAMBDA`: the shape parameter :math:`k > 0`.
-    If `parameters_set == ot.Gamma.MUSIGMA`: the distribution's mean.
-arg2 : float
-    If `parameters_set == ot.Gamma.KLAMBDA`: the scale parameter :math:`\lambda > 0`.
-    If `parameters_set == ot.Gamma.MUSIGMA`: the distribution's standard
-    deviation.
-gamma : float, optional, :math:`\gamma \in \Rset`
-    Shift parameter.
-    Default is 0.
-parameters_set : int, optional
-    An integer telling which parameters set is used for definining the
-    distribution (amongst `ot.Gamma.KLAMBDA, ot.Gamma.MUSIGMA`).
-    Default assumes `ot.Gamma.KLAMBDA`.
 
 Examples
 --------

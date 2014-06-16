@@ -1,11 +1,23 @@
 %feature("docstring") OT::Exponential
 "Exponential distribution.
 
+Parameters
+----------
+lambda : float, :math:`\lambda > 0`
+    Failure rate parameter.
+gamma : float, optional, :math:`\gamma \in \Rset`
+    Shift parameter.
+
+    Default is 0.
+
+Notes
+-----
 Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \lambda\,\exp\left(-\lambda\,(x - \gamma)\right), \quad x \in [\gamma; +\infty[
+    f_X(x) = \lambda \exp\left(- \lambda\,(x - \gamma)\right),
+             \quad x \in [\gamma; +\infty[
 
 with :math:`\lambda > 0` and :math:`\gamma \in \Rset`.
 
@@ -18,14 +30,6 @@ Its first moments are:
         \Expect{X} & = & \gamma + \frac{1}{\lambda} \\
         \Var{X} & = & \frac{1}{\lambda^2}
     \end{eqnarray*}
-
-Parameters
-----------
-lambda : float, :math:`\lambda > 0`
-    Failure rate parameter.
-gamma : float, optional, :math:`\gamma \in \Rset`
-    Shift parameter.
-    Default is 0.
 
 Examples
 --------
