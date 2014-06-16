@@ -20,9 +20,6 @@
 %include OTexceptions.i
 %include std_vector.i
 
-%import common_module.i
-%import typ_module.i
-%include TestResult.i
 %import base_module.i
 
 /* Uncertainty/Model */

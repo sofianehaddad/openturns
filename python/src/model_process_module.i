@@ -19,9 +19,6 @@
 %include OTexceptions.i
 %include std_vector.i
 
-%import common_module.i
-%import typ_module.i
-%include TestResult.i
 %import base_module.i
 %import dist_bundle1_module.i
 %import dist_bundle2_module.i

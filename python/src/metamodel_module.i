@@ -21,9 +21,6 @@
 %include OTexceptions.i
 %include std_vector.i
 
-%import common_module.i
-%import typ_module.i
-%include TestResult.i
 %include BaseFuncCollection.i
 %import base_module.i
 
