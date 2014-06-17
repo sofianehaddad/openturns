@@ -37,8 +37,9 @@ static Factory<MinCopula> RegisteredFactory("MinCopula");
 
 /* Default constructor */
 MinCopula::MinCopula(const UnsignedInteger dim)
-  : CopulaImplementation("MinCopula")
+  : CopulaImplementation()
 {
+  setName("MinCopula");
   // The range is generic for all the copulas
   setDimension(dim);
   computeRange();

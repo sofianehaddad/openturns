@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class AnalyticalResult
  * AnalyticalResult stores the Analytical result
  */
-class AnalyticalResult
+class OT_API AnalyticalResult
   : public PersistentObject
 {
   CLASSNAME;
@@ -54,8 +54,7 @@ public:
   /** Standard constructor */
   AnalyticalResult(const NumericalPoint & standardSpaceDesignPoint,
                    const Event & limitStateVariable,
-                   const Bool isStandardPointOriginInFailureSpace,
-                   const String & name = DefaultName);
+                   const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor (required by SWIG :-<) */
   AnalyticalResult();

@@ -7,10 +7,3 @@ streamObject(const T & anObject)
 class=PersistentObject name=Unnamed
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=PersistentObject name=myName
-checkNameAccessors()
-streamObject(const T & anObject)
-class=PersistentObject name=myNewName

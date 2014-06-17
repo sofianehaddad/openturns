@@ -32,6 +32,7 @@
 #include "ComparisonOperatorImplementation.hxx"
 #include "ResourceMap.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -155,7 +156,7 @@ NumericalScalar StrongMaximumTest::getImportanceLevel() const
 /* ImportanceLevel accessor */
 void StrongMaximumTest::setImportanceLevel(const NumericalScalar importanceLevel)
 {
-  if((importanceLevel >= 1.0) or (importanceLevel <= 0.0)) throw InvalidRangeException(HERE) << "importanceLevel is not within 0.0 and 1.0";
+  if((importanceLevel >= 1.0) || (importanceLevel <= 0.0)) throw InvalidRangeException(HERE) << "importanceLevel is not within 0.0 and 1.0";
   importanceLevel_ = importanceLevel ;
 }
 
@@ -181,7 +182,7 @@ NumericalScalar StrongMaximumTest::getConfidenceLevel() const
 /* ConfidenceLevel accessor */
 void StrongMaximumTest::setConfidenceLevel(const NumericalScalar confidenceLevel)
 {
-  if((confidenceLevel > 1.0) or (confidenceLevel < 0.0)) throw InvalidRangeException(HERE) << "confidenceLevel is not within 0.0 and 1.0";
+  if((confidenceLevel > 1.0) || (confidenceLevel < 0.0)) throw InvalidRangeException(HERE) << "confidenceLevel is not within 0.0 and 1.0";
   confidenceLevel_ = confidenceLevel ;
 }
 
@@ -194,7 +195,7 @@ NumericalScalar StrongMaximumTest::getDesignPointVicinity() const
 /* StrongMaxTestDesignPointVicinity accessor */
 void  StrongMaximumTest::setDesignPointVicinity(const NumericalScalar designPointVicinity)
 {
-  if((designPointVicinity >= 1.0) or (designPointVicinity <= 0.0)) throw InvalidRangeException(HERE) << "designPointVicinity is not within 0.0 and 1.0";
+  if((designPointVicinity >= 1.0) || (designPointVicinity <= 0.0)) throw InvalidRangeException(HERE) << "designPointVicinity is not within 0.0 and 1.0";
   designPointVicinity_ =  designPointVicinity;
 }
 
@@ -337,7 +338,7 @@ void StrongMaximumTest::initializeParametersGivenConfidenceLevel()
   /* evaluate the HyperSphereSurfaceRatio (see documentation) */
   NumericalScalar p(computeHyperSphereSurfaceRatio());
   // put eps1 and eps2 instead of 1.0 and 0.0
-  if((p >= 1.0) or (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
+  if((p >= 1.0) || (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
 
   /* evaluate and affect the pointNumber_ */
   setPointNumber(static_cast<UnsignedInteger>(round(log1p(-confidenceLevel_) / log1p(-p))));
@@ -357,10 +358,10 @@ void StrongMaximumTest::initializeParametersGivenPointNumber()
   NumericalScalar p(computeHyperSphereSurfaceRatio());
 
   // put eps1 and eps2 instead of 1.0 and 0.0
-  if((p >= 1.0) or (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
+  if((p >= 1.0) || (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
 
   /* evaluate and affect the confidenceLevel */
-  setConfidenceLevel(1.0 - pow(1.0 - p, pointNumber_));
+  setConfidenceLevel(1.0 - pow(1.0 - p, static_cast<int>(pointNumber_)));
 
   /* evaluate and affect the designPointVicinity_ */
   setDesignPointVicinity(1.0 / (1.0 + accuracyLevel_ * deltaEpsilon_));

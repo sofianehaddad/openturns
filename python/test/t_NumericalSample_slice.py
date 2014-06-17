@@ -47,7 +47,7 @@ try:
 
     # Writing slice
     sample2 = NumericalSample(sample)
-    sample2.scale(NumericalPoint(d, 10.))
+    sample2 *= [10.]*d
 
     # case #0 [slice]
     sample3 = NumericalSample(sample)

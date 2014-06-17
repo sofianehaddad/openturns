@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This PenalizedLeast Square Algorithm as a functor class
  */
 
-class PenalizedLeastSquaresAlgorithm
+class OT_API PenalizedLeastSquaresAlgorithm
   : public ApproximationAlgorithmImplementation
 {
   CLASSNAME;

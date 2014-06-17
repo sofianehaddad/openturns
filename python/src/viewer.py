@@ -38,12 +38,12 @@
 import openturns as ot
 import numpy as np
 import matplotlib
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 from distutils.version import LooseVersion
 import os
 import re
 import warnings
-
+import io
 
 class View(object):
 
@@ -54,57 +54,62 @@ class View(object):
 
     Parameters
     ----------
-    graph:
-        An OpenTURNS Graph object, or else a Drawable object.
+    graph : :class:`~openturns.Graph, :class:`~openturns.Drawable`
+        A Graph or Drawable object.
 
-    figure:
-        The figure to draw on, as matplotlib.figure.Figure
+    figure : :class:`matplotlib.figure.Figure`
+        The figure to draw on.
 
-    axes:
-        The axes to draw on, as matplotlib.axes.Axes
+    axes : :class:`matplotlib.axes.Axes`
+        The axes to draw on.
 
-    plot_kwargs:
+    plot_kwargs : dict, optional
         Used when drawing Cloud, Curve drawables
         Passed on as matplotlib.axes.Axes.plot kwargs
 
-    axes_kwargs:
+    axes_kwargs : dict, optional
         Passed on to matplotlib.figure.Figure.add_subplot kwargs
 
-    bar_kwargs:
+    bar_kwargs : dict, optional
         Used when drawing BarPlot drawables
         Passed on to matplotlib.pyplot.bar kwargs
 
-    pie_kwargs:
+    pie_kwargs : dict, optional
         Used when drawing Pie drawables
         Passed on to matplotlib.pyplot.pie kwargs
 
-    polygon_kwargs:
+    polygon_kwargs : dict, optional
         Used when drawing Polygon drawables
         Passed on to matplotlib.patches.Polygon kwargs
 
-    contour_kwargs:
+    contour_kwargs : dict, optional
         Used when drawing Contour drawables
         Passed on to matplotlib.pyplot.contour kwargs
 
-    clabel_kwargs:
+    clabel_kwargs : dict, optional
         Used when drawing Contour drawables
         Passed on to matplotlib.pyplot.clabel kwargs
 
-    step_kwargs:
+    step_kwargs : dict, optional
         Used when drawing Staircase drawables
         Passed on to matplotlib.pyplot.step kwargs
 
-    text_kwargs:
+    text_kwargs : dict, optional
         Used when drawing Pairs drawables
         Passed on to matplotlib.axes.Axes.text kwargs
 
-    legend_kwargs:
+    legend_kwargs : dict, optional
         Passed on to matplotlib.axes.Axes.legend kwargs
+
+    add_legend : bool, optional
+        Adds a legend if True. Default is True.
     """
 
-    # check that the argument is a dictionnary
     @staticmethod
     def CheckDict(arg):
+        """
+        Check that the argument is a python dict
+        """
         result = arg
         if arg is None:
             result = dict()
@@ -112,7 +117,6 @@ class View(object):
             raise TypeError('Argument is not a dict')
         return result
 
-    # constructor
     def __init__(self,
                  graph,
                  figure=None,
@@ -127,12 +131,13 @@ class View(object):
                  clabel_kwargs=None,
                  text_kwargs=None,
                  legend_kwargs=None,
+                 add_legend=True,
                  **kwargs):
 
         # prevent Qt from stopping the interpreter, see matplotlib PR #1905
         if LooseVersion(matplotlib.__version__) < LooseVersion('1.3'):
             # check for DISPLAY env variable on X11 build of Qt
-            if pyplot.get_backend().startswith('Qt4'):
+            if plt.get_backend().startswith('Qt4'):
                 from matplotlib.backends.qt4_compat import QtGui
                 if hasattr(QtGui, 'QX11Info'):
                     display = os.environ.get('DISPLAY')
@@ -167,6 +172,9 @@ class View(object):
         text_kwargs_default = View.CheckDict(text_kwargs)
         legend_kwargs = View.CheckDict(legend_kwargs)
 
+        # set step drawstyle
+        step_kwargs_default.setdefault('where', 'post')
+
         # set title
         axes_kwargs.setdefault('title', graph.getTitle())
 
@@ -184,7 +192,7 @@ class View(object):
 
         # set figure
         if figure is None:
-            self._fig = pyplot.figure()
+            self._fig = plt.figure()
         else:
             self._fig = figure
             if len(axes) == 0:
@@ -196,6 +204,7 @@ class View(object):
         else:
             self._ax = axes
 
+        has_labels = False
         self._ax[0].grid()
         for drawable in drawables:
             # reset working dictionaries by excplicitely creating copies
@@ -255,19 +264,18 @@ class View(object):
             if data.getDimension() > 1:
                 y = data.getMarginal(1)
 
-            # add legend, title
+            # add label, title
             drawableKind = drawable.getImplementation().getClassName()
             if drawableKind != 'Pie':
                 self._ax[0].set_xlabel(graph.getXTitle())
                 self._ax[0].set_ylabel(graph.getYTitle())
 
-                legend = '_nolegend_'
                 if len(drawable.getLegend()) > 0:
-                    legend = drawable.getLegend()
-
-                plot_kwargs.setdefault('label', legend)
-                bar_kwargs.setdefault('label', legend)
-                step_kwargs.setdefault('label', legend)
+                    label = drawable.getLegend()
+                    has_labels = True
+                    plot_kwargs.setdefault('label', label)
+                    bar_kwargs.setdefault('label', label)
+                    step_kwargs.setdefault('label', label)
 
             if drawableKind == 'BarPlot':
                 # linestyle for bar() is different than the one for plot()
@@ -289,7 +297,7 @@ class View(object):
                     # items
                     if (i == 1) and ('label' in bar_kwargs):
                         bar_kwargs.pop('label')
-                    pyplot.bar(
+                    self._ax[0].bar(
                         xi, height=y[i][0], width=x[i][0], **bar_kwargs)
                     xi += x[i][0]
 
@@ -315,7 +323,7 @@ class View(object):
                 pie_kwargs.setdefault('labels', drawable.getLabels())
                 pie_kwargs.setdefault('colors', drawable.getPalette())
                 self._ax[0].set_aspect('equal')
-                pyplot.pie(x, **pie_kwargs)
+                self._ax[0].pie(x, **pie_kwargs)
 
             elif drawableKind == 'Contour':
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
@@ -329,14 +337,14 @@ class View(object):
                             drawable.getLineStyle()]
                     except:
                         warnings.warn('-- Unknown line style')
-                contourset = pyplot.contour(X, Y, Z, **contour_kwargs)
+                contourset = self._ax[0].contour(X, Y, Z, **contour_kwargs)
 
                 clabel_kwargs.setdefault('fontsize', 8)
                 clabel_kwargs.setdefault('fmt', '%g')
-                pyplot.clabel(contourset, **clabel_kwargs)
+                plt.clabel(contourset, **clabel_kwargs)
 
             elif drawableKind == 'Staircase':
-                pyplot.step(x, y, **step_kwargs)
+                self._ax[0].step(x, y, **step_kwargs)
 
             elif drawableKind == 'Pairs':
                 # disable axis : grid, ticks, axis
@@ -386,12 +394,18 @@ class View(object):
                     'Drawable type not implemented: ' + drawableKind)
 
         # Add legend
-        if (drawableKind != 'Pie') and (graph.getLegendPosition() != ''):
+        if add_legend and has_labels and (graph.getLegendPosition() != ''):
             # set legend position
             if not 'loc' in legend_kwargs:
                 try:
-                    legendPositionDict = {'bottomright': 'lower right', 'bottom': 'lower center', 'bottomleft': 'lower left', 'left':
-                                          'center left', 'topleft': 'upper left', 'topright': 'upper right', 'right': 'center right', 'center': 'center'}
+                    legendPositionDict = {'bottomright': 'lower right',
+                                          'bottom': 'lower center',
+                                          'bottomleft': 'lower left',
+                                          'left': 'center left',
+                                          'topleft': 'upper left',
+                                          'topright': 'upper right',
+                                          'right': 'center right',
+                                          'center': 'center'}
                     legend_kwargs['loc'] = legendPositionDict[
                         graph.getLegendPosition()]
                 except:
@@ -424,7 +438,7 @@ class View(object):
             These parameters are passed to matplotlib.pyplot.show()
         """
 
-        pyplot.show(**kwargs)
+        plt.show(**kwargs)
 
     def save(self, fname, **kwargs):
         """
@@ -462,3 +476,31 @@ class View(object):
         Refer to matplotlib.axes.Axes for further information.
         """
         return self._ax
+        
+        
+def ToSVGString(graph):
+    """
+    ToSVGString(graph)
+    
+    Parameters
+    ----------
+    graph:
+        A Graph or Drawable object.
+
+    Returns a SVG representation as string
+    """
+    
+    output = io.BytesIO()
+    
+    # save interactive mode state
+    ision = plt.isinteractive()
+    plt.ioff()
+    
+    View(graph).save(output, format='svg')
+    
+    # restore interactive mode state
+    if ision:
+        plt.ion()
+        
+    return output.getvalue()
+

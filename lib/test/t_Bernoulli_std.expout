@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Bernoulli name=Bernoulli dimension=1 p=0.7
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Bernoulli name=myName dimension=1 p=0.7
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Bernoulli name=myNewName dimension=1 p=0.7
 Distribution class=Bernoulli name=Bernoulli dimension=1 p=0.7
 Distribution Bernoulli(p = 0.7)
 Elliptical = false

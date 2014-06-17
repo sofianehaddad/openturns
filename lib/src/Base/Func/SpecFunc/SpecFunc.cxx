@@ -76,11 +76,11 @@ NumericalScalar SpecFunc::SmallCaseBesselI0(const NumericalScalar x)
   NumericalScalar r(1.0);
   UnsignedInteger k(1);
   while ((fabs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
-    {
-      r *= 0.25 * x2 / (k * k);
-      value += r;
-      ++k;
-    }
+  {
+    r *= 0.25 * x2 / (k * k);
+    value += r;
+    ++k;
+  }
   return value;
 }
 
@@ -92,7 +92,7 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI0(const NumericalScalar x)
                                   1.7277275025845, 6.0740420012735,
                                   2.4380529699556e+01, 1.1001714026925e+02,
                                   5.5133589612202e+02, 3.0380905109224e+03
-  };
+                                 };
   const NumericalScalar ax(fabs(x));
   UnsignedInteger k0(12);
   if (ax >= 35.0) k0 = 9;
@@ -101,10 +101,10 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI0(const NumericalScalar x)
   const NumericalScalar xR(1.0 / ax);
   NumericalScalar xRPow(xR);
   for (UnsignedInteger k = 0; k < k0; ++k)
-    {
-      value += A[k] * xRPow;
-      xRPow *= xR;
-    }
+  {
+    value += A[k] * xRPow;
+    xRPow *= xR;
+  }
   value = log(value) + ax - 0.5 * log(2.0 * M_PI * ax);
   return value;
 }
@@ -135,11 +135,11 @@ NumericalScalar SpecFunc::SmallCaseBesselI1(const NumericalScalar x)
   NumericalScalar r(1.0);
   UnsignedInteger k(1);
   while ((fabs(r / value) > 0.0) && (k < SpecFunc::MaximumIteration))
-    {
-      r *= 0.25 * x2 / (k * (k + 1));
-      value += r;
-      ++k;
-    }
+  {
+    r *= 0.25 * x2 / (k * (k + 1));
+    value += r;
+    ++k;
+  }
   value *= 0.5 * x;
   return value;
 }
@@ -152,7 +152,7 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI1(const NumericalScalar x)
                                    -1.9935317337513, -6.8839142681099,
                                    -2.7248827311269e+01, -1.2159789187654e+02,
                                    -6.0384407670507e+02, -3.3022722944809e+03
-  };
+                                 };
   const NumericalScalar ax(fabs(x));
   UnsignedInteger k0(12);
   if (ax >= 35.0) k0 = 9;
@@ -161,10 +161,10 @@ NumericalScalar SpecFunc::LargeCaseLogBesselI1(const NumericalScalar x)
   const NumericalScalar xR(1.0 / ax);
   NumericalScalar xRPow(xR);
   for (UnsignedInteger k = 0; k < k0; ++k)
-    {
-      value += B[k] * xRPow;
-      xRPow *= xR;
-    }
+  {
+    value += B[k] * xRPow;
+    xRPow *= xR;
+  }
   value = log(value) + ax - 0.5 * log(2.0 * M_PI * ax);
   return value;
 }
@@ -175,11 +175,11 @@ NumericalScalar SpecFunc::BesselI1(const NumericalScalar x)
   // Small argument
   if (fabs(x) <= 22.0) return SmallCaseBesselI1(x);
   else
-    {
-      const NumericalScalar signX(x <= 0.0 ? -1.0 : 1.0);
-      const NumericalScalar value(signX * exp(LargeCaseLogBesselI1(x)));
-      return value;
-    }
+  {
+    const NumericalScalar signX(x <= 0.0 ? -1.0 : 1.0);
+    const NumericalScalar value(signX * exp(LargeCaseLogBesselI1(x)));
+    return value;
+  }
 }
 
 NumericalScalar SpecFunc::LogBesselI1(const NumericalScalar x)
@@ -226,36 +226,36 @@ NumericalScalar SpecFunc::Beta(const NumericalScalar a,
 
 // Incomplete Beta function: BetaInc(a, b, x) = \int_0^x t^{a-1}(1-t)^{b-1} dt
 NumericalScalar SpecFunc::IncompleteBeta(const NumericalScalar a,
-                                         const NumericalScalar b,
-                                         const NumericalScalar x,
-                                         const Bool tail)
+    const NumericalScalar b,
+    const NumericalScalar x,
+    const Bool tail)
 {
-  return IncompleteBeta(a, b, x, tail) * Beta(a, b);
+  return RegularizedIncompleteBeta(a, b, x, tail) * Beta(a, b);
 }
 
 // Incomplete Beta function inverse
 NumericalScalar SpecFunc::IncompleteBetaInverse(const NumericalScalar a,
-                                                const NumericalScalar b,
-                                                const NumericalScalar x,
-                                                const Bool tail)
+    const NumericalScalar b,
+    const NumericalScalar x,
+    const Bool tail)
 {
   return RegularizedIncompleteBetaInverse(a, b, x / Beta(a, b), tail);
 }
 
 // Regularized Incomplete Beta function: RegularizedIncompleteBeta(a, b, x) = 1/beta(a, b) * \int_0^x t^{a-1}(1-t)^{b-1} dt
 NumericalScalar SpecFunc::RegularizedIncompleteBeta(const NumericalScalar a,
-                                                    const NumericalScalar b,
-                                                    const NumericalScalar x,
-                                                    const Bool tail)
+    const NumericalScalar b,
+    const NumericalScalar x,
+    const Bool tail)
 {
   return BetaFunctions::RegularizedIncompleteBeta(a, b, x, tail);
 }
 
 // Regularized incomplete Beta Function inverse
 NumericalScalar SpecFunc::RegularizedIncompleteBetaInverse(const NumericalScalar a,
-                                                           const NumericalScalar b,
-                                                           const NumericalScalar x,
-                                                           const Bool tail)
+    const NumericalScalar b,
+    const NumericalScalar x,
+    const Bool tail)
 {
   return BetaFunctions::RegularizedIncompleteBetaInverse(a, b, x, tail);
 }
@@ -279,7 +279,7 @@ NumericalScalar SpecFunc::Debye(const NumericalScalar x,
   if (x < 0.0) return 0.0;
   // The threshold is such that the overall error is less than 1.0e-16
   if (x < 1.0e-8) return 1.0 - n * x / (2.0 * (n + 1.0));
-  return debyen(x, static_cast<int>(n)) * n / pow(x, n);
+  return debyen(x, static_cast<int>(n)) * n / pow(x, static_cast<int>(n));
 }
 
 // DiLog function: DiLog(x) = -\int_0^x \log(1-t)/t dt
@@ -306,10 +306,10 @@ NumericalScalar SpecFunc::DiLog(const NumericalScalar x)
   NumericalScalar value(0.0);
   NumericalScalar powerX(1.0);
   for (UnsignedInteger n = 1; n <= nMax; ++n)
-    {
-      powerX *= x;
-      value += powerX / (n * n);
-    }
+  {
+    powerX *= x;
+    value += powerX / (n * n);
+  }
   return value;
 }
 
@@ -336,13 +336,13 @@ NumericalScalar SpecFunc::IGamma1pm1(const NumericalScalar a)
   if (a < -0.5) return a + IGamma1pm1(a + 1.0);
   if (a > 0.5) return (IGamma1pm1(a - 1.0) - a) / (1.0 + a);
   return a * (0.55840397973848040460 +    (-0.28693519326375203685 +
-                                           (-0.28661639813928077048 +     (0.56469202267873782108e-2 +
-                                                                           (0.12419086997568707715e-1 + (-0.28455238049924868708e-2 +
-                                                                                                         (-0.11632361891621759586e-3 +   0.43452535150473018757e-4 * a) * a) * a) * a) * a) * a) * a) /
-    (0.967409607349687017271 +    (0.602145048219053169110 +
-                                   (0.258051013832915714221 +    (0.677000815494264186575e-1 +
-                                                                  (0.142113296913915958898e-1 + (0.183821175266489590252e-2 +
-                                                                                                 0.192078142776918599109e-3 * a) * a) * a) * a) * a) * a);
+              (-0.28661639813928077048 +     (0.56469202267873782108e-2 +
+                  (0.12419086997568707715e-1 + (-0.28455238049924868708e-2 +
+                      (-0.11632361891621759586e-3 +   0.43452535150473018757e-4 * a) * a) * a) * a) * a) * a) * a) /
+         (0.967409607349687017271 +    (0.602145048219053169110 +
+                                        (0.258051013832915714221 +    (0.677000815494264186575e-1 +
+                                            (0.142113296913915958898e-1 + (0.183821175266489590252e-2 +
+                                                0.192078142776918599109e-3 * a) * a) * a) * a) * a) * a);
 }
 
 // GammaCorrection(a) = LogGamma(a) - log(sqrt(2.Pi)) + a - (a - 1/2) log(a)
@@ -351,14 +351,14 @@ NumericalScalar SpecFunc::GammaCorrection(const NumericalScalar a)
   if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute GammaCorrection for nonpositive a, here a=" << a;
   // Use an asymptotic series for large argument
   if (a > 7.7490453948312251620)
-    {
-      const NumericalScalar ia2(1.0 / (a * a));
-      return (0.83333333333333333333e-1 + (-0.27777777777777777778e-2 +
-                                           (0.79365079365079365079e-3 + (-0.59523809523809523810e-3 +
-                                                                         (0.84175084175084175084e-3 + (-0.19175269175269175269e-2 +
-                                                                                                       (0.64102564102564102564e-2 + (-0.29550653594771241830e-1 +
-                                                                                                                                     (0.17964437236883057316e0 - 0.13924322169059011164e1 * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) / a;
-    }
+  {
+    const NumericalScalar ia2(1.0 / (a * a));
+    return (0.83333333333333333333e-1 + (-0.27777777777777777778e-2 +
+                                         (0.79365079365079365079e-3 + (-0.59523809523809523810e-3 +
+                                             (0.84175084175084175084e-3 + (-0.19175269175269175269e-2 +
+                                                 (0.64102564102564102564e-2 + (-0.29550653594771241830e-1 +
+                                                     (0.17964437236883057316e0 - 0.13924322169059011164e1 * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) / a;
+  }
   return LogGamma(a) + a - (a - 0.5) * log(a) - LOGSQRT2PI;
 }
 
@@ -379,29 +379,29 @@ NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
   NumericalComplex z(a);
   Bool flip(false);
   if (z.real() < 0.0)
-    {
-      z = -z;
-      flip = true;
-    }
+  {
+    z = -z;
+    flip = true;
+  }
   const UnsignedInteger coefficientsSize(11);
   static const NumericalScalar coefficients[coefficientsSize] =
-    {
-      1.000000000000000174663,      5716.400188274341379136,
-      -14815.30426768413909044,     14291.49277657478554025,
-      -6348.160217641458813289,     1301.608286058321874105,
-      -108.1767053514369634679,     2.605696505611755827729,
-      -0.7423452510201416151527e-2, 0.5384136432509564062961e-7,
-      -0.4023533141268236372067e-8
-    };
+  {
+    1.000000000000000174663,      5716.400188274341379136,
+    -14815.30426768413909044,     14291.49277657478554025,
+    -6348.160217641458813289,     1301.608286058321874105,
+    -108.1767053514369634679,     2.605696505611755827729,
+    -0.7423452510201416151527e-2, 0.5384136432509564062961e-7,
+    -0.4023533141268236372067e-8
+  };
   const NumericalScalar g(coefficientsSize - 2.0);
   NumericalComplex t(z + g);
   NumericalComplex s(0.0);
   NumericalComplex ss(t - 0.5);
   for (UnsignedInteger k = coefficientsSize - 1; k > 0; --k)
-    {
-      s += coefficients[k] / t;
-      t -= 1.0;
-    }
+  {
+    s += coefficients[k] / t;
+    t -= 1.0;
+  }
   s += coefficients[0];
   s = log(s * sqrt2Pi) + (z - 0.5) * log(ss) - ss;
   NumericalComplex f(s);
@@ -443,32 +443,32 @@ NumericalScalar SpecFunc::LogGamma1p(const NumericalScalar a)
 
 // Incomplete Gamma function: IncompleteGamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt
 NumericalScalar SpecFunc::IncompleteGamma(const NumericalScalar a,
-                                          const NumericalScalar x,
-                                          const Bool tail)
+    const NumericalScalar x,
+    const Bool tail)
 {
   return GammaFunctions::IncompleteGamma(a, x, tail);
 }
 
 // Incomplete Gamma function inverse with respect to x
 NumericalScalar SpecFunc::IncompleteGammaInverse(const NumericalScalar a,
-                                                 const NumericalScalar x,
-                                                 const Bool tail)
+    const NumericalScalar x,
+    const Bool tail)
 {
   return GammaFunctions::IncompleteGammaInverse(a, x, tail);
 }
 
 // Regularized incomplete Gamma function: RegularizedIncompleteGamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt / \Gamma(a)
 NumericalScalar SpecFunc::RegularizedIncompleteGamma(const NumericalScalar a,
-                                                     const NumericalScalar x,
-                                                     const Bool tail)
+    const NumericalScalar x,
+    const Bool tail)
 {
   return GammaFunctions::RegularizedIncompleteGamma(a, x, tail);
 }
 
 // Regularized incomplete Gamma function inverse with respect to x
 NumericalScalar SpecFunc::RegularizedIncompleteGammaInverse(const NumericalScalar a,
-                                                            const NumericalScalar x,
-                                                            const Bool tail)
+    const NumericalScalar x,
+    const Bool tail)
 {
   return GammaFunctions::RegularizedIncompleteGammaInverse(a, x, tail);
 }
@@ -489,10 +489,10 @@ NumericalScalar SpecFunc::DiGamma(const NumericalScalar x)
   NumericalScalar z(x);
   NumericalScalar value(0.0);
   while ( z < 7.33 )
-    {
-      value -= 1.0 / z;
-      z += 1.0;
-    }
+  {
+    value -= 1.0 / z;
+    z += 1.0;
+  }
   // Use the asymptotic expansion in Horner form
   const NumericalScalar y(1.0 / (z * z));
   return value + log(z) - 0.5 / z + (-0.83333333333333333e-1 + (0.83333333333333333e-2 + (-0.39682539682539683e-2 + (0.41666666666666667e-2 + (-0.75757575757575758e-2 + (0.21092796092796093e-1 + (-0.83333333333333333e-1 + (.44325980392156863 - 3.0539543302701197 * y) * y) * y) * y) * y) * y) * y) * y) * y;
@@ -511,11 +511,11 @@ NumericalScalar SpecFunc::DiGammaInv(const NumericalScalar a)
   // Use a Newton scheme
   NumericalScalar d(0.0);
   for (UnsignedInteger k = 0; k < 6; ++k)
-    {
-      d = (DiGamma(x) - a) / TriGamma(x);
-      if (d == 0.0) break;
-      x -= d;
-    }
+  {
+    d = (DiGamma(x) - a) / TriGamma(x);
+    if (d == 0.0) break;
+    x -= d;
+  }
   return x;
 }
 
@@ -534,10 +534,10 @@ NumericalScalar SpecFunc::TriGamma(const NumericalScalar x)
   NumericalScalar z(x);
   NumericalScalar value(0.0);
   while ( z < 7.69 )
-    {
-      value += 1.0 / (z * z);
-      z += 1.0;
-    }
+  {
+    value += 1.0 / (z * z);
+    z += 1.0;
+  }
   // Use the asymptotic expansion in Horner form
   const NumericalScalar y(1.0 / (z * z));
   return value + 0.5 * y + (1. + (.16666666666666667 + (-0.33333333333333333e-1 + (0.23809523809523810e-1 + (-0.33333333333333333e-1 + (0.75757575757575758e-1 + (-.25311355311355311 + (1.1666666666666667 + (-7.0921568627450980 + 54.971177944862155 * y) * y) * y) * y) * y) * y) * y) * y) * y) / z;
@@ -554,34 +554,34 @@ NumericalScalar SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
   NumericalScalar t(x);
   NumericalScalar pochhammerP1(p1);
   if (x < 0)
-    {
-      pochhammerP1 = q1 - p1;
-      t = -x;
-      term = exp(x);
-    }
+  {
+    pochhammerP1 = q1 - p1;
+    t = -x;
+    term = exp(x);
+  }
   NumericalScalar pochhammerQ1(q1);
   NumericalScalar factorial(1.0);
   NumericalScalar sum(term);
   NumericalScalar eps;
   UnsignedInteger k(0);
   do
-    {
-      term *= pochhammerP1 * t / (pochhammerQ1 * factorial);
-      ++pochhammerP1;
-      ++pochhammerQ1;
-      ++factorial;
-      sum += term;
-      eps = fabs(term / sum);
-      ++k;
-    }
+  {
+    term *= pochhammerP1 * t / (pochhammerQ1 * factorial);
+    ++pochhammerP1;
+    ++pochhammerQ1;
+    ++factorial;
+    sum += term;
+    eps = fabs(term / sum);
+    ++k;
+  }
   while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
   return sum;
 }
 
 // Complex hypergeometric function of type (1,1): HyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
 NumericalComplex SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
-                                         const NumericalScalar q1,
-                                         const NumericalComplex & x)
+    const NumericalScalar q1,
+    const NumericalComplex & x)
 {
   NumericalComplex pochhammerP1(p1);
   NumericalComplex pochhammerQ1(q1);
@@ -591,15 +591,15 @@ NumericalComplex SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
   NumericalComplex eps(0.0);
   UnsignedInteger k(0);
   do
-    {
-      term *= pochhammerP1 * x / (pochhammerQ1 * factorial);
-      pochhammerP1 += 1.0;
-      pochhammerQ1 += 1.0;
-      ++factorial;
-      sum += term;
-      eps = term / sum;
-      ++k;
-    }
+  {
+    term *= pochhammerP1 * x / (pochhammerQ1 * factorial);
+    pochhammerP1 += 1.0;
+    pochhammerQ1 += 1.0;
+    ++factorial;
+    sum += term;
+    eps = term / sum;
+    ++k;
+  }
   // std::abs() for complex argument
   while ((std::abs(eps) > 0.0) && (k < SpecFunc::MaximumIteration));
   return sum;
@@ -620,16 +620,16 @@ NumericalScalar SpecFunc::HyperGeom_2_1(const NumericalScalar p1,
   NumericalScalar eps(0.0);
   UnsignedInteger k(0);
   do
-    {
-      term *= pochhammerP1 * pochhammerP2 * x / (pochhammerQ1 * factorial);
-      ++pochhammerP1;
-      ++pochhammerP2;
-      ++pochhammerQ1;
-      ++factorial;
-      sum += term;
-      eps = fabs(term / sum);
-      ++k;
-    }
+  {
+    term *= pochhammerP1 * pochhammerP2 * x / (pochhammerQ1 * factorial);
+    ++pochhammerP1;
+    ++pochhammerP2;
+    ++pochhammerQ1;
+    ++factorial;
+    sum += term;
+    eps = fabs(term / sum);
+    ++k;
+  }
   while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
   return sum;
 }
@@ -655,18 +655,18 @@ NumericalScalar SpecFunc::HyperGeom_2_2(const NumericalScalar p1,
   NumericalScalar signTerm(1.0);
   UnsignedInteger k(0);
   do
-    {
-      term += log(pochhammerP1) + log(pochhammerP2) + logX - log(pochhammerQ1) - log(pochhammerQ2) - log(factorial);
-      ++pochhammerP1;
-      ++pochhammerP2;
-      ++pochhammerQ1;
-      ++pochhammerQ2;
-      ++factorial;
-      sum += signTerm * exp(term);
-      signTerm *= signX;
-      eps = fabs(term / sum);
-      ++k;
-    }
+  {
+    term += log(pochhammerP1) + log(pochhammerP2) + logX - log(pochhammerQ1) - log(pochhammerQ2) - log(factorial);
+    ++pochhammerP1;
+    ++pochhammerP2;
+    ++pochhammerQ1;
+    ++pochhammerQ2;
+    ++factorial;
+    sum += signTerm * exp(term);
+    signTerm *= signX;
+    eps = fabs(term / sum);
+    ++k;
+  }
   while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
   return sum;
 }
@@ -721,47 +721,47 @@ NumericalScalar SpecFunc::ErfInverse(const NumericalScalar x)
 {
   NumericalScalar p(0.5 * (x + 1.0));
   static const NumericalScalar a[6] =
-    {
-      -3.969683028665376e+01,  2.209460984245205e+02,
-      -2.759285104469687e+02,  1.383577518672690e+02,
-      -3.066479806614716e+01,  2.506628277459239e+00
-    };
+  {
+    -3.969683028665376e+01,  2.209460984245205e+02,
+    -2.759285104469687e+02,  1.383577518672690e+02,
+    -3.066479806614716e+01,  2.506628277459239e+00
+  };
   static const NumericalScalar b[5] =
-    {
-      -5.447609879822406e+01,  1.615858368580409e+02,
-      -1.556989798598866e+02,  6.680131188771972e+01,
-      -1.328068155288572e+01
-    };
+  {
+    -5.447609879822406e+01,  1.615858368580409e+02,
+    -1.556989798598866e+02,  6.680131188771972e+01,
+    -1.328068155288572e+01
+  };
   static const NumericalScalar c[6] =
-    {
-      -7.784894002430293e-03, -3.223964580411365e-01,
-      -2.400758277161838e+00, -2.549732539343734e+00,
-      4.374664141464968e+00,  2.938163982698783e+00
-    };
+  {
+    -7.784894002430293e-03, -3.223964580411365e-01,
+    -2.400758277161838e+00, -2.549732539343734e+00,
+    4.374664141464968e+00,  2.938163982698783e+00
+  };
   static const NumericalScalar d[4] =
-    {
-      7.784695709041462e-03,  3.224671290700398e-01,
-      2.445134137142996e+00,  3.754408661907416e+00
-    };
+  {
+    7.784695709041462e-03,  3.224671290700398e-01,
+    2.445134137142996e+00,  3.754408661907416e+00
+  };
   NumericalScalar q;
   NumericalScalar t;
   NumericalScalar u;
   q = std::min(p, 1.0 - p);
   if (q > 0.02425)
-    {
-      /* Rational approximation for central region. */
-      u = q - 0.5;
-      t = u * u;
-      u = u * (((((a[0] * t + a[1]) * t + a[2]) * t + a[3]) * t + a[4]) * t + a[5])
+  {
+    /* Rational approximation for central region. */
+    u = q - 0.5;
+    t = u * u;
+    u = u * (((((a[0] * t + a[1]) * t + a[2]) * t + a[3]) * t + a[4]) * t + a[5])
         / (((((b[0] * t + b[1]) * t + b[2]) * t + b[3]) * t + b[4]) * t + 1.0);
-    }
+  }
   else
-    {
-      /* Rational approximation for tail region. */
-      t = sqrt(-2.0 * log(q));
-      u = (((((c[0] * t + c[1]) * t + c[2]) * t + c[3]) * t + c[4]) * t + c[5])
+  {
+    /* Rational approximation for tail region. */
+    t = sqrt(-2.0 * log(q));
+    u = (((((c[0] * t + c[1]) * t + c[2]) * t + c[3]) * t + c[4]) * t + c[5])
         / ((((d[0] * t + d[1]) * t + d[2]) * t + d[3]) * t + 1.0);
-    }
+  }
   /* The relative error of the approximation has absolute value less
      than 1.15e-9.  One iteration of Halley's rational method (third
      order) gives full machine precision... */
@@ -784,35 +784,35 @@ NumericalScalar SpecFunc::LambertW(const NumericalScalar x,
   if (x <= -0.3678794411714423215955238) return w;
   // Principal branch, defined over [-1/e,+inf], LambertW >= -1
   if (principal)
+  {
+    if (x == 0) return 0.0;
+    if(x < 6.46) w = x * (3.0 + 4.0 * x) / (3.0 + x * (7.0 + 2.5 * x));
+    // Large argument, use asymptotic expansion, formula 4.18
+    else
     {
-      if (x == 0) return 0.0;
-      if(x < 6.46) w = x * (3.0 + 4.0 * x) / (3.0 + x * (7.0 + 2.5 * x));
-      // Large argument, use asymptotic expansion, formula 4.18
-      else
-        {
-          const NumericalScalar t1(log(x));
-          w = t1 - log(t1);
-        }
+      const NumericalScalar t1(log(x));
+      w = t1 - log(t1);
     }
+  }
   // Second real branch, defined over [-1/e, 0[, LambertW <= -1
   else
+  {
+    if (x >= 0.0) return - std::numeric_limits<NumericalScalar>::infinity();
+    if (x < -0.1) w = -2.0;
+    else
     {
-      if (x >= 0.0) return -INFINITY;
-      if (x < -0.1) w = -2.0;
-      else
-        {
-          const NumericalScalar t1(log(-x));
-          w = t1 - log(-t1);
-        }
+      const NumericalScalar t1(log(-x));
+      w = t1 - log(-t1);
     }
+  }
   // Halley's iteration
   for (UnsignedInteger i = 0; i < 3; ++i)
-    {
-      const NumericalScalar expW(exp(w));
-      const NumericalScalar numerator(w * expW - x);
-      const NumericalScalar dw(numerator / (expW * (w + 1.0) - 0.5 * (w + 2.0) * numerator / (w + 1.0)));
-      w -= dw;
-    }
+  {
+    const NumericalScalar expW(exp(w));
+    const NumericalScalar numerator(w * expW - x);
+    const NumericalScalar dw(numerator / (expW * (w + 1.0) - 0.5 * (w + 2.0) * numerator / (w + 1.0)));
+    w -= dw;
+  }
   return w;
 }
 

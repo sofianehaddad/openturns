@@ -152,6 +152,7 @@
 /* Support for TBB library */
 #cmakedefine HAVE_TBB
 #cmakedefine OPENTURNS_HAVE_TBB
+#cmakedefine OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
 
 /* Define to 1 if you have the <tbb/tbb.h> header file. */
 #cmakedefine HAVE_TBB_TBB_H

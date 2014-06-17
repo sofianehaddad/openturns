@@ -38,33 +38,30 @@ CLASSNAMEINIT(ExponentialCauchy);
 static Factory<ExponentialCauchy> RegisteredFactory("ExponentialCauchy");
 
 /* Constructor with parameters */
-ExponentialCauchy::ExponentialCauchy(const String & name)
-  : SecondOrderModelImplementation(ExponentialModel(), CauchyModel(), name)
+ExponentialCauchy::ExponentialCauchy()
+  : SecondOrderModelImplementation(ExponentialModel(), CauchyModel())
+{
+  // Nothing to do
+}
+
+ExponentialCauchy::ExponentialCauchy(const NumericalPoint & amplitude,
+                                     const NumericalPoint & scale)
+  : SecondOrderModelImplementation(ExponentialModel(amplitude, scale), CauchyModel(amplitude, scale))
 {
   // Nothing to do
 }
 
 ExponentialCauchy::ExponentialCauchy(const NumericalPoint & amplitude,
                                      const NumericalPoint & scale,
-                                     const String & name)
-  : SecondOrderModelImplementation(ExponentialModel(amplitude, scale), CauchyModel(amplitude, scale), name)
-{
-  // Nothing to do
-}
-
-ExponentialCauchy::ExponentialCauchy(const NumericalPoint & amplitude,
-                                     const NumericalPoint & scale,
-                                     const CorrelationMatrix & spatialCorrelation,
-                                     const String & name)
-  : SecondOrderModelImplementation(ExponentialModel(amplitude, scale, spatialCorrelation), CauchyModel(amplitude, scale, spatialCorrelation), name)
+                                     const CorrelationMatrix & spatialCorrelation)
+  : SecondOrderModelImplementation(ExponentialModel(amplitude, scale, spatialCorrelation), CauchyModel(amplitude, scale, spatialCorrelation))
 {
   // Nothing to do
 }
 
 ExponentialCauchy::ExponentialCauchy(const NumericalPoint & scale,
-                                     const CovarianceMatrix & spatialCovariance,
-                                     const String & name)
-  : SecondOrderModelImplementation(ExponentialModel(scale, spatialCovariance), CauchyModel(scale, spatialCovariance), name)
+                                     const CovarianceMatrix & spatialCovariance)
+  : SecondOrderModelImplementation(ExponentialModel(scale, spatialCovariance), CauchyModel(scale, spatialCovariance))
 {
   // Nothing to do
 }

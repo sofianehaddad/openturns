@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A subclass for Continuous usual distributions.
  */
-class ContinuousDistribution
+class OT_API ContinuousDistribution
   : public DistributionImplementation
 {
 
@@ -41,7 +41,7 @@ class ContinuousDistribution
 public:
 
   /** Default constructor */
-  explicit ContinuousDistribution(const String & name = DefaultName);
+  ContinuousDistribution();
 
   /** Virtual constructor */
   virtual ContinuousDistribution * clone() const;

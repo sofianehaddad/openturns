@@ -70,6 +70,7 @@
 
 # else /* not __GNUC_ */
 
+#  define REINTERPRET_CAST(T,V) ( reinterpret_cast< T > (V) )
 #  define GCC_VERSION 0
 #  define DEPRECATED
 #  define UNUSED
@@ -99,16 +100,16 @@
  * OT_API is used for the public API symbols. It either DLL imports or DLL exports (or does nothing for static build)
  * OT_LOCAL is used for non-api symbols. */
 
-#ifdef OT_DLL /* defined if OT is compiled as a DLL */
+#ifndef OT_STATIC /* defined if OT is compiled as a DLL */
 #ifdef OT_DLL_EXPORTS /* defined if we are building the OT DLL (instead of using it) */
 #define OT_API OT_HELPER_DLL_EXPORT
 #else
 #define OT_API OT_HELPER_DLL_IMPORT
 #endif /* OT_DLL_EXPORTS */
 #define OT_LOCAL OT_HELPER_DLL_LOCAL
-#else /* OT_DLL is not defined: this means OT is a static lib. */
+#else /* OT_STATIC is defined: this means OT is a static lib. */
 #define OT_API
 #define OT_LOCAL
-#endif /* OT_DLL */
+#endif /* !OT_STATIC */
 
 #endif /* OPENTURNS_OTDEBUG_H */

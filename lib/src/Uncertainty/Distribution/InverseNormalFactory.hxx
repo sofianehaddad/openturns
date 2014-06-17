@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class InverseNormalFactory
  */
-class InverseNormalFactory
+class OT_API InverseNormalFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

@@ -6,8 +6,6 @@
 #include "HypothesisTest.hxx"
 %}
 
-%template(TestResultCollection) OT::Collection<OT::TestResult>;
-
 %nodefaultctor HypothesisTest;
 
 %include HypothesisTest.hxx

@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public TruncatedNormal
 {
 public:
-  explicit TestObject() : TruncatedNormal(0.5, 3.0, -2.0, 2.0) {}
-  explicit TestObject(const String & name) : TruncatedNormal(0.5, 3.0, -2.0, 2.0)
-  {
-    setName(name);
-  }
+  TestObject() : TruncatedNormal(0.5, 3.0, -2.0, 2.0) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     TruncatedNormal distribution(0.5, 3.0, -2.0, 2.0);

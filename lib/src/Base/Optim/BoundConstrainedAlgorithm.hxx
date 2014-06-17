@@ -37,20 +37,16 @@ BEGIN_NAMESPACE_OPENTURNS
  * point of an interval that minimize the given objective function
  */
 
-class BoundConstrainedAlgorithm
+class OT_API BoundConstrainedAlgorithm
   : public TypedInterfaceObject<BoundConstrainedAlgorithmImplementation>
 {
 
   CLASSNAME;
 public:
 
-  typedef Pointer<BoundConstrainedAlgorithmImplementation>          Implementation;
+  typedef Pointer<BoundConstrainedAlgorithmImplementation>                  Implementation;
   typedef BoundConstrainedAlgorithmImplementation::OptimizationProblem      OptimizationProblem;
-#ifndef SWIG
-  typedef BoundConstrainedAlgorithmImplementation::Result                   Result;
-#else
   typedef BoundConstrainedAlgorithmImplementationResult                     Result;
-#endif
 
   /** Default constructor */
   BoundConstrainedAlgorithm();

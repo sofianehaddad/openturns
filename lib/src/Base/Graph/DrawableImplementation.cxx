@@ -29,6 +29,7 @@
 #include "PersistentObjectFactory.hxx"
 #include "Log.hxx"
 #include "ResourceMap.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -928,7 +929,7 @@ String DrawableImplementation::ConvertFromHSVA(const NumericalScalar hue,
 /* Default constructor */
 DrawableImplementation::DrawableImplementation(const NumericalSample & data,
     const String & legend)
-  : PersistentObject(legend),
+  : PersistentObject(),
     legend_(legend),
     data_(data),
     color_(ResourceMap::Get("DrawableImplementation-DefaultColor")),
@@ -938,6 +939,7 @@ DrawableImplementation::DrawableImplementation(const NumericalSample & data,
     lineWidth_(ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DefaultLineWidth")),
     dataFileName_("")
 {
+  setName(legend);
   if(IsFirstInitialization)
   {
     InitializeValidParameterList();
@@ -1356,7 +1358,7 @@ String DrawableImplementation::draw() const
   if (size * dimension > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
   {
     dataFileName_ = data_.storeToTemporaryFile();
-    return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\"))";
+    return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))";
   }
   return OSS().setPrecision(20) << "dataOT <- " << data_.streamToRFormat() << "\n";
 }

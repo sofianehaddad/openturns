@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an abstract interface for the implementation
  * of an real numerical mathematical hessian into the platform.
  */
-class NumericalMathHessianImplementation
+class OT_API NumericalMathHessianImplementation
   : public PersistentObject
 {
   CLASSNAME;

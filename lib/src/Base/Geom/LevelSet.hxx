@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a collection of levelSet
  */
-class LevelSet
+class OT_API LevelSet
   : public DomainImplementation
 {
   CLASSNAME;

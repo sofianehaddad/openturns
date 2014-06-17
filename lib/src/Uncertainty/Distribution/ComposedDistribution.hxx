@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of distributions
  * made from marginal distributions and from a copula.
  */
-class ComposedDistribution
+class OT_API ComposedDistribution
   : public DistributionImplementation
 {
   CLASSNAME;
@@ -109,9 +109,11 @@ public:
   NumericalScalar computeProbability(const Interval & interval) const;
 
   /** Get the PDF gradient of the distribution */
+  using DistributionImplementation::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDF gradient of the distribution */
+  using DistributionImplementation::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the quantile of the distributionImplementation */

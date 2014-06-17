@@ -6,6 +6,8 @@
 #include "TypedCollectionInterfaceObject.hxx"
 %}
 
+%ignore OT::TypedCollectionInterfaceObject::swap;
+
 %define OTTypedCollectionInterfaceObjectMisnamedHelper(Interface,CollectionType)
 
 %template(CollectionType)           OT::Collection<OT::Interface>;

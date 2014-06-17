@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of combinatorialGeneratorImplementation plan
  */
-class CombinatorialGeneratorImplementation
+class OT_API CombinatorialGeneratorImplementation
   : public PersistentObject
 {
   CLASSNAME;

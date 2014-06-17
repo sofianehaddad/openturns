@@ -42,9 +42,8 @@ typedef PersistentCollection<NumericalPointWithDescription> PersistentSensitivit
  */
 FORMResult::FORMResult(const NumericalPoint & standardSpaceDesignPoint,
                        const Event & limitStateVariable,
-                       const Bool isStandardPointOriginInFailureSpace,
-                       const String & name):
-  AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace, name),
+                       const Bool isStandardPointOriginInFailureSpace):
+  AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace),
   eventProbability_(0.),
   generalisedReliabilityIndex_(0.),
   eventProbabilitySensitivity_(Sensitivity(0)),

@@ -39,23 +39,21 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of weightedExperiment plan
  */
-class WeightedExperiment
+class OT_API WeightedExperiment
   : public ExperimentImplementation
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  explicit WeightedExperiment(const String & name = DefaultName);
+  WeightedExperiment();
 
   /** Parameters constructor */
-  explicit WeightedExperiment(const UnsignedInteger size,
-                              const String & name = DefaultName);
+  explicit WeightedExperiment(const UnsignedInteger size);
 
   /** Parameters constructor */
   WeightedExperiment(const Distribution & distribution,
-                     const UnsignedInteger size,
-                     const String & name = DefaultName);
+                     const UnsignedInteger size);
 
   /** Virtual constructor */
   virtual WeightedExperiment * clone() const;

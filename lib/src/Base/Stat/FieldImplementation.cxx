@@ -37,6 +37,7 @@
 #include "Curve.hxx"
 #include "Os.hxx"
 #include "PlatformInfo.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

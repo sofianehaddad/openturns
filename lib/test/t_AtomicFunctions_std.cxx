@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     }
 #endif
     nbThreads++;
-    pthread_t threadsIds[nbThreads];
+    pthread_t *threadsIds = new pthread_t[nbThreads];
 
     unsigned int i;
     for( i = 0; i < nbThreads; ++i )
@@ -80,9 +80,11 @@ int main(int argc, char *argv[])
                                (void*) &atom );
       if (rc != 0)
       {
+#ifndef _MSC_VER
         int j;
         for( j = i - 1 ; j >= 0 ; --j )
           pthread_kill( threadsIds[j], SIGTERM );
+#endif
         OSS errorMessage;
         errorMessage << "OT::AtomicFunctions Threads creation failed!";
         throw TestFailed(errorMessage);
@@ -99,6 +101,7 @@ int main(int argc, char *argv[])
         throw TestFailed(errorMessage);
       }
     } /* end for */
+    delete [] threadsIds;
 
     unsigned int shaked = atom.fetchAndAdd(10);
     if (shaked != (NB_ITER * nbThreads))

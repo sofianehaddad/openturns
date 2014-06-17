@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class IntervalMesher
  */
-class IntervalMesher
+class OT_API IntervalMesher
   : public MeshFactoryImplementation
 {
   CLASSNAME;

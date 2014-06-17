@@ -4,7 +4,7 @@
 
 %module(package="openturns", docstring="Deterministic meta-package.") base
 //#pragma SWIG nowarn=314
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %pythoncode %{
 from openturns.common import PlatformInfo
@@ -14,8 +14,8 @@ def TESTPREAMBLE():
     prints a identification string and then exits softly.
     """
     import sys
-    if "--version" in sys.argv:
-        print ( sys.argv[0] + ' ' + PlatformInfo.GetVersion() )
+    if '--version' in sys.argv:
+        print(sys.argv[0] + ' ' + PlatformInfo.GetVersion())
         sys.exit(0)
 %}
 

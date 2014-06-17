@@ -49,9 +49,8 @@ static Factory<SORMResult> RegisteredFactory("SORMResult");
  */
 SORMResult::SORMResult(const NumericalPoint & standardSpaceDesignPoint,
                        const Event & limitStateVariable,
-                       const Bool isStandardPointOriginInFailureSpace,
-                       const String & name):
-  AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace, name),
+                       const Bool isStandardPointOriginInFailureSpace):
+  AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace),
   hessianLimitStateFunction_(),
   gradientLimitStateFunction_(),
   sortedCurvatures_(),
@@ -180,7 +179,7 @@ NumericalScalar SORMResult::getEventProbabilityBreitung() const
 NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
 {
   /* Quick return if the probability has already been computed */
-  if ((eventProbabilityHohenBichler_ != -1.0) and (eventProbabilityHohenBichler_ != -2.0)) return eventProbabilityHohenBichler_;
+  if ((eventProbabilityHohenBichler_ != -1.0) && (eventProbabilityHohenBichler_ != -2.0)) return eventProbabilityHohenBichler_;
 
   /* this formula is valid only for standard distribution with independent components */
   if (!standardDistribution_.hasIndependentCopula())
@@ -222,7 +221,7 @@ NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
 NumericalScalar SORMResult::getEventProbabilityTvedt() const
 {
   /* Quick return if the probability has already been computed */
-  if ((eventProbabilityTvedt_ != -1.0) and (eventProbabilityTvedt_ != -2.0)) return eventProbabilityTvedt_;
+  if ((eventProbabilityTvedt_ != -1.0) && (eventProbabilityTvedt_ != -2.0)) return eventProbabilityTvedt_;
   /* this formula is valid only for standard distribution with independent components */
   if (!standardDistribution_.hasIndependentCopula())
   {

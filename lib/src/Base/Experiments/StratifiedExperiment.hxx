@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of stratifiedExperiment plan
  */
-class StratifiedExperiment
+class OT_API StratifiedExperiment
   : public ExperimentImplementation
 {
   CLASSNAME;
@@ -44,12 +44,11 @@ public:
 
 
   /** Default constructor */
-  explicit StratifiedExperiment(const String & name = DefaultName);
+  StratifiedExperiment();
 
   /** Constructor with parameters */
   StratifiedExperiment(const NumericalPoint & center,
-                       const NumericalPoint & levels,
-                       const String & name = DefaultName);
+                       const NumericalPoint & levels);
 
   /** String converter */
   virtual String __repr__() const;

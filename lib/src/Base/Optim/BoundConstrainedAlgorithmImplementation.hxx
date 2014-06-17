@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * point of an interval that minimize the given objective function
  */
 
-class BoundConstrainedAlgorithmImplementation
+class OT_API BoundConstrainedAlgorithmImplementation
   : public PersistentObject
 {
 

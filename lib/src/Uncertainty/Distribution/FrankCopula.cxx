@@ -36,9 +36,10 @@ static Factory<FrankCopula> RegisteredFactory("FrankCopula");
 
 /* Default constructor */
 FrankCopula::FrankCopula()
-  : ArchimedeanCopula("FrankCopula")
+  : ArchimedeanCopula()
   , theta_(2.0)
 {
+  setName( "FrankCopula" );
   // We set the dimension of the FrankCopula distribution
   setDimension( 2 );
   computeRange();
@@ -46,9 +47,10 @@ FrankCopula::FrankCopula()
 
 /* Parameters constructor */
 FrankCopula::FrankCopula(const NumericalScalar theta)
-  : ArchimedeanCopula("FrankCopula")
+  : ArchimedeanCopula()
   , theta_(theta)
 {
+  setName( "FrankCopula" );
   // We set the dimension of the FrankCopula distribution
   setDimension( 2 );
   computeRange();

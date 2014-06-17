@@ -138,7 +138,7 @@ NumericalPoint IdentityMatrix::computeEigenValues(const Bool keepIntact)
   return NumericalPoint(getNbRows(), 1.0);
 }
 
-NumericalPoint IdentityMatrix::computeEigenValues(SquareMatrix & v,
+NumericalPoint IdentityMatrix::computeEVD(SquareMatrix & v,
     const Bool keepIntact)
 {
   v = *this;
@@ -152,7 +152,7 @@ NumericalPoint IdentityMatrix::computeSingularValues(const Bool keepIntact)
 }
 
 /* Compute singular values */
-NumericalPoint IdentityMatrix::computeSingularValues(Matrix & u,
+NumericalPoint IdentityMatrix::computeSVD(Matrix & u,
     Matrix & vT,
     const Bool fullSVD,
     const Bool keepIntact)

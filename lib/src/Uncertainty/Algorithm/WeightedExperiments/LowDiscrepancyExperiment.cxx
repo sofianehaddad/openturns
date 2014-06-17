@@ -33,8 +33,8 @@ CLASSNAMEINIT(LowDiscrepancyExperiment);
 
 
 /* Default constructor */
-LowDiscrepancyExperiment::LowDiscrepancyExperiment(const String & name):
-  WeightedExperiment(name),
+LowDiscrepancyExperiment::LowDiscrepancyExperiment():
+  WeightedExperiment(),
   marginals_(),
   sequence_(SobolSequence())
 {
@@ -42,9 +42,8 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const String & name):
 }
 
 /* Constructor with parameters */
-LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
-    const String & name):
-  WeightedExperiment(size, name),
+LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size):
+  WeightedExperiment(size),
   marginals_(),
   sequence_(SobolSequence())
 {
@@ -54,9 +53,8 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
     const Distribution & distribution,
-    const UnsignedInteger size,
-    const String & name):
-  WeightedExperiment(distribution, size, name),
+    const UnsignedInteger size):
+  WeightedExperiment(distribution, size),
   marginals_(0),
   sequence_(sequence)
 {
@@ -65,9 +63,8 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
 
 /* Constructor with parameters */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence & sequence,
-    const UnsignedInteger size,
-    const String & name):
-  WeightedExperiment(size, name),
+    const UnsignedInteger size):
+  WeightedExperiment(size),
   marginals_(0),
   sequence_(sequence)
 {

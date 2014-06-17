@@ -73,10 +73,10 @@ Function CheckPython
     StrCpy $Python_INSTALL_PATH "$INSTDIR"
   ${Else}
     ; search the prog in the Windows registry
-    ReadRegStr $Python_INSTALL_PATH HKLM "Software\Python\PythonCore\2.7\InstallPath" ""
+    ReadRegStr $Python_INSTALL_PATH HKLM "Software\Python\PythonCore\${PYBASEVER}\InstallPath" ""
     ${If} $Python_INSTALL_PATH == ""
       !insertmacro PRINT "! Python not found in machine registry, try user registry."
-      ReadRegStr $Python_INSTALL_PATH HKCU "Software\Python\PythonCore\2.7\InstallPath" ""
+      ReadRegStr $Python_INSTALL_PATH HKCU "Software\Python\PythonCore\${PYBASEVER}\InstallPath" ""
     ${EndIf}
 
     ${If} $Python_INSTALL_PATH == ""
@@ -100,6 +100,8 @@ FunctionEnd
 
 ; Launch before the section are displayed
 Function .onInit
+  !insertmacro CHECK_REG_VIEW
+
   !insertmacro MUI_LANGDLL_DISPLAY
 
   !insertmacro CHECK_USER_INSTALL "Installation switched to user install."

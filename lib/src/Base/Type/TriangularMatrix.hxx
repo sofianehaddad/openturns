@@ -42,7 +42,7 @@ class HermitianMatrix;
  * Default implementation is triangular lower
  */
 
-class TriangularMatrix :
+class OT_API TriangularMatrix :
   public SquareMatrix
 {
   CLASSNAME;
@@ -81,7 +81,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Get the dimension of the matrix */
-  const UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** TriangularMatrix transpose */
   TriangularMatrix transpose () const;

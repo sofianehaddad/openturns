@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the Nataf gradient for elliptical distributions
  */
-class NatafEllipticalDistributionHessian
+class OT_API NatafEllipticalDistributionHessian
   : public ConstantNumericalMathHessianImplementation
 {
   CLASSNAME;

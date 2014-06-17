@@ -61,7 +61,7 @@ std::ostream & operator << (std::ostream & os,
 
 
 template <class T>
-class PersistentCollection
+class OT_API PersistentCollection
   : public PersistentObject,
   public Collection<T>
 {
@@ -140,7 +140,7 @@ public:
   inline
   String __str__(const String & offset = "") const
   {
-    return Collection<T>::__str__();
+    return Collection<T>::__str__(offset);
   }
 
   /** Method save() stores the object through the StorageManager */
@@ -177,6 +177,15 @@ Bool operator == (const PersistentCollection<T> & lhs,
                   const PersistentCollection<T> & rhs)
 {
   return static_cast<const Collection<T>& >(lhs) == static_cast<const Collection<T>& >(rhs);
+}
+
+
+/** Comparison operator */
+template <class T> inline
+Bool operator != (const PersistentCollection<T> & lhs,
+                  const PersistentCollection<T> & rhs)
+{
+  return !(lhs == rhs);
 }
 
 

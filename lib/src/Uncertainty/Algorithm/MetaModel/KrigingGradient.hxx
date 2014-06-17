@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
   *
   * This class permits prediction on a gaussian process
   */
-class KrigingGradient
+class OT_API KrigingGradient
   : public NumericalMathGradientImplementation
 {
   CLASSNAME

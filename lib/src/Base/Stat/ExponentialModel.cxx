@@ -36,8 +36,8 @@ CLASSNAMEINIT(ExponentialModel);
 static Factory<ExponentialModel> RegisteredFactory("ExponentialModel");
 
 /* Constructor with parameters */
-ExponentialModel::ExponentialModel(const String & name)
-  : StationaryCovarianceModel(name)
+ExponentialModel::ExponentialModel()
+  : StationaryCovarianceModel()
   , amplitude_(NumericalPoint(1, 1.0))
   , scale_(NumericalPoint(1, 1.0))
   , spatialCorrelation_(0)
@@ -47,9 +47,8 @@ ExponentialModel::ExponentialModel(const String & name)
 }
 
 ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
-                                   const NumericalPoint & scale,
-                                   const String & name)
-  : StationaryCovarianceModel(name)
+                                   const NumericalPoint & scale)
+  : StationaryCovarianceModel()
   , amplitude_(0)
   , scale_(0)
   , spatialCorrelation_(0)
@@ -64,9 +63,8 @@ ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
 
 ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
                                    const NumericalPoint & scale,
-                                   const CorrelationMatrix & spatialCorrelation,
-                                   const String & name)
-  : StationaryCovarianceModel(name)
+                                   const CorrelationMatrix & spatialCorrelation)
+  : StationaryCovarianceModel()
   , amplitude_(0)
   , scale_(0)
   , spatialCorrelation_(0)
@@ -82,9 +80,8 @@ ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
 }
 
 ExponentialModel::ExponentialModel(const NumericalPoint & scale,
-                                   const CovarianceMatrix & spatialCovariance,
-                                   const String & name)
-  : StationaryCovarianceModel(name)
+                                   const CovarianceMatrix & spatialCovariance)
+  : StationaryCovarianceModel()
   , amplitude_(0)
   , scale_(scale)
   , spatialCorrelation_(0)

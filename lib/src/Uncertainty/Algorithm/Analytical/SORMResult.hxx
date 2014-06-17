@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SORMResult
  * SORMResult stores the SORM result
  */
-class SORMResult:
+class OT_API SORMResult:
   public AnalyticalResult
 {
   CLASSNAME;
@@ -45,8 +45,7 @@ public:
   /** Standard constructor */
   SORMResult(const NumericalPoint & standardSpaceDesignPoint,
              const Event & limitStateVariable,
-             const Bool isStandardPointOriginInFailureSpace,
-             const String & name = DefaultName);
+             const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor (required by SWIG :-<) */
   SORMResult();

@@ -16,8 +16,8 @@ namespace OT {
 
   TriangularMatrix(PyObject * pyObj) { return new OT::TriangularMatrix( OT::convert<OT::_PySequence_,OT::TriangularMatrix>(pyObj) ); }
 
-  OTMatrixAccessors(TriangularMatrix, NumericalScalar)
-
+  OTMatrixAccessors()
+    
   TriangularMatrix __rmul__(NumericalScalar s) { return s * (*self); }
   
   TriangularMatrix __truediv__(NumericalScalar s) { return (*self) / s; }

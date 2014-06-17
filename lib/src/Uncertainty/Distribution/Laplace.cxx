@@ -35,10 +35,11 @@ static Factory<Laplace> RegisteredFactory("Laplace");
 
 /* Default constructor */
 Laplace::Laplace()
-  : ContinuousDistribution("Laplace")
+  : ContinuousDistribution()
   , lambda_(1.0)
   , mu_(0.0)
 {
+  setName( "Laplace" );
   setDimension( 1 );
   computeRange();
 }
@@ -46,10 +47,11 @@ Laplace::Laplace()
 /* Parameters constructor */
 Laplace::Laplace(const NumericalScalar lambda,
                  const NumericalScalar mu)
-  : ContinuousDistribution("Laplace")
+  : ContinuousDistribution()
   , lambda_(lambda)
   , mu_(mu)
 {
+  setName( "Laplace" );
   // We set the dimension of the Laplace distribution
   setDimension( 1 );
   // This call set also the range.

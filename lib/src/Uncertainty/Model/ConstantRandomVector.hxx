@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for constant random vectors
  */
-class ConstantRandomVector
+class OT_API ConstantRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;
@@ -47,12 +47,10 @@ class ConstantRandomVector
 public:
 
   /** Default constructor */
-  ConstantRandomVector(const NumericalPointWithDescription & point,
-                       const String & name = DefaultName);
+  ConstantRandomVector(const NumericalPointWithDescription & point);
 
   /** Parameter constructor */
-  ConstantRandomVector(const NumericalPoint & point,
-                       const String & name = DefaultName);
+  ConstantRandomVector(const NumericalPoint & point);
 
 
   /** Virtual constructor */
@@ -101,7 +99,7 @@ protected:
   friend class Factory<ConstantRandomVector>;
 
   /** Default constructor */
-  ConstantRandomVector(const String & name = DefaultName) : RandomVectorImplementation(name) {};
+  ConstantRandomVector() : RandomVectorImplementation() {};
 
 private:
 

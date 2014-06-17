@@ -32,8 +32,8 @@ CLASSNAMEINIT(RandomVectorImplementation);
 static Factory<RandomVectorImplementation> RegisteredFactory("RandomVectorImplementation");
 
 /* Default constructor */
-RandomVectorImplementation::RandomVectorImplementation(const String & name)
-  : PersistentObject(name)
+RandomVectorImplementation::RandomVectorImplementation()
+  : PersistentObject()
   , description_()
 {
   // Nothing to do

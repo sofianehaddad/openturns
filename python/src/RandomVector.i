@@ -16,7 +16,7 @@ class PythonRandomVector(object):
     def __init__(self, dim=0):
         # Warning: these names are used in PythonRandomVectorImplementation class. Synchronize the files if changed
         self.__dim = dim
-        self.__desc = list(map( lambda i: 'x' + str(i), range(dim) ))
+        self.__desc = list(map(lambda i: 'x' + str(i), range(dim)))
 
     def __str__(self):
         return 'PythonRandomVector -> %s #%d' % (self.__desc, self.__dim)
@@ -24,18 +24,18 @@ class PythonRandomVector(object):
     def __repr__(self):
         return self.__str__()
       
-    def getDimension(self) :
+    def getDimension(self):
         return self.__dim
     
     def setDescription(self, desc):
         if (len(desc) != self.__dim):
             raise ValueError('Description size does NOT match dimension')
-        self.__desc  = desc
+        self.__desc = desc
         
     def getDescription(self):
         return self.__desc
       
-    def getRealization(self) :
+    def getRealization(self):
         raise RuntimeError('You must define a method getRealization() -> X, where X is a NumericalPoint')
       
     def getMean(self):

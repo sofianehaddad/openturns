@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of composite experiment plan
  */
-class Composite
+class OT_API Composite
   : public StratifiedExperiment
 {
   CLASSNAME;
@@ -43,17 +43,15 @@ public:
 
 
   /** Default constructor */
-  explicit Composite(const String & name = DefaultName);
+  Composite();
 
   /** Constructor with parameters */
   Composite(const NumericalPoint & center,
-            const NumericalPoint & levels,
-            const String & name = DefaultName);
+            const NumericalPoint & levels);
 
   /** Constructor with parameters */
   Composite(const UnsignedInteger dimension,
-            const NumericalPoint & levels,
-            const String & name = DefaultName);
+            const NumericalPoint & levels);
 
   /** Virtual constructor */
   virtual Composite * clone() const;

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class is an interface for the 1D nonlinear solverImplementations
  */
-class Secant :
+class OT_API Secant :
   public SolverImplementation
 {
   CLASSNAME;

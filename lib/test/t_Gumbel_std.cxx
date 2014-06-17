@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Gumbel
 {
 public:
-  explicit TestObject() : Gumbel(2.0, -0.5) {}
-  explicit TestObject(const String & name) : Gumbel(2.0, -0.5)
-  {
-    setName(name);
-  }
+  TestObject() : Gumbel(2.0, -0.5) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Gumbel distribution(2.0, -0.5);

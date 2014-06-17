@@ -49,7 +49,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the evaluation, the gradient or the hessian.
  */
-class NumericalMathFunctionImplementation
+class OT_API NumericalMathFunctionImplementation
   : public PersistentObject
 {
   CLASSNAME;

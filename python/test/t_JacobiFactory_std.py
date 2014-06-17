@@ -15,8 +15,7 @@ try:
         print "jacobi(", i, ")=", jacobi.build(i)
     roots = jacobi.getRoots(10)
     print "jacobi(10) roots=", repr(roots)
-    weights = NumericalPoint()
-    nodes = jacobi.getNodesAndWeights(10, weights)
+    nodes, weights = jacobi.getNodesAndWeights(10)
     print "jacobi(10) nodes=", nodes, "and weights=", weights
 except:
     import sys

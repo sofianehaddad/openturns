@@ -106,19 +106,19 @@ String TensorImplementation::__str__(const String & offset) const
 }
 
 /* Get the dimensions of the TensorImplementation : number of rows */
-const UnsignedInteger TensorImplementation::getNbRows() const
+UnsignedInteger TensorImplementation::getNbRows() const
 {
   return nbRows_;
 }
 
 /* Get the dimensions of the TensorImplementation : number of columns */
-const UnsignedInteger TensorImplementation::getNbColumns() const
+UnsignedInteger TensorImplementation::getNbColumns() const
 {
   return nbColumns_;
 }
 
 /* Get the dimensions of the TensorImplementation : number of sheets */
-const UnsignedInteger TensorImplementation::getNbSheets() const
+UnsignedInteger TensorImplementation::getNbSheets() const
 {
   return nbSheets_;
 }
@@ -198,7 +198,7 @@ void TensorImplementation::setSheetSym(const UnsignedInteger k,
 
 
 /* Empty returns true if there is no element in the TensorImplementation */
-const Bool TensorImplementation::isEmpty() const
+Bool TensorImplementation::isEmpty() const
 {
   return ((nbRows_ == 0)  || (nbColumns_ == 0) || (nbSheets_ == 0) || (PersistentCollection<NumericalScalar>::isEmpty())) ;
 }

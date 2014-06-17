@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for distribution-based random vectors
  */
-class UsualRandomVector
+class OT_API UsualRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;
@@ -46,8 +46,7 @@ public:
 
 
   /** Default constructor */
-  explicit UsualRandomVector(const Distribution & distribution,
-                             const String & name = DefaultName);
+  explicit UsualRandomVector(const Distribution & distribution);
 
 
   /** Virtual constructor */
@@ -94,7 +93,7 @@ protected:
   friend class Factory<UsualRandomVector>;
 
   /** Default constructor */
-  UsualRandomVector(const String & name = DefaultName) : RandomVectorImplementation(name) {};
+  UsualRandomVector() : RandomVectorImplementation() {};
 
 private:
 

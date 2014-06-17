@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class HistogramFactory
  */
-class HistogramFactory
+class OT_API HistogramFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

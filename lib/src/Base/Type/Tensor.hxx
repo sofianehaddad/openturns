@@ -40,7 +40,7 @@ class TensorImplementation;
  * Tensor implements the classical mathematical Tensor
  */
 
-class Tensor :
+class OT_API Tensor :
   public TypedInterfaceObject<TensorImplementation>
 
 {
@@ -105,17 +105,17 @@ public:
 
   /** Get the dimensions of the tensor */
   /** Number of rows */
-  const UnsignedInteger getNbRows() const;
+  UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedInteger getNbColumns() const;
+  UnsignedInteger getNbColumns() const;
   /** Number of sheets */
-  const UnsignedInteger getNbSheets() const;
+  UnsignedInteger getNbSheets() const;
 
   /** Comparison operators */
   Bool operator == (const Tensor & rhs) const;
 
   /** Empty returns true if there is no element in the tensor */
-  const Bool isEmpty() const;
+  Bool isEmpty() const;
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED

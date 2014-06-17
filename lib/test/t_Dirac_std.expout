@@ -7,15 +7,8 @@ streamObject(const T & anObject)
 class=Dirac name=Dirac dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Dirac name=myName dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Dirac name=myNewName dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
 Distribution class=Dirac name=Dirac dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
-Distribution Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[0.7])
+Distribution Dirac(point = [0.7])
 Elliptical = false
 Continuous = false
 oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
@@ -56,9 +49,9 @@ standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=
 standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.343]
 standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.2401]
 standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.16807]
-Standard representative=Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[0.7])
+Standard representative=Dirac(point = [0.7])
 Distribution class=Dirac name=Dirac dimension=4 point=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
-Distribution Dirac(point = class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3])
+Distribution Dirac(point = [2.3,2.3,2.3,2.3])
 Elliptical = false
 Continuous = false
 oneRealization=class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3]
@@ -93,4 +86,4 @@ standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=4 values=
 standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=4 values=[12.167,12.167,12.167,12.167]
 standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=4 values=[27.9841,27.9841,27.9841,27.9841]
 standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=4 values=[64.3634,64.3634,64.3634,64.3634]
-Standard representative=Dirac(point = class=NumericalPoint name=Unnamed dimension=4 values=[2.3,2.3,2.3,2.3])
+Standard representative=Dirac(point = [2.3,2.3,2.3,2.3])

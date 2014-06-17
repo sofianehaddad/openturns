@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NumericalPoint implements the classical mathematical point
  */
 
-class NumericalPoint
+class OT_API NumericalPoint
   : public PersistentCollection<NumericalScalar>
 {
   CLASSNAME;
@@ -97,7 +97,7 @@ public:
   const NumericalScalar & operator[](const UnsignedInteger index) const;
 
   /** Erase the elements between first and last */
-  iterator erase(iterator first, iterator last);
+  iterator erase(const iterator first, const iterator last);
 
   /** Erase the element pointed by position */
   iterator erase(iterator position);
@@ -159,37 +159,37 @@ private:
 
 #ifndef SWIG
 /** Comparison operator */
-Bool operator == (const NumericalPoint & lhs,
+OT_API Bool operator == (const NumericalPoint & lhs,
                   const NumericalPoint & rhs);
 
 /** Ordering operator */
-Bool operator < (const NumericalPoint & lhs,
+OT_API Bool operator < (const NumericalPoint & lhs,
                  const NumericalPoint & rhs);
 
 /** Product operator */
-NumericalPoint operator * (const NumericalScalar scalar,
+OT_API NumericalPoint operator * (const NumericalScalar scalar,
                            const NumericalPoint & point);
 
 /** Product operator */
-NumericalPoint operator * (const NumericalPoint & point,
+OT_API NumericalPoint operator * (const NumericalPoint & point,
                            const NumericalScalar scalar);
 
 /** Division operator */
-NumericalPoint operator / (const NumericalPoint & point,
+OT_API NumericalPoint operator / (const NumericalPoint & point,
                            const NumericalScalar scalar);
 
 /** Addition operator */
-NumericalPoint operator + (const NumericalPoint & lhs,
+OT_API NumericalPoint operator + (const NumericalPoint & lhs,
                            const NumericalPoint & rhs);
 
 /** Substraction operator */
-NumericalPoint operator - (const NumericalPoint & lhs,
+OT_API NumericalPoint operator - (const NumericalPoint & lhs,
                            const NumericalPoint & rhs);
 
 #endif
 
 /** Dot product operator */
-NumericalScalar dot(const NumericalPoint & lhs,
+OT_API NumericalScalar dot(const NumericalPoint & lhs,
                     const NumericalPoint & rhs);
 
 

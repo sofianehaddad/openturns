@@ -30,34 +30,31 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MeshFactory);
 
 /* Default constructor */
-MeshFactory::MeshFactory(const String & name)
-  : TypedInterfaceObject<MeshFactoryImplementation>(new MeshFactoryImplementation(name))
+MeshFactory::MeshFactory()
+  : TypedInterfaceObject<MeshFactoryImplementation>(new MeshFactoryImplementation())
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-MeshFactory::MeshFactory(const MeshFactoryImplementation & implementation,
-    const String & name)
+MeshFactory::MeshFactory(const MeshFactoryImplementation & implementation)
   : TypedInterfaceObject<MeshFactoryImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-MeshFactory::MeshFactory(const Implementation & p_implementation,
-    const String & name)
+MeshFactory::MeshFactory(const Implementation & p_implementation)
   : TypedInterfaceObject<MeshFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-MeshFactory::MeshFactory(MeshFactoryImplementation * p_implementation,
-    const String & name)
+MeshFactory::MeshFactory(MeshFactoryImplementation * p_implementation)
   : TypedInterfaceObject<MeshFactoryImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 

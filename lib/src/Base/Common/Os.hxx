@@ -26,6 +26,7 @@
 #define OPENTURNS_OS_HXX
 
 #include "OTtypes.hxx"
+#include "OTdebug.h"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class provides operating system specific.
  */
-class Os
+class OT_API Os
 {
 
 public:
@@ -63,6 +64,16 @@ public:
    * Remove a file.
    */
   static void Remove(const String & fileName);
+
+  /**
+   * Create a directory.
+   */
+  static int MakeDirectory(const String & fileName);
+
+  /**
+   * Delete a directory recursively.
+   */
+  static int DeleteDirectory(const String & path);
 
   /**
    * Make a system call. Return 0 if no error.

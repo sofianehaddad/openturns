@@ -24,6 +24,16 @@
 # @date   2012-08-28
 #
 
+"""
+    OpenTURNS coupling tools
+    =============================
+    Provides several functions to ease wrapping of an external code:
+    - replace: allows to replace a value in template file
+    - execute: run an external code
+    - get: parse values from a result file
+
+"""
+
 import re
 import shutil
 import os
@@ -192,8 +202,11 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     startupinfo = None
     if hide_win and sys.platform.startswith('win'):
         startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
+        if hasattr(subprocess, 'STARTF_USESHOWWINDOW'):
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        else:
+            startupinfo.dwFlags |= 1
+            
     stdout = None
     stderr = None
     if get_stdout:

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Beta distribution.
  */
-class Beta
+class OT_API Beta
   : public ContinuousDistribution
 {
   CLASSNAME;
@@ -84,9 +84,11 @@ public:
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
   /** Get the PDFGradient of the distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

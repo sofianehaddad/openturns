@@ -35,18 +35,20 @@ static Factory<FarlieGumbelMorgensternCopula> RegisteredFactory("FarlieGumbelMor
 
 /* Default constructor */
 FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula()
-  : CopulaImplementation("FarlieGumbelMorgensternCopula")
+  : CopulaImplementation()
   , theta_(0.0)
 {
+  setName( "FarlieGumbelMorgensternCopula" );
   setDimension( 2 );
   computeRange();
 }
 
 /* Parameters constructor */
 FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula(const NumericalScalar theta)
-  : CopulaImplementation("FarlieGumbelMorgensternCopula")
+  : CopulaImplementation()
   , theta_(0.0)
 {
+  setName( "FarlieGumbelMorgensternCopula" );
   // Check the value of theta
   setTheta(theta);
   // We set the dimension of the FarlieGumbelMorgensternCopula distribution

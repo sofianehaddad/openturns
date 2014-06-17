@@ -37,17 +37,16 @@ CLASSNAMEINIT(CovarianceModelImplementation);
 static Factory<CovarianceModelImplementation> RegisteredFactory("CovarianceModelImplementation");
 
 /* Constructor without parameters */
-CovarianceModelImplementation::CovarianceModelImplementation(const String & name)
-  : PersistentObject(name)
+CovarianceModelImplementation::CovarianceModelImplementation()
+  : PersistentObject()
   , dimension_(0)
 {
   // Nothing to do
 }
 
 /* Constructor with dimension parameter */
-CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger dimension,
-                                                             const String & name)
-  : PersistentObject(name)
+CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger dimension)
+  : PersistentObject()
   , dimension_(dimension)
 {
   // Nothing to do

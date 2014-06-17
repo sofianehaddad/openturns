@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * AbdoRackwitz is an actual implementation for
  * NearestPointAlgorithm
  */
-class AbdoRackwitzSpecificParameters
+class OT_API AbdoRackwitzSpecificParameters
   : public PersistentObject
 {
 

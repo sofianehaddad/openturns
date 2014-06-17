@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * An implementation returning the set of polynomials in sequence
  */
 
-class SequentialStrategy
+class OT_API SequentialStrategy
   : public AdaptiveStrategyImplementation
 {
   CLASSNAME;

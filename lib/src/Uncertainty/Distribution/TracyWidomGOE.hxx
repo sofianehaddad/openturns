@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The TracyWidomGOE distribution.
  */
-class TracyWidomGOE
+class OT_API TracyWidomGOE
   : public ContinuousDistribution
 {
   CLASSNAME;

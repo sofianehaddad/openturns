@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * form a numerical math evaluation implementation by using noncentered
  * finite difference formula
  */
-class NonCenteredFiniteDifferenceGradient
+class OT_API NonCenteredFiniteDifferenceGradient
   : public FiniteDifferenceGradient
 {
   CLASSNAME;

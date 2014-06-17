@@ -233,7 +233,7 @@ NumericalScalar FittingTest::BIC(const NumericalSample & sample,
     if (logPDF[i][0] == -SpecFunc::MaxNumericalScalar) return SpecFunc::MaxNumericalScalar;
     logLikelihood += logPDF[i][0];
   }
-  return (-2.0 * logLikelihood + estimatedParameters * log(size)) / size;
+  return (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
 }
 
 /* Bayesian Information Criterion computation */
@@ -351,6 +351,7 @@ TestResult FittingTest::RunRTest(const NumericalSample & sample,
   cmdFile << "library(rot)" << std::endl;
   cmdFile << "options(digits=17)" << std::endl;
   cmdFile << "options(warn=-1)" << std::endl;
+  cmdFile << "options(stringsAsFactors = F)" << std::endl;
   cmdFile << "sample <- data.matrix(read.table(\"" << dataFileName << "\"))" << std::endl;
   cmdFile << "res <- computeTest" << testName << distribution.getImplementation()->getClassName();
   cmdFile << "(sample, ";

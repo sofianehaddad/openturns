@@ -1,0 +1,92 @@
+%feature("docstring") OT::PersistentObject
+"PersistentObject saves and reloads the object's internal state."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::getId
+"Accessor to the object's id.
+
+Returns
+-------
+id : int
+   Internal unique identifier."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::setShadowedId
+"Accessor to the object's shadowed id.
+
+Parameters
+----------
+id : int
+    Internal unique identifier."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::getShadowedId
+"Accessor to the object's shadowed id.
+
+Returns
+-------
+id : int
+    Internal unique identifier."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::setVisibility
+"Accessor to the object's visibility state.
+
+Parameters
+----------
+visible : bool
+    Visibility flag."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::getVisibility
+"Accessor to the object's visibility state.
+
+Returns
+-------
+visible : bool
+    Visibility flag."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::hasName
+"Tests if the object is named.
+
+Returns
+-------
+hasName : bool
+    True if the name is not empty."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::hasVisibleName
+"Tests if the object has a distinghishable name.
+
+Returns
+-------
+hasVisibleName : bool
+    True if the name is not empty and not the default one."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::getName
+"Accessor to the object's name.
+
+Returns
+-------
+name : string
+    The name of the object."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PersistentObject::setName
+"Accessor to the object's name.
+
+Parameters
+----------
+name : string
+    The name of the object."

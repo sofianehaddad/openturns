@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of monteCarloExperiment plan
  */
-class GaussProductExperiment
+class OT_API GaussProductExperiment
   : public WeightedExperiment
 {
   CLASSNAME;
@@ -47,20 +47,17 @@ public:
   typedef Collection<OrthogonalUniVariatePolynomialFamily> OrthogonalUniVariatePolynomialFamilyCollection;
 
   /** Default constructor */
-  explicit GaussProductExperiment(const String & name = DefaultName);
+  GaussProductExperiment();
 
   /** Parameters constructor */
-  explicit GaussProductExperiment(const Indices & marginalDegrees,
-                                  const String & name = DefaultName);
+  explicit GaussProductExperiment(const Indices & marginalDegrees);
 
   /** Parameters constructor */
-  explicit GaussProductExperiment(const Distribution & distribution,
-                                  const String & name = DefaultName);
+  explicit GaussProductExperiment(const Distribution & distribution);
 
   /** Parameters constructor */
   GaussProductExperiment(const Distribution & distribution,
-                         const Indices & marginalDegrees,
-                         const String & name = DefaultName);
+                         const Indices & marginalDegrees);
 
   /** Virtual constructor */
   virtual GaussProductExperiment * clone() const;

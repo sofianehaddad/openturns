@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Skellam distribution.
  */
-class Skellam
+class OT_API Skellam
   : public DiscreteDistribution
 {
   CLASSNAME;
@@ -74,9 +74,11 @@ public:
   NumericalScalar computeCDF(const NumericalPoint & point) const;
 
   /** Get the PDFGradient of the distribution */
+  using DiscreteDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the distribution */
+  using DiscreteDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */

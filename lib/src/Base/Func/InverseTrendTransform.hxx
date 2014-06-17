@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class TrendTransform;
 
-class InverseTrendTransform
+class OT_API InverseTrendTransform
   : public TemporalFunction
 {
   CLASSNAME;

@@ -3,7 +3,7 @@
 // @date   2012-07-16 12:24:33 +0200 (Mon, 16 Jul 2012)
 
 %module(package="openturns", docstring="Differential algorithms.") diff
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

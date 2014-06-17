@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface for time series
  */
-class ProcessSample
+class OT_API ProcessSample
   : public PersistentObject
 {
   CLASSNAME;

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class GeometricFactory
  */
-class GeometricFactory
+class OT_API GeometricFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class BasisFactory
+class OT_API BasisFactory
   : public PersistentObject
 {
   CLASSNAME;
@@ -47,12 +47,6 @@ public:
 
   /** @copydoc BasisFactory::build() const */
   virtual Basis build() const;
-
-  /* Method save() stores the object through the StorageManager */
-  void save(OT::Advocate & adv) const;
-
-  /* Method load() reloads the object from the StorageManager */
-  void load(OT::Advocate & adv);
 
 };
 

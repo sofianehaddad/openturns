@@ -23,9 +23,7 @@
 
 cmake_minimum_required ( VERSION 2.8 )
 
-#include ( CTest )
-
-set ( NEW_PATH "$ENV{PATH}:${INSTALL_DESTDIR}${EXAMPLE_PATH}" )
+set ( NEW_PATH "${INSTALL_DESTDIR}${EXAMPLE_PATH}${PATH_SEP}$ENV{PATH}" )
 
 set ( ADAPT_CHECK_TESTS_EXPONENT )
 set ( REPLACE_EOL " | cat " )
@@ -764,8 +762,10 @@ ot_installcheck_test ( StrongMaximumTest_std )
 ot_installcheck_test ( StrongMaximumTest_tabulatedValues )
 ot_installcheck_test ( StrongMaximumTest_other )
 
-# Simulation
+# FIXME: related to #506 ? 
 ot_installcheck_test ( MonteCarlo_threads )
+set_tests_properties ( cppinstallcheck_MonteCarlo_threads PROPERTIES RUN_SERIAL ON )
+
 if ( R_base_FOUND )
 ot_installcheck_test ( SimulationSensitivityAnalysis_std )
 endif ()

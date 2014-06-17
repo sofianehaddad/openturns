@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of tuples generator
  */
-class Tuples
+class OT_API Tuples
   : public CombinatorialGeneratorImplementation
 {
   CLASSNAME;

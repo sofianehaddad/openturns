@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The MeixnerDistribution distribution.
  */
-class MeixnerDistribution
+class OT_API MeixnerDistribution
   : public ContinuousDistribution
 {
   CLASSNAME;

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Wishart distribution.
  */
-class Wishart
+class OT_API Wishart
   : public ContinuousDistribution
 {
   CLASSNAME;

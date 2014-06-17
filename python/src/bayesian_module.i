@@ -3,7 +3,7 @@
 // @date   2012-11-17 13:46:13 +0100 (Thu, 17 Nov 2012)
 
 %module(package="openturns", docstring="Bayesian algorithms.") bayesian
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"
@@ -17,9 +17,6 @@
 %include OTexceptions.i
 %include std_vector.i
 
-%import common_module.i
-%import typ_module.i
-%include TestResult.i
 %import base_module.i
 
 /* Uncertainty/Model */

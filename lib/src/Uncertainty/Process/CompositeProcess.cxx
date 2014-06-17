@@ -32,17 +32,16 @@ CLASSNAMEINIT(CompositeProcess);
 
 static Factory<CompositeProcess> RegisteredFactory("CompositeProcess");
 
-CompositeProcess::CompositeProcess(const String & name)
-  : ProcessImplementation(name)
+CompositeProcess::CompositeProcess()
+  : ProcessImplementation()
 {
   // Nothing to do
 }
 
 /* Standard constructor */
 CompositeProcess::CompositeProcess(const DynamicalFunction & function,
-                                   const Antecedent & p_antecedent,
-                                   const String & name)
-  : ProcessImplementation(name)
+                                   const Antecedent & p_antecedent)
+  : ProcessImplementation()
   , function_(function)
   , p_antecedent_(p_antecedent)
 {
@@ -56,9 +55,8 @@ CompositeProcess::CompositeProcess(const DynamicalFunction & function,
 
 /* Standard constructor */
 CompositeProcess::CompositeProcess(const DynamicalFunction & function,
-                                   const Process & antecedent,
-                                   const String & name)
-  : ProcessImplementation(name)
+                                   const Process & antecedent)
+  : ProcessImplementation()
   , function_(function)
   , p_antecedent_(antecedent.getImplementation())
 {

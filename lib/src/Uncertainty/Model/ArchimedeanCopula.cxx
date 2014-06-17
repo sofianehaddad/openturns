@@ -33,8 +33,8 @@ CLASSNAMEINIT(ArchimedeanCopula);
 
 
 /* Default constructor */
-ArchimedeanCopula::ArchimedeanCopula(const String & name)
-  : CopulaImplementation(name)
+ArchimedeanCopula::ArchimedeanCopula()
+  : CopulaImplementation()
 {
   setDimension(2);
 }

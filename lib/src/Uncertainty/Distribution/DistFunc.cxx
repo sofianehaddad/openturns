@@ -28,6 +28,7 @@
 #include <iomanip>
 
 #include "DistFunc.hxx"
+#include "SpecFunc.hxx"
 #include "RandomGenerator.hxx"
 #include "Log.hxx"
 #include "SquareMatrix.hxx"
@@ -40,7 +41,6 @@
 // The following implementation of the Poisson quantile is used in a LGPL context with written permission of the author.
 #include "poissinv_cpu.h"
 #include "StudentFunctions.hxx"
-#include "SpecFunc.hxx"
 #include "OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

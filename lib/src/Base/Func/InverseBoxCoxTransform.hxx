@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class BoxCoxTransform;
 
-class InverseBoxCoxTransform
+class OT_API InverseBoxCoxTransform
   : public NumericalMathFunction
 
 {

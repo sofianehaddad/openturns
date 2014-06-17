@@ -38,7 +38,7 @@ class TimeGrid;
  * @class CauchyModel
  */
 
-class CauchyModel
+class OT_API CauchyModel
   : public SpectralModelImplementation
 {
 
@@ -48,23 +48,20 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit CauchyModel(const String & name = DefaultName);
+  CauchyModel();
 
   /** Standard constructor with amplitude and scale parameters parameters */
   CauchyModel(const NumericalPoint & amplitude,
-              const NumericalPoint & scale,
-              const String & name = DefaultName);
+              const NumericalPoint & scale);
 
   /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
   CauchyModel(const NumericalPoint & amplitude,
               const NumericalPoint & scale,
-              const CorrelationMatrix & spatialCorrelation,
-              const String & name = DefaultName);
+              const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */
   CauchyModel(const NumericalPoint & scale,
-              const CovarianceMatrix & spatialCovariance,
-              const String & name = DefaultName);
+              const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
   virtual CauchyModel * clone() const;

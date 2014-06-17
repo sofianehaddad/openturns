@@ -36,10 +36,11 @@ static Factory<InverseNormal> RegisteredFactory("InverseNormal");
 
 /* Default constructor */
 InverseNormal::InverseNormal()
-  : ContinuousDistribution("InverseNormal")
+  : ContinuousDistribution()
   , lambda_(1.0)
   , mu_(1.0)
 {
+  setName( "InverseNormal" );
   setDimension( 1 );
   computeRange();
 }
@@ -47,10 +48,11 @@ InverseNormal::InverseNormal()
 /* Parameters constructor */
 InverseNormal::InverseNormal(const NumericalScalar lambda,
                              const NumericalScalar mu)
-  : ContinuousDistribution("InverseNormal")
+  : ContinuousDistribution()
   , lambda_(0.0)
   , mu_(0.0)
 {
+  setName( "InverseNormal" );
   // This call set also the range
   setLambdaMu(lambda, mu);
   setDimension( 1 );

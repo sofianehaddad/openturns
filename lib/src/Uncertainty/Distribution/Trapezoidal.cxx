@@ -35,12 +35,13 @@ static Factory<Trapezoidal> RegisteredFactory("Trapezoidal");
 
 /* Default constructor */
 Trapezoidal::Trapezoidal()
-  : ContinuousDistribution("Trapezoidal")
+  : ContinuousDistribution()
   , a_(-2.0)
   , b_(-1.0)
   , c_(1.0)
   , d_(2.0)
 {
+  setName("Trapezoidal");
   update();
 }
 
@@ -49,12 +50,13 @@ Trapezoidal::Trapezoidal(const NumericalScalar a,
                          const NumericalScalar b,
                          const NumericalScalar c,
                          const NumericalScalar d)
-  : ContinuousDistribution("Trapezoidal")
+  : ContinuousDistribution()
   , a_(a)
   , b_(b)
   , c_(c)
   , d_(d)
 {
+  setName("Trapezoidal");
   update();
 }
 

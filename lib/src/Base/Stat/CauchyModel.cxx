@@ -39,8 +39,8 @@ CLASSNAMEINIT(CauchyModel);
 static Factory<CauchyModel> RegisteredFactory("CauchyModel");
 
 /* Constructor with parameters */
-CauchyModel::CauchyModel(const String & name)
-  : SpectralModelImplementation(name)
+CauchyModel::CauchyModel()
+  : SpectralModelImplementation()
   , amplitude_(NumericalPoint(1, 1.0))
   , scale_(NumericalPoint(1, 1.0))
   , spatialCorrelation_(0)
@@ -50,9 +50,8 @@ CauchyModel::CauchyModel(const String & name)
 }
 
 CauchyModel::CauchyModel(const NumericalPoint & amplitude,
-                         const NumericalPoint & scale,
-                         const String & name)
-  : SpectralModelImplementation(name)
+                         const NumericalPoint & scale)
+  : SpectralModelImplementation()
   , amplitude_(0)
   , scale_(0)
   , spatialCorrelation_(0)
@@ -67,9 +66,8 @@ CauchyModel::CauchyModel(const NumericalPoint & amplitude,
 
 CauchyModel::CauchyModel(const NumericalPoint & amplitude,
                          const NumericalPoint & scale,
-                         const CorrelationMatrix & spatialCorrelation,
-                         const String & name)
-  : SpectralModelImplementation(name)
+                         const CorrelationMatrix & spatialCorrelation)
+  : SpectralModelImplementation()
   , amplitude_(0)
   , scale_(0)
   , spatialCorrelation_(0)
@@ -85,9 +83,8 @@ CauchyModel::CauchyModel(const NumericalPoint & amplitude,
 }
 
 CauchyModel::CauchyModel(const NumericalPoint & scale,
-                         const CovarianceMatrix & spatialCovariance,
-                         const String & name)
-  : SpectralModelImplementation(name)
+                         const CovarianceMatrix & spatialCovariance)
+  : SpectralModelImplementation()
   , amplitude_(0)
   , scale_(scale)
   , spatialCorrelation_(0)

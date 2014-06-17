@@ -6,5 +6,7 @@
 #include "FittingTest.hxx"
 %}
 
+%include FittingTest_doc.i
+
 %include FittingTest.hxx
 

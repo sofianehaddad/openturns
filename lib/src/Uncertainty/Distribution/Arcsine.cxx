@@ -36,10 +36,11 @@ static Factory<Arcsine> RegisteredFactory("Arcsine");
 
 /* Default constructor */
 Arcsine::Arcsine()
-  : ContinuousDistribution("Arcsine")
+  : ContinuousDistribution()
   , a_(-1.0)
   , b_(1.0)
 {
+  setName("Arcsine");
   setDimension(1);
   computeRange();
 }
@@ -48,10 +49,11 @@ Arcsine::Arcsine()
 Arcsine::Arcsine(const NumericalScalar arg1,
                  const NumericalScalar arg2,
                  const ParameterSet set)
-  : ContinuousDistribution("Arcsine")
+  : ContinuousDistribution()
   , a_(-1.0)
   , b_(1.0)
 {
+  setName("Arcsine");
   switch (set)
   {
     case AB:

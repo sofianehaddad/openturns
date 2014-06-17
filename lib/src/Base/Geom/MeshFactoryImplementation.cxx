@@ -36,8 +36,8 @@ static Factory<MeshFactoryImplementation> RegisteredFactory("MeshFactoryImplemen
 typedef NotYetImplementedException NotYetImplementedException;
 
 /* Default constructor */
-MeshFactoryImplementation::MeshFactoryImplementation(const String & name)
-  : PersistentObject(name)
+MeshFactoryImplementation::MeshFactoryImplementation()
+  : PersistentObject()
 {
   // Nothing to do
 }

@@ -41,10 +41,11 @@ static Factory<ComposedCopula> RegisteredFactory("ComposedCopula");
 
 /* Default constructor */
 ComposedCopula::ComposedCopula()
-  : CopulaImplementation("ComposedCopula")
+  : CopulaImplementation()
   , copulaCollection_(0)
   , isIndependent_(false)
 {
+  setName("ComposedCopula");
   setDimension(1);
   CopulaCollection coll(1);
   coll[0] = IndependentCopula(1);
@@ -53,10 +54,11 @@ ComposedCopula::ComposedCopula()
 
 /* Default constructor */
 ComposedCopula::ComposedCopula(const CopulaCollection & coll)
-  : CopulaImplementation("ComposedCopula")
+  : CopulaImplementation()
   , copulaCollection_()
   , isIndependent_(false)
 {
+  setName("ComposedCopula");
   // We assign the copula collection through the accessor in order to compute the composed copula dimension
   setCopulaCollection(coll);
 }

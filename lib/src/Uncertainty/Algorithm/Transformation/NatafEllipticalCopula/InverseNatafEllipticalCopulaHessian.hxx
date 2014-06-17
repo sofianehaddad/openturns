@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for the InverseNataf function for elliptical distributions
  */
-class InverseNatafEllipticalCopulaHessian
+class OT_API InverseNatafEllipticalCopulaHessian
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

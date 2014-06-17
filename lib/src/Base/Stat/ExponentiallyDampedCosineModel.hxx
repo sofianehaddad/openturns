@@ -39,7 +39,7 @@ class RegularGrid;
  * @class ExponentiallyDampedCosineModel
  */
 
-class ExponentiallyDampedCosineModel
+class OT_API ExponentiallyDampedCosineModel
   : public StationaryCovarianceModel
 {
 
@@ -49,13 +49,12 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit ExponentiallyDampedCosineModel(const String & name = DefaultName);
+  explicit ExponentiallyDampedCosineModel();
 
   /** Standard constructor with amplitude and scale parameters parameters */
   ExponentiallyDampedCosineModel(const NumericalScalar amplitude,
                    const NumericalScalar scale,
-                   const NumericalScalar frequency,
-                   const String & name = DefaultName);
+                   const NumericalScalar frequency);
 
   /** Virtual copy constructor */
   virtual ExponentiallyDampedCosineModel * clone() const;

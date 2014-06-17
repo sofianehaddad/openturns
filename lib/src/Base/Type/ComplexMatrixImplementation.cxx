@@ -119,7 +119,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
       B(i, j) = b(i, j);
   int nrhs(q);
   int lwork(-1);
-  std::complex<double> lwork_d;
+  std::vector< std::complex<double> > work(1);
+  std::vector<double> rwork(2 * n);
   int info;
   std::vector<int> jpiv(n);
   double rcond(ResourceMap::GetAsNumericalScalar("MatrixImplementation-DefaultSmallPivot"));
@@ -128,17 +129,18 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
   if (keepIntact)
   {
     ComplexMatrixImplementation A(*this);
-    ZGELSY_F77(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
-    lwork = static_cast<int>(std::real(lwork_d));
+    // (int *m, int *n, int *nrhs, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, double *rwork, int *info)
+    zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+    lwork = static_cast<int>(std::real(work[0]));
     NumericalComplexCollection work(lwork);
-    ZGELSY_F77(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
+    zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
   }
   else
   {
-    ZGELSY_F77(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
-    lwork = static_cast<int>(std::real(lwork_d));
+    zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+    lwork = static_cast<int>(std::real(work[0]));
     NumericalComplexCollection work(lwork);
-    ZGELSY_F77(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
+    zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
   }
   ComplexMatrixImplementation result(n, q);
   for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
@@ -273,19 +275,19 @@ const NumericalComplex & ComplexMatrixImplementation::operator () (const Unsigne
 
 
 /* Get the dimensions of the ComplexMatrixImplementation : number of rows */
-const UnsignedInteger ComplexMatrixImplementation::getNbRows() const
+UnsignedInteger ComplexMatrixImplementation::getNbRows() const
 {
   return nbRows_;
 }
 
 /* Get the dimensions of the ComplexMatrixImplementation : number of columns */
-const UnsignedInteger ComplexMatrixImplementation::getNbColumns() const
+UnsignedInteger ComplexMatrixImplementation::getNbColumns() const
 {
   return nbColumns_;
 }
 
 /* Get the dimensions of the ComplexMatrixImplementation : dimension (square matrix : nbRows_) */
-const UnsignedInteger ComplexMatrixImplementation::getDimension() const
+UnsignedInteger ComplexMatrixImplementation::getDimension() const
 {
   return nbRows_;
 }
@@ -392,13 +394,13 @@ MatrixImplementation ComplexMatrixImplementation::imagSym() const
 
 
 /* Empty returns true if there is no element in theComplexMatrixImplementation */
-const Bool ComplexMatrixImplementation::isEmpty() const
+Bool ComplexMatrixImplementation::isEmpty() const
 {
   return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<NumericalComplex>::isEmpty()));
 }
 
 /* Returns true if triangular lower or upper */
-const Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
+Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
 {
   if ( nbRows_ == nbColumns_ )
   {
@@ -422,7 +424,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Compl
   NumericalComplex alpha(1.0, 0.0);
   int one(1);
   // Lapack routine
-  ZAXPY_F77(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &add[0], &one);
+  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &add[0], &one);
 
   return add;
 }
@@ -437,7 +439,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Matri
   NumericalComplex alpha(1.0, 0.0);
   int one(1);
   // Lapack routine
-  ZAXPY_F77(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &add[0], &one);
+  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &add[0], &one);
 
   return add;
 }
@@ -452,7 +454,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const Compl
   NumericalComplex alpha(-1.0, 0.0);
   int one(1);
 
-  ZAXPY_F77(&size, &alpha, const_cast<std::complex<double>*>(&(matrix)[0]), &one, &sub[0], &one);
+  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&(matrix)[0]), &one, &sub[0], &one);
 
   return sub;
 }
@@ -476,7 +478,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator * (const Numer
   int one(1);
   int n_(nbRows_ * nbColumns_);
   // Lapack routine
-  ZSCAL_F77(&n_, &alpha, &scalprod[0], &one);
+  zscal_(&n_, &alpha, &scalprod[0], &one);
 
   return scalprod;
 }
@@ -510,7 +512,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::genProd(const ComplexMa
   int ltransb(1);
 
   //Lapack routine
-  ZGEMM_F77(&transa, &transb, &m, &n, &k, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &ltransa, &ltransb);
+  zgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &ltransa, &ltransb);
   return mult;
 }
 
@@ -535,7 +537,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::symProd (const ComplexM
   int luplo(1);
 
   // Lapack routine
-  ZSYMM_F77(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
+  zsymm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
 
   return mult;
 }
@@ -561,8 +563,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::hermProd(const ComplexM
   int luplo(1);
 
   // Lapack routine
-  if (hermSide == 'L') ZHEMM_F77(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
-  else ZHEMM_F77(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&(matrix[0])), &k, const_cast<std::complex<double>*>(&((*this)[0])), &m, &beta, &mult[0], &m, &lside, &luplo);
+  if (hermSide == 'L') zhemm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
+  else zhemm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&(matrix[0])), &k, const_cast<std::complex<double>*>(&((*this)[0])), &m, &beta, &mult[0], &m, &lside, &luplo);
 
   return mult;
 }
@@ -596,7 +598,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::triangularProd(const Co
   NumericalComplex alpha(1.0);
 
   // Lapack routine
-  ZTRMM_F77(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<std::complex<double>*>(&((*this)[0])),  &m, const_cast<std::complex<double>*>(&(mult[0])), &m, &lside , &luplo, &ltrans,  &ldiag);
+  ztrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<std::complex<double>*>(&((*this)[0])),  &m, const_cast<std::complex<double>*>(&(mult[0])), &m, &lside , &luplo, &ltrans,  &ldiag);
   return mult;
 }
 
@@ -711,7 +713,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplex beta(0.0, 0.0);
   int ltrans(1);
 
-  ZGEMV_F77(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
+  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -733,7 +735,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplex beta(0.0, 0.0);
   int ltrans(1);
 
-  ZGEMV_F77(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
+  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -755,7 +757,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplex beta(0.0, 0.0);
   int ltrans(1);
 
-  ZGEMV_F77(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
+  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -773,7 +775,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplex alpha(1.0, 0.0);
   NumericalComplex beta(0.0, 0.0);
   int luplo(1);
-  ZHEMV_F77(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
+  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -793,7 +795,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplex alpha(1.0, 0.0);
   NumericalComplex beta(0.0, 0.0);
   int luplo(1);
-  ZHEMV_F77(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
+  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -813,7 +815,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplex alpha(1.0, 0.0);
   NumericalComplex beta(0.0, 0.0);
   int luplo(1);
-  ZHEMV_F77(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
+  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -842,7 +844,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   int one(1);
 
   NumericalComplexCollection x(pt);
-  ZTRMV_F77(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
@@ -870,7 +872,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplexCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
-  ZTRMV_F77(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
@@ -898,7 +900,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   NumericalComplexCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
-  ZTRMV_F77(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
@@ -930,12 +932,12 @@ Bool ComplexMatrixImplementation::isHermitianPositiveDefinite(const Bool keepInt
   if (keepIntact)
   {
     ComplexMatrixImplementation A(*this);
-    ZPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
+    zpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
   }
   else
   {
-    ZPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
+    zpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
   }
   return (info == 0) ;
@@ -953,7 +955,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
   if (keepIntact)
   {
     ComplexMatrixImplementation A(*this);
-    ZPOTRF_F77(&uplo, &n, &A[0], &n, &info, &luplo);
+    zpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
@@ -965,7 +967,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
   }
   else
   {
-    ZPOTRF_F77(&uplo, &n, &(*this)[0], &n, &info, &luplo);
+    zpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)

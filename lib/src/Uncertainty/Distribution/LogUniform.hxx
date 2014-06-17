@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The LogUniform distribution.
  */
-class LogUniform
+class OT_API LogUniform
   : public ContinuousDistribution
 {
   CLASSNAME;
@@ -79,9 +79,11 @@ public:
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the standard deviation of the distribution */

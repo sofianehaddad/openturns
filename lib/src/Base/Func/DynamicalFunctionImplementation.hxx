@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the evaluation, the gradient or the hessian.
  */
-class DynamicalFunctionImplementation
+class OT_API DynamicalFunctionImplementation
   : public PersistentObject
 {
   CLASSNAME;

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The TruncatedDistribution distribution.
  */
-class TruncatedDistribution
+class OT_API TruncatedDistribution
   : public DistributionImplementation
 {
   CLASSNAME;
@@ -92,9 +92,11 @@ public:
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
   /** Get the PDFGradient of the distribution */
+  using DistributionImplementation::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the distribution */
+  using DistributionImplementation::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Parameters value and description accessor */

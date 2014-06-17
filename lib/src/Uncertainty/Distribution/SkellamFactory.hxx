@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SkellamFactory
  */
-class SkellamFactory
+class OT_API SkellamFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

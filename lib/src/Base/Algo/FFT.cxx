@@ -37,27 +37,24 @@ FFT::FFT()
 }
 
 /* Parameters constructor */
-FFT::FFT(const FFTImplementation & implementation,
-         const String & name)
+FFT::FFT(const FFTImplementation & implementation)
   : TypedInterfaceObject<FFTImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-FFT::FFT(const Implementation & p_implementation,
-         const String & name)
+FFT::FFT(const Implementation & p_implementation)
   : TypedInterfaceObject<FFTImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-FFT::FFT(FFTImplementation * p_implementation,
-         const String & name)
+FFT::FFT(FFTImplementation * p_implementation)
   : TypedInterfaceObject<FFTImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of copulas
  * made from a collection of copulas joined by an independent copula
  */
-class ComposedCopula
+class OT_API ComposedCopula
   : public CopulaImplementation
 {
   CLASSNAME;

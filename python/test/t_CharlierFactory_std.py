@@ -11,8 +11,7 @@ try:
         print "charlier(", i, ")=", charlier.build(i)
     roots = charlier.getRoots(10)
     print "charlier(10) roots=", repr(roots)
-    weights = NumericalPoint()
-    nodes = charlier.getNodesAndWeights(10, weights)
+    nodes, weights = charlier.getNodesAndWeights(10)
     print "charlier(10) nodes=", nodes, "and weights=", weights
 except:
     import sys

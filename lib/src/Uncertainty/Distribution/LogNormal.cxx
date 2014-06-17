@@ -38,7 +38,7 @@ static Factory<LogNormal> RegisteredFactory("LogNormal");
 
 /* Default constructor */
 LogNormal::LogNormal()
-  : ContinuousDistribution("LogNormal")
+  : ContinuousDistribution()
   , muLog_(0.0)
   , sigmaLog_(0.0)
   , gamma_(0.0)
@@ -48,6 +48,7 @@ LogNormal::LogNormal()
   , hermiteNodes_(0)
   , hermiteWeights_(0)
 {
+  setName("LogNormal");
   setDimension(1);
   // The arguments must be different from the initialization values, which is the case as sigmaLog_ is initialized by 0
   setMuLogSigmaLog(0.0, 1.0);
@@ -59,7 +60,7 @@ LogNormal::LogNormal(const NumericalScalar arg1,
                      const NumericalScalar arg2,
                      const NumericalScalar gamma,
                      const ParameterSet set)
-  : ContinuousDistribution("LogNormal")
+  : ContinuousDistribution()
   , muLog_(0.0)
   , sigmaLog_(0.0)
   , gamma_(gamma)
@@ -68,6 +69,7 @@ LogNormal::LogNormal(const NumericalScalar arg1,
   , hermiteNodes_(0)
   , hermiteWeights_(0)
 {
+  setName("LogNormal");
   // Adapt the integration nodes number to the needs of the characteristic function integration
   switch (set)
   {

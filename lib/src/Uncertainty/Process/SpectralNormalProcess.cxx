@@ -38,8 +38,8 @@ CLASSNAMEINIT(SpectralNormalProcess);
 
 static Factory<SpectralNormalProcess> RegisteredFactory("SpectralNormalProcess");
 
-SpectralNormalProcess::SpectralNormalProcess(const String & name)
-  : ProcessImplementation(name)
+SpectralNormalProcess::SpectralNormalProcess()
+  : ProcessImplementation()
   , spectralModel_()
   , maximalFrequency_(0.0)
   , nFrequency_(0)
@@ -53,9 +53,8 @@ SpectralNormalProcess::SpectralNormalProcess(const String & name)
 
 /* Standard constructor  */
 SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
-    const RegularGrid & timeGrid,
-    const String & name)
-  : ProcessImplementation(name)
+    const RegularGrid & timeGrid)
+  : ProcessImplementation()
   , spectralModel_(model.getSpectralModel())
   , maximalFrequency_(0.0)
   , nFrequency_(0)
@@ -70,9 +69,8 @@ SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
 
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
 SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel,
-    const RegularGrid & timeGrid,
-    const String & name)
-  : ProcessImplementation(name)
+    const RegularGrid & timeGrid)
+  : ProcessImplementation()
   , spectralModel_(spectralModel)
   , maximalFrequency_(0.0)
   , nFrequency_(0)
@@ -88,9 +86,8 @@ SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel
 /* Standard constructor  */
 SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
     const NumericalScalar maximalFrequency,
-    const UnsignedInteger nFrequency,
-    const String & name)
-  : ProcessImplementation(name)
+    const UnsignedInteger nFrequency)
+  : ProcessImplementation()
   , spectralModel_(model.getSpectralModel())
   , maximalFrequency_(maximalFrequency)
   , nFrequency_(nFrequency)
@@ -111,10 +108,9 @@ SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
 SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel,
     const NumericalScalar maximalFrequency,
-    const UnsignedInteger nFrequency,
-    const String & name)
+    const UnsignedInteger nFrequency)
 
-  : ProcessImplementation(name)
+  : ProcessImplementation()
   , spectralModel_(spectralModel)
   , maximalFrequency_(maximalFrequency)
   , nFrequency_(nFrequency)

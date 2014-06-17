@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Field
  */
 
-class Field
+class OT_API Field
   : public TypedInterfaceObject<FieldImplementation>
 {
   CLASSNAME;

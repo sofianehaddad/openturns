@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * distribution, can compute PDF or CDF, etc.
  * They are the actual key component of RandomVectors.
  */
-class Distribution
+class OT_API Distribution
   : public TypedInterfaceObject<DistributionImplementation>
 {
   CLASSNAME;
@@ -53,22 +53,22 @@ public:
   Distribution();
 
   /** Default constructor */
-  Distribution(const DistributionImplementation & implementation,
-               const String & name = DefaultName);
+  Distribution(const DistributionImplementation & implementation);
 
 
   /** Constructor from implementation */
-  Distribution(const Implementation & p_implementation,
-               const String & name = DefaultName);
+  Distribution(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  Distribution(DistributionImplementation * p_implementation,
-               const String & name = DefaultName);
+  Distribution(DistributionImplementation * p_implementation);
 #endif
 
   /** Comparison operator */
   Bool operator ==(const Distribution & other) const;
+
+  /** Comparison operator */
+  Bool operator !=(const Distribution & other) const;
 
   /** Addition operator */
   Distribution operator + (const Distribution & other) const;
@@ -195,9 +195,11 @@ public:
 
   /** Get the PDF gradient of the distribution */
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  NumericalSample computePDFGradient(const NumericalSample & sample) const;
 
   /** Get the CDF gradient of the distribution */
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  NumericalSample computeCDFGradient(const NumericalSample & sample) const;
 
   /** Get the quantile of the distribution */
   NumericalPoint computeQuantile(const NumericalScalar prob,
@@ -293,6 +295,21 @@ public:
   /** Get the support on the whole range */
   NumericalSample getSupport() const;
 
+  /** Compute the density generator of the elliptical generator, i.e.
+   *  the function phi such that the density of the distribution can
+   *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
+  virtual NumericalScalar computeDensityGenerator(const NumericalScalar betaSquare) const;
+
+  /** Compute the derivative of the density generator */
+  virtual NumericalScalar computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const;
+
+  /** Compute the seconde derivative of the density generator */
+  virtual NumericalScalar computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const;
+
+  /** Compute the radial distribution CDF */
+  virtual NumericalScalar computeRadialDistributionCDF (const NumericalScalar radius,
+                                                        const Bool tail = false) const;
+  
   /** Get the i-th marginal distribution */
   Distribution getMarginal(const UnsignedInteger i) const;
 
@@ -304,19 +321,19 @@ public:
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalDDF(const NumericalScalar x,
-                                                const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
-                                                const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
-                                                const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
-                                                     const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Get the isoprobabilist transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;

@@ -40,14 +40,10 @@ int main(int argc, char *argv[])
     UnsignedInteger size(100);
     NumericalSample sample(normal.getSample(size));
     Graph sampleCDF(VisualTest::DrawEmpiricalCDF(sample, sample.getMin()[0] - 1.0, sample.getMax()[0] + 1.0));
-    sampleCDF.draw("sampleCDF", 640, 480);
-    fullprint << "bitmap = " << sampleCDF.getBitmap() << std::endl;
-    fullprint << "postscript = " << sampleCDF.getPostscript() << std::endl;
+    fullprint << "sampleCDF = " << sampleCDF << std::endl;
 
     sampleCDF = VisualTest::DrawEmpiricalCDF(sample, -0.5, 0.5);
-    sampleCDF.draw("sampleCDFZoom", 640, 480);
-    fullprint << "bitmap = " << sampleCDF.getBitmap() << std::endl;
-    fullprint << "postscript = " << sampleCDF.getPostscript() << std::endl;
+    fullprint << "EmpiricalCDF graph = " << sampleCDF << std::endl;
   }
 
   /* Histogram tests */
@@ -56,14 +52,10 @@ int main(int argc, char *argv[])
     UnsignedInteger size(100);
     NumericalSample sample(normal.getSample(size));
     Graph sampleHist(VisualTest::DrawHistogram(sample, 10));
-    sampleHist.draw("sampleHist", 640, 480);
-    fullprint << "bitmap = " << sampleHist.getBitmap() << std::endl;
-    fullprint << "postscript = " << sampleHist.getPostscript() << std::endl;
+    fullprint << "sampleHist = " << sampleHist << std::endl;
 
     sampleHist = VisualTest::DrawHistogram(sample);
-    sampleHist.draw("sampleHistOpt", 640, 480);
-    fullprint << "bitmap = " << sampleHist.getBitmap() << std::endl;
-    fullprint << "postscript = " << sampleHist.getPostscript() << std::endl;
+    fullprint << "Histogram graph = " << sampleHist << std::endl;
   }
 
   /* QQPlot tests */
@@ -73,14 +65,10 @@ int main(int argc, char *argv[])
     NumericalSample sample(normal.getSample(size));
     NumericalSample sample2(Gamma(3.0, 4.0, 0.0).getSample(size));
     Graph twoSamplesQQPlot(VisualTest::DrawQQplot(sample, sample2, 100));
-    twoSamplesQQPlot.draw("twoSamplesQQPlot", 640, 480);
-    fullprint << "bitmap = " << twoSamplesQQPlot.getBitmap() << std::endl;
-    fullprint << "postscript = " << twoSamplesQQPlot.getPostscript() << std::endl;
+    fullprint << "twoSamplesQQPlot = " << twoSamplesQQPlot << std::endl;
 
     Graph sampleDistributionQQPlot(VisualTest::DrawQQplot(sample, normal));
-    sampleDistributionQQPlot.draw("sampleDistributionQQPlot", 640, 480);
-    fullprint << "bitmap = " << sampleDistributionQQPlot.getBitmap() << std::endl;
-    fullprint << "postscript = " << sampleDistributionQQPlot.getPostscript() << std::endl;
+    fullprint << "sampleDistributionQQPlot = " << sampleDistributionQQPlot << std::endl;
   }
 
   /* HenryLine test */
@@ -89,9 +77,7 @@ int main(int argc, char *argv[])
     Normal normal(1);
     NumericalSample sample(normal.getSample(size));
     Graph henryPlot(VisualTest::DrawHenryLine(sample));
-    henryPlot.draw("HenryPlot", 640, 480);
-    fullprint << "bitmap = " << henryPlot.getBitmap() << std::endl;
-    fullprint << "postscript = " << henryPlot.getPostscript() << std::endl;
+    fullprint << "Henry graph = " << henryPlot << std::endl;
   }
 
   /* Clouds tests */
@@ -111,14 +97,10 @@ int main(int argc, char *argv[])
     }
 
     Graph sampleSampleClouds(VisualTest::DrawClouds(sample2D, Normal(NumericalPoint(dimension, 2.0), NumericalPoint(dimension, 3.0), R).getSample(size / 2)));
-    sampleSampleClouds.draw("sampleSampleClouds", 640, 480);
-    fullprint << "bitmap = " << sampleSampleClouds.getBitmap() << std::endl;
-    fullprint << "postscript = " << sampleSampleClouds.getPostscript() << std::endl;
+    fullprint << "sampleSampleClouds = " << sampleSampleClouds << std::endl;
 
     Graph sampleDistributionClouds(VisualTest::DrawClouds(sample2D, Normal(NumericalPoint(dimension, 2.5), NumericalPoint(dimension, 1.0), R)));
-    sampleDistributionClouds.draw("sampleDistributionClouds", 640, 480);
-    fullprint << "bitmap = " << sampleDistributionClouds.getBitmap() << std::endl;
-    fullprint << "postscript = " << sampleDistributionClouds.getPostscript() << std::endl;
+    fullprint << "sampleDistributionClouds = " << sampleDistributionClouds << std::endl;
   }
 
   /* LinearModel tests */
@@ -139,14 +121,10 @@ int main(int argc, char *argv[])
 
     LinearModel lmtest(LinearModelFactory().build(firstSample, secondSample));
     Graph drawLinearModelVTest(VisualTest::DrawLinearModel(firstSample, secondSample, lmtest));
-    drawLinearModelVTest.draw("LinearModelV", 640, 480);
-    fullprint << "bitmap = " << drawLinearModelVTest.getBitmap() << std::endl;
-    fullprint << "postscript = " << drawLinearModelVTest.getPostscript() << std::endl;
+    fullprint << "LinearModelV = " << drawLinearModelVTest << std::endl;
 
     Graph drawLinearModelResidualTest(VisualTest::DrawLinearModelResidual(firstSample, secondSample, lmtest));
-    drawLinearModelResidualTest.draw("LinearModelR", 640, 480);
-    fullprint << "bitmap = " << drawLinearModelResidualTest.getBitmap() << std::endl;
-    fullprint << "postscript = " << drawLinearModelResidualTest.getPostscript() << std::endl;
+    fullprint << "LinearModelR = " << drawLinearModelResidualTest << std::endl;
   }
 
   /* CobWeb tests */
@@ -165,13 +143,9 @@ int main(int argc, char *argv[])
     NumericalMathFunction model(inputVar, outputVar, formula);
     NumericalSample outputSample(model(inputSample));
     Graph cobwebValue(VisualTest::DrawCobWeb(inputSample, outputSample, 2.5, 3.0, "red", false));
-    cobwebValue.draw("cobwebValue", 640, 480);
-    fullprint << "bitmap = " << cobwebValue.getBitmap() << std::endl;
-    fullprint << "postscript = " << cobwebValue.getPostscript() << std::endl;
+    fullprint << "cobwebValue = " << cobwebValue << std::endl;
     Graph cobwebQuantile(VisualTest::DrawCobWeb(inputSample, outputSample, 0.7, 0.9, "red", false));
-    cobwebQuantile.draw("cobwebQuantile", 640, 480);
-    fullprint << "bitmap = " << cobwebQuantile.getBitmap() << std::endl;
-    fullprint << "postscript = " << cobwebQuantile.getPostscript() << std::endl;
+    fullprint << "cobwebQuantile = " << cobwebQuantile << std::endl;
   }
 
   /* KendallPlot tests */
@@ -184,13 +158,9 @@ int main(int argc, char *argv[])
     NumericalSample sample2(copula2.getSample(size));
     sample2.setName("data 2");
     Graph kendallPlot1(VisualTest::DrawKendallPlot(sample1, copula2));
-    kendallPlot1.draw("KendallPlot1", 640, 480);
-    fullprint << "bitmap = " << kendallPlot1.getBitmap() << std::endl;
-    fullprint << "postscript = " << kendallPlot1.getPostscript() << std::endl;
+    fullprint << "KendallPlot1 = " << kendallPlot1 << std::endl;
     Graph kendallPlot2(VisualTest::DrawKendallPlot(sample2, sample1));
-    kendallPlot2.draw("KendallPlot2", 640, 480);
-    fullprint << "bitmap = " << kendallPlot2.getBitmap() << std::endl;
-    fullprint << "postscript = " << kendallPlot2.getPostscript() << std::endl;
+    fullprint << "KendallPlot2 = " << kendallPlot2 << std::endl;
   }
 
   return ExitCode::Success;

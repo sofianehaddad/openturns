@@ -40,7 +40,7 @@ static Factory<Dirichlet> RegisteredFactory("Dirichlet");
 
 /* Default constructor */
 Dirichlet::Dirichlet()
-  : ContinuousDistribution("Dirichlet")
+  : ContinuousDistribution()
   , theta_(0)
   , sumTheta_(0.0)
   , normalizationFactor_(0.0)
@@ -48,12 +48,13 @@ Dirichlet::Dirichlet()
   , integrationNodes_(0)
   , integrationWeights_(0)
 {
+  setName("Dirichlet");
   setTheta(NumericalPoint(2, 1.0));
 }
 
 /* Parameters constructor */
 Dirichlet::Dirichlet(const NumericalPoint & theta)
-  : ContinuousDistribution("Dirichlet")
+  : ContinuousDistribution()
   , theta_(0)
   , sumTheta_(0.0)
   , normalizationFactor_(0.0)
@@ -61,6 +62,7 @@ Dirichlet::Dirichlet(const NumericalPoint & theta)
   , integrationNodes_(0)
   , integrationWeights_(0)
 {
+  setName("Dirichlet");
   setTheta(theta);
 }
 
@@ -161,12 +163,12 @@ void Dirichlet::initializeIntegration() const
       integrationNodes_ = NumericalPointCollection(0);
       integrationWeights_ = NumericalPointCollection(0);
       for (UnsignedInteger i = 0; i < dimension; ++i)
-	{
-	  NumericalPoint marginalWeights;
-	  NumericalPoint marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
-	  integrationNodes_.add(marginalNodes);
-	  integrationWeights_.add(marginalWeights);
-	}
+        {
+          NumericalPoint marginalWeights;
+          NumericalPoint marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
+          integrationNodes_.add(marginalNodes);
+          integrationWeights_.add(marginalWeights);
+        }
       isInitializedCDF_ = true;
     } // !isInitialized
 }
@@ -493,19 +495,19 @@ CorrelationMatrix Dirichlet::getSpearmanCorrelation() const
     {
       const UnsignedInteger nI(integrationNodes_[i].getSize());
       for (UnsignedInteger j = 0; j < i; ++j)
-	{
-	  const UnsignedInteger nJ(integrationNodes_[j].getSize());
-	  // Perform the numerical integration of the (i,j) correlation
-	  NumericalScalar rhoIJ(0.0);
-	  for (UnsignedLong indexU = 0; indexU < nI; ++indexU)
-	    {
-	      const NumericalScalar u(0.5 * (integrationNodes_[j][indexU] + 1.0));
-	      for (UnsignedLong indexV = 0; indexV < nJ; ++indexV)
-		{
-		  NumericalScalar v(0.5 * (integrationNodes_[j][indexU] + 1.0) * (1.0 - u));
-		} // indexV
-	    } // indexU
-	} // j
+        {
+          const UnsignedInteger nJ(integrationNodes_[j].getSize());
+          // Perform the numerical integration of the (i,j) correlation
+          NumericalScalar rhoIJ(0.0);
+          for (UnsignedLong indexU = 0; indexU < nI; ++indexU)
+            {
+              const NumericalScalar u(0.5 * (integrationNodes_[j][indexU] + 1.0));
+              for (UnsignedLong indexV = 0; indexV < nJ; ++indexV)
+                {
+                  NumericalScalar v(0.5 * (integrationNodes_[j][indexU] + 1.0) * (1.0 - u));
+                } // indexV
+            } // indexU
+        } // j
     } // i
   return rho;
 #endif

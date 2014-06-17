@@ -81,8 +81,8 @@ typedef Collection<Distribution>                                      Distributi
 static Factory<DistributionImplementation> RegisteredFactory("DistributionImplementation");
 
 /* Default constructor */
-DistributionImplementation::DistributionImplementation(const String & name)
-  : PersistentObject(name)
+DistributionImplementation::DistributionImplementation()
+  : PersistentObject()
   , mean_(NumericalPoint(0))
   , covariance_(CovarianceMatrix(0))
   , gaussNodesAndWeights_()
@@ -121,6 +121,12 @@ Bool DistributionImplementation::operator ==(const DistributionImplementation & 
 {
   if (this == &other) return true;
   return (dimension_ == other.dimension_) && (weight_ == other.weight_) && (range_ == other.range_);
+}
+
+/* Comparison operator */
+Bool DistributionImplementation::operator !=(const DistributionImplementation & other) const
+{
+  return !operator==(other);
 }
 
 /* Addition operator */
@@ -204,7 +210,9 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
         }
       // Second with varying sign
       coll[0] = operator * (TruncatedDistribution(other, 0.0, TruncatedDistribution::LOWER));
+      LOGINFO(coll[0].__str__());
       coll[1] = operator * (TruncatedDistribution(other, 0.0, TruncatedDistribution::UPPER));
+      LOGINFO(coll[1].__str__());
       NumericalPoint weights(2);
       weights[0] = other->computeComplementaryCDF(0.0);
       weights[1] = other->computeCDF(0.0);
@@ -706,7 +714,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
   // In the continuous case, we use simple gauss integration with a fixed number of integration points. We divide the interval in order to have a sufficient number of integration points by interval. It is good for low to moderate value of x, but is prohibitive for large x. In this case, we use Filon's method with linear interpolation, it means the modified trapezoidal rule as in E. O. Tuck, 'A simple "Filon-Trapezoidal" Rule'
   if (isContinuous())
     {
-      const UnsignedInteger N(100000);
+      const UnsignedInteger N(1000000);
       // The circular function will have x(b-a)/2\pi arches over [a, b], so we need a number of points of this order, we decide to take 8 points per arch
       const NumericalSample legendreNodesAndWeights(getGaussNodesAndWeights());
       // How many sub-intervals?
@@ -1279,6 +1287,24 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
       newParameters[i] = initialParameters[i];
     }
   return PDFGradient;
+}
+
+/* ComputePDFGradient On a NumericalSample */
+NumericalSample DistributionImplementation::computePDFGradient(const NumericalSample & inSample) const
+{
+  const UnsignedInteger size(inSample.getSize());
+  NumericalSample outSample(size, getParametersNumber());
+  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computePDFGradient(inSample[i]);
+  return outSample;
+}
+
+/* ComputeCDFGradient On a NumericalSample */
+NumericalSample DistributionImplementation::computeCDFGradient(const NumericalSample & inSample) const
+{
+  const UnsignedInteger size(inSample.getSize());
+  NumericalSample outSample(size, getParametersNumber());
+  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeCDFGradient(inSample[i]);
+  return outSample;
 }
 
 /* Get the CDF gradient of the distribution */
@@ -2064,7 +2090,7 @@ void DistributionImplementation::computeGaussNodesAndWeights() const
   SquareMatrix z(integrationNodesNumber);
   NumericalPoint work(2 * integrationNodesNumber - 2);
   int info;
-  DSTEV_F77(&jobz, &integrationNodesNumber, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
+  dstev_(&jobz, &integrationNodesNumber, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
   for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(integrationNodesNumber); ++i)
     {
@@ -2494,7 +2520,6 @@ Graph DistributionImplementation::drawPDF(const UnsignedInteger pointNumber) con
   const NumericalScalar xMin(computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))[0]);
   const NumericalScalar xMax(computeQuantile(ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ))[0]);
   const NumericalScalar delta(2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMax" ) - ResourceMap::GetAsNumericalScalar( "DistributionImplementation-QMin" ))));
-  std::cerr << "xMin=" << xMin << ", xMax=" << xMax << ", delta=" << delta << std::endl;
   if (isDiscrete())
     {
       NumericalScalar a(std::max(xMin - delta, range_.getLowerBound()[0] - 1.0));
@@ -2650,8 +2675,6 @@ Graph DistributionImplementation::drawDiscreteCDF(const NumericalScalar xMin,
   // Create the graph that will store the staircase representing the empirical CDF
   const String title(OSS() << getDescription()[0] << " CDF");
   const NumericalSample support(getSupport(Interval(xMin, xMax)));
-  std::cerr << "support=" << support << std::endl;
-  std::cerr << "xMin=" << xMin << ", xMax=" << xMax << std::endl;
   const UnsignedInteger size(support.getSize());
   const String xName(getDescription()[0]);
   Graph graphCDF(title, xName, "CDF", true, "topleft");
@@ -2678,7 +2701,6 @@ Graph DistributionImplementation::drawCDF(const NumericalScalar xMin,
                                           const NumericalScalar xMax,
                                           const UnsignedInteger pointNumber) const
 {
-  std::cerr << "xMin=" << xMin << ", xMax=" << xMax << std::endl;
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDF only if dimension equals 1, here dimension=" << dimension_;
   if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a CDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a CDF with a point number < 2";

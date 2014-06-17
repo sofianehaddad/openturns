@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public Uniform
 {
 public:
-  explicit TestObject() : Uniform(-0.5, 1.5) {}
-  explicit TestObject(const String & name) : Uniform(-0.5, 1.5)
-  {
-    setName(name);
-  }
+  TestObject() : Uniform(-0.5, 1.5) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     Uniform distribution(-0.5, 1.5);

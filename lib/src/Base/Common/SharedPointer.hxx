@@ -53,7 +53,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * and part of the implementation of the BOOST one. Many thanks to BOOST for its work.
  */
 
-class GenericCounterImplementation
+class OT_API GenericCounterImplementation
 {
   /* The number of references to the pointee */
   AtomicInt use_count_;
@@ -148,7 +148,7 @@ public:
 
 
 
-class Counter
+class OT_API Counter
 {
   GenericCounterImplementation * p_impl_;
 
@@ -204,7 +204,7 @@ public:
 
 
 
-class dynamic_cast_tag {};
+class OT_API dynamic_cast_tag {};
 
 /**
  * @class SharedPointer

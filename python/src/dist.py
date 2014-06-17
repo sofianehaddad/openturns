@@ -1,9 +1,7 @@
 #                                               -*- Python -*-
 """
-    Open TURNS --- The uncertainty engineering software
-    ===================================================
-
-    Probabilistic distributions submodule
+Probabilistic distributions submodule
+-------------------------------------
 """
 
 

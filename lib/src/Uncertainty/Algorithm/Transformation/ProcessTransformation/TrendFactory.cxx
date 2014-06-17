@@ -38,9 +38,8 @@ CLASSNAMEINIT(TrendFactory);
 
 /* Constructor with parameters */
 TrendFactory::TrendFactory(const BasisSequenceFactory & basisSequenceFactory,
-                           const FittingAlgorithm & fittingAlgorithm,
-                           const String & name)
-  : PersistentObject(name),
+                           const FittingAlgorithm & fittingAlgorithm)
+  : PersistentObject(),
     basisSequenceFactory_(basisSequenceFactory),
     fittingAlgorithm_(fittingAlgorithm)
 {

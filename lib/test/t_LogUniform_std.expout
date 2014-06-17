@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=LogUniform name=LogUniform dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=LogUniform name=myName dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
-checkNameAccessors()
-streamObject(const T & anObject)
-class=LogUniform name=myNewName dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
 Distribution class=LogUniform name=LogUniform dimension=1 aLog=-0.5 bLog=1.5 a=0.606531 b=4.48169
 Distribution LogUniform(aLog = -0.5, bLog = 1.5)
 Elliptical = false

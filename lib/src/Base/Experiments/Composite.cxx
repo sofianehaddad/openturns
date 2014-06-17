@@ -24,6 +24,7 @@
 #include "Factorial.hxx"
 #include "Axial.hxx"
 #include "Composite.hxx"
+#include "SpecFunc.hxx"
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,26 +32,24 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Composite);
 
 /* Default constructor */
-Composite::Composite(const String & name)
-  : StratifiedExperiment(name)
+Composite::Composite()
+  : StratifiedExperiment()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Composite::Composite(const NumericalPoint & center,
-                     const NumericalPoint & levels,
-                     const String & name)
-  : StratifiedExperiment(center, levels, name)
+                     const NumericalPoint & levels)
+  : StratifiedExperiment(center, levels)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Composite::Composite(const UnsignedInteger dimension,
-                     const NumericalPoint & levels,
-                     const String & name)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels, name)
+                     const NumericalPoint & levels)
+  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
 {
   // Nothing to do
 }
@@ -67,7 +66,7 @@ NumericalSample Composite::generate()
   /* Dimension of the realizations */
   const UnsignedInteger dimension(center_.getDimension());
   /* Hypercube number of vertices */
-  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2, dimension)));
+  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2.0, static_cast<int>(dimension))));
   /* Number of levels to be generated */
   const UnsignedInteger levelNumber(levels_.getDimension());
   /* Size of the sample to be generated: 1 + number of levels x (2 x dimension + 2^dimension) */

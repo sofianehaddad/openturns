@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @see StorageManager
  */
 
-class PersistentObjectFactory
+class OT_API PersistentObjectFactory
 {
 public:
 

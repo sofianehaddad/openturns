@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implements all random vectors
  */
-class Event
+class OT_API Event
   : public RandomVector
 {
   CLASSNAME;
@@ -51,18 +51,15 @@ public:
   /** Constructor from RandomVector */
   Event(const RandomVector & antecedent,
         const ComparisonOperator & op,
-        const NumericalScalar threshold,
-        const String & name = DefaultName);
+        const NumericalScalar threshold);
 
   /** Constructor from RandomVector */
   Event(const RandomVector & antecedent,
-        const Domain & domain,
-        const String & name = DefaultName);
+        const Domain & domain);
 
   /** Constructor from RandomVector */
   Event(const Process &  process,
-        const Domain & domain,
-        const String & name = DefaultName);
+        const Domain & domain);
 
   /** String converter */
   String __repr__() const;

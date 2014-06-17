@@ -37,10 +37,11 @@ static Factory<Wishart> RegisteredFactory("Wishart");
 
 /* Default constructor */
 Wishart::Wishart()
-  : ContinuousDistribution("Wishart")
+  : ContinuousDistribution()
   , cholesky_()
   , nu_(1.0)
 {
+  setName("Wishart");
   setV(CovarianceMatrix(1));
   computeRange();
 }
@@ -48,10 +49,11 @@ Wishart::Wishart()
 /* Parameters constructor */
 Wishart::Wishart(const CovarianceMatrix & v,
                  const NumericalScalar nu)
-  : ContinuousDistribution("Wishart")
+  : ContinuousDistribution()
   , cholesky_()
   , nu_(nu)
 {
+  setName("Wishart");
   if (nu + 1 <= v.getDimension()) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << "is not greater than dimension-1=" << static_cast< SignedInteger > (v.getDimension()) - 1;
   setV(v);
 }

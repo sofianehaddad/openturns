@@ -50,7 +50,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * distribution, can compute PDF or CDF, etc.
  * They are the actual key component of RandomVectors.
  */
-class DistributionImplementation
+class OT_API DistributionImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -63,10 +63,11 @@ public:
   typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
 
   /** Default constructor */
-  DistributionImplementation(const String & name = DefaultName);
+  DistributionImplementation();
 
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;
+  Bool operator !=(const DistributionImplementation & other) const;
 
   /** Addition operator */
   Implementation operator + (const DistributionImplementation & other) const;
@@ -219,9 +220,9 @@ public:
                                      NumericalSample & grid) const;
 
   virtual NumericalSample computeComplementaryCDF(const NumericalScalar xMin,
-                                                  const NumericalScalar xMax,
-                                                  const UnsignedInteger pointNumber,
-                                                  NumericalSample & grid) const;
+      const NumericalScalar xMax,
+      const UnsignedInteger pointNumber,
+      NumericalSample & grid) const;
 
   /** Get the probability content of an interval */
   virtual NumericalScalar computeProbability(const Interval & interval) const;
@@ -249,9 +250,12 @@ public:
 
   /** Get the PDF gradient of the distribution */
   virtual NumericalPoint computePDFGradient(const NumericalPoint & point) const;
-
+  virtual NumericalSample computePDFGradient(const NumericalSample & inSample) const;
+public:
   /** Get the CDF gradient of the distribution */
   virtual NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  virtual NumericalSample computeCDFGradient(const NumericalSample & inSample) const;
+public:
 
   /** Get the quantile of the distributionImplementation */
   virtual NumericalPoint computeQuantile(const NumericalScalar prob,
@@ -260,9 +264,9 @@ public:
   /** Get the quantile over a provided grid */
 protected:
   virtual NumericalSample computeQuantileSequential(const NumericalPoint & prob,
-                                                    const Bool tail = false) const;
+      const Bool tail = false) const;
   virtual NumericalSample computeQuantileParallel(const NumericalPoint & prob,
-                                                  const Bool tail = false) const;
+      const Bool tail = false) const;
 public:
   virtual NumericalSample computeQuantile(const NumericalPoint & prob,
                                           const Bool tail = false) const;
@@ -380,7 +384,7 @@ public:
 
   /** Compute the radial distribution CDF */
   virtual NumericalScalar computeRadialDistributionCDF(const NumericalScalar radius,
-                                                       const Bool tail = false) const;
+      const Bool tail = false) const;
 
   /** Get the i-th marginal distribution */
   virtual Implementation getMarginal(const UnsignedInteger i) const;
@@ -393,19 +397,19 @@ public:
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalDDF(const NumericalScalar x,
-                                                const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
-                                                const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
-                                                const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
-                                                     const NumericalPoint & y) const;
+      const NumericalPoint & y) const;
 
   /** Get the isoprobabilist transformation */
   virtual IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
@@ -562,28 +566,28 @@ protected:
   /** Compute the PDF and CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
       Used to speed-up the computeConditionalQuantile() method */
   NumericalScalar computeConditionalPDFAndCDF(const NumericalScalar x,
-                                              const NumericalPoint & y,
-                                              NumericalScalar & cdf,
-                                              const Implementation & conditioningDistribution,
-                                              const Implementation & conditionedDistribution,
-                                              const NumericalScalar xMin) const;
+      const NumericalPoint & y,
+      NumericalScalar & cdf,
+      const Implementation & conditioningDistribution,
+      const Implementation & conditionedDistribution,
+      const NumericalScalar xMin) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) with reuse of expansive data */
   NumericalScalar computeConditionalCDFForQuantile(const NumericalScalar x,
-                                                   const NumericalPoint & y,
-                                                   const Implementation & conditioningDistribution,
-                                                   const Implementation & conditionedDistribution,
-                                                   const NumericalScalar xMin) const;
+      const NumericalPoint & y,
+      const Implementation & conditioningDistribution,
+      const Implementation & conditionedDistribution,
+      const NumericalScalar xMin) const;
 
   /** Compute the characteristic function of 1D distributions in a regular pattern with cache */
   virtual NumericalComplex computeCharacteristicFunction(const UnsignedInteger index,
-                                                         const NumericalScalar step) const;
+      const NumericalScalar step) const;
   virtual NumericalComplex computeLogCharacteristicFunction(const UnsignedInteger index,
-                                                            const NumericalScalar step) const;
+      const NumericalScalar step) const;
   virtual NumericalComplex computeCharacteristicFunction(const Indices & indices,
-                                                         const NumericalPoint & step) const;
+      const NumericalPoint & step) const;
   virtual NumericalComplex computeLogCharacteristicFunction(const Indices & indices,
-                                                            const NumericalPoint & step) const;
+      const NumericalPoint & step) const;
 
   /** Compute the mean of the distribution */
   virtual void computeMean() const;
@@ -596,13 +600,13 @@ protected:
 
   /** Compute the shifted moments of the distribution */
   virtual NumericalPoint computeShiftedMoment(const UnsignedInteger n,
-                                              const NumericalPoint & shift) const;
+      const NumericalPoint & shift) const;
   virtual NumericalPoint computeShiftedMomentContinuous(const UnsignedInteger n,
-                                                        const NumericalPoint & shift) const;
+      const NumericalPoint & shift) const;
   virtual NumericalPoint computeShiftedMomentDiscrete(const UnsignedInteger n,
-                                                      const NumericalPoint & shift) const;
+      const NumericalPoint & shift) const;
   virtual NumericalPoint computeShiftedMomentGeneral(const UnsignedInteger n,
-                                                     const NumericalPoint & shift) const;
+      const NumericalPoint & shift) const;
 
 
   /** Compute the nodes and weights of the 1D gauss integration rule over [-1, 1] */
@@ -613,7 +617,7 @@ protected:
 
   /** Quantile computation for dimension=1 */
   virtual NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                                const Bool tail = false) const;
+      const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   virtual void computeRange();
@@ -652,6 +656,7 @@ protected:
   mutable Bool isAlreadyCreatedGeneratingFunction_;
   mutable UniVariatePolynomial generatingFunction_;
 
+#ifndef SWIG
   // Structure used to wrap the computePDF() method for interpolation purpose
   struct PDFWrapper
   {
@@ -731,6 +736,7 @@ protected:
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
+#endif
 
   /** The dimension of the distributionImplementation */
   UnsignedInteger dimension_;

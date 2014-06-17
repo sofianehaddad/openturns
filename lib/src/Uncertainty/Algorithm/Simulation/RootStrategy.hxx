@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RootStrategy
  */
 
-class RootStrategy
+class OT_API RootStrategy
   : public TypedInterfaceObject<RootStrategyImplementation>
 {
   CLASSNAME;

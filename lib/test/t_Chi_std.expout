@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Chi name=Chi dimension=1 nu=1.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Chi name=myName dimension=1 nu=1.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Chi name=myNewName dimension=1 nu=1.5
 Distribution class=Chi name=Chi dimension=1 nu=1.5
 Distribution Chi(nu = 1.5)
 Elliptical = false

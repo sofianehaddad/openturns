@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Each implementation object refers to a specific evaluation
  * @see DynamicalFunctionImplementation
  */
-class DynamicalFunction
+class OT_API DynamicalFunction
   : public TypedInterfaceObject<DynamicalFunctionImplementation>
 {
   CLASSNAME;

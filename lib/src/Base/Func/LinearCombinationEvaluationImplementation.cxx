@@ -214,7 +214,7 @@ LinearCombinationEvaluationImplementation::Implementation LinearCombinationEvalu
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   const UnsignedInteger size(functionsCollection_.getSize());
   NumericalMathFunctionCollection marginalFunctions(size);
-  for (UnsignedInteger i = 0; i < size; ++i) marginalFunctions[i] = functionsCollection_[i].getMarginal(i);
+  for (UnsignedInteger j = 0; j < size; ++j) marginalFunctions[j] = functionsCollection_[j].getMarginal(i);
   return new LinearCombinationEvaluationImplementation(marginalFunctions, coefficients_);
 }
 

@@ -35,9 +35,10 @@ static Factory<Dirac> RegisteredFactory("Dirac");
 
 /* Default constructor */
 Dirac::Dirac()
-  : DiscreteDistribution("Dirac")
+  : DiscreteDistribution()
   , point_(1, 0.0)
 {
+  setName( "Dirac" );
   // We set the dimension of the Dirac distribution
   setDimension( 1 );
   computeRange();
@@ -45,9 +46,10 @@ Dirac::Dirac()
 
 /* Parameters constructor */
 Dirac::Dirac(const NumericalScalar p)
-  : DiscreteDistribution("Dirac")
+  : DiscreteDistribution()
   , point_(1, p)
 {
+  setName( "Dirac" );
   // We set the dimension of the Dirac distribution
   setDimension( 1 );
   computeRange();
@@ -55,9 +57,10 @@ Dirac::Dirac(const NumericalScalar p)
 
 /* Parameters constructor */
 Dirac::Dirac(const NumericalPoint & point)
-  : DiscreteDistribution("Dirac")
+  : DiscreteDistribution()
   , point_(point)
 {
+  setName( "Dirac" );
   // We set the dimension of the Dirac distribution
   setDimension( point.getDimension() );
   computeRange();
@@ -84,7 +87,7 @@ String Dirac::__repr__() const
 String Dirac::__str__(const String & offset) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(point = " << point_ << ")";
+  oss << offset << getClassName() << "(point = " << point_.__str__() << ")";
   return oss;
 }
 

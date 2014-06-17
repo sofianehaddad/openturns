@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FieldImplementation
  */
 
-class FieldImplementation
+class OT_API FieldImplementation
   : public PersistentObject
 {
   CLASSNAME;

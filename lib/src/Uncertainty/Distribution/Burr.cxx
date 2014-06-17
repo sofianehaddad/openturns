@@ -35,10 +35,11 @@ static Factory<Burr> RegisteredFactory("Burr");
 
 /* Default constructor */
 Burr::Burr()
-  : ContinuousDistribution("Burr")
+  : ContinuousDistribution()
   , c_(1.0)
   , k_(1.0)
 {
+  setName( "Burr" );
   setDimension( 1 );
   computeRange();
 }
@@ -46,10 +47,11 @@ Burr::Burr()
 /* Parameters constructor */
 Burr::Burr(const NumericalScalar c,
            const NumericalScalar k)
-  : ContinuousDistribution("Burr")
+  : ContinuousDistribution()
   , c_(c)
   , k_(0.)
 {
+  setName( "Burr" );
   // We set the dimension of the Burr distribution
   setDimension( 1 );
   setC(c);

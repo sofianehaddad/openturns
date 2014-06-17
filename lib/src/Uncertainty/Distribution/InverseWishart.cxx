@@ -37,10 +37,11 @@ static Factory<InverseWishart> RegisteredFactory("InverseWishart");
 
 /* Default constructor */
 InverseWishart::InverseWishart()
-  : ContinuousDistribution("InverseWishart")
+  : ContinuousDistribution()
   , cholesky_()
   , nu_(1.0)
 {
+  setName("InverseWishart");
   setV(CovarianceMatrix(1));
   computeRange();
 }
@@ -48,10 +49,11 @@ InverseWishart::InverseWishart()
 /* Parameters constructor */
 InverseWishart::InverseWishart(const CovarianceMatrix & v,
                  const NumericalScalar nu)
-  : ContinuousDistribution("InverseWishart")
+  : ContinuousDistribution()
   , cholesky_()
   , nu_(nu)
 {
+  setName("InverseWishart");
   if (nu + 1 <= v.getDimension()) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << "is not greater than dimension-1=" << static_cast< SignedInteger > (v.getDimension()) - 1;
   setV(v);
 }

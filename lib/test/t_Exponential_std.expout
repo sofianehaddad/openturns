@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=Exponential name=Exponential dimension=1 lambda=2.5 gamma=-0.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=Exponential name=myName dimension=1 lambda=2.5 gamma=-0.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=Exponential name=myNewName dimension=1 lambda=2.5 gamma=-0.5
 Distribution class=Exponential name=Exponential dimension=1 lambda=2.5 gamma=-0.5
 Distribution Exponential(lambda = 2.5, gamma = -0.5)
 Elliptical = false

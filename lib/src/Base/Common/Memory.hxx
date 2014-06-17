@@ -26,6 +26,8 @@
 
 #include <cstddef>
 
+#include "OTdebug.h"
+
 #ifdef DEBUG_MEMORY
 
 #include <new>
@@ -111,7 +113,7 @@ bool operator != (const CStyleAllocator<T> & lhs, const CStyleAllocator<T> & rhs
   return false;
 }
 
-struct _OpenTURNS_memory
+struct OT_API _OpenTURNS_memory
 {
   void * ptr_;
   size_t size_;
@@ -124,7 +126,7 @@ typedef std::map < void *,
 
 typedef std::map<size_t, size_t, std::less<size_t>,  CStyleAllocator<std::pair<size_t, size_t> > > MemSpectrum;
 
-class MemoryImplementation
+class OT_API MemoryImplementation
 {
 public:
   MemContainer memList_;
@@ -139,7 +141,7 @@ public:
   ~MemoryImplementation();
 };
 
-class Memory
+class OT_API Memory
 {
   static MemoryImplementation * p_impl_;
   Memory() {}
@@ -149,7 +151,7 @@ public:
   static MemoryImplementation & GetInstance();
 };
 
-class LockNewDelete
+class OT_API LockNewDelete
 {
   static pthread_mutex_t NewMutex_;
   static void Lock();
@@ -163,14 +165,14 @@ public:
 
 #endif /* DEBUG_MEMORY */
 
-extern size_t GetMemoryUsage();
-extern size_t GetFullMemoryUsage();
-extern size_t GetMaxMemoryUsage();
-extern size_t GetMaxFullMemoryUsage();
+OT_API size_t GetMemoryUsage();
+OT_API size_t GetFullMemoryUsage();
+OT_API size_t GetMaxMemoryUsage();
+OT_API size_t GetMaxFullMemoryUsage();
 
-extern void printMemoryUsage();
-extern void printMemorySpectrum();
+OT_API void printMemoryUsage();
+OT_API void printMemorySpectrum();
 
-extern void SetMemoryFlag(bool);
+OT_API void SetMemoryFlag(bool);
 
 #endif /* OPENTURNS_MEMORY_HXX */

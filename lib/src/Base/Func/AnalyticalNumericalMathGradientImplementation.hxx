@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the gradient of an analytical function.
  */
-class AnalyticalNumericalMathGradientImplementation
+class OT_API AnalyticalNumericalMathGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

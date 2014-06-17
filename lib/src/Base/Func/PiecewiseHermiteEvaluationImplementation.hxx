@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class PiecewiseHermiteEvaluationImplementation
+class OT_API PiecewiseHermiteEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

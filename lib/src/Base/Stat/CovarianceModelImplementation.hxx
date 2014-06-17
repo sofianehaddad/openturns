@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CovarianceModelImplementation
  */
 
-class CovarianceModelImplementation
+class OT_API CovarianceModelImplementation
   : public PersistentObject
 {
 
@@ -47,12 +47,10 @@ public:
 
   typedef Pointer<CovarianceModelImplementation> Implementation;
 
-  /** Default constructor without parameters */
-  explicit CovarianceModelImplementation(const String & name = DefaultName);
+  CovarianceModelImplementation();
 
   /** Constructor with dimension parameter */
-  explicit CovarianceModelImplementation(const UnsignedInteger dimension,
-                                         const String & name = DefaultName);
+  explicit CovarianceModelImplementation(const UnsignedInteger dimension);
 
   /** Virtual copy constructor */
   virtual CovarianceModelImplementation * clone() const;

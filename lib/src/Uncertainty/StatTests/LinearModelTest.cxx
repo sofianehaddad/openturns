@@ -126,6 +126,7 @@ TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const NumericalSample
   cmdFile << "library(rot)" << std::endl;
   cmdFile << "options(digits=17)" << std::endl;
   cmdFile << "options(warn=-1)" << std::endl;
+  cmdFile << "options(stringsAsFactors = F)" << std::endl;
   cmdFile << "firstSample <- data.matrix(read.table(\"" << firstDataFileName << "\"))" << std::endl;
   cmdFile << "secondSample <- data.matrix(read.table(\"" << secondDataFileName << "\"))" << std::endl;
   cmdFile << "regression <- t(data.matrix(read.table(\"" << regressionFileName << "\")))" << std::endl;

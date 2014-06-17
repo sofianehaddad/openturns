@@ -39,7 +39,7 @@ class RegularGrid;
  * @class ExponentialCauchy
  */
 
-class ExponentialCauchy
+class OT_API ExponentialCauchy
   : public SecondOrderModelImplementation
 {
 
@@ -49,23 +49,20 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit ExponentialCauchy(const String & name = DefaultName);
+  ExponentialCauchy();
 
   /** Standard constructor with amplitude and scale parameters parameters */
   ExponentialCauchy(const NumericalPoint & amplitude,
-                    const NumericalPoint & scale,
-                    const String & name = DefaultName);
+                    const NumericalPoint & scale);
 
   /** Standard constructor with amplitude, scale and spatial correlation parameters parameters */
   ExponentialCauchy(const NumericalPoint & amplitude,
                     const NumericalPoint & scale,
-                    const CorrelationMatrix & spatialCorrelation,
-                    const String & name = DefaultName);
+                    const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */
   ExponentialCauchy(const NumericalPoint & scale,
-                    const CovarianceMatrix & spatialCovariance,
-                    const String & name = DefaultName);
+                    const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
   virtual ExponentialCauchy * clone() const;

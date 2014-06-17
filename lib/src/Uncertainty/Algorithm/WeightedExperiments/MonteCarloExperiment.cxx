@@ -30,25 +30,23 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MonteCarloExperiment);
 
 /* Default constructor */
-MonteCarloExperiment::MonteCarloExperiment(const String & name):
-  WeightedExperiment(name)
+MonteCarloExperiment::MonteCarloExperiment():
+  WeightedExperiment()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-MonteCarloExperiment::MonteCarloExperiment(const UnsignedInteger size,
-    const String & name):
-  WeightedExperiment(size, name)
+MonteCarloExperiment::MonteCarloExperiment(const UnsignedInteger size):
+  WeightedExperiment(size)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 MonteCarloExperiment::MonteCarloExperiment(const Distribution & distribution,
-    const UnsignedInteger size,
-    const String & name):
-  WeightedExperiment(distribution, size, name)
+    const UnsignedInteger size):
+  WeightedExperiment(distribution, size)
 {
   // Nothing to do
 }

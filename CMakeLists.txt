@@ -6,6 +6,10 @@ option ( USE_BISON                    "Looks for Bison if true and then build pa
 option ( USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON )
 option ( USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ON )
 option ( USE_SYSTEM_LAPACK            "Use system LAPACK libraries"                                           ON )
+
+# still a bit new: provided by 3.5.0 but the cmake config file is only in the dev version
+option ( USE_LAPACKE                  "Use LAPACKE C interface to LAPACK"                                     OFF )
+
 option ( USE_MUPARSER                 "Use muParser libraries"                                                ON )
 option ( USE_MUPARSER2                "Use muParser2 features"                                                OFF )
 option ( USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON )
@@ -78,11 +82,14 @@ set ( OPENTURNS_DOC_PATH
       CACHE PATH "The directory where the license files are installed"
     )
 
-if ( MINGW )
+
+if ( WIN32 )
   set ( DEFAULT_TMP TEMP )
-else ( MINGW )
+  set ( PATH_SEP "\\;" )
+else ()
   set( DEFAULT_TMP /tmp )
-endif( MINGW ) 
+  set ( PATH_SEP ":" )
+endif()
 
 set ( OPENTURNS_TEMPDIR
       ${DEFAULT_TMP}
@@ -92,17 +99,56 @@ set ( TEMPDIR ${OPENTURNS_TEMPDIR} )
 
 # WARNING: This is where variables without OPENTURNS_ prefix are defined !
 foreach ( _var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH WRAPPER_PATH EXAMPLE_PATH SAMPLE_PATH VALIDATION_PATH DOC_PATH )
-  if ( IS_ABSOLUTE ${OPENTURNS_${_var}} )
-    set(${_var} ${OPENTURNS_${_var}})
-  else ( IS_ABSOLUTE ${OPENTURNS_${_var}} )
-    set(${_var} ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_${_var}})
-  endif ( IS_ABSOLUTE ${OPENTURNS_${_var}} )
+  file ( TO_NATIVE_PATH "${OPENTURNS_${_var}}" NATIVE_OPENTURNS_${_var} )
+  if ( NOT IS_ABSOLUTE ${NATIVE_OPENTURNS_${_var}} )
+    file ( TO_NATIVE_PATH ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_${_var}} NATIVE_OPENTURNS_${_var} )
+  endif ()
+  string(REPLACE "\\" "\\\\" ${_var} ${NATIVE_OPENTURNS_${_var}})
 endforeach ( _var )
+
+# CMake 2.x does not define MSVC when using Intel compiler on Windows, see
+# http://public.kitware.com/Bug/view.php?id=14476
+if ( WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Intel" )
+  set(WINTEL TRUE)
+endif()
 
 
 if ( BUILD_LIB )
 
-enable_language ( C Fortran )
+enable_language ( C )
+
+if ( USE_SYSTEM_LAPACK )
+  if ( USE_LAPACKE )
+    find_package ( LAPACKE NO_MODULE )
+  endif ()
+  if ( NOT LAPACKE_FOUND )
+    enable_language( Fortran )
+    find_package ( LAPACK REQUIRED )
+  endif ()
+endif ()
+if ( NOT LAPACK_FOUND AND NOT LAPACKE_FOUND )
+  include ( ExternalProject )
+  enable_language( Fortran )
+  set ( LAPACK_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/lapack-prefix )
+  ExternalProject_Add ( lapack
+    URL http://www.netlib.org/lapack/lapack-3.5.0.tgz
+    URL_MD5 b1d3e3e425b2e44a06760ff173104bdf
+    CMAKE_ARGS
+      -DCMAKE_INSTALL_PREFIX=${LAPACK_PREFIX}
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBUILD_TESTING=OFF
+      "-DCMAKE_Fortran_FLAGS=-g -O2 -fPIC"
+  )
+  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/libblas.a )
+  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/liblapack.a )
+endif ()
+
+if ( MSVC OR WINTEL )
+  set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
+  include_directories(${PROJECT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
+  find_package(Boost REQUIRED)
+  set(USE_BOOST ON CACHE INTERNAL "Force use of Boost on Windows")
+endif ()
 
 if ( USE_BISON )
   find_package ( BISON 2.4 )
@@ -122,25 +168,9 @@ find_program ( BC_EXECUTABLE NAMES bc )
 
 if ( USE_TBB )
   find_package ( TBB )
-endif ()
-
-if ( USE_SYSTEM_LAPACK )
-  find_package ( LAPACK REQUIRED )
-endif ()
-if ( NOT LAPACK_FOUND )
-  include ( ExternalProject )
-  set ( LAPACK_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/lapack-prefix )
-  ExternalProject_Add ( lapack
-    URL http://www.netlib.org/lapack/lapack-3.5.0.tgz
-    URL_MD5 b1d3e3e425b2e44a06760ff173104bdf
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${LAPACK_PREFIX}
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBUILD_TESTING=OFF
-      "-DCMAKE_Fortran_FLAGS=-g -O2 -fPIC"
-  )
-  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/libblas.a )
-  list ( APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_PREFIX}/lib/liblapack.a )
+  if ( TBB_FOUND AND (MSVC OR WINTEL ))
+    set (OPENTURNS_TBB_NO_IMPLICIT_LINKAGE ON CACHE BOOL "Prevent implicit linkage against tbb.lib ")
+  endif ()
 endif ()
 
 if ( USE_MUPARSER )
@@ -253,17 +283,24 @@ macro ( ot_add_build_dir_to_include_dirs DIR )
   set ( INTERNAL_INCLUDE_DIRS ${inc_dirs} CACHE INTERNAL "List of directories with header files needed for build" )
 endmacro ( ot_add_build_dir_to_include_dirs )
 
-if ( MINGW )
+if ( WIN32 )
   list ( APPEND OPENTURNS_LIBRARIES ws2_32 )
-  set ( CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-auto-import ${CMAKE_EXE_LINKER_FLAGS}" )
 endif ()
 
 # Add definitions according to the prerequisites found
 add_definitions( -DHAVE_CONFIG_H )
 
+if (NOT BUILD_SHARED_LIBS)
+  list ( APPEND OPENTURNS_DEFINITIONS -DOT_STATIC )
+endif ()
+
 # CMake makefiles don't link against stdc++ on OSX
 if ( APPLE )
   list ( APPEND OPENTURNS_LIBRARIES stdc++ )
+endif ()
+
+if ( MSVC OR WINTEL )
+  list ( APPEND OPENTURNS_DEFINITIONS -D_USE_MATH_DEFINES )
 endif ()
 
 if ( LIBXML2_FOUND )
@@ -276,6 +313,11 @@ endif ()
 
 if ( LAPACK_FOUND )
   list ( APPEND OPENTURNS_LIBRARIES ${LAPACK_LIBRARIES} )
+endif ()
+if ( LAPACKE_FOUND )
+  set ( OPENTURNS_HAVE_LAPACKE TRUE )
+  list ( APPEND OPENTURNS_INCLUDE_DIRS ${LAPACKE_INCLUDE_DIRS} )
+  list ( APPEND OPENTURNS_LIBRARIES ${LAPACKE_LIBRARIES} )
 endif ()
 
 if ( MUPARSER_FOUND )
@@ -393,6 +435,11 @@ endif ()
 
 set ( OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/swig )
 set ( OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=openturns )
+
+# necessary to link against Py_InitModule64
+if ( MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8 )
+  set (OPENTURNS_SWIG_DEFINITIONS "-DMS_WIN64 ${OPENTURNS_SWIG_DEFINITIONS}" )
+endif ()
 
 # The tests can't be run if this function is absent
 enable_testing ()

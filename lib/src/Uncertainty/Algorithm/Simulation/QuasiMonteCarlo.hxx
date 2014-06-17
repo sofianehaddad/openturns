@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class QuasiMonteCarlo
  */
 
-class QuasiMonteCarlo :
+class OT_API QuasiMonteCarlo :
   public Simulation
 {
   CLASSNAME;

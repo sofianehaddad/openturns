@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class StationaryCovarianceModel
  */
 
-class StationaryCovarianceModel
+class OT_API StationaryCovarianceModel
   : public CovarianceModelImplementation
 {
 
@@ -42,7 +42,7 @@ class StationaryCovarianceModel
 public:
 
   /** Default constructor without parameters */
-  explicit StationaryCovarianceModel(const String & name = DefaultName);
+  StationaryCovarianceModel();
 
   /** Virtual copy constructor */
   virtual StationaryCovarianceModel * clone() const;

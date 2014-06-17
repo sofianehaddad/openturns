@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class RiceFactory
  */
-class RiceFactory
+class OT_API RiceFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

@@ -36,9 +36,10 @@ static Factory<Poisson> RegisteredFactory("Poisson");
 
 /* Default constructor */
 Poisson::Poisson()
-  : DiscreteDistribution("Poisson")
+  : DiscreteDistribution()
   , lambda_(1.0)
 {
+  setName( "Poisson" );
   // We set the dimension of the Poisson distribution
   setDimension( 1 );
   computeRange();
@@ -46,9 +47,10 @@ Poisson::Poisson()
 
 /* Parameters constructor */
 Poisson::Poisson(const NumericalScalar lambda)
-  : DiscreteDistribution("Poisson")
+  : DiscreteDistribution()
   , lambda_(0.0)
 {
+  setName( "Poisson" );
   // We set the dimension of the Poisson distribution
   setDimension( 1 );
   // This call set also the range.

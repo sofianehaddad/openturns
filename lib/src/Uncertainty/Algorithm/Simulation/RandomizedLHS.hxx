@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RandomizedLHS
  */
 
-class RandomizedLHS: public Simulation
+class OT_API RandomizedLHS: public Simulation
 {
 
   CLASSNAME;

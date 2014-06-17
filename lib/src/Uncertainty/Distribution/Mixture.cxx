@@ -35,7 +35,7 @@ static Factory<Mixture> RegisteredFactory("Mixture");
 
 /* Default constructor */
 Mixture::Mixture()
-  : DistributionImplementation("Mixture")
+  : DistributionImplementation()
   , distributionCollection_(1)
   , weightsDistribution_(UserDefined())
   , pdfApproximationCDF_()
@@ -44,6 +44,7 @@ Mixture::Mixture()
   , ccdfApproximation_()
   , useApproximatePDFCDF_(false)
 {
+  setName("Mixture");
   setParallel(true);
   // Set an empty range
   setRange(Interval(1.0, 0.0));
@@ -51,7 +52,7 @@ Mixture::Mixture()
 
 /* Parameters constructor */
 Mixture::Mixture(const DistributionCollection & coll)
-  : DistributionImplementation("Mixture")
+  : DistributionImplementation()
   , distributionCollection_()
   , weightsDistribution_()
   , pdfApproximationCDF_()
@@ -60,6 +61,7 @@ Mixture::Mixture(const DistributionCollection & coll)
   , ccdfApproximation_()
   , useApproximatePDFCDF_(false)
 {
+  setName("Mixture");
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the same dimension). We do this by calling
@@ -81,7 +83,7 @@ Mixture::Mixture(const DistributionCollection & coll)
 /* Parameters constructor */
 Mixture::Mixture(const DistributionCollection & coll,
                  const NumericalPoint & weights)
-  : DistributionImplementation("Mixture")
+  : DistributionImplementation()
   , distributionCollection_()
   , weightsDistribution_()
   , pdfApproximationCDF_()
@@ -90,6 +92,7 @@ Mixture::Mixture(const DistributionCollection & coll,
   , ccdfApproximation_()
   , useApproximatePDFCDF_(false)
 {
+  setName("Mixture");
   if (coll.getSize() != weights.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight size " << weights.getSize() << " must be equal to the distribution collection size " << coll.getSize();
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the

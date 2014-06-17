@@ -39,7 +39,7 @@ static Factory<TruncatedDistribution> RegisteredFactory("TruncatedDistribution")
 
 /* Default constructor */
 TruncatedDistribution::TruncatedDistribution()
-  : DistributionImplementation("TruncatedDistribution")
+  : DistributionImplementation()
   , distribution_(Uniform(0.0, 1.0))
   , lowerBound_(0.0)
   , finiteLowerBound_(true)
@@ -52,6 +52,7 @@ TruncatedDistribution::TruncatedDistribution()
   , cdfUpperBound_(1.0)
   , normalizationFactor_(1.0)
 {
+  setName("TruncatedDistribution");
   setDimension(1);
   // Adjust the truncation interval and the distribution range
   computeRange();
@@ -62,8 +63,9 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const NumericalScalar lowerBound,
     const NumericalScalar upperBound,
     const NumericalScalar thresholdRealization)
-  : DistributionImplementation("TruncatedDistribution")
+  : DistributionImplementation()
 {
+  setName("TruncatedDistribution");
   setDistribution(distribution);
   setThresholdRealization(thresholdRealization);
   setDimension(1);
@@ -86,8 +88,9 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const NumericalScalar bound,
     const BoundSide side,
     const NumericalScalar thresholdRealization)
-  : DistributionImplementation("TruncatedDistribution")
+  : DistributionImplementation()
 {
+  setName("TruncatedDistribution");
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can truncate only distribution with dimension=1, here dimension=" << distribution.getDimension();
   distribution_ = distribution;
   setThresholdRealization(thresholdRealization);
@@ -134,8 +137,9 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
 TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const Interval & truncationInterval,
     const NumericalScalar thresholdRealization)
-  : DistributionImplementation("TruncatedDistribution")
+  : DistributionImplementation()
 {
+  setName("TruncatedDistribution");
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can truncate only distribution with dimension=1, here dimension=" << distribution.getDimension();
   distribution_ = distribution;
   setThresholdRealization(thresholdRealization);

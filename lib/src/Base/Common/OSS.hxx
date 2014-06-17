@@ -93,7 +93,7 @@ struct OSSFormater<double>
   static
   void apply(std::ostringstream & oss, double d, int precision)
   {
-    int oldPrecision = oss.precision(precision);
+    int oldPrecision = static_cast<int>(oss.precision(precision));
     oss << d;
     oss.precision(oldPrecision);
   }
@@ -102,7 +102,7 @@ struct OSSFormater<double>
   static
   void apply(OStream & OS, double d, int precision)
   {
-    int oldPrecision = OS.getStream().precision(precision);
+    int oldPrecision = static_cast<int>(OS.getStream().precision(precision));
     OS.getStream() << d;
     OS.getStream().precision(oldPrecision);
   }
@@ -116,7 +116,7 @@ struct OSSFormater<float>
   static
   void apply(std::ostringstream & oss, float f, int precision)
   {
-    int oldPrecision = oss.precision(precision);
+    int oldPrecision = static_cast<int>(oss.precision(precision));
     oss << f;
     oss.precision(oldPrecision);
   }
@@ -125,7 +125,7 @@ struct OSSFormater<float>
   static
   void apply(OStream & OS, float f, int precision)
   {
-    int oldPrecision = OS.getStream().precision(precision);
+    int oldPrecision = static_cast<int>(OS.getStream().precision(precision));
     OS.getStream() << f;
     OS.getStream().precision(oldPrecision);
   }
@@ -159,7 +159,7 @@ struct OSSFormater<bool>
  * Class OSS is useful when streaming data through a function
  * that expect a string as parameter
  */
-class OSS
+class OT_API OSS
 {
 private:
   std::ostringstream oss_;
@@ -193,7 +193,7 @@ public:
   inline
   int getPrecision() const
   {
-    precision_ = oss_.precision();
+    precision_ = static_cast<int>(oss_.precision());
     return precision_;
   }
 
@@ -229,8 +229,8 @@ public:
 
 private:
   ostream_type*     _M_stream;
-  const String &    _M_string;
-  const String &    _M_prefix;
+  String            _M_string;
+  String            _M_prefix;
   mutable bool      _M_first;
 
 public:
@@ -259,10 +259,21 @@ public:
     , _M_first(__obj._M_first)
   {}
 
+  /// Copy assignment
+  OSS_iterator&
+  operator=(const OSS_iterator& obj)
+  {
+    _M_stream = obj._M_stream;
+    _M_string = obj._M_string;
+    _M_prefix = obj._M_prefix;
+    _M_first  = obj._M_first;
+    return *this;
+  }
+
   /// Writes @a value to underlying ostream using operator<<.  If
   /// constructed with delimiter string, writes delimiter to ostream.
   OSS_iterator&
-  operator=(const _Tp& __value)
+  operator=(const _Tp& value)
   {
 #ifdef __GNUC__
 #if ( GCC_VERSION >= 30400 )
@@ -271,10 +282,10 @@ public:
                             ._M_iterator(*this));
 #endif
 #endif
-    if (_UnaryPredicate()(__value))
+    if (_UnaryPredicate()(value))
     {
       if (!_M_first) *_M_stream << _M_string;
-      *_M_stream << _M_prefix << __value;
+      *_M_stream << _M_prefix << value;
       _M_first = false;
     }
     return *this;

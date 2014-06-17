@@ -223,12 +223,12 @@ NumericalPoint Matrix::computeSingularValues(const Bool keepIntact)
 }
 
 /* Compute singular values */
-NumericalPoint Matrix::computeSingularValues(Matrix & u,
+NumericalPoint Matrix::computeSVD(Matrix & u,
     Matrix & vT,
     const Bool fullSVD,
     const Bool keepIntact)
 {
-  return getImplementation()->computeSingularValues(*(u.getImplementation()), *(vT.getImplementation()), fullSVD, keepIntact);
+  return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD, keepIntact);
 }
 
 

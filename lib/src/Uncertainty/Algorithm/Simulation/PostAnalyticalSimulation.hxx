@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class PostAnalyticalSimulation
  */
 
-class PostAnalyticalSimulation
+class OT_API PostAnalyticalSimulation
   : public Simulation
 {
 

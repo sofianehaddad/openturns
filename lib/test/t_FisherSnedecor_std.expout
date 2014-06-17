@@ -7,13 +7,6 @@ streamObject(const T & anObject)
 class=FisherSnedecor name=FisherSnedecor dimension=1 d1=5.5 d2=10.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-checkNameFeature()
-checkNameConstructor()
-streamObject(const T & anObject)
-class=FisherSnedecor name=myName dimension=1 d1=5.5 d2=10.5
-checkNameAccessors()
-streamObject(const T & anObject)
-class=FisherSnedecor name=myNewName dimension=1 d1=5.5 d2=10.5
 Distribution class=FisherSnedecor name=FisherSnedecor dimension=1 d1=5.5 d2=10.5
 Distribution FisherSnedecor(d1 = 5.5, d2 = 10.5)
 Elliptical = false

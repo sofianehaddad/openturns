@@ -111,7 +111,7 @@ String NumericalPoint::__str__(const String & offset) const
 
 
 /* Erase the elements between first and last */
-NumericalPoint::iterator NumericalPoint::erase(iterator first, iterator last)
+NumericalPoint::iterator NumericalPoint::erase(const iterator first, const iterator last)
 {
   return PersistentCollection<NumericalScalar>::erase(first, last);
 }

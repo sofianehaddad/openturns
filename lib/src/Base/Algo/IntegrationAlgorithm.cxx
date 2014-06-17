@@ -37,27 +37,24 @@ IntegrationAlgorithm::IntegrationAlgorithm()
 }
 
 /* Parameters constructor */
-IntegrationAlgorithm::IntegrationAlgorithm(const IntegrationAlgorithmImplementation & implementation,
-    const String & name)
+IntegrationAlgorithm::IntegrationAlgorithm(const IntegrationAlgorithmImplementation & implementation)
   : TypedInterfaceObject<IntegrationAlgorithmImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-IntegrationAlgorithm::IntegrationAlgorithm(const Implementation & p_implementation,
-    const String & name)
+IntegrationAlgorithm::IntegrationAlgorithm(const Implementation & p_implementation)
   : TypedInterfaceObject<IntegrationAlgorithmImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-IntegrationAlgorithm::IntegrationAlgorithm(IntegrationAlgorithmImplementation * p_implementation,
-    const String & name)
+IntegrationAlgorithm::IntegrationAlgorithm(IntegrationAlgorithmImplementation * p_implementation)
   : TypedInterfaceObject<IntegrationAlgorithmImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 

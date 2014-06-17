@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A class that holds a mesh
  */
-class Mesh
+class OT_API Mesh
   : public DomainImplementation
 {
   CLASSNAME;

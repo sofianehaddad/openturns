@@ -84,7 +84,7 @@ String SquareMatrix::__repr__() const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedInteger SquareMatrix::getDimension() const
+UnsignedInteger SquareMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }
@@ -198,10 +198,10 @@ SquareMatrix::NumericalComplexCollection SquareMatrix::computeEigenValues(const 
   return getImplementation()->computeEigenValuesSquare(keepIntact);
 }
 
-SquareMatrix::NumericalComplexCollection SquareMatrix::computeEigenValues(SquareComplexMatrix & v,
+SquareMatrix::NumericalComplexCollection SquareMatrix::computeEVD(SquareComplexMatrix & v,
     const Bool keepIntact)
 {
-  return getImplementation()->computeEigenValuesSquare(*(v.getImplementation()), keepIntact);
+  return getImplementation()->computeEVDSquare(*(v.getImplementation()), keepIntact);
 }
 
 /* Check if the matrix is diagonal */

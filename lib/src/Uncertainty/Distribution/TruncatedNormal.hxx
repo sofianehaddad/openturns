@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The TruncatedNormal distribution.
  */
-class TruncatedNormal
+class OT_API TruncatedNormal
   : public ContinuousDistribution
 {
   CLASSNAME;
@@ -89,9 +89,11 @@ public:
   NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the PDFGradient of the TruncatedNormal distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the TruncatedNormal distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the standard deviation of the distribution */

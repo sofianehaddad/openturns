@@ -38,7 +38,7 @@
 #include "WrapperMacros.h"
 #include "TBB.hxx"
 #include "FieldImplementation.hxx"
-#ifdef WIN32
+#ifdef __MINGW32__
 #include <sys/time.h> // gettimeofday
 #endif
 #include "AtomicFunctions.hxx"
@@ -295,7 +295,7 @@ struct WrapperSymbols : public Object
         p_error_(p_error),
         count_(count),
         size_(inSample ? inSample->size_ : 0),
-        width_( size_ != 0 ? ceil( log10( size_ ) ) : 1 ),
+        width_( size_ != 0 ? ceil( log10( 1.0 * size_ ) ) : 1 ),
         modulo_( size_ > 1000 ? size_ / 1000 : size_ )
     {}
 
@@ -375,6 +375,18 @@ struct WrapperSymbols : public Object
     return WRAPPER_OK;
   }
 
+#elif defined(_MSC_VER) /* HAVE_TBB */
+#pragma message ( "WARNING: WrapperObject.cxx has currently been ported on Windows MSVC only with TBB enabled" )
+
+  enum WrapperErrorCode defaultWrapperExecSampleFunction_PTHREAD(void * p_state,
+      const struct sample * inSample,
+      struct sample * outSample,
+      const struct WrapperExchangedData * p_exchangedData,
+      void * p_error) const
+  {
+    LOGINFO( OSS() << "Build OpenTURNS with TBB to use wrappers on Windows" );
+    return WRAPPER_NOT_IMPLEMENTED;
+  }
 #else /* HAVE_TBB */
 
   struct AdapterArguments
@@ -467,7 +479,7 @@ struct WrapperSymbols : public Object
 
 
       double ratio = 100.0 * args->count / args->size;
-      int width = static_cast<int>( (args->size != 0 ? ceil( log10( args->size ) ) : 1) );
+      int width = static_cast<int>( (args->size != 0 ? ceil( log10( 1.0 * args->size ) ) : 1) );
       LOGINFO( OSS() << "Progression : "
                << std::setw(7) << ratio << "% ( "
                << std::setw(width) << args->count << " / "
@@ -506,10 +518,7 @@ struct WrapperSymbols : public Object
       const long T = ResourceMap::GetAsUnsignedInteger("computation-progression-update-interval");
       for (long i = 0; i < T; ++i)
       {
-#ifndef WIN32
-        pthread_testcancel();
-        sleep(1);
-#else
+#ifdef __MINGW32__
         struct timeval  tp;
         gettimeofday( &tp, NULL );
         struct timespec ts;
@@ -521,6 +530,9 @@ struct WrapperSymbols : public Object
         if (args->cancel == 0)
           pthread_cond_timedwait( &(args->cancelCond), &cancelMutex, &ts );
         pthread_mutex_unlock( &cancelMutex );
+#else
+        pthread_testcancel();
+        sleep(1);
 #endif
       }
     } /* end while */
@@ -804,7 +816,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
                              const WrapperData & data,
                              ObjectType o
                             )
-  : PersistentObject(symbolName),
+  : PersistentObject(),
     handle_(LibraryLoader::GetInstance().load(libraryPath)),
     data_(data),
     p_exchangedData_(data.getNewWrapperExchangedDataForCInterface()),
@@ -813,6 +825,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
     wrapperSymbols_(new WrapperSymbols),
     wrapperInfo_(0)
 {
+  setName(symbolName);
   if (symbolName.empty())
   {
     String name;
@@ -871,7 +884,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
   BIND_METHODS;
 
   // fill in the array with the pointer of the functions
-  METHODS methodsToBind[ nbMethods ];
+  METHODS * methodsToBind = new METHODS[nbMethods];
   METHODS * ptr = methodsToBind;
 #undef BIND_ACTION
 #define BIND_ACTION(rtype, name, args) *ptr++ = reinterpret_cast<METHODS>( wrapper_ ## name );
@@ -882,6 +895,7 @@ WrapperObject::WrapperObject(const FileName & libraryPath,
   assert( bindMethodsSymbol_ != 0 );
   enum WrapperErrorCode returnCode = (* bindMethodsSymbol_)( methodsToBind );
   if (returnCode != WRAPPER_OK) throw DynamicLibraryException(HERE) << "Method binding error. Report bug.";
+  delete [] methodsToBind;
 }
 
 /* Destructor */

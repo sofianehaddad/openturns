@@ -1,12 +1,14 @@
 #                                               -*- cmake -*-
 
-# workaround for bug #0014358
-if ( CMAKE_VERSION VERSION_LESS 2.8.13 AND NOT DEFINED FortranCInterface_EXE )
-  set ( FortranCInterface_EXE ${CMAKE_BINARY_DIR}/CMakeFiles/FortranCInterface/FortranCInterface${CMAKE_EXECUTABLE_SUFFIX} )
-endif ()
+if (NOT OPENTURNS_HAVE_LAPACKE)
+  # workaround for bug #0014358
+  if ( CMAKE_VERSION VERSION_LESS 2.8.13 AND NOT DEFINED FortranCInterface_EXE )
+    set ( FortranCInterface_EXE ${CMAKE_BINARY_DIR}/CMakeFiles/FortranCInterface/FortranCInterface${CMAKE_EXECUTABLE_SUFFIX} )
+  endif ()
 
-include ( FortranCInterface )
-FortranCInterface_HEADER ( FortranCInterface.h )
+  include ( FortranCInterface )
+  FortranCInterface_HEADER ( FortranCInterface.h )
+endif ()
 
 ot_add_current_dir_to_include_dirs ()
 ot_add_build_dir_to_include_dirs ( ${CMAKE_CURRENT_BINARY_DIR} )
@@ -61,3 +63,10 @@ install ( FILES ${CMAKE_CURRENT_BINARY_DIR}/installed-OTconfig.h
           RENAME OTconfig.h
         )
 
+if ( MSVC OR WINTEL )
+    install ( FILES pthread_win32/pthread.h
+                    pthread_win32/semaphore.h
+                    pthread_win32/unistd.h
+              DESTINATION ${OPENTURNS_INCLUDE_PATH}
+            )
+endif ()

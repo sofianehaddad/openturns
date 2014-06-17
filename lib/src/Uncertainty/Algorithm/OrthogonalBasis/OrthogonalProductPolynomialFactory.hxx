@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This is the orthogonal polynomial basis
  */
 
-class OrthogonalProductPolynomialFactory
+class OT_API OrthogonalProductPolynomialFactory
   : public OrthogonalFunctionFactory
 {
   CLASSNAME;

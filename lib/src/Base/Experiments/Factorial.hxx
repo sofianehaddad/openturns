@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of factorial experiment plan
  */
-class Factorial
+class OT_API Factorial
   : public StratifiedExperiment
 {
   CLASSNAME;
@@ -44,17 +44,15 @@ public:
 
 
   /** Default constructor */
-  explicit Factorial(const String & name = DefaultName);
+  Factorial();
 
   /** Constructor with parameters */
   Factorial(const NumericalPoint & center,
-            const NumericalPoint & levels,
-            const String & name = DefaultName);
+            const NumericalPoint & levels);
 
   /** Constructor with parameters */
   Factorial(const UnsignedInteger dimension,
-            const NumericalPoint & levels,
-            const String & name = DefaultName);
+            const NumericalPoint & levels);
 
   /** Virtual constructor */
   virtual Factorial * clone() const;

@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class MetaModelAlgorithm
+class OT_API MetaModelAlgorithm
   : public PersistentObject
 {
   CLASSNAME;
@@ -47,12 +47,11 @@ public:
 
 
   /** Default constructor */
-  MetaModelAlgorithm(const String & name = DefaultName);
+  MetaModelAlgorithm();
 
   /** Constructor with parameters */
   MetaModelAlgorithm(const Distribution & distribution,
-                     const NumericalMathFunction & model,
-                     const String & name = DefaultName);
+                     const NumericalMathFunction & model);
 
   /** Virtual constructor */
   virtual MetaModelAlgorithm * clone() const;

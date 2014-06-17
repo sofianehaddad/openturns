@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * TensorImplementation implements the Tensor classes
  */
 
-class TensorImplementation
+class OT_API TensorImplementation
   : public PersistentCollection<NumericalScalar>
 
 {
@@ -108,11 +108,11 @@ public:
 
   /** Get the dimensions of the tensor */
   /** Number of rows */
-  const UnsignedInteger getNbRows() const;
+  UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedInteger getNbColumns() const;
+  UnsignedInteger getNbColumns() const;
   /** Number of sheets */
-  const UnsignedInteger getNbSheets() const;
+  UnsignedInteger getNbSheets() const;
 
   /** Check for symmetry */
   Bool isSymmetric() const;
@@ -124,7 +124,7 @@ public:
   Bool operator == (const TensorImplementation & rhs) const;
 
   /** Empty returns true if there is no element in the tensor */
-  const Bool isEmpty() const;
+  Bool isEmpty() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * point the nearest to the origin of an implicitely defined manifold
  */
 
-class NearestPointAlgorithmImplementation
+class OT_API NearestPointAlgorithmImplementation
   : public PersistentObject
 {
 

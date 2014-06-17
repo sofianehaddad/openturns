@@ -205,7 +205,17 @@ bool operator >= (const NSI_point & lhs, const NSI_point & rhs)
 }
 
 
+std::ostream & operator <<(std::ostream & os, const NSI_point & point)
+{
+  return os << NumericalPoint( point );
+}
 
+
+OStream & operator << (OStream & OS, const NSI_point & point)
+{
+  OS.getStream() << NumericalPoint( point ).__repr__();
+  return OS;
+}
 
 
 NSI_const_point::NSI_const_point(const NumericalSampleImplementation * p_nsi, const UnsignedInteger index)
@@ -259,6 +269,18 @@ bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs)
   return !( lhs < rhs );
 }
 
+
+std::ostream & operator <<(std::ostream & os, const NSI_const_point & point)
+{
+  return os << NumericalPoint( point );
+}
+
+
+OStream & operator << (OStream & OS, const NSI_const_point & point)
+{
+  OS.getStream() << NumericalPoint( point ).__repr__();
+  return OS;
+}
 
 typedef NumericalSampleImplementation (*BuildMethod) (const FileName & fileName, const String & parameters);
 
@@ -1366,7 +1388,7 @@ NumericalPoint NumericalSampleImplementation::computeSkewnessPerComponent() cons
   ReductionFunctor<SkewnessPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
   NumericalPoint skewness(dimension_);
-  const NumericalScalar factor(size_ * sqrt(size_ - 1) / (size_ - 2));
+  const NumericalScalar factor(size_ * sqrt(size_ - 1.0) / (size_ - 2));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
@@ -1455,7 +1477,7 @@ struct CenteredMomentPerComponentPolicy
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       const NumericalScalar val(point[i] - mean_[i]);
-      var[i] += pow(val, k_);
+      var[i] += pow(val, static_cast<int>(k_));
     }
     return var;
   }
@@ -1760,7 +1782,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator + (const N
 {
   NumericalSampleImplementation sample(*this);
   sample += translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1768,7 +1790,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator + (const N
 {
   NumericalSampleImplementation sample(*this);
   sample += translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1776,7 +1798,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator - (const N
 {
   NumericalSampleImplementation sample(*this);
   sample -= translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1784,7 +1806,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator - (const N
 {
   NumericalSampleImplementation sample(*this);
   sample -= translation;
-  sample.setName(DefaultName);
+  sample.setName("");
   return sample;
 }
 
@@ -1897,7 +1919,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator * (const N
 {
   NumericalSampleImplementation nsi(*this);
   nsi *= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1905,7 +1927,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator / (const N
 {
   NumericalSampleImplementation nsi(*this);
   nsi /= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1955,7 +1977,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator * (const S
 {
   NumericalSampleImplementation nsi(*this);
   nsi *= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1963,7 +1985,7 @@ NumericalSampleImplementation NumericalSampleImplementation::operator / (const S
 {
   NumericalSampleImplementation nsi(*this);
   nsi /= scaling;
-  nsi.setName(DefaultName);
+  nsi.setName("");
   return nsi;
 }
 
@@ -1986,7 +2008,7 @@ void NumericalSampleImplementation::exportToCSVFile(const FileName & filename,
     {
       String label(description[i]);
       Bool isBlank(true);
-      for (UnsignedInteger j = 0; j < label.size(); ++j) isBlank = isBlank && isblank(label[j]);
+      for (UnsignedInteger j = 0; isBlank && j < label.size(); ++j) isBlank = (label[j] == ' ') || (label[j] == '\t');
       if (isBlank) csvFile << separator << "\"NoDescription\"";
       else csvFile << separator << "\"" << description[i] << "\"";
     }

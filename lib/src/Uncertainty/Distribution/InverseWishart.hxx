@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The InverseWishart distribution.
  */
-class InverseWishart
+class OT_API InverseWishart
   : public ContinuousDistribution
 {
   CLASSNAME;

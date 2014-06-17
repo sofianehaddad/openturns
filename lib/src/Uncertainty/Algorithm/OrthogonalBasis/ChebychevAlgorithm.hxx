@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * OrthogonalUniVariatePolynomialStandardDistribution polynomial factory
  */
 
-class ChebychevAlgorithm
+class OT_API ChebychevAlgorithm
   : public OrthonormalizationAlgorithmImplementation
 {
   CLASSNAME;

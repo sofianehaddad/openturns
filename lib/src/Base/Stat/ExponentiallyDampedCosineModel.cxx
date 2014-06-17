@@ -36,8 +36,8 @@ CLASSNAMEINIT(ExponentiallyDampedCosineModel);
 static Factory<ExponentiallyDampedCosineModel> RegisteredFactory("ExponentiallyDampedCosineModel");
 
 /* Constructor with parameters */
-ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const String & name)
-  : StationaryCovarianceModel(name)
+ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel()
+  : StationaryCovarianceModel()
   , amplitude_(1.0)
   , scale_(1.0)
   , frequency_(1.0)
@@ -47,9 +47,8 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const String & na
 
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalScalar amplitude,
                                    const NumericalScalar frequency,
-                                   const NumericalScalar scale,
-                                   const String & name)
-  : StationaryCovarianceModel(name)
+                                   const NumericalScalar scale)
+  : StationaryCovarianceModel()
   , amplitude_(0.0)
   , scale_(0.0)
   , frequency_(0.0)

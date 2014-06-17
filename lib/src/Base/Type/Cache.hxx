@@ -78,7 +78,8 @@ template <typename K_, typename V_>
 class Cache
   : public PersistentObject
 {
-  CLASSNAME;
+  static  OT::String GetClassName() { return OT::String("Cache<")+OT::String(K_::GetClassName())+OT::String(", ")+OT::String(V_::GetClassName())+OT::String(">"); }
+  virtual OT::String getClassName() const { return Cache<K_, V_>::GetClassName(); }
 
 public:
 
@@ -98,6 +99,7 @@ public:
     PersistentCollection< KeyType >      & valueColl_;
     PersistentCollection< UnsignedInteger > & ageColl_;
     UnsignedInteger i_;
+
     ConvertMapToCollections(PersistentCollection< KeyType > & keyColl,
                             PersistentCollection< KeyType > & valueColl,
                             PersistentCollection< UnsignedInteger > & ageColl)
@@ -110,6 +112,16 @@ public:
       valueColl_[i_] = val.second.first;
       ageColl_  [i_] = val.second.second;
       ++i_;
+      return *this;
+    }
+
+    ConvertMapToCollections &
+    operator = (const ConvertMapToCollections & other)
+    {
+      keyColl_   = other.keyColl_;
+      valueColl_ = other.valueColl_;
+      ageColl_   = other.ageColl_;
+      i_         = other.i_;
       return *this;
     }
 
@@ -398,7 +410,7 @@ private:
     bool operator() (const PairType & a,
                      const PairType & b)
     {
-      return a.second.second <= b.second.second ;
+      return a.second.second < b.second.second ;
     }
   };
 
@@ -407,7 +419,7 @@ private:
   {
     Cache * p_cache_;
     inline addFunctor( Cache * p_cache ) : p_cache_(p_cache) {}
-    inline void operator() ( const typename std::map< Cache::KeyType, Cache::ValueType >::value_type & val )
+    inline void operator() ( const typename std::map< typename Cache::KeyType, typename Cache::ValueType >::value_type & val )
     {
       p_cache_->insert( val.first, val.second );
     }

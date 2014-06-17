@@ -23,6 +23,7 @@
  */
 #include <cmath>
 #include "PoissonFactory.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

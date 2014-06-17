@@ -6,6 +6,7 @@
 #include "TypedInterfaceObject.hxx"
 %}
 
+%ignore OT::TypedInterfaceObject::swap;
 
 %define OTTypedInterfaceObjectImplementationHelper(Interface,Implementation)
 

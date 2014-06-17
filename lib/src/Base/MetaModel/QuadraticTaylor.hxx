@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of quadratic taylor response surface
  */
-class QuadraticTaylor
+class OT_API QuadraticTaylor
   : public PersistentObject
 {
   CLASSNAME;
@@ -48,12 +48,11 @@ public:
 
 
   /** Default constructor */
-  explicit QuadraticTaylor(const String & name = DefaultName);
+  QuadraticTaylor();
 
   /** Constructor with parameters */
   QuadraticTaylor(const NumericalPoint & center,
-                  const NumericalMathFunction & inputFunction,
-                  const String & name = DefaultName);
+                  const NumericalMathFunction & inputFunction);
 
 
   /** Virtual constructor */

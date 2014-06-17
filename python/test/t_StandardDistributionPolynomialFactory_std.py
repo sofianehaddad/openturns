@@ -26,8 +26,7 @@ try:
             print name, " polynomial(", i, ")=", polynomialFactory.build(i)
         roots = polynomialFactory.getRoots(iMax - 1)
         print name, " polynomial(", iMax - 1, ") roots=", roots
-        weights = NumericalPoint()
-        nodes = polynomialFactory.getNodesAndWeights(iMax - 1, weights)
+        nodes, weights = polynomialFactory.getNodesAndWeights(iMax - 1)
         print name, " polynomial(", iMax - 1, ") nodes=", nodes, " and weights=", weights
 
 except:

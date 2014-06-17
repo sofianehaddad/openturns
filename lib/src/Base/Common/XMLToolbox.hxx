@@ -45,7 +45,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class stores a pointer to an XML document and manages its life cycle
  */
 
-class XMLDoc
+class OT_API XMLDoc
 {
   xmlDocPtr doc_;
 
@@ -79,7 +79,7 @@ public:
  * This is a compound class to gather general methods
  */
 
-class XML
+class OT_API XML
 {
 public:
 
@@ -151,7 +151,7 @@ protected:
 
 }; /* end class XML */
 
-std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node);
+OT_API std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node);
 
 #endif /* OPENTURNS_HAVE_LIBXML2 */
 

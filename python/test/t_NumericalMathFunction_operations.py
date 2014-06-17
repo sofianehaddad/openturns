@@ -13,18 +13,18 @@ try:
     f1 = NumericalMathFunction(inVar, outVar, formula)
     # Second, build a function from R^3->R^2
     formula = ["x2 - x0 + x1"]
-    formula.add("x0 + x1 * x0 + x2")
+    formula.append("x0 + x1 * x0 + x2")
     outVar = ["y0", "y1"]
     f2 = NumericalMathFunction(inVar, outVar, formula)
     # Third, build the product function
     myFunction = f1 * f2
     inPoint = [1.2, 2.3, 3.4]
     print "myFunction=", myFunction
-    const NumericalPoint value(myFunction(inPoint))
+    value = myFunction(inPoint)
     print "Value at ", inPoint, "=\n", value
-    const Matrix gradient(myFunction.gradient(inPoint))
+    gradient = myFunction.gradient(inPoint)
     print "Gradient at ", inPoint, "=\n", gradient
-    const SymmetricTensor hessian(myFunction.hessian(inPoint))
+    hessian = myFunction.hessian(inPoint)
     print "Hessian at ", inPoint, "=\n", hessian
 
     # Sum/difference

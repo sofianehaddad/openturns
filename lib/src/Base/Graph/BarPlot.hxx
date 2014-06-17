@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-class BarPlot : public DrawableImplementation
+class OT_API BarPlot : public DrawableImplementation
 {
 
   CLASSNAME;

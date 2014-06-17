@@ -1,5 +1,5 @@
 %module(package="openturns", docstring="Test routines.") testing
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"

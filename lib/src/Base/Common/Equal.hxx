@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is derived from ComparisonOperatorImplementation. It performs the comparison
  * of two NumericalScalar and is mainly used in threshold exceedence algorithms.
  */
-class Equal
+class OT_API Equal
   : public ComparisonOperatorImplementation
 {
   CLASSNAME;

@@ -44,6 +44,10 @@ link_directories ( ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES} )
 add_library ( OTbind bind.c )
 add_library ( OT ${SOURCEFILES} ${BUILT_SOURCEFILES} )
 
+if (BUILD_SHARED_LIBS)
+  set_target_properties( OT OTbind PROPERTIES COMPILE_DEFINITIONS "OT_DLL_EXPORTS" )
+endif ()
+
 # soversion
 if ( NOT DEFINED LIB_VERSION ) 
   set ( LIB_VERSION 0.0.0 )

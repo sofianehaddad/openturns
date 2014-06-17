@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Instance of Drawable
  */
 
-class Cloud : public DrawableImplementation
+class OT_API Cloud : public DrawableImplementation
 {
   CLASSNAME;
 public:

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Corrected implicit leave-one-out cross validation
  */
-class CorrectedLeaveOneOut
+class OT_API CorrectedLeaveOneOut
   : public FittingAlgorithmImplementation
 {
   CLASSNAME;

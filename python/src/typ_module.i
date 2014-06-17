@@ -3,34 +3,36 @@
 // @date   2012-01-04 12:26:21 +0100 (Wed, 04 Jan 2012)
 
 %module(package="openturns", docstring="Internal data types.") typ
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %pythoncode %{
-def getCorrelationMatrixFromMap(Vars,Map):
-  """
-  getCorrelationMatrixFromMap(Vars,Map) transform a two-dimension dict whose keys
-  are listed in Vars into a CorrelationMatrix. The values are numerical.
-  No need to define all the elements in the map since CorrelationMatrix is symmetric.
-  Example:
-    Vars=['X','Y','Z']
-    Map={}
-    Map['X']={}
-    Map['X']['Y']= 0.1
-    Map['X']['Z']= 0.7
-    Map['Y']={}
-    Map['Y']['Z']= 0.8
-    R = getCorrelationMatrixFromMap(Vars,Map)
-  """
-  Corr = CorrelationMatrix( len(Vars) )
-  i=0
-  for first in Vars:
-    j=0
-    for second in Vars:
-      if first in Map and second in Map[first]:
-        Corr[i,j] = Map[first][second]
-      j+=1
-    i+=1
-  return Corr
+def getCorrelationMatrixFromMap(Vars, Map):
+    """
+    getCorrelationMatrixFromMap(Vars, Map) transform a two-dimension dict whose keys
+    are listed in Vars into a CorrelationMatrix. The values are numerical.
+    No need to define all the elements in the map since CorrelationMatrix is symmetric.
+    
+    Examples
+    --------
+      Vars=['X','Y','Z']
+      Map={}
+      Map['X']={}
+      Map['X']['Y']= 0.1
+      Map['X']['Z']= 0.7
+      Map['Y']={}
+      Map['Y']['Z']= 0.8
+      R = getCorrelationMatrixFromMap(Vars,Map)
+    """
+    corr = CorrelationMatrix(len(Vars))
+    i = 0
+    for first in Vars:
+        j = 0
+        for second in Vars:
+            if first in Map and second in Map[first]:
+                corr[i, j] = Map[first][second]
+            j += 1
+        i += 1
+    return corr
 %}
 
 %{

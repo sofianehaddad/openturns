@@ -42,18 +42,16 @@ Event::Event()
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
-             const NumericalScalar threshold,
-             const String & name)
-  : RandomVector(antecedent, op, threshold, name)
+             const NumericalScalar threshold)
+  : RandomVector(antecedent, op, threshold)
 {
   // Nothing to do
 }
 
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
-             const Domain & domain,
-             const String & name)
-  : RandomVector(antecedent, domain, name)
+             const Domain & domain)
+  : RandomVector(antecedent, domain)
 {
   // Nothing to do
 }
@@ -61,9 +59,8 @@ Event::Event(const RandomVector & antecedent,
 
 /* Constructor from RandomVector */
 Event::Event(const Process & process,
-             const Domain & domain,
-             const String & name)
-  : RandomVector(process, domain, name)
+             const Domain & domain)
+  : RandomVector(process, domain)
 {
   // Nothing to do
 }

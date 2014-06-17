@@ -40,7 +40,7 @@ static Factory<CompositeDistribution> RegisteredFactory("CompositeDistribution")
 
 /* Default constructor */
 CompositeDistribution::CompositeDistribution()
-  : DistributionImplementation("CompositeDistribution")
+  : DistributionImplementation()
   , function_(NumericalMathFunction("x", "x"))
   , antecedent_(Uniform(0.0, 1.0))
   , bounds_(0)
@@ -49,6 +49,7 @@ CompositeDistribution::CompositeDistribution()
   , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
+  setName("CompositeDistribution");
   setDimension(1);
   setParallel(true);
   // Update the derivative attributes. It also recompute the range
@@ -58,7 +59,7 @@ CompositeDistribution::CompositeDistribution()
 /* Parameters constructor */
 CompositeDistribution::CompositeDistribution(const NumericalMathFunction & function,
                                              const Distribution & antecedent)
-  : DistributionImplementation("CompositeDistribution")
+  : DistributionImplementation()
   , function_(function)
   , antecedent_(antecedent)
   , bounds_(0)
@@ -67,6 +68,7 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
   , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
+  setName("CompositeDistribution");
   setParallel(antecedent.getImplementation()->isParallel());
   // This method check everything and call the update() method.
   setFunctionAndAntecedent(function, antecedent);
@@ -77,7 +79,7 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
                                              const Distribution & antecedent,
                                              const NumericalPoint & bounds,
                                              const NumericalPoint & values)
-  : DistributionImplementation("CompositeDistribution")
+  : DistributionImplementation()
   , function_(function)
   , antecedent_(antecedent)
   , bounds_(bounds)
@@ -86,6 +88,7 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
   , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
+  setName("CompositeDistribution");
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
   if (!function.getGradientImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the function must have a gradient. Consider using finite difference.";
@@ -239,7 +242,7 @@ void CompositeDistribution::update()
 /* Function accessors */
 void CompositeDistribution::setFunction(const NumericalMathFunction & function)
 {
-  if (function != function_) setFunctionAndAntecedent(function, antecedent_);
+  if (!(function == function_)) setFunctionAndAntecedent(function, antecedent_);
 }
 
 NumericalMathFunction CompositeDistribution::getFunction() const
@@ -261,7 +264,7 @@ Distribution CompositeDistribution::getAntecedent() const
 /* Solver accessors */
 void CompositeDistribution::setSolver(const Solver & solver)
 {
-  if (solver != solver_)
+  if (!(solver == solver_))
     {
       solver_ = solver;
       update();

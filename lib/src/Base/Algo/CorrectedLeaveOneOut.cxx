@@ -77,7 +77,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   Matrix u;
   Matrix vT;
   LOGINFO("Compute the SVD decomposition");
-  const NumericalPoint svd( psiAk.computeSingularValues(u, vT, false, false) );
+  const NumericalPoint svd( psiAk.computeSVD(u, vT, false, false) );
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
   NumericalPoint b( sampleSize );

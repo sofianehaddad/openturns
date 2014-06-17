@@ -66,6 +66,22 @@ OTTypedInterfaceObjectHelper(Graph)
 
 %include Graph.hxx
 
+%pythoncode %{
+def Graph__repr_svg_(self):
+    """ svg representation """
+    from .viewer import ToSVGString
+    return ToSVGString(self)
+
+Graph._repr_svg_ = Graph__repr_svg_
+
+
+def Graph__repr_html_(self):
+    """ html representation """
+    raise
+
+Graph._repr_html_ = Graph__repr_html_
+%}
+
 namespace OT{  
 
 %extend Graph {

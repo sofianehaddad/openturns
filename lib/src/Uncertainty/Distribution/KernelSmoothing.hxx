@@ -36,14 +36,14 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of KernelSmoothing.
  */
-class KernelSmoothing
+class OT_API KernelSmoothing
   : public DistributionImplementationFactory
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  explicit KernelSmoothing();
+  KernelSmoothing();
 
   /** Default constructor */
   explicit KernelSmoothing(const Distribution & kernel,

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class FrankCopulaFactory
  */
-class FrankCopulaFactory
+class OT_API FrankCopulaFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

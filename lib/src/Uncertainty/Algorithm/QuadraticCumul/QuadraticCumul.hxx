@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
  Y=G(X) by implementing the Taylor approximation of G
 */
 
-class QuadraticCumul
+class OT_API QuadraticCumul
   : public PersistentObject
 {
 
@@ -56,7 +56,7 @@ public:
   QuadraticCumul() {};
 
   /** Constructor with parameters */
-  explicit QuadraticCumul(const RandomVector & limitStateVariable, const String & name = DefaultName);
+  explicit QuadraticCumul(const RandomVector & limitStateVariable);
 
 
   /** Virtual constructor */

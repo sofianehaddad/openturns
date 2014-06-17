@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 // Forward declaration of ComplexMatrixImplementation
 class ComplexMatrixImplementation;
 
-class MatrixImplementation
+class OT_API MatrixImplementation
   : public PersistentCollection<NumericalScalar>
 
 {
@@ -102,11 +102,11 @@ public:
 
   /** Get the dimensions of the MatrixImplementation */
   /** Number of rows */
-  const UnsignedInteger getNbRows() const;
+  UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedInteger getNbColumns() const;
+  UnsignedInteger getNbColumns() const;
   /** Dimension (for square matrices only */
-  const UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** MatrixImplementation transpose */
   MatrixImplementation transpose () const;
@@ -206,19 +206,20 @@ public:
 
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
-  NumericalComplexCollection computeEigenValuesSquare(ComplexMatrixImplementation & v,
-      const Bool keepIntact = true);
+  NumericalComplexCollection computeEVDSquare(ComplexMatrixImplementation & v,
+                                              const Bool keepIntact = true);
   NumericalPoint computeEigenValuesSym(const Bool keepIntact = true);
-  NumericalPoint computeEigenValuesSym(MatrixImplementation & v,
-                                       const Bool keepIntact = true);
+  NumericalPoint computeEVDSym(MatrixImplementation & v,
+                               const Bool keepIntact = true);
 
   /** Compute singular values */
   NumericalPoint computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSingularValues(MatrixImplementation & u,
-                                       MatrixImplementation & vT,
-                                       const Bool fullSVD = false,
-                                       const Bool keepIntact = true);
+  /** Build the singular value decomposition */
+  NumericalPoint computeSVD(MatrixImplementation & u,
+                            MatrixImplementation & vT,
+                            const Bool fullSVD = false,
+                            const Bool keepIntact = true);
 
   /** Check if the matrix is symmetric */
   virtual Bool isSymmetric() const;
@@ -248,10 +249,10 @@ public:
   }
 
   /** Empty returns true if there is no element in the MatrixImplementation */
-  const Bool isEmpty() const;
+  Bool isEmpty() const;
 
   /** Returns true if triangular lower or upper */
-  const Bool isTriangular(Bool lower = true) const;
+  Bool isTriangular(Bool lower = true) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

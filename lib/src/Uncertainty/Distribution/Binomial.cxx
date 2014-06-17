@@ -37,10 +37,11 @@ static Factory<Binomial> RegisteredFactory("Binomial");
 
 /* Default constructor */
 Binomial::Binomial()
-  : DiscreteDistribution("Binomial")
-  , n_(1)
-  , p_(0.5)
+  : DiscreteDistribution(),
+    n_(1),
+    p_(0.5)
 {
+  setName( "Binomial" );
   // We set the dimension of the Binomial distribution
   setDimension( 1 );
   computeRange();
@@ -49,10 +50,11 @@ Binomial::Binomial()
 /* Parameters constructor */
 Binomial::Binomial(const UnsignedInteger n,
                    const NumericalScalar p)
-  : DiscreteDistribution("Binomial")
-  , n_(n)
-  , p_(-1.0)
+  : DiscreteDistribution(),
+    n_(n),
+    p_(-1.0)
 {
+  setName( "Binomial" );
   // This call sets also the range
   setP(p);
   // We set the dimension of the Binomial distribution

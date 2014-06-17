@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * and compute the results of such kind of analyses
  */
 
-class SORM :
+class OT_API SORM :
   public Analytical
 {
 

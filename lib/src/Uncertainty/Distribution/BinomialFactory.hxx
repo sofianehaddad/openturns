@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class BinomialFactory
  */
-class BinomialFactory
+class OT_API BinomialFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

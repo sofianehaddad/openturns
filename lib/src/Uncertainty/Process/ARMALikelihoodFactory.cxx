@@ -47,8 +47,8 @@ static int modifiedCholeskyDecomposition(SquareMatrix &matrix,
     NumericalScalar epsilon);
 
 /* Default constructor */
-ARMALikelihoodFactory::ARMALikelihoodFactory(const String & name)
-  : ARMAFactoryImplementation(name)
+ARMALikelihoodFactory::ARMALikelihoodFactory()
+  : ARMAFactoryImplementation()
   , currentG_()
   , w_()
   , dimension_(1)
@@ -69,9 +69,8 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const String & name)
 ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
     const UnsignedInteger q,
     const UnsignedInteger dimension,
-    const Bool invertible,
-    const String & name)
-  : ARMAFactoryImplementation(p, q, invertible, name)
+    const Bool invertible)
+  : ARMAFactoryImplementation(p, q, invertible)
   , currentG_()
   , w_()
   , dimension_()
@@ -105,9 +104,8 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
 ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
     const Indices & q,
     const UnsignedInteger dimension,
-    const Bool invertible,
-    const String & name)
-  : ARMAFactoryImplementation(p, q, invertible, name)
+    const Bool invertible)
+  : ARMAFactoryImplementation(p, q, invertible)
   , currentG_()
   , w_()
   , dimension_()
@@ -908,7 +906,6 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
   else
   {
     // Memory allocate for the rhs and matA matrices
-    const UnsignedInteger one(1);
     const UnsignedInteger max1P(std::max(one, currentP_));
     const UnsignedInteger size(dimension_ * dimension_ * (max1P - 1) + dimension_ * (dimension_ + 1) / 2);
     SquareMatrix matA(size);

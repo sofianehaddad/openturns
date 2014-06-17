@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class MeshFactoryImplementation
  */
-class MeshFactoryImplementation
+class OT_API MeshFactoryImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -43,7 +43,7 @@ public:
   typedef Pointer< MeshFactoryImplementation > Implementation;
 
   /** Default constructor */
-  explicit MeshFactoryImplementation(const String & name = OT::DefaultName);
+  MeshFactoryImplementation();
 
   /** Virtual constructor */
   virtual MeshFactoryImplementation * clone() const;

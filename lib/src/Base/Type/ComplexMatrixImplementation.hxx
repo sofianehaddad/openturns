@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * ComplexMatrixImplementation implements the classical mathematical ComplexMatrixImplementation
  */
 
-class ComplexMatrixImplementation
+class OT_API ComplexMatrixImplementation
   : public PersistentCollection<NumericalComplex>
 
 {
@@ -122,11 +122,11 @@ public:
 
   /** Get the dimensions of the ComplexMatrixImplementation */
   /** Number of rows */
-  const UnsignedInteger getNbRows() const;
+  UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedInteger getNbColumns() const;
+  UnsignedInteger getNbColumns() const;
   /** Dimension (for square matrices only */
-  const UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** ComplexMatrixImplementation transpose */
   ComplexMatrixImplementation transpose () const;
@@ -220,10 +220,10 @@ public:
   }
 
   /** Empty returns true if there is no element in the ComplexMatrixImplementation */
-  const Bool isEmpty() const;
+  Bool isEmpty() const;
 
   /** Returns true if triangular lower or upper */
-  const Bool isTriangular(Bool lower = true) const;
+  Bool isTriangular(Bool lower = true) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

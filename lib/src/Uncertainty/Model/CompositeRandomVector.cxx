@@ -34,8 +34,8 @@ CLASSNAMEINIT(CompositeRandomVector);
 static Factory<CompositeRandomVector> RegisteredFactory("CompositeRandomVector");
 
 /* Standard constructor */
-CompositeRandomVector::CompositeRandomVector(const String & name)
-  : RandomVectorImplementation(name),
+CompositeRandomVector::CompositeRandomVector()
+  : RandomVectorImplementation(),
     function_(),
     p_antecedent_()
 {
@@ -44,9 +44,8 @@ CompositeRandomVector::CompositeRandomVector(const String & name)
 
 /* Standard constructor */
 CompositeRandomVector::CompositeRandomVector(const NumericalMathFunction & function,
-    const Antecedent & p_antecedent,
-    const String & name)
-  : RandomVectorImplementation(name),
+    const Antecedent & p_antecedent)
+  : RandomVectorImplementation(),
     function_(function),
     p_antecedent_(p_antecedent)
 {
@@ -57,9 +56,8 @@ CompositeRandomVector::CompositeRandomVector(const NumericalMathFunction & funct
 
 /* Standard constructor */
 CompositeRandomVector::CompositeRandomVector(const NumericalMathFunction & function,
-    const RandomVector & antecedent,
-    const String & name)
-  : RandomVectorImplementation(name),
+    const RandomVector & antecedent)
+  : RandomVectorImplementation(),
     function_(function),
     p_antecedent_(antecedent.getImplementation())
 {

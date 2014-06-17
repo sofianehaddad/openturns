@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The ZipfMandelbrot distribution.
  */
-class ZipfMandelbrot
+class OT_API ZipfMandelbrot
   : public DiscreteDistribution
 {
   CLASSNAME;

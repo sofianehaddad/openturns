@@ -50,22 +50,21 @@ EventRandomVectorImplementation::EventRandomVectorImplementation()
 /* Constructor from RandomVector */
 EventRandomVectorImplementation::EventRandomVectorImplementation(const RandomVectorImplementation & antecedent,
     const ComparisonOperator & op,
-    const NumericalScalar threshold,
-    const String & name)
-  : CompositeRandomVector(name),
+    const NumericalScalar threshold)
+  : CompositeRandomVector(),
     operator_(op),
     threshold_(threshold)
 {
   // Event can only be constructed from composite random vectors
   if (!antecedent.isComposite())
     throw InvalidArgumentException(HERE) << "Event can only be constructed from composite random vectors. The random vector ("
-                                         << antecedent << ") passed as first argument of event '"
-                                         << name << "' has incorrect type";
+                                         << antecedent << ") passed as first argument of EventRandomVectorImplementation "
+                                         << " has incorrect type";
   // EventRandomVectorImplementation can only be constructed from 1D random vectors
   if (antecedent.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "EventRandomVectorImplementation can only be constructed from 1D random vectors. The random vector ("
-                                         << antecedent << ") passed as first argument of eventRandomVectorImplementation '"
-                                         << name << "' has incorrect dimension";
+                                         << antecedent << ") passed as first argument of EventRandomVectorImplementation "
+                                         << " has incorrect dimension";
   function_ = antecedent.getFunction();
   p_antecedent_ = antecedent.getAntecedent();
   setName(antecedent.getName());
@@ -112,7 +111,7 @@ NumericalPoint EventRandomVectorImplementation::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample EventRandomVectorImplementation::getSample(UnsignedInteger size) const
+NumericalSample EventRandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
   // We don't build the return sample element by element because it doesn't
   // use the potential distribution of the computation. As the returned

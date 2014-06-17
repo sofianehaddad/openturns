@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A factory for building BasisSequence objects
  */
-class BasisSequenceFactoryImplementation
+class OT_API BasisSequenceFactoryImplementation
   : public PersistentObject
 {
   CLASSNAME;

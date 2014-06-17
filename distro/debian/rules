@@ -79,6 +79,7 @@ override_dh_auto_configure: debian/tmp/usr/lib/R/site-library/rot
             -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+            -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
             -DLIB_SOVERSION=0.4 \
             -DLIB_VERSION=0.4.0 \
             -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.3 \

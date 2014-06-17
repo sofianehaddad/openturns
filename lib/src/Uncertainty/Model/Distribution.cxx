@@ -26,6 +26,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+
+
 CLASSNAMEINIT(Distribution);
 
 /* Default constructor */
@@ -36,16 +38,14 @@ Distribution::Distribution()
 }
 
 /* Default constructor */
-Distribution::Distribution(const DistributionImplementation & implementation,
-                           const String & name)
+Distribution::Distribution(const DistributionImplementation & implementation)
   : TypedInterfaceObject<DistributionImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-Distribution::Distribution(const Implementation & p_implementation,
-                           const String & name)
+Distribution::Distribution(const Implementation & p_implementation)
   : TypedInterfaceObject<DistributionImplementation>(p_implementation)
 {
   // Initialize any other class members here
@@ -54,8 +54,7 @@ Distribution::Distribution(const Implementation & p_implementation,
 
 
 /* Constructor from implementation pointer */
-Distribution::Distribution(DistributionImplementation * p_implementation,
-                           const String & name)
+Distribution::Distribution(DistributionImplementation * p_implementation)
   : TypedInterfaceObject<DistributionImplementation>(p_implementation)
 {
   // Initialize any other class members here
@@ -67,6 +66,12 @@ Distribution::Distribution(DistributionImplementation * p_implementation,
 Bool Distribution::operator ==(const Distribution & other) const
 {
   return (this == &other);
+}
+
+/* Comparison operator */
+Bool Distribution::operator !=(const Distribution & other) const
+{
+  return !operator==(other);
 }
 
 /* Addition operator */
@@ -538,13 +543,21 @@ NumericalPoint Distribution::computePDFGradient(const NumericalPoint & point) co
   return getImplementation()->computePDFGradient(point);
 }
 
+NumericalSample Distribution::computePDFGradient(const NumericalSample & sample) const
+{
+  return getImplementation()->computePDFGradient(sample);
+}
+
 /* Get the CDF gradient of the distribution */
 NumericalPoint Distribution::computeCDFGradient(const NumericalPoint & point) const
 {
   return getImplementation()->computeCDFGradient(point);
 }
 
-
+NumericalSample Distribution::computeCDFGradient(const NumericalSample & sample) const
+{
+  return getImplementation()->computeCDFGradient(sample);
+}
 
 /* Get the mathematical and numerical range of the distribution.
    Its mathematical range is the smallest closed interval outside
@@ -635,6 +648,33 @@ NumericalSample Distribution::getSupport(const Interval & interval) const
 NumericalSample Distribution::getSupport() const
 {
   return getImplementation()->getSupport();
+}
+
+/* Compute the density generator of the elliptical generator, i.e.
+  *  the function phi such that the density of the distribution can
+  *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
+NumericalScalar Distribution::computeDensityGenerator(const NumericalScalar betaSquare) const
+{
+  return getImplementation()->computeDensityGenerator(betaSquare);
+}
+
+/* Compute the derivative of the density generator */
+NumericalScalar Distribution::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
+{
+  return getImplementation()->computeDensityGeneratorDerivative(betaSquare);
+}
+
+/* Compute the seconde derivative of the density generator */
+NumericalScalar Distribution::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
+{
+  return getImplementation()->computeDensityGeneratorSecondDerivative(betaSquare);
+}
+
+/* Compute the radial distribution CDF */
+NumericalScalar Distribution::computeRadialDistributionCDF (const NumericalScalar radius,
+                                                            const Bool tail) const
+{
+  return getImplementation()->computeRadialDistributionCDF(radius, tail);
 }
 
 /* Get the i-th marginal distribution */

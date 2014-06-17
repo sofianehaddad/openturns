@@ -37,10 +37,11 @@ static Factory<NegativeBinomial> RegisteredFactory("NegativeBinomial");
 
 /* Default constructor */
 NegativeBinomial::NegativeBinomial()
-  : DiscreteDistribution("NegativeBinomial")
+  : DiscreteDistribution()
   , r_(1.0)
   , p_(0.5)
 {
+  setName( "NegativeBinomial" );
   // We set the dimension of the NegativeBinomial distribution
   setDimension( 1 );
   computeRange();
@@ -49,10 +50,11 @@ NegativeBinomial::NegativeBinomial()
 /* Parameters constructor */
 NegativeBinomial::NegativeBinomial(const NumericalScalar r,
                                    const NumericalScalar p)
-  : DiscreteDistribution("NegativeBinomial")
+  : DiscreteDistribution()
   , r_(r)
   , p_(p)
 {
+  setName( "NegativeBinomial" );
   // We set the dimension of the NegativeBinomial distribution
   setR(r);
   setP(p);

@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public FisherSnedecor
 {
 public:
-  explicit TestObject() : FisherSnedecor(5.5, 10.5) {}
-  explicit TestObject(const String & name) : FisherSnedecor(5.5, 10.5)
-  {
-    setName(name);
-  }
+  TestObject() : FisherSnedecor(5.5, 10.5) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     FisherSnedecor distribution(5.5, 10.5);

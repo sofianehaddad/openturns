@@ -31,7 +31,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-class AnalyticalParser : public mu::Parser
+class OT_API AnalyticalParser : public mu::Parser
 {
 
 public:

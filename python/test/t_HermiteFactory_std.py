@@ -11,8 +11,7 @@ try:
         print "hermite(", i, ")=", hermite.build(i)
     roots = hermite.getRoots(10)
     print "hermite(10) roots=", repr(roots)
-    weights = NumericalPoint()
-    nodes = hermite.getNodesAndWeights(10, weights)
+    nodes, weights = hermite.getNodesAndWeights(10)
     print "hermite(10) nodes=", nodes, "and weights=", weights
 except:
     import sys

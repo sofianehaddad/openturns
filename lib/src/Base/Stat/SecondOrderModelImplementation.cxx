@@ -37,8 +37,8 @@ CLASSNAMEINIT(SecondOrderModelImplementation);
 static Factory<SecondOrderModelImplementation> RegisteredFactory("SecondOrderModelImplementation");
 
 /* Constructor without parameters */
-SecondOrderModelImplementation::SecondOrderModelImplementation(const String & name)
-  : PersistentObject(name)
+SecondOrderModelImplementation::SecondOrderModelImplementation()
+  : PersistentObject()
   , covarianceModel_()
   , spectralModel_()
 {
@@ -46,9 +46,8 @@ SecondOrderModelImplementation::SecondOrderModelImplementation(const String & na
 }
 
 SecondOrderModelImplementation::SecondOrderModelImplementation(const CovarianceModel & covarianceModel,
-    const SpectralModel & spectralModel,
-    const String & name)
-  : PersistentObject(name),
+    const SpectralModel & spectralModel)
+  : PersistentObject(),
     covarianceModel_(),
     spectralModel_()
 {

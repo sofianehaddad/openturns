@@ -35,18 +35,20 @@ static Factory<Geometric> RegisteredFactory("Geometric");
 
 /* Default constructor */
 Geometric::Geometric()
-  : DiscreteDistribution("Geometric")
+  : DiscreteDistribution()
   , p_(0.5)
 {
+  setName( "Geometric" );
   setDimension( 1 );
   computeRange();
 }
 
 /* Parameters constructor */
 Geometric::Geometric(const NumericalScalar p)
-  : DiscreteDistribution("Geometric")
+  : DiscreteDistribution()
   , p_(0.)
 {
+  setName( "Geometric" );
   // We set the dimension of the Geometric distribution
   setDimension( 1 );
   // Also sets the range

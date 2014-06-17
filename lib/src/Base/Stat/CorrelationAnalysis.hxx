@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class CorrelationAnalysis
+class OT_API CorrelationAnalysis
 {
 public:
 

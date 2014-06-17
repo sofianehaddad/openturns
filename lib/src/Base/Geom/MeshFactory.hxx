@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class  MeshFactory
  */
-class  MeshFactory
+class OT_API MeshFactory
   : public TypedInterfaceObject<MeshFactoryImplementation>
 {
   CLASSNAME;
@@ -43,20 +43,17 @@ public:
   typedef MeshFactoryImplementation::Implementation    Implementation;
 
   /** Default constructor */
-  explicit MeshFactory(const String & name = OT::DefaultName);
+  MeshFactory();
 
   /** Copy constructors */
-  MeshFactory(const MeshFactoryImplementation & implementation,
-              const String & name = OT::DefaultName);
+  MeshFactory(const MeshFactoryImplementation & implementation);
 
   /** Constructor from implementation */
-  MeshFactory(const Implementation & p_implementation,
-              const String & name = OT::DefaultName);
+  MeshFactory(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  MeshFactory(MeshFactoryImplementation * p_implementation,
-              const String & name = OT::DefaultName);
+  MeshFactory(MeshFactoryImplementation * p_implementation);
 #endif
 
   /** Virtual constructor */

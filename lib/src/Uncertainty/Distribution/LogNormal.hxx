@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The LogNormal distribution.
  */
-class LogNormal
+class OT_API LogNormal
   : public ContinuousDistribution
 {
   CLASSNAME;
@@ -93,9 +93,11 @@ public:
   NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the PDFGradient of the LogNormal distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the LogNormal distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the standard deviation of the distribution */

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class UserDefinedStationaryCovarianceModel
  */
 
-class UserDefinedStationaryCovarianceModel
+class OT_API UserDefinedStationaryCovarianceModel
   : public StationaryCovarianceModel
 {
 
@@ -48,12 +48,11 @@ public:
   typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
 
   /** Default onstructor */
-  UserDefinedStationaryCovarianceModel(const String & name = OT::DefaultName);
+  UserDefinedStationaryCovarianceModel();
 
   /** Standard onstructor */
   UserDefinedStationaryCovarianceModel(const Mesh & mesh,
-                                       const CovarianceMatrixCollection & covarianceCollection,
-                                       const String & name = OT::DefaultName);
+                                       const CovarianceMatrixCollection & covarianceCollection);
 
   /** Virtual copy constructor */
   virtual UserDefinedStationaryCovarianceModel * clone() const;

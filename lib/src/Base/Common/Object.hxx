@@ -67,7 +67,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * These methods should be overloaded by every derived class
  */
 
-class Object
+class OT_API Object
 {
   CLASSNAME;
 public:
@@ -119,7 +119,7 @@ private:
  *
  * @sa String __repr__() const
  */
-std::ostream & operator <<(std::ostream & os, const Object & obj);
+OT_API std::ostream & operator <<(std::ostream & os, const Object & obj);
 
 #endif
 

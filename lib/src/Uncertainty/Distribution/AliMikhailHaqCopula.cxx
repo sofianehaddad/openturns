@@ -36,18 +36,20 @@ static Factory<AliMikhailHaqCopula> RegisteredFactory("AliMikhailHaqCopula");
 
 /* Default constructor */
 AliMikhailHaqCopula::AliMikhailHaqCopula()
-  : ArchimedeanCopula("AliMikhailHaqCopula")
+  : ArchimedeanCopula()
   , theta_(0.0)
 {
+  setName( "AliMikhailHaqCopula" );
   setDimension( 2 );
   computeRange();
 }
 
 /* Parameters constructor */
 AliMikhailHaqCopula::AliMikhailHaqCopula(const NumericalScalar theta)
-  : ArchimedeanCopula("AliMikhailHaqCopula")
+  : ArchimedeanCopula()
   , theta_(0.0)
 {
+  setName( "AliMikhailHaqCopula" );
   // We set the dimension of the AliMikhailHaqCopula distribution
   setDimension( 2 );
   // Check the given theta

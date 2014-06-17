@@ -79,7 +79,6 @@ ot_add_python_module( common common_module.i
                       StorageManager.i
                       XMLStorageManager.i
                       Log.i
-                      MPI.i
                       TTY.i
                       Path.i
                       Catalog.i
@@ -467,6 +466,7 @@ ot_add_python_module( model_process model_process_module.i
                     )
 
 ot_add_python_module( dist_bundle1 dist_bundle1_module.i
+                      Distribution.i
                       DistFunc.i
                       Arcsine.i
                       ArcsineFactory.i
@@ -494,7 +494,8 @@ ot_add_python_module( dist_bundle1 dist_bundle1_module.i
                       PythonWrappingFunctions.hxx
                     )
                     
-ot_add_python_module( dist_bundle2 dist_bundle2_module.i                 
+ot_add_python_module( dist_bundle2 dist_bundle2_module.i
+                      Distribution.i
                       Gamma.i
                       GammaFactory.i
                       GeneralizedPareto.i
@@ -529,6 +530,7 @@ ot_add_python_module( dist_bundle2 dist_bundle2_module.i
                     )
                     
 ot_add_python_module( dist_bundle3 dist_bundle3_module.i
+                      Distribution.i
                       NegativeBinomial.i
                       NegativeBinomialFactory.i
                       NonCentralChiSquare.i
@@ -771,4 +773,15 @@ install ( FILES ${SWIGFILES}
           DESTINATION ${OPENTURNS_INCLUDE_PATH}/swig
         )
 
-        
+# escape x4 backslashes in *_doc.i.in
+file ( GLOB DOCSTRING_IN_FILES "*_doc.i.in" )
+foreach ( DOCSTRING_IN_FILE ${DOCSTRING_IN_FILES} )
+  get_filename_component ( DOCSTRING_FILE_BASENAME ${DOCSTRING_IN_FILE} NAME_WE )
+  add_custom_command ( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i
+                       COMMAND ${CMAKE_COMMAND} -DDOCSTRING_IN_FILE=${DOCSTRING_IN_FILE} -DDOCSTRING_FILE=${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i -P ${CMAKE_SOURCE_DIR}/cmake/escape_backslash_x4.cmake
+                       DEPENDS ${DOCSTRING_IN_FILE}
+                     )
+  add_custom_target ( generate_${DOCSTRING_FILE_BASENAME} DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i )
+  add_dependencies ( generate_swig_runtime generate_${DOCSTRING_FILE_BASENAME} )
+  install ( FILES ${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i DESTINATION include/openturns/swig )
+endforeach ()

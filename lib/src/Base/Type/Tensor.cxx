@@ -157,25 +157,25 @@ void Tensor::setSheet(const UnsignedInteger k,
 }
 
 /* Get the dimensions of the tensor : number of rows */
-const UnsignedInteger Tensor::getNbRows() const
+UnsignedInteger Tensor::getNbRows() const
 {
   return getImplementation()->getNbRows();
 }
 
 /* Get the dimensions of the Tensor : number of columns */
-const UnsignedInteger Tensor::getNbColumns() const
+UnsignedInteger Tensor::getNbColumns() const
 {
   return getImplementation()->getNbColumns();
 }
 
 /* Get the dimensions of the Tensor : number of sheets */
-const UnsignedInteger Tensor::getNbSheets() const
+UnsignedInteger Tensor::getNbSheets() const
 {
   return getImplementation()->getNbSheets();
 }
 
 /* Empty returns true if there is no element in the Tensor */
-const Bool Tensor::isEmpty() const
+Bool Tensor::isEmpty() const
 {
   return getImplementation()->isEmpty();
 }

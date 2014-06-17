@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of Mixture.
  */
-class Mixture
+class OT_API Mixture
   : public DistributionImplementation
 {
   CLASSNAME;
@@ -98,9 +98,11 @@ public:
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the PDF gradient of the distribution */
+  using DistributionImplementation::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDF gradient of the distribution */
+  using DistributionImplementation::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Get the i-th marginal distribution */

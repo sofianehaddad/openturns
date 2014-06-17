@@ -30,11 +30,7 @@ using namespace OT::Test;
 class TestObject : public ZipfMandelbrot
 {
 public:
-  explicit TestObject() : ZipfMandelbrot(15, 1.2, 2.) {}
-  explicit TestObject(const String & name) : ZipfMandelbrot(15, 1.2, 2.)
-  {
-    setName(name);
-  }
+  TestObject() : ZipfMandelbrot(15, 1.2, 2.) {}
   virtual ~TestObject() {}
 };
 
@@ -49,9 +45,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Instanciate one distribution object
     ZipfMandelbrot distribution(15, 1.2, 2.);

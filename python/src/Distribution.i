@@ -7,13 +7,15 @@
 #include "PythonDistributionImplementation.hxx"
 %}
 
+%include Distribution_doc.i
+
 %pythoncode %{
 class PythonDistribution(object):
     """"
     PythonDistribution is a class to subclass
     before it can be passed on to a Distribution
     """
-    def __init__(self, dim = 0):
+    def __init__(self, dim=0):
         self.__dim = dim
 
     def __str__(self):
@@ -22,7 +24,7 @@ class PythonDistribution(object):
     def __repr__(self):
         return self.__str__()
       
-    def getDimension(self) :
+    def getDimension(self):
         return self.__dim
         
     def computeCDF(self, X):
@@ -56,7 +58,7 @@ class SciPyDistribution(PythonDistribution):
         fub = int(abs(ub) != float('+inf'))
         self.__range = [[lb], [ub], [flb], [fub]]
                 
-    def getRange(self) :
+    def getRange(self):
         return self.__range
         
     def getRealization(self):
@@ -81,7 +83,7 @@ class SciPyDistribution(PythonDistribution):
       
     def getStandardDeviation(self):
         var = float(self._dist.stats('v'))
-        std = var**0.5
+        std = var ** 0.5
         return [std]        
         
     def getSkewness(self):

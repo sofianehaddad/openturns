@@ -41,7 +41,7 @@ class SquareComplexMatrix;
  * SquareMatrix implements the classical mathematical square matrix
  */
 
-class SquareMatrix :
+class OT_API SquareMatrix :
   public Matrix
 {
   CLASSNAME;
@@ -83,7 +83,7 @@ public:
   String __repr__() const;
 
   /** Get the dimension of the matrix */
-  const UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** SquareMatrix transpose */
   SquareMatrix transpose () const;
@@ -97,6 +97,9 @@ public:
   SquareMatrix operator - (const SymmetricMatrix & m) const;
 
   /** SquareMatrix multiplications (must have consistent dimensions) */
+#ifdef _MSC_VER   // VS2010 does not like 'using' being called after overloads
+  using Matrix::operator *;
+#endif
   SquareMatrix operator * (const SquareMatrix & m) const;
   SquareMatrix operator * (const SymmetricMatrix & m) const;
   SquareMatrix operator * (const IdentityMatrix & m) const;
@@ -111,7 +114,9 @@ public:
   SquareMatrix operator * (const NumericalScalar s) const;
 
   // We import the definitions from the upper class (for Matrix multiplication)
+#ifndef _MSC_VER   // VS2010 does not like 'using' being called after overloads
   using Matrix::operator *;
+#endif
 
   /** Division by a NumericalScalar*/
   SquareMatrix operator / (const NumericalScalar s) const;
@@ -133,8 +138,8 @@ public:
 
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValues(const Bool keepIntact = true);
-  NumericalComplexCollection computeEigenValues(SquareComplexMatrix & v,
-      const Bool keepIntact = true);
+  NumericalComplexCollection computeEVD(SquareComplexMatrix & v,
+                                        const Bool keepIntact = true);
 
   /** Check if it is diagonal */
   Bool isDiagonal() const;

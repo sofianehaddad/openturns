@@ -23,6 +23,7 @@
  */
 #include "OTprivate.hxx"
 #include "Factorial.hxx"
+#include "SpecFunc.hxx"
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,26 +31,24 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Factorial);
 
 /* Default constructor */
-Factorial::Factorial(const String & name)
-  : StratifiedExperiment(name)
+Factorial::Factorial()
+  : StratifiedExperiment()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Factorial::Factorial(const NumericalPoint & center,
-                     const NumericalPoint & levels,
-                     const String & name)
-  : StratifiedExperiment(center, levels, name)
+                     const NumericalPoint & levels)
+  : StratifiedExperiment(center, levels)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 Factorial::Factorial(const UnsignedInteger dimension,
-                     const NumericalPoint & levels,
-                     const String & name)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels, name)
+                     const NumericalPoint & levels)
+  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
 {
   // Nothing to do
 }
@@ -66,7 +65,7 @@ NumericalSample Factorial::generate()
   /* Dimension of the realizations */
   const UnsignedInteger dimension(center_.getDimension());
   /* Hypercube number of vertices */
-  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2, dimension)));
+  const UnsignedInteger verticesNumber((UnsignedInteger)round(pow(2.0, static_cast<int>(dimension))));
   /* Number of levels to be generated */
   const UnsignedInteger levelNumber(levels_.getDimension());
   /* Size of the sample to be generated: 1 + number of levels x 2^dimension */

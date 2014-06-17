@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-class Polygon : public DrawableImplementation
+class OT_API Polygon : public DrawableImplementation
 {
 
   CLASSNAME;

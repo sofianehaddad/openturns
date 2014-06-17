@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * numerical math function that acts only on the spatial part
  * of a time series.
  */
-class SpatialFunction
+class OT_API SpatialFunction
   : public DynamicalFunctionImplementation
 {
   CLASSNAME;

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Regression from a data sample upon a particular basis
  */
-class ApproximationAlgorithm
+class OT_API ApproximationAlgorithm
   : public TypedInterfaceObject<ApproximationAlgorithmImplementation>
 {
   CLASSNAME;

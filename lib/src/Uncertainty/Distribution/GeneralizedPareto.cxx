@@ -35,10 +35,11 @@ static Factory<GeneralizedPareto> RegisteredFactory("GeneralizedPareto");
 
 /* Default constructor */
 GeneralizedPareto::GeneralizedPareto()
-  : ContinuousDistribution("GeneralizedPareto")
+  : ContinuousDistribution()
   , sigma_(1.0)
   , xi_(0.0)
 {
+  setName( "GeneralizedPareto" );
   setDimension( 1 );
   computeRange();
 }
@@ -46,10 +47,11 @@ GeneralizedPareto::GeneralizedPareto()
 /* Parameters constructor */
 GeneralizedPareto::GeneralizedPareto(const NumericalScalar sigma,
                                      const NumericalScalar xi)
-  : ContinuousDistribution("GeneralizedPareto")
+  : ContinuousDistribution()
   , sigma_(0.0)
   , xi_(xi)
 {
+  setName( "GeneralizedPareto" );
   // We set the dimension of the GeneralizedPareto distribution
   setDimension( 1 );
   // This call set also the range.

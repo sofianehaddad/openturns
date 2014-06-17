@@ -31,9 +31,8 @@ CLASSNAMEINIT(UsualRandomVector);
 static Factory<UsualRandomVector> RegisteredFactory("UsualRandomVector");
 
 /* Default constructor */
-UsualRandomVector::UsualRandomVector(const Distribution & distribution,
-                                     const String & name)
-  : RandomVectorImplementation(name)
+UsualRandomVector::UsualRandomVector(const Distribution & distribution)
+  : RandomVectorImplementation()
   , distribution_(distribution)
 {
   // Get the description from the underlying distribution

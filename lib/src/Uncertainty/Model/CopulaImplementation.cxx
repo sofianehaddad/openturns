@@ -37,8 +37,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(CopulaImplementation);
 
 /* Default constructor */
-CopulaImplementation::CopulaImplementation(const String & name)
-  : ContinuousDistribution(name)
+CopulaImplementation::CopulaImplementation()
+  : ContinuousDistribution()
 {
   // Nothing to do
 }

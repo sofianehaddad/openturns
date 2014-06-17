@@ -34,9 +34,8 @@ CLASSNAMEINIT(QuadraticLeastSquares);
 
 /* Constructor with parameters */
 QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
-    const NumericalMathFunction & inputFunction,
-    const String & name)
-  : PersistentObject(name),
+    const NumericalMathFunction & inputFunction)
+  : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(NumericalSample(0, inputFunction.getOutputDimension())),
     inputFunction_(inputFunction),
@@ -50,9 +49,8 @@ QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
 
 /* Constructor with parameters */
 QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
-    const NumericalSample & dataOut,
-    const String & name)
-  : PersistentObject(name),
+    const NumericalSample & dataOut)
+  : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(NumericalSample(0, dataOut.getDimension())),
     inputFunction_(NumericalMathFunction()),

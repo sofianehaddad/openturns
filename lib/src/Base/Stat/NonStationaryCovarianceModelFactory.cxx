@@ -40,8 +40,8 @@ static Factory<NonStationaryCovarianceModelFactory> RegisteredFactory("NonStatio
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 
 /* Default constructor */
-NonStationaryCovarianceModelFactory::NonStationaryCovarianceModelFactory(const String & name)
-  : CovarianceModelFactoryImplementation(name)
+NonStationaryCovarianceModelFactory::NonStationaryCovarianceModelFactory()
+  : CovarianceModelFactoryImplementation()
 {
   // Nothing to do
 }

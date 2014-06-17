@@ -37,8 +37,8 @@ CLASSNAMEINIT(StationaryCovarianceModel);
 static Factory<StationaryCovarianceModel> RegisteredFactory("StationaryCovarianceModel");
 
 /* Constructor without parameters */
-StationaryCovarianceModel::StationaryCovarianceModel(const String & name)
-  : CovarianceModelImplementation(0, name)
+StationaryCovarianceModel::StationaryCovarianceModel()
+  : CovarianceModelImplementation(0)
 {
   // Nothing to do
 }

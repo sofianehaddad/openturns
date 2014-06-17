@@ -48,7 +48,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @toto Release method definition and implementation
  */
 
-class LibraryLoader
+class OT_API LibraryLoader
   : public Lockable
 {
   CLASSNAME;
@@ -113,8 +113,8 @@ private:
  * @param obj The object read by \em os
  * @return A reference to \em os
  */
-std::ostream & operator <<(std::ostream & os, const LibraryLoader & obj);
-OStream & operator <<(OStream & OS, const LibraryLoader & obj);
+OT_API std::ostream & operator <<(std::ostream & os, const LibraryLoader & obj);
+OT_API OStream & operator <<(OStream & OS, const LibraryLoader & obj);
 
 END_NAMESPACE_OPENTURNS
 

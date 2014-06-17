@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The CompositeDistribution distribution.
  */
-class CompositeDistribution
+class OT_API CompositeDistribution
   : public DistributionImplementation
 {
   CLASSNAME;

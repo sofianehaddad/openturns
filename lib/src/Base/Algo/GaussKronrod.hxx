@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class GaussKronrod
  */
 
-class GaussKronrod
+class OT_API GaussKronrod
   : public IntegrationAlgorithmImplementation
 {
 
@@ -43,7 +43,7 @@ class GaussKronrod
 public:
 
   /** Default constructor without parameters */
-  explicit GaussKronrod(const String & name = DefaultName);
+  GaussKronrod();
 
   /** Parameter constructor */
   GaussKronrod(const UnsignedInteger maximumSubIntervals,

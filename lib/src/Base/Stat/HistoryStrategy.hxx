@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HistoryStrategy
  */
 
-class HistoryStrategy
+class OT_API HistoryStrategy
   : public TypedInterfaceObject<HistoryStrategyImplementation>
 {
 

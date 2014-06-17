@@ -36,9 +36,10 @@ static Factory<GumbelCopula> RegisteredFactory("GumbelCopula");
 
 /* Default constructor */
 GumbelCopula::GumbelCopula()
-  : ArchimedeanCopula("GumbelCopula")
+  : ArchimedeanCopula()
   , theta_(2.0)
 {
+  setName( "GumbelCopula" );
   // We set the dimension of the GumbelCopula distribution
   setDimension( 2 );
   computeRange();
@@ -46,9 +47,10 @@ GumbelCopula::GumbelCopula()
 
 /* Parameters constructor */
 GumbelCopula::GumbelCopula(const NumericalScalar theta)
-  : ArchimedeanCopula("GumbelCopula")
+  : ArchimedeanCopula()
   , theta_(0.0)
 {
+  setName( "GumbelCopula" );
   // We set the dimension of the GumbelCopula distribution
   setDimension( 2 );
   // Check the value of theta

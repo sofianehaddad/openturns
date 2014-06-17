@@ -37,8 +37,9 @@ static Factory<Epanechnikov> RegisteredFactory("Epanechnikov");
 
 /* Default constructor */
 Epanechnikov::Epanechnikov()
-  : ContinuousDistribution("Epanechnikov")
+  : ContinuousDistribution()
 {
+  setName("Epanechnikov");
   setDimension(1);
   setRange(Interval(-1.0, 1.0));
 }

@@ -46,7 +46,7 @@ class PersistentObject;
 /* Forward declaration of XMLStorageManagerState */
 struct XMLStorageManagerState;
 
-class VersionList
+class OT_API VersionList
 {
   std::vector<UnsignedInteger> versions_;
 public:
@@ -68,7 +68,7 @@ public:
  * @see Study
  */
 
-class XMLStorageManager
+class OT_API XMLStorageManager
   : public StorageManager
 {
   CLASSNAME;

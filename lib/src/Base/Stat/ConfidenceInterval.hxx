@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * ConfidenceInterval implements the notion of confidence interval
  */
 
-class ConfidenceInterval :
+class OT_API ConfidenceInterval :
   public PersistentObject
 {
   CLASSNAME;

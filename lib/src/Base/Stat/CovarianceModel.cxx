@@ -35,34 +35,31 @@ CLASSNAMEINIT(CovarianceModel);
 //   static Factory<CovarianceModel> RegisteredFactory("CovarianceModel");
 
 /* Constructor without parameters */
-CovarianceModel::CovarianceModel(const String & name)
-  : TypedInterfaceObject<CovarianceModelImplementation>(new ExponentialModel(name))
+CovarianceModel::CovarianceModel()
+  : TypedInterfaceObject<CovarianceModelImplementation>(new ExponentialModel())
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-CovarianceModel::CovarianceModel(const CovarianceModelImplementation & implementation,
-                                 const String & name)
+CovarianceModel::CovarianceModel(const CovarianceModelImplementation & implementation)
   : TypedInterfaceObject<CovarianceModelImplementation>(implementation.clone())
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation */
-CovarianceModel::CovarianceModel(const Implementation & p_implementation,
-                                 const String & name)
+CovarianceModel::CovarianceModel(const Implementation & p_implementation)
   : TypedInterfaceObject<CovarianceModelImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-CovarianceModel::CovarianceModel(CovarianceModelImplementation * p_implementation,
-                                 const String & name)
+CovarianceModel::CovarianceModel(CovarianceModelImplementation * p_implementation)
   : TypedInterfaceObject<CovarianceModelImplementation>(p_implementation)
 {
-  getImplementation()->setName(name);
+  // Nothing to do
 }
 
 /* Dimension accessor */

@@ -36,8 +36,8 @@ CLASSNAMEINIT(UserDefinedCovarianceModel);
 static Factory<UserDefinedCovarianceModel> RegisteredFactory("UserDefinedCovarianceModel");
 
 /* Constructor with parameters */
-UserDefinedCovarianceModel::UserDefinedCovarianceModel(const String & name)
-  : CovarianceModelImplementation(name)
+UserDefinedCovarianceModel::UserDefinedCovarianceModel()
+  : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , p_mesh_(RegularGrid().clone())
 {
@@ -46,9 +46,8 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const String & name)
 
 // For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
 UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
-                                                       const CovarianceMatrixCollection & covarianceFunction,
-                                                       const String & name)
-  : CovarianceModelImplementation(name)
+                                                       const CovarianceMatrixCollection & covarianceFunction)
+  : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , p_mesh_(0)
 {

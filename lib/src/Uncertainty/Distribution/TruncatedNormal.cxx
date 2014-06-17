@@ -36,23 +36,24 @@ static Factory<TruncatedNormal> RegisteredFactory("TruncatedNormal");
 
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
-  : ContinuousDistribution("TruncatedNormal"),
-    mu_(0.0),
-    sigma_(1.0),
-    a_(-1.0),
-    b_(1.0),
-    aNorm_(-1.0),
-    bNorm_(1.0),
+  : ContinuousDistribution()
+  , mu_(0.0)
+  , sigma_(1.0)
+  , a_(-1.0)
+  , b_(1.0)
+  , aNorm_(-1.0)
+  , bNorm_(1.0)
     // 0.24197072451914333757 = exp(-1/2)/sqrt{2\pi}
-    phiANorm_(0.24197072451914333757),
-    phiBNorm_(0.24197072451914333757),
+  , phiANorm_(0.24197072451914333757)
+  , phiBNorm_(0.24197072451914333757)
     // 0.15865525393145704647 = Phi(-1)
-    PhiANorm_(0.15865525393145704647),
+  , PhiANorm_(0.15865525393145704647)
     // 0.84134474606854292578 = Phi(1)
-    PhiBNorm_(0.84134474606854292578),
+  , PhiBNorm_(0.84134474606854292578)
     // 1.46479477349154407761 = 1 / (Phi(1) - Phi(-1))
-    normalizationFactor_(1.46479477349154407761)
+  , normalizationFactor_(1.46479477349154407761)
 {
+  setName("TruncatedNormal");
   setDimension(1);
   computeRange();
 }
@@ -62,19 +63,20 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
                                  const NumericalScalar sigma,
                                  const NumericalScalar a,
                                  const NumericalScalar b)
-  : ContinuousDistribution("TruncatedNormal"),
-    mu_(mu),
-    sigma_(0.0),
-    a_(a),
-    b_(b),
-    aNorm_(0.0),
-    bNorm_(0.0),
-    phiANorm_(0.0),
-    phiBNorm_(0.0),
-    PhiANorm_(0.0),
-    PhiBNorm_(0.0),
-    normalizationFactor_(0.0)
+  : ContinuousDistribution()
+  , mu_(mu)
+  , sigma_(0.0)
+  , a_(a)
+  , b_(b)
+  , aNorm_(0.0)
+  , bNorm_(0.0)
+  , phiANorm_(0.0)
+  , phiBNorm_(0.0)
+  , PhiANorm_(0.0)
+  , PhiBNorm_(0.0)
+  , normalizationFactor_(0.0)
 {
+  setName("TruncatedNormal");
   if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with sigma <=0. Here, sigma=" << sigma;
   if (a >= b) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with a >= b. Here, a=" << a << " and b=" << b;
   setSigma(sigma);

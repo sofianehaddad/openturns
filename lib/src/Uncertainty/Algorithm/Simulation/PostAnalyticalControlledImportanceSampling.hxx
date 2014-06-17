@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class PostAnalyticalControlledImportanceSampling
  */
 
-class PostAnalyticalControlledImportanceSampling :
+class OT_API PostAnalyticalControlledImportanceSampling :
   public PostAnalyticalSimulation
 {
 

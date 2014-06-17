@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * way temporary files are built.
  */
 
-class Path
+class OT_API Path
 {
 public:
 

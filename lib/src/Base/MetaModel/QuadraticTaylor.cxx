@@ -31,17 +31,16 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(QuadraticTaylor);
 
-QuadraticTaylor::QuadraticTaylor(const String & name)
-  : PersistentObject(name)
+QuadraticTaylor::QuadraticTaylor()
+  : PersistentObject()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
 QuadraticTaylor::QuadraticTaylor(const NumericalPoint & center,
-                                 const NumericalMathFunction & inputFunction,
-                                 const String & name)
-  : PersistentObject(name),
+                                 const NumericalMathFunction & inputFunction)
+  : PersistentObject(),
     center_(center),
     inputFunction_(inputFunction)
 {

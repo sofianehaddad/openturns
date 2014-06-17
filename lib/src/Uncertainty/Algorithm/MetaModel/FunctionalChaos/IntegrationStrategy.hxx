@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * An implementation of projection strategy as a leastSquares
  */
 
-class IntegrationStrategy
+class OT_API IntegrationStrategy
   : public ProjectionStrategyImplementation
 {
   CLASSNAME;

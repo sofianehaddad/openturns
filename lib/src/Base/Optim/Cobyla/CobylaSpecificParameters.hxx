@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CobylaSpecificParameters
  * Specific parameters of the cobyla library
  */
-class CobylaSpecificParameters
+class OT_API CobylaSpecificParameters
   : public PersistentObject
 {
 

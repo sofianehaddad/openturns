@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The hessian part of linear combination of polynomials
  */
 
-class AggregatedNumericalMathHessianImplementation
+class OT_API AggregatedNumericalMathHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

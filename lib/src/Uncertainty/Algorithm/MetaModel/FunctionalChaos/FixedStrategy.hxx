@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * An implementation directly returning the full set of polynomials
  */
 
-class FixedStrategy
+class OT_API FixedStrategy
   : public AdaptiveStrategyImplementation
 {
   CLASSNAME;

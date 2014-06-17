@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the composition of two numerical math functions,
  * its gradient and its hessian. This class has no implementation class
  */
-class ComposedNumericalMathGradientImplementation
+class OT_API ComposedNumericalMathGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

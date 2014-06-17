@@ -93,7 +93,6 @@ String NatafEllipticalCopulaHessian::__repr__() const
 SymmetricTensor NatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP) const
 {
   UnsignedInteger dimension(getInputDimension());
-  NumericalPoint quantileSecondDerivative(dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)

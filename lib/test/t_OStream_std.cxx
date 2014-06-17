@@ -50,9 +50,6 @@ int main(int argc, char *argv[])
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
-    // Test some extra functionnalities
-    //checkNameFeature<TestObject>();
-
     MyTest obj;
     std::cout << obj    << "\n";
     std::cout << true   << "\n";

@@ -42,7 +42,7 @@ static Factory<KernelMixture> RegisteredFactory("KernelMixture");
 
 /* Default constructor */
 KernelMixture::KernelMixture()
-  : ContinuousDistribution("KernelMixture")
+  : ContinuousDistribution()
   , kernel_()
   , bandwidth_(0)
   , bandwidthInverse_(0)
@@ -54,14 +54,14 @@ KernelMixture::KernelMixture()
   , ccdfApproximation_()
   , useApproximatePDFCDF_(false)
 {
-  // Nothing to do
+  setName("KernelMixture");
 }
 
 /* Parameters constructor */
 KernelMixture::KernelMixture(const Distribution & kernel,
                              const NumericalPoint & bandwidth,
                              const NumericalSample & sample)
-  : ContinuousDistribution("KernelMixture")
+  : ContinuousDistribution()
   , kernel_(kernel)
   , bandwidth_(0)
   , bandwidthInverse_(0)
@@ -73,6 +73,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
   , ccdfApproximation_()
   , useApproximatePDFCDF_(false)
 {
+  setName("KernelMixture");
   // We check if the given kernel is 1-D (product kernel)
   if (kernel.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: only 1D kernel is allowed for multidimensional product kernels";
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a KernelMixture based on an empty sample.";

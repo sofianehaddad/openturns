@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Dirichlet distribution.
  */
-class Dirichlet
+class OT_API Dirichlet
   : public ContinuousDistribution
 {
   CLASSNAME;

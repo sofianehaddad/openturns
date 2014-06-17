@@ -36,8 +36,8 @@ CLASSNAMEINIT(Hamming);
 static Factory<Hamming> RegisteredFactory("Hamming");
 
 /* Constructor with parameters */
-Hamming::Hamming(const String & name)
-  : FilteringWindowsImplementation(name)
+Hamming::Hamming()
+  : FilteringWindowsImplementation()
 {
   // Nothing to do
 }

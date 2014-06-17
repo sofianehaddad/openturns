@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class TriangularFactory
  */
-class TriangularFactory
+class OT_API TriangularFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SafeAndSlow
  */
 
-class SafeAndSlow :
+class OT_API SafeAndSlow :
   public RootStrategyImplementation
 {
 

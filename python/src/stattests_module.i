@@ -4,7 +4,7 @@
 
 %module(package="openturns", docstring="Statistical tests.") stattests
 #pragma SWIG nowarn=302,509
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"
@@ -19,9 +19,6 @@
 %include OTexceptions.i
 %include std_vector.i
 
-%import common_module.i
-%import typ_module.i
-%include TestResult.i
 %import base_module.i
 
 /* Uncertainty/Model */

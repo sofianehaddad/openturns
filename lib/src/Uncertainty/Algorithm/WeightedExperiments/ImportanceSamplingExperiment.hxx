@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the probabilistic concept of importanceSamplingExperiment plan
  */
-class ImportanceSamplingExperiment
+class OT_API ImportanceSamplingExperiment
   : public WeightedExperiment
 {
   CLASSNAME;
@@ -43,18 +43,16 @@ public:
 
 
   /** Default constructor */
-  explicit ImportanceSamplingExperiment(const String & name = DefaultName);
+  ImportanceSamplingExperiment();
 
   /** Parameters constructor */
   ImportanceSamplingExperiment(const Distribution & importanceDistribution,
-                               const UnsignedInteger size,
-                               const String & name = DefaultName);
+                               const UnsignedInteger size);
 
   /** Parameters constructor */
   ImportanceSamplingExperiment(const Distribution & distribution,
                                const Distribution & importanceDistribution,
-                               const UnsignedInteger size,
-                               const String & name = DefaultName);
+                               const UnsignedInteger size);
 
   /** Virtual constructor */
   virtual ImportanceSamplingExperiment * clone() const;

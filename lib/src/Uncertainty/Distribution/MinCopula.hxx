@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements a min copula
  */
-class MinCopula
+class OT_API MinCopula
   : public CopulaImplementation
 {
   CLASSNAME;

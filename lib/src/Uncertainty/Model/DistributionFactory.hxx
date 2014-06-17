@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class DistributionFactory
  */
-class DistributionFactory
+class OT_API DistributionFactory
   : public TypedInterfaceObject<DistributionImplementationFactory>
 {
   CLASSNAME;
@@ -48,8 +48,7 @@ public:
   typedef Collection<DistributionFactory>           DistributionFactoryCollection;
 
   /** Default constructor */
-  explicit DistributionFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"),
-                               const String & name = DefaultName);
+  explicit DistributionFactory(const UnsignedInteger bootstrapSize = ResourceMap::GetAsUnsignedInteger("DistributionImplementationFactory-DefaultBootstrapSize"));
 
   /** Parameter constructor */
   DistributionFactory(const DistributionImplementationFactory & factory);

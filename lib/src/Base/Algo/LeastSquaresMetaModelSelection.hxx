@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Basis selection algorithm
  */
-class LeastSquaresMetaModelSelection
+class OT_API LeastSquaresMetaModelSelection
   : public ApproximationAlgorithmImplementation
 {
   CLASSNAME;

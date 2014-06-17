@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 
-class NearestPointChecker
+class OT_API NearestPointChecker
   : public PersistentObject
 {
   CLASSNAME;

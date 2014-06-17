@@ -40,6 +40,10 @@ namespace OT {
 
 %}
 
+%template(TestResultCollection) OT::Collection<OT::TestResult>;
+
+%include TestResult_doc.i
+
 %include TestResult.hxx
 namespace OT{  
 

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class BernoulliFactory
  */
-class BernoulliFactory
+class OT_API BernoulliFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

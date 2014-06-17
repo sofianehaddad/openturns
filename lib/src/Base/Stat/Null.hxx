@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Null
  */
 
-class Null
+class OT_API Null
   : public HistoryStrategyImplementation
 {
 

@@ -98,7 +98,7 @@ GraphImplementation::GraphImplementation(const String & title,
     const String & legendPosition,
     const NumericalScalar legendFontSize,
     const LogScale logScale)
-  : PersistentObject(title)
+  : PersistentObject()
   , title_(title)
   , legendFontSize_(legendFontSize)
   , xTitle_(xTitle)
@@ -113,6 +113,7 @@ GraphImplementation::GraphImplementation(const String & title,
   , path_()
   , fileName_()
 {
+  setName(title);
   if(IsFirstInitialization)
   {
     initializeValidLegendPositions();

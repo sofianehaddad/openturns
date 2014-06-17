@@ -24,6 +24,7 @@
 #include <cmath>
 #include "ZipfMandelbrot.hxx"
 #include "DistFunc.hxx"
+#include "SpecFunc.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
@@ -36,12 +37,13 @@ static Factory<ZipfMandelbrot> RegisteredFactory("ZipfMandelbrot");
 
 /* Default constructor */
 ZipfMandelbrot::ZipfMandelbrot()
-  : DiscreteDistribution("ZipfMandelbrot")
+  : DiscreteDistribution()
   , harmonicNumbers_(0)
   , n_(1)
   , q_(0.0)
   , s_(1.0)
 {
+  setName("ZipfMandelbrot");
   // We set the dimension of the ZipfMandelbrot distribution
   setDimension( 1 );
   computeRange();
@@ -52,12 +54,13 @@ ZipfMandelbrot::ZipfMandelbrot()
 ZipfMandelbrot::ZipfMandelbrot(const UnsignedInteger n,
                                const NumericalScalar q,
                                const NumericalScalar s )
-  : DiscreteDistribution("ZipfMandelbrot")
+  : DiscreteDistribution()
   , harmonicNumbers_(NumericalScalarCollection(0))
   , n_(n)
   , q_(q)
   , s_(s)
 {
+  setName("ZipfMandelbrot");
   // We set the dimension of the ZipfMandelbrot distribution
   setDimension( 1 );
   computeRange();

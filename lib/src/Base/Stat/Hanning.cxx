@@ -35,8 +35,8 @@ CLASSNAMEINIT(Hanning);
 static Factory<Hanning> RegisteredFactory("Hanning");
 
 /* Constructor with parameters */
-Hanning::Hanning(const String & name)
-  : FilteringWindowsImplementation(name)
+Hanning::Hanning()
+  : FilteringWindowsImplementation()
 {
   // Nothing to do
 }

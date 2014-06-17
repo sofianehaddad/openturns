@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A factory for building ApproximationAlgorithmImplementation objects
  */
-class ApproximationAlgorithmImplementationFactory
+class OT_API ApproximationAlgorithmImplementationFactory
   : public PersistentObject
 {
   CLASSNAME;

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class  CovarianceModelFactory
  */
-class  CovarianceModelFactory
+class OT_API  CovarianceModelFactory
   : public TypedInterfaceObject<CovarianceModelFactoryImplementation>
 {
   CLASSNAME;
@@ -43,20 +43,17 @@ public:
   typedef CovarianceModelFactoryImplementation::Implementation    Implementation;
 
   /** Default constructor */
-  explicit CovarianceModelFactory(const String & name = OT::DefaultName);
+  CovarianceModelFactory();
 
   /** Copy constructors */
-  CovarianceModelFactory(const CovarianceModelFactoryImplementation & implementation,
-                         const String & name = OT::DefaultName);
+  CovarianceModelFactory(const CovarianceModelFactoryImplementation & implementation);
 
   /** Constructor from implementation */
-  CovarianceModelFactory(const Implementation & p_implementation,
-                         const String & name = OT::DefaultName);
+  CovarianceModelFactory(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  CovarianceModelFactory(CovarianceModelFactoryImplementation * p_implementation,
-                         const String & name = OT::DefaultName);
+  CovarianceModelFactory(CovarianceModelFactoryImplementation * p_implementation);
 #endif
 
   /** Virtual constructor */

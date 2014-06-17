@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * @see Sampler
  */
-class RandomWalkMetropolisHastings
+class OT_API RandomWalkMetropolisHastings
   : public MCMC
 {
   CLASSNAME;

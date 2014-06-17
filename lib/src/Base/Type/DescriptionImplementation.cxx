@@ -21,8 +21,6 @@
  *  @author schueller
  *  @date   2012-02-17 19:35:43 +0100 (Fri, 17 Feb 2012)
  */
-#include <ctype.h> // for isblank
-
 #include "DescriptionImplementation.hxx"
 #include "Log.hxx"
 #include "StorageManager.hxx"
@@ -88,7 +86,10 @@ Bool DescriptionImplementation::isBlank() const
   {
     const UnsignedInteger length((*this)[i].size());
     for (UnsignedInteger j = 0; j < length; ++j)
-      if (!isblank((*this)[i][j])) return false;
+    {
+      const char c = (*this)[i][j];
+      if (c != ' ' && c != '\t') return false;
+    }
   }
   return true;
 }

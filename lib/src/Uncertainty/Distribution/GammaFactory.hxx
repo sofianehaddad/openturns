@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class GammaFactory
  */
-class GammaFactory
+class OT_API GammaFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

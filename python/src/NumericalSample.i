@@ -2,10 +2,17 @@
 // @author schueller
 // @date   2012-07-16 12:24:33 +0200 (Mon, 16 Jul 2012)
 
+%ignore OT::NumericalSample::storeToTemporaryFile;
+%ignore OT::NumericalSample::streamToRFormat;
+//%ignore OT::NumericalSample::scale; // Use *= and /= operators instead
+//%ignore OT::NumericalSample::translate; // Use += and -= operators instead
+
 %{
 #include "NumericalSampleImplementation.hxx"
 #include "NumericalSample.hxx"
 %}
+
+%include NumericalSample_doc.i
 
 %template(NumericalSampleImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::NumericalSampleImplementation>;
 
@@ -36,32 +43,32 @@
 # See python doc http://docs.python.org/reference/datamodel.html?highlight=getattribute#object.__getattribute__
 # for details on how to write such a method.
 def NumericalSample___getattribute__(self, name):
-  """__getattribute__(self, name) -> value"""
-  if (name == '__array_interface__'):
-    self.__dict__['__array_interface__'] = { 'shape'   : ( self.getSize(), self.getDimension() ),
-                                            'typestr' : "|f" + str(self.__elementsize__()),
-                                            'data'    : ( int(self.__baseaddress__()), True),
-                                            'version' : 3, 
-                                            }
-  return object.__getattribute__(self,name)
+    """__getattribute__(self, name) -> value"""
+    if (name == '__array_interface__'):
+        self.__dict__['__array_interface__'] = {'shape': (self.getSize(), self.getDimension()),
+                                                'typestr': "|f" + str(self.__elementsize__()),
+                                                'data': (int(self.__baseaddress__()), True),
+                                                'version': 3, 
+                                                }
+    return object.__getattribute__(self, name)
 NumericalSample.__getattribute__ = NumericalSample___getattribute__
 
 
 def NumericalSample__repr_html_(self):
-    """ html representation """
+    """HTML representation"""
     html = '<TABLE>'
     desc = self.getDescription()
     if not desc.isBlank():
         html += '<TR>'
         html += '<TD></TD>'
         for j in range(self.getDimension()):
-            html += '<TH>'+desc[j]+'</TH>'
+            html += '<TH>' + desc[j] + '</TH>'
         html += '</TR>'
     for i in range(self.getSize()):
         html += '<TR>'
-        html +='<TH>'+str(i)+'</TH>'
+        html += '<TH>' + str(i) + '</TH>'
         for j in range(self.getDimension()):
-            html += '<TD>'+str(self[i,j])+'</TD>'
+            html += '<TD>' + str(self[i, j]) + '</TD>'
         html += '</TR>'
     html += '</TABLE>'
     return html
@@ -366,6 +373,8 @@ NumericalSample(PyObject * pyObj, UnsignedInteger dimension)
 }
 
 Bool __eq__(const NumericalSample & other) { return (*self) == other; }
+
+NumericalSample __truediv__(const SquareMatrix & m) { return (*self) / m; }
 
 } // %extend
 } // namespace OT

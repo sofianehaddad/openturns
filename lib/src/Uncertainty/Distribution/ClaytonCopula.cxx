@@ -25,6 +25,7 @@
 #include "ClaytonCopula.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "SpecFunc.hxx"
 #include "Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,18 +36,20 @@ static Factory<ClaytonCopula> RegisteredFactory("ClaytonCopula");
 
 /* Default constructor */
 ClaytonCopula::ClaytonCopula()
-  : ArchimedeanCopula("ClaytonCopula")
+  : ArchimedeanCopula()
   , theta_(2.0)
 {
+  setName( "ClaytonCopula" );
   setDimension( 2 );
   computeRange();
 }
 
 /* Parameters constructor */
 ClaytonCopula::ClaytonCopula(const NumericalScalar theta)
-  : ArchimedeanCopula("ClaytonCopula")
+  : ArchimedeanCopula()
   , theta_(theta)
 {
+  setName( "ClaytonCopula" );
   // We set the dimension of the ClaytonCopula distribution
   setDimension( 2 );
   computeRange();
@@ -170,8 +173,6 @@ NumericalScalar ClaytonCopula::computeCDF(const NumericalPoint & point) const
 CorrelationMatrix ClaytonCopula::getSpearmanCorrelation() const
 {
   return CopulaImplementation::getSpearmanCorrelation();
-  CorrelationMatrix rho(2);
-  return rho;
 }
 
 /* Get the Kendall concordance of the distribution */

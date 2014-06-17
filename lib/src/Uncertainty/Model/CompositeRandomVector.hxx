@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An implementation class for composite random vectors
  */
-class CompositeRandomVector
+class OT_API CompositeRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME;
@@ -51,17 +51,15 @@ public:
   /** Some typedefs to ease reading */
 
   /** Default constructor */
-  explicit CompositeRandomVector(const String & name = DefaultName);
+  CompositeRandomVector();
 
   /** Standard constructor */
   CompositeRandomVector(const NumericalMathFunction & function,
-                        const Antecedent & p_antecedent,
-                        const String & name = DefaultName);
+                        const Antecedent & p_antecedent);
 
   /** Standard constructor */
   CompositeRandomVector(const NumericalMathFunction & function,
-                        const RandomVector & antecedent,
-                        const String & name = DefaultName);
+                        const RandomVector & antecedent);
 
 
   /** Virtual constructor */

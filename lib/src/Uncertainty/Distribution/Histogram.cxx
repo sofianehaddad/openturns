@@ -39,11 +39,12 @@ static Factory<Histogram> RegisteredFactory_alt("Histogram");
 
 /* Default constructor */
 Histogram::Histogram()
-  : ContinuousDistribution("Histogram")
+  : ContinuousDistribution()
   , first_(0.0)
   , collection_(0)
   , cumulatedWidth_(0)
 {
+  setName( "Histogram" );
   // This call set also the range.
   setPairCollection(HistogramPairCollection(1, HistogramPair(1.0, 1.0)));
   setDimension( 1 );
@@ -52,11 +53,12 @@ Histogram::Histogram()
 /* Parameters constructor */
 Histogram::Histogram(const NumericalScalar first,
                      const HistogramPairCollection & collection)
-  : ContinuousDistribution("Histogram")
+  : ContinuousDistribution()
   , first_(first)
   , collection_(0)
   , cumulatedWidth_(0)
 {
+  setName( "Histogram" );
   // This call set also the range.
   setPairCollection(collection);
   setDimension( 1 );
@@ -65,11 +67,12 @@ Histogram::Histogram(const NumericalScalar first,
 Histogram::Histogram(const NumericalScalar first,
                      const NumericalPoint & width,
                      const NumericalPoint & height)
-  : ContinuousDistribution("Histogram")
+  : ContinuousDistribution()
   , first_(first)
   , collection_(0)
   , cumulatedWidth_(0)
 {
+  setName( "Histogram" );
   // Convert the width and height into an Histogram pairs collection
   const UnsignedInteger size(width.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given width has a size of 0.";
@@ -151,11 +154,11 @@ NumericalScalar Histogram::computePDF(const NumericalPoint & point) const
   UnsignedInteger iMin(0);
   UnsignedInteger iMax(size-1);
   while (iMax > iMin + 1)
-    {
+  {
       const UnsignedInteger i((iMin + iMax) / 2);
       if (x < cumulatedWidth_[i]) iMax = i;
       else iMin = i;
-    }
+  }
   return collection_[iMax].getHeight();
 }
 
@@ -174,7 +177,7 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
   SignedInteger iMin(-1);
   UnsignedInteger iMax(size - 1);
   while (iMax > iMin + 1)
-    {
+  {
       const UnsignedInteger i((iMin + iMax) / 2);
       if (x < cumulatedWidth_[i]) iMax = i;
       else iMin = i;
@@ -185,7 +188,7 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Histogram::computeCharacteristicFunction(const NumericalScalar x) const
-{
+    {
   const NumericalComplex generic(DistributionImplementation::computeCharacteristicFunction(x));
   NumericalComplex result(0.0);
   if (x == 0.0) result = 1.0;
@@ -194,17 +197,17 @@ NumericalComplex Histogram::computeCharacteristicFunction(const NumericalScalar 
     {
       result = NumericalComplex(collection_[0].getHeight() * collection_[0].getWidth());
       for (UnsignedInteger k = 1; k < size; ++k)
-	{
-	  result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * collection_[k].getWidth();
-	}
-      result *= std::exp(NumericalComplex(0.0, first_));
+        {
+          result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * collection_[k].getWidth();
     }
+      result *= std::exp(NumericalComplex(0.0, first_));
+  }
   else
     {
       for (UnsignedInteger k = 1; k < size; ++k)
-	{
-	  result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * (std::exp(NumericalComplex(0.0, x * collection_[k].getWidth())) - 1.0);
-	}
+        {
+          result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * (std::exp(NumericalComplex(0.0, x * collection_[k].getWidth())) - 1.0);
+        }
       result *= std::exp(NumericalComplex(0.0, first_)) / NumericalComplex(0.0, x);
     }
   if (std::abs(result - generic) > 1.0e-6) std::cerr << "for x=" << x << ", generic=" << generic << ", comp=" << result << std::endl;

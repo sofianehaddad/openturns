@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * OrthogonalUniVariatePolynomialStandardDistribution polynomial factory
  */
 
-class GramSchmidtAlgorithm
+class OT_API GramSchmidtAlgorithm
   : public OrthonormalizationAlgorithmImplementation
 {
   CLASSNAME;

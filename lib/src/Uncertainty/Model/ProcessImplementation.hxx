@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * An interface for all implementation class of process
  */
-class ProcessImplementation
+class OT_API ProcessImplementation
   : public PersistentObject
 {
   CLASSNAME;
@@ -53,7 +53,7 @@ public:
   typedef Antecedent                         Implementation;
 
   /** Default constructor */
-  explicit ProcessImplementation(const String & name = DefaultName);
+  ProcessImplementation();
 
   /** Virtual constructor */
   virtual ProcessImplementation * clone() const;

@@ -57,6 +57,7 @@ KernelSmoothing::KernelSmoothing()
   , bined_(true)
   , binNumber_(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ))
 {
+  setName("KernelSmoothing");
   if (binNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: The default number of bins=" << binNumber_ << " is less than 2. Check the ResourceMap or the openturns.conf file.";
 }
 
@@ -70,6 +71,7 @@ KernelSmoothing::KernelSmoothing(const Distribution & kernel,
   , bined_(bined)
   , binNumber_(binNumber)
 {
+  setName("KernelSmoothing");
   // Only 1D kernel allowed here
   if (kernel.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: only 1D kernel allowed for product kernel smoothing";
   if (bined && (binNumber < 2)) throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";

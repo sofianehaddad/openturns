@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * A sequence of numerical math function collection.
  */
-class LAR
+class OT_API LAR
   : public BasisSequenceFactoryImplementation
 {
   CLASSNAME;

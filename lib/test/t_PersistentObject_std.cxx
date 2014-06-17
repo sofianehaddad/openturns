@@ -30,8 +30,7 @@ using namespace OT::Test;
 class TestObject : public PersistentObject
 {
 public:
-  explicit TestObject() : PersistentObject() {}
-  explicit TestObject(const String & name) : PersistentObject(name) {}
+  TestObject() : PersistentObject() {}
   virtual ~TestObject() {}
   virtual TestObject * clone() const
   {
@@ -49,9 +48,6 @@ int main(int argc, char *argv[])
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
-
-    // Test some extra functionnalities
-    checkNameFeature<TestObject>();
 
     // Identity comparison
     TestObject o1, o2;

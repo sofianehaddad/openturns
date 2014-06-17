@@ -38,9 +38,10 @@ static Factory<TracyWidomGUE> RegisteredFactory("TracyWidomGUE");
 
 /* Default constructor */
 TracyWidomGUE::TracyWidomGUE()
-  : ContinuousDistribution("TracyWidomGUE")
+  : ContinuousDistribution()
 {
   throw NotYetImplementedException(HERE);
+  setName("TracyWidomGUE");
   setDimension(1);
   setRange(Interval(-1.0, 1.0));
 }

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class that implement the composition of two numerical math functions implementations.
  */
-class ComposedNumericalMathEvaluationImplementation
+class OT_API ComposedNumericalMathEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

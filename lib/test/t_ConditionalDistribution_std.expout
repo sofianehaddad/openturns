@@ -54,9 +54,9 @@ margin PDF=0.156744
 margin CDF=0.192205
 margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[4.38019]
 margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.843042]
-conditioning distribution=ComposedDistribution(Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+conditioning distribution=ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution class=ConditionalDistribution name=ConditionalDistribution dimension=1 conditioned distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] conditioning distribution=class=ComposedDistribution name=ComposedDistribution dimension=2 copula=class=IndependentCopula name=IndependentCopula dimension=2 marginal[0]=class=Dirac name=Dirac dimension=1 point=class=NumericalPoint name=Unnamed dimension=1 values=[0] marginal[1]=class=Uniform name=Uniform dimension=1 a=1 b=2
-Distribution ConditionalDistribution(X|Theta = Normal, Theta = ComposedDistribution(Dirac(point = class=NumericalPoint name=Unnamed dimension=1 values=[0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+Distribution ConditionalDistribution(X|Theta = Normal, Theta = ComposedDistribution(Dirac(point = [0]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
 Parameters [[point_0_marginal_0 : 0],[a_marginal_1 : 1, b_marginal_1 : 2],[]]
 Mean class=NumericalPoint name=Unnamed dimension=1 values=[0]
 Covariance class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.33333]

@@ -3,7 +3,7 @@
 // @date   2012-07-16 10:12:54 +0200 (Mon, 16 Jul 2012)
 
 %module(package="openturns", docstring="Utility classes.") common
-%feature("autodoc","1");
+//%feature("autodoc","1");
 
 %{
 #include "OTconfig.hxx"
@@ -42,8 +42,6 @@
 %include Less.i
 %include LessOrEqual.i
 %include PlatformInfo.i
-%include MPI.i
-
 
 /* At last we include template definitions */
 %include BaseCommonTemplateDefs.i

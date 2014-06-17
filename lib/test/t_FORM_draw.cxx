@@ -31,7 +31,7 @@ String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger d
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps(pow(0.1, digits));
+  NumericalScalar eps(pow(0.1, 1.0 * digits));
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((fabs(point[i]) < eps) ? fabs(point[i]) : point[i]);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     output.setDescription(outputDescription);
 
     /* We create an Event from this RandomVector */
-    Event myEvent(output, Greater(), 0.0, "Event 1");
+    Event myEvent(output, Greater(), 0.0);
 
     /* We create a NearestPoint algorithm */
     Cobyla myCobyla;

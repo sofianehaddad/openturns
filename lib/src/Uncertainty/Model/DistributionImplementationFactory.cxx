@@ -39,9 +39,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(DistributionImplementationFactory);
 
 /* Default constructor */
-DistributionImplementationFactory::DistributionImplementationFactory(const UnsignedInteger bootstrapSize,
-    const String & name)
-  : PersistentObject(name)
+DistributionImplementationFactory::DistributionImplementationFactory(const UnsignedInteger bootstrapSize)
+  : PersistentObject()
   , bootstrapSize_(bootstrapSize)
 {
   // Nothing to do
@@ -132,6 +131,7 @@ NumericalPoint DistributionImplementationFactory::runRFactory(const NumericalSam
   cmdFile << "library(rot)" << std::endl;
   cmdFile << "options(digits=17)" << std::endl;
   cmdFile << "options(warn=-1)" << std::endl;
+  cmdFile << "options(stringsAsFactors = F)" << std::endl;
   cmdFile << "sample <- data.matrix(read.table(\"" << dataFileName << "\"))" << std::endl;
   cmdFile << "res <- estimate" << distributionName << "Parameters(sample)" << std::endl;
   cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;

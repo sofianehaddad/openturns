@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class UniformFactory
  */
-class UniformFactory
+class OT_API UniformFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;

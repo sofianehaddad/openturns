@@ -41,7 +41,7 @@ class TriangularComplexMatrix;
  * SquareComplexMatrix implements the classical mathematical square matrix
  */
 
-class SquareComplexMatrix :
+class OT_API SquareComplexMatrix :
   public ComplexMatrix
 {
   CLASSNAME;
@@ -74,7 +74,7 @@ public:
   String __repr__() const;
 
   /** Get the dimension of the matrix */
-  const UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** SquareComplexMatrix transpose */
   SquareComplexMatrix transpose () const;

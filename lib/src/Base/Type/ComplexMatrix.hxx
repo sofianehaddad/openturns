@@ -42,7 +42,7 @@ class TriangularComplexMatrix;
  * ComplexMatrix implements the classical mathematical matrix with complex values
  */
 
-class ComplexMatrix :
+class OT_API ComplexMatrix :
   public TypedInterfaceObject<ComplexMatrixImplementation>
 {
   CLASSNAME;
@@ -125,9 +125,9 @@ public:
 
   /** Get the dimensions of the matrix */
   /** Number of rows */
-  const UnsignedInteger getNbRows() const;
+  UnsignedInteger getNbRows() const;
   /** Number of columns */
-  const UnsignedInteger getNbColumns() const;
+  UnsignedInteger getNbColumns() const;
 
   /** ComplexMatrix transpose */
   ComplexMatrix transpose () const;
@@ -193,7 +193,7 @@ public:
   Bool operator == (const ComplexMatrix & rhs) const;
 
   /** Empty returns true if there is no element in the matrix */
-  const Bool isEmpty() const;
+  Bool isEmpty() const;
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED

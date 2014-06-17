@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class describes the concept of kPermutations generator
  */
-class KPermutations
+class OT_API KPermutations
   : public CombinatorialGeneratorImplementation
 {
   CLASSNAME;

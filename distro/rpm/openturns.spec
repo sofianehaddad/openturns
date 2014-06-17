@@ -27,7 +27,7 @@ BuildRequires:  gcc-c++, cmake, bison, flex, bc, swig
 BuildRequires:  muParser-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  boost-devel
-%if 0%{?suse_version} || 0%{?rhel_version}
+%if 0%{?suse_version}
 BuildRequires:  lapack
 %else
 BuildRequires:  lapack-devel
@@ -58,7 +58,7 @@ Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
 Requires:       muParser-devel
 Requires:       libxml2-devel
-%if ! (0%{?suse_version} || 0%{?rhel_version})
+%if ! 0%{?suse_version}
 Requires:       lapack-devel
 %endif
 
@@ -106,10 +106,6 @@ Python textual interface to OpenTURNS uncertainty library development
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DOPENTURNS_SYSCONFIG_PATH=/etc \
-%if 0%{?rhel_version}
-       -DLAPACK_LIBRARIES=%{_libdir}/liblapack.so.3 \
-       -DBLAS_LIBRARIES=%{_libdir}/libblas.so.3 \
-%endif
 %ifarch i586 i686
        -DCMAKE_C_FLAGS_RELEASE="%optflags -O0" \
 %endif

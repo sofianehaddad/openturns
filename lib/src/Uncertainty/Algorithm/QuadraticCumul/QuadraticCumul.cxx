@@ -46,8 +46,8 @@ static Factory<QuadraticCumul> RegisteredFactory("QuadraticCumul");
 */
 
 /* Constructor with parameters */
-QuadraticCumul::QuadraticCumul(const RandomVector & limitStateVariable, const String & name)
-  : PersistentObject(name),
+QuadraticCumul::QuadraticCumul(const RandomVector & limitStateVariable)
+  : PersistentObject(),
     limitStateVariable_(limitStateVariable),
     meanInputVector_(0),
     valueAtMean_(0),

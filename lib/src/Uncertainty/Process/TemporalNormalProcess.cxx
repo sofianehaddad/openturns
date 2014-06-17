@@ -37,8 +37,8 @@ CLASSNAMEINIT(TemporalNormalProcess);
 
 static Factory<TemporalNormalProcess> RegisteredFactory("TemporalNormalProcess");
 
-TemporalNormalProcess::TemporalNormalProcess(const String & name)
-  : ProcessImplementation(name)
+TemporalNormalProcess::TemporalNormalProcess()
+  : ProcessImplementation()
   , covarianceModel_()
   , choleskyFactorCovarianceMatrix_(0)
   , isInitialized_(false)
@@ -53,9 +53,8 @@ TemporalNormalProcess::TemporalNormalProcess(const String & name)
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
                                              const SecondOrderModel & model,
-                                             const Mesh & mesh,
-                                             const String & name)
-  : ProcessImplementation(name)
+                                             const Mesh & mesh)
+  : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
   , choleskyFactorCovarianceMatrix_(0)
   , isInitialized_(false)
@@ -72,9 +71,8 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
                                              const CovarianceModel & covarianceModel,
-                                             const Mesh & mesh,
-                                             const String & name)
-  : ProcessImplementation(name)
+                                             const Mesh & mesh)
+  : ProcessImplementation()
   , covarianceModel_(covarianceModel)
   , choleskyFactorCovarianceMatrix_(0)
   , isInitialized_(false)
@@ -90,9 +88,8 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
-                                             const Mesh & mesh,
-                                             const String & name)
-  : ProcessImplementation(name)
+                                             const Mesh & mesh)
+  : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
   , choleskyFactorCovarianceMatrix_(0)
   , isInitialized_(false)
@@ -108,9 +105,8 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceModel,
-                                             const Mesh & mesh,
-                                             const String & name)
-  : ProcessImplementation(name)
+                                             const Mesh & mesh)
+  : ProcessImplementation()
   , covarianceModel_(covarianceModel)
   , choleskyFactorCovarianceMatrix_(0)
   , isInitialized_(false)

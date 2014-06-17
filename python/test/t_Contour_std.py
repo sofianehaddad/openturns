@@ -23,8 +23,8 @@ try:
     discretization[0] = nX
     discretization[1] = nY
     inputData = Box(discretization).generate()
-    inputData.scale(NumericalPoint(2, 10.0))
-    inputData.translate(NumericalPoint(2, -5.0))
+    inputData *= [10.0] * 2
+    inputData += [-5.0] * 2
     data = f(inputData)
     size = 7
     levels = NumericalPoint(size)

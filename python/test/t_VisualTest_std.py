@@ -12,28 +12,20 @@ try:
     sample = normal.getSample(size)
     sampleCDF = VisualTest.DrawEmpiricalCDF(
         sample, sample.getMin()[0] - 1.0, sample.getMax()[0] + 1.0)
-    sampleCDF.draw("sampleCDF", 640, 480)
-    print "bitmap = ", sampleCDF.getBitmap()
-    print "postscript = ", sampleCDF.getPostscript()
+    print "sampleCDF = ", sampleCDF
 
     sampleCDF = VisualTest.DrawEmpiricalCDF(sample, -0.5, 0.5)
-    sampleCDF.draw("sampleCDFZoom", 640, 480)
-    print "bitmap = ", sampleCDF.getBitmap()
-    print "postscript = ", sampleCDF.getPostscript()
+    print "sampleCDFZoom = ", sampleCDF
 
     # Histogram tests
     normal = Normal(1)
     size = 100
     sample = normal.getSample(size)
     sampleHist = VisualTest.DrawHistogram(sample, 10)
-    sampleHist.draw("sampleHist", 640, 480)
-    print "bitmap = ", sampleHist.getBitmap()
-    print "postscript = ", sampleHist.getPostscript()
+    print "sampleHist = ", sampleHist
 
     sampleHist = VisualTest.DrawHistogram(sample)
-    sampleHist.draw("sampleHistOpt", 640, 480)
-    print "bitmap = ", sampleHist.getBitmap()
-    print "postscript = ", sampleHist.getPostscript()
+    print "sampleHistOpt = ", sampleHist
 
     # QQPlot tests
     size = 100
@@ -41,23 +33,17 @@ try:
     sample = normal.getSample(size)
     sample2 = Gamma(3.0, 4.0, 0.0).getSample(size)
     twoSamplesQQPlot = VisualTest.DrawQQplot(sample, sample2)
-    twoSamplesQQPlot.draw("twoSamplesQQPlot", 640, 480)
-    print "bitmap = ", twoSamplesQQPlot.getBitmap()
-    print "postscript = ", twoSamplesQQPlot.getPostscript()
+    print "twoSamplesQQPlot = ", twoSamplesQQPlot
 
     sampleDistributionQQPlot = VisualTest.DrawQQplot(sample, normal)
-    sampleDistributionQQPlot.draw("sampleDistributionQQPlot", 640, 480)
-    print "bitmap = ", sampleDistributionQQPlot.getBitmap()
-    print "postscript = ", sampleDistributionQQPlot.getPostscript()
+    print "sampleDistributionQQPlot = ", sampleDistributionQQPlot
 
     # HenryLine test
     size = 100
     normal = Normal(1)
     sample = normal.getSample(size)
     henryPlot = VisualTest.DrawHenryLine(sample)
-    henryPlot.draw("HenryPlot", 640, 480)
-    print "bitmap = ", henryPlot.getBitmap()
-    print "postscript = ", henryPlot.getPostscript()
+    print "HenryPlot = ", henryPlot
 
     # Clouds tests
     dimension = (2)
@@ -75,15 +61,11 @@ try:
 
     sampleSampleClouds = VisualTest.DrawClouds(
         sample2D, Normal(NumericalPoint(dimension, 2.0), NumericalPoint(dimension, 3.0), R).getSample(divmod(size, 2)[0]))
-    sampleSampleClouds.draw("sampleSampleClouds", 640, 480)
-    print "bitmap = ", sampleSampleClouds.getBitmap()
-    print "postscript = ", sampleSampleClouds.getPostscript()
+    print "sampleSampleClouds = ", sampleSampleClouds
 
     sampleDistributionClouds = VisualTest.DrawClouds(
         sample2D, Normal(NumericalPoint(dimension, 2.5), NumericalPoint(dimension, 1.0), R))
-    sampleDistributionClouds.draw("sampleDistributionClouds", 640, 480)
-    print "bitmap = ", sampleDistributionClouds.getBitmap()
-    print "postscript = ", sampleDistributionClouds.getPostscript()
+    print "sampleDistributionClouds = ", sampleDistributionClouds
 
     # LinearModel tests
     dimension = 2
@@ -102,15 +84,11 @@ try:
     lmtest = LinearModelFactory().build(firstSample, secondSample)
     drawLinearModelVTest = VisualTest.DrawLinearModel(
         firstSample, secondSample, lmtest)
-    drawLinearModelVTest.draw("LinearModelV", 640, 480)
-    print "bitmap = ", drawLinearModelVTest.getBitmap()
-    print "postscript = ", drawLinearModelVTest.getPostscript()
+    print "LinearModelV = ", drawLinearModelVTest
 
     drawLinearModelResidualTest = VisualTest.DrawLinearModelResidual(
         firstSample, secondSample, lmtest)
-    drawLinearModelResidualTest.draw("LinearModelR", 640, 480)
-    print "bitmap = ", drawLinearModelResidualTest.getBitmap()
-    print "postscript = ", drawLinearModelResidualTest.getPostscript()
+    print "LinearModelR = ", drawLinearModelResidualTest
 
     # CobWeb tests
     size = 100
@@ -132,14 +110,11 @@ try:
     outputSample = model(inputSample)
     cobwebValue = VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, "red", False)
-    cobwebValue.draw("cobwebValue", 640, 480)
-    print "bitmap = ", cobwebValue.getBitmap()
-    print "postscript = ", cobwebValue.getPostscript()
+    print "cobwebValue = ", cobwebValue
+    
     cobwebQuantile = VisualTest.DrawCobWeb(
         inputSample, outputSample, 0.7, 0.9, "red", False)
-    cobwebQuantile.draw("cobwebQuantile", 640, 480)
-    print "bitmap = ", cobwebQuantile.getBitmap()
-    print "postscript = ", cobwebQuantile.getPostscript()
+    print "cobwebQuantile = ", cobwebQuantile
 
     # KendallPlot tests
     size = 100
@@ -150,13 +125,10 @@ try:
     sample2 = copula2.getSample(size)
     sample2.setName("data 2")
     kendallPlot1 = VisualTest.DrawKendallPlot(sample1, copula2)
-    kendallPlot1.draw("KendallPlot1", 640, 480)
-    print "bitmap = ", kendallPlot1.getBitmap()
-    print "postscript = ", kendallPlot1.getPostscript()
+    print "KendallPlot1 = ", kendallPlot1
+    
     kendallPlot2 = VisualTest.DrawKendallPlot(sample2, sample1)
-    kendallPlot2.draw("KendallPlot2", 640, 480)
-    print "bitmap = ", kendallPlot2.getBitmap()
-    print "postscript = ", kendallPlot2.getPostscript()
+    print "KendallPlot2 = ", kendallPlot2
 
 except:
     import sys

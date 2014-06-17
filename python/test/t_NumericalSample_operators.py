@@ -45,13 +45,13 @@ try:
     sample2.add(point6)
     print "sample2=", repr(sample2)
 
-    # Operator +/-
+    # Operator +|-
     summation = NumericalSample(sample1 + sample2)
     substraction = NumericalSample(sample2 - sample1)
     print "sample1 + sample2=", repr(summation)
     print "sample2 - sample1=", repr(substraction)
 
-    # Operator +=/-=
+    # Operator +=|-=
     sample3 = NumericalSample(sample2)
     sample4 = NumericalSample(sample2)
     sample3 += sample1
@@ -68,6 +68,16 @@ try:
     scaling = NumericalPoint(2, 2.0)
     sample1 *= scaling
     print "after a scaling of vector=", repr(scaling), " sample1=", repr(sample1)
+
+    # operator /
+    sample5 = NumericalSample(sample2)
+    m = SquareMatrix([[1,2],[3,5]])
+    mDivision = sample5 / m
+    print "sample / m =", mDivision
+
+    # operator /=
+    sample5 /= m
+    print "sample /= m =", mDivision
 
 except:
     import sys

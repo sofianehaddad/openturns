@@ -33,8 +33,8 @@ static Factory<ARMAFactoryImplementation> RegisteredFactory("ARMAFactoryImplemen
 
 
 /* Default constructor */
-ARMAFactoryImplementation::ARMAFactoryImplementation(const String & name)
-  : PersistentObject(name)
+ARMAFactoryImplementation::ARMAFactoryImplementation()
+  : PersistentObject()
   , p_(0)
   , currentP_(0)
   , q_(0)
@@ -47,9 +47,8 @@ ARMAFactoryImplementation::ARMAFactoryImplementation(const String & name)
 /* Parameter constructor */
 ARMAFactoryImplementation::ARMAFactoryImplementation(const UnsignedInteger p,
     const UnsignedInteger q,
-    const Bool invertible,
-    const String & name)
-  : PersistentObject(name)
+    const Bool invertible)
+  : PersistentObject()
   , p_(1, p)
   , currentP_(p)
   , q_(1, q)
@@ -62,9 +61,8 @@ ARMAFactoryImplementation::ARMAFactoryImplementation(const UnsignedInteger p,
 /* Parameter constructor */
 ARMAFactoryImplementation::ARMAFactoryImplementation(const Indices & p,
     const Indices & q,
-    const Bool invertible,
-    const String & name)
-  : PersistentObject(name)
+    const Bool invertible)
+  : PersistentObject()
   , p_(p)
   , currentP_(0)
   , q_(q)

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Student distribution.
  */
-class Student
+class OT_API Student
   : public EllipticalDistribution
 {
 
@@ -84,9 +84,11 @@ public:
   NumericalScalar computeProbability(const Interval & interval) const;
 
   /** Get the PDFGradient of the distribution */
+  using EllipticalDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the CDFGradient of the distribution */
+  using EllipticalDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
   /** Compute the radial distribution CDF */

@@ -73,7 +73,7 @@ String HermitianMatrix::__str__(const String & offset) const
 }
 
 /* Get the dimension of the matrix */
-const UnsignedInteger HermitianMatrix::getDimension() const
+UnsignedInteger HermitianMatrix::getDimension() const
 {
   return getImplementation()->getDimension();
 }

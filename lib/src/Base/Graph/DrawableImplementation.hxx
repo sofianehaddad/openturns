@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Instances of this class can actually be plotted
  */
 
-class DrawableImplementation :
+class OT_API DrawableImplementation :
   public PersistentObject
 {
 

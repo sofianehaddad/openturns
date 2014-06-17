@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SamplingStrategy
  */
 
-class SamplingStrategy
+class OT_API SamplingStrategy
   : public TypedInterfaceObject<SamplingStrategyImplementation>
 {
 

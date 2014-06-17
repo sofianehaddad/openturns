@@ -32,8 +32,8 @@ try:
     point[1] = 1e3
     point[2] = 1.5
     point[3] = 2.e-6
-    sample.scale(point * 0.2)
-    sample.translate(point * 0.9)
+    sample *= point * 0.2
+    sample += point * 0.9
     # Compute the model over the sample
     response = model(sample)
     # Compute the min and max values taken by the model

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The Weibull distribution.
  */
-class Weibull
+class OT_API Weibull
   : public ContinuousDistribution
 {
   CLASSNAME;
@@ -90,9 +90,11 @@ public:
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
+  using ContinuousDistribution::computePDFGradient;
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
 
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
+  using ContinuousDistribution::computeCDFGradient;
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
 
 protected:

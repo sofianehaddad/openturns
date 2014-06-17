@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class WeibullFactory
  */
-class WeibullFactory
+class OT_API WeibullFactory
   : public DistributionImplementationFactory
 {
   CLASSNAME;
