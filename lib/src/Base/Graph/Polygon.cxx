@@ -34,6 +34,9 @@ static Factory<Polygon> RegisteredFactory("Polygon");
 /* Default constructor */
 Polygon::Polygon(const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
+  , colors_(0)
+  , colorsFileName_("")
 {
   // Nothing to do
   setEdgeColor(getColor());
@@ -43,6 +46,9 @@ Polygon::Polygon(const String & legend)
 Polygon::Polygon(const NumericalSample & data,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
+  , colors_(0)
+  , colorsFileName_("")
 {
   // Check data validity
   setData(data);
@@ -54,6 +60,9 @@ Polygon::Polygon(const NumericalSample & dataX,
                  const NumericalSample & dataY,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
+  , colors_(0)
+  , colorsFileName_("")
 {
   const UnsignedInteger size(dataX.getSize());
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples with different size.";
@@ -74,6 +83,9 @@ Polygon::Polygon(const NumericalPoint & dataX,
                  const NumericalPoint & dataY,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
+  , colors_(0)
+  , colorsFileName_("")
 {
   const UnsignedInteger size(dataX.getDimension());
   if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical points with different size.";
@@ -94,6 +106,9 @@ Polygon::Polygon(const NumericalSample & data,
                  const String & edgeColor,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
+  , colors_(0)
+  , colorsFileName_("")
 {
   NumericalSample dataFull;
   // If data is unidimensional, assume that it means Y values with indices as X values
@@ -111,7 +126,36 @@ Polygon::Polygon(const NumericalSample & data,
   // Check data validity
   setData(dataFull);
   setColor(color);
-  setEdgeColor(getColor());
+  setEdgeColor(edgeColor);
+}
+
+Polygon::Polygon(const NumericalSample & data,
+                 const Description & colors,
+                 const String & legend)
+  : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
+  , colors_(0)
+  , colorsFileName_("")
+{
+  if (colors.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the given list of colors is empty.";
+  NumericalSample dataFull;
+  // If data is unidimensional, assume that it means Y values with indices as X values
+  if (data.getDimension() == 1)
+  {
+    const UnsignedInteger size(data.getSize());
+    dataFull = NumericalSample(size, 2);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      dataFull[i][0] = i;
+      dataFull[i][1] = data[i][0];
+    }
+  }
+  else dataFull = data;
+  // Check data validity
+  setData(dataFull);
+  setColor(colors[0]);
+  setEdgeColor(colors[0]);
+  colors_ = colors;
 }
 
 /* String converter */
@@ -131,26 +175,44 @@ String Polygon::draw() const
   dataFileName_ = "";
   OSS oss;
   // Stores the data in a temporary file
-  oss << DrawableImplementation::draw() << "\n";
+  oss << DrawableImplementation::draw();
+  // Check if we have a strip
+  const Bool isStrip(colors_.getSize() > 0);
+  // Store the colors in a temporary file
+  if (isStrip)
+    {
+      colorsFileName_ = Path::BuildTemporaryFileName("RColors.txt.XXXXXX");
+      std::ofstream colorsFile(colorsFileName_.c_str(), std::ios::out);
+      for (UnsignedInteger i = 0; i < colors_.getSize(); ++i)
+	colorsFile << "\"" << colors_[i] << "\"\n";
+      colorsFile.close();
+      oss << "colorsOT <- scan(\"" << colorsFileName_ << "\", what=\"\")\n";
+    }
   // The specific R command for drawing
   oss << "polygon(dataOT[,1], dataOT[,2]"
-      << ", border=\"" << edgeColor_
-      << "\", lty=\"" << lineStyle_
-      << "\", col=\"" << color_
-      << "\", lwd=" << lineWidth_;
+      << ", border=";
+  if (isStrip) oss << "colorsOT";
+  else oss << "\"" << edgeColor_ << "\"";
+  oss << ", lty=\"" << lineStyle_ << "\""
+      << ", col=";
+  if (isStrip) oss << "colorsOT";
+  else oss << "\"" << color_ << "\"";
+  oss << ", lwd=" << lineWidth_;
   if (pointStyle_ != "none")
   {
     const String code((OSS() << getPointCode(pointStyle_)));
-    oss << ", type=\"b\""
-        << ", pch=" << (pointStyle_ == "dot" ? "\".\"" : code);
-  }
-  else
-  {
-    oss << ", type=\"l\"";
+    oss << ", pch=" << (pointStyle_ == "dot" ? "\".\"" : code);
   }
   oss << ")";
 
   return oss;
+}
+
+/* Clean method */
+void Polygon::clean() const
+{
+  if (remove(colorsFileName_.c_str()) == -1) LOGWARN(OSS(false) << "Warning: cannot remove file " << colorsFileName_);
+  DrawableImplementation::clean();
 }
 
 /* Clone method */

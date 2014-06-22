@@ -36,7 +36,7 @@ class OT_API BoxCoxEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;
-public:
+ public:
 
 
   /** Default constructor */
@@ -81,7 +81,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
+ protected:
 
   struct ComputeSamplePolicy
   {
@@ -95,29 +95,24 @@ protected:
       : input_(input)
       , output_(output)
       , evaluation_(evaluation)
-    {}
+    {
+      // Nothing to do
+    }
 
     inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
     {
-      for (UnsignedInteger i = 0; i < evaluation_.getInputDimension(); ++i)
-	{
-	  const NumericalScalar lambdaI(evaluation_.getLambda()[i]);
-	  const NumericalScalar shiftI(evaluation_.getShift()[i]);
-	  if (lambdaI != 0.0) evaluateNonZeroLambda(r, i, shiftI, lambdaI);
-	  else evaluateZeroLambda(r, i, shiftI);
-	}
-    }
-
-    inline void evaluateZeroLambda( const TBB::BlockedRange<UnsignedInteger> & r, const UnsignedInteger dimension, const NumericalScalar shiftI ) const
-    {
-      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][dimension] = log(input_[i][dimension] + shiftI);
-    }
-
-    inline void evaluateNonZeroLambda( const TBB::BlockedRange<UnsignedInteger> & r, const UnsignedInteger dimension, const NumericalScalar shiftI, const NumericalScalar lambdaI ) const
-    {
-      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][dimension] = (pow(input_[i][dimension] + shiftI, lambdaI) - 1.0) / lambdaI;
-    }
-  }; /* end struct ComputeSamplePolicy */
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        {
+          for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
+            {
+              const NumericalScalar lambda_j(evaluation_.getLambda()[j]);
+              const NumericalScalar logX(log(input_[i][j] + evaluation_.getShift()[j]));
+              if (std::abs(lambda_j * logX) < 1e-8) output_[i][j] = logX * (1.0 + 0.5 * lambda_j * logX);
+              else output_[i][j] = expm1(lambda_j * logX) / lambda_j;
+            } // j
+        } // i
+    } // operator ()
+  };  // struct ComputeSamplePolicy
 
   /** Lambda vector of the box cox transform */
   NumericalPoint lambda_;

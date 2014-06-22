@@ -146,6 +146,9 @@ void TemporalNormalProcess::initialize() const
     {
       try
         {
+          cumulatedScaling += scaling ;
+          // Unroll the regularization to optimize the computation
+          for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
           LOGINFO(OSS() << "Factor the covariance matrix");
           choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
           continuationCondition = false;
@@ -153,11 +156,8 @@ void TemporalNormalProcess::initialize() const
       // If it has not yet been computed, compute it and store it
       catch (InternalException & ex)
         {
-          cumulatedScaling += scaling ;
-          // Unroll the regularization to optimize the computation
-          for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
-          LOGWARN(OSS() << "Must regularize the covariance matrix, factor=" << cumulatedScaling);
           scaling *= 2.0;
+          LOGWARN(OSS() << "Must regularize the covariance matrix, factor=" << cumulatedScaling);
         }
     }
 
@@ -228,18 +228,24 @@ NumericalSample TemporalNormalProcess::getRealizationGibbs() const
 {
   const NumericalSample vertices(getMesh().getVertices());
   const UnsignedInteger size(vertices.getSize());
-  const UnsignedInteger nMax(ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-GibbsMaximumIteration"));
+  const UnsignedInteger nMax(std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-GibbsMaximumIteration")));
+  
   NumericalSample values(size, 1);
+  NumericalPoint diagonal(size);
   for (UnsignedInteger n = 0; n < nMax; ++n)
     {
       for (UnsignedInteger i = 0; i < size; ++i)
 	{
-	  const NumericalPoint delta(1, DistFunc::rNormal() - values[i][0]);
+	  // Here we work on the normalized covariance, ie the correlation
 	  NumericalSample covarianceRow(covarianceModel_.discretizeRow(vertices, i));
+	  diagonal[i] = covarianceRow[i][0];
+	  const NumericalPoint delta(1, (DistFunc::rNormal() - values[i][0]) / diagonal[i]);
 	  values += covarianceRow * delta;
 	}
       LOGINFO(OSS() << "Gibbs sampler - iteration " << n+1 << " over " << nMax);
     }
+  // We have to rescale the realization
+  for (UnsignedInteger i = 0; i < size; ++i) values[i] *= sqrt(diagonal[i]);
   return values;
 }
 

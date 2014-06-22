@@ -68,6 +68,11 @@ public:
           const String & edgeColor,
           const String & legend = "");
 
+  /** Constructor with parameters */
+  Polygon(const NumericalSample & data,
+          const Description & colors,
+          const String & legend = "");
+
   /** String converter */
   String __repr__() const;
 
@@ -90,6 +95,9 @@ public:
   /** Method load() stores the object through the StorageManager */
   void load(Advocate & adv);
 
+  /** Remove all the temporary files */
+  void clean() const;
+
 protected:
   /** Check fo data validity */
   virtual void checkData(const NumericalSample & data) const;
@@ -98,6 +106,11 @@ private:
   /** Color of the edge of the polygon */
   String edgeColor_;
 
+  /** List of colors for strip of polygons */
+  Description colors_;
+
+  /** Name of the file to store colors of a strip */
+  mutable String colorsFileName_;
 }; /* class Polygon */
 
 

@@ -99,24 +99,17 @@ protected:
 
     inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
     {
-      for (UnsignedInteger i = 0; i < evaluation_.getInputDimension(); ++i)
-	{
-	  const NumericalScalar lambdaI(evaluation_.getLambda()[i]);
-	  const NumericalScalar shiftI(evaluation_.getShift()[i]);
-	  if (lambdaI != 0.0) evaluateNonZeroLambda(r, i, shiftI, lambdaI);
-	  else evaluateZeroLambda(r, i, shiftI);
-	}
-    }
-
-    inline void evaluateZeroLambda( const TBB::BlockedRange<UnsignedInteger> & r, const UnsignedInteger dimension, const NumericalScalar shiftI ) const
-    {
-      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][dimension] = exp(input_[i][dimension] - shiftI);
-    }
-
-    inline void evaluateNonZeroLambda( const TBB::BlockedRange<UnsignedInteger> & r, const UnsignedInteger dimension, const NumericalScalar shiftI, const NumericalScalar lambdaI ) const
-    {
-      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][dimension] = pow(lambdaI * (input_[i][dimension] - shiftI) + 1.0, 1.0 / lambdaI);
-    }
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        {
+          for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
+            {
+              const NumericalScalar lambda_j(evaluation_.getLambda()[j]);
+              const NumericalScalar x(input_[i][j] - evaluation_.getShift()[j]);
+              if (std::abs(lambda_j * x * x) < 1e-8) output_[i][j] = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
+              else output_[i][j] = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
+            } // j
+        } // i
+    } // operator ()
   }; /* end struct ComputeSamplePolicy */
 
   /** lambda vector of the box cox transform */

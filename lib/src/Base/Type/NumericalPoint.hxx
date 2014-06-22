@@ -75,6 +75,9 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
+  /** Set small elements to zero */
+  NumericalPoint clean(const NumericalScalar threshold) const;
+
   /** Dimension accessor */
   inline UnsignedInteger getDimension() const
   {

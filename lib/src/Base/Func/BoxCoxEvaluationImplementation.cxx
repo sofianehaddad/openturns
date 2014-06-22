@@ -104,6 +104,7 @@ NumericalPoint BoxCoxEvaluationImplementation::getShift() const
 NumericalSample BoxCoxEvaluationImplementation::operator() (const NumericalSample & inS) const
 {
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
+  //  return NumericalMathEvaluationImplementation::operator()(inS);
   const UnsignedInteger size(inS.getSize());
   NumericalSample result(size, getInputDimension());
   const BoxCoxEvaluationImplementation::ComputeSamplePolicy policy( inS, result, *this );
@@ -135,8 +136,9 @@ NumericalPoint BoxCoxEvaluationImplementation::operator() (const NumericalPoint 
 
     // Applying the Box-Cox function
     const NumericalScalar lambda_i(lambda_[index]);
-    if (lambda_i == 0) result[index] = log(x);
-    else result[index] = ((pow(x, lambda_i) - 1.0) / lambda_i);
+    const NumericalScalar logX(log(x));
+    if (std::abs(lambda_i * logX) < 1e-8) result[index] = logX * (1.0 + 0.5 * lambda_i * logX);
+    else result[index] = expm1(lambda_i * logX) / lambda_i;
   }
   ++callsNumber_;
   if (isHistoryEnabled_)

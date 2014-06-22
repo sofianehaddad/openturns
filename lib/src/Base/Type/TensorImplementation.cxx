@@ -27,19 +27,16 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(TensorImplementation);
 
 static Factory<TensorImplementation> RegisteredFactory("TensorImplementation");
 
-
 /* Default constructor */
 TensorImplementation::TensorImplementation()
-  : PersistentCollection<NumericalScalar>(),
-    nbRows_(0),
-    nbColumns_(0),
-    nbSheets_(0)
+  : PersistentCollection<NumericalScalar>()
+  , nbRows_(0)
+  , nbColumns_(0)
+  , nbSheets_(0)
 {
   // Nothing to do
 }
@@ -50,10 +47,10 @@ TensorImplementation::TensorImplementation()
 TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim),
-    nbSheets_(sheetDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
+  , nbSheets_(sheetDim)
 {
   // Nothing to do
 }
@@ -63,10 +60,10 @@ TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim,
     const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim),
-    nbSheets_(sheetDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
+  , nbSheets_(sheetDim)
 {
   const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, elementsValues.getSize());
   for(UnsignedInteger i = 0; i < tensorSize; ++i)
@@ -82,6 +79,17 @@ TensorImplementation * TensorImplementation::clone() const
   return new TensorImplementation(*this);
 }
 
+
+/* Set small elements to zero */
+TensorImplementation TensorImplementation::clean(const NumericalScalar threshold) const
+{
+  // Nothing to do for nonpositive threshold
+  if (threshold <= 0.0) return *this;
+  TensorImplementation result(nbRows_, nbColumns_, nbSheets_);
+  for (UnsignedInteger k = 0; k < nbSheets_; ++k)
+    result.setSheet(k, getSheet(k).clean(threshold));
+  return result;
+}
 
 /* String converter */
 String TensorImplementation::__repr__() const

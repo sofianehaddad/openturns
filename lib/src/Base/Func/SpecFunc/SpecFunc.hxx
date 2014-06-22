@@ -227,6 +227,8 @@ public:
                                   const Bool principal = true);
   // Accurate value of log(1+z) for |z|<<1
   static NumericalComplex Log1p(const NumericalComplex & z);
+  // Accurate value of exp(z)-1 for |z|<<1
+  static NumericalComplex Expm1(const NumericalComplex & z);
   // Accurate value of log(1-exp(-x)) for all x
   static NumericalComplex Log1MExp(const NumericalScalar x);
   // MarcumQ- function

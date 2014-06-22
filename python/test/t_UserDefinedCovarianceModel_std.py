@@ -50,7 +50,7 @@ try:
             s = timeGrid.getValue(j)
             # We look for cov(s,t) ==> when adding to the collection, we compute cov(t,s)
             # Because of symmetry, we check the right index computation
-            print "myModel =  %.12g" % myModel(s, t)[0, 0], ", referenceModel=  %.12g" % referenceModel(s, t)[0, 0]
+            print "myModel =  %.6g" % myModel(s, t)[0, 0], ", referenceModel=  %.6g" % referenceModel(s, t)[0, 0]
     print "myModel.discretize()=", myModel.discretize(timeGrid)
 
 except:

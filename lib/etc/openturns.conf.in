@@ -386,6 +386,8 @@
 
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual    value="1.0e-6"  />
+  <FunctionalChaosAlgorithm-SmallSampleSize           value="1000"  />
+  <FunctionalChaosAlgorithm-MaximumTotalDegree        value="5"  />
   
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />

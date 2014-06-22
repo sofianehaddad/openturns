@@ -718,6 +718,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FunctionalChaosAlgorithm parameters //
   setAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6 );
+  setAsNumericalScalar( "FunctionalChaosAlgorithm-SmallSampleSize", 1000);
+  setAsNumericalScalar( "FunctionalChaosAlgorithm-MaximumMarginalDegree", 5 );
 
   // KrigingAlgorithm parameters //
   setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );

@@ -505,7 +505,11 @@ String NumericalSampleImplementation::storeToTemporaryFile() const
   {
     String separator = "";
     for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
-      dataFile << separator << std::setprecision(16) << operator[](i)[j];
+      {
+	const NumericalScalar value(operator[](i)[j]);
+	const Bool isNaN(value != value);
+      	dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+      }
     dataFile << Os::GetEndOfLine();
   }
   dataFile.close();
@@ -521,7 +525,11 @@ String NumericalSampleImplementation::streamToRFormat() const
   String separator("");
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
-      oss << separator << operator[](i)[j];
+      {
+	const NumericalScalar value(operator[](i)[j]);
+	const Bool isNaN(value != value);
+	oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+      }
   oss << "), nrow=" << size_ << ", ncol=" << dimension_ << ")";
   return oss;
 }

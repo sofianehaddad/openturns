@@ -27,7 +27,7 @@
 #include "NumericalMathEvaluationImplementation.hxx"
 #include "Collection.hxx"
 #include "PersistentCollection.hxx"
-#include "NumericalMathFunction.hxx"
+#include "KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -74,6 +74,7 @@ public:
 
   /** Operator () */
   virtual NumericalPoint operator()(const NumericalPoint & inP) const;
+  virtual NumericalSample operator()(const NumericalSample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -96,6 +97,7 @@ protected:
 
   NumericalSample inputSample_;
   NumericalSample outputSample_;
+  KDTree tree_;
 
 private:
 

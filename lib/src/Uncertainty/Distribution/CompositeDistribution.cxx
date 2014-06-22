@@ -49,9 +49,9 @@ CompositeDistribution::CompositeDistribution()
   , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
+  setParallel(false);
   setName("CompositeDistribution");
   setDimension(1);
-  setParallel(true);
   // Update the derivative attributes. It also recompute the range
   update();
 }
@@ -68,8 +68,8 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
   , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
+  setParallel(false);
   setName("CompositeDistribution");
-  setParallel(antecedent.getImplementation()->isParallel());
   // This method check everything and call the update() method.
   setFunctionAndAntecedent(function, antecedent);
 }
@@ -88,6 +88,7 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
   , increasing_(0)
   , solver_(Brent(SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon, SpecFunc::NumericalScalarEpsilon))
 {
+  setParallel(false);
   setName("CompositeDistribution");
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
@@ -110,7 +111,6 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
       xMin = std::min(xMin, values[i]);
       xMax = std::max(xMax, values[i]);
     }
-  setParallel(antecedent.getImplementation()->isParallel());
   setRange(Interval(xMin, xMax));
 }
 

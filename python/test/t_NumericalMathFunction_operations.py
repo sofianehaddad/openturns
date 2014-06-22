@@ -48,7 +48,6 @@ try:
     print "myDiff=", myDiff
     value = myDiff(inPoint)
     print "Value at ", inPoint, "=\n", value
-    print "Value at ", inPoint, "=\n", value.__str__()
     gradient = myDiff.gradient(inPoint)
     print "Gradient at ", inPoint, "=\n", gradient
     hessian = myDiff.hessian(inPoint)

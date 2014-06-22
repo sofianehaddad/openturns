@@ -34,8 +34,8 @@ CLASSNAMEINIT(HermitianMatrix);
 
 /* Default constructor */
 HermitianMatrix::HermitianMatrix()
-  : SquareComplexMatrix(0),
-    hasBeenHermitianized_(false)
+  : SquareComplexMatrix(0)
+  , hasBeenHermitianized_(false)
 {
   // Nothing to do
 }
@@ -43,8 +43,8 @@ HermitianMatrix::HermitianMatrix()
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 HermitianMatrix::HermitianMatrix(const UnsignedInteger dimension)
-  : SquareComplexMatrix(dimension, dimension),
-    hasBeenHermitianized_(false)
+  : SquareComplexMatrix(dimension, dimension)
+  , hasBeenHermitianized_(false)
 {
   // Nothing to do
 }
@@ -52,8 +52,8 @@ HermitianMatrix::HermitianMatrix(const UnsignedInteger dimension)
 
 /* Constructor with implementation */
 HermitianMatrix::HermitianMatrix(const Implementation & i)
-  : SquareComplexMatrix(i),
-    hasBeenHermitianized_(false)
+  : SquareComplexMatrix(i)
+  , hasBeenHermitianized_(false)
 {
   // Nothing to do
 }

@@ -160,7 +160,7 @@ NumericalComplex Uniform::computeCharacteristicFunction(const NumericalScalar x)
   NumericalComplex result;
   const NumericalScalar ax(a_ * x);
   const NumericalScalar bx(b_ * x);
-  if (std::abs(x) <= 1.0e-10) result = NumericalComplex(1.0, 0.5 * (ax + bx));
+  if (std::abs(ax) + std::abs(ax) <= 1.0e-5) result = NumericalComplex(1.0 - (ax * ax + ax * bx + bx * bx) / 6.0, 0.5 * (ax + bx));
   else
   {
     const NumericalScalar idenom(1.0 / (bx - ax));

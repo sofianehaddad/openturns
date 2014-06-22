@@ -27,8 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(MetaModelAlgorithm);
 
 static Factory<MetaModelAlgorithm> RegisteredFactory("MetaModelAlgorithm");
@@ -37,15 +35,17 @@ static Factory<MetaModelAlgorithm> RegisteredFactory("MetaModelAlgorithm");
 MetaModelAlgorithm::MetaModelAlgorithm()
   : PersistentObject()
 {
+  // Nothing to do
 }
 
 /* Constructor with parameters */
 MetaModelAlgorithm::MetaModelAlgorithm(const Distribution & distribution,
                                        const NumericalMathFunction & model)
-  : PersistentObject(),
-    distribution_(distribution),
-    model_(model)
+  : PersistentObject()
+  , distribution_(distribution)
+  , model_(model)
 {
+  // Nothing to do
 }
 
 /* Virtual constructor */

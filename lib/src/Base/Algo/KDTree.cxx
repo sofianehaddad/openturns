@@ -39,6 +39,15 @@ CLASSNAMEINIT(KDTree);
  */
 
 /* Default constructor */
+KDTree::KDTree()
+  : Object()
+  , points_(0, 0)
+  , p_root_(0)
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
 KDTree::KDTree(const NumericalSample & points)
   : Object()
   , points_(points)

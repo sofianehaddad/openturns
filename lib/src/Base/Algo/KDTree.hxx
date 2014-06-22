@@ -40,6 +40,9 @@ class KDTree
   CLASSNAME;
 public:
 
+  /** Default constructor */
+  KDTree();
+
   /** Parameter constructor */
   KDTree(const NumericalSample & sample);
 

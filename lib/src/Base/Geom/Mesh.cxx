@@ -46,7 +46,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
-  , tree_(NumericalSample(0, 0))
+  , tree_()
 {
   // Nothing to do
 }
@@ -57,7 +57,7 @@ Mesh::Mesh(const NumericalSample & vertices,
   : DomainImplementation(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
-  , tree_(NumericalSample(0, 0))
+  , tree_()
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);

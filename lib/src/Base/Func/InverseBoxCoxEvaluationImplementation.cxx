@@ -131,7 +131,7 @@ NumericalPoint InverseBoxCoxEvaluationImplementation::operator() (const Numerica
   {
     const NumericalScalar x(inP[index] - shift_[index]);
     const NumericalScalar lambda_i(lambda_[index]);
-    if (lambda_i == 0) result[index] = exp(x);
+    if (std::abs(lambda_i * x * x) < 1e-8) result[index] = exp(x) * (1.0 - 0.5 * lambda_i * x * x);
     else
     {
       const NumericalScalar evaluation(lambda_i * x + 1.0);

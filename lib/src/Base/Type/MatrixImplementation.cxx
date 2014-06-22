@@ -555,9 +555,8 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
-      NumericalScalar value((*this)(i, j));
-      if (fabs(value) <= threshold) value = 0.0;
-      else result(i, j) = threshold * (round(value / threshold));
+      const NumericalScalar value((*this)(i, j));
+      if (fabs(value) > threshold) result(i, j) = threshold * (round(value / threshold));
     }
   return result;
 }
@@ -571,9 +570,8 @@ MatrixImplementation MatrixImplementation::cleanSym(const NumericalScalar thresh
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = j; i < nbRows_; ++i)
     {
-      NumericalScalar value((*this)(i, j));
-      if (fabs(value) <= threshold) value = 0.0;
-      else result(i, j) = threshold * (round(value / threshold));
+      const NumericalScalar value((*this)(i, j));
+      if (fabs(value) > threshold) result(i, j) = threshold * (round(value / threshold));
     }
   return result;
 }

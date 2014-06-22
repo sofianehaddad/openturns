@@ -823,6 +823,13 @@ NumericalComplex SpecFunc::Log1p(const NumericalComplex & z)
   return log(1.0 + z);
 }
 
+// Accurate evaluation of exp(z)-1 for |z|<<1
+NumericalComplex SpecFunc::Expm1(const NumericalComplex & z)
+{
+  if (std::norm(z) < 1e-5) return z * (1.0 + 0.5 * z * (1.0 + z / 3.0));
+  return exp(z) - 1.0;
+}
+
 // Accurate evaluation of log(1-exp(-x)) for all x > 0
 NumericalComplex SpecFunc::Log1MExp(const NumericalScalar x)
 {

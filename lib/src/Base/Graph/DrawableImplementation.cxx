@@ -1358,7 +1358,7 @@ String DrawableImplementation::draw() const
   if (size * dimension > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
   {
     dataFileName_ = data_.storeToTemporaryFile();
-    return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))";
+    return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))" << "\n";
   }
   return OSS().setPrecision(20) << "dataOT <- " << data_.streamToRFormat() << "\n";
 }

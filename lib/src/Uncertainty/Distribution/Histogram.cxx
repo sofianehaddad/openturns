@@ -27,6 +27,7 @@
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -154,11 +155,11 @@ NumericalScalar Histogram::computePDF(const NumericalPoint & point) const
   UnsignedInteger iMin(0);
   UnsignedInteger iMax(size-1);
   while (iMax > iMin + 1)
-  {
+    {
       const UnsignedInteger i((iMin + iMax) / 2);
       if (x < cumulatedWidth_[i]) iMax = i;
       else iMin = i;
-  }
+    }
   return collection_[iMax].getHeight();
 }
 
@@ -177,7 +178,7 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
   SignedInteger iMin(-1);
   UnsignedInteger iMax(size - 1);
   while (iMax > iMin + 1)
-  {
+    {
       const UnsignedInteger i((iMin + iMax) / 2);
       if (x < cumulatedWidth_[i]) iMax = i;
       else iMin = i;
@@ -188,29 +189,23 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Histogram::computeCharacteristicFunction(const NumericalScalar x) const
-    {
-  const NumericalComplex generic(DistributionImplementation::computeCharacteristicFunction(x));
+{
+  if (x == 0.0) return 1.0;
   NumericalComplex result(0.0);
-  if (x == 0.0) result = 1.0;
   const UnsignedInteger size(collection_.getSize());
-  if (std::abs(x) < 1e-10)
+  if (std::abs(cumulatedWidth_[size - 1] * x) < 1e-10)
     {
-      result = NumericalComplex(collection_[0].getHeight() * collection_[0].getWidth());
-      for (UnsignedInteger k = 1; k < size; ++k)
-        {
-          result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * collection_[k].getWidth();
+      NumericalScalar term(collection_[0].getHeight() * cumulatedWidth_[0] * cumulatedWidth_[0]);
+      for (UnsignedInteger k = 1; k < size; ++k) term += collection_[k].getHeight() * (cumulatedWidth_[k-1] + cumulatedWidth_[k]) * collection_[k].getWidth();
+      result = NumericalComplex(1.0, 0.5 * x * term);
     }
-      result *= std::exp(NumericalComplex(0.0, first_));
-  }
   else
     {
-      for (UnsignedInteger k = 1; k < size; ++k)
-        {
-          result += collection_[k].getHeight() * std::exp(NumericalComplex(0.0, x * cumulatedWidth_[k - 1])) * (std::exp(NumericalComplex(0.0, x * collection_[k].getWidth())) - 1.0);
-        }
-      result *= std::exp(NumericalComplex(0.0, first_)) / NumericalComplex(0.0, x);
+      result = collection_[0].getHeight() * SpecFunc::Expm1(NumericalComplex(0.0, cumulatedWidth_[0] * x));
+      for (UnsignedInteger k = 1; k < size; ++k) result += collection_[k].getHeight() * (std::exp(NumericalComplex(0.0, cumulatedWidth_[k] * x)) - std::exp(NumericalComplex(0.0, cumulatedWidth_[k-1] * x)));
+      result /= NumericalComplex(0.0, x);
     }
-  if (std::abs(result - generic) > 1.0e-6) std::cerr << "for x=" << x << ", generic=" << generic << ", comp=" << result << std::endl;
+  result *= std::exp(NumericalComplex(0.0, first_ * x));
   return result;
 }
 
@@ -232,7 +227,7 @@ NumericalPoint Histogram::computeCDFGradient(const NumericalPoint & point) const
 
 /* Get the quantile of the distribution */
 NumericalScalar Histogram::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+                                                 const Bool tail) const
 {
   const NumericalScalar p(tail ? 1.0 - prob : prob);
   const UnsignedInteger size(collection_.getSize());
@@ -242,23 +237,23 @@ NumericalScalar Histogram::computeScalarQuantile(const NumericalScalar prob,
   UnsignedInteger currentIndex(index);
   // Basic search: upper bound. The loop must end because cumulatedSurface_[size - 1] = 1.0 and prob < 1.0
   while (p >= currentProba)
-  {
-    ++currentIndex;
-    currentProba = cumulatedSurface_[currentIndex];
-  }
+    {
+      ++currentIndex;
+      currentProba = cumulatedSurface_[currentIndex];
+    }
   // At the end of the loop, we are sure that currentProba > p
   // If index < currentIndex, it means that p is associated with bin number currentIndex. Do a linear interpolation.
   if (index < currentIndex)
-  {
-    // currentIndex is now the number of the bin associated with prob
-    return first_ + cumulatedWidth_[currentIndex] + collection_[currentIndex].getWidth() * (p - currentProba) / collection_[currentIndex].getSurface();
-  }
+    {
+      // currentIndex is now the number of the bin associated with prob
+      return first_ + cumulatedWidth_[currentIndex] + collection_[currentIndex].getWidth() * (p - currentProba) / collection_[currentIndex].getSurface();
+    }
   // Here we know that we have to go downstairs. We must check that currentIndex remains >= 0 in the loop.
   while ((p < currentProba) && (currentIndex > 0))
-  {
-    --currentIndex;
-    currentProba = cumulatedSurface_[currentIndex];
-  }
+    {
+      --currentIndex;
+      currentProba = cumulatedSurface_[currentIndex];
+    }
   // At the end of the loop, either p < cumulatedSurface_[0], which means that prob is associated with the first bin...
   if (p < currentProba) return first_ + collection_[0].getWidth() * p / currentProba;
   // ... or p >= cumulatedSurface_[currentIndex], which means that p is associated with the bin number currentIndex + 1. Do a linear interpolation.
@@ -272,12 +267,12 @@ void Histogram::computeMean() const
   const UnsignedInteger size(collection_.getSize());
   NumericalScalar lower(0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const NumericalScalar width(collection_[i].getWidth());
-    NumericalScalar upper(lower + width);
-    mean += 0.5 * collection_[i].getSurface() * (lower + upper);
-    lower = upper;
-  }
+    {
+      const NumericalScalar width(collection_[i].getWidth());
+      NumericalScalar upper(lower + width);
+      mean += 0.5 * collection_[i].getSurface() * (lower + upper);
+      lower = upper;
+    }
   mean_ = NumericalPoint(1, mean);
   isAlreadyComputedMean_ = true;
 }
@@ -291,12 +286,12 @@ void Histogram::computeCovariance() const
   // Since variance is invariant by translation, we center the data for numerical stability
   NumericalScalar lower(first_ - getMean()[0]);
   for (UnsignedInteger i = 0; i < size; i++)
-  {
-    const NumericalScalar width(collection_[i].getWidth());
-    NumericalScalar upper(lower + width);
-    value += collection_[i].getSurface() * (lower * lower + lower * upper + upper * upper);
-    lower = upper;
-  }
+    {
+      const NumericalScalar width(collection_[i].getWidth());
+      NumericalScalar upper(lower + width);
+      value += collection_[i].getSurface() * (lower * lower + lower * upper + upper * upper);
+      lower = upper;
+    }
   covariance_(0, 0) = value / 3.0;
   isAlreadyComputedCovariance_ = true;
 }
@@ -310,11 +305,11 @@ NumericalPoint Histogram::getStandardMoment(const UnsignedInteger n) const
   NumericalScalar xPrec(-1.0);
   const NumericalScalar factor(2.0 / cumulatedWidth_[size - 1]);
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const NumericalScalar x(xPrec + collection_[i].getWidth() * factor);
-    value += (std::pow(x, n + 1) - std::pow(xPrec, n + 1)) * collection_[i].getHeight();
-    xPrec = x;
-  }
+    {
+      const NumericalScalar x(xPrec + collection_[i].getWidth() * factor);
+      value += (std::pow(x, n + 1) - std::pow(xPrec, n + 1)) * collection_[i].getHeight();
+      xPrec = x;
+    }
   value /= (n + 1) * factor;
   return NumericalPoint(1, value);
 }
@@ -340,20 +335,20 @@ Histogram::NumericalPointWithDescriptionCollection Histogram::getParametersColle
   point[0] = first_;
   description[0] = "first";
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    point[2 * i + 1] = collection_[i].getWidth();
-    point[2 * i + 2] = collection_[i].getHeight();
     {
-      OSS oss;
-      oss << "width_" << i;
-      description[2 * i + 1] = oss;
+      point[2 * i + 1] = collection_[i].getWidth();
+      point[2 * i + 2] = collection_[i].getHeight();
+      {
+        OSS oss;
+        oss << "width_" << i;
+        description[2 * i + 1] = oss;
+      }
+      {
+        OSS oss;
+        oss << "height_" << i;
+        description[2 * i + 2] = oss;
+      }
     }
-    {
-      OSS oss;
-      oss << "height_" << i;
-      description[2 * i + 2] = oss;
-    }
-  }
   point.setDescription(description);
   point.setName(getDescription()[0]);
   parameters[0] = point;
@@ -369,12 +364,12 @@ Histogram::NumericalPointWithDescriptionCollection Histogram::getParametersColle
 void Histogram::setFirst(const NumericalScalar first)
 {
   if (first != first_)
-  {
-    first_ = first;
-    isAlreadyComputedMean_ = false;
-    // The covariance does not depend on first
-    computeRange();
-  }
+    {
+      first_ = first;
+      isAlreadyComputedMean_ = false;
+      // The covariance does not depend on first
+      computeRange();
+    }
 }
 
 NumericalScalar Histogram::getFirst() const
@@ -392,25 +387,25 @@ void Histogram::setPairCollection(const HistogramPairCollection & collection)
   cumulatedSurface_ = NumericalPoint(size);
   // first, check that all the heights and widths are >=0
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    NumericalScalar height(collection[i].getHeight());
-    if (height < 0.0) throw InvalidArgumentException(HERE) << "Error: all the heights must be >= 0, here values=" << collection;
-    NumericalScalar width(collection[i].getWidth());
-    if (width <= 0.0) throw InvalidArgumentException(HERE) << "Error: all the widths must be > 0, here value=" << collection;
-    surface += height * width;
-    cumulatedWidth_[i] = width + (i == 0 ? 0 : cumulatedWidth_[i - 1]);
-    cumulatedSurface_[i] = surface;
-  }
+    {
+      NumericalScalar height(collection[i].getHeight());
+      if (height < 0.0) throw InvalidArgumentException(HERE) << "Error: all the heights must be >= 0, here values=" << collection;
+      NumericalScalar width(collection[i].getWidth());
+      if (width <= 0.0) throw InvalidArgumentException(HERE) << "Error: all the widths must be > 0, here value=" << collection;
+      surface += height * width;
+      cumulatedWidth_[i] = width + (i == 0 ? 0 : cumulatedWidth_[i - 1]);
+      cumulatedSurface_[i] = surface;
+    }
   // Check if the surface is strictly positive
   if (surface < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultCDFEpsilon")) throw InvalidArgumentException(HERE) << "Error: the surface of the histogram is zero.";
   // Normalization
   collection_ = HistogramPairCollection(size);
   NumericalScalar normalizationFactor(1.0 / surface);
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    collection_[i] = HistogramPair(collection[i].getWidth(), collection[i].getHeight() * normalizationFactor);
-    cumulatedSurface_[i] *= normalizationFactor;
-  }
+    {
+      collection_[i] = HistogramPair(collection[i].getWidth(), collection[i].getHeight() * normalizationFactor);
+      cumulatedSurface_[i] *= normalizationFactor;
+    }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   computeRange();
@@ -443,29 +438,29 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // If the histogram is completely at the right or at the left of the plot range,
   // just draw an horizontal line
   if ((xMax < first_) || (xMin > first_ + cumulatedWidth_[size - 1]))
-  {
-    NumericalSample data(2, 2);
-    data[0][0] = xMin;
-    data[0][1] = 0.0;
-    data[1][0] = xMax;
-    data[1][1] = 0.0;
-    graphPDF.add(Curve(data, "red", "solid", 2, title));
-    return graphPDF;
-  }
+    {
+      NumericalSample data(2, 2);
+      data[0][0] = xMin;
+      data[0][1] = 0.0;
+      data[1][0] = xMax;
+      data[1][1] = 0.0;
+      graphPDF.add(Curve(data, "red", "solid", 2, title));
+      return graphPDF;
+    }
   // Find the index of the left bar to draw
   UnsignedInteger indexLeft(0);
   while (first_ + cumulatedWidth_[indexLeft] < xMin) ++indexLeft;
   // Another special case: the plot range covers only partially a unique bar
   if (first_ + cumulatedWidth_[indexLeft] >= xMax)
-  {
-    NumericalSample data(2, 2);
-    data[0][0] = xMin;
-    data[0][1] = collection_[indexLeft].getHeight();
-    data[1][0] = xMax;
-    data[1][1] = collection_[indexLeft].getHeight();
-    graphPDF.add(Curve(data, "red", "solid", 2, title));
-    return graphPDF;
-  }
+    {
+      NumericalSample data(2, 2);
+      data[0][0] = xMin;
+      data[0][1] = collection_[indexLeft].getHeight();
+      data[1][0] = xMax;
+      data[1][1] = collection_[indexLeft].getHeight();
+      graphPDF.add(Curve(data, "red", "solid", 2, title));
+      return graphPDF;
+    }
   // Find the index of the right bar to draw
   UnsignedInteger indexRight(indexLeft);
   UnsignedInteger shiftFull(0);
@@ -477,66 +472,66 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // !!! Only the first part of the graph has a label !!!
   // The first class is completely included
   if (xMin <= first_)
-  {
-    NumericalSample data(2, 2);
-    data[0][0] = xMin;
-    data[0][1] = 0.0;
-    data[1][0] = first_;
-    data[1][1] = 0.0;
-    dataFull.add(data);
-  }
+    {
+      NumericalSample data(2, 2);
+      data[0][0] = xMin;
+      data[0][1] = 0.0;
+      data[1][0] = first_;
+      data[1][1] = 0.0;
+      dataFull.add(data);
+    }
   // The first class that appears in the graph is only partially included
   else
-  {
-    NumericalSample data(3, 2);
-    data[0][0] = xMin;
-    data[0][1] = collection_[indexLeft].getHeight();
-    data[1][0] = first_ + cumulatedWidth_[indexLeft];
-    data[1][1] = data[0][1];
-    data[2][0] = data[1][0];
-    data[2][1] = 0.0;
-    dataFull.add(data);
-    shiftFull = 1;
-  }
+    {
+      NumericalSample data(3, 2);
+      data[0][0] = xMin;
+      data[0][1] = collection_[indexLeft].getHeight();
+      data[1][0] = first_ + cumulatedWidth_[indexLeft];
+      data[1][1] = data[0][1];
+      data[2][0] = data[1][0];
+      data[2][1] = 0.0;
+      dataFull.add(data);
+      shiftFull = 1;
+    }
   // Central part of the graph
   NumericalScalar startX(first_);
   if (indexLeft + shiftFull > 0) startX += cumulatedWidth_[indexLeft + shiftFull];
   for (UnsignedInteger i = indexLeft + shiftFull; i < indexRight; ++i)
-  {
-    NumericalSample data(4, 2);
-    data[0][0] = startX;
-    data[0][1] = 0.0;
-    data[1][0] = startX;
-    data[1][1] = collection_[i].getHeight();
-    startX += collection_[i].getWidth();
-    data[2][0] = startX;
-    data[2][1] = collection_[i].getHeight();
-    data[3][0] = startX;
-    data[3][1] = 0.0;
-    dataFull.add(data);
-  }
+    {
+      NumericalSample data(4, 2);
+      data[0][0] = startX;
+      data[0][1] = 0.0;
+      data[1][0] = startX;
+      data[1][1] = collection_[i].getHeight();
+      startX += collection_[i].getWidth();
+      data[2][0] = startX;
+      data[2][1] = collection_[i].getHeight();
+      data[3][0] = startX;
+      data[3][1] = 0.0;
+      dataFull.add(data);
+    }
   // The last class is completely included
   if (indexRight == size)
-  {
-    NumericalSample data(2, 2);
-    data[0][0] = first_ + cumulatedWidth_[size - 1];
-    data[0][1] = 0.0;
-    data[1][0] = xMax;
-    data[1][1] = 0.0;
-    dataFull.add(data);
-  }
+    {
+      NumericalSample data(2, 2);
+      data[0][0] = first_ + cumulatedWidth_[size - 1];
+      data[0][1] = 0.0;
+      data[1][0] = xMax;
+      data[1][1] = 0.0;
+      dataFull.add(data);
+    }
   // The last class that appears in the graph is only partially included
   else
-  {
-    NumericalSample data(3, 2);
-    data[0][0] = first_ + cumulatedWidth_[indexRight - 1];
-    data[0][1] = 0.0;
-    data[1][0] = data[0][0];
-    data[1][1] = collection_[indexRight].getHeight();
-    data[2][0] = xMax;
-    data[2][1] = collection_[indexRight].getHeight();
-    dataFull.add(data);
-  }
+    {
+      NumericalSample data(3, 2);
+      data[0][0] = first_ + cumulatedWidth_[indexRight - 1];
+      data[0][1] = 0.0;
+      data[1][0] = data[0][0];
+      data[1][1] = collection_[indexRight].getHeight();
+      data[2][0] = xMax;
+      data[2][1] = collection_[indexRight].getHeight();
+      dataFull.add(data);
+    }
   Curve curve(dataFull, "red", "solid", 2, "");
   curve.setLegend(title);
   graphPDF.add(curve);

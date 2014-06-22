@@ -87,7 +87,8 @@ Indices IntervalMesher::getDiscretization() const
 
 /* Here is the interface that all derived class must implement */
 
-Mesh IntervalMesher::build(const Interval & interval) const
+Mesh IntervalMesher::build(const Interval & interval,
+			   const Bool diamond) const
 {
   const UnsignedInteger dimension(interval.getDimension());
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
@@ -120,28 +121,28 @@ Mesh IntervalMesher::build(const Interval & interval) const
       // First the vertices
       NumericalSample vertices(0, 2);
       NumericalPoint point(2);
-      for (UnsignedInteger i = 0; i <= m; ++i)
-        {
-          point[0] = (i * interval.getLowerBound()[0] + (m - i) * interval.getUpperBound()[0]) / m;
-          for (UnsignedInteger j = 0; j <= n; ++j)
-            {
-              point[1] = (j * interval.getLowerBound()[1] + (n - j) * interval.getUpperBound()[1]) / n;
+      for (UnsignedInteger j = 0; j <= n; ++j)
+	{
+	  point[1] = ((n - j) * interval.getLowerBound()[1] + j * interval.getUpperBound()[1]) / n;
+	  for (UnsignedInteger i = 0; i <= m; ++i)
+	    {
+	      point[0] = ((m - i) * interval.getLowerBound()[0] + i * interval.getUpperBound()[0]) / m;
               vertices.add(point);
-            } // j
-        } // i
+            } // i
+        } // j
       // Second the simplices
       Mesh::IndicesCollection simplices(0, Indices(3));
       UnsignedInteger vertexIndex(0);
       Indices index(3);
-      for (UnsignedInteger i = 0; i < m; ++i)
+      for (UnsignedInteger j = 0; j < n; ++j)
         {
-          for (UnsignedInteger j = 0; j < n; ++j)
+	  for (UnsignedInteger i = 0; i < m; ++i)
             {
               index[0] = vertexIndex;
               index[1] = vertexIndex + 1;
-              index[2] = vertexIndex + 1 + n;
+              index[2] = vertexIndex + 1 + m;
               simplices.add(index);
-              index[0] = vertexIndex + 2 + n;
+              index[0] = vertexIndex + 2 + m;
               simplices.add(index);
               ++vertexIndex;
             } // j

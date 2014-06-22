@@ -90,6 +90,21 @@ const NumericalScalar & NumericalPoint::operator[](const UnsignedInteger index) 
   return PersistentCollection<NumericalScalar>::operator[](index);
 }
 
+/* Set small elements to zero */
+NumericalPoint NumericalPoint::clean(const NumericalScalar threshold) const
+{
+  // Nothing to do for nonpositive threshold
+  if (threshold <= 0.0) return *this;
+  const UnsignedInteger size(getSize());
+  NumericalPoint result(size, 0.0);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const NumericalScalar value(operator[](i));
+      if (fabs(value) > threshold) result[i] = threshold * (round(value / threshold));
+    }
+  return result;
+}
+
 
 /* String converter */
 String NumericalPoint::__repr__() const
