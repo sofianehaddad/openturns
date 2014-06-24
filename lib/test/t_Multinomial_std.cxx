@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     {
       // Instanciate one distribution object
-      Multinomial distribution(5, NumericalPoint(3, 0.25));
+      Multinomial distribution;
     }
 
     // Instanciate one distribution object
