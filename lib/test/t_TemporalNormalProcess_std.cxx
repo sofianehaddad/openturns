@@ -56,11 +56,14 @@ int main(int argc, char *argv[])
     const UnsignedInteger n(11);
 
     RegularGrid myTimeGrid(tmin, step, n);
-    const UnsignedInteger size(10000);
+    const UnsignedInteger size(100);
 
     TemporalNormalProcess myProcess(myModel, myTimeGrid);
     fullprint << "myProcess=" << myProcess << std::endl;
     fullprint << "is stationary? " << myProcess.isStationary() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
     fullprint << "mean over " << size << " realizations=" << myProcess.getSample(size).computeMean() << std::endl;
 
     /* Second order model with parameters */
@@ -70,6 +73,9 @@ int main(int argc, char *argv[])
     TemporalNormalProcess myProcess1(myCovModel, myTimeGrid);
     fullprint << "myProcess1=" << myProcess1 << std::endl;
     fullprint << "is stationary? " << myProcess1.isStationary() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With constant trend */
@@ -77,14 +83,20 @@ int main(int argc, char *argv[])
     TemporalNormalProcess myProcess2(trend, myCovModel, myTimeGrid);
     fullprint << "myProcess2=" << myProcess2 << std::endl;
     fullprint << "is stationary? " << myProcess2.isStationary() << std::endl;
-    fullprint << "mean over " << size << " realizations=" << myProcess2.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With varying trend */
     TrendTransform trend3(NumericalMathFunction("t", "sin(t)"));
     TemporalNormalProcess myProcess3(trend3, myCovModel, myTimeGrid);
     fullprint << "myProcess3=" << myProcess3 << std::endl;
     fullprint << "is stationary? " << myProcess3.isStationary() << std::endl;
-    fullprint << "mean over " << size << " realizations=" << myProcess3.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
   }
   catch (TestFailed & ex)
   {

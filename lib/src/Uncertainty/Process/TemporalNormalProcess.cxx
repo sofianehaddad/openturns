@@ -210,7 +210,7 @@ void TemporalNormalProcess::setMesh(const Mesh & mesh)
 Field TemporalNormalProcess::getRealization() const
 {
   NumericalSample values;
-  if ((getDimension() == 1) && ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-UseGibbsGenerator") == 1) values = getRealizationGibbs();
+  if ((getDimension() == 1) && ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler") == 1) values = getRealizationGibbs();
   else values = getRealizationCholesky();
   // If constant trend
   if (isTrendStationary())
@@ -245,7 +245,7 @@ NumericalSample TemporalNormalProcess::getRealizationGibbs() const
       LOGINFO(OSS() << "Gibbs sampler - iteration " << n+1 << " over " << nMax);
     }
   // We have to rescale the realization
-  for (UnsignedInteger i = 0; i < size; ++i) values[i] *= sqrt(diagonal[i]);
+  for (UnsignedInteger i = 0; i < size; ++i) values[i] *= diagonal[i];
   return values;
 }
 

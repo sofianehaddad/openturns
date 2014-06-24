@@ -246,7 +246,8 @@ NumericalMathFunctionImplementation * NumericalMathFunctionImplementation::clone
 /* Comparison operator */
 Bool NumericalMathFunctionImplementation::operator ==(const NumericalMathFunctionImplementation & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return (*p_evaluationImplementation_ == *other.p_evaluationImplementation_) && (*p_gradientImplementation_ == *other.p_gradientImplementation_) && (*p_hessianImplementation_ == *other.p_hessianImplementation_);
 }
 
 /* String converter */

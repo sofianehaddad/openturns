@@ -39,15 +39,15 @@ static Factory<FunctionalChaosResult> RegisteredFactory("FunctionalChaosResult")
 
 /* Default constructor */
 FunctionalChaosResult::FunctionalChaosResult()
-  : MetaModelResult(),
-    distribution_(),
-    transformation_(),
-    inverseTransformation_(),
-    composedModel_(),
-    orthogonalBasis_(),
-    I_(0),
-    alpha_k_(0, 0),
-    Psi_k_(0)
+  : MetaModelResult()
+  , distribution_()
+  , transformation_()
+  , inverseTransformation_()
+  , composedModel_()
+  , orthogonalBasis_()
+  , I_(0)
+  , alpha_k_(0, 0)
+  , Psi_k_(0)
 {
   // Nothing to do
 }
@@ -65,16 +65,16 @@ FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model
     const NumericalMathFunctionCollection & Psi_k,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors)
-  : MetaModelResult(model, NumericalMathFunction(), residuals, relativeErrors),
-    distribution_(distribution),
-    transformation_(transformation),
-    inverseTransformation_(inverseTransformation),
-    composedModel_(composedModel),
-    orthogonalBasis_(orthogonalBasis),
-    I_(I),
-    alpha_k_(alpha_k),
-    Psi_k_(Psi_k),
-    composedMetaModel_()
+  : MetaModelResult(model, NumericalMathFunction(), residuals, relativeErrors)
+  , distribution_(distribution)
+  , transformation_(transformation)
+  , inverseTransformation_(inverseTransformation)
+  , composedModel_(composedModel)
+  , orthogonalBasis_(orthogonalBasis)
+  , I_(I)
+  , alpha_k_(alpha_k)
+  , Psi_k_(Psi_k)
+  , composedMetaModel_()
 {
   // The composed meta model will be a dual linear combination
   composedMetaModel_ = NumericalMathFunction(Psi_k, alpha_k);

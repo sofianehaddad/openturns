@@ -221,7 +221,8 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
 /* Comparison operator */
 Bool NumericalMathFunction::operator ==(const NumericalMathFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
 }
 
 /* String converter */

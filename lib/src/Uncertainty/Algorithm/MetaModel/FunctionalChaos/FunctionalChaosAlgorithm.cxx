@@ -47,11 +47,14 @@
 #include "KernelSmoothing.hxx"
 #include "NormalCopulaFactory.hxx"
 #include "UserDefined.hxx"
+#include "UniformFactory.hxx"
+#include "NormalFactory.hxx"
 #include "ComposedDistribution.hxx"
 #include "StandardDistributionPolynomialFactory.hxx"
 #include "LeastSquaresMetaModelSelectionFactory.hxx"
 #include "LAR.hxx"
 #include "CorrectedLeaveOneOut.hxx"
+#include "FittingTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -170,12 +173,20 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   const UnsignedInteger inputDimension(inputSample.getDimension());
   Collection< Distribution > marginals(inputDimension);
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
+  // The strategy is to test first a Uniform distribution, then a Normal distribution, then a kernel smoothing for the marginals
   KernelSmoothing ks;
+  Collection< DistributionFactory > factories(0);
+  factories.add(UniformFactory());
+  factories.add(NormalFactory());
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
     {
-      marginals[i] = ks.build(inputSample.getMarginal(i));
+      const Distribution candidate(FittingTest::BestModelKolmogorov(inputSample.getMarginal(i), factories));
+      if (FittingTest::GetLastResult().getPValue() > 1e-3) marginals[i] = candidate;
+      else marginals[i] = ks.build(inputSample.getMarginal(i));
+      LOGINFO(OSS() << "Selected distribution for marginal " << i << "=" << marginals[i]);
       polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
     }
+  // For the dependence structure, we test first the independent copula, then the normal copula, but not a non-parametric copula as the penalty on the meta-model evaluation speed is most of the time prohibitive
   setDistribution(ComposedDistribution(marginals, NormalCopulaFactory().build(inputSample)));
   const EnumerateFunction enumerate(inputDimension);
   const UnsignedInteger maximumTotalDegree(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-MaximumTotalDegree" ));

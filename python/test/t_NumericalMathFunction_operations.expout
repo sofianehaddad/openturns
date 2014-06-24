@@ -158,8 +158,6 @@ myDiff= NumericalMathFunction :
 
 Value at  [1.2, 2.3, 3.4] =
 [20.14,-13.8]
-Value at  [1.2, 2.3, 3.4] =
-[20.14,-13.8]
 Gradient at  [1.2, 2.3, 3.4] =
 [[  0    3.3 ]
  [  5.8 -8   ]

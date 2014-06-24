@@ -776,7 +776,7 @@ void ResourceMap::loadDefaultConfiguration()
   // TemporalNormalProcess parameters //
   setAsNumericalScalar( "TemporalNormalProcess-StartingScaling", 1.0e-13 );
   setAsNumericalScalar( "TemporalNormalProcess-MaximalScaling", 1.0e5 );
-  setAsUnsignedInteger( "TemporalNormalProcess-UseGibbsGenerator", 0 );
+  setAsUnsignedInteger( "TemporalNormalProcess-UseGibbsSampler", 0 );
   setAsUnsignedInteger( "TemporalNormalProcess-GibbsMaximumIteration", 100 );
 
   // SpectralNormalProcess parameters //

@@ -68,6 +68,22 @@ const NumericalScalar SpecFunc::NumericalScalarEpsilon = std::numeric_limits<Num
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const NumericalScalar SpecFunc::Precision = ResourceMap::GetAsNumericalScalar("SpecFunc-Precision");
 
+// Some facilities for NaN and inf
+Bool SpecFunc::isNaN(const NumericalScalar value)
+{
+  return value != value;
+}
+
+Bool SpecFunc::isInf(const NumericalScalar value)
+{
+  return (value == value) && isNaN(value - value);
+}
+
+Bool SpecFunc::isNormal(const NumericalScalar value)
+{
+  return value - value == 0.0;
+}
+
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 NumericalScalar SpecFunc::SmallCaseBesselI0(const NumericalScalar x)
 {

@@ -160,7 +160,7 @@ void CompositeDistribution::update()
     {
       throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
     }
-  if (isinf(values_[0]) || isnan(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
+  if (!SpecFunc::isNormal(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
   probabilities_ = NumericalPoint(1, antecedent_.computeCDF(xMin));
   increasing_ = Indices(0);
   NumericalScalar fMin(values_[0]);
@@ -178,7 +178,7 @@ void CompositeDistribution::update()
     {
       throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
     }
-  if (isinf(fpA) || isnan(fpA)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
+  if (!SpecFunc::isNormal(fpA)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
   NumericalScalar b(a);
   NumericalScalar fpB(fpA);
   for (UnsignedInteger i = 0; i < n; ++i)
@@ -194,7 +194,7 @@ void CompositeDistribution::update()
         {
           throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
         }
-      if (isinf(fpB) || isnan(fpB)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
+      if (!SpecFunc::isNormal(fpB)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
       try
         {
           const NumericalScalar root(solver_.solve(derivative, 0.0, a, b, fpA, fpB));
@@ -208,7 +208,7 @@ void CompositeDistribution::update()
             {
               throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << root;
             }
-          if (isinf(root) || isnan(root)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << root;
+          if (!SpecFunc::isNormal(root)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << root;
           increasing_.add(value > values_[values_.getSize() - 1]);
           values_.add(value);
           probabilities_.add(antecedent_.computeCDF(root));
@@ -230,7 +230,7 @@ void CompositeDistribution::update()
     {
       throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
     }
-  if (isinf(value) || isnan(value)) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
+  if (!SpecFunc::isNormal(value)) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMax;
   increasing_.add(value > values_[values_.getSize() - 1]);
   values_.add(value);
   probabilities_.add(NumericalPoint(1, antecedent_.computeCDF(xMax)));

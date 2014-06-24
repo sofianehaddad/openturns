@@ -203,6 +203,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::cleanHerm(const Numeric
       if (fabs(imagPart) <= threshold) imagPart = 0.0;
       else imagPart = threshold * (round(imagPart / threshold));
       result(i, j) = NumericalComplex(realPart, imagPart);
+      result(j, i) = NumericalComplex(realPart, -imagPart);
     }
   return result;
 }

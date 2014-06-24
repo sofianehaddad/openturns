@@ -443,7 +443,7 @@
   <!-- OT::TemporalNormalProcess parameters -->
   <TemporalNormalProcess-StartingScaling       value="1.0e-13" />
   <TemporalNormalProcess-MaximalScaling        value="1.0e5"   />
-  <TemporalNormalProcess-UseGibbsGenerator     value="0"       />
+  <TemporalNormalProcess-UseGibbsSampler       value="0"       />
   <TemporalNormalProcess-GibbsMaximumIteration value="100"     />
 
   <!-- OT::SpectralNormalProcess parameters -->

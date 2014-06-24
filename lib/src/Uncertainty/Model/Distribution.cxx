@@ -65,7 +65,8 @@ Distribution::Distribution(DistributionImplementation * p_implementation)
 /* Comparison operator */
 Bool Distribution::operator ==(const Distribution & other) const
 {
-  return (this == &other);
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
 }
 
 /* Comparison operator */

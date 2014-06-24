@@ -99,6 +99,11 @@ public:
   // Real number accuracy
   static const NumericalScalar NumericalScalarEpsilon;
 
+  // Some facilities for NaN and inf
+  static Bool isNaN(const NumericalScalar value);
+  static Bool isInf(const NumericalScalar value);
+  static Bool isNormal(const NumericalScalar value);
+
   // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 private:
   static NumericalScalar SmallCaseBesselI0(const NumericalScalar x);
