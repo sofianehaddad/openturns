@@ -165,8 +165,9 @@ NumericalScalar RegularizedIncompleteBetaP(const NumericalScalar a,
     const NumericalScalar b,
     const NumericalScalar x)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (a < 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (b < 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return 0.0;
   if (x >= 1.0) return 1.0;
   if (x * (a + b + 2) < a + 1.0) return RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
@@ -177,8 +178,9 @@ NumericalScalar RegularizedIncompleteBetaQ(const NumericalScalar a,
     const NumericalScalar b,
     const NumericalScalar x)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (a < 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (b < 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x >= 1.0) return 0.0;
   if (x <= 0.0) return 1.0;
   if (x * (a + b + 2) < a + 1.0) return 1.0 - RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
@@ -416,8 +418,9 @@ NumericalScalar RegularizedIncompleteBetaContinuedFraction(const NumericalScalar
     const NumericalScalar b,
     const NumericalScalar x)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if (a < 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (b < 0.0) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
+  if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return 1.0;
   const NumericalScalar epsilon(SpecFunc::Precision * SpecFunc::Precision);
   const NumericalScalar aPb(a + b);
