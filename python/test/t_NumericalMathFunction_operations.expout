@@ -42,13 +42,13 @@ hessian    :
 | d^2(y1) / d(x2)d(x1) = 0 
 |    d^2(y1) / d(x2)^2 = 0 
 
-Value at  [1.2, 2.3, 3.4] =
+Value at  [1.2,2.3,3.4] =
 [122.76,200.781]
-Gradient at  [1.2, 2.3, 3.4] =
+Gradient at  [1.2,2.3,3.4] =
 [[ -16.48  107.688 ]
  [  57.88   82.784 ]
  [  61.48   83.216 ]]
-Hessian at  [1.2, 2.3, 3.4] =
+Hessian at  [1.2,2.3,3.4] =
 sheet #0
 [[  4.2  -4.4  -5.2  ]
  [ -4.4  13.6  23.4  ]
@@ -99,13 +99,13 @@ mySum= NumericalMathFunction :
 | d(y1) / d(x1) = (-1)+(3*x2) 
 | d(y1) / d(x2) = 3*x1 
 
-Value at  [1.2, 2.3, 3.4] =
+Value at  [1.2,2.3,3.4] =
 [33.94,23.72]
-Gradient at  [1.2, 2.3, 3.4] =
+Gradient at  [1.2,2.3,3.4] =
 [[  2   -0.7 ]
  [  7.8 10.4 ]
  [  8.6  7.9 ]]
-Hessian at  [1.2, 2.3, 3.4] =
+Hessian at  [1.2,2.3,3.4] =
 sheet #0
 [[ 0 0 0 ]
  [ 0 0 2 ]
@@ -156,13 +156,13 @@ myDiff= NumericalMathFunction :
 | d(y1) / d(x1) = (-1)+(3*x2) 
 | d(y1) / d(x2) = 3*x1 
 
-Value at  [1.2, 2.3, 3.4] =
+Value at  [1.2,2.3,3.4] =
 [20.14,-13.8]
-Gradient at  [1.2, 2.3, 3.4] =
+Gradient at  [1.2,2.3,3.4] =
 [[  0    3.3 ]
  [  5.8 -8   ]
  [  6.6 -5.9 ]]
-Hessian at  [1.2, 2.3, 3.4] =
+Hessian at  [1.2,2.3,3.4] =
 sheet #0
 [[  0  0  0 ]
  [  0  0  2 ]

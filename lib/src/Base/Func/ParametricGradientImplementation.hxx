@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * ParametricGradientImplementation implements the concept of parametric function for its gradient part
  */
-class ParametricGradientImplementation
+class OT_API ParametricGradientImplementation
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;

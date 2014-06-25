@@ -6,5 +6,7 @@
 #include "PolygonArray.hxx"
 %}
 
+%template(PolygonCollection) OT::Collection<OT::Polygon>;
+
 %include PolygonArray.hxx
 namespace OT { %extend PolygonArray { PolygonArray(const PolygonArray & other) { return new OT::PolygonArray(other); } } }

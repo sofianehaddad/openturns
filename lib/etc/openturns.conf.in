@@ -416,17 +416,19 @@
   <MarginalTransformationEvaluation-Simplify             value="1" />
 
   <!-- OT::DistributionImplementation parameters -->
-  <DistributionImplementation-DefaultPointNumber            value="129"     />
-  <DistributionImplementation-DefaultQuantileEpsilon        value="1.0e-12" />
-  <DistributionImplementation-DefaultPDFEpsilon             value="1.0e-14" />
-  <DistributionImplementation-DefaultCDFEpsilon             value="1.0e-14" />
-  <DistributionImplementation-DefaultQuantileIteration      value="100"     />
-  <DistributionImplementation-QMin                          value="1.5e-1"  />
-  <DistributionImplementation-QMax                          value="8.5e-1"  />
-  <DistributionImplementation-DefaultIntegrationNodesNumber value="255"     />
-  <DistributionImplementation-DefaultLevelNumber            value="10"      />
-  <DistributionImplementation-DefaultQuantileCacheSize      value="128"     />
-  <DistributionImplementation-Parallel                      value="1"       />
+  <DistributionImplementation-DefaultPointNumber             value="129"     />
+  <DistributionImplementation-DefaultQuantileEpsilon         value="1.0e-12" />
+  <DistributionImplementation-DefaultPDFEpsilon              value="1.0e-14" />
+  <DistributionImplementation-DefaultCDFEpsilon              value="1.0e-14" />
+  <DistributionImplementation-DefaultQuantileIteration       value="100"     />
+  <DistributionImplementation-QMin                           value="1.5e-1"  />
+  <DistributionImplementation-QMax                           value="8.5e-1"  />
+  <DistributionImplementation-DefaultIntegrationNodesNumber  value="255"     />
+  <DistributionImplementation-DefaultLevelNumber             value="10"      />
+  <DistributionImplementation-DefaultQuantileCacheSize       value="128"     />
+  <DistributionImplementation-Parallel                       value="1"       />
+  <DistributionImplementation-CharacteristicFunctionBlockMax value="20"      />
+  <DistributionImplementation-CharacteristicFunctionNMax     value="1000000" />
 
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />

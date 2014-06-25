@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class implements a subSquare copula
  */
-class SubSquareCopula
+class OT_API SubSquareCopula
   : public CopulaImplementation
 {
   CLASSNAME;

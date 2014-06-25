@@ -5,4 +5,3 @@
 %template(DrawableImplementationPointer) OT::Pointer<OT::DrawableImplementation>;
 %template(GraphImplementationPointer) OT::Pointer<OT::GraphImplementation>;
 
-//%template(PolygonCollection) OT::Collection<OT::Polygon>;

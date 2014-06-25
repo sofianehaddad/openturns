@@ -102,6 +102,13 @@ public:
   void setSheet(const UnsignedInteger k,
                 const Matrix & m);
 
+  /** getSheetSym returns the symmetric sheet specified by its sheet number k */
+  SymmetricMatrix getSheetSym(const UnsignedInteger k) const;
+
+  /** setSheetSym sets symmetric matrix m as the sheet specified by its sheet number k  */
+  void setSheetSym(const UnsignedInteger k,
+                   const SymmetricMatrix & m);
+
   /** Get the dimensions of the tensor */
   /** Number of rows */
   UnsignedInteger getNbRows() const;

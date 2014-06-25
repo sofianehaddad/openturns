@@ -554,7 +554,12 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
   MatrixImplementation result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
-      result(i, j) = threshold * (round((*this)(i, j) / threshold));
+      {
+	const NumericalScalar value((*this)(i, j));
+	// Things are done this way to prevent spurious -0.0
+	if (std::abs(value) < 0.5 * threshold) result(i, j) = 0.0;
+	else result(i, j) = threshold * round(value / threshold);
+      }
   return result;
 }
 

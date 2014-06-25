@@ -174,8 +174,14 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
-      const NumericalComplex value(this->operator[](convertPosition(i, j)));
-      result(i, j) = NumericalComplex(threshold * (round(std::real(value) / threshold)), threshold * (round(std::imag(value) / threshold)));
+      const NumericalComplex value((*this)[convertPosition(i, j)]);
+      NumericalScalar realPart(std::real(value));
+      NumericalScalar imagPart(std::imag(value));
+      if (std::abs(realPart) < 0.5 * threshold) realPart = 0.0;
+      else realPart = threshold * round(realPart / threshold);
+      if (std::abs(imagPart) < 0.5 * threshold) imagPart = 0.0;
+      else imagPart = threshold * round(imagPart / threshold);
+      result(i, j) = NumericalComplex(realPart, imagPart);
     }
   return result;
 }

@@ -52,11 +52,9 @@ public:
   /** Default constructor */
   explicit PolygonArray(const String & legend = "");
 
-#ifndef SWIG
   /** Constructor based on a collection of polygons */
   explicit PolygonArray(const PolygonCollection & polygons,
 			const String & legend = "");
-#endif
 
   /** Construction based on a set of vertices */
   explicit PolygonArray(const NumericalSample & coordinates,

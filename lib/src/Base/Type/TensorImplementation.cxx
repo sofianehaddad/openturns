@@ -171,6 +171,22 @@ void TensorImplementation::setSheet(const UnsignedInteger k,
   memcpy( &(*this)[this->convertPosition(0, 0, k)], &m.getImplementation()->operator[](0), nbRows_ * nbColumns_ * sizeof(NumericalScalar) );
 }
 
+/* getSheetSym returns the symmetric sheet specified by its sheet number k */
+SymmetricMatrix TensorImplementation::getSheetSym(const UnsignedInteger k) const
+{
+  Pointer<MatrixImplementation> sheet(getSheet(k).getImplementation());
+  sheet->symmetrize();
+  return sheet;
+}
+
+/* setSheetSym sets symmetric matrix m as the sheet specified by its sheet number k  */
+void TensorImplementation::setSheetSym(const UnsignedInteger k,
+                                       const SymmetricMatrix & m)
+{
+  Pointer<MatrixImplementation> sheet(m.getImplementation());
+  sheet->symmetrize();
+  setSheet(k, m);
+}
 
 /* Empty returns true if there is no element in the TensorImplementation */
 Bool TensorImplementation::isEmpty() const

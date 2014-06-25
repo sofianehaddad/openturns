@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * ParametricHessianImplementation implements the concept of parametric function for its hessian part
  */
-class ParametricHessianImplementation
+class OT_API ParametricHessianImplementation
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;

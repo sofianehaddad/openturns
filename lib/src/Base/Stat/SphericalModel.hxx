@@ -39,7 +39,7 @@ class RegularGrid;
  * @class SphericalModel
  */
 
-class SphericalModel
+class OT_API SphericalModel
   : public StationaryCovarianceModel
 {
 

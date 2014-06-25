@@ -714,7 +714,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
   // In the continuous case, we use simple gauss integration with a fixed number of integration points. We divide the interval in order to have a sufficient number of integration points by interval. It is good for low to moderate value of x, but is prohibitive for large x. In this case, we use Filon's method with linear interpolation, it means the modified trapezoidal rule as in E. O. Tuck, 'A simple "Filon-Trapezoidal" Rule'
   if (isContinuous())
     {
-      const UnsignedInteger N(1000000);
+      const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("DistributionImplementation-CharacteristicFunctionNMax"));
       // The circular function will have x(b-a)/2\pi arches over [a, b], so we need a number of points of this order, we decide to take 8 points per arch
       const NumericalSample legendreNodesAndWeights(getGaussNodesAndWeights());
       // How many sub-intervals?

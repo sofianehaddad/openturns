@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Organize d-dimensional points into a hierarchical tree-like structure
  */
-class KDTree
+class OT_API KDTree
   : public Object
 {
   CLASSNAME;
