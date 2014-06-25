@@ -82,6 +82,10 @@ class View(object):
         Used when drawing Polygon drawables
         Passed on to matplotlib.patches.Polygon kwargs
 
+    polygon_array_kwargs : dict, optional
+        Used when drawing PolygonArray drawables
+        Passed on to matplotlib.collection.PolygonCollection kwargs
+
     contour_kwargs : dict, optional
         Used when drawing Contour drawables
         Passed on to matplotlib.pyplot.contour kwargs
@@ -126,6 +130,7 @@ class View(object):
                  bar_kwargs=None,
                  pie_kwargs=None,
                  polygon_kwargs=None,
+                 polygon_array_kwargs=None,
                  contour_kwargs=None,
                  step_kwargs=None,
                  clabel_kwargs=None,
@@ -166,6 +171,7 @@ class View(object):
         bar_kwargs_default = View.CheckDict(bar_kwargs)
         pie_kwargs_default = View.CheckDict(pie_kwargs)
         polygon_kwargs_default = View.CheckDict(polygon_kwargs)
+        polygon_array_kwargs_default = View.CheckDict(polygon_array_kwargs)
         contour_kwargs_default = View.CheckDict(contour_kwargs)
         step_kwargs_default = View.CheckDict(step_kwargs)
         clabel_kwargs_default = View.CheckDict(clabel_kwargs)
@@ -205,13 +211,15 @@ class View(object):
             self._ax = axes
 
         has_labels = False
-        self._ax[0].grid()
+        if graph.getGrid():
+            self._ax[0].grid()
         for drawable in drawables:
             # reset working dictionaries by excplicitely creating copies
             plot_kwargs = dict(plot_kwargs_default)
             bar_kwargs = dict(bar_kwargs_default)
             pie_kwargs = dict(pie_kwargs_default)
             polygon_kwargs = dict(polygon_kwargs_default)
+            polygon_array_kwargs = dict(polygon_array_kwargs_default)
             contour_kwargs = dict(contour_kwargs_default)
             step_kwargs = dict(step_kwargs_default)
             clabel_kwargs = dict(clabel_kwargs_default)
@@ -270,7 +278,7 @@ class View(object):
                 self._ax[0].set_xlabel(graph.getXTitle())
                 self._ax[0].set_ylabel(graph.getYTitle())
 
-                if len(drawable.getLegend()) > 0:
+                if len(drawable.getLegend()) > 0 and drawable.getPointStyle() != 'none':
                     label = drawable.getLegend()
                     has_labels = True
                     plot_kwargs.setdefault('label', label)
@@ -318,6 +326,23 @@ class View(object):
                         drawable.getEdgeColor())
                 self._ax[0].add_patch(
                     matplotlib.patches.Polygon(data, **polygon_kwargs))
+
+            elif drawableKind == 'PolygonArray':
+
+                polygonsNumber = drawable.getPalette().getSize()
+                verticesNumber = drawable.getData().getSize() / polygonsNumber
+                colors = drawable.getPalette()
+                colorsRGBA = list()
+                for i in xrange(polygonsNumber):
+                    rgba = drawable.ConvertToRGBA(colors[i])
+                    colorsRGBA.append((rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
+                if (not 'facecolors' in polygon_array_kwargs_default):
+                    polygon_array_kwargs['facecolors'] = colorsRGBA
+
+                if (not 'edgecolors' in polygon_kwargs_default):
+                    polygon_array_kwargs['edgecolors'] = colorsRGBA
+                self._ax[0].add_collection(
+                    matplotlib.collections.PolyCollection(np.array(data).reshape((polygonsNumber, verticesNumber, 2)), **polygon_array_kwargs))
 
             elif drawableKind == 'Pie':
                 pie_kwargs.setdefault('labels', drawable.getLabels())

@@ -661,7 +661,7 @@ void NumericalMathFunctionImplementation::InitializeDocumentation()
   ValidFunctions_.add("round(arg) -> round to nearest integer");
   ValidFunctions_.add("rint(arg) -> round to nearest integer");
   ValidFunctions_.add("sign(arg) -> sign function -1 if x<0; 1 if x>0");
-  ValidFunctions_.add("if(arg1, arg2, arg3) -> if arg1 then arg2 else arg3");
+  ValidFunctions_.add("(condition ? value1 : value2) -> if condition then value1 else value2");
   ValidFunctions_.add("sum(arg1, ..., argn) -> sum of all arguments");
   ValidFunctions_.add("avg(arg1, ..., argn) -> mean value of all arguments");
   ValidFunctions_.add("min(arg1, ..., argn) -> min of all arguments");

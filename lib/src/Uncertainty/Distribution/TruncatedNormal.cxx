@@ -213,7 +213,7 @@ NumericalComplex TruncatedNormal::computeCharacteristicFunction(const NumericalS
   const NumericalScalar beta((b_ - mu_) * iSigma2);
   const NumericalScalar erf1(SpecFunc::Erf(alpha));
   const NumericalScalar erf2(SpecFunc::Erf(beta));
-  const NumericalScalar t(x * sigma_ / std::sqrt(2));
+  const NumericalScalar t(x * sigma_ / std::sqrt(2.0));
   const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
   const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
   return std::exp(NumericalComplex(0.0, x * mu_)) * (w2 * std::exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) / (erf2 - erf1);
@@ -226,7 +226,7 @@ NumericalComplex TruncatedNormal::computeLogCharacteristicFunction(const Numeric
   const NumericalScalar beta((b_ - mu_) * iSigma2);
   const NumericalScalar erf1(SpecFunc::Erf(alpha));
   const NumericalScalar erf2(SpecFunc::Erf(beta));
-  const NumericalScalar t(x * sigma_ / std::sqrt(2));
+  const NumericalScalar t(x * sigma_ / std::sqrt(2.0));
   const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
   const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
   return NumericalComplex(0.0, x * mu_) + std::log(w2 * std::exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) - std::log(erf2 - erf1);

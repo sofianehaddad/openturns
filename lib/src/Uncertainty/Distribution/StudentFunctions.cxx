@@ -56,7 +56,7 @@ NumericalScalar StudentCDF(const NumericalScalar nu,
   if (nu == 2.0) return (tail ? 0.5 - 0.5 * (x / std::sqrt(2.0 + x2)) : 0.5 + 0.5 * (x / std::sqrt(2.0 + x2)));
   if (nu == 3.0) return (tail ? 0.5 - (std::atan(x / std::sqrt(3.0)) * M_1_PI + x * std::sqrt(3.0) / (M_PI * (3.0 + x2))) : 0.5 + (std::atan(x / std::sqrt(3.0)) * M_1_PI + x * std::sqrt(3.0) / (M_PI * (3.0 + x2))));
   if (nu == 4.0) return (tail ? 0.5 - (0.5 * x * (x2 + 6.0) * std::pow(4.0 + x2, -1.5)) : 0.5 + (0.5 * x * (x2 + 6.0) * std::pow(4.0 + x2, -1.5)));
-  if (nu == 5.0) return (tail ? 0.5 - (std::atan(x / std::sqrt(5.0)) * M_1_PI + x * std::sqrt(5.0) * (3.0 * x2 + 25.0) / (3.0 * M_PI * std::pow(5.0 + x2, 2))) : 0.5 + (std::atan(x / std::sqrt(5.0)) * M_1_PI + x * std::sqrt(5) * (3.0 * x2 + 25.0) / (3.0 * M_PI * std::pow(5.0 + x2, 2))));
+  if (nu == 5.0) return (tail ? 0.5 - (std::atan(x / std::sqrt(5.0)) * M_1_PI + x * std::sqrt(5.0) * (3.0 * x2 + 25.0) / (3.0 * M_PI * std::pow(5.0 + x2, 2))) : 0.5 + (std::atan(x / std::sqrt(5.0)) * M_1_PI + x * std::sqrt(5.0) * (3.0 * x2 + 25.0) / (3.0 * M_PI * std::pow(5.0 + x2, 2))));
   if (nu == 6.0) return (tail ? 0.5 - (0.25 * x * (135.0 + x2 * (30.0 + 2.0 * x2)) * std::pow(6.0 + x2, -2.5)) : 0.5 + (0.25 * x * (135.0 + x2 * (30.0 + 2.0 * x2)) * std::pow(6.0 + x2, -2.5)));
   if (nu == 7.0) return (tail ? 0.5 - (std::atan(x / std::sqrt(7.0)) * M_1_PI + x * std::sqrt(7.0) * (1617.0 + x2 * (280.0 + 15.0 * x2)) / (15.0 * M_PI * std::pow(7.0 + x2, 3))) : 0.5 + (std::atan(x / std::sqrt(7.0)) * M_1_PI + x * std::sqrt(7.0) * (1617.0 + x2 * (280.0 + 15.0 * x2)) / (15.0 * M_PI * std::pow(7.0 + x2, 3))));
 #ifdef HAVE_BOOST

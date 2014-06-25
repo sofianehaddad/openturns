@@ -221,6 +221,7 @@ ot_add_python_module( graph graph_module.i
                       Pairs.i
                       Pie.i
                       Polygon.i
+                      PolygonArray.i
                       Staircase.i
                       BaseGraphTemplateDefs.i
                       PythonWrappingFunctions.hxx

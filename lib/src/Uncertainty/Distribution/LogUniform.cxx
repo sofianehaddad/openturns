@@ -254,7 +254,7 @@ void LogUniform::computeCovariance() const
 NumericalPoint LogUniform::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
-  return NumericalPoint(1, (std::pow(b_, n) - std::pow(a_, n)) / (n * (bLog_ - aLog_)));
+  return NumericalPoint(1, (std::pow(b_, static_cast<int>(n)) - std::pow(a_, static_cast<int>(n))) / (n * (bLog_ - aLog_)));
 }
 
 /* Parameters value and description accessor */

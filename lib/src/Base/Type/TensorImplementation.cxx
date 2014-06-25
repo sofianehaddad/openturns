@@ -66,10 +66,7 @@ TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
   , nbSheets_(sheetDim)
 {
   const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, elementsValues.getSize());
-  for(UnsignedInteger i = 0; i < tensorSize; ++i)
-  {
-    (*this)[i] = elementsValues[i];
-  }
+  memcpy(&(*this)[0], &elementsValues[0], tensorSize * sizeof(NumericalScalar));
 }
 
 
@@ -159,11 +156,8 @@ Matrix TensorImplementation::getSheet(const UnsignedInteger k) const
 {
   if (k >= nbSheets_) throw InvalidDimensionException(HERE);
 
-  Matrix sheet(nbRows_, nbColumns_);
-  for (UnsignedInteger i = 0; i < nbRows_; ++i)
-    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-      sheet(i, j) = (*this)(i, j, k);
-
+  MatrixImplementation sheet(nbRows_, nbColumns_);
+  memcpy( &sheet[0], &(*this)[this->convertPosition(0, 0, k)], nbRows_ * nbColumns_ * sizeof(NumericalScalar) );
   return sheet;
 }
 
@@ -172,36 +166,9 @@ void TensorImplementation::setSheet(const UnsignedInteger k,
                                     const Matrix & m)
 {
   if (k >= nbSheets_) throw InvalidDimensionException(HERE);
-
-  for (UnsignedInteger i = 0; i < nbRows_; ++i)
-    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-      (*this)(i, j, k) = m(i, j);
-}
-
-/* getSheetSym returns the symmetric sheet specified by its sheet number k */
-SymmetricMatrix TensorImplementation::getSheetSym(const UnsignedInteger k) const
-{
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
-  if (nbRows_ != nbColumns_) throw InvalidDimensionException(HERE);
-  SymmetricMatrix sheet(nbRows_);
-  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-    for (UnsignedInteger i = j; i < nbRows_; ++i)
-      sheet(i, j) = (*this)(i, j, k);
-  return sheet;
-}
-
-/* setSheetSym sets symmetric matrix m as the sheet specified by its sheet number k  */
-void TensorImplementation::setSheetSym(const UnsignedInteger k,
-                                       const SymmetricMatrix & m)
-{
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
-
-  if (m.getDimension() != nbRows_) throw InvalidArgumentException(HERE);
-  if (nbRows_ != nbColumns_) throw InvalidDimensionException(HERE);
-
-  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-    for (UnsignedInteger i = j; i < nbRows_; ++i)
-      (*this)(i, j, k) = m(i, j);
+  if (m.getNbRows() != nbRows_) throw InvalidDimensionException(HERE);
+  if (m.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE);
+  memcpy( &(*this)[this->convertPosition(0, 0, k)], &m.getImplementation()->operator[](0), nbRows_ * nbColumns_ * sizeof(NumericalScalar) );
 }
 
 

@@ -271,10 +271,14 @@ NumericalPoint Field::getTemporalMean() const
 
 /* Draw a marginal of the field */
 Graph Field::drawMarginal(const UnsignedInteger index,
-                          const Bool interpolate,
-			  const Bool stream) const
+                          const Bool interpolate) const
 {
-  return getImplementation()->drawMarginal(index, interpolate, stream);
+  return getImplementation()->drawMarginal(index, interpolate);
+}
+
+Graph Field::draw() const
+{
+  return getImplementation()->draw();
 }
 
 /* VTK export */

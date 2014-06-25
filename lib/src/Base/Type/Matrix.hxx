@@ -40,7 +40,7 @@ class IdentityMatrix;
  * Matrix implements the classical mathematical matrix
  */
 
-class Matrix :
+class OT_API Matrix :
   public TypedInterfaceObject<MatrixImplementation>
 {
   CLASSNAME;

@@ -210,7 +210,7 @@ NumericalPoint InverseNormal::getStandardMoment(const UnsignedInteger n) const
     product *= (n - k) * (n + k - 1) * rho / k;
     moment += product;
   }
-  return NumericalPoint(1, std::pow(mu_, n) * moment);
+  return NumericalPoint(1, std::pow(mu_, static_cast<int>(n)) * moment);
 }
 
 /* Interface specific to InverseNormal */

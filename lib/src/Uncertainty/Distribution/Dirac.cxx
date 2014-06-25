@@ -214,7 +214,7 @@ NumericalPoint Dirac::getStandardMoment(const UnsignedInteger n) const
 {
   const UnsignedInteger dimension(getDimension());
   NumericalPoint result(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = std::pow(point_[i], n);
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = std::pow(point_[i], static_cast<int>(n));
   return result;
 }
 

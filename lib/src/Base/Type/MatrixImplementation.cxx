@@ -554,30 +554,15 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
   MatrixImplementation result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
-    {
-      const NumericalScalar value((*this)(i, j));
-      if (fabs(value) > threshold) result(i, j) = threshold * (round(value / threshold));
-    }
+      result(i, j) = threshold * (round((*this)(i, j) / threshold));
   return result;
 }
 
 /* Set small elements to zero */
 MatrixImplementation MatrixImplementation::cleanSym(const NumericalScalar threshold) const
 {
-  // Nothing to do for nonpositive threshold
-  if (threshold <= 0.0) return *this;
-  MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-    for (UnsignedInteger i = j; i < nbRows_; ++i)
-    {
-      const NumericalScalar value((*this)(i, j));
-      if (fabs(value) > threshold)
-	{
-	  result(i, j) = threshold * (round(value / threshold));
-	  result(j, i) = result(i, j);
-	}
-    }
-  return result;
+  symmetrize();
+  return clean(threshold);
 }
 
 /* Resolution of a linear system : rectangular matrix

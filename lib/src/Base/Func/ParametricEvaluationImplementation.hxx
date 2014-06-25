@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * ParametricEvaluationImplementation implements the concept of parametric function for its evaluation part
  */
-class ParametricEvaluationImplementation
+class OT_API ParametricEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;

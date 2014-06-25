@@ -35,7 +35,7 @@
 #include "Path.hxx"
 #include "Cloud.hxx"
 #include "Curve.hxx"
-#include "Polygon.hxx"
+#include "PolygonArray.hxx"
 #include "Os.hxx"
 #include "PlatformInfo.hxx"
 #include "SpecFunc.hxx"
@@ -348,9 +348,13 @@ Mesh FieldImplementation::asDeformedMesh() const
 }
 
 /* Draw a marginal of the Field */
+Graph FieldImplementation::draw() const
+{
+  return drawMarginal(0, false);
+}
+
 Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
-                                        const Bool interpolate,
-                                        const Bool stream) const
+                                        const Bool interpolate) const
 {
   if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
   const UnsignedInteger meshDimension(getMeshDimension());
@@ -456,40 +460,20 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           const UnsignedInteger simplicesNumber(mesh_.getSimplicesNumber());
           if (simplicesNumber > 0)
             {
-              if (stream)
-                {
-                  NumericalSample data(0, 2);
-                  Description colors(0);
-                  for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
-                    {
-                      const Indices simplex(mesh_.getSimplex(i));
-                      data.add(mesh_.getVertex(simplex[0]));
-                      data.add(mesh_.getVertex(simplex[1]));
-                      data.add(mesh_.getVertex(simplex[2]));
-                      data.add(NumericalPoint(2, nan("")));
-                      const NumericalScalar meanValue((marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0);
-                      const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
-                      colors.add(color);
-                    }
-                  graph.add(Polygon(data, colors));
-                } // stream
-              else
-                {
-                  for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
-                    {
-                      const Indices simplex(mesh_.getSimplex(i));
-                      NumericalSample data(3, 2);
-                      data[0] = mesh_.getVertex(simplex[0]);
-                      data[1] = mesh_.getVertex(simplex[1]);
-                      data[2] = mesh_.getVertex(simplex[2]);
-                      const NumericalScalar meanValue((marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0);
-                      Polygon triangle(data);
-                      const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
-                      triangle.setColor(color);
-                      triangle.setEdgeColor(color);
-                      graph.add(triangle);
-                    }
-                } // no stream
+	      NumericalSample data(0, 2);
+	      Description colors(0);
+	      for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
+		{
+		  const Indices simplex(mesh_.getSimplex(i));
+		  data.add(mesh_.getVertex(simplex[0]));
+		  data.add(mesh_.getVertex(simplex[1]));
+		  data.add(mesh_.getVertex(simplex[2]));
+		  const NumericalScalar meanValue((marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0);
+		  const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
+		  colors.add(color);
+		}
+	      graph.add(PolygonArray(data, 3, colors));
+	      graph.setGrid(false);
             } // Simplices
           else
             {

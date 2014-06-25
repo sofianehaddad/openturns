@@ -134,8 +134,9 @@ public:
 
   /** Draw a marginal of the field */
   Graph drawMarginal(const UnsignedInteger index = 0,
-                     const Bool interpolate = true,
-		     const Bool stream = false) const;
+                     const Bool interpolate = true) const;
+
+  Graph draw() const;
 
   /** VTK export */
   void exportToVTKFile(const String & fileName) const;

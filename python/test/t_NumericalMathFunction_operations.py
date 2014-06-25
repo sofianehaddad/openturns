@@ -18,7 +18,7 @@ try:
     f2 = NumericalMathFunction(inVar, outVar, formula)
     # Third, build the product function
     myFunction = f1 * f2
-    inPoint = [1.2, 2.3, 3.4]
+    inPoint = NumericalPoint([1.2, 2.3, 3.4])
     print "myFunction=", myFunction
     value = myFunction(inPoint)
     print "Value at ", inPoint, "=\n", value
@@ -39,19 +39,19 @@ try:
     mySum = f1 + f2
     print "mySum=", mySum
     value = mySum(inPoint)
-    print "Value at ", inPoint, "=\n", value
+    print "Value at ", inPoint.clean(1e-5), "=\n", value.clean(1e-5)
     gradient = mySum.gradient(inPoint)
-    print "Gradient at ", inPoint, "=\n", gradient
+    print "Gradient at ", inPoint.clean(1e-5), "=\n", gradient.clean(1e-5)
     hessian = mySum.hessian(inPoint)
-    print "Hessian at ", inPoint, "=\n", hessian
+    print "Hessian at ", inPoint.clean(1e-5), "=\n", hessian.clean(1e-5)
     myDiff = f1 - f2
     print "myDiff=", myDiff
     value = myDiff(inPoint)
-    print "Value at ", inPoint, "=\n", value
+    print "Value at ", inPoint.clean(1e-5), "=\n", value.clean(1e-5)
     gradient = myDiff.gradient(inPoint)
-    print "Gradient at ", inPoint, "=\n", gradient
+    print "Gradient at ", inPoint.clean(1e-5), "=\n", gradient.clean(1e-5)
     hessian = myDiff.hessian(inPoint)
-    print "Hessian at ", inPoint, "=\n", hessian
+    print "Hessian at ", inPoint.clean(1e-5), "=\n", hessian.clean(1e-5)
 
 except:
     import sys

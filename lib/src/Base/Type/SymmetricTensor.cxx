@@ -113,7 +113,7 @@ const NumericalScalar & SymmetricTensor::operator () (const UnsignedInteger i,
 /* getSheet returns the sheet specified by its sheet number k */
 SymmetricMatrix SymmetricTensor::getSheet(const UnsignedInteger k) const
 {
-  return getImplementation()->getSheetSym(k);
+  return getImplementation()->getSheet(k).getImplementation();
 }
 
 /* setSheet sets matrix m as the sheet specified by its sheet number k  */
@@ -121,7 +121,7 @@ void SymmetricTensor::setSheet(const UnsignedInteger k,
                                const SymmetricMatrix & m)
 {
   hasBeenSymmetrized_ = false;
-  getImplementation()->setSheetSym(k, m);
+  getImplementation()->setSheet(k, m);
 }
 
 END_NAMESPACE_OPENTURNS

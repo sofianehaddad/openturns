@@ -21,6 +21,7 @@
 #include "NumericalMathEvaluationImplementation.hxx"
 #include "NumericalPoint.hxx"
 #include "NumericalSample.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

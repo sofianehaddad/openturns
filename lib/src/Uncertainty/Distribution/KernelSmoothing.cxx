@@ -128,7 +128,7 @@ struct PluginConstraint
         if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * std::exp(-0.5 * x * x);
       }
     }
-    const NumericalScalar res(phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1) * std::sqrt(2.0 * M_PI)));
+    const NumericalScalar res(phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI)));
     return res;
   }
 
@@ -233,7 +233,7 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
   setBandwidth(bandwidth);
   UnsignedInteger size(sample.getSize());
   // The usual case: no boundary correction, no binning
-  const Bool mustBin(bined_ && (dimension * std::log(binNumber_) < std::log(size)));
+  const Bool mustBin(bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size)));
   if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
   if ((dimension > 2) || ((!mustBin) && (!boundaryCorrection)))
   {

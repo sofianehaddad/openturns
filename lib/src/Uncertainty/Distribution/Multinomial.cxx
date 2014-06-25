@@ -249,7 +249,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
     sumX += point[i];
   }
   // If we are at the origin, CDF=PDF(0,...,0)
-  if (allZero) return std::pow(1.0 - sumP_, n_);
+  if (allZero) return std::pow(1.0 - sumP_, static_cast<int>(n_));
   // If the atoms with non zero probability sum to N
   if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
   {
@@ -584,7 +584,7 @@ void Multinomial::setN(const UnsignedInteger n)
     n_ = n;
     // Best overall performance for Poisson's formula, see reference
     r_ = std::pow(eta_, 1.0 / (2.0 * n));
-    normalizationCDF_ = std::exp(lgamma(n + 1.0) - n * std::log(n) + n - std::log(2.0 * n) - 0.5 * std::log(eta_));
+    normalizationCDF_ = std::exp(lgamma(n + 1.0) - n * std::log(1.0 * n) + n - std::log(2.0 * n) - 0.5 * std::log(eta_));
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;

@@ -98,10 +98,7 @@ NumericalPoint NumericalPoint::clean(const NumericalScalar threshold) const
   const UnsignedInteger size(getSize());
   NumericalPoint result(size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      const NumericalScalar value(operator[](i));
-      if (fabs(value) > threshold) result[i] = threshold * (round(value / threshold));
-    }
+    result[i] = threshold * (round(operator[](i) / threshold));
   return result;
 }
 

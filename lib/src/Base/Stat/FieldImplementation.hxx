@@ -147,8 +147,9 @@ public:
 
   /** Draw a marginal of the timeSerie */
   Graph drawMarginal(const UnsignedInteger index = 0,
-                     const Bool interpolate = true,
-		     const Bool stream = false) const;
+                     const Bool interpolate = true) const;
+
+  Graph draw() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

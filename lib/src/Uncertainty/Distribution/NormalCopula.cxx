@@ -203,7 +203,7 @@ NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
     value += yi * yi;
   }
   // 0.398942280401432677939946059934 = 1 / sqrt(2.pi)
-  value = std::pow(0.398942280401432677939946059934, dimension) * std::exp(-0.5 * value);
+  value = std::pow(0.398942280401432677939946059934, static_cast<int>(dimension)) * std::exp(-0.5 * value);
   return normal_.computePDF(normalPoint) / value;
 }
 
