@@ -55,9 +55,6 @@ CHECK_OT=y
 # build and install tests
 INSTALL_TESTS_OPT=ON
 
-# verbose (ON/OFF)
-VERBOSE = ON
-
 JOBS=$(shell getconf _NPROCESSORS_ONLN)
 JOBS_PYTHON=$(JOBS)
 export PATH := $(MINGW_PREFIX)/bin:$(PATH)
@@ -88,7 +85,6 @@ ot-config: ot-check-compiler
 	cd $(OT_BUILD) && rm -f CMakeCache.txt && $(CMAKE) \
 	  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 	  -DCMAKE_TOOLCHAIN_FILE=toolchain-$(TARGET).cmake \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
 	  -DPYTHON_INCLUDE_DIR=$(MINGW_PREFIX)/$(TARGET)/include/python$(PYBASEVER_NODOT) \
 	  -DPYTHON_INCLUDE_DIR2=$(MINGW_PREFIX)/$(TARGET)/include/python$(PYBASEVER_NODOT) \
 	  -DPYTHON_LIBRARY=$(MINGW_PREFIX)/$(TARGET)/lib/libpython$(PYBASEVER_NODOT).dll.a \
@@ -147,7 +143,6 @@ ot-test-wrapper-template: ot-install
 # 	svn export $(OT_SRC)/wrappers/WrapperTemplates/wrapper_calling_shell_command $(OT_BUILD)/mywrapper
 	cd $(OT_BUILD)/mywrapper && ./customize Pouet && mkdir build && cd build && $(CMAKE) \
 	  -DCMAKE_TOOLCHAIN_FILE=$(OT_BUILD)/toolchain-$(TARGET).cmake \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
 	  -DCMAKE_CXX_FLAGS_RELEASE="-DNDEBUG -g -O2" \
 	  -DCMAKE_C_FLAGS_RELEASE="-DNDEBUG -g -O2" \
 	  -DCMAKE_Fortran_FLAGS_RELEASE="-DNDEBUG -g -O2" \
