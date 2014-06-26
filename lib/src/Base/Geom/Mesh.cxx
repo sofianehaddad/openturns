@@ -44,11 +44,13 @@ static Factory<Mesh> RegisteredFactory("Mesh");
 /* Default constructor */
 Mesh::Mesh(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
-  , vertices_(1, dimension) // At least one point
+  , vertices_(0, dimension) 
   , simplices_()
   , tree_()
 {
-  // Nothing to do
+  // Use the vertices accessor to initialize the kd-tree
+  // At least one point
+  setVertices(NumericalSample(1, dimension));
 }
 
 /* Parameters constructor, simplified interface for 1D case */
@@ -178,51 +180,44 @@ UnsignedInteger Mesh::getSimplicesNumber() const
 }
 
 /* TBB functor to speed-up nearest index computation */
-struct NearestFunctor
+struct NearestPolicy
 {
+  const NumericalSample & points_;
+  Indices & indices_;
   const Mesh & mesh_;
-  const NumericalPoint & point_;
-  NumericalScalar minDistance_;
-  UnsignedInteger minIndex_;
 
-  NearestFunctor(const Mesh & mesh, const NumericalPoint & point)
-    : mesh_(mesh), point_(point), minDistance_(SpecFunc::MaxNumericalScalar), minIndex_(0) {}
+  NearestPolicy(const NumericalSample & points,
+		Indices & indices,
+		const Mesh & mesh)
+    : points_(points)
+    , indices_(indices)
+    , mesh_(mesh)
+ {}
 
-  NearestFunctor(const NearestFunctor & other, TBB::Split)
-    : mesh_(other.mesh_), point_(other.point_), minDistance_(SpecFunc::MaxNumericalScalar), minIndex_(0) {}
-
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      {
-        const NumericalScalar d((point_ - mesh_.getVertices()[i]).normSquare());
-        if (d < minDistance_)
-          {
-            minDistance_ = d;
-            minIndex_ = i;
-          } // d < minDistance_
-      } // i
-  } // operator
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) indices_[i] = mesh_.getNearestVertexIndex(points_[i]);
+  }
 
-  void join(const NearestFunctor & other)
-  {
-    if (other.minDistance_ < minDistance_)
-      {
-        minDistance_ = other.minDistance_;
-        minIndex_ = other.minIndex_;
-      } // minDistance
-  } // join
-
-}; /* end struct NearestFunctor */
+}; /* end struct NearestPolicy */
 
 /* Get the index of the nearest vertex */
 UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-  if (!tree_.isEmpty()) return tree_.getNearestNeighbourIndex(point);
-  NearestFunctor functor( *this, point );
-  TBB::ParallelReduce( 0, getVerticesNumber(), functor );
-  return functor.minIndex_;
+  return tree_.getNearestNeighbourIndex(point);
+}
+
+/* Get the index of the nearest vertices */
+Indices Mesh::getNearestVerticesIndices(const NumericalSample & points) const
+{
+  if (points.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected points of dimension " << getDimension() << ", got points of dimension " << points.getDimension();
+  const UnsignedInteger size(points.getSize());
+  Indices indices(size);
+  if (size == 0) return indices;
+  const NearestPolicy policy( points, indices, *this );
+  TBB::ParallelFor( 0, size, policy );
+  return indices;
 }
 
 /* Compute the volume of a given simplex */
