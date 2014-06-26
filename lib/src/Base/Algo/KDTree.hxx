@@ -29,6 +29,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+class KDNearestNeighboursFinder;
+
 /**
  * @class KDTree
  *
@@ -38,6 +40,9 @@ class OT_API KDTree
   : public Object
 {
   CLASSNAME;
+
+  friend class KDNearestNeighboursFinder;
+
 public:
 
   /** Default constructor */
@@ -59,12 +64,12 @@ public:
   virtual void insert(const NumericalPoint & point);
 
   /** Get the indices of the k nearest neighbours of the given point */
-  //  virtual Indices getNearestNeighboursIndices(const NumericalPoint & x,
-  //                                              const UnsignedInteger k) const;
+  virtual Indices getNearestNeighboursIndices(const NumericalPoint & x,
+                                              const UnsignedInteger k) const;
 
   /** Get the k nearest neighbours of the given point */
-  //  virtual NumericalSample getNearestNeighbours(const NumericalPoint & x,
-  //					       const UnsignedInteger k) const;
+  virtual NumericalSample getNearestNeighbours(const NumericalPoint & x,
+					       const UnsignedInteger k) const;
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const NumericalPoint & x) const;
@@ -84,7 +89,6 @@ protected:
    */
   struct KDNode
   {
-
     typedef Pointer< KDNode> KDNodePointer;
 
     /** Parameter constructor */
@@ -124,13 +128,6 @@ protected:
 						   const NumericalPoint & x,
 						   NumericalScalar & bestSquaredDistance,
 						   const UnsignedInteger activeDimension) const;
-
-  // /** Get the indices of the k nearest neighbours of the given point */
-  // virtual Indices getNearestNeighboursIndices(const KDNode::KDNodePointer & p_node,
-  // 					      const NumericalPoint & x,
-  // 					      const UnsignedInteger k,
-  // 					      NumericalPoint & bestSquaredDistance,
-  // 					      const UnsignedInteger activeDimension) const;
 
   /** The data organized by the tree */
   NumericalSample points_;

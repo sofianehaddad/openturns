@@ -33,6 +33,142 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(KDTree);
 
 /**
+ * @class KDNearestNeighboursFinder
+ *
+ * A fixed-size heap to find k-nearest neighbours in a KDTree
+ */
+class KDNearestNeighboursFinder
+{
+public:
+
+  /** Constructor */
+  KDNearestNeighboursFinder(const NumericalSample & sample, const UnsignedInteger size)
+    : sample_(sample)
+    , capacity_(size)
+    , size_(0)
+    , indices_(size)
+    , values_(size)
+  {
+    // Initialize values_[0] to a valid value
+    values_[0] = SpecFunc::MaxNumericalScalar;
+  }
+
+  /** Get the indices of the k nearest neighbours of the given point */
+  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const NumericalPoint & x)
+  {
+    if (size_ != 0)
+    {
+      // Clear heap
+      indices_.clear();
+      values_.clear();
+      size_ = 0;
+      values_[0] = SpecFunc::MaxNumericalScalar;
+    }
+    collectNearestNeighbours(p_node, x, 0);
+    Indices result(size_);
+    for (UnsignedInteger i = 0; i < size_; ++i) result[i] = indices_[i];
+    return result;
+  }
+
+private:
+/* Recursive method to find the indices of the k nearest neighbours
+   Strategy:
+   + for a new candidate, if there is still room just add it to the list of neighbours
+   + else replace the worst candidate from the current list by the new candidate
+   Complexity: O(k) at each insertion, O(log(n)) expected insertions
+*/
+  void collectNearestNeighbours(const KDTree::KDNode::KDNodePointer & p_node,
+                                const NumericalPoint & x,
+                                const UnsignedInteger activeDimension)
+  {
+    const NumericalScalar delta(x[activeDimension] - sample_[p_node->index_][activeDimension]);
+    const KDTree::KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
+    const KDTree::KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
+    const UnsignedInteger dimension(sample_.getDimension());
+    NumericalScalar currentGreatestValidSquaredDistance(values_[0]);
+    if (sameSide != 0)
+      {
+        collectNearestNeighbours(sameSide, x, (activeDimension + 1) % dimension);
+        currentGreatestValidSquaredDistance = values_[0];
+      }
+    if (size_ == capacity_ && currentGreatestValidSquaredDistance < delta * delta) return;
+    const UnsignedInteger localIndex(p_node->index_);
+    const NumericalScalar localSquaredDistance((x - sample_[localIndex]).normSquare());
+    if (size_ != capacity_)
+      {
+        // Put index/value at the first free node and move it up to a valid location
+        indices_[size_] = localIndex;
+        values_[size_] = localSquaredDistance;
+        moveNodeUp(size_);
+        ++size_;
+      }
+    else if (localSquaredDistance < currentGreatestValidSquaredDistance)
+      {
+        // Heap is full, and current value is smaller than heap largest value.
+        // Replace the largest value by current value and move it down to a
+        // valid location.
+        if (localSquaredDistance < values_[0])
+          {
+            indices_[0] = localIndex;
+            values_[0] = localSquaredDistance;
+            moveNodeDown(0);
+          }
+      }
+    if (oppositeSide != 0)
+      {
+        collectNearestNeighbours(oppositeSide, x, (activeDimension + 1) % dimension);
+      }
+  }
+
+  /** Move node down to its final location */
+  void moveNodeDown(const UnsignedInteger index)
+  {
+    const UnsignedInteger left = (index << 1) + 1;
+    const UnsignedInteger right = left + 1;
+    UnsignedInteger maxValueIndex = index;
+    if (left < size_ && values_[left] > values_[maxValueIndex])
+    {
+        maxValueIndex = left;
+    }
+    if (right < size_ && values_[right] > values_[maxValueIndex])
+    {
+        maxValueIndex = right;
+    }
+    if (index != maxValueIndex)
+    {
+        std::swap(values_[index], values_[maxValueIndex]);
+        std::swap(indices_[index], indices_[maxValueIndex]);
+        moveNodeDown(maxValueIndex);
+    }
+  }
+
+  /** Move node up to its final location */
+  void moveNodeUp(const UnsignedInteger index)
+  {
+    if (index == 0) return;
+    const UnsignedInteger parent = (index - 1) >> 1;
+    if (values_[index] > values_[parent])
+    {
+      std::swap(values_[index], values_[parent]);
+      std::swap(indices_[index], indices_[parent]);
+      moveNodeUp(parent);
+    }
+  }
+
+  // Points contained in the tree
+  const NumericalSample sample_;
+  // Maximum heap size
+  const UnsignedInteger capacity_;
+  // Number of used buckets
+  UnsignedInteger size_;
+  // Array containing values
+  Collection<NumericalScalar> values_;
+  // Array containing point indices
+  Indices indices_;
+
+}; /* class KDNearestNeighboursFinder */
+
+/**
  * @class KDTree
  *
  * Organize d-dimensional points into a hierarchical tree-like structure
@@ -106,100 +242,35 @@ void KDTree::insert(KDNode::KDNodePointer & p_node,
   else insert(p_node->p_right_, index, (activeDimension + 1) % points_.getDimension());
 }
 
-// /* Get the indices of the k nearest neighbours of the given point */
-// Indices KDTree::getNearestNeighboursIndices(const NumericalPoint & x,
-//                                             const UnsignedInteger k) const
-// {
-//   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
-//   Indices result(0);
-//   // If we need as many neighbours as points in the sample, just return all the possible indices
-//   if (k == points_.getSize())
-//     {
-//       result = Indices(k);
-//       result.fill();
-//       return result;
-//     }
-//   NumericalPoint bestSquaredDistance(0);
-//   return getNearestNeighboursIndices(p_root_, x, k, bestSquaredDistance, 0);
-// }
+/* Get the indices of the k nearest neighbours of the given point */
+Indices KDTree::getNearestNeighboursIndices(const NumericalPoint & x,
+                                            const UnsignedInteger k) const
+{
+  if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
+  Indices result(k);
+  // If we need as many neighbours as points in the sample, just return all the possible indices
+  if (k == points_.getSize())
+    {
+      result.fill();
+    }
+  else
+    {
+      KDNearestNeighboursFinder heap(points_, k);
+      result = heap.getNearestNeighboursIndices(p_root_, x);
+    }
+  return result;
+}
 
-// /* Recursive method to find the indices of the k nearest neighbours
-//    Strategy:
-//    + for a new candidate, if there is still room just add it to the list of neighbours
-//    + else replace the worst candidate from the current list by the new candidate
-//    Complexity: O(k) at each insertion, O(log(n)) expected insertions
-//    A clever structure for the neighbours could probably improve the complexity of the insertion.
-
-//    More details:
-//    + We come from an upper level, so the best squared distances correspond to nodes seen so far either on top or on the left of the current node
-//    + On the descending phase, the distances are not updated
-//    + On the ascending phase, the distances are first aggregated, then they are compressed
-// */
-// Indices KDTree::getNearestNeighboursIndices(const KDNode::KDNodePointer & p_node,
-// 					    const NumericalPoint & x,
-//                                             const UnsignedInteger k,
-// 					    NumericalPoint & bestSquaredDistances,
-// 					    const UnsignedInteger activeDimension) const
-// {
-//   const NumericalScalar delta(x[activeDimension] - points_[p_node->index_][activeDimension]);
-//   const KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
-//   const KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
-//   Indices currentBestIndices(k, points_.getSize());
-//   NumericalPoint currentBestSquaredDistance(bestSquaredDistances);
-//   // 1)
-//   if (sameSide != 0)
-//     {
-//       // 1.1)
-//       Indices candidateBestIndices(getNearestNeighbourIndices(sameSide, x, bestSquaredDistances, (activeDimension + 1) % points_.getDimension()));
-//       if (bestSquaredDistance < currentBestSquaredDistance)
-// 	{
-// 	  currentBestSquaredDistance = bestSquaredDistance;
-// 	  currentBestIndex = candidateBestIndex;
-// 	}
-//     } // sameSide != 0
-//   // 2)
-//   if (currentBestSquaredDistance < delta * delta)
-//     {
-//       // 2.1)
-//       bestSquaredDistance = currentBestSquaredDistance;
-//       return currentBestIndex;
-//     }
-//   // 2.2)
-//   const UnsignedInteger localIndex(p_node->index_);
-//   const NumericalScalar localSquaredDistance((x - points_[localIndex]).normSquare());
-//   if (localSquaredDistance < currentBestSquaredDistance)
-//     {
-//       currentBestSquaredDistance = localSquaredDistance;
-//       // To send the current best squared distance to the lower levels
-//       bestSquaredDistance = localSquaredDistance;
-//       currentBestIndex = localIndex;
-//     }
-//   // 2.3)
-//   if (oppositeSide != 0)
-//     {
-//       // 2.4)
-//       UnsignedInteger candidateBestIndex(getNearestNeighbourIndex(oppositeSide, x, bestSquaredDistance, (activeDimension + 1) % points_.getDimension()));
-//       if (bestSquaredDistance < currentBestSquaredDistance)
-// 	{
-// 	  currentBestSquaredDistance = bestSquaredDistance;
-// 	  currentBestIndex = candidateBestIndex;
-// 	}
-//     } // oppositeSide != 0
-//   // 3)
-//   bestSquaredDistance = currentBestSquaredDistance;
-//   throw NotYetImplementedException(HERE);
-// }
-
-// /* Get the k nearest neighbours of the given point */
-// NumericalSample KDTree::getNearestNeighbours(const NumericalPoint & x,
-// 					     const UnsignedInteger k) const
-// {
-//   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
-//   const Indices indices(getNearestNeighboursIndices(x, k));
-//   NumericalSample result(k, points_.getDimension());
-//   for (UnsignedInteger i = 0; i < k; ++i) result[i] = points_[indices[i]];
-//   return result;
-// }
+/* Get the k nearest neighbours of the given point */
+NumericalSample KDTree::getNearestNeighbours(const NumericalPoint & x,
+					     const UnsignedInteger k) const
+{
+  if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
+  const Indices indices(getNearestNeighboursIndices(x, k));
+  NumericalSample result(k, points_.getDimension());
+  for (UnsignedInteger i = 0; i < k; ++i) result[i] = points_[indices[i]];
+  return result;
+}
 
 UnsignedInteger KDTree::getNearestNeighbourIndex(const NumericalPoint & x) const
 {
