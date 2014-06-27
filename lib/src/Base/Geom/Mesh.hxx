@@ -77,9 +77,6 @@ public:
   /** Get the index of the nearest vertex */
   UnsignedInteger getNearestVertexIndex(const NumericalPoint & point) const;
 
-  /** Get the index of the nearest vertices */
-  Indices getNearestVerticesIndices(const NumericalSample & points) const;
-
   /** Comparison operator */
   Bool operator == (const Mesh & rhs) const;
 

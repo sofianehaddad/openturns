@@ -21,11 +21,11 @@ try:
     inPoint = NumericalPoint([1.2, 2.3, 3.4])
     print "myFunction=", myFunction
     value = myFunction(inPoint)
-    print "Value at  %s =\n%s" % (inPoint, value)
+    print "Value at ", inPoint, "=\n", value
     gradient = myFunction.gradient(inPoint)
-    print "Gradient at  %s =\n%s" % (inPoint, gradient)
+    print "Gradient at ", inPoint, "=\n", gradient
     hessian = myFunction.hessian(inPoint)
-    print "Hessian at  %s =\n%s" % (inPoint, hessian)
+    print "Hessian at ", inPoint, "=\n", hessian
 
     # Sum/difference
     # First, build two functions from R^3->R^2
@@ -39,19 +39,19 @@ try:
     mySum = f1 + f2
     print "mySum=", mySum
     value = mySum(inPoint)
-    print "Value at  %s =\n%s" % (inPoint.clean(1e-5), value.clean(1e-5))
+    print "Value at ", inPoint.clean(1e-5), "=\n", value.clean(1e-5)
     gradient = mySum.gradient(inPoint)
-    print "Gradient at  %s =\n%s" % (inPoint.clean(1e-5), gradient.clean(1e-5))
+    print "Gradient at ", inPoint.clean(1e-5), "=\n", gradient.clean(1e-5)
     hessian = mySum.hessian(inPoint)
-    print "Hessian at  %s =\n%s" % (inPoint.clean(1e-5), hessian.clean(1e-5))
+    print "Hessian at ", inPoint.clean(1e-5), "=\n", hessian.clean(1e-5)
     myDiff = f1 - f2
     print "myDiff=", myDiff
     value = myDiff(inPoint)
-    print "Value at  %s =\n%s" % (inPoint.clean(1e-5), value.clean(1e-5))
+    print "Value at ", inPoint.clean(1e-5), "=\n", value.clean(1e-5)
     gradient = myDiff.gradient(inPoint)
-    print "Gradient at  %s =\n%s" % (inPoint.clean(1e-5), gradient.clean(1e-5))
+    print "Gradient at ", inPoint.clean(1e-5), "=\n", gradient.clean(1e-5)
     hessian = myDiff.hessian(inPoint)
-    print "Hessian at  %s =\n%s" % (inPoint.clean(1e-5), hessian.clean(1e-5))
+    print "Hessian at ", inPoint.clean(1e-5), "=\n", hessian.clean(1e-5)
 
 except:
     import sys
