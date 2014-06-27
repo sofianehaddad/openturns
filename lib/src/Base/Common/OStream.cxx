@@ -169,24 +169,7 @@ OStream & operator << (OStream & OS, std::ios_base & (*manip)(std::ios_base &))
   return OS;
 }
 
-#ifdef _MSC_VER
-
-template<typename T>
-inline OStream & operator << (OStream & OS, std::_Smanip<T> manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
-
-template <typename T>
-inline OStream & operator << (OStream & OS, std::_Fillobj<T> manip)
-{
-  OS.getStream() << manip;
-  return OS;
-}
-
-#elif defined(__GNUC__)
-
+#if defined(__GNUC__)
 
 OStream & operator << (OStream & OS, std::_Setw manip)
 {

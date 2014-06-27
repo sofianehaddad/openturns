@@ -45,6 +45,11 @@ int main(int argc, char *argv[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
+    {
+      // Instanciate one distribution object
+      Multinomial distribution;
+    }
+
     // Instanciate one distribution object
     Multinomial distribution(5, NumericalPoint(3, 0.25));
     fullprint << "Distribution " << distribution << std::endl;
