@@ -61,6 +61,12 @@ int main(int argc, char *argv[])
       NumericalPoint p(1);
       p[0] = 1.3;
       fullprint << "is p=" << p << " in mesh? " << mesh1D.contains(p) << std::endl;
+      NumericalPoint point(1, 1.8);
+      fullprint << "Nearest index(" << point << ")=" << mesh1D.getNearestVertexIndex(point) << std::endl;
+      NumericalSample points(2, 1);
+      points[0] = NumericalPoint(1, -0.3);
+      points[1] = NumericalPoint(1, 2.4);
+      fullprint << "Nearest index(" << points << ")=" << mesh1D.getNearestVertexIndex(points) << std::endl;
     }
     {
       NumericalSample vertices(0, 2);
@@ -111,6 +117,12 @@ int main(int argc, char *argv[])
       simplicies[4][2] = 5;
       Mesh mesh2D(vertices, simplicies);
       fullprint << "2D mesh=" << mesh2D << std::endl;
+      NumericalPoint point(2, 1.8);
+      fullprint << "Nearest index(" << point << ")=" << mesh2D.getNearestVertexIndex(point) << std::endl;
+      NumericalSample points(2, 2);
+      points[0] = NumericalPoint(2, -0.3);
+      points[1] = NumericalPoint(2, 2.4);
+      fullprint << "Nearest index(" << points << ")=" << mesh2D.getNearestVertexIndex(points) << std::endl;
     }
     {
       NumericalSample vertices(0, 3);
@@ -189,6 +201,12 @@ int main(int argc, char *argv[])
 
       Mesh mesh3D(vertices, simplicies);
       fullprint << "3D mesh=" << mesh3D << std::endl;
+      NumericalPoint point(3, 1.8);
+      fullprint << "Nearest index(" << point << ")=" << mesh3D.getNearestVertexIndex(point) << std::endl;
+      NumericalSample points(2, 3);
+      points[0] = NumericalPoint(3, -0.3);
+      points[1] = NumericalPoint(3, 2.4);
+      fullprint << "Nearest index(" << points << ")=" << mesh3D.getNearestVertexIndex(points) << std::endl;
     }
   }
   catch (TestFailed & ex)

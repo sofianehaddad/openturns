@@ -225,6 +225,40 @@ UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
   return functor.minIndex_;
 }
 
+/* TBB policy to speed-up nearest index computation over a sample */
+struct NearestPolicy
+{
+  const NumericalSample & points_;
+  Indices & indices_;
+  const Mesh & mesh_;
+
+  NearestPolicy(const NumericalSample & points,
+                Indices & indices,
+                const Mesh & mesh)
+    : points_(points)
+    , indices_(indices)
+    , mesh_(mesh)
+ {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) indices_[i] = mesh_.getNearestVertexIndex(points_[i]);
+  }
+
+}; /* end struct NearestPolicy */
+
+/* Get the index of the nearest vertex for a set of points */
+Indices Mesh::getNearestVertexIndex(const NumericalSample & points) const
+{
+  if (points.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected points of dimension " << getDimension() << ", got points of dimension " << points.getDimension();
+  const UnsignedInteger size(points.getSize());
+  Indices indices(size);
+  if (size == 0) return indices;
+  const NearestPolicy policy( points, indices, *this );
+  TBB::ParallelFor( 0, size, policy );
+  return indices;
+}
+
 /* Compute the volume of a given simplex */
 NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
 {

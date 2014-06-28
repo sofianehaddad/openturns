@@ -56,6 +56,7 @@ UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequency
   DSPCollection_ = HermitianMatrixCollection(N);
   // put the first element
   DSPCollection_[0] = spectralFunction[0];
+  DSPCollection_[0].checkHermitian();
   setDimension(DSPCollection_[0].getDimension());
   // put the next elements if dimension is ok
   for (UnsignedInteger k = 1; k < N; ++k)
@@ -63,6 +64,7 @@ UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequency
     if (spectralFunction[k].getDimension() != dimension_)
       throw InvalidArgumentException(HERE) << " Error with dimension; the spectral matrices should be of same dimension";
     DSPCollection_[k] = spectralFunction[k];
+    DSPCollection_[k].checkHermitian();
   }
 }
 

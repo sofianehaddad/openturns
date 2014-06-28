@@ -384,7 +384,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "KFold-DefaultK", 10 );
 
   // BlendedStep parameters //
-  setAsNumericalScalar( "BlendedStep-DefaultEta", 0.0 );
+  setAsNumericalScalar( "BlendedStep-DefaultEta", 1.0 );
 
   // CenteredFiniteDifferenceGradient parameters //
   setAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-5 );

@@ -67,9 +67,9 @@ try:
     CDFTail = distribution.computeComplementaryCDF( quantileTail )
     print "cdf (tail)=", CDFTail
     CF = distribution.computeCharacteristicFunction( point[0] )
-    print "characteristic function=", CF
+    print "characteristic function=(%.6g+%.6gj)" % (CF.real, CF.imag)
     LCF = distribution.computeLogCharacteristicFunction( point[0] )
-    print "log characteristic function=", LCF
+    print "log characteristic function=(%.6g+%.6gj)" % (LCF.real, LCF.imag)
     PDFgr = distribution.computePDFGradient( point )
     print "pdf gradient     =", PDFgr
     CDFgr = distribution.computeCDFGradient( point )

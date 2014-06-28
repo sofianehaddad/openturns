@@ -52,7 +52,7 @@
   <KFold-DefaultK                      value="10" />
   
   <!-- OT::BlendedStep parameters -->
-  <BlendedStep-DefaultEta              value="0.0" />
+  <BlendedStep-DefaultEta              value="1.0" />
 
   <!-- OT::CenteredFiniteDifferenceGradient parameters -->
   <CenteredFiniteDifferenceGradient-DefaultEpsilon value="1.0e-5" />
