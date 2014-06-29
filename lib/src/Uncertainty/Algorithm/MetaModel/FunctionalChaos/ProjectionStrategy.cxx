@@ -91,6 +91,30 @@ NumericalSample ProjectionStrategy::getOutputSample() const
   return getImplementation()->getOutputSample();
 }
 
+/* Weights accessor */
+NumericalPoint ProjectionStrategy::getWeights() const
+{
+  return getImplementation()->getWeights();
+}
+
+/* Residual accessor */
+NumericalScalar ProjectionStrategy::getResidual() const
+{
+  return getImplementation()->getResidual();
+}
+
+/* Relative error accessor */
+NumericalScalar ProjectionStrategy::getRelativeError() const
+{
+  return getImplementation()->getRelativeError();
+}
+
+/* Relative error accessor */
+NumericalPoint ProjectionStrategy::getCoefficients() const
+{
+  return getImplementation()->getCoefficients();
+}
+
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategy::computeCoefficients(const NumericalMathFunction & function,

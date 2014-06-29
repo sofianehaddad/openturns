@@ -92,6 +92,18 @@ public:
   virtual NumericalSample getInputSample() const;
   virtual NumericalSample getOutputSample() const;
 
+  /** Weights accessor */
+  virtual NumericalPoint getWeights() const;
+
+  /** Residual accessor */
+  virtual NumericalScalar getResidual() const;
+
+  /** Relative error accessor */
+  virtual NumericalScalar getRelativeError() const;
+
+  /** Relative error accessor */
+  virtual NumericalPoint getCoefficients() const;
+
   /** Experiment accessors */
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
   virtual const WeightedExperiment & getExperiment() const;
