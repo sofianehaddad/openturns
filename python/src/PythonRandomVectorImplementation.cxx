@@ -71,7 +71,7 @@ PythonRandomVectorImplementation::PythonRandomVectorImplementation(PyObject * py
                              const_cast<char *>( "()" ) ));
   if ( ( desc.get() != NULL )
        && PySequence_Check( desc.get() )
-       && ( PySequence_Size( desc.get() ) == dimension ) )
+       && ( PySequence_Size( desc.get() ) == static_cast<SignedInteger>(dimension) ) )
   {
     description = convert< _PySequence_, Description >( desc.get() );
   }

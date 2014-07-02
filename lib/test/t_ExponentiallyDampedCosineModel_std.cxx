@@ -34,17 +34,12 @@ int main(int argc, char *argv[])
 
   try
   {
-
-    /* Default dimension parameter to evaluate the model */
-    const UnsignedInteger defaultDimension(1);
-
     /* Amplitude values */
     NumericalScalar amplitude(1.0);
     /* Scale values */
     NumericalScalar scale(1.0);
     /* Frequency values */
     NumericalScalar frequency(0.1);
-
 
     /* Default constructor */
     ExponentiallyDampedCosineModel myDefautModel;
