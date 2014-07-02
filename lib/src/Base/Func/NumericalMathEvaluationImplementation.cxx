@@ -71,9 +71,9 @@ NumericalMathEvaluationImplementation::NumericalMathEvaluationImplementation()
   , inputStrategy_(Full())
   , outputStrategy_(Full())
   , isHistoryEnabled_(false)
+  , parameters_(0)
   , inputDescription_(0)
   , outputDescription_(0)
-  , parameters_(0)
 {
   // We disable the cache by default
   p_cache_->disable();

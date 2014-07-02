@@ -445,7 +445,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         Cloud point(NumericalSample(1, xMin));
         point.setPointStyle("none");
         point.setColor(palette[i]);
-        if ((i == levelsNumber - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
+        if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
         else point.setLegend(" ");
         graph.add(point);
       }
@@ -493,7 +493,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         Cloud point(NumericalSample(1, xMin));
         point.setPointStyle("none");
         point.setColor(palette[(i * (size - 1)) / (levelsNumber - 1)]);
-        if ((i == levelsNumber - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
+        if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
         else point.setLegend(" ");
         graph.add(point);
       }

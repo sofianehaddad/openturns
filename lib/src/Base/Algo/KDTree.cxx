@@ -46,8 +46,8 @@ public:
     : sample_(sample)
     , capacity_(size)
     , size_(0)
-    , indices_(size)
     , values_(size)
+    , indices_(size)
   {
     // Initialize values_[0] to a valid value
     values_[0] = SpecFunc::MaxNumericalScalar;

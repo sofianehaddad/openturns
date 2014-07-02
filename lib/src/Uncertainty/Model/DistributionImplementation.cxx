@@ -743,8 +743,6 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
     }
     else
     {
-      Bool notDone(true);
-
       const NumericalScalar a(range_.getLowerBound()[0]);
       const NumericalScalar b(range_.getUpperBound()[0]);
       const NumericalScalar T(0.5 * (b - a));

@@ -177,7 +177,7 @@ NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
   // Must start at -1 as both cumulatedWidth_ and cumulatedSurface_ start with positive values
   SignedInteger iMin(-1);
   UnsignedInteger iMax(size - 1);
-  while (iMax > iMin + 1)
+  while (static_cast<SignedInteger>(iMax) > iMin + 1)
   {
     const UnsignedInteger i((iMin + iMax) / 2);
     if (x < cumulatedWidth_[i]) iMax = i;

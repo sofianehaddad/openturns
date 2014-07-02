@@ -131,7 +131,6 @@ NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
   if ( value == -SpecFunc::MaxNumericalScalar ) return -SpecFunc::MaxNumericalScalar;
 
   const UnsignedInteger size(observations_.getSize());
-  const UnsignedInteger p(conditional_.getParametersNumber());
   for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     // retrieve model data if available
