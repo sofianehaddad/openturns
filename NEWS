@@ -30,6 +30,7 @@
  * Renamed Matrix::computeSingularValues(u, vT) to computeSVD(u, vT)
  * Renamed Matrix::computeEigenValues(v) to computeEVD(v)
  * Added Matrix::computeTrace
+ * Renamed WeightedExperiment::generate(weights) to WeightedExperiment::generateWithWeights(weights)
  
 === Python module ===
  * Docstring documentation, can be used in combination with sphinx (in-progress)

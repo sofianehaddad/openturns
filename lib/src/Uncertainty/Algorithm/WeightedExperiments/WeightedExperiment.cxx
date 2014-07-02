@@ -116,7 +116,7 @@ NumericalSample WeightedExperiment::generate()
 }
 
 /* Sample generation with weights */
-NumericalSample WeightedExperiment::generate(NumericalPoint & weights)
+NumericalSample WeightedExperiment::generateWithWeights(NumericalPoint & weights)
 {
   const NumericalSample sample(generate());
   weights = weights_;

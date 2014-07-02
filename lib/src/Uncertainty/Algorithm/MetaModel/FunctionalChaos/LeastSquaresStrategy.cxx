@@ -127,7 +127,7 @@ void LeastSquaresStrategy::computeCoefficients(const NumericalMathFunction & fun
   // upon this sample
   if (inputSample_.getSize() == 0)
   {
-    inputSample_  = p_weightedExperiment_->generate(weights_);
+    inputSample_  = p_weightedExperiment_->generateWithWeights(weights_);
     outputSample_ = function(inputSample_);
   }
 

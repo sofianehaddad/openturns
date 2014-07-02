@@ -75,7 +75,7 @@ public:
   virtual NumericalSample generate();
 
   /** Sample generation with weights*/
-  virtual NumericalSample generate(NumericalPoint & weights);
+  virtual NumericalSample generateWithWeights(NumericalPoint & weights);
 
   /** Weight accessor */
   virtual NumericalPoint getWeight() const;

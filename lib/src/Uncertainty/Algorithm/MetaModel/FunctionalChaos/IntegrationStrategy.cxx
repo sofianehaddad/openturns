@@ -114,7 +114,7 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   // upon this sample
   if (inputSample_.getSize() == 0)
   {
-    inputSample_  = p_weightedExperiment_->generate(weights_);
+    inputSample_  = p_weightedExperiment_->generateWithWeights(weights_);
     outputSample_ = function(inputSample_);
   }
   // First, copy the coefficients that are common with the previous partial basis

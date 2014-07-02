@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     GaussProductExperiment myPlane(distribution, marginalDegrees);
     fullprint << "myPlane = " << myPlane << std::endl;
     NumericalPoint weights(0);
-    NumericalSample sample(myPlane.generate(weights));
+    NumericalSample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
   }

@@ -17,8 +17,7 @@ try:
     print "ref. sample=", repr(refSample)
     myPlane = BootstrapExperiment(refSample)
     print "myPlane = ", myPlane
-    weights = NumericalPoint(0)
-    sample = myPlane.generate(weights)
+    sample, weights = myPlane.generateWithWeights()
     print "sample = ", repr(sample)
     print "weights = ", repr(weights)
 

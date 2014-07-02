@@ -219,7 +219,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributions(const D
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of integration nodes. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"ConditionalDistribution-MaximumIntegrationNodesNumber\"");
 
     GaussProductExperiment experiment(measure, Indices(continuousDimension, std::min(maximumNumber, candidateNumber)));
-    continuousNodes_ = experiment.generate(continuousWeights_);
+    continuousNodes_ = experiment.generateWithWeights(continuousWeights_);
     // Also adapt the integration nodes number in the upper class
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     // Normalization factor for the weights

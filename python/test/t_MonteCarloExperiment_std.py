@@ -9,8 +9,7 @@ try:
     size = 10
     myPlane = MonteCarloExperiment(distribution, size)
     print "myPlane = ", myPlane
-    weights = NumericalPoint(0)
-    sample = NumericalSample(myPlane.generate(weights))
+    sample, weights = myPlane.generateWithWeights()
     print "sample = ", repr(sample)
     print "weights = ", repr(weights)
 except:
