@@ -121,7 +121,7 @@ rm %{buildroot}%{_datadir}/%{name}/examples/*.sh
 
 %check
 make tests %{?_smp_mflags}
-ctest %{?_smp_mflags} --output-on-failure
+ctest %{?_smp_mflags} || cat Testing/Temporary/LastTest.log
 rm %{buildroot}%{python_sitearch}/%{name}/*.pyc
 
 %clean
