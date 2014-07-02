@@ -87,6 +87,7 @@ String ImportanceSamplingExperiment::__repr__() const
 NumericalSample ImportanceSamplingExperiment::generate(NumericalPoint & weights)
 {
   NumericalSample result(size_, distribution_.getDimension());
+  result.setDescription(distribution_.getDescription());
   weights_ = NumericalPoint(size_);
   for (UnsignedInteger i = 0; i < size_; ++i)
   {

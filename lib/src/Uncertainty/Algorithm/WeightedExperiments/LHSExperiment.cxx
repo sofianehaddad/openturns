@@ -88,6 +88,7 @@ NumericalSample LHSExperiment::generate()
   // To insure that the shuffle has been initialized
   shuffle_ = getShuffle();
   NumericalSample sample(size_, dimension);
+  sample.setDescription(distribution_.getDescription());
   DistributionCollection marginals(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) marginals[i] = distribution_.getMarginal(i);
   for(UnsignedInteger index = 0; index < size_; ++index)

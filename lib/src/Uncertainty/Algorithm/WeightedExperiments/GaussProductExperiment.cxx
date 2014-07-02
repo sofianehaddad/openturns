@@ -149,6 +149,7 @@ void GaussProductExperiment::computeNodesAndWeights()
   }
   // Second, multiplex everything
   nodes_ = NumericalSample(size_, dimension);
+  nodes_.setDescription(distribution_.getDescription());
   weights_ = NumericalPoint(size_, 1.0);
   Indices indices(dimension, 0);
   for (UnsignedInteger linearIndex = 0; linearIndex < size_; ++linearIndex)
