@@ -45,6 +45,7 @@ import re
 import warnings
 import io
 
+
 class View(object):
 
     """
@@ -335,7 +336,8 @@ class View(object):
                 colorsRGBA = list()
                 for i in xrange(polygonsNumber):
                     rgba = drawable.ConvertToRGBA(colors[i])
-                    colorsRGBA.append((rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
+                    colorsRGBA.append(
+                        (rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
                 if (not 'facecolors' in polygon_array_kwargs_default):
                     polygon_array_kwargs['facecolors'] = colorsRGBA
 
@@ -501,12 +503,12 @@ class View(object):
         Refer to matplotlib.axes.Axes for further information.
         """
         return self._ax
-        
-        
+
+
 def ToSVGString(graph):
     """
     ToSVGString(graph)
-    
+
     Parameters
     ----------
     graph:
@@ -514,18 +516,17 @@ def ToSVGString(graph):
 
     Returns a SVG representation as string
     """
-    
+
     output = io.BytesIO()
-    
+
     # save interactive mode state
     ision = plt.isinteractive()
     plt.ioff()
-    
+
     View(graph).save(output, format='svg')
-    
+
     # restore interactive mode state
     if ision:
         plt.ion()
-        
-    return output.getvalue()
 
+    return output.getvalue()

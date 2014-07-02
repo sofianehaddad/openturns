@@ -537,17 +537,17 @@ void MatrixImplementation::triangularize(const Bool isLowerTriangular) const
 {
   MatrixImplementation *refThis(const_cast<MatrixImplementation *>(this));
   if (isLowerTriangular)
-    {
-      for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-        for (UnsignedInteger i = 0; i < j; ++i)
-          refThis->operator[](convertPosition(i, j)) = 0.0;
-    }
+  {
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+      for (UnsignedInteger i = 0; i < j; ++i)
+        refThis->operator[](convertPosition(i, j)) = 0.0;
+  }
   else
-    {
-      for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-        for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
-          refThis->operator[](convertPosition(i, j)) = 0.0;
-    }
+  {
+    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+      for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
+        refThis->operator[](convertPosition(i, j)) = 0.0;
+  }
 }
 
 /* Check if the matrix values belong to (-1;1) */
@@ -574,12 +574,12 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
   MatrixImplementation result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
-      {
-	const NumericalScalar value((*this)(i, j));
-	// Things are done this way to prevent spurious -0.0
-	if (std::abs(value) < 0.5 * threshold) result(i, j) = 0.0;
-	else result(i, j) = threshold * round(value / threshold);
-      }
+    {
+      const NumericalScalar value((*this)(i, j));
+      // Things are done this way to prevent spurious -0.0
+      if (std::abs(value) < 0.5 * threshold) result(i, j) = 0.0;
+      else result(i, j) = threshold * round(value / threshold);
+    }
   return result;
 }
 
@@ -1187,9 +1187,9 @@ NumericalPoint MatrixImplementation::computeSingularValues(const Bool keepIntact
 
 /* Compute the singular values and singular decomposition of a matrix */
 NumericalPoint MatrixImplementation::computeSVD(MatrixImplementation & u,
-                                                MatrixImplementation & vT,
-                                                const Bool fullSVD,
-                                                const Bool keepIntact)
+    MatrixImplementation & vT,
+    const Bool fullSVD,
+    const Bool keepIntact)
 {
   int m(nbRows_);
   int n(nbColumns_);

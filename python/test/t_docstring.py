@@ -17,9 +17,9 @@ except:
     pass
 
 ot_path = os.path.dirname(ot.__file__)
-py_files = sorted(glob(ot_path+'/*.py'))
+py_files = sorted(glob(ot_path + '/*.py'))
 
-total_failure_count = 0  
+total_failure_count = 0
 total_test_count = 0
 
 # Temporary working directory for IO tests
@@ -32,7 +32,8 @@ for py_file in py_files:
     else:
         py_basename = os.path.splitext(os.path.basename(py_file))[0]
         module = __import__('openturns.' + py_basename, fromlist=[py_basename])
-        failure_count, test_count = doctest.testmod(module, verbose=False, optionflags=doctest.ELLIPSIS)
+        failure_count, test_count = doctest.testmod(
+            module, verbose=False, optionflags=doctest.ELLIPSIS)
 
     total_failure_count += failure_count
     total_test_count += test_count

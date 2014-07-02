@@ -57,7 +57,7 @@ ParametricHessianImplementation * ParametricHessianImplementation::clone() const
 
 /* Hessian operator */
 SymmetricTensor ParametricHessianImplementation::hessian(const NumericalPoint & point,
-                                                         const NumericalPoint & parameters) const
+    const NumericalPoint & parameters) const
 {
   const UnsignedInteger parametersDimension(parameters.getDimension());
   if (parametersDimension != evaluation_.getParametersPositions().getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << evaluation_.getParametersPositions().getSize() << ", got dimension=" << parametersDimension;
@@ -72,17 +72,17 @@ SymmetricTensor ParametricHessianImplementation::hessian(const NumericalPoint & 
   // The gradient wrt x corresponds to the inputPositions rows of the full gradient
   SymmetricTensor result(pointDimension, outputDimension);
   for (UnsignedInteger i = 0; i < pointDimension; ++i)
+  {
+    const UnsignedInteger i0(evaluation_.inputPositions_[i]);
+    for (UnsignedInteger j = 0; j < pointDimension; ++j)
     {
-      const UnsignedInteger i0(evaluation_.inputPositions_[i]);
-      for (UnsignedInteger j = 0; j < pointDimension; ++j)
-	{
-	  const UnsignedInteger j0(evaluation_.inputPositions_[j]);
-	  {
-	    for (UnsignedInteger k = 0; k < outputDimension; ++k)
-	      result(i, j, k) = fullHessian(i0, j0, k);
-	  }
-	}
+      const UnsignedInteger j0(evaluation_.inputPositions_[j]);
+      {
+        for (UnsignedInteger k = 0; k < outputDimension; ++k)
+          result(i, j, k) = fullHessian(i0, j0, k);
+      }
     }
+  }
   return result;
 }
 

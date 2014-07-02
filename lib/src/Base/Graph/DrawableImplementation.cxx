@@ -821,14 +821,14 @@ Indices DrawableImplementation::ConvertToRGB(const String & key)
   Indices rgb(3, 0);
   UnsignedInteger code;
   if (ScanColorCode(key, code))
-    {
-      code = code >> 8;
-      rgb[2] = code % 256;
-      code = code >> 8;
-      rgb[1] = code % 256;
-      code = code >> 8;
-      rgb[0] = code;
-    }
+  {
+    code = code >> 8;
+    rgb[2] = code % 256;
+    code = code >> 8;
+    rgb[1] = code % 256;
+    code = code >> 8;
+    rgb[0] = code;
+  }
   else LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
   return rgb;
 }
@@ -839,15 +839,15 @@ Indices DrawableImplementation::ConvertToRGBA(const String & key)
   Indices rgba(4, 0);
   UnsignedInteger code;
   if (ScanColorCode(key, code))
-    {
-      rgba[3] = code % 256;
-      code = code >> 8;
-      rgba[2] = code % 256;
-      code = code >> 8;
-      rgba[1] = code % 256;
-      code = code >> 8;
-      rgba[0] = code;
-    }
+  {
+    rgba[3] = code % 256;
+    code = code >> 8;
+    rgba[2] = code % 256;
+    code = code >> 8;
+    rgba[1] = code % 256;
+    code = code >> 8;
+    rgba[0] = code;
+  }
   else LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
   return rgba;
 }
@@ -1061,7 +1061,7 @@ Bool DrawableImplementation::IsValidColorName(const String & key)
 }
 
 Bool DrawableImplementation::ScanColorCode(const String & key,
-					   UnsignedInteger & code)
+    UnsignedInteger & code)
 {
   code = 255;
   // First, check if the color is given in RGB format
@@ -1074,7 +1074,7 @@ Bool DrawableImplementation::ScanColorCode(const String & key,
   // 9 for #RRGGBBAA
   if ((keySize != 7) && (keySize != 9)) return false;
   // Second, check that the values are ok
-  UnsignedInteger shift(1<<28);
+  UnsignedInteger shift(1 << 28);
   for (UnsignedInteger i = 1; i < keySize; ++i)
   {
     const char c(key[i]);

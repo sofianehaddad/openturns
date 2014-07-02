@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
   fullprint << "tree=" << tree << std::endl;
   NumericalSample test(Normal(3).getSample(20));
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
-    {
-      UnsignedInteger index(tree.getNearestNeighbourIndex(test[i]));
-      NumericalPoint neighbour(tree.getNearestNeighbour(test[i]));
-      fullprint << "Nearest neighbour of " << test[i] << "=" << neighbour << " (index=" << index << ")" << std::endl;
-    }
+  {
+    UnsignedInteger index(tree.getNearestNeighbourIndex(test[i]));
+    NumericalPoint neighbour(tree.getNearestNeighbour(test[i]));
+    fullprint << "Nearest neighbour of " << test[i] << "=" << neighbour << " (index=" << index << ")" << std::endl;
+  }
   return ExitCode::Success;
 }

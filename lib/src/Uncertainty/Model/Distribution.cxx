@@ -673,7 +673,7 @@ NumericalScalar Distribution::computeDensityGeneratorSecondDerivative(const Nume
 
 /* Compute the radial distribution CDF */
 NumericalScalar Distribution::computeRadialDistributionCDF (const NumericalScalar radius,
-                                                            const Bool tail) const
+    const Bool tail) const
 {
   return getImplementation()->computeRadialDistributionCDF(radius, tail);
 }

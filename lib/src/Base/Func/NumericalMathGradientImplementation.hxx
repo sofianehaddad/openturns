@@ -83,7 +83,7 @@ public:
   /** Gradient method */
   virtual Matrix gradient(const NumericalPoint & inP) const;
   virtual Matrix gradient(const NumericalPoint & inP,
-			  const NumericalPoint & parameters);
+                          const NumericalPoint & parameters);
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

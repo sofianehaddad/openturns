@@ -308,8 +308,8 @@ public:
 
   /** Compute the radial distribution CDF */
   virtual NumericalScalar computeRadialDistributionCDF (const NumericalScalar radius,
-                                                        const Bool tail = false) const;
-  
+      const Bool tail = false) const;
+
   /** Get the i-th marginal distribution */
   Distribution getMarginal(const UnsignedInteger i) const;
 

@@ -46,7 +46,7 @@ class OT_API ComplexMatrixImplementation
 #ifndef SWIG
   /** Declaration of friend operators */
   friend ComplexMatrixImplementation operator * (const NumericalComplex s,
-                                                 const ComplexMatrixImplementation & matrix)
+      const ComplexMatrixImplementation & matrix)
   {
     return matrix.operator * (s);
   }
@@ -96,10 +96,10 @@ public:
 
   /** Resolution of a linear system in case of a rectangular matrix */
   NumericalComplexCollection solveLinearSystemRect(const NumericalComplexCollection & b,
-                                                   const Bool keepIntact = true);
+      const Bool keepIntact = true);
 
   ComplexMatrixImplementation solveLinearSystemRect(const ComplexMatrixImplementation & b,
-                                                    const Bool keepIntact = true);
+      const Bool keepIntact = true);
 
   /** Set small elements to zero */
   virtual ComplexMatrixImplementation clean(const NumericalScalar threshold) const;
@@ -175,8 +175,8 @@ public:
                                        const char hermSide) const;
   /** Triangular matrix product : side argument L/R for the position of the triangular matrix, up/lo to tell if it  */
   ComplexMatrixImplementation triangularProd(const ComplexMatrixImplementation & m,
-                                             const char side = 'L',
-                                             const char uplo = 'L') const;
+      const char side = 'L',
+      const char uplo = 'L') const;
 
   /** ComplexMatrixImplementation integer power */
   ComplexMatrixImplementation genPower(const UnsignedInteger n) const;
@@ -195,13 +195,13 @@ public:
 
   /** Using triangular matrix */
   NumericalComplexCollection triangularVectProd(const NumericalComplexCollection & pt,
-                                                const char side = 'L') const;
+      const char side = 'L') const;
   NumericalComplexCollection triangularVectProd(const NumericalScalarCollection & pt,
-                                                const char side = 'L') const;
+      const char side = 'L') const;
 
 
   NumericalComplexCollection triangularVectProd(const NumericalPoint & pt,
-                                                const char side = 'L') const;
+      const char side = 'L') const;
 
   /** Check if the matrix is self-adjoint */
   virtual Bool isHermitian() const;
@@ -250,7 +250,7 @@ protected:
 }; /* class ComplexMatrixImplementation */
 
 inline UnsignedInteger ComplexMatrixImplementation::convertPosition (const UnsignedInteger i,
-                                                                     const UnsignedInteger j) const
+    const UnsignedInteger j) const
 {
   return i + nbRows_ * j ;
 }
@@ -258,9 +258,9 @@ inline UnsignedInteger ComplexMatrixImplementation::convertPosition (const Unsig
 /** Constructor from range of external collection */
 template <class InputIterator>
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
-                                                         const UnsignedInteger colDim,
-                                                         const InputIterator first,
-                                                         const InputIterator last)
+    const UnsignedInteger colDim,
+    const InputIterator first,
+    const InputIterator last)
   : PersistentCollection<NumericalComplex>(rowDim * colDim, 0.0),
     nbRows_(rowDim),
     nbColumns_(colDim)

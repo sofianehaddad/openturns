@@ -111,7 +111,7 @@ try:
     cobwebValue = VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, "red", False)
     print "cobwebValue = ", cobwebValue
-    
+
     cobwebQuantile = VisualTest.DrawCobWeb(
         inputSample, outputSample, 0.7, 0.9, "red", False)
     print "cobwebQuantile = ", cobwebQuantile
@@ -126,7 +126,7 @@ try:
     sample2.setName("data 2")
     kendallPlot1 = VisualTest.DrawKendallPlot(sample1, copula2)
     print "KendallPlot1 = ", kendallPlot1
-    
+
     kendallPlot2 = VisualTest.DrawKendallPlot(sample2, sample1)
     print "KendallPlot2 = ", kendallPlot2
 

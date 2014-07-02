@@ -6,6 +6,7 @@ from math import *
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
+
 def cleanSymmetricTensor(inSymmetricTensor):
     rowDim = inSymmetricTensor.getNbRows()
     colDim = inSymmetricTensor.getNbColumns()

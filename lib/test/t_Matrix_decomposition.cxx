@@ -75,7 +75,7 @@ void testSVD(UnsignedInteger m, UnsignedInteger n)
 }
 
 
-void testQR(UnsignedInteger m, UnsignedInteger n) 
+void testQR(UnsignedInteger m, UnsignedInteger n)
 {
   OStream fullprint(std::cout);
 
@@ -83,7 +83,7 @@ void testQR(UnsignedInteger m, UnsignedInteger n)
   Matrix R;
   Matrix Q(matrix1.computeQR(R));
   fullprint << "Q= " << Q.__str__() << std::endl;
-  fullprint << "R="<< R.__str__() << std::endl;
+  fullprint << "R=" << R.__str__() << std::endl;
 //   fullprint << "QR="<<(Q*R).__str__()<< std::endl;
 }
 

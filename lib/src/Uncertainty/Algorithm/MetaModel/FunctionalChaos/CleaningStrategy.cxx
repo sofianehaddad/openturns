@@ -61,7 +61,7 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
   : AdaptiveStrategyImplementation(basis, maximumDimension)
   , currentVectorIndex_(0)
   , maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" )),
-    significanceFactor_(ResourceMap::GetAsNumericalScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
+  significanceFactor_(ResourceMap::GetAsNumericalScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
   , verbose_(verbose)
 {
   // Nothing to do

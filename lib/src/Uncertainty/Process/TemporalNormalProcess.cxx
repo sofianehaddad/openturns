@@ -52,8 +52,8 @@ TemporalNormalProcess::TemporalNormalProcess()
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
-                                             const SecondOrderModel & model,
-                                             const Mesh & mesh)
+    const SecondOrderModel & model,
+    const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
   , choleskyFactorCovarianceMatrix_(0)
@@ -70,8 +70,8 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
-                                             const CovarianceModel & covarianceModel,
-                                             const Mesh & mesh)
+    const CovarianceModel & covarianceModel,
+    const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(covarianceModel)
   , choleskyFactorCovarianceMatrix_(0)
@@ -88,7 +88,7 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
-                                             const Mesh & mesh)
+    const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
   , choleskyFactorCovarianceMatrix_(0)
@@ -105,7 +105,7 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
 
 /* Standard constructor  */
 TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceModel,
-                                             const Mesh & mesh)
+    const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(covarianceModel)
   , choleskyFactorCovarianceMatrix_(0)
@@ -143,23 +143,23 @@ void TemporalNormalProcess::initialize() const
 
   NumericalScalar scaling(startingScaling);
   while (continuationCondition && (cumulatedScaling < maximalScaling))
+  {
+    try
     {
-      try
-        {
-          cumulatedScaling += scaling ;
-          // Unroll the regularization to optimize the computation
-          for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
-          LOGINFO(OSS() << "Factor the covariance matrix");
-          choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
-          continuationCondition = false;
-        }
-      // If it has not yet been computed, compute it and store it
-      catch (InternalException & ex)
-        {
-          scaling *= 2.0;
-          LOGWARN(OSS() << "Must regularize the covariance matrix, factor=" << cumulatedScaling);
-        }
+      cumulatedScaling += scaling ;
+      // Unroll the regularization to optimize the computation
+      for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
+      LOGINFO(OSS() << "Factor the covariance matrix");
+      choleskyFactorCovarianceMatrix_ = covarianceMatrix.computeCholesky();
+      continuationCondition = false;
     }
+    // If it has not yet been computed, compute it and store it
+    catch (InternalException & ex)
+    {
+      scaling *= 2.0;
+      LOGWARN(OSS() << "Must regularize the covariance matrix, factor=" << cumulatedScaling);
+    }
+  }
 
   if (scaling >= maximalScaling)
     throw InvalidArgumentException(HERE) << "Error; Could not compute the Cholesky factor"
@@ -214,12 +214,12 @@ Field TemporalNormalProcess::getRealization() const
   else values = getRealizationCholesky();
   // If constant trend
   if (isTrendStationary())
-    {
-      // If zero trend
-      if (stationaryTrendValue_.norm() == 0.0) return Field(mesh_, values);
-      // If nonzero trend
-      return Field(mesh_, values + stationaryTrendValue_);
-    }
+  {
+    // If zero trend
+    if (stationaryTrendValue_.norm() == 0.0) return Field(mesh_, values);
+    // If nonzero trend
+    return Field(mesh_, values + stationaryTrendValue_);
+  }
   // else apply the trend
   return trend_(Field(mesh_, values));
 }
@@ -229,21 +229,21 @@ NumericalSample TemporalNormalProcess::getRealizationGibbs() const
   const NumericalSample vertices(getMesh().getVertices());
   const UnsignedInteger size(vertices.getSize());
   const UnsignedInteger nMax(std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-GibbsMaximumIteration")));
-  
+
   NumericalSample values(size, 1);
   NumericalPoint diagonal(size);
   for (UnsignedInteger n = 0; n < nMax; ++n)
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  // Here we work on the normalized covariance, ie the correlation
-	  NumericalSample covarianceRow(covarianceModel_.discretizeRow(vertices, i));
-	  diagonal[i] = covarianceRow[i][0];
-	  const NumericalPoint delta(1, (DistFunc::rNormal() - values[i][0]) / diagonal[i]);
-	  values += covarianceRow * delta;
-	}
-      LOGINFO(OSS() << "Gibbs sampler - iteration " << n+1 << " over " << nMax);
+      // Here we work on the normalized covariance, ie the correlation
+      NumericalSample covarianceRow(covarianceModel_.discretizeRow(vertices, i));
+      diagonal[i] = covarianceRow[i][0];
+      const NumericalPoint delta(1, (DistFunc::rNormal() - values[i][0]) / diagonal[i]);
+      values += covarianceRow * delta;
     }
+    LOGINFO(OSS() << "Gibbs sampler - iteration " << n + 1 << " over " << nMax);
+  }
   // We have to rescale the realization
   for (UnsignedInteger i = 0; i < size; ++i) values[i] *= diagonal[i];
   return values;
@@ -300,13 +300,13 @@ void TemporalNormalProcess::checkStationaryTrend() const
   if (n == 0) return;
   stationaryTrendValue_ = (*trend_.getEvaluation())(mesh_.getVertices()[0]);
   for (UnsignedInteger i = 1; i < n; ++i)
+  {
+    if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)
     {
-      if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)
-        {
-          hasStationaryTrend_ = false;
-          return;
-        }
+      hasStationaryTrend_ = false;
+      return;
     }
+  }
   return;
 }
 

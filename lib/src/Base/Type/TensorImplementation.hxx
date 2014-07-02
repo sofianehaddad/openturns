@@ -150,8 +150,8 @@ protected:
 
   /** Position conversion function : the indices i & j are used to compute the actual position of the element in the collection */
   inline UnsignedInteger convertPosition (const UnsignedInteger i,
-                                       const UnsignedInteger j,
-                                       const UnsignedInteger k) const;
+                                          const UnsignedInteger j,
+                                          const UnsignedInteger k) const;
 
 }; /* class TensorImplementation */
 

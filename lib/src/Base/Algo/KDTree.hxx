@@ -65,11 +65,11 @@ public:
 
   /** Get the indices of the k nearest neighbours of the given point */
   virtual Indices getNearestNeighboursIndices(const NumericalPoint & x,
-                                              const UnsignedInteger k) const;
+      const UnsignedInteger k) const;
 
   /** Get the k nearest neighbours of the given point */
   virtual NumericalSample getNearestNeighbours(const NumericalPoint & x,
-					       const UnsignedInteger k) const;
+      const UnsignedInteger k) const;
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const NumericalPoint & x) const;
@@ -104,9 +104,9 @@ protected:
     virtual String __repr__() const
     {
       return OSS() << "class=" << GetClassName()
-		   << " index=" << index_
-		   << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
-		   << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
+             << " index=" << index_
+             << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
+             << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
     }
 
     /* Index of the nodal point */
@@ -125,9 +125,9 @@ protected:
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
-						   const NumericalPoint & x,
-						   NumericalScalar & bestSquaredDistance,
-						   const UnsignedInteger activeDimension) const;
+      const NumericalPoint & x,
+      NumericalScalar & bestSquaredDistance,
+      const UnsignedInteger activeDimension) const;
 
   /** The data organized by the tree */
   NumericalSample points_;

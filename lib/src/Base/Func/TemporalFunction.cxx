@@ -42,7 +42,7 @@ TemporalFunction::TemporalFunction(const UnsignedInteger meshDimension)
 
 /* Parameter constructor */
 TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
-				   const UnsignedInteger meshDimension)
+                                   const UnsignedInteger meshDimension)
   : DynamicalFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluationImplementation())
 {
@@ -57,7 +57,7 @@ TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
 
 /* Parameter constructor */
 TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation,
-				   const UnsignedInteger meshDimension)
+                                   const UnsignedInteger meshDimension)
   : DynamicalFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
 {
@@ -72,7 +72,7 @@ TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation
 
 /* Parameter constructor */
 TemporalFunction::TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
-				   const UnsignedInteger meshDimension)
+                                   const UnsignedInteger meshDimension)
   : DynamicalFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
 {

@@ -49,8 +49,8 @@ Wilks::Wilks(const RandomVector & vector)
 
 /* Sample size computation */
 UnsignedInteger Wilks::ComputeSampleSize(const NumericalScalar quantileLevel,
-                                      const NumericalScalar confidenceLevel,
-                                      const UnsignedInteger marginIndex)
+    const NumericalScalar confidenceLevel,
+    const UnsignedInteger marginIndex)
 {
   if ((quantileLevel <= 0.0) || (quantileLevel >= 1.0)) throw InvalidArgumentException(HERE) << "Error: quantile level must be in ]0, 1[, here quantile level=" << quantileLevel;
   if ((confidenceLevel <= 0.0) || (confidenceLevel >= 1.0)) throw InvalidArgumentException(HERE) << "Error: confidence level must be in ]0, 1[, here confidence level=" << confidenceLevel;

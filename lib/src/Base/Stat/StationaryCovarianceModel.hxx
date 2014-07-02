@@ -50,11 +50,11 @@ public:
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::operator();
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
-				       const NumericalPoint & t) const;
+                                       const NumericalPoint & t) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
   using CovarianceModelImplementation::computeAsScalar;
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-					   const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
   virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */

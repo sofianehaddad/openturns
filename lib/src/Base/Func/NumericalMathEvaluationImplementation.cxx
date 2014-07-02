@@ -313,7 +313,7 @@ NumericalPoint NumericalMathEvaluationImplementation::operator() (const Numerica
 }
 
 NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
-								  const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   setParameters(parameters);
   return (*this)(inP);
@@ -481,15 +481,15 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
   NumericalPoint levels(isoValues.getLevels());
   Description labels(isoValues.getLabels());
   for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
-    {
-      Contour current(isoValues);
-      current.setLevels(NumericalPoint(1, levels[i]));
-      current.setLabels(Description(1, labels[i]));
-      current.setDrawLabels(false);
-      current.setLegend(labels[i]);
-      current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
-      graph.add(current);
-    }
+  {
+    Contour current(isoValues);
+    current.setLevels(NumericalPoint(1, levels[i]));
+    current.setLabels(Description(1, labels[i]));
+    current.setDrawLabels(false);
+    current.setLegend(labels[i]);
+    current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
+    graph.add(current);
+  }
   return graph;
 }
 

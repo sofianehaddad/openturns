@@ -314,7 +314,7 @@ NumericalScalar DistFunc::fcBinomial(const UnsignedInteger k)
 }
 
 UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
-                                 const NumericalScalar p)
+                                    const NumericalScalar p)
 {
   // Quick return for degenerate cases
   if (p == 0.0) return 0;

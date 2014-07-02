@@ -52,7 +52,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const Basis & basis,
                                    const CovarianceModel & covarianceModel,
-				   const Bool normalize)
+                                   const Bool normalize)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
@@ -66,26 +66,26 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 
   if (inputSample_.getDimension() != covarianceModel.getDimension())
     throw InvalidArgumentException(HERE) << "Input sample dimension (" << inputSample_.getDimension() << ") does not match covariance model dimension (" << covarianceModel.getDimension() << ").";
-  
+
   // normalize the sample
   const UnsignedInteger dimension(inputSample.getDimension());
   if (normalize)
+  {
+    const NumericalPoint mean(inputSample.computeMean());
+    const NumericalPoint stdev(inputSample.computeStandardDeviationPerComponent());
+    SquareMatrix linear(dimension);
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      const NumericalPoint mean(inputSample.computeMean());
-      const NumericalPoint stdev(inputSample.computeStandardDeviationPerComponent());
-      SquareMatrix linear(dimension);
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-	{
-	  linear(j, j) = 1.0;
-	  if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
-	}
-      const NumericalPoint zero(dimension);
-      setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+      linear(j, j) = 1.0;
+      if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
+    const NumericalPoint zero(dimension);
+    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+  }
   else
-    {
-      setInputTransformation(NumericalMathFunction(Description::BuildDefault(dimension, "x"), Description::BuildDefault(dimension, "x")));
-    }
+  {
+    setInputTransformation(NumericalMathFunction(Description::BuildDefault(dimension, "x"), Description::BuildDefault(dimension, "x")));
+  }
 }
 
 
@@ -108,7 +108,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 
   if (inputSample_.getDimension() != covarianceModel.getDimension())
     throw InvalidArgumentException(HERE) << "Input sample dimension (" << inputSample_.getDimension() << ") does not match covariance model dimension (" << covarianceModel.getDimension() << ").";
-  
+
   // use the isoprobabilistic transformation
   setInputTransformation(inputDistribution.getIsoProbabilisticTransformation());
 }

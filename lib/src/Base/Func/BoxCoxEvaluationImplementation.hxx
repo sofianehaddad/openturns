@@ -37,7 +37,7 @@ class OT_API BoxCoxEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;
- public:
+public:
 
 
   /** Default constructor */
@@ -82,7 +82,7 @@ class OT_API BoxCoxEvaluationImplementation
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
- protected:
+protected:
 
   struct ComputeSamplePolicy
   {
@@ -103,15 +103,15 @@ class OT_API BoxCoxEvaluationImplementation
     inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
     {
       for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
         {
-          for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
-            {
-              const NumericalScalar lambda_j(evaluation_.getLambda()[j]);
-              const NumericalScalar logX(log(input_[i][j] + evaluation_.getShift()[j]));
-              if (std::abs(lambda_j * logX) < 1e-8) output_[i][j] = logX * (1.0 + 0.5 * lambda_j * logX);
-              else output_[i][j] = expm1(lambda_j * logX) / lambda_j;
-            } // j
-        } // i
+          const NumericalScalar lambda_j(evaluation_.getLambda()[j]);
+          const NumericalScalar logX(log(input_[i][j] + evaluation_.getShift()[j]));
+          if (std::abs(lambda_j * logX) < 1e-8) output_[i][j] = logX * (1.0 + 0.5 * lambda_j * logX);
+          else output_[i][j] = expm1(lambda_j * logX) / lambda_j;
+        } // j
+      } // i
     } // operator ()
   };  // struct ComputeSamplePolicy
 

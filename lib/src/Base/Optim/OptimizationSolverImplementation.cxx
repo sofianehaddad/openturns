@@ -47,7 +47,7 @@ OptimizationSolverImplementation::OptimizationSolverImplementation()
  * @brief Standard constructor: the optimization problem is managed by the optimization solver, and the actual solver is in charge to check if it is able to solve it.
  */
 OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem,
-								   const NumericalPoint & startingPoint)
+    const NumericalPoint & startingPoint)
   : PersistentObject()
   , problem_(problem)
   , startingPoint_(startingPoint)

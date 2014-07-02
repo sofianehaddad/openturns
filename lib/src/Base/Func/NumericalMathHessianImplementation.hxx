@@ -80,7 +80,7 @@ public:
   /** Hessian method */
   virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
   virtual SymmetricTensor hessian(const NumericalPoint & inP,
-				  const NumericalPoint & parameters);
+                                  const NumericalPoint & parameters);
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

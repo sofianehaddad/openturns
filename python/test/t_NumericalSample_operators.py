@@ -71,7 +71,7 @@ try:
 
     # operator /
     sample5 = NumericalSample(sample2)
-    m = SquareMatrix([[1,2],[3,5]])
+    m = SquareMatrix([[1, 2], [3, 5]])
     mDivision = sample5 / m
     print "sample / m =", mDivision
 

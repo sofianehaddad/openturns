@@ -50,10 +50,10 @@ public:
   /** Constructor with size and default value */
   Description(const UnsignedInteger size,
               const String & value);
-  
+
   /** Constructor from a collection */
   Description(const Collection<String> & coll);
-  
+
   /** Check if the content is blank */
   Bool isBlank() const;
 
@@ -72,7 +72,7 @@ public:
 
   /** Build a default description */
   static Description BuildDefault(const UnsignedInteger dimension,
-      const String & prefix = "Component");
+                                  const String & prefix = "Component");
 
 
 }; /* class Description */

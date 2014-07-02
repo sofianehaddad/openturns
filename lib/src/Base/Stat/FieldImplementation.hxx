@@ -182,15 +182,15 @@ protected:
     {
       const UnsignedInteger meshDimension(field_.getMeshDimension());
       const UnsignedInteger dimension(field_.getDimension());
-      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) 
-	{
-	  const NumericalScalar volume(field_.mesh_.computeSimplexVolume(i));
-	  const Indices simplex(field_.mesh_.getSimplex(i));
-	  NumericalPoint meanValue(dimension, 0.0);
-	  for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
-	  volumeAccumulator_ += volume;
-	  accumulator_ += (volume / dimension) * meanValue;
-	}
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        const NumericalScalar volume(field_.mesh_.computeSimplexVolume(i));
+        const Indices simplex(field_.mesh_.getSimplex(i));
+        NumericalPoint meanValue(dimension, 0.0);
+        for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
+        volumeAccumulator_ += volume;
+        accumulator_ += (volume / dimension) * meanValue;
+      }
     }
 
     void join(const SpatialMeanFunctor & other)

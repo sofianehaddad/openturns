@@ -78,7 +78,7 @@ NumericalPoint CorrelationAnalysis::SRC(const NumericalSample & inputSample,
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     src[i] *= linear[i] * linear[i] / varOutput;
-    if (src[i] > 1.) LOGWARN(OSS() << "SRC coefficient for component "<<i<<" value ("<<src[i]<<") is > 1. Check the variance of the samples." );
+    if (src[i] > 1.) LOGWARN(OSS() << "SRC coefficient for component " << i << " value (" << src[i] << ") is > 1. Check the variance of the samples." );
   }
   return src;
 }

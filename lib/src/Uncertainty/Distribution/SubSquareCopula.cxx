@@ -112,20 +112,20 @@ void SubSquareCopula::setPhi(const NumericalMathFunction & phi)
   if (lastValue < 0.0) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << lastX << ")=" << lastValue;
   if (lastValue > 1.0) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << lastX << ")=" << lastValue;
   for (UnsignedInteger i = 1; i < inputOutput.getSize(); ++i)
-    {
-      const NumericalScalar x(inputOutput[i][0]);
-      const NumericalScalar value(inputOutput[i][1]);
-      if (value < 0.0) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << inputOutput[i][0] << ")=" << value;
-      if (lastValue > 1.0) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << inputOutput[0][0] << ")=" << inputOutput[0][1];
-      if (value < lastValue) throw InvalidArgumentException(HERE) << "Error: phi must be nondecreasing, here phi(" << lastX << ")=" << lastValue << " and phi(" << x << ")=" << value;
-      lastX = x;
-      lastValue = value;
-    }
+  {
+    const NumericalScalar x(inputOutput[i][0]);
+    const NumericalScalar value(inputOutput[i][1]);
+    if (value < 0.0) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << inputOutput[i][0] << ")=" << value;
+    if (lastValue > 1.0) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << inputOutput[0][0] << ")=" << inputOutput[0][1];
+    if (value < lastValue) throw InvalidArgumentException(HERE) << "Error: phi must be nondecreasing, here phi(" << lastX << ")=" << lastValue << " and phi(" << x << ")=" << value;
+    lastX = x;
+    lastValue = value;
+  }
   if (mass_ < error[0])
-    {
-      mass_ = 0.0;
-      nullPhi_ = true;
-    }
+  {
+    mass_ = 0.0;
+    nullPhi_ = true;
+  }
 }
 
 /* Get one realization of the distribution */

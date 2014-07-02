@@ -485,7 +485,7 @@ Matrix NumericalMathFunctionImplementation::parametersGradient(const NumericalPo
 
 /* Gradient according to the marginal parameters */
 Matrix NumericalMathFunctionImplementation::parametersGradient(const NumericalPoint & inP,
-							       const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   setParameters(parameters);
   return p_evaluationImplementation_->parametersGradient(inP);
@@ -519,7 +519,7 @@ NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalP
 }
 
 NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
-								const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   setParameters(parameters);
   return p_evaluationImplementation_->operator()(inP);
@@ -545,7 +545,7 @@ Matrix NumericalMathFunctionImplementation::gradient(const NumericalPoint & inP)
 }
 
 Matrix NumericalMathFunctionImplementation::gradient(const NumericalPoint & inP,
-						     const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   setParameters(parameters);
@@ -560,7 +560,7 @@ SymmetricTensor NumericalMathFunctionImplementation::hessian(const NumericalPoin
 }
 
 SymmetricTensor NumericalMathFunctionImplementation::hessian(const NumericalPoint & inP,
-						     const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
   setParameters(parameters);

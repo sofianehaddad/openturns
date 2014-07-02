@@ -45,9 +45,9 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation()
 
 /* Parameter constructor */
 ParametricEvaluationImplementation::ParametricEvaluationImplementation(const NumericalMathFunction & function,
-                                                                       const Indices & set,
-								       const NumericalPoint & referencePoint,
-								       const Bool parametersSet)
+    const Indices & set,
+    const NumericalPoint & referencePoint,
+    const Bool parametersSet)
   : NumericalMathEvaluationImplementation()
   , function_(function)
   , parametersPositions_(0)
@@ -72,24 +72,24 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Num
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
     if (fullIndices[i] != inputDimension) otherSet.add(i);
   if (parametersSet)
-    {
-      parametersPositions_ = set;
-      inputPositions_ = otherSet;
-    }
+  {
+    parametersPositions_ = set;
+    inputPositions_ = otherSet;
+  }
   else
-    {
-      parametersPositions_ = otherSet;
-      inputPositions_ = set;
-    }
+  {
+    parametersPositions_ = otherSet;
+    inputPositions_ = set;
+  }
   // Set the relevant part of the reference point in the parameters
   const UnsignedInteger parametersSize(parametersPositions_.getSize());
   NumericalPointWithDescription parameters(parametersSize);
   Description description(parametersSize);
   for (UnsignedInteger i = 0; i < parametersSize; ++i)
-    {
-      parameters[i] = referencePoint[parametersPositions_[i]];
-      description[i] = function.getInputDescription()[i];
-    }
+  {
+    parameters[i] = referencePoint[parametersPositions_[i]];
+    description[i] = function.getInputDescription()[i];
+  }
   parameters.setDescription(description);
   // Here we cannot use the accessor as the dimension of the parameters is set at the first allocation
   parameters_ = parameters;

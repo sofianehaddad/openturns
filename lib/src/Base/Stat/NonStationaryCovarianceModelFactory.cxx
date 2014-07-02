@@ -84,7 +84,7 @@ struct ComputeCovariancePolicy
   NumericalScalar alpha_;
 
   ComputeCovariancePolicy(const ProcessSample & input,
-                    CovarianceMatrixCollection & output)
+                          CovarianceMatrixCollection & output)
     : input_(input)
     , output_(output)
     , mean_()
@@ -98,26 +98,26 @@ struct ComputeCovariancePolicy
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+    {
+      const UnsignedInteger i(static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5));
+      const UnsignedInteger j(index - (i * (i + 1)) / 2);
+      CovarianceMatrix & matrix(output_[index]);
+      for (UnsignedInteger k = 0; k < dimension_; ++k)
       {
-	const UnsignedInteger i(static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5));
-	const UnsignedInteger j(index - (i * (i + 1)) / 2);
-	CovarianceMatrix & matrix(output_[index]);
-	for (UnsignedInteger k = 0; k < dimension_; ++k)
-	  {
-	    const NumericalScalar muIK(mean_.getValueAtIndex(i)[k]);
-	    for (UnsignedInteger l = 0; l <= k; ++l)
-	      {
-		const NumericalScalar muJL(mean_.getValueAtIndex(j)[l]);
-		NumericalScalar coef(0.0);
-		for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
-		  {
-		    coef += (input_[sampleIndex][i][k] - muIK)
-		      * (input_[sampleIndex][j][l] - muJL);
-		  } // sampleIndex
-		matrix(k, l) = coef * alpha_;
-	      } // l
-	  } // k
-      } // index
+        const NumericalScalar muIK(mean_.getValueAtIndex(i)[k]);
+        for (UnsignedInteger l = 0; l <= k; ++l)
+        {
+          const NumericalScalar muJL(mean_.getValueAtIndex(j)[l]);
+          NumericalScalar coef(0.0);
+          for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
+          {
+            coef += (input_[sampleIndex][i][k] - muIK)
+                    * (input_[sampleIndex][j][l] - muJL);
+          } // sampleIndex
+          matrix(k, l) = coef * alpha_;
+        } // l
+      } // k
+    } // index
   }
 
 }; /* end struct ComputeCovariancePolicy */

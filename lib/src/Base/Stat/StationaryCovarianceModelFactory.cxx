@@ -157,7 +157,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
         covariance(i, j) = std::real(matrix(index, columnIndex));
-	++columnIndex;
+        ++columnIndex;
       }
     }
     collection[currentIndex] = covariance;

@@ -54,7 +54,7 @@ public:
   using NumericalMathHessianImplementation::hessian;
   SymmetricTensor hessian(const NumericalPoint & point) const;
   SymmetricTensor hessian(const NumericalPoint & point,
-			  const NumericalPoint & parameters) const;
+                          const NumericalPoint & parameters) const;
 
   /** Evaluation accessor */
   ParametricEvaluationImplementation getEvaluation() const;

@@ -35,7 +35,8 @@ int main(int argc, char *argv[])
 
   try
   {
-    { // Product
+    {
+      // Product
       // First, build a function from R^3->R
       Description inVar(Description::BuildDefault(3, "x"));
       Description outVar(Description::BuildDefault(1, "y"));
@@ -65,7 +66,8 @@ int main(int argc, char *argv[])
       fullprint << "Hessian at " << inPoint << "=\n" << hessian << std::endl;
       fullprint << "Hessian at " << inPoint << "=\n" << hessian.__str__() << std::endl;
     } // Product
-    { // Sum/difference
+    {
+      // Sum/difference
       // First, build two functions from R^3->R^2
       Description inVar(Description::BuildDefault(3, "x"));
       Description outVar(Description::BuildDefault(2, "y"));
@@ -83,31 +85,31 @@ int main(int argc, char *argv[])
       // Second, build the function
       NumericalMathFunction mySum(f1 + f2);
       {
-      fullprint << "mySum=" << mySum << std::endl;
-      fullprint << "mySum=" << mySum.__str__() << std::endl;
-      const NumericalPoint value(mySum(inPoint));
-      fullprint << "Value at " << inPoint << "=\n" << value << std::endl;
-      fullprint << "Value at " << inPoint << "=\n" << value.__str__() << std::endl;
-      const Matrix gradient(mySum.gradient(inPoint));
-      fullprint << "Gradient at " << inPoint << "=\n" << gradient << std::endl;
-      fullprint << "Gradient at " << inPoint << "=\n" << gradient.__str__() << std::endl;
-      const SymmetricTensor hessian(mySum.hessian(inPoint));
-      fullprint << "Hessian at " << inPoint << "=\n" << hessian << std::endl;
-      fullprint << "Hessian at " << inPoint << "=\n" << hessian.__str__() << std::endl;
+        fullprint << "mySum=" << mySum << std::endl;
+        fullprint << "mySum=" << mySum.__str__() << std::endl;
+        const NumericalPoint value(mySum(inPoint));
+        fullprint << "Value at " << inPoint << "=\n" << value << std::endl;
+        fullprint << "Value at " << inPoint << "=\n" << value.__str__() << std::endl;
+        const Matrix gradient(mySum.gradient(inPoint));
+        fullprint << "Gradient at " << inPoint << "=\n" << gradient << std::endl;
+        fullprint << "Gradient at " << inPoint << "=\n" << gradient.__str__() << std::endl;
+        const SymmetricTensor hessian(mySum.hessian(inPoint));
+        fullprint << "Hessian at " << inPoint << "=\n" << hessian << std::endl;
+        fullprint << "Hessian at " << inPoint << "=\n" << hessian.__str__() << std::endl;
       }
       NumericalMathFunction myDiff(f1 - f2);
       {
-      fullprint << "myDiff=" << myDiff << std::endl;
-      fullprint << "myDiff=" << myDiff.__str__() << std::endl;
-      const NumericalPoint value(myDiff(inPoint));
-      fullprint << "Value at " << inPoint << "=\n" << value << std::endl;
-      fullprint << "Value at " << inPoint << "=\n" << value.__str__() << std::endl;
-      const Matrix gradient(myDiff.gradient(inPoint));
-      fullprint << "Gradient at " << inPoint << "=\n" << gradient << std::endl;
-      fullprint << "Gradient at " << inPoint << "=\n" << gradient.__str__() << std::endl;
-      const SymmetricTensor hessian(myDiff.hessian(inPoint));
-      fullprint << "Hessian at " << inPoint << "=\n" << hessian << std::endl;
-      fullprint << "Hessian at " << inPoint << "=\n" << hessian.__str__() << std::endl;
+        fullprint << "myDiff=" << myDiff << std::endl;
+        fullprint << "myDiff=" << myDiff.__str__() << std::endl;
+        const NumericalPoint value(myDiff(inPoint));
+        fullprint << "Value at " << inPoint << "=\n" << value << std::endl;
+        fullprint << "Value at " << inPoint << "=\n" << value.__str__() << std::endl;
+        const Matrix gradient(myDiff.gradient(inPoint));
+        fullprint << "Gradient at " << inPoint << "=\n" << gradient << std::endl;
+        fullprint << "Gradient at " << inPoint << "=\n" << gradient.__str__() << std::endl;
+        const SymmetricTensor hessian(myDiff.hessian(inPoint));
+        fullprint << "Hessian at " << inPoint << "=\n" << hessian << std::endl;
+        fullprint << "Hessian at " << inPoint << "=\n" << hessian.__str__() << std::endl;
       }
     } // Sum/difference
   }

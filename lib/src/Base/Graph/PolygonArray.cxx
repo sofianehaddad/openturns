@@ -43,7 +43,7 @@ PolygonArray::PolygonArray(const String & legend)
 
 /* Default constructor */
 PolygonArray::PolygonArray(const PolygonCollection & polygons,
-                 const String & legend)
+                           const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
   , verticesNumber_(2)
   , palette_(0)
@@ -52,32 +52,32 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
   // Convert the collection of polygons into a valid (coordinates, verticesNumber) pair
   const UnsignedInteger size(polygons.getSize());
   if (size > 0)
+  {
+    palette_ = Description(size);
+    // The first polygon gives the number of vertices
+    verticesNumber_ = polygons[0].getData().getSize();
+    if (verticesNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
+    data_ = NumericalSample(size * verticesNumber_, 2);
+    UnsignedInteger index(0);
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      palette_ = Description(size);
-      // The first polygon gives the number of vertices
-      verticesNumber_ = polygons[0].getData().getSize();
-      if (verticesNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
-      data_ = NumericalSample(size * verticesNumber_, 2);
-      UnsignedInteger index(0);
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const NumericalSample polygonData(polygons[i].getData());
-	  if (polygonData.getSize() != verticesNumber_) throw InvalidArgumentException(HERE) << "Error: expected polygons with " << verticesNumber_ << " but polygon " << i << " has " << polygonData.getSize() << " vertices.";
-	  for (UnsignedInteger j = 0; j < verticesNumber_; ++j)
-	    {
-	      data_[index] = polygonData[j];
-	      ++index;
-	    } // j
-	  palette_[i] = polygons[i].getColor();
-	} // i
-    } // size > 0
+      const NumericalSample polygonData(polygons[i].getData());
+      if (polygonData.getSize() != verticesNumber_) throw InvalidArgumentException(HERE) << "Error: expected polygons with " << verticesNumber_ << " but polygon " << i << " has " << polygonData.getSize() << " vertices.";
+      for (UnsignedInteger j = 0; j < verticesNumber_; ++j)
+      {
+        data_[index] = polygonData[j];
+        ++index;
+      } // j
+      palette_[i] = polygons[i].getColor();
+    } // i
+  } // size > 0
 }
 
 /* Contructor from 2 data sets */
 PolygonArray::PolygonArray(const NumericalSample & coordinates,
-			   const UnsignedInteger verticesNumber,
-			   const Description & palette,
-			   const String & legend)
+                           const UnsignedInteger verticesNumber,
+                           const Description & palette,
+                           const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
   , verticesNumber_(0)
   , palette_(palette)
@@ -113,10 +113,10 @@ String PolygonArray::draw() const
   for (UnsignedInteger i = 0; i < polygonNumber; ++i)
   {
     for (UnsignedInteger j = 0; j < verticesNumber_; ++j)
-      {
-	dataFile << std::setprecision(16) << data_[index][0] << " " << data_[index][1] << "\n";
-	++index;
-      }
+    {
+      dataFile << std::setprecision(16) << data_[index][0] << " " << data_[index][1] << "\n";
+      ++index;
+    }
     // Insert NaNs in order to tell R to go to the next polygon
     dataFile << "\"nan\" \"nan\"\n";
   }
@@ -180,7 +180,7 @@ Description PolygonArray::getPalette() const
 
 /* Coordinates and vertices number of the vertices of the polygons */
 void PolygonArray::setCoordinatesAndVerticesNumber(const NumericalSample & coordinates,
-						   const UnsignedInteger verticesNumber)
+    const UnsignedInteger verticesNumber)
 {
   if (verticesNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
   if (coordinates.getSize() % verticesNumber != 0) throw InvalidArgumentException(HERE) << "Error: the coordinates size=" << coordinates.getSize() << " is not compatible with the vertices number=" << verticesNumber;

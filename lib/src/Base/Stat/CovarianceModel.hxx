@@ -68,12 +68,12 @@ public:
                                        const NumericalPoint & t) const;
 
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-					   const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
 
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
-  
+
   virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
 
   /** Gradient */
@@ -84,7 +84,7 @@ public:
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
   virtual NumericalSample discretizeRow(const NumericalSample & vertices,
-					const UnsignedInteger p) const;
+                                        const UnsignedInteger p) const;
 
   /** Partial discretization with respect to the second argument */
   Basis getPartialDiscretization(const NumericalSample & secondLocation) const;

@@ -49,11 +49,20 @@ using boost::math::trunc;
 using boost::math::round;
 
 /* log2 is not defined */
-static inline double log2(double x) { return log(x)/log(2.); }
+static inline double log2(double x)
+{
+  return log(x) / log(2.);
+}
 /* rint is not defined */
-static inline double rint(double x) { return boost::numeric::RoundEven<double>::nearbyint(x); }
+static inline double rint(double x)
+{
+  return boost::numeric::RoundEven<double>::nearbyint(x);
+}
 /* nearbyint is not defined */
-static inline double nearbyint(double x) { return boost::numeric::RoundEven<double>::nearbyint(x); }
+static inline double nearbyint(double x)
+{
+  return boost::numeric::RoundEven<double>::nearbyint(x);
+}
 
 #endif /* _MSC_VER */
 

@@ -78,8 +78,14 @@ template <typename K_, typename V_>
 class Cache
   : public PersistentObject
 {
-  static  OT::String GetClassName() { return OT::String("Cache<")+OT::String(K_::GetClassName())+OT::String(", ")+OT::String(V_::GetClassName())+OT::String(">"); }
-  virtual OT::String getClassName() const { return Cache<K_, V_>::GetClassName(); }
+  static  OT::String GetClassName()
+  {
+    return OT::String("Cache<") + OT::String(K_::GetClassName()) + OT::String(", ") + OT::String(V_::GetClassName()) + OT::String(">");
+  }
+  virtual OT::String getClassName() const
+  {
+    return Cache<K_, V_>::GetClassName();
+  }
 
 public:
 

@@ -53,9 +53,9 @@ OptimizationProblem::OptimizationProblem(const Implementation & p_implementation
  *         and a level value
  */
 OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective,
-					 const NumericalMathFunction & equalityConstraint,
-					 const NumericalMathFunction & inequalityConstraint,
-					 const Interval & bounds):
+    const NumericalMathFunction & equalityConstraint,
+    const NumericalMathFunction & inequalityConstraint,
+    const Interval & bounds):
   TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective, equalityConstraint, inequalityConstraint, bounds))
 {
   // Nothing to do

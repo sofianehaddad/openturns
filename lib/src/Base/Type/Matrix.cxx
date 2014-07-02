@@ -224,9 +224,9 @@ NumericalPoint Matrix::computeSingularValues(const Bool keepIntact)
 
 /* Compute singular values */
 NumericalPoint Matrix::computeSVD(Matrix & u,
-    Matrix & vT,
-    const Bool fullSVD,
-    const Bool keepIntact)
+                                  Matrix & vT,
+                                  const Bool fullSVD,
+                                  const Bool keepIntact)
 {
   return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD, keepIntact);
 }

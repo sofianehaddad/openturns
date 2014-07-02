@@ -48,8 +48,8 @@ public:
   /** Parameters constructor */
   ParametricEvaluationImplementation(const NumericalMathFunction & function,
                                      const Indices & set,
-				     const NumericalPoint & referencePoint,
-				     const Bool parametersSet = true);
+                                     const NumericalPoint & referencePoint,
+                                     const Bool parametersSet = true);
 
   /** Virtual constructor method */
   ParametricEvaluationImplementation * clone() const;

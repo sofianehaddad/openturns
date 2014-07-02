@@ -6,6 +6,7 @@ from math import *
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
+
 def printSample(name, sample):
     oss = name + "=["
     for counter in range(sample.getSize()):

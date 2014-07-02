@@ -183,7 +183,7 @@ FUNC_INIT( WRAPPERNAME , {} )
 
 // These commands should be inserted in FUNC_EXEC argument
 // just below.  But Microsoft compiler (at least Visual Studio 2010)
-// chokes on '#ifdef WIN32' because of the hash sign. 
+// chokes on '#ifdef WIN32' because of the hash sign.
 #ifdef WIN32
 #define TEST_SET_PATH_ON_WINDOWS \
       char * cmd = p_exchangedData->parameters_->command_; \

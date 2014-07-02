@@ -132,10 +132,10 @@ void LevelSet::setLevel(const NumericalScalar level)
 String LevelSet::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-                   << " name=" << getName()
-                   << " dimension=" << getDimension()
-                   << " function=" << function_.__repr__()
-                   << " level=" << level_;
+         << " name=" << getName()
+         << " dimension=" << getDimension()
+         << " function=" << function_.__repr__()
+         << " level=" << level_;
 }
 
 String LevelSet::__str__(const String & offset) const

@@ -57,7 +57,7 @@ ParametricGradientImplementation * ParametricGradientImplementation::clone() con
 
 /* Gradient operator */
 Matrix ParametricGradientImplementation::gradient(const NumericalPoint & point,
-						  const NumericalPoint & parameters) const
+    const NumericalPoint & parameters) const
 {
   const UnsignedInteger parametersDimension(parameters.getDimension());
   if (parametersDimension != evaluation_.getParametersPositions().getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << evaluation_.getParametersPositions().getSize() << ", got dimension=" << parametersDimension;
@@ -72,11 +72,11 @@ Matrix ParametricGradientImplementation::gradient(const NumericalPoint & point,
   // The gradient wrt x corresponds to the inputPositions rows of the full gradient
   Matrix result(pointDimension, outputDimension);
   for (UnsignedInteger i = 0; i < pointDimension; ++i)
-    {
-      const UnsignedInteger i0(evaluation_.inputPositions_[i]);
-      for (UnsignedInteger j = 0; j < outputDimension; ++j)
-	result(i, j) = fullGradient(i0, j);
-    }
+  {
+    const UnsignedInteger i0(evaluation_.inputPositions_[i]);
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      result(i, j) = fullGradient(i0, j);
+  }
   return result;
 }
 

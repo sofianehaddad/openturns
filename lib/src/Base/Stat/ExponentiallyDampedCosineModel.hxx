@@ -53,8 +53,8 @@ public:
 
   /** Standard constructor with amplitude and scale parameters parameters */
   ExponentiallyDampedCosineModel(const NumericalScalar amplitude,
-                   const NumericalScalar scale,
-                   const NumericalScalar frequency);
+                                 const NumericalScalar scale,
+                                 const NumericalScalar frequency);
 
   /** Virtual copy constructor */
   virtual ExponentiallyDampedCosineModel * clone() const;

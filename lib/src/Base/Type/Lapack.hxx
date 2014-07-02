@@ -58,7 +58,7 @@ void dsymm_(char *side, char *uplo, int *m, int *n, double *alpha, double *a, in
 
 /** Function dgeev is used to compute the eigenvalues of a square matrix */
 void dgeev_(char *jobvl, char *jobvr, int *n, double *a, int *lda, double *wr, double *wi,
-               double *vl, int *ldvl, double *vr, int *ldvr, double *work, int *lwork, int *info, int *ljobvl, int *ljobvr);
+            double *vl, int *ldvl, double *vr, int *ldvr, double *work, int *lwork, int *info, int *ljobvl, int *ljobvr);
 
 /** Function dsyev is used to compute the eigenvalues of a symmetric matrix */
 void dsyev_(char *jobz, char *uplo, int *n, double *a, int *lda, double *w, double *work, int *lwork, int *info, int *ljobz, int *luplo);
@@ -126,19 +126,19 @@ void zscal_(int *n, std::complex<double> *alpha, std::complex<double> *x, int *i
 /** Function zgemm is to be used to compute the product of two complex matrices
     c := alpha*a(trans)*b(trans) + beta*c */
 void zgemm_(char *transa, char *transb, int *m, int *n, int *k, std::complex<double> *alpha, std::complex<double> *a, int *lda,
-               std::complex<double> *b, int *ldb, std::complex<double> *beta, std::complex<double> *c, int *ldc, int *ltransa, int *ltransb);
+            std::complex<double> *b, int *ldb, std::complex<double> *beta, std::complex<double> *c, int *ldc, int *ltransa, int *ltransb);
 
 /** Function zsymm is to be used to compute the product of two complex matrices
  *  optimization for symmetric matrices
  c := alpha*a*b + beta*c if side is l or alpha*b*a + beta*c if side is r */
 void zsymm_(char *side, char *uplo, int *m, int *n, std::complex<double> *alpha, std::complex<double> *a, int *lda,
-               std::complex<double> *b, int *ldb, std::complex<double> *beta, std::complex<double> *c, int *ldc, int *lside, int *luplo);
+            std::complex<double> *b, int *ldb, std::complex<double> *beta, std::complex<double> *c, int *ldc, int *lside, int *luplo);
 
 /** Function zhemm is to be used to compute the product of two complex matrices
  *  optimization for hermitian matrices
  c := alpha*a*b + beta*c if side is l or alpha*b*a + beta*c if side is r */
 void zhemm_(char *side, char *uplo, int *m, int *n, std::complex<double> *alpha, std::complex<double> *a, int *lda,
-               std::complex<double> *b, int *ldb, std::complex<double> *beta, std::complex<double> *c, int *ldc, int *lside, int *luplo);
+            std::complex<double> *b, int *ldb, std::complex<double> *beta, std::complex<double> *c, int *ldc, int *lside, int *luplo);
 
 /** Function zpotrf is used to computes the Cholesky factorization of a complex hermitian positive definite matrix  */
 void zpotrf_(char *uplo, int *n, std::complex<double> *a, int *lda, int *info, int *luplo);
@@ -146,12 +146,12 @@ void zpotrf_(char *uplo, int *n, std::complex<double> *a, int *lda, int *info, i
 /** Function zgemv is to be used to compute the product of a complex matrix with a complex vector
     y := alpha*A(trans)*x + beta*y */
 void zgemv_(char *trans, int *m, int *n, std::complex<double> *alpha, std::complex<double> *a, int *lda, std::complex<double> *x, int *incx,
-               std::complex<double> *beta, std::complex<double> *y, int *incy, int *ltrans);
+            std::complex<double> *beta, std::complex<double> *y, int *incy, int *ltrans);
 
 /** Function zhemv is to be used to compute the product of a complex matrix with a vector ;  optimization for hermitian matrices
     y := alpha*A(trans)*x + beta*y */
 void zhemv_(char *uplo, int *n, std::complex<double> *alpha, std::complex<double> *a, int *lda, std::complex<double> *x, int *incx,
-               std::complex<double> *beta, std::complex<double> *y, int *incy, int *luplo);
+            std::complex<double> *beta, std::complex<double> *y, int *incy, int *luplo);
 
 /** Function zcopy is to be used to copy a vector x to a vector y */
 void zcopy_(int *n, std::complex<double> *x, int *incx, std::complex<double> *y, int *incy);

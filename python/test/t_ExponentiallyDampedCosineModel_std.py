@@ -31,7 +31,8 @@ try:
     print "covariance matrix at t = ", timeValueOne, " : ", myModel(timeValueOne)
     print "covariance matrix at t = ", -1.0 * timeValueOne, " : ", myModel(-1.0 * timeValueOne)
 
-    # Evaluation at time higher to check the decrease of the exponentiallyDampedCosine values
+    # Evaluation at time higher to check the decrease of the
+    # exponentiallyDampedCosine values
     timeValueHigh = 15.
     print "covariance matrix at t = ", timeValueHigh, " : ", myModel(timeValueHigh).__str__()
 

@@ -51,15 +51,15 @@ JacobiFactory::JacobiFactory(const NumericalScalar alpha,
   , beta_(0.0)
 {
   if (parameterization == ANALYSIS)
-    {
-      alpha_ = alpha;
-      beta_ = beta;
-    }
+  {
+    alpha_ = alpha;
+    beta_ = beta;
+  }
   else
-    {
-      alpha_ = beta - alpha - 1.0;
-      beta_ = alpha - 1.0;
-    }
+  {
+    alpha_ = beta - alpha - 1.0;
+    beta_ = alpha - 1.0;
+  }
   initializeCache();
 }
 

@@ -88,7 +88,7 @@ Indices IntervalMesher::getDiscretization() const
 /* Here is the interface that all derived class must implement */
 
 Mesh IntervalMesher::build(const Interval & interval,
-			   const Bool diamond) const
+                           const Bool diamond) const
 {
   const UnsignedInteger dimension(interval.getDimension());
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
@@ -97,61 +97,61 @@ Mesh IntervalMesher::build(const Interval & interval,
   Mesh result;
   // Waiting for a generic implementation in higher dimension
   if (dimension == 1)
+  {
+    // We must insure that the interval bounds will be within the vertices
+    const UnsignedInteger n(discretization_[0]);
+    NumericalSample vertices(n + 1, 1);
+    // First the vertices
+    vertices[0] = interval.getLowerBound();
+    vertices[n] = interval.getUpperBound();
+    for (UnsignedInteger i = 0; i <= n; ++i) vertices[i][0] = (i * vertices[0][0] + (n - i) * vertices[0][n]) / n;
+    // Second the simplices
+    Mesh::IndicesCollection simplices(n);
+    Indices simplex(2);
+    for (UnsignedInteger i = 0; i < n; ++i)
     {
-      // We must insure that the interval bounds will be within the vertices
-      const UnsignedInteger n(discretization_[0]);
-      NumericalSample vertices(n + 1, 1);
-      // First the vertices
-      vertices[0] = interval.getLowerBound();
-      vertices[n] = interval.getUpperBound();
-      for (UnsignedInteger i = 0; i <= n; ++i) vertices[i][0] = (i * vertices[0][0] + (n - i) * vertices[0][n]) / n;
-      // Second the simplices
-      Mesh::IndicesCollection simplices(n);
-      Indices simplex(2);
-      for (UnsignedInteger i = 0; i < n; ++i)
-        {
-          simplex[0] = i;
-          simplex[1] = i + 1;
-          simplices[i] = simplex;
-        } // i
-      result = Mesh(vertices, simplices);
-    } // dimension == 1
+      simplex[0] = i;
+      simplex[1] = i + 1;
+      simplices[i] = simplex;
+    } // i
+    result = Mesh(vertices, simplices);
+  } // dimension == 1
   if (dimension == 2)
+  {
+    const UnsignedInteger m(discretization_[0]);
+    const UnsignedInteger n(discretization_[1]);
+    // First the vertices
+    NumericalSample vertices(0, 2);
+    NumericalPoint point(2);
+    for (UnsignedInteger j = 0; j <= n; ++j)
     {
-      const UnsignedInteger m(discretization_[0]);
-      const UnsignedInteger n(discretization_[1]);
-      // First the vertices
-      NumericalSample vertices(0, 2);
-      NumericalPoint point(2);
-      for (UnsignedInteger j = 0; j <= n; ++j)
-	{
-	  point[1] = ((n - j) * interval.getLowerBound()[1] + j * interval.getUpperBound()[1]) / n;
-	  for (UnsignedInteger i = 0; i <= m; ++i)
-	    {
-	      point[0] = ((m - i) * interval.getLowerBound()[0] + i * interval.getUpperBound()[0]) / m;
-              vertices.add(point);
-            } // i
-        } // j
-      // Second the simplices
-      Mesh::IndicesCollection simplices(0, Indices(3));
-      UnsignedInteger vertexIndex(0);
-      Indices index(3);
-      for (UnsignedInteger j = 0; j < n; ++j)
-        {
-	  for (UnsignedInteger i = 0; i < m; ++i)
-            {
-              index[0] = vertexIndex;
-              index[1] = vertexIndex + 1;
-              index[2] = vertexIndex + 1 + m;
-              simplices.add(index);
-              index[0] = vertexIndex + 2 + m;
-              simplices.add(index);
-              ++vertexIndex;
-            } // j
-          ++vertexIndex;
-        } // i
-      result = Mesh(vertices, simplices);
-    } // dimension == 2
+      point[1] = ((n - j) * interval.getLowerBound()[1] + j * interval.getUpperBound()[1]) / n;
+      for (UnsignedInteger i = 0; i <= m; ++i)
+      {
+        point[0] = ((m - i) * interval.getLowerBound()[0] + i * interval.getUpperBound()[0]) / m;
+        vertices.add(point);
+      } // i
+    } // j
+    // Second the simplices
+    Mesh::IndicesCollection simplices(0, Indices(3));
+    UnsignedInteger vertexIndex(0);
+    Indices index(3);
+    for (UnsignedInteger j = 0; j < n; ++j)
+    {
+      for (UnsignedInteger i = 0; i < m; ++i)
+      {
+        index[0] = vertexIndex;
+        index[1] = vertexIndex + 1;
+        index[2] = vertexIndex + 1 + m;
+        simplices.add(index);
+        index[0] = vertexIndex + 2 + m;
+        simplices.add(index);
+        ++vertexIndex;
+      } // j
+      ++vertexIndex;
+    } // i
+    result = Mesh(vertices, simplices);
+  } // dimension == 2
   return result;
 }
 

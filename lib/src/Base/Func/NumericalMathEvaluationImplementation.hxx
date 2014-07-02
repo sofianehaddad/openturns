@@ -147,7 +147,7 @@ public:
   /** Operator () */
   virtual NumericalPoint operator() (const NumericalPoint & inP) const;
   virtual NumericalPoint operator() (const NumericalPoint & inP,
-				     const NumericalPoint & parameters);
+                                     const NumericalPoint & parameters);
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
   virtual NumericalSample operator() (const NumericalSample & inSample) const;

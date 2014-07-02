@@ -42,7 +42,7 @@ SpatialFunction::SpatialFunction(const UnsignedInteger meshDimension)
 
 /* Parameter constructor */
 SpatialFunction::SpatialFunction(const NumericalMathFunction & function,
-				 const UnsignedInteger meshDimension)
+                                 const UnsignedInteger meshDimension)
   : DynamicalFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluationImplementation())
 {
@@ -53,7 +53,7 @@ SpatialFunction::SpatialFunction(const NumericalMathFunction & function,
 
 /* Parameter constructor */
 SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation,
-				 const UnsignedInteger meshDimension)
+                                 const UnsignedInteger meshDimension)
   : DynamicalFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
 {
@@ -64,7 +64,7 @@ SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation,
 
 /* Parameter constructor */
 SpatialFunction::SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
-				 const UnsignedInteger meshDimension)
+                                 const UnsignedInteger meshDimension)
   : DynamicalFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
 {

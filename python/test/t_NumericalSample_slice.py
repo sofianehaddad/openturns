@@ -47,7 +47,7 @@ try:
 
     # Writing slice
     sample2 = NumericalSample(sample)
-    sample2 *= [10.]*d
+    sample2 *= [10.] * d
 
     # case #0 [slice]
     sample3 = NumericalSample(sample)

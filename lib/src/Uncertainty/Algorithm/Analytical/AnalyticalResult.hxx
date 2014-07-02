@@ -147,8 +147,8 @@ private:
 
   /** Returns the position of the given (value, name) into the NumericalPoint or the dimension of the NumericalPoint if failed */
   UnsignedInteger computePosition(const String & marginalName,
-                               const String & marginalParameterName,
-                               const Description & parameterSetNames) const;
+                                  const String & marginalParameterName,
+                                  const Description & parameterSetNames) const;
 
   NumericalPoint    standardSpaceDesignPoint_;
   mutable NumericalPoint    physicalSpaceDesignPoint_;

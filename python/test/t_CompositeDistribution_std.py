@@ -24,11 +24,11 @@ try:
 
     # Test for sampling
     size = 10000
-    oneSample = distribution.getSample( size )
+    oneSample = distribution.getSample(size)
     print "oneSample first=", oneSample[0], " last=", oneSample[size - 1]
     print "mean=", oneSample.computeMean()
     print "covariance=", oneSample.computeCovariance()
-    #RandomGenerator::SetSeed(0)
+    # RandomGenerator::SetSeed(0)
     size = 100
     for i in range(2):
         msg = ''
@@ -39,40 +39,39 @@ try:
         print "Kolmogorov test for the generator, sample size=", size, " is", msg
         size *= 10
 
-
     # Define a point
-    point = NumericalPoint( distribution.getDimension(), 1.0 )
+    point = NumericalPoint(distribution.getDimension(), 1.0)
     print "Point= ", point
 
     # Show PDF and CDF of point
     eps = 1e-5
-    DDF = distribution.computeDDF( point )
+    DDF = distribution.computeDDF(point)
     print "ddf     =", DDF
-    LPDF = distribution.computeLogPDF( point )
+    LPDF = distribution.computeLogPDF(point)
     print "log pdf=", LPDF
-    PDF = distribution.computePDF( point )
+    PDF = distribution.computePDF(point)
     print "pdf     =", PDF
-    print "pdf (FD)=", (distribution.computeCDF( point + NumericalPoint(1, eps) ) - distribution.computeCDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps)
-    CDF = distribution.computeCDF( point )
+    print "pdf (FD)=", (distribution.computeCDF(point + NumericalPoint(1, eps)) - distribution.computeCDF(point + NumericalPoint(1, -eps))) / (2.0 * eps)
+    CDF = distribution.computeCDF(point)
     print "cdf=", CDF
-    CCDF = distribution.computeComplementaryCDF( point )
+    CCDF = distribution.computeComplementaryCDF(point)
     print "ccdf=", CCDF
-    Survival = distribution.computeSurvivalFunction( point )
+    Survival = distribution.computeSurvivalFunction(point)
     print "survival=", Survival
-    quantile = distribution.computeQuantile( 0.95 )
+    quantile = distribution.computeQuantile(0.95)
     print "quantile=", quantile
     print "cdf(quantile)=", distribution.computeCDF(quantile)
-    quantileTail = distribution.computeQuantile( 0.95, True )
+    quantileTail = distribution.computeQuantile(0.95, True)
     print "quantile (tail)=", quantileTail
-    CDFTail = distribution.computeComplementaryCDF( quantileTail )
+    CDFTail = distribution.computeComplementaryCDF(quantileTail)
     print "cdf (tail)=", CDFTail
-    CF = distribution.computeCharacteristicFunction( point[0] )
+    CF = distribution.computeCharacteristicFunction(point[0])
     print "characteristic function=(%.6g+%.6gj)" % (CF.real, CF.imag)
-    LCF = distribution.computeLogCharacteristicFunction( point[0] )
+    LCF = distribution.computeLogCharacteristicFunction(point[0])
     print "log characteristic function=(%.6g+%.6gj)" % (LCF.real, LCF.imag)
-    PDFgr = distribution.computePDFGradient( point )
+    PDFgr = distribution.computePDFGradient(point)
     print "pdf gradient     =", PDFgr
-    CDFgr = distribution.computeCDFGradient( point )
+    CDFgr = distribution.computeCDFGradient(point)
     print "cdf gradient     =", CDFgr
     mean = distribution.getMean()
     print "mean=", mean

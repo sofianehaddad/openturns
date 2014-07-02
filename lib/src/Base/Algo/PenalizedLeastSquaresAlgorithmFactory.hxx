@@ -64,7 +64,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
- private:
+private:
   Bool useNormal_;
 }; /* class PenalizedLeastSquaresAlgorithmFactory */
 

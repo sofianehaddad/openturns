@@ -65,7 +65,7 @@ public:
                                        const NumericalPoint & t) const;
   // Special case for 1D model
   virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-					   const NumericalPoint & t) const;
+      const NumericalPoint & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
@@ -81,7 +81,7 @@ public:
 
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
   virtual NumericalSample discretizeRow(const NumericalSample & vertices,
-					const UnsignedInteger p) const;
+                                        const UnsignedInteger p) const;
 
   /** Partial discretization with respect to the second argument */
   Basis getPartialDiscretization(const NumericalSample & secondLocation) const;
@@ -115,9 +115,9 @@ protected:
     const CovarianceModelImplementation & model_;
 
     DiscretizePolicy(const NumericalSample & input,
-		     const UnsignedInteger p,
-		     NumericalSample & output,
-		     const CovarianceModelImplementation & model)
+                     const UnsignedInteger p,
+                     NumericalSample & output,
+                     const CovarianceModelImplementation & model)
       : input_(input)
       , p_(input[p])
       , output_(output)

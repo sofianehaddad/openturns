@@ -54,13 +54,13 @@ public:
 
   /** Constructor based on a collection of polygons */
   explicit PolygonArray(const PolygonCollection & polygons,
-			const String & legend = "");
+                        const String & legend = "");
 
   /** Construction based on a set of vertices */
   explicit PolygonArray(const NumericalSample & coordinates,
-			const UnsignedInteger verticesNumber,
-			const Description & palette,
-			const String & legend = "");
+                        const UnsignedInteger verticesNumber,
+                        const Description & palette,
+                        const String & legend = "");
 
   /** String converter */
   String __repr__() const;
@@ -78,8 +78,8 @@ public:
 
   /** Coordinates and vertices number of the vertices of the polygons */
   void setCoordinatesAndVerticesNumber(const NumericalSample & coordinates,
-				       const UnsignedInteger verticesNumber);
-  
+                                       const UnsignedInteger verticesNumber);
+
   /** Coordinates accessor */
   NumericalSample getCoordinates() const;
 

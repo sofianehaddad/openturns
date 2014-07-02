@@ -49,9 +49,9 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
  * @brief General multi-objective equality, inequality and bound constraints
  */
 OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & objective,
-                                                                     const NumericalMathFunction & equalityConstraint,
-                                                                     const NumericalMathFunction & inequalityConstraint,
-                                                                     const Interval & bounds)
+    const NumericalMathFunction & equalityConstraint,
+    const NumericalMathFunction & inequalityConstraint,
+    const Interval & bounds)
   : PersistentObject()
   , objective_(objective)
   , equalityConstraint_(equalityConstraint)

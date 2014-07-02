@@ -193,10 +193,10 @@ NumericalMathFunction::NumericalMathFunction(const NumericalSample & inputSample
   // Nothing to do
 }
 
-  /* Constructor by splitting the input of a function between variables and parameters */
+/* Constructor by splitting the input of a function between variables and parameters */
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
-			const Indices & set,
-			const Bool parametersSet)
+    const Indices & set,
+    const Bool parametersSet)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
   const ParametricEvaluationImplementation evaluation(function, set, NumericalPoint(function.getInputDimension()), parametersSet);
@@ -207,10 +207,10 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
 
 
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
-					     const Indices & set,
-					     const NumericalPoint & referencePoint,
-					     const Bool parametersSet)
-: TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+    const Indices & set,
+    const NumericalPoint & referencePoint,
+    const Bool parametersSet)
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
   const ParametricEvaluationImplementation evaluation(function, set, NumericalPoint(function.getInputDimension()), parametersSet);
   setEvaluationImplementation(evaluation.clone());
@@ -469,7 +469,7 @@ Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP) con
 }
 
 Matrix NumericalMathFunction::parametersGradient(const NumericalPoint & inP,
-						 const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   copyOnWrite();
   return getImplementation()->parametersGradient(inP, parameters);
@@ -495,7 +495,7 @@ NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP) co
 }
 
 NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP,
-						  const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameters);
@@ -520,7 +520,7 @@ Matrix NumericalMathFunction::gradient(const NumericalPoint & inP) const
 }
 
 Matrix NumericalMathFunction::gradient(const NumericalPoint & inP,
-				       const NumericalPoint & parameters)
+                                       const NumericalPoint & parameters)
 {
   copyOnWrite();
   return getImplementation()->gradient(inP, parameters);
@@ -533,7 +533,7 @@ SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP) const
 }
 
 SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP,
-					       const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   copyOnWrite();
   return getImplementation()->hessian(inP, parameters);

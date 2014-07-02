@@ -336,11 +336,11 @@ void ComplexMatrixImplementation::hermitianize() const
   // The lower triangle of the source matrix is accessed columnwise in the natural order
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
-      {
-	const NumericalComplex value(operator[](convertPosition(i, j)));
-	if (std::abs(value.imag()) == 0.0) refThis->operator[](convertPosition(j, i)) = value.real();
-	else refThis->operator[](convertPosition(j, i)) = std::conj(value);
-      }
+    {
+      const NumericalComplex value(operator[](convertPosition(i, j)));
+      if (std::abs(value.imag()) == 0.0) refThis->operator[](convertPosition(j, i)) = value.real();
+      else refThis->operator[](convertPosition(j, i)) = std::conj(value);
+    }
 }
 
 

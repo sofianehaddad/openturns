@@ -45,10 +45,10 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Bool useNor
 
 /* Parameters constructor */
 PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                                               const NumericalSample & y,
-                                                               const NumericalMathFunctionCollection & psi,
-                                                               const NumericalScalar penalizationFactor,
-                                                               const Bool useNormal)
+    const NumericalSample & y,
+    const NumericalMathFunctionCollection & psi,
+    const NumericalScalar penalizationFactor,
+    const Bool useNormal)
   : ApproximationAlgorithmImplementation( x, y, psi )
   , penalizationFactor_(penalizationFactor)
   , penalizationMatrix_(0)
@@ -56,20 +56,20 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
 {
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
-    {
-      const UnsignedInteger basisSize(psi.getSize());
-      penalizationMatrix_ = IdentityMatrix(basisSize);
-    }
+  {
+    const UnsignedInteger basisSize(psi.getSize());
+    penalizationMatrix_ = IdentityMatrix(basisSize);
+  }
 }
 
 
 /* Parameters constructor */
 PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                                               const NumericalSample & y,
-                                                               const NumericalPoint & weight,
-                                                               const NumericalMathFunctionCollection & psi,
-                                                               const NumericalScalar penalizationFactor,
-                                                               const Bool useNormal)
+    const NumericalSample & y,
+    const NumericalPoint & weight,
+    const NumericalMathFunctionCollection & psi,
+    const NumericalScalar penalizationFactor,
+    const Bool useNormal)
   : ApproximationAlgorithmImplementation( x, y, weight, psi )
   , penalizationFactor_(penalizationFactor)
   , penalizationMatrix_(0)
@@ -77,20 +77,20 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
 {
   // If the penalization factor is strictly positive, use the identity matrix as a penalization term
   if (penalizationFactor > 0.0)
-    {
-      const UnsignedInteger basisSize(psi.getSize());
-      penalizationMatrix_ = IdentityMatrix(basisSize);
-    }
+  {
+    const UnsignedInteger basisSize(psi.getSize());
+    penalizationMatrix_ = IdentityMatrix(basisSize);
+  }
 }
 
 /* Parameters constructor */
 PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                                               const NumericalSample & y,
-                                                               const NumericalPoint & weight,
-                                                               const NumericalMathFunctionCollection & psi,
-                                                               const NumericalScalar penalizationFactor,
-                                                               const CovarianceMatrix & penalizationMatrix,
-                                                               const Bool useNormal)
+    const NumericalSample & y,
+    const NumericalPoint & weight,
+    const NumericalMathFunctionCollection & psi,
+    const NumericalScalar penalizationFactor,
+    const CovarianceMatrix & penalizationMatrix,
+    const Bool useNormal)
   : ApproximationAlgorithmImplementation( x, y, weight, psi )
   , penalizationFactor_(penalizationFactor)
   , penalizationMatrix_(penalizationMatrix)
@@ -113,57 +113,57 @@ void PenalizedLeastSquaresAlgorithm::run()
   NumericalPoint rightHandSide;
   // If there is a penalization term, augment the dimension of the matrix and the right hand side
   if (penalizationFactor_ > 0.0)
-    {
-      basisMatrix = Matrix(sampleSize + basisDimension, basisDimension);
-      rightHandSide = NumericalPoint(sampleSize + basisDimension, 0.0);
-    }
+  {
+    basisMatrix = Matrix(sampleSize + basisDimension, basisDimension);
+    rightHandSide = NumericalPoint(sampleSize + basisDimension, 0.0);
+  }
   else
-    {
-      basisMatrix = Matrix(sampleSize, basisDimension);
-      rightHandSide = NumericalPoint(sampleSize, 0.0);
-    }
+  {
+    basisMatrix = Matrix(sampleSize, basisDimension);
+    rightHandSide = NumericalPoint(sampleSize, 0.0);
+  }
   NumericalPoint weightSquareRoot(sampleSize);
   // Build the right-hand side
   for (UnsignedInteger rowIndex = 0; rowIndex < sampleSize; ++rowIndex)
-    {
-      weightSquareRoot[rowIndex] = sqrt(weight_[rowIndex]);
-      rightHandSide[rowIndex] = weightSquareRoot[rowIndex] * y_[rowIndex][0];
-    }
+  {
+    weightSquareRoot[rowIndex] = sqrt(weight_[rowIndex]);
+    rightHandSide[rowIndex] = weightSquareRoot[rowIndex] * y_[rowIndex][0];
+  }
   // Build the matrix column-wise
   for (UnsignedInteger functionIndex = 0; functionIndex < basisDimension; ++functionIndex)
+  {
+    NumericalSample functionSample(psi_[functionIndex](x_));
+    // Fill-in the matrix column
+    for (UnsignedInteger rowIndex = 0; rowIndex < sampleSize; ++rowIndex)
     {
-      NumericalSample functionSample(psi_[functionIndex](x_));
-      // Fill-in the matrix column
-      for (UnsignedInteger rowIndex = 0; rowIndex < sampleSize; ++rowIndex)
-        {
-          basisMatrix(rowIndex, functionIndex) = functionSample[rowIndex][0] * weightSquareRoot[rowIndex];
-        }
+      basisMatrix(rowIndex, functionIndex) = functionSample[rowIndex][0] * weightSquareRoot[rowIndex];
     }
+  }
   // If there is a penalization term, add the penalization matrix to the basis matrix
   if (penalizationFactor_ > 0.0)
+  {
+    const TriangularMatrix transposedSquareRootPenalizationMatrix(sqrt(penalizationFactor_) * penalizationMatrix_.computeCholesky());
+    for (UnsignedInteger i = 0; i < basisDimension; ++i)
     {
-      const TriangularMatrix transposedSquareRootPenalizationMatrix(sqrt(penalizationFactor_) * penalizationMatrix_.computeCholesky());
-      for (UnsignedInteger i = 0; i < basisDimension; ++i)
-        {
-          // The cholesky factor has to be transposed, thus we fill only the upper triangular part of the trailing block
-          for (UnsignedInteger j = i; j < basisDimension; ++j)
-            basisMatrix(sampleSize + i, j) = transposedSquareRootPenalizationMatrix(j, i);
-        }
+      // The cholesky factor has to be transposed, thus we fill only the upper triangular part of the trailing block
+      for (UnsignedInteger j = i; j < basisDimension; ++j)
+        basisMatrix(sampleSize + i, j) = transposedSquareRootPenalizationMatrix(j, i);
     }
+  }
   // Solve the linear system (least squares solution)
   // If we can use the normal equation (fastest but less stable)
   if (useNormal_)
-    {
-      LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use normal equation");
-      CovarianceMatrix normalMatrix(basisMatrix.computeGram());
-      setCoefficients( normalMatrix.solveLinearSystem(basisMatrix.transpose() * rightHandSide, false) );
-    }
+  {
+    LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use normal equation");
+    CovarianceMatrix normalMatrix(basisMatrix.computeGram());
+    setCoefficients( normalMatrix.solveLinearSystem(basisMatrix.transpose() * rightHandSide, false) );
+  }
   // Else use the QR decomposition, slowest but more stable
   else
-    {
-      LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use QR decomposition");
-      setCoefficients( basisMatrix.solveLinearSystem( rightHandSide ) );
-    }
+  {
+    LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use QR decomposition");
+    setCoefficients( basisMatrix.solveLinearSystem( rightHandSide ) );
+  }
   const NumericalScalar quadraticResidual( (basisMatrix * getCoefficients() - rightHandSide).normSquare() );
 
   // The residual is the mean L2 norm of the fitting
@@ -187,9 +187,9 @@ PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithm::clone() const
 String PenalizedLeastSquaresAlgorithm::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-               << ApproximationAlgorithmImplementation::__repr__()
-               << " penalization factor=" << penalizationFactor_
-               << " penalization matrix=" << penalizationMatrix_;
+         << ApproximationAlgorithmImplementation::__repr__()
+         << " penalization factor=" << penalizationFactor_
+         << " penalization matrix=" << penalizationMatrix_;
 }
 
 

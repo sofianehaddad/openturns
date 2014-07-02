@@ -18,4 +18,3 @@ print ot.SquareComplexMatrix(ref)
 A = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
 B = ot.SquareMatrix([[1, 0], [0, 1]])
 print(A * B)
-

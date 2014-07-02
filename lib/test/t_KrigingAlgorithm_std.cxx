@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-  
+
   try
   {
 

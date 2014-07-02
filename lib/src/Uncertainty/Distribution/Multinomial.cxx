@@ -553,16 +553,16 @@ void Multinomial::setP(const NumericalPoint & p)
     sum += pI;
   }
   if (sum > 1.0)
-    {
-      LOGWARN(OSS() << "P elements have a sum=" << sum << " greater than 1. It has been renormalized to 1.0");
-      p_ = p / sum;
-      sumP_ = 1.0;
-    }
+  {
+    LOGWARN(OSS() << "P elements have a sum=" << sum << " greater than 1. It has been renormalized to 1.0");
+    p_ = p / sum;
+    sumP_ = 1.0;
+  }
   else
-    {
-  p_ = p;
-  sumP_ = sum;
-    }
+  {
+    p_ = p;
+    sumP_ = sum;
+  }
   setDimension(dimension);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

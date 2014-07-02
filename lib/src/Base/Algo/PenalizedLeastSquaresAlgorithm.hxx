@@ -56,7 +56,7 @@ public:
                                  const NumericalSample & y,
                                  const NumericalMathFunctionCollection & psi,
                                  const NumericalScalar penalizationFactor = 0.0,
-				 const Bool useNormal = false);
+                                 const Bool useNormal = false);
 
   /** Parameters constructor, simple weighted least squares problem with default parameters, spherically penalized for general parameters */
   PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
@@ -64,7 +64,7 @@ public:
                                  const NumericalPoint & weight,
                                  const NumericalMathFunctionCollection & psi,
                                  const NumericalScalar penalizationFactor = 0.0,
-				 const Bool useNormal = false);
+                                 const Bool useNormal = false);
 
   /** Parameters constructor, general penalized weighted least squares problem */
   PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
@@ -73,7 +73,7 @@ public:
                                  const NumericalMathFunctionCollection & psi,
                                  const NumericalScalar penalizationFactor,
                                  const CovarianceMatrix & penalizationMatrix,
-				 const Bool useNormal = false);
+                                 const Bool useNormal = false);
 
   /** Virtual constructor */
   virtual PenalizedLeastSquaresAlgorithm * clone() const;

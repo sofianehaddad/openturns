@@ -186,7 +186,7 @@ NumericalComplex Weibull::computeCharacteristicFunction(const NumericalScalar x)
   /*
   X=mu+sigma*Y;
   phi_X(u)=E(exp(I*u*(mu+sigma*Y)))=exp(I*u*mu)*E(I*u*sigma*Y)=exp(I*u*mu)*phi_Y(sigma*u)
-phi_Y(u)=1+(\sum_{r=1}^{\infty}(iu)^r\frac{\Gamma(r/\lambda)}{\Gamma(r)}
+  phi_Y(u)=1+(\sum_{r=1}^{\infty}(iu)^r\frac{\Gamma(r/\lambda)}{\Gamma(r)}
   */
   if (x == 0.0) return 1.0;
   // Special case: beta == 1 -> exponential distribution
@@ -202,23 +202,23 @@ phi_Y(u)=1+(\sum_{r=1}^{\infty}(iu)^r\frac{\Gamma(r/\lambda)}{\Gamma(r)}
   UnsignedInteger r(1);
   Bool increasing(true);
   while (increasing || (norm > std::abs(value) * SpecFunc::NumericalScalarEpsilon))
-    {
-      const NumericalScalar term1(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
-      ++r;
-      const NumericalScalar term2(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
-      ++r;
-      const NumericalScalar term3(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
-      ++r;
-      const NumericalScalar term4(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
-      ++r;
-      const NumericalComplex term((term4 - term2) / beta_, sign * (term1 - term3) / beta_);
-      oldNorm = norm;
-      norm = std::abs(term);
-      // If the term grows too much, the cancelation will be too large
-      if (norm > 1e3) return DistributionImplementation::computeCharacteristicFunction(x);
-      value += term;
-      increasing = norm > oldNorm;
-    }
+  {
+    const NumericalScalar term1(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    ++r;
+    const NumericalScalar term2(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    ++r;
+    const NumericalScalar term3(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    ++r;
+    const NumericalScalar term4(std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_)));
+    ++r;
+    const NumericalComplex term((term4 - term2) / beta_, sign * (term1 - term3) / beta_);
+    oldNorm = norm;
+    norm = std::abs(term);
+    // If the term grows too much, the cancelation will be too large
+    if (norm > 1e3) return DistributionImplementation::computeCharacteristicFunction(x);
+    value += term;
+    increasing = norm > oldNorm;
+  }
   value *= std::exp(NumericalComplex(0.0, x * gamma_));
   return value;
 }

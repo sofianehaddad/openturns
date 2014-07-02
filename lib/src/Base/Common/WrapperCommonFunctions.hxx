@@ -246,12 +246,12 @@ extern OT_API void freeList(struct chunk * list);
  * Return a new buffer allocated (malloc) with the content of the replaced string.
  */
 extern OT_API char * substitute(const char * mystring,
-                         const std::string & origRegexp,
-                         const std::string & origReplace,
-                         const std::string & newRegexp,
-                         const std::string & newReplace,
-                         const struct regexp_match regmatch,
-                         void * p_error);
+                                const std::string & origRegexp,
+                                const std::string & origReplace,
+                                const std::string & newRegexp,
+                                const std::string & newReplace,
+                                const struct regexp_match regmatch,
+                                void * p_error);
 
 typedef std::map<std::string, std::string> ShortcutMap;
 
@@ -274,23 +274,23 @@ extern OT_API ShortcutMap getShortcutMap(const struct WrapperExchangedData * p_e
  * changes in the regexp.
  */
 extern OT_API void substituteShortcuts(const ShortcutMap & shMap,
-                                const std::string & origRegexp,
-                                const std::string & origReplace,
-                                std::string & newRegexp,
-                                std::string & newReplace,
-                                struct regexp_match regmatch,
-                                void * p_error);
+                                       const std::string & origRegexp,
+                                       const std::string & origReplace,
+                                       std::string & newRegexp,
+                                       std::string & newReplace,
+                                       struct regexp_match regmatch,
+                                       void * p_error);
 
 
 /* Substitute all the variables in p_variableList in buf.
  * Buf may be realloc-ated to hold the new string (if bigger).
  */
 extern OT_API char * substituteVariables(char * buf,
-                                  const struct WrapperExchangedData * p_exchangedData,
-                                  const char * subst,
-                                  const struct point * p_point,
-                                  long & sizeDiff,
-                                  void * p_error);
+    const struct WrapperExchangedData * p_exchangedData,
+    const char * subst,
+    const struct point * p_point,
+    long & sizeDiff,
+    void * p_error);
 extern OT_API char * substituteVariablesOnCommandLine(char * buf,
     const struct WrapperExchangedData * p_exchangedData,
     const char * subst,
@@ -301,21 +301,21 @@ extern OT_API char * substituteVariablesOnCommandLine(char * buf,
 
 /* Look for origRegexp in mystring and parse it as if it was a double. Returns non zero if not found or failure */
 extern OT_API int retrieve(const std::string & mystring,
-                    const std::string & origRegexp,
-                    const std::string & origFormat,
-                    const std::string & newRegexp,
-                    const std::string & newFormat,
-                    const struct regexp_match regmatch,
-                    double & value,
-                    void * p_error);
+                           const std::string & origRegexp,
+                           const std::string & origFormat,
+                           const std::string & newRegexp,
+                           const std::string & newFormat,
+                           const struct regexp_match regmatch,
+                           double & value,
+                           void * p_error);
 
 
 /* Pick up data from the file */
 extern OT_API int retrieveVariables(char * buf,
-                             const struct WrapperExchangedData * p_exchangedData,
-                             const char * subst,
-                             struct point * p_point,
-                             void * p_error);
+                                    const struct WrapperExchangedData * p_exchangedData,
+                                    const char * subst,
+                                    struct point * p_point,
+                                    void * p_error);
 
 
 

@@ -165,7 +165,7 @@ convert_backslashes(String & path)
   const char* current_char = path.c_str();
   String::size_type pos = 0;
   // On Windows, leading \\ is for network paths and must not be stripped
-  if (*current_char == '\\' && *(current_char+1) == '\\')
+  if (*current_char == '\\' && *(current_char + 1) == '\\')
   {
     pos = 2;
     current_char += pos;

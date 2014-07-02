@@ -37,7 +37,7 @@ DynamicalFunction::DynamicalFunction(const UnsignedInteger meshDimension)
 
 /* Constructor from NumericalMathFunction */
 DynamicalFunction::DynamicalFunction(const NumericalMathFunction & function,
-				     const UnsignedInteger meshDimension)
+                                     const UnsignedInteger meshDimension)
   : TypedInterfaceObject<DynamicalFunctionImplementation>(SpatialFunction(function, meshDimension).clone())
 {
   // Nothing to do

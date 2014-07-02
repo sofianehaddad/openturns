@@ -47,7 +47,7 @@ public:
 
   /** Parameters constructor */
   InverseWishart(const CovarianceMatrix & v,
-          const NumericalScalar nu);
+                 const NumericalScalar nu);
 
   /** Comparison operator */
   Bool operator ==(const InverseWishart & other) const;

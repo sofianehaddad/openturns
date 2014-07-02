@@ -5,6 +5,7 @@ from openturns import *
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
+
 class RVEC(PythonRandomVector):
 
     def __init__(self):

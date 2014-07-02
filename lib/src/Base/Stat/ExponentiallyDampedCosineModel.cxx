@@ -46,8 +46,8 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel()
 }
 
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalScalar amplitude,
-                                   const NumericalScalar frequency,
-                                   const NumericalScalar scale)
+    const NumericalScalar frequency,
+    const NumericalScalar scale)
   : StationaryCovarianceModel()
   , amplitude_(0.0)
   , scale_(0.0)
@@ -100,11 +100,11 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
   const CovarianceMatrix covTau0( operator()( 0.0 ) );
 
   for (UnsignedInteger diag = 0; diag < size; ++diag)
-    {
-      const NumericalScalar covTau( operator()( diag * timeStep )(0, 0) );
-      for (UnsignedInteger i = 0; i < size - diag; ++i)
-	cov( i, i + diag ) = covTau;
-    }
+  {
+    const NumericalScalar covTau( operator()( diag * timeStep )(0, 0) );
+    for (UnsignedInteger i = 0; i < size - diag; ++i)
+      cov( i, i + diag ) = covTau;
+  }
 
   return cov;
 }

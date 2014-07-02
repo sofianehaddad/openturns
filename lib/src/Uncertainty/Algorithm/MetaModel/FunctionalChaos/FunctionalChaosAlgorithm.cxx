@@ -78,9 +78,9 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm()
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction & model,
-                                                   const Distribution & distribution,
-                                                   const AdaptiveStrategy & adaptiveStrategy,
-                                                   const ProjectionStrategy & projectionStrategy)
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy,
+    const ProjectionStrategy & projectionStrategy)
   : MetaModelAlgorithm( distribution, model )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
@@ -91,10 +91,10 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction &
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                                                   const NumericalSample & outputSample,
-                                                   const Distribution & distribution,
-                                                   const AdaptiveStrategy & adaptiveStrategy,
-                                                   const ProjectionStrategy & projectionStrategy)
+    const NumericalSample & outputSample,
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy,
+    const ProjectionStrategy & projectionStrategy)
   : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
@@ -112,11 +112,11 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                                                   const NumericalPoint & weights,
-                                                   const NumericalSample & outputSample,
-                                                   const Distribution & distribution,
-                                                   const AdaptiveStrategy & adaptiveStrategy,
-                                                   const ProjectionStrategy & projectionStrategy)
+    const NumericalPoint & weights,
+    const NumericalSample & outputSample,
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy,
+    const ProjectionStrategy & projectionStrategy)
   : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
@@ -134,8 +134,8 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction & model,
-                                                   const Distribution & distribution,
-                                                   const AdaptiveStrategy & adaptiveStrategy)
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm( distribution, model )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy())
@@ -146,9 +146,9 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction &
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                                                   const NumericalSample & outputSample,
-                                                   const Distribution & distribution,
-                                                   const AdaptiveStrategy & adaptiveStrategy)
+    const NumericalSample & outputSample,
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
@@ -160,7 +160,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                                                   const NumericalSample & outputSample)
+    const NumericalSample & outputSample)
   : MetaModelAlgorithm( Distribution(), NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
   , adaptiveStrategy_()
   , projectionStrategy_()
@@ -177,13 +177,13 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   Collection< DistributionFactory > factories(DistributionFactory::GetContinuousUniVariateFactories());
   LOGINFO("In FunctionalChaosAlgorithm, identify marginal distributions");
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
-    {
-      const Distribution candidate(FittingTest::BestModelKolmogorov(inputSample.getMarginal(i), factories));
-	  if (FittingTest::GetLastResult().getPValue() > 1e-3) marginals[i] = candidate;
-      else marginals[i] = ks.build(inputSample.getMarginal(i));
-      LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
-      polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
-    }
+  {
+    const Distribution candidate(FittingTest::BestModelKolmogorov(inputSample.getMarginal(i), factories));
+    if (FittingTest::GetLastResult().getPValue() > 1e-3) marginals[i] = candidate;
+    else marginals[i] = ks.build(inputSample.getMarginal(i));
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
+    polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
+  }
   // For the dependence structure, we test first the independent copula, then the normal copula, but not a non-parametric copula as the penalty on the meta-model evaluation speed is most of the time prohibitive
   setDistribution(ComposedDistribution(marginals, NormalCopulaFactory().build(inputSample)));
   const EnumerateFunction enumerate(inputDimension);
@@ -191,27 +191,27 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   // For small sample size, use sparse regression
   LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
   if (inputSample.getSize() < ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-SmallSampleSize" ))
-    {
-      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), KFold()));
-      adaptiveStrategy_ = FixedStrategy(OrthogonalProductPolynomialFactory(polynomials), enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
-      LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LAR and KFold for a total degree of " << maximumTotalDegree);
-    }
+  {
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), KFold()));
+    adaptiveStrategy_ = FixedStrategy(OrthogonalProductPolynomialFactory(polynomials), enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LAR and KFold for a total degree of " << maximumTotalDegree);
+  }
   else
-    {
-      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-      const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
-      const UnsignedInteger basisSize(std::min(totalSize, maximumTotalDegree * maximumTotalDegree * inputSample.getDimension()));
-      adaptiveStrategy_ = CleaningStrategy(OrthogonalProductPolynomialFactory(polynomials), totalSize, basisSize);      
-      LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a constrained chaos expansion based on CleaningStrategy for a total degree of " << maximumTotalDegree << " and a maximum number of terms of " << basisSize);
-    }
+  {
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
+    const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
+    const UnsignedInteger basisSize(std::min(totalSize, maximumTotalDegree * maximumTotalDegree * inputSample.getDimension()));
+    adaptiveStrategy_ = CleaningStrategy(OrthogonalProductPolynomialFactory(polynomials), totalSize, basisSize);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a constrained chaos expansion based on CleaningStrategy for a total degree of " << maximumTotalDegree << " and a maximum number of terms of " << basisSize);
+  }
 }
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                                                   const NumericalPoint & weights,
-                                                   const NumericalSample & outputSample,
-                                                   const Distribution & distribution,
-                                                   const AdaptiveStrategy & adaptiveStrategy)
+    const NumericalPoint & weights,
+    const NumericalSample & outputSample,
+    const Distribution & distribution,
+    const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
@@ -277,52 +277,52 @@ void FunctionalChaosAlgorithm::run()
   if (!measure.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use FunctionalChaosAlgorithm with an orthogonal basis not based on a product measure";
   // Has the distribution an independent copula? Simply use marginal transformations
   if (distribution_.hasIndependentCopula())
+  {
+    const UnsignedInteger dimension(distribution_.getDimension());
+    // We use empty collections to avoid the construction of default distributions
+    DistributionCollection marginalX(0);
+    DistributionCollection marginalZ(0);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      const UnsignedInteger dimension(distribution_.getDimension());
-      // We use empty collections to avoid the construction of default distributions
-      DistributionCollection marginalX(0);
-      DistributionCollection marginalZ(0);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-        {
-          marginalX.add(distribution_.getMarginal(i));
-          marginalZ.add(measure.getMarginal(i));
-        }
-      // The distributions have an independent copula, they can be converted one into another by marginal transformation. T is such that T(X) = Z
-      const MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
-      const MarginalTransformationGradient gradientT(evaluationT);
-      const MarginalTransformationHessian hessianT(evaluationT);
-      transformation_ = NumericalMathFunction(evaluationT.clone(), gradientT.clone(), hessianT.clone());
-      const MarginalTransformationEvaluation evaluationTinv(MarginalTransformationEvaluation(marginalZ, marginalX));
-      const MarginalTransformationGradient gradientTinv(evaluationTinv);
-      const MarginalTransformationHessian hessianTinv(evaluationTinv);
-      inverseTransformation_ = NumericalMathFunction(evaluationTinv.clone(), gradientTinv.clone(), hessianTinv.clone());
+      marginalX.add(distribution_.getMarginal(i));
+      marginalZ.add(measure.getMarginal(i));
     }
+    // The distributions have an independent copula, they can be converted one into another by marginal transformation. T is such that T(X) = Z
+    const MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
+    const MarginalTransformationGradient gradientT(evaluationT);
+    const MarginalTransformationHessian hessianT(evaluationT);
+    transformation_ = NumericalMathFunction(evaluationT.clone(), gradientT.clone(), hessianT.clone());
+    const MarginalTransformationEvaluation evaluationTinv(MarginalTransformationEvaluation(marginalZ, marginalX));
+    const MarginalTransformationGradient gradientTinv(evaluationTinv);
+    const MarginalTransformationHessian hessianTinv(evaluationTinv);
+    inverseTransformation_ = NumericalMathFunction(evaluationTinv.clone(), gradientTinv.clone(), hessianTinv.clone());
+  }
   else
+  {
+    // Is the input distribution mapped into a normal standard space?
+    // We know that the standard space associated with Z is a normal space, as Z has an independent copula. We can check that X has the same standard space if its standard distribution has also an independent copula
+    if (distribution_.getStandardDistribution().hasIndependentCopula())
     {
-      // Is the input distribution mapped into a normal standard space?
-      // We know that the standard space associated with Z is a normal space, as Z has an independent copula. We can check that X has the same standard space if its standard distribution has also an independent copula
-      if (distribution_.getStandardDistribution().hasIndependentCopula())
-        {
-          // The distributions share the same standard space, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
-          const NumericalMathFunction TX(distribution_.getIsoProbabilisticTransformation());
-          const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
-          const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
-          const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
-          transformation_ = NumericalMathFunction(TinvZ, TX);
-          inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
-        }
-      // The standard space is not normal, use Rosenblatt transformation instead of the native iso-probabilistic transformation.
-      else
-        {
-          // The distributions share the same standard space if we use a Rosenblatt transforation, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
-          const NumericalMathFunction TX(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution_.getImplementation()).clone()));
-          const NumericalMathFunction TinvX(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(distribution_.getImplementation()).clone()));
-          const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
-          const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
-          transformation_ = NumericalMathFunction(TinvZ, TX);
-          inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
-        }
-    } // Non-independent input copula
+      // The distributions share the same standard space, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
+      const NumericalMathFunction TX(distribution_.getIsoProbabilisticTransformation());
+      const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
+      const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
+      const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
+      transformation_ = NumericalMathFunction(TinvZ, TX);
+      inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
+    }
+    // The standard space is not normal, use Rosenblatt transformation instead of the native iso-probabilistic transformation.
+    else
+    {
+      // The distributions share the same standard space if we use a Rosenblatt transforation, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
+      const NumericalMathFunction TX(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution_.getImplementation()).clone()));
+      const NumericalMathFunction TinvX(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(distribution_.getImplementation()).clone()));
+      const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
+      const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
+      transformation_ = NumericalMathFunction(TinvZ, TX);
+      inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
+    }
+  } // Non-independent input copula
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
@@ -340,30 +340,30 @@ void FunctionalChaosAlgorithm::run()
   NumericalPoint relativeErrors(outputDimension);
   std::map<UnsignedInteger, NumericalPoint> coefficientsMap;
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
+  {
+    Indices marginalIndices;
+    NumericalPoint marginalAlpha_k;
+    NumericalScalar marginalResidual;
+    NumericalScalar marginalRelativeError;
+    // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
+    runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
+    residuals[outputIndex] = marginalResidual;
+    relativeErrors[outputIndex] = marginalRelativeError;
+    for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
     {
-      Indices marginalIndices;
-      NumericalPoint marginalAlpha_k;
-      NumericalScalar marginalResidual;
-      NumericalScalar marginalRelativeError;
-      // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
-      runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
-      residuals[outputIndex] = marginalResidual;
-      relativeErrors[outputIndex] = marginalRelativeError;
-      for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
-        {
-          // Deal only with non-zero coefficients
-          const NumericalScalar marginalAlpha_kj(marginalAlpha_k[j]);
-          if (marginalAlpha_kj != 0.0)
-            {
-              // Current index in the decomposition of the current marginal output
-              const UnsignedInteger index(marginalIndices[j]);
-              // If the current index is not in the map, create it
-              if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = NumericalPoint(outputDimension, 0.0);
-              // Add the current scalar coefficient to the corresponding component of the vectorial coefficient
-              coefficientsMap[index][outputIndex] = marginalAlpha_kj;
-            }
-        } // Loop over the marginal indices
-    } // Loop over the output dimension
+      // Deal only with non-zero coefficients
+      const NumericalScalar marginalAlpha_kj(marginalAlpha_k[j]);
+      if (marginalAlpha_kj != 0.0)
+      {
+        // Current index in the decomposition of the current marginal output
+        const UnsignedInteger index(marginalIndices[j]);
+        // If the current index is not in the map, create it
+        if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = NumericalPoint(outputDimension, 0.0);
+        // Add the current scalar coefficient to the corresponding component of the vectorial coefficient
+        coefficientsMap[index][outputIndex] = marginalAlpha_kj;
+      }
+    } // Loop over the marginal indices
+  } // Loop over the output dimension
   // At this point, the map contains all the associations (index, vector coefficient). It remains to present these data into the proper form and to build the associated partial basis
   std::map<UnsignedInteger, NumericalPoint>::iterator iter;
   // Full set of indices
@@ -373,13 +373,13 @@ void FunctionalChaosAlgorithm::run()
   // Full set of partial basis functions.
   NumericalMathFunctionCollection Psi_k(0);
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
-    {
-      const UnsignedInteger i(iter->first);
-      const NumericalPoint currentcoefficient(iter->second);
-      I_k.add(i);
-      alpha_k.add(currentcoefficient);
-      Psi_k.add(basis.build(i));
-    }
+  {
+    const UnsignedInteger i(iter->first);
+    const NumericalPoint currentcoefficient(iter->second);
+    I_k.add(i);
+    alpha_k.add(currentcoefficient);
+    Psi_k.add(basis.build(i));
+  }
   // Build the result
   result_ = FunctionalChaosResult(model_, distribution_, transformation_, inverseTransformation_, composedModel_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
   // Restore the initial input sample
@@ -391,10 +391,10 @@ void FunctionalChaosAlgorithm::run()
 
 /* Marginal computation */
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
-                                           Indices & indices,
-                                           NumericalPoint & coefficients,
-                                           NumericalScalar & residual,
-                                           NumericalScalar & relativeError)
+    Indices & indices,
+    NumericalPoint & coefficients,
+    NumericalScalar & residual,
+    NumericalScalar & relativeError)
 {
   // Initialize the projection basis Phi_k_p_ and I_p_
   adaptiveStrategy_.computeInitialBasis();
@@ -404,6 +404,23 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
   // + the current residual is small enough
   // + the adaptive strategy has no more vector to propose
   if (projectionStrategy_.getImplementation()->residual_p_ < maximumResidual_)
+  {
+    indices = adaptiveStrategy_.getImplementation()->I_p_;
+    coefficients = projectionStrategy_.getImplementation()->alpha_k_p_;
+    residual = projectionStrategy_.getImplementation()->residual_p_;
+    relativeError = projectionStrategy_.getImplementation()->relativeError_p_;
+    return;
+  }
+  // Update the basis
+  adaptiveStrategy_.updateBasis(projectionStrategy_.getImplementation()->alpha_k_p_, projectionStrategy_.getImplementation()->residual_p_, projectionStrategy_.getImplementation()->relativeError_p_);
+  // Check if there is still something to do
+  while ((adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
+  {
+    projectionStrategy_.computeCoefficients(composedModel_, adaptiveStrategy_.getImplementation()->Psi_k_p_, adaptiveStrategy_.getImplementation()->I_p_, adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->conservedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_, marginalIndex);
+    // The basis is adapted under the following conditions:
+    // + the current residual is small enough
+    // + the adaptive strategy has no more vector to propose
+    if (projectionStrategy_.getImplementation()->residual_p_ < maximumResidual_)
     {
       indices = adaptiveStrategy_.getImplementation()->I_p_;
       coefficients = projectionStrategy_.getImplementation()->alpha_k_p_;
@@ -411,25 +428,8 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
       relativeError = projectionStrategy_.getImplementation()->relativeError_p_;
       return;
     }
-  // Update the basis
-  adaptiveStrategy_.updateBasis(projectionStrategy_.getImplementation()->alpha_k_p_, projectionStrategy_.getImplementation()->residual_p_, projectionStrategy_.getImplementation()->relativeError_p_);
-  // Check if there is still something to do
-  while ((adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
-    {
-      projectionStrategy_.computeCoefficients(composedModel_, adaptiveStrategy_.getImplementation()->Psi_k_p_, adaptiveStrategy_.getImplementation()->I_p_, adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->conservedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_, marginalIndex);
-      // The basis is adapted under the following conditions:
-      // + the current residual is small enough
-      // + the adaptive strategy has no more vector to propose
-      if (projectionStrategy_.getImplementation()->residual_p_ < maximumResidual_)
-        {
-          indices = adaptiveStrategy_.getImplementation()->I_p_;
-          coefficients = projectionStrategy_.getImplementation()->alpha_k_p_;
-          residual = projectionStrategy_.getImplementation()->residual_p_;
-          relativeError = projectionStrategy_.getImplementation()->relativeError_p_;
-          return;
-        }
-      adaptiveStrategy_.updateBasis(projectionStrategy_.getImplementation()->alpha_k_p_, projectionStrategy_.getImplementation()->residual_p_, projectionStrategy_.getImplementation()->relativeError_p_);
-    }
+    adaptiveStrategy_.updateBasis(projectionStrategy_.getImplementation()->alpha_k_p_, projectionStrategy_.getImplementation()->residual_p_, projectionStrategy_.getImplementation()->relativeError_p_);
+  }
   indices = adaptiveStrategy_.getImplementation()->I_p_;
   coefficients = projectionStrategy_.getImplementation()->alpha_k_p_;
   residual = projectionStrategy_.getImplementation()->residual_p_;

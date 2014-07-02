@@ -54,7 +54,7 @@ public:
   using NumericalMathGradientImplementation::gradient;
   Matrix gradient(const NumericalPoint & point) const;
   Matrix gradient(const NumericalPoint & point,
-		  const NumericalPoint & parameters) const;
+                  const NumericalPoint & parameters) const;
 
   /** Evaluation accessor */
   ParametricEvaluationImplementation getEvaluation() const;

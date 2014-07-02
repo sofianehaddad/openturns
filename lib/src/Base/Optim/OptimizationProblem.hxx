@@ -59,10 +59,10 @@ public:
 
   /** Constructor with parameters */
   OptimizationProblem(const NumericalMathFunction & objective,
-		      const NumericalMathFunction & equalityConstraint,
-		      const NumericalMathFunction & inequalityConstraint,
-		      const Interval & bounds);
-  
+                      const NumericalMathFunction & equalityConstraint,
+                      const NumericalMathFunction & inequalityConstraint,
+                      const Interval & bounds);
+
   /** Objective functions accessor */
   NumericalMathFunction getObjective() const;
   void setObjective(const NumericalMathFunction & objective);

@@ -49,7 +49,8 @@ try:
     frequencies = NumericalPoint(slice, 0.0)
     mean = 0.0
     for i in range(size):
-        frequencies[manyUnsignedInteger[i]] = frequencies[manyUnsignedInteger[i]] + 1
+        frequencies[manyUnsignedInteger[i]] = frequencies[
+            manyUnsignedInteger[i]] + 1
         mean = mean + manyUnsignedInteger[i]
 
     mean = mean / size

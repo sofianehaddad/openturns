@@ -90,7 +90,7 @@ SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint
 }
 
 SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint & inP,
-							    const NumericalPoint & parameters)
+    const NumericalPoint & parameters)
 {
   setParameters(parameters);
   return hessian(inP);

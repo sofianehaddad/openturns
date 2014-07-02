@@ -36,7 +36,7 @@ try:
     k = 0
     for i in range(timeGrid.getN()):
         t = timeGrid.getValue(i)
-        for j in range(i+1):
+        for j in range(i + 1):
             s = timeGrid.getValue(j)
             covarianceCollection[k] = referenceModel(t, s)
             k = k + 1

@@ -85,4 +85,3 @@ for matrix in matrices:
     matrix2 = matrix
     matrix2[3, 4] = matrix[3, 4]
     print 'wslice[3,4]=', matrix2
-

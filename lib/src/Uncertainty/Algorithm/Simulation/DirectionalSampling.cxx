@@ -200,7 +200,7 @@ RootStrategy DirectionalSampling::getRootStrategy() const
 void DirectionalSampling::setSamplingStrategy(const SamplingStrategy & samplingStrategy)
 {
   samplingStrategy_ = samplingStrategy;
-  
+
   // To force the sampling strategy to have the correct dimension
   samplingStrategy_.setDimension(inputDistribution_->getDimension());
 }

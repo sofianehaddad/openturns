@@ -54,7 +54,7 @@ public:
 
   /** Constructor from NumericalMathFunction */
   DynamicalFunction(const NumericalMathFunction & function,
-		    const UnsignedInteger meshDimension = 1);
+                    const UnsignedInteger meshDimension = 1);
 
   /** Constructor from DynamicalFunctionImplementation */
   DynamicalFunction(const DynamicalFunctionImplementation & implementation);

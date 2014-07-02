@@ -38,9 +38,9 @@ try:
 
     mesh2D = Mesh(vertices, simplicies)
     print "2D mesh=", mesh2D
-    point = [1.8]*2
+    point = [1.8] * 2
     print "Nearest index(", point, ")=", mesh2D.getNearestVertexIndex(point)
-    points = [[-0.25]*2, [2.25]*2]
+    points = [[-0.25] * 2, [2.25] * 2]
     print "Nearest index(", points, ")=", mesh2D.getNearestVertexIndex(points)
 
     vertices = NumericalSample(0, 3)
@@ -64,9 +64,9 @@ try:
 
     mesh3D = Mesh(vertices, simplicies)
     print "3D mesh=", mesh3D
-    point = [1.8]*3
+    point = [1.8] * 3
     print "Nearest index(", point, ")=", mesh3D.getNearestVertexIndex(point)
-    points = [[-0.25]*3, [2.25]*3]
+    points = [[-0.25] * 3, [2.25] * 3]
     print "Nearest index(", points, ")=", mesh3D.getNearestVertexIndex(points)
     rotation = SquareMatrix(3)
     rotation[0, 0] = cos(pi / 3.0)

@@ -91,11 +91,11 @@ CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
   const CovarianceMatrix covTau0( operator()( 0.0 ) );
 
   for (UnsignedInteger diag = 0; diag < size; ++diag)
-    {
-      const NumericalScalar covTau( operator()( diag * timeStep )(0, 0) );
-      for (UnsignedInteger i = 0; i < size - diag; ++i)
-        cov( i, i + diag ) = covTau;
-    }
+  {
+    const NumericalScalar covTau( operator()( diag * timeStep )(0, 0) );
+    for (UnsignedInteger i = 0; i < size - diag; ++i)
+      cov( i, i + diag ) = covTau;
+  }
 
   return cov;
 }

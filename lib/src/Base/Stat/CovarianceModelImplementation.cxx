@@ -65,19 +65,19 @@ UnsignedInteger CovarianceModelImplementation::getDimension() const
 }
 
 CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalScalar s,
-                                                            const NumericalScalar t) const
+    const NumericalScalar t) const
 {
   return operator() (NumericalPoint(1, s), NumericalPoint(1, t));
 }
 
 CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalPoint & s,
-                                                            const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   throw NotYetImplementedException(HERE);
 }
 
 NumericalScalar CovarianceModelImplementation::computeAsScalar (const NumericalPoint & s,
-								const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
   return (*this)(s, t)(0, 0);
@@ -102,7 +102,7 @@ NumericalScalar CovarianceModelImplementation::computeAsScalar (const NumericalP
 
 /* Gradient */
 SymmetricTensor CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
-                                                                const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   throw NotYetImplementedException(HERE);
 }
@@ -122,28 +122,28 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) co
 
   // Fill-in the matrix by blocks
   for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
+  {
+    // Only the lower part has to be filled-in
+    for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
     {
-      // Only the lower part has to be filled-in
-      for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
+      const CovarianceMatrix localCovarianceMatrix(operator()( vertices[rowIndex],  vertices[columnIndex] ));
+      // We fill the covariance matrix using the previous local one
+      // The full local covariance matrix has to be copied as it is
+      // not copied on a symmetric position
+      for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
+      {
+        for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
         {
-          const CovarianceMatrix localCovarianceMatrix(operator()( vertices[rowIndex],  vertices[columnIndex] ));
-          // We fill the covariance matrix using the previous local one
-          // The full local covariance matrix has to be copied as it is
-          // not copied on a symmetric position
-          for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
-            {
-              for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
-                {
-                  covarianceMatrix(columnIndex + columnIndexLocal * size, rowIndex + rowIndexLocal * size ) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
-                } // column index within the block
-            } // row index within the block
-        } // column index of the block
-    } // row index of the block
+          covarianceMatrix(columnIndex + columnIndexLocal * size, rowIndex + rowIndexLocal * size ) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
+        } // column index within the block
+      } // row index within the block
+    } // column index of the block
+  } // row index of the block
   return covarianceMatrix;
 }
 
 NumericalSample CovarianceModelImplementation::discretizeRow(const NumericalSample & vertices,
-							     const UnsignedInteger p) const
+    const UnsignedInteger p) const
 {
   if (dimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if dimension is not 1. Here, dimension=" << dimension_;
   const UnsignedInteger size(vertices.getSize());

@@ -51,17 +51,17 @@ public:
 
   /** Parameter constructor */
   TemporalFunction(const NumericalMathFunction & function,
-		   const UnsignedInteger meshDimension = 1);
+                   const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
   TemporalFunction(const EvaluationImplementation & p_evaluation,
-		   const UnsignedInteger meshDimension = 1);
+                   const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
   TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
-		   const UnsignedInteger meshDimension = 1);
+                   const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual TemporalFunction * clone() const;

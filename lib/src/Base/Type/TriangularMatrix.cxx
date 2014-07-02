@@ -92,17 +92,17 @@ void TriangularMatrix::checkTriangularity() const
 Bool TriangularMatrix::isDiagonal() const
 {
   if (isLowerTriangular_)
-    {
-      for (UnsignedInteger j = 0; j < getDimension(); ++j)
-	for (UnsignedInteger i = j + 1; i < getDimension(); ++i)
-	  if ((*getImplementation())(i, j) != 0.0) return false;
-    }
+  {
+    for (UnsignedInteger j = 0; j < getDimension(); ++j)
+      for (UnsignedInteger i = j + 1; i < getDimension(); ++i)
+        if ((*getImplementation())(i, j) != 0.0) return false;
+  }
   else
-    {
-      for (UnsignedInteger j = 0; j < getDimension(); ++j)
-	for (UnsignedInteger i = 0; i < j; ++i)
-	  if ((*getImplementation())(i, j) != 0.0) return false;
-    }
+  {
+    for (UnsignedInteger j = 0; j < getDimension(); ++j)
+      for (UnsignedInteger i = 0; i < j; ++i)
+        if ((*getImplementation())(i, j) != 0.0) return false;
+  }
   return true;
 }
 

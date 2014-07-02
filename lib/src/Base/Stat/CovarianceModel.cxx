@@ -121,7 +121,7 @@ CovarianceMatrix CovarianceModel::discretize(const Mesh & mesh) const
 }
 
 NumericalSample CovarianceModel::discretizeRow(const NumericalSample & vertices,
-					       const UnsignedInteger p) const
+    const UnsignedInteger p) const
 {
   return getImplementation()->discretizeRow(vertices, p);
 }

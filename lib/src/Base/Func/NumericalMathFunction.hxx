@@ -153,13 +153,13 @@ public:
 
   /** Constructor by splitting the input of a function between variables and parameters */
   NumericalMathFunction(const NumericalMathFunction & function,
-			const Indices & set,
-			const Bool parametersSet = true);
+                        const Indices & set,
+                        const Bool parametersSet = true);
 
   NumericalMathFunction(const NumericalMathFunction & function,
-			const Indices & set,
-			const NumericalPoint & referencePoint,
-			const Bool parametersSet = true);
+                        const Indices & set,
+                        const NumericalPoint & referencePoint,
+                        const Bool parametersSet = true);
 
   /** Comparison operator */
   Bool operator ==(const NumericalMathFunction & other) const;
@@ -295,7 +295,7 @@ public:
   /** Operator () */
   NumericalPoint operator() (const NumericalPoint & inP) const;
   NumericalPoint operator() (const NumericalPoint & inP,
-			     const NumericalPoint & parameters);
+                             const NumericalPoint & parameters);
 
   NumericalSample operator() (const NumericalSample & inS) const;
 
@@ -305,17 +305,17 @@ public:
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   Matrix gradient(const NumericalPoint & inP) const;
   Matrix gradient(const NumericalPoint & inP,
-		  const NumericalPoint & parameters);
+                  const NumericalPoint & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   SymmetricTensor hessian(const NumericalPoint & inP) const;
   SymmetricTensor hessian(const NumericalPoint & inP,
-			  const NumericalPoint & parameters);
+                          const NumericalPoint & parameters);
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parametersGradient(const NumericalPoint & inP) const;
   virtual Matrix parametersGradient(const NumericalPoint & inP,
-				    const NumericalPoint & parameters);
+                                    const NumericalPoint & parameters);
 
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameters() const;

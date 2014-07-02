@@ -505,11 +505,11 @@ String NumericalSampleImplementation::storeToTemporaryFile() const
   {
     String separator = "";
     for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
-      {
-	const NumericalScalar value(operator[](i)[j]);
-	const Bool isNaN(value != value);
-      	dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
-      }
+    {
+      const NumericalScalar value(operator[](i)[j]);
+      const Bool isNaN(value != value);
+      dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+    }
     dataFile << Os::GetEndOfLine();
   }
   dataFile.close();
@@ -525,11 +525,11 @@ String NumericalSampleImplementation::streamToRFormat() const
   String separator("");
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
-      {
-	const NumericalScalar value(operator[](i)[j]);
-	const Bool isNaN(value != value);
-	oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
-      }
+    {
+      const NumericalScalar value(operator[](i)[j]);
+      const Bool isNaN(value != value);
+      oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+    }
   oss << "), nrow=" << size_ << ", ncol=" << dimension_ << ")";
   return oss;
 }
@@ -1398,10 +1398,10 @@ NumericalPoint NumericalSampleImplementation::computeSkewnessPerComponent() cons
   NumericalPoint skewness(dimension_);
   const NumericalScalar factor(size_ * sqrt(size_ - 1.0) / (size_ - 2));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
-      skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
-    }
+  {
+    if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
+    skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
+  }
   return skewness;
 }
 
@@ -1457,10 +1457,10 @@ NumericalPoint NumericalSampleImplementation::computeKurtosisPerComponent() cons
   const NumericalScalar factor1((size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0)));
   const NumericalScalar factor2(-3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0)));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
-      kurtosis[i] = factor1 * functor.accumulator_[i + dimension_] / (functor.accumulator_[i] * functor.accumulator_[i]) + factor2;
-    }
+  {
+    if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
+    kurtosis[i] = factor1 * functor.accumulator_[i + dimension_] / (functor.accumulator_[i] * functor.accumulator_[i]) + factor2;
+  }
   return kurtosis;
 }
 
@@ -1736,7 +1736,7 @@ struct PositiveTranslationSamplePolicy
   NumericalSampleImplementation & output_;
 
   PositiveTranslationSamplePolicy( const NumericalSampleImplementation & translation,
-				   NumericalSampleImplementation & output)
+                                   NumericalSampleImplementation & output)
     : translation_(translation), output_(output) {}
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
@@ -1752,7 +1752,7 @@ struct NegativeTranslationSamplePolicy
   NumericalSampleImplementation & output_;
 
   NegativeTranslationSamplePolicy( const NumericalSampleImplementation & translation,
-				   NumericalSampleImplementation & output)
+                                   NumericalSampleImplementation & output)
     : translation_(translation), output_(output) {}
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const

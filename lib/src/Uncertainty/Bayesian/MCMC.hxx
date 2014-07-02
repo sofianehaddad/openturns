@@ -75,7 +75,7 @@ public:
   /** Prior accessor */
   void setPrior(const Distribution & prior);
   Distribution getPrior() const;
-  
+
   /** Conditional accessor */
   Distribution getConditional() const;
 

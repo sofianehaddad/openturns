@@ -153,37 +153,37 @@ private:
 #ifndef SWIG
 /** Comparison operator */
 OT_API Bool operator == (const NumericalPoint & lhs,
-                  const NumericalPoint & rhs);
+                         const NumericalPoint & rhs);
 
 /** Ordering operator */
 OT_API Bool operator < (const NumericalPoint & lhs,
-                 const NumericalPoint & rhs);
+                        const NumericalPoint & rhs);
 
 /** Product operator */
 OT_API NumericalPoint operator * (const NumericalScalar scalar,
-                           const NumericalPoint & point);
+                                  const NumericalPoint & point);
 
 /** Product operator */
 OT_API NumericalPoint operator * (const NumericalPoint & point,
-                           const NumericalScalar scalar);
+                                  const NumericalScalar scalar);
 
 /** Division operator */
 OT_API NumericalPoint operator / (const NumericalPoint & point,
-                           const NumericalScalar scalar);
+                                  const NumericalScalar scalar);
 
 /** Addition operator */
 OT_API NumericalPoint operator + (const NumericalPoint & lhs,
-                           const NumericalPoint & rhs);
+                                  const NumericalPoint & rhs);
 
 /** Substraction operator */
 OT_API NumericalPoint operator - (const NumericalPoint & lhs,
-                           const NumericalPoint & rhs);
+                                  const NumericalPoint & rhs);
 
 #endif
 
 /** Dot product operator */
 OT_API NumericalScalar dot(const NumericalPoint & lhs,
-                    const NumericalPoint & rhs);
+                           const NumericalPoint & rhs);
 
 
 

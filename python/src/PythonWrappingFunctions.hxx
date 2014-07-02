@@ -715,14 +715,14 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
   if ( PyObject_HasAttrString(pyObj, const_cast<char *>("getNbColumns")) )
   {
     ScopedPyObjectPointer colunmsObj(PyObject_CallMethod ( pyObj,
-                            const_cast<char *>( "getNbColumns" ),
-                            const_cast<char *>( "()" ) ));
+                                     const_cast<char *>( "getNbColumns" ),
+                                     const_cast<char *>( "()" ) ));
     ScopedPyObjectPointer rowsObj(PyObject_CallMethod ( pyObj,
-                            const_cast<char *>( "getNbRows" ),
-                            const_cast<char *>( "()" ) ));
+                                  const_cast<char *>( "getNbRows" ),
+                                  const_cast<char *>( "()" ) ));
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
-                            const_cast<char *>( "getImplementation" ),
-                            const_cast<char *>( "()" ) ));
+                                  const_cast<char *>( "getImplementation" ),
+                                  const_cast<char *>( "()" ) ));
     Pointer< Collection< NumericalScalar > > ptr = buildCollectionFromPySequence< NumericalScalar >( implObj.get() );
     UnsignedInteger nbColumns( checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() ) );
     UnsignedInteger nbRows( checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() ) );
@@ -936,14 +936,14 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
   if ( PyObject_HasAttrString(pyObj, const_cast<char *>("getNbColumns")) )
   {
     ScopedPyObjectPointer colunmsObj(PyObject_CallMethod ( pyObj,
-                            const_cast<char *>( "getNbColumns" ),
-                            const_cast<char *>( "()" ) ));
+                                     const_cast<char *>( "getNbColumns" ),
+                                     const_cast<char *>( "()" ) ));
     ScopedPyObjectPointer rowsObj(PyObject_CallMethod ( pyObj,
-                            const_cast<char *>( "getNbRows" ),
-                            const_cast<char *>( "()" ) ));
+                                  const_cast<char *>( "getNbRows" ),
+                                  const_cast<char *>( "()" ) ));
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
-                            const_cast<char *>( "getImplementation" ),
-                            const_cast<char *>( "()" ) ));
+                                  const_cast<char *>( "getImplementation" ),
+                                  const_cast<char *>( "()" ) ));
     Pointer< Collection< NumericalComplex > > ptr = buildCollectionFromPySequence< NumericalComplex >( implObj.get() );
     UnsignedInteger nbColumns( checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() ) );
     UnsignedInteger nbRows( checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() ) );

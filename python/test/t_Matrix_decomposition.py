@@ -6,18 +6,19 @@ TESTPREAMBLE()
 
 
 def quadM(m, n):
-    res = Matrix(m, n);
+    res = Matrix(m, n)
     for i in range(m):
         for j in range(n):
-            res[i, j] = (i + 1.0)**(j + 1.0)
+            res[i, j] = (i + 1.0) ** (j + 1.0)
     return res
+
 
 def testQR(m, n):
     matrix1 = quadM(m, n)
     Q, R = matrix1.computeQR()
     print 'Q= ', Q
     print 'R=', R
-    #print 'Q*R=', Q*R
+    # print 'Q*R=', Q*R
 
 
 try:

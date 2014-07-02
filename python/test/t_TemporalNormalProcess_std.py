@@ -32,9 +32,11 @@ try:
     myProcess = TemporalNormalProcess(myModel, myTimeGrid)
     print "myProcess = ", myProcess
     print "is stationary? ", myProcess.isStationary()
-    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0)
+    ResourceMap.SetAsUnsignedInteger(
+        "TemporalNormalProcess-UseGibbsSampler", 0)
     print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
-    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1)
+    ResourceMap.SetAsUnsignedInteger(
+        "TemporalNormalProcess-UseGibbsSampler", 1)
     print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
 
     # Second order model with parameters
@@ -44,9 +46,11 @@ try:
     myProcess1 = TemporalNormalProcess(myCovModel, myTimeGrid)
     print "myProcess1 = ", myProcess1
     print "is stationary? ", myProcess1.isStationary()
-    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0)
+    ResourceMap.SetAsUnsignedInteger(
+        "TemporalNormalProcess-UseGibbsSampler", 0)
     print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
-    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1)
+    ResourceMap.SetAsUnsignedInteger(
+        "TemporalNormalProcess-UseGibbsSampler", 1)
     print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
 
     # With constant trend
@@ -61,11 +65,13 @@ try:
     myProcess3 = TemporalNormalProcess(trend3, myCovModel, myTimeGrid)
     print "myProcess3 = ", myProcess3
     print "is stationary? ", myProcess3.isStationary()
-    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0)
+    ResourceMap.SetAsUnsignedInteger(
+        "TemporalNormalProcess-UseGibbsSampler", 0)
     print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
-    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1)
+    ResourceMap.SetAsUnsignedInteger(
+        "TemporalNormalProcess-UseGibbsSampler", 1)
     print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
-    
+
 except:
     import sys
     print "t_TemporalNormalProcess_std.py", sys.exc_type, sys.exc_value

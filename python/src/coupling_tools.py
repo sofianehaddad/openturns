@@ -206,7 +206,7 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         else:
             startupinfo.dwFlags |= 1
-            
+
     stdout = None
     stderr = None
     if get_stdout:

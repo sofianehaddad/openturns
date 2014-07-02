@@ -78,23 +78,23 @@ public:
   static NumericalScalar GetAsNumericalScalar(String key);
   static char * GetAsNewCharArray(String key);
 
-  /** Set a value in the map 
+  /** Set a value in the map
    * @deprecated
    */
   static UnsignedInteger GetAsUnsignedLong(String key);
-  
-  
+
+
   /** Set a value in the map */
   static void Set(String key, String value);
   static void SetAsBool(String key, Bool value);
   static void SetAsUnsignedInteger(String key, UnsignedInteger value);
   static void SetAsNumericalScalar(String key, NumericalScalar value);
 
-  /** Set a value in the map 
+  /** Set a value in the map
    * @deprecated
    */
   static void SetAsUnsignedLong(String key, UnsignedInteger value);
-  
+
   /** @copydoc Object::__repr__() const */
   String __repr__() const;
 

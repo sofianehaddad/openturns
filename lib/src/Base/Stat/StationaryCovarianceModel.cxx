@@ -51,7 +51,7 @@ StationaryCovarianceModel * StationaryCovarianceModel::clone() const
 
 /* Computation of the covariance function */
 CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & s,
-							const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   return (*this)(t - s);
 }
@@ -62,7 +62,7 @@ CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & t
 }
 
 NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint & s,
-						  const NumericalPoint & t) const
+    const NumericalPoint & t) const
 {
   return computeAsScalar(t - s);
 }

@@ -60,10 +60,10 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
   // Seed bound
   seedBound_ = modulus_;
   while (seedBound_ < seed_)
-    {
-      ++logSeed_;
-      seedBound_ *= modulus_;
-    }
+  {
+    ++logSeed_;
+    seedBound_ *= modulus_;
+  }
   // Binomial coefficients modulo the modulus associated withthe current value of the seed
   computeInitialBinomialCoefficients();
 }

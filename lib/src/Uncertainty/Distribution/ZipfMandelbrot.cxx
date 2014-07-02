@@ -109,9 +109,9 @@ NumericalPoint ZipfMandelbrot::getRealization() const
   const NumericalScalar uniformRealization(1.0 - RandomGenerator::Generate());
 
   NumericalScalarCollection::const_iterator it(lower_bound(harmonicNumbers_.begin(),
-                                         harmonicNumbers_.end(),
-                                         uniformRealization * getHarmonicNumbers(n_))
-                                        );
+      harmonicNumbers_.end(),
+      uniformRealization * getHarmonicNumbers(n_))
+                                              );
   return NumericalPoint(1, it - harmonicNumbers_.begin() + 1);
 }
 

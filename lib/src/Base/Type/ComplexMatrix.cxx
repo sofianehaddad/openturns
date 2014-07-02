@@ -95,7 +95,7 @@ ComplexMatrix::NumericalComplexCollection ComplexMatrix::solveLinearSystem(const
 }
 
 ComplexMatrix ComplexMatrix::solveLinearSystem(const ComplexMatrix & b,
-					       const Bool keepIntact)
+    const Bool keepIntact)
 {
   return Implementation(getImplementation()->solveLinearSystemRect(*(b.getImplementation()), keepIntact).clone());
 }

@@ -47,8 +47,8 @@ public:
 
   /** Maximum sample size accessor */
   static UnsignedInteger ComputeSampleSize(const NumericalScalar quantileLevel,
-                                        const NumericalScalar confidenceLevel,
-                                        const UnsignedInteger marginIndex = 0);
+      const NumericalScalar confidenceLevel,
+      const UnsignedInteger marginIndex = 0);
 
   /* Estimate an upper bound of the quantile of the random vector for the given quantile level and confidence level, using the marginIndex upper statistics */
   NumericalPoint computeQuantileBound(const NumericalScalar quantileLevel,

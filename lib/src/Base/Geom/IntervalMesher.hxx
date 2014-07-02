@@ -62,7 +62,7 @@ public:
   /* Here is the interface that all derived class must implement */
   /** Build a mesh based on a domain */
   virtual Mesh build(const Interval & interval,
-		     const Bool diamond = false) const;
+                     const Bool diamond = false) const;
 
 protected:
 

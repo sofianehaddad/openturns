@@ -63,7 +63,7 @@ private:
 
 public:
   static UnsignedInteger rBinomial(const UnsignedInteger n,
-                                const NumericalScalar p);
+                                   const NumericalScalar p);
   // For Gamma distribution
   static NumericalScalar pGamma(const NumericalScalar k,
                                 const NumericalScalar x,
