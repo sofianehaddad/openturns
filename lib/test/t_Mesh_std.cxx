@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
       fullprint << "Default 1D mesh=" << mesh1D << std::endl;
     }
     {
+      PlatformInfo::SetNumericalPrecision(6);
       NumericalSample vertices(0, 1);
       vertices.add(NumericalPoint(1, 0.5));
       vertices.add(NumericalPoint(1, 1.5));

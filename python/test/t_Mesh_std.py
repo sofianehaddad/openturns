@@ -6,6 +6,7 @@ from math import *
 TESTPREAMBLE()
 
 try:
+    PlatformInfo.SetNumericalPrecision(6)
     mesh1D = Mesh()
     print "Default 1D mesh=", mesh1D
     vertices = NumericalSample(0, 1)
