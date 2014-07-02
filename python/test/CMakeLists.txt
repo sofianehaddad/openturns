@@ -286,9 +286,7 @@ ot_pyinstallcheck_test ( NonStationaryCovarianceModelFactory_std )
 ot_pyinstallcheck_test ( Domain_std )
 ot_pyinstallcheck_test ( Interval_std )
 ot_pyinstallcheck_test ( IntervalMesher_std )
-if ( R_base_FOUND )
 ot_pyinstallcheck_test ( Mesh_std )
-endif ()
 
 ## Graph
 if ( R_base_FOUND )

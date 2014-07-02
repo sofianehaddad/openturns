@@ -38,7 +38,7 @@ try:
     referenceModel = CauchyModel(amplitude, scale, spatialCorrelation)
 
     size = 5
-    frequencyGrid = RegularGrid(0.0, 1.0 / size, size)
+    frequencyGrid = RegularGrid(0.0, 2.0 / size, size)
     dspCollection = HermitianMatrixCollection(frequencyGrid.getN())
     for i in range(frequencyGrid.getN()):
         dspCollection[i] = referenceModel(frequencyGrid.getValue(i))
@@ -48,7 +48,7 @@ try:
     print "myModel=", myModel
 
     # Sample the UserDefinedSpectralModel
-    samplingGrid = RegularGrid(-1.5, 3.0 / (4.0 * size), 4 * size)
+    samplingGrid = RegularGrid(-0.4, 1.0 / 16, 5 * size)
 
     for i in range(samplingGrid.getN()):
         frequency = samplingGrid.getValue(i)

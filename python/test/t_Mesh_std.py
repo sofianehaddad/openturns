@@ -29,10 +29,8 @@ try:
     print "is p=", p, " in mesh? ", mesh1D.contains(p)
     point = [1.8]
     print "Nearest index(", point, ")=", mesh1D.getNearestVertexIndex(point)
-    points = [[-0.3], [2.4]]
+    points = [[-0.25], [2.4]]
     print "Nearest index(", points, ")=", mesh1D.getNearestVertexIndex(points)
-    mesh1D.draw().draw("mesh1D")
-    mesh1D.draw1D().draw("mesh1D")
     vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
                 [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
     simplicies = IndicesCollection(
@@ -42,10 +40,8 @@ try:
     print "2D mesh=", mesh2D
     point = [1.8]*2
     print "Nearest index(", point, ")=", mesh2D.getNearestVertexIndex(point)
-    points = [[-0.3]*2, [2.4]*2]
+    points = [[-0.25]*2, [2.4]*2]
     print "Nearest index(", points, ")=", mesh2D.getNearestVertexIndex(points)
-    mesh2D.draw().draw("mesh2D")
-    mesh2D.draw2D().draw("mesh2D")
 
     vertices = NumericalSample(0, 3)
 
@@ -70,16 +66,14 @@ try:
     print "3D mesh=", mesh3D
     point = [1.8]*3
     print "Nearest index(", point, ")=", mesh3D.getNearestVertexIndex(point)
-    points = [[-0.3]*3, [2.4]*3]
+    points = [[-0.25]*3, [2.4]*3]
     print "Nearest index(", points, ")=", mesh3D.getNearestVertexIndex(points)
-    mesh3D.draw().draw("mesh3D")
     rotation = SquareMatrix(3)
     rotation[0, 0] = cos(pi / 3.0)
     rotation[0, 1] = sin(pi / 3.0)
     rotation[1, 0] = -sin(pi / 3.0)
     rotation[1, 1] = cos(pi / 3.0)
     rotation[2, 2] = 1.0
-    mesh3D.draw3D(True, rotation, True).draw("mesh3D_2")
 
 except:
     import sys
