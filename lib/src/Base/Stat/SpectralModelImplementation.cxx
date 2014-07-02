@@ -70,12 +70,6 @@ void SpectralModelImplementation::setFrequencyGrid(const RegularGrid & frequency
 }
 
 /* Computation of the spectral density function */
-HermitianMatrix SpectralModelImplementation::computeSpectralDensity(const NumericalScalar frequency) const
-{
-  LOGUSER(OSS() << "The computeSpectralDensity(const NumericalScalar frequency) method is deprecated in favor of the operator() (const NumericalScalar frequency method");
-  return operator()(frequency);
-}
-
 HermitianMatrix SpectralModelImplementation::operator() (const NumericalScalar frequency) const
 {
   throw NotYetImplementedException(HERE);

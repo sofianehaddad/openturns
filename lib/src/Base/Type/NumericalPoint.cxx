@@ -313,11 +313,6 @@ NumericalScalar NumericalPoint::normSquare() const
   return dot(*this, *this);
 }
 
-NumericalScalar NumericalPoint::norm2() const
-{
-  LOGUSER(OSS() << "norm2 is deprecated in favor of normSquare");
-  return normSquare();
-}
 
 /*  Normalize */
 NumericalPoint NumericalPoint::normalize() const
@@ -336,13 +331,6 @@ NumericalPoint NumericalPoint::normalizeSquare() const
   for (UnsignedInteger i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;
   return result;
 }
-
-NumericalPoint NumericalPoint::normalize2() const
-{
-  LOGUSER(OSS() << "normalize2 is deprecated in favor of normalizeSquare");
-  return normalizeSquare();
-}
-
 
 /* Method save() stores the object through the StorageManager */
 void NumericalPoint::save(Advocate & adv) const

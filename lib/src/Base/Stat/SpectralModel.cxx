@@ -84,12 +84,6 @@ void SpectralModel::setFrequencyGrid(const RegularGrid & frequencyGrid)
   getImplementation()->setFrequencyGrid(frequencyGrid);
 }
 
-/* Computation of the spectral density function */
-HermitianMatrix SpectralModel::computeSpectralDensity(const NumericalScalar frequency) const
-{
-  return getImplementation()->computeSpectralDensity(frequency);
-}
-
 HermitianMatrix SpectralModel::operator() (const NumericalScalar frequency) const
 {
   return getImplementation()->operator()(frequency);

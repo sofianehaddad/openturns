@@ -32,7 +32,9 @@
  * Added Matrix::computeTrace
  * Renamed WeightedExperiment::generate(weights) to WeightedExperiment::generateWithWeights(weights)
  * Removed DistributionImplementation::getGaussNodesAndWeights(void)
- * Removed DescriptionImplementation
+ * Removed DescriptionImplementation class
+ * Removed method NumericalPoint::norm2 in favor of normSquare, normalize2 in favor of normalizeSquare
+ * Removed SpectralModel::computeSpectralDensity
 
 === Python module ===
  * Docstring documentation, can be used in combination with sphinx (in-progress)

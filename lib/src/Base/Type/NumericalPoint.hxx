@@ -130,21 +130,11 @@ public:
   /**  Norm^2 */
   NumericalScalar normSquare() const;
 
-  /**  Norm^2
-   * @deprecated
-   */
-  NumericalScalar norm2() const;
-
   /** Normalize the vector */
   NumericalPoint normalize() const;
 
   /** Square normalize the vector */
   NumericalPoint normalizeSquare() const;
-
-  /** Square normalize the vector
-   * @deprecated
-   */
-  NumericalPoint normalize2() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

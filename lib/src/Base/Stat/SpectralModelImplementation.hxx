@@ -56,9 +56,6 @@ public:
   void setDimension(const UnsignedInteger dimension);
 
   /** Computation of the spectral density function */
-  /** @deprecated */
-  virtual HermitianMatrix computeSpectralDensity(const NumericalScalar frequency) const;
-
   virtual HermitianMatrix operator() (const NumericalScalar frequency) const;
 
   /** Frequency grid accessors */
