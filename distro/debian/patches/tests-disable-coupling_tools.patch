@@ -3,18 +3,18 @@ Description: Disable coupling_tools test
 Author: Denis Barbier
 Origin: Debian
 Forwarded: No
-Last-Update: 2013-06-25
+Last-Update: 2014-07-02
 
 Index: openturns/python/test/CMakeLists.txt
 ===================================================================
 --- openturns.orig/python/test/CMakeLists.txt  (révision 3135)
 +++ openturns/python/test/CMakeLists.txt  (copie de travail)
-@@ -651,7 +651,7 @@
- endif ()
- ot_pyinstallcheck_test ( QuickTest IGNOREOUT )
+@@ -624,7 +624,7 @@
  
--ot_pyinstallcheck_test ( coupling_tools )
+ # FIXME: check_get_line_col fails through wine on newer native version
+ if ( NOT WIN32 )
+-  ot_pyinstallcheck_test ( coupling_tools )
 +#DEB#ot_pyinstallcheck_test ( coupling_tools )
+ endif ()
  
- 
- add_custom_target ( pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"
+ if (MATPLOTLIB_FOUND AND R_rot_FOUND)
