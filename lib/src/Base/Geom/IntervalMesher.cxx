@@ -93,6 +93,8 @@ Mesh IntervalMesher::build(const Interval & interval,
   const UnsignedInteger dimension(interval.getDimension());
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (dimension > 2) throw NotYetImplementedException(HERE);
+
+  Mesh result;
   // Waiting for a generic implementation in higher dimension
   if (dimension == 1)
     {
@@ -112,7 +114,7 @@ Mesh IntervalMesher::build(const Interval & interval,
           simplex[1] = i + 1;
           simplices[i] = simplex;
         } // i
-      return Mesh(vertices, simplices);
+      result = Mesh(vertices, simplices);
     } // dimension == 1
   if (dimension == 2)
     {
@@ -148,8 +150,9 @@ Mesh IntervalMesher::build(const Interval & interval,
             } // j
           ++vertexIndex;
         } // i
-      return Mesh(vertices, simplices);
+      result = Mesh(vertices, simplices);
     } // dimension == 2
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS
