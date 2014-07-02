@@ -428,7 +428,6 @@ public:
   void setIntegrationNodesNumber(const UnsignedInteger integrationNodesNumber) const;
 
   /** Gauss nodes and weights accessor */
-  NumericalSample getGaussNodesAndWeights() const;
   NumericalPoint getGaussNodesAndWeights(NumericalPoint & weights) const;
 
   /** Draw the PDF of the distribution when its dimension is 1 or 2 */
@@ -632,7 +631,8 @@ protected:
 
   mutable NumericalPoint mean_;
   mutable CovarianceMatrix covariance_;
-  mutable NumericalSample gaussNodesAndWeights_;
+  mutable NumericalPoint gaussNodes_;
+  mutable NumericalPoint gaussWeights_;
 
   /** The integration nodes number for covariance computation */
   mutable UnsignedInteger integrationNodesNumber_;

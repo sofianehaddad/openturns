@@ -554,16 +554,17 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   if (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" ))
   {
     setIntegrationNodesNumber(128);
-    const NumericalSample nodesAndWeights(getGaussNodesAndWeights());
-    const UnsignedInteger numberOfNodes(nodesAndWeights.getDimension());
+    NumericalPoint gaussWeights;
+    const NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
+    const UnsignedInteger numberOfNodes(gaussNodes.getDimension());
     NumericalScalar probability(0.0);
     const NumericalScalar halfLength(0.5 * (upperBound - lowerBound));
     cdfEpsilon_ = 0.0;
     // Map [lowerBound, upperBound] into [-1,1]
     for (UnsignedInteger i = 0; i < numberOfNodes; ++i)
     {
-      const NumericalScalar w(nodesAndWeights[1][i]);
-      const NumericalScalar xi(nodesAndWeights[0][i]);
+      const NumericalScalar w(gaussWeights[i]);
+      const NumericalScalar xi(gaussNodes[i]);
       NumericalScalar z(lowerBound + (1.0 + xi) * halfLength);
       const NumericalScalar pdf(computePDF(z));
       // Accumulate PROBABILITY value

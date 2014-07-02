@@ -85,7 +85,8 @@ DistributionImplementation::DistributionImplementation()
   : PersistentObject()
   , mean_(NumericalPoint(0))
   , covariance_(CovarianceMatrix(0))
-  , gaussNodesAndWeights_()
+  , gaussNodes_()
+  , gaussWeights_()
   , integrationNodesNumber_(ResourceMap::GetAsUnsignedInteger( "DistributionImplementation-DefaultIntegrationNodesNumber" ))
   , isAlreadyComputedMean_(false)
   , isAlreadyComputedCovariance_(false)
@@ -635,7 +636,8 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
   const UnsignedInteger dimension(getDimension());
   const NumericalPoint lowerBounds(reducedInterval.getLowerBound());
   const NumericalPoint upperBounds(reducedInterval.getUpperBound());
-  NumericalSample nodesAndWeights(getGaussNodesAndWeights());
+  NumericalPoint gaussWeights;
+  NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
   // Perform the integration
   const UnsignedInteger marginalNodesNumber(getIntegrationNodesNumber());
   const UnsignedInteger size(static_cast< UnsignedInteger >(round(std::pow(1.0 * marginalNodesNumber, static_cast<int>(dimension)))));
@@ -649,8 +651,8 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
         {
           const UnsignedInteger indiceJ(indices[j]);
           const NumericalScalar delta(0.5 * (upperBounds[j] - lowerBounds[j]));
-          node[j] = lowerBounds[j] + delta * (1.0 + nodesAndWeights[0][indiceJ]);
-          weight *= delta * nodesAndWeights[1][indiceJ];
+          node[j] = lowerBounds[j] + delta * (1.0 + gaussNodes[indiceJ]);
+          weight *= delta * gaussWeights[indiceJ];
         }
       probability += weight * computePDF(node);
       /* Update the indices */
@@ -716,7 +718,8 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
     {
       const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("DistributionImplementation-CharacteristicFunctionNMax"));
       // The circular function will have x(b-a)/2\pi arches over [a, b], so we need a number of points of this order, we decide to take 8 points per arch
-      const NumericalSample legendreNodesAndWeights(getGaussNodesAndWeights());
+      NumericalPoint legendreWeights;
+      const NumericalPoint legendreNodes(getGaussNodesAndWeights(legendreWeights));
       // How many sub-intervals?
       // nPts = 8*x(b-a)/2\pi => (b-a)/2 = nPts * \pi / (8*x)
       const NumericalScalar xMin(range_.getLowerBound()[0]);
@@ -731,8 +734,8 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
               const NumericalScalar a(xMin + 2.0 * n * halfLength);
               for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
                 {
-                  const NumericalScalar xi(a + (1.0 + legendreNodesAndWeights[0][i]) * halfLength);
-                  value += legendreNodesAndWeights[1][i] * computePDF(xi) * std::exp(NumericalComplex(0.0, x * xi));
+                  const NumericalScalar xi(a + (1.0 + legendreNodes[i]) * halfLength);
+                  value += legendreWeights[i] * computePDF(xi) * std::exp(NumericalComplex(0.0, x * xi));
                 }
             }
           // We factor out the scaling as all the sub intervals have the same length
@@ -1491,16 +1494,17 @@ NumericalScalar DistributionImplementation::computeConditionalCDFForQuantile(con
   NumericalPoint z(y);
   z.add(x);
   pdfEpsilon_ = conditionedDistribution->getPDFEpsilon() + conditioningDistribution->getPDFEpsilon();
-  const NumericalSample legendreNodesAndWeights(getGaussNodesAndWeights());
+  NumericalPoint legendreWeights;
+  const NumericalPoint legendreNodes(getGaussNodesAndWeights(legendreWeights));
   const NumericalScalar halfLength(0.5 * (x - xMin));
   cdfEpsilon_ = conditioningDistribution->getPDFEpsilon();
   NumericalScalar value(0.0);
   for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
     {
-      const NumericalScalar xi(xMin + (1.0 + legendreNodesAndWeights[0][i]) * halfLength);
+      const NumericalScalar xi(xMin + (1.0 + legendreNodes[i]) * halfLength);
       z[conditioningDimension] = xi;
-      value += legendreNodesAndWeights[1][i] * conditionedDistribution->computePDF(z);
-      cdfEpsilon_ += legendreNodesAndWeights[1][i] * conditionedDistribution->getPDFEpsilon();
+      value += legendreWeights[i] * conditionedDistribution->computePDF(z);
+      cdfEpsilon_ += legendreWeights[i] * conditionedDistribution->getPDFEpsilon();
     }
   value *= (halfLength / pdfConditioning);
   return value;
@@ -1526,15 +1530,16 @@ NumericalScalar DistributionImplementation::computeConditionalPDFAndCDF(const Nu
   z.add(x);
   const NumericalScalar pdfConditioned(conditionedDistribution->computePDF(z));
   cdf = 0.0;
-  const NumericalSample legendreNodesAndWeights(getGaussNodesAndWeights());
+  NumericalPoint legendreWeights;
+  const NumericalPoint legendreNodes(getGaussNodesAndWeights(legendreWeights));
   const NumericalScalar halfLength(0.5 * (x - xMin));
   cdfEpsilon_ = conditioningDistribution->getPDFEpsilon();
   for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
     {
-      const NumericalScalar xi(xMin + (1.0 + legendreNodesAndWeights[0][i]) * halfLength);
+      const NumericalScalar xi(xMin + (1.0 + legendreNodes[i]) * halfLength);
       z[conditioningDimension] = xi;
-      cdf += legendreNodesAndWeights[1][i] * conditionedDistribution->computePDF(z);
-      cdfEpsilon_ += legendreNodesAndWeights[1][i] * conditionedDistribution->getPDFEpsilon();
+      cdf += legendreWeights[i] * conditionedDistribution->computePDF(z);
+      cdfEpsilon_ += legendreWeights[i] * conditionedDistribution->getPDFEpsilon();
     }
   cdf *= (halfLength / pdfConditioning);
   return pdfConditioned / pdfConditioning;
@@ -1834,7 +1839,8 @@ void DistributionImplementation::computeCovarianceContinuous() const
       // We first loop over the coefficients because the most expensive task is to get the 2D marginal distributions
 
       // Compute the conditional CDF by numerical integration of the conditional PDF. We use a fixed point Gauss integration.
-      const NumericalSample nodesAndWeights(getGaussNodesAndWeights());
+      NumericalPoint gaussWeights;
+      const NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
       Indices indices(2);
       for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
         {
@@ -1858,15 +1864,15 @@ void DistributionImplementation::computeCovarianceContinuous() const
                   NumericalPoint in(2);
                   for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
                     {
-                      const NumericalScalar nodeI(aI + (1.0 + nodesAndWeights[0][rowNodeIndex]) * halfLengthI);
+                      const NumericalScalar nodeI(aI + (1.0 + gaussNodes[rowNodeIndex]) * halfLengthI);
                       const NumericalScalar xI(nodeI - muI);
-                      const NumericalScalar weightI(nodesAndWeights[1][rowNodeIndex]);
+                      const NumericalScalar weightI(gaussWeights[rowNodeIndex]);
                       in[0] = nodeI;
                       for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
                         {
-                          const NumericalScalar nodeJ(aJ + (1.0 + nodesAndWeights[0][columnNodeIndex]) * halfLengthJ);
+                          const NumericalScalar nodeJ(aJ + (1.0 + gaussWeights[columnNodeIndex]) * halfLengthJ);
                           const NumericalScalar xJ(nodeJ - muJ);
-                          const NumericalScalar weightJ(nodesAndWeights[1][columnNodeIndex]);
+                          const NumericalScalar weightJ(gaussWeights[columnNodeIndex]);
                           in[1] = nodeJ;
                           covarianceIJ += weightI * weightJ * xI * xJ * marginalDistribution->computePDF(in);
                         } // loop over J integration nodes
@@ -2078,7 +2084,8 @@ TriangularMatrix DistributionImplementation::getInverseCholesky() const
 void DistributionImplementation::computeGaussNodesAndWeights() const
 {
   int integrationNodesNumber(integrationNodesNumber_);
-  gaussNodesAndWeights_ = NumericalSample(2, integrationNodesNumber);
+  gaussNodes_ = NumericalPoint(integrationNodesNumber);
+  gaussWeights_ = NumericalPoint(integrationNodesNumber);
   // First, build a symmetric tridiagonal matrix whose eigenvalues are the nodes of the
   // gauss integration rule
   char jobz('V');
@@ -2095,9 +2102,9 @@ void DistributionImplementation::computeGaussNodesAndWeights() const
   for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(integrationNodesNumber); ++i)
     {
       // Nodes
-      gaussNodesAndWeights_[0][i] = d[i];
+      gaussNodes_[i] = d[i];
       // Weights
-      gaussNodesAndWeights_[1][i] = 2.0 * std::pow(z(0, i), 2);
+      gaussWeights_[i] = 2.0 * std::pow(z(0, i), 2);
     }
   isAlreadyComputedGaussNodesAndWeights_ = true;
 }
@@ -2119,19 +2126,13 @@ void DistributionImplementation::setIntegrationNodesNumber(const UnsignedInteger
     }
 }
 
-/* Gauss nodes and weights accessor */
-NumericalSample DistributionImplementation::getGaussNodesAndWeights() const
-{
-  if (!isAlreadyComputedGaussNodesAndWeights_) computeGaussNodesAndWeights();
-  return gaussNodesAndWeights_;
-}
 
 /* Gauss nodes and weights accessor */
 NumericalPoint DistributionImplementation::getGaussNodesAndWeights(NumericalPoint & weights) const
 {
   if (!isAlreadyComputedGaussNodesAndWeights_) computeGaussNodesAndWeights();
-  weights = gaussNodesAndWeights_[1];
-  return gaussNodesAndWeights_[0];
+  weights = gaussWeights_;
+  return gaussNodes_;
 }
 
 
@@ -2157,8 +2158,9 @@ NumericalPoint DistributionImplementation::computeShiftedMomentContinuous(const 
   if (shift.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
   if (n == 0) return NumericalPoint(dimension_, 1.0);
   setIntegrationNodesNumber(std::max(ResourceMap::GetAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber" ), 20 * n + 1));
-  const NumericalSample nodesAndWeights(getGaussNodesAndWeights());
-  const UnsignedInteger numberOfNodes(nodesAndWeights.getDimension());
+  NumericalPoint gaussWeights;
+  const NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
+  const UnsignedInteger numberOfNodes(gaussNodes.getDimension());
   NumericalPoint moment(dimension_, 0.0);
   // For each component
   for(UnsignedInteger component = 0; component < dimension_; ++component)
@@ -2171,8 +2173,8 @@ NumericalPoint DistributionImplementation::computeShiftedMomentContinuous(const 
       NumericalScalar value(0.0);
       for (UnsignedInteger i = 0; i < numberOfNodes; ++i)
         {
-          const NumericalScalar w(nodesAndWeights[1][i]);
-          const NumericalScalar xi(nodesAndWeights[0][i]);
+          const NumericalScalar w(gaussWeights[i]);
+          const NumericalScalar xi(gaussNodes[i]);
           const NumericalScalar z(a + (1.0 + xi) * halfLength);
           value += w * std::pow(z - shiftComponent, static_cast<int>(n)) * marginalDistribution->computePDF(z);
         } // Integration nodes
@@ -3086,7 +3088,8 @@ void DistributionImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "mean_", mean_ );
   adv.saveAttribute( "covariance_", covariance_ );
-  adv.saveAttribute( "gaussNodesAndWeights_", gaussNodesAndWeights_ );
+  adv.saveAttribute( "gaussNodes_", gaussNodes_ );
+  adv.saveAttribute( "gaussWeights_", gaussWeights_ );
   adv.saveAttribute( "integrationNodesNumber_", integrationNodesNumber_ );
   adv.saveAttribute( "isAlreadyComputedMean_", isAlreadyComputedMean_ );
   adv.saveAttribute( "isAlreadyComputedCovariance_", isAlreadyComputedCovariance_ );
@@ -3103,7 +3106,8 @@ void DistributionImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "mean_", mean_ );
   adv.loadAttribute( "covariance_", covariance_ );
-  adv.loadAttribute( "gaussNodesAndWeights_", gaussNodesAndWeights_ );
+  adv.loadAttribute( "gaussNodes_", gaussNodes_ );
+  adv.loadAttribute( "gaussWeights_", gaussWeights_ );
   adv.loadAttribute( "integrationNodesNumber_", integrationNodesNumber_ );
   adv.loadAttribute( "isAlreadyComputedMean_", isAlreadyComputedMean_ );
   adv.loadAttribute( "isAlreadyComputedCovariance_", isAlreadyComputedCovariance_ );

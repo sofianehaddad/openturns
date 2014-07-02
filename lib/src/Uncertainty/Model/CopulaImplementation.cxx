@@ -157,12 +157,13 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
     return tau;
   }
   // Compute the weights and nodes of the 1D gauss quadrature over [-1, 1]
-  NumericalSample nodesAndWeights(getGaussNodesAndWeights());
+  NumericalPoint gaussWeights;
+  NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
   // Convert the nodes and weights for the interval [0, 1]
   for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
   {
-    nodesAndWeights[0][i] = 0.5 * (nodesAndWeights[0][i] + 1.0);
-    nodesAndWeights[1][i] *= 0.5;
+    gaussNodes[i] = 0.5 * (gaussNodes[i] + 1.0);
+    gaussWeights[i] *= 0.5;
   }
   // Performs the integration for each tau in the strictly lower triangle of the tau matrix
   // We simply use a product gauss quadrature
@@ -174,8 +175,8 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
   {
     for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
     {
-      nodes[index][0] = nodesAndWeights[0][rowNodeIndex];
-      nodes[index][1] = nodesAndWeights[0][columnNodeIndex];
+      nodes[index][0] = gaussNodes[rowNodeIndex];
+      nodes[index][1] = gaussNodes[columnNodeIndex];
       ++index;
     } // columnNodeIndex
   } // rowNodeIndex
@@ -199,10 +200,10 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
         index = 0;
         for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
         {
-          const NumericalScalar weightI(nodesAndWeights[1][rowNodeIndex]);
+          const NumericalScalar weightI(gaussWeights[rowNodeIndex]);
           for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
           {
-            const NumericalScalar weightJ(nodesAndWeights[1][columnNodeIndex]);
+            const NumericalScalar weightJ(gaussWeights[columnNodeIndex]);
             value += weightI * weightJ * sampleCDF[index][0] * samplePDF[index][0];
             ++index;
           } // loop over J integration nodes
@@ -246,12 +247,13 @@ void CopulaImplementation::computeCovariance() const
   if (!hasIndependentCopula())
   {
     // Compute the weights and nodes off the 1D gauss quadrature over [-1, 1]
-    NumericalSample nodesAndWeights(getGaussNodesAndWeights());
+    NumericalPoint gaussWeights;
+    NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
     // Convert the nodes and weights for the interval [0, 1]
     for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
     {
-      nodesAndWeights[0][i] = 0.5 * (nodesAndWeights[0][i] + 1.0);
-      nodesAndWeights[1][i] *= 0.5;
+      gaussNodes[i] = 0.5 * (gaussNodes[i] + 1.0);
+      gaussWeights[i] *= 0.5;
     }
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
     // We simply use a product gauss quadrature
@@ -272,12 +274,12 @@ void CopulaImplementation::computeCovariance() const
           // Then we loop over the integration points
           for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
           {
-            const NumericalScalar nodeI(nodesAndWeights[0][rowNodeIndex]);
-            const NumericalScalar weightI(nodesAndWeights[1][rowNodeIndex]);
+            const NumericalScalar nodeI(gaussNodes[rowNodeIndex]);
+            const NumericalScalar weightI(gaussWeights[rowNodeIndex]);
             for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
             {
-              const NumericalScalar nodeJ(nodesAndWeights[0][columnNodeIndex]);
-              const NumericalScalar weightJ(nodesAndWeights[1][columnNodeIndex]);
+              const NumericalScalar nodeJ(gaussNodes[columnNodeIndex]);
+              const NumericalScalar weightJ(gaussWeights[columnNodeIndex]);
               NumericalPoint in(2);
               in[0] = nodeI;
               in[1] = nodeJ;

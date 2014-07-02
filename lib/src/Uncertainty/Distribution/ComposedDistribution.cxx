@@ -544,12 +544,13 @@ void ComposedDistribution::computeCovariance() const
     // To ensure that the mean is up to date
     mean_ = getMean();
     // Compute the weights and nodes of the 1D gauss quadrature over [-1, 1]
-    NumericalSample nodesAndWeights(getGaussNodesAndWeights());
+    NumericalPoint gaussWeights;
+    NumericalPoint gaussNodes(getGaussNodesAndWeights(gaussWeights));
     // Convert the nodes and weights for the interval [0, 1]
     for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
     {
-      nodesAndWeights[0][i] = 0.5 * (nodesAndWeights[0][i] + 1.0);
-      nodesAndWeights[1][i] *= 0.5;
+      gaussNodes[i] = 0.5 * (gaussNodes[i] + 1.0);
+      gaussWeights[i] *= 0.5;
     }
     // Compute the marginal quantiles at the nodes
     NumericalSample marginalQuantiles(integrationNodesNumber_, dimension);
@@ -559,7 +560,7 @@ void ComposedDistribution::computeCovariance() const
       const Distribution marginalDistribution(getMarginal(component));
       for(UnsignedInteger nodeIndex = 0; nodeIndex < integrationNodesNumber_; ++nodeIndex)
       {
-        const NumericalScalar node(nodesAndWeights[0][nodeIndex]);
+        const NumericalScalar node(gaussNodes[nodeIndex]);
         const NumericalPoint q(marginalDistribution.computeQuantile(node));
         marginalQuantiles[nodeIndex][component] = q[0];
         marginalPDF[nodeIndex][component] = marginalDistribution.computePDF(q);
@@ -584,12 +585,12 @@ void ComposedDistribution::computeCovariance() const
           // Then we loop over the integration points
           for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
           {
-            const NumericalScalar nodeI(nodesAndWeights[0][rowNodeIndex]);
-            const NumericalScalar weightI(nodesAndWeights[1][rowNodeIndex]);
+            const NumericalScalar nodeI(gaussNodes[rowNodeIndex]);
+            const NumericalScalar weightI(gaussWeights[rowNodeIndex]);
             for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
             {
-              const NumericalScalar nodeJ(nodesAndWeights[0][columnNodeIndex]);
-              const NumericalScalar weightJ(nodesAndWeights[1][columnNodeIndex]);
+              const NumericalScalar nodeJ(gaussNodes[columnNodeIndex]);
+              const NumericalScalar weightJ(gaussWeights[columnNodeIndex]);
               NumericalPoint in(2);
               in[0] = nodeI;
               in[1] = nodeJ;
