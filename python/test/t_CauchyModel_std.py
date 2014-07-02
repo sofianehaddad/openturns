@@ -25,11 +25,11 @@ try:
     print "myModel = ", myModel
 
     frequencyValue = 1.0
-    print "spectral density matrix at f = ", frequencyValue, " : ", myModel.computeSpectralDensity(frequencyValue)
+    print "spectral density matrix at f = ", frequencyValue, " : ", myModel(frequencyValue)
 
     # Evaluation at time higher to check the decrease of the cauchy values
     frequencyValueHigh = 10.0
-    print "spectral density matrix at f = ", frequencyValueHigh, " : ", myModel.computeSpectralDensity(frequencyValueHigh)
+    print "spectral density matrix at f = ", frequencyValueHigh, " : ", myModel(frequencyValueHigh)
 
     # Default dimension parameter to evaluate the model
     highDimension = 3
@@ -53,8 +53,8 @@ try:
     # Second order model  - dimension 10
     myHighModel = CauchyModel(amplitude, scale, spatialCorrelation)
     print "myHighModel = ", myHighModel
-    print "spectral density matrix at f = ", frequencyValue, " : ", myModel.computeSpectralDensity(frequencyValue)
-    print "spectral density matrix at f = ", frequencyValueHigh, " : ", myModel.computeSpectralDensity(frequencyValueHigh)
+    print "spectral density matrix at f = ", frequencyValue, " : ", myModel(frequencyValue)
+    print "spectral density matrix at f = ", frequencyValueHigh, " : ", myModel(frequencyValueHigh)
 
 except:
     import sys

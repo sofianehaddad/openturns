@@ -35,7 +35,7 @@ try:
                 frequency = myFrequencyGrid.getStart(
                 ) + k * myFrequencyGrid.getStep()
                 estimatedValue = (
-                    mySpectralModel.computeSpectralDensity(frequency)[i, j]).real
+                    mySpectralModel(frequency)[i, j]).real
                 modelValue = (
                     model.computeSpectralDensity(frequency)[i, j]).real
                 print "Frequency =  %.6f" % frequency, ", evaluation = %.8f" % estimatedValue, " model = %.8f" % modelValue
@@ -55,7 +55,7 @@ try:
                 frequency = myFrequencyGrid.getStart(
                 ) + k * myFrequencyGrid.getStep()
                 estimatedValue = (
-                    mySpectralModel2.computeSpectralDensity(frequency)[i, j]).real
+                    mySpectralModel2(frequency)[i, j]).real
                 modelValue = (
                     model.computeSpectralDensity(frequency)[i, j]).real
                 print "Frequency =  %.6f" % frequency, ", evaluation = %.8f" % estimatedValue, " model = %.8f" % modelValue

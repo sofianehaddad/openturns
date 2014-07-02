@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
         for (UnsignedInteger k = 0; k < myFrequencyGrid.getN(); ++k)
         {
           const NumericalScalar frequency(myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep());
-          const NumericalScalar estimatedValue(std::real(mySpectralModel2.computeSpectralDensity(frequency)(i, j)));
+          const NumericalScalar estimatedValue(std::real(mySpectralModel2(frequency)(i, j)));
           const NumericalScalar modelValue(std::real(model.computeSpectralDensity(frequency)(i, j)));
           fullprint << "Frequency =  " <<  frequency ;
           fullprint << ", evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
