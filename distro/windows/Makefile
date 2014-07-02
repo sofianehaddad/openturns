@@ -132,7 +132,7 @@ ot-test: ot-install
 ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/lib/test
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test
-	cd $(OT_BUILD) && ctest -j$(JOBS)
+	cd $(OT_BUILD) && ctest -j$(JOBS) --output-on-failure
 	touch ot-test
 endif
 

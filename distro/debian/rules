@@ -98,9 +98,8 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	# CTestTestfile.cmake sets LD_LIBRARY_PATH to find libraries in debian/tmp.
 	# But it overrides current value, which breaks when run by fakeroot.
 	[ -z "$$LD_LIBRARY_PATH" ] || sed -i -e "s#;LD_LIBRARY_PATH=[^;]*#&:$$LD_LIBRARY_PATH#" $(builddir)/python/test/CTestTestfile.cmake
-	CTEST_OUTPUT_ON_FAILURE=1 \
-	  R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
-	  $(MAKE) $(test_makeflags) -C $(builddir) test ARGS="$(test_makeflags) -R pyinstallcheck" || { cat $(builddir)/Testing/Temporary/LastTest.log; false; }
+	R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
+	  $(MAKE) $(test_makeflags) -C $(builddir) test ARGS="$(test_makeflags) -R pyinstallcheck --output-on-failure"
 endif
 
 override_dh_makeshlibs:
@@ -120,7 +119,7 @@ override_dh_auto_test:
 	# 'make test' does not build binary tests
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	$(MAKE) $(test_makeflags) -C $(builddir) tests
-	CTEST_OUTPUT_ON_FAILURE=1 $(MAKE) -C $(builddir) test ARGS="$(test_makeflags) -R cppcheck" || { cat $(builddir)/Testing/Temporary/LastTest.log; false; }
+	$(MAKE) -C $(builddir) test ARGS="$(test_makeflags) -R cppcheck --output-on-failure"
 endif
 
 get-orig-source:
