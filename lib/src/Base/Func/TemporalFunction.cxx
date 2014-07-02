@@ -49,7 +49,7 @@ TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
   if (p_evaluation_->getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << p_evaluation_->getInputDimension();
   // Set the descriptions
-  DescriptionImplementation inputDescription(*(p_evaluation_->getInputDescription().getImplementation()));
+  Description inputDescription(p_evaluation_->getInputDescription());
   inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
   setInputDescription(inputDescription);
   setOutputDescription(p_evaluation_->getOutputDescription());
@@ -64,7 +64,7 @@ TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
   if (p_evaluation_->getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << p_evaluation_->getInputDimension();
   // Set the descriptions
-  DescriptionImplementation inputDescription(*(p_evaluation_->getInputDescription().getImplementation()));
+  Description inputDescription(p_evaluation_->getInputDescription());
   inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
   setInputDescription(inputDescription);
   setOutputDescription(p_evaluation_->getOutputDescription());
@@ -79,7 +79,7 @@ TemporalFunction::TemporalFunction(const NumericalMathEvaluationImplementation &
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
   if (p_evaluation_->getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << p_evaluation_->getInputDimension();
   // Set the descriptions
-  DescriptionImplementation inputDescription(*(p_evaluation_->getInputDescription().getImplementation()));
+  Description inputDescription(p_evaluation_->getInputDescription());
   inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
   setInputDescription(inputDescription);
   setOutputDescription(p_evaluation_->getOutputDescription());

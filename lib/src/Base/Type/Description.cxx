@@ -22,14 +22,21 @@
  *  @date   2012-02-17 19:35:43 +0100 (Fri, 17 Feb 2012)
  */
 #include "Description.hxx"
+#include "PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Description);
 
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<String>);
+
+static Factory<PersistentCollection<String> > RegisteredFactory2("PersistentCollection<String>");
+
+static Factory<Description> RegisteredFactory("Description");
+
 /* Default constructor */
 Description::Description()
-  : TypedCollectionInterfaceObject<DescriptionImplementation>(new DescriptionImplementation)
+  : InternalType()
 {
   // Nothing to do
 }
@@ -37,15 +44,7 @@ Description::Description()
 
 /* Constructor with size */
 Description::Description(const UnsignedInteger size)
-  : TypedCollectionInterfaceObject<DescriptionImplementation>(new DescriptionImplementation(size))
-{
-  // Nothing to do
-}
-
-
-/* Constructor with value */
-Description::Description(const String & value)
-  : TypedCollectionInterfaceObject<DescriptionImplementation>(new DescriptionImplementation(value))
+  : InternalType(size)
 {
   // Nothing to do
 }
@@ -54,21 +53,14 @@ Description::Description(const String & value)
 /* Constructor with size and default value */
 Description::Description(const UnsignedInteger size,
                          const String & value)
-  : TypedCollectionInterfaceObject<DescriptionImplementation>(new DescriptionImplementation(size, value))
+  : InternalType(size, value)
 {
   // Nothing to do
 }
 
 /* Constructor with size and default value */
 Description::Description(const Collection<String> & coll)
-  : TypedCollectionInterfaceObject<DescriptionImplementation>(new DescriptionImplementation(coll))
-{
-  // Nothing to do
-}
-
-/* Constructor from implementation */
-Description::Description(const DescriptionImplementation & implementation)
-  : TypedCollectionInterfaceObject<DescriptionImplementation>(implementation.clone())
+  : InternalType(coll)
 {
   // Nothing to do
 }
@@ -76,7 +68,13 @@ Description::Description(const DescriptionImplementation & implementation)
 /* Check if the content is blank */
 Bool Description::isBlank() const
 {
-  return getImplementation()->isBlank();
+  for (UnsignedInteger i = 0; i < getSize(); ++i)
+  {
+    const UnsignedInteger length((*this)[i].size());
+    for (UnsignedInteger j = 0; j < length; ++j)
+      if (!isblank((*this)[i][j])) return false;
+  }
+  return true;
 }
 
 /* Destructor */
@@ -85,18 +83,17 @@ Description::~Description()
   // Nothing to do
 }
 
-
 void Description::sort()
 {
-  copyOnWrite();
   std::sort(begin(), end());
 }
 
-
 Description Description::BuildDefault(const UnsignedInteger dimension,
-						 const String & prefix)
+                                      const String & prefix)
 {
-  return DescriptionImplementation::BuildDefault(dimension, prefix);
+  Description description(dimension);
+  for (UnsignedInteger k = 0; k < dimension; ++k) description[k] =  String(OSS() << prefix << k);
+  return description;
 }
 
 END_NAMESPACE_OPENTURNS

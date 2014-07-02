@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   NumericalSample x( xuniform.getSample(size) );
   Uniform yuniform(1.9, 2.1);
   NumericalSample y( yuniform.getSample(size) );
-  NumericalMathFunction f( Description("x"), Description("y"), Description("2.0*x") );
+  NumericalMathFunction f( Description(1, "x"), Description(1, "y"), Description(1, "2.0*x") );
   Basis basis;
   basis.add(f);
 
@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
     size = 2;
     x = xuniform.getSample(size);
     y = yuniform.getSample(size);
-    NumericalMathFunction f2( Description("x"), Description("y"), Description("x^2") );
+    NumericalMathFunction f2( Description(1, "x"), Description(1, "y"), Description(1, "x^2") );
     basis.add(f2);
-    NumericalMathFunction f3( Description("x"), Description("y"), Description("x^3") );
+    NumericalMathFunction f3( Description(1, "x"), Description(1, "y"), Description(1, "x^3") );
     basis.add(f3);
     NumericalScalar result = fittingAlgo.run( x, y, basis );
     fullprint << "result=" << result << std::endl;

@@ -3,28 +3,24 @@
 // @date   2012-01-02 16:48:50 +0100 (Mon, 02 Jan 2012)
 
 %{
-#include "PythonWrappingFunctions.hxx"
 #include "Description.hxx"
 %}
 
-%typemap(in) const Description & ($1_basetype temp) {
+%template(StringCollection) OT::Collection<OT::String>;
+%template(StringPersistentCollection) OT::PersistentCollection<OT::String>;
+
+%typemap(in) const OT::Description & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     temp = OT::convert<OT::_PySequence_,OT::Description>( $input );
     $1 = &temp;
   }
 }
 
-%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const Description & {
+%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const OT::Description & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
        OT::isAPythonSequenceOf<OT::_PyString_>( $input );
 }
 
-%apply const Description & { const OT::Description & };
-
-%ignore OT::TypedCollectionInterfaceObject<OT::DescriptionImplementation>::getDimension() const;
-
-%template(DescriptionImplementationTypedInterfaceObject)           OT::TypedInterfaceObject<OT::DescriptionImplementation>;
-%template(DescriptionImplementationTypedCollectionInterfaceObject) OT::TypedCollectionInterfaceObject<OT::DescriptionImplementation>;
 %include Description.hxx
 
 namespace OT {  

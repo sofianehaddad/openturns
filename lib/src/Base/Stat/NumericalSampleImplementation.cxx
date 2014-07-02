@@ -634,7 +634,7 @@ void NumericalSampleImplementation::swap_range_points(const UnsignedInteger fa, 
 void NumericalSampleImplementation::setDescription(const Description & description)
 {
   if (description.getSize() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given description does not match the sample dimension.";
-  p_description_ = description.getImplementation();
+  p_description_ = Pointer<Description>(new Description(description));
 }
 
 

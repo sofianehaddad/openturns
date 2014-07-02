@@ -784,7 +784,7 @@ private:
   PersistentCollection<NumericalScalar> data_;
 
   /** The description of all components */
-  Description::Implementation p_description_;
+  Pointer<Description> p_description_;
 
 }; /* class NumericalSampleImplementation */
 

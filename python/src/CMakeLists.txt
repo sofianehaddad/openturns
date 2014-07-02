@@ -111,7 +111,6 @@ ot_add_python_module( wrapper wrapper_module.i
                     
 ot_add_python_module( typ typ_module.i
                       PersistentCollection.i
-                      DescriptionImplementation.i
                       Description.i
                       NumericalPoint.i
                       NumericalPointWithDescription.i

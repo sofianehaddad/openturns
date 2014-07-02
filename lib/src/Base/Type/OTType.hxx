@@ -28,7 +28,6 @@
 #include "Cache.hxx"
 #include "Collection.hxx"
 #include "Description.hxx"
-#include "DescriptionImplementation.hxx"
 #include "IdentityMatrix.hxx"
 #include "Indices.hxx"
 #include "Matrix.hxx"

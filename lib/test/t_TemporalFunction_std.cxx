@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     Description inputVars;
     inputVars.add("t");
     inputVars.add("x");
-    Description formula("x + t^2");
+    Description formula(1, "x + t^2");
     NumericalMathFunction myFunc(inputVars, formula);
     TemporalFunction myTemporalFunc(myFunc);
 

@@ -24,8 +24,7 @@
 #ifndef OPENTURNS_DESCRIPTION_HXX
 #define OPENTURNS_DESCRIPTION_HXX
 
-#include "TypedCollectionInterfaceObject.hxx"
-#include "DescriptionImplementation.hxx"
+#include "PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,10 +35,11 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API Description :
-  public TypedCollectionInterfaceObject<DescriptionImplementation>
+  public PersistentCollection<String>
 {
   CLASSNAME;
 public:
+  typedef PersistentCollection<String> InternalType;
 
   /** Default constructor */
   Description();
@@ -47,19 +47,13 @@ public:
   /** Constructor with size */
   explicit Description(const UnsignedInteger size);
 
-  /** Constructor with value */
-  explicit Description(const String & value);
-
   /** Constructor with size and default value */
   Description(const UnsignedInteger size,
               const String & value);
-
+  
   /** Constructor from a collection */
   Description(const Collection<String> & coll);
-
-  /** Contructor from implementation */
-  Description(const DescriptionImplementation & implementation);
-
+  
   /** Check if the content is blank */
   Bool isBlank() const;
 

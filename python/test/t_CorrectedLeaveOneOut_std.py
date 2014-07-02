@@ -11,8 +11,7 @@ try:
     x = xuniform.getSample(size)
     yuniform = Uniform(1.9, 2.1)
     y = yuniform.getSample(size)
-    f = NumericalMathFunction(
-        Description("x"), Description("y"), Description("2.0*x"))
+    f = NumericalMathFunction(['x'], ['y'], ['2.0*x'])
     basis = Basis()
     basis.add(f)
 
