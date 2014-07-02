@@ -1,18 +1,21 @@
 #! /usr/bin/env python
 
-from openturns import *
+import openturns as ot
 
-ref = Matrix([[1.0, 0.0], [0.0, 0.5]])
+ref = ot.Matrix([[1.0, 0.0], [0.0, 0.5]])
 
-print SquareMatrix(ref)
-print TriangularMatrix(ref)
-print SymmetricMatrix(ref)
-print CovarianceMatrix(ref)
-print CorrelationMatrix(ref)
-print HermitianMatrix(ref)
-print TriangularComplexMatrix(ref)
-print SquareComplexMatrix(ref)
+# conversion
+print ot.SquareMatrix(ref)
+print ot.TriangularMatrix(ref)
+print ot.SymmetricMatrix(ref)
+print ot.CovarianceMatrix(ref)
+print ot.CorrelationMatrix(ref)
+print ot.HermitianMatrix(ref)
+print ot.TriangularComplexMatrix(ref)
+print ot.SquareComplexMatrix(ref)
 
-#A = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
-#B = ot.SquareMatrix(np.eye(2))
-#print(A * B)
+# multiplication
+A = ot.Matrix([[1., 2.], [3., 4.], [5., 6.]])
+B = ot.SquareMatrix([[1, 0], [0, 1]])
+print(A * B)
+

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @file  t_MatrixSingularValues_std.cxx
+ *  @file  t_MatrixSingular_decomposition.cxx
  *  @brief The test file for the singularValues method of the Matrix class
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
@@ -37,7 +37,7 @@ Matrix quadM(UnsignedInteger m, UnsignedInteger n)
   return res;
 }
 
-void testM(UnsignedInteger m, UnsignedInteger n)
+void testSVD(UnsignedInteger m, UnsignedInteger n)
 {
   OStream fullprint(std::cout);
 
@@ -75,19 +75,35 @@ void testM(UnsignedInteger m, UnsignedInteger n)
 }
 
 
+void testQR(UnsignedInteger m, UnsignedInteger n) 
+{
+  OStream fullprint(std::cout);
+
+  Matrix matrix1(quadM(m, n));
+  Matrix R;
+  Matrix Q(matrix1.computeQR(R));
+  fullprint << "Q= " << Q.__str__() << std::endl;
+  fullprint << "R="<< R.__str__() << std::endl;
+//   fullprint << "QR="<<(Q*R).__str__()<< std::endl;
+}
+
+
 int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  fullprint << "-- Square case ------------------------------------------" << std::endl;
-  testM(3, 3);
+  fullprint << "-- SVD square case ------------------------------------------" << std::endl;
+  testSVD(3, 3);
 
-  fullprint << "-- Rectangular case, m < n ------------------------------" << std::endl;
-  testM(3, 5);
+  fullprint << "-- SVD rectangular case, m < n ------------------------------" << std::endl;
+  testSVD(3, 5);
 
-  fullprint << "-- Rectangular case, m > n ------------------------------" << std::endl;
-  testM(5, 3);
+  fullprint << "-- SVD rectangular case, m > n ------------------------------" << std::endl;
+  testSVD(5, 3);
+
+  fullprint << "-- QR square case ------------------------------------------" << std::endl;
+  testQR(3, 3);
 
   return ExitCode::Success;
 }
