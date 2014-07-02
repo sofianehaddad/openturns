@@ -3,6 +3,7 @@
 from openturns import *
 
 TESTPREAMBLE()
+RandomGenerator.SetSeed(0)
 
 try:
     distribution = Normal(4)

@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
 from openturns import *
-
-from math import *
 from math import *
 
+TESTPREAMBLE()
+RandomGenerator.SetSeed(0)
 
 def printSample(name, sample):
     oss = name + "=["
@@ -21,7 +21,6 @@ def printSample(name, sample):
     oss += "]"
     return oss
 
-TESTPREAMBLE()
 
 try:
 

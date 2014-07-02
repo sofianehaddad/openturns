@@ -42,6 +42,10 @@ String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger d
 
 int main(int argc, char *argv[])
 {
+  TESTPREAMBLE;
+  OStream fullprint(std::cout);
+  setRandomGenerator();
+  
   try
   {
 

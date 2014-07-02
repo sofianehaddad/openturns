@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
+  setRandomGenerator();
 
   const char fileName[] = "myStudy.xml";
 

@@ -4,6 +4,7 @@ from openturns import *
 from math import *
 
 TESTPREAMBLE()
+RandomGenerator.SetSeed(0)
 
 try:
     elementaryFunctions = Description(0)

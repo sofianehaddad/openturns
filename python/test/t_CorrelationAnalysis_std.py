@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
 from openturns import *
-from math import *
 
-# TESTPREAMBLE()
+TESTPREAMBLE()
+RandomGenerator.SetSeed(0)
 
 try:
     dimension = 2

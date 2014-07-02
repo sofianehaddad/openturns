@@ -4,6 +4,7 @@ from openturns import *
 import math as m
 
 TESTPREAMBLE()
+RandomGenerator.SetSeed(0)
 
 
 def buildPoly(p):
