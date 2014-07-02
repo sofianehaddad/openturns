@@ -3,7 +3,7 @@
  * @file  WrapperCommon_macros.h
  * @brief This file provides macro definitions to ease exporting function definitions
  *
- * Copyright (C) 2005-2013 EDF
+ * Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
  * Permission to copy, use, modify, sell and distribute this software
  * is granted provided this copyright notice appears in all copies.

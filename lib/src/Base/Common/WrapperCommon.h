@@ -3,7 +3,7 @@
  * @file  WrapperCommon.h
  * @brief This file provides objects and functions commonly used by wrappers
  *
- * Copyright (C) 2005-2013 EDF
+ * Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
  * Permission to copy, use, modify, sell and distribute this software
  * is granted provided this copyright notice appears in all copies.

@@ -3,7 +3,7 @@
  *  @file  ParametricEvaluationImplementation.hxx
  *  @brief ParametricEvaluationImplementation
  *
- *  Copyright (C) 2005-2012 EDF-EADS-Phimeca
+ *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
