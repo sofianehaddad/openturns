@@ -15,7 +15,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns 
-Version:        1.3
+Version:        1.4
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -175,6 +175,9 @@ rm -rf %{buildroot}
 %{_includedir}/%{name}/swig/
 
 %changelog
+* Wed Jul 2 2014 Julien Schueller <schueller at phimeca dot com> 1.4-1
+- New upstream release
+
 * Tue Dec 17 2013 Julien Schueller <schueller at phimeca dot com> 1.3-1
 - New upstream release
 

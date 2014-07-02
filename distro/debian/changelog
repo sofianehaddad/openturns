@@ -1,3 +1,12 @@
+openturns (1.4~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+  * Set CMAKE_INSTALL_LIBDIR overriden by Ubuntu
+  * Use ctest --output-on-failure instead of CTEST_OUTPUT_ON_FAILURE
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 02 Jul 2014 10:34:47 +0200
+
 openturns (1.3-1) experimental; urgency=low
 
   [ Julien Schueller ]
