@@ -530,9 +530,7 @@ ot_check_test ( Normal_std )
 ot_check_test ( NormalFactory_std )
 ot_check_test ( Normal_large )
 ot_check_test ( Normal_wrongarg )
-if ( R_rot_FOUND )
-  ot_check_test ( Poisson_std )
-endif ()
+ot_check_test ( Poisson_std )
 ot_check_test ( PoissonFactory_std )
 #ot_check_test ( PosteriorDistribution_std )
 ot_check_test ( RandomMixture_std )
@@ -767,10 +765,7 @@ ot_installcheck_test ( StrongMaximumTest_other )
 # FIXME: related to #506 ? 
 ot_installcheck_test ( MonteCarlo_threads )
 set_tests_properties ( cppinstallcheck_MonteCarlo_threads PROPERTIES RUN_SERIAL ON )
-
-if ( R_base_FOUND )
 ot_installcheck_test ( SimulationSensitivityAnalysis_std )
-endif ()
 
 # Waarts tests
 # ot_installcheck_test ( Waarts_25_quadratic_terms )

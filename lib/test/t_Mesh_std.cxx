@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
       fullprint << "Nearest index(" << point << ")=" << mesh1D.getNearestVertexIndex(point) << std::endl;
       NumericalSample points(2, 1);
       points[0] = NumericalPoint(1, -0.25);
-      points[1] = NumericalPoint(1, 2.4);
+      points[1] = NumericalPoint(1, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh1D.getNearestVertexIndex(points) << std::endl;
     }
     {
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
       fullprint << "Nearest index(" << point << ")=" << mesh2D.getNearestVertexIndex(point) << std::endl;
       NumericalSample points(2, 2);
       points[0] = NumericalPoint(2, -0.25);
-      points[1] = NumericalPoint(2, 2.4);
+      points[1] = NumericalPoint(2, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh2D.getNearestVertexIndex(points) << std::endl;
     }
     {
@@ -205,7 +205,7 @@ int main(int argc, char *argv[])
       fullprint << "Nearest index(" << point << ")=" << mesh3D.getNearestVertexIndex(point) << std::endl;
       NumericalSample points(2, 3);
       points[0] = NumericalPoint(3, -0.25);
-      points[1] = NumericalPoint(3, 2.4);
+      points[1] = NumericalPoint(3, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh3D.getNearestVertexIndex(points) << std::endl;
     }
   }

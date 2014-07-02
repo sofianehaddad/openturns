@@ -29,7 +29,7 @@ try:
     print "is p=", p, " in mesh? ", mesh1D.contains(p)
     point = [1.8]
     print "Nearest index(", point, ")=", mesh1D.getNearestVertexIndex(point)
-    points = [[-0.25], [2.4]]
+    points = [[-0.25], [2.25]]
     print "Nearest index(", points, ")=", mesh1D.getNearestVertexIndex(points)
     vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
                 [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
@@ -40,7 +40,7 @@ try:
     print "2D mesh=", mesh2D
     point = [1.8]*2
     print "Nearest index(", point, ")=", mesh2D.getNearestVertexIndex(point)
-    points = [[-0.25]*2, [2.4]*2]
+    points = [[-0.25]*2, [2.25]*2]
     print "Nearest index(", points, ")=", mesh2D.getNearestVertexIndex(points)
 
     vertices = NumericalSample(0, 3)
@@ -66,7 +66,7 @@ try:
     print "3D mesh=", mesh3D
     point = [1.8]*3
     print "Nearest index(", point, ")=", mesh3D.getNearestVertexIndex(point)
-    points = [[-0.25]*3, [2.4]*3]
+    points = [[-0.25]*3, [2.25]*3]
     print "Nearest index(", points, ")=", mesh3D.getNearestVertexIndex(points)
     rotation = SquareMatrix(3)
     rotation[0, 0] = cos(pi / 3.0)

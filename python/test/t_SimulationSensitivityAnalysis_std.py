@@ -35,26 +35,16 @@ try:
         print "Importance factors at ", threshold / 2, " =", algo.computeImportanceFactors(threshold / 2)
         importanceFactorsGraph = algo.drawImportanceFactors()
         print "importanceFactorsGraph=", importanceFactorsGraph
-        importanceFactorsGraph.draw(
-            "importanceFactorsGraphSample" + comparisonOperators[i].getClassName())
-        print "postscript=", importanceFactorsGraph.getPostscript()
-        print "bitmap=", importanceFactorsGraph.getBitmap()
+
         # Importance factors evolution on probability scale
         importanceFactorsRangeGraphProbability = algo.drawImportanceFactorsRange(
         )
         print "importanceFactorsRangeGraphProbability=", importanceFactorsRangeGraphProbability
-        importanceFactorsRangeGraphProbability.draw(
-            "importanceFactorsRangeGraphProbabilitySample" + comparisonOperators[i].getClassName())
-        print "postscript=", importanceFactorsRangeGraphProbability.getPostscript()
-        print "bitmap=", importanceFactorsRangeGraphProbability.getBitmap()
+
         # Importance factors evolution on threshold scale
         importanceFactorsRangeGraphThreshold = algo.drawImportanceFactorsRange(
             False)
         print "importanceFactorsRangeGraphThreshold=", importanceFactorsRangeGraphThreshold
-        importanceFactorsRangeGraphThreshold.draw(
-            "importanceFactorsRangeGraphThresholdSample" + comparisonOperators[i].getClassName())
-        print "postscript=", importanceFactorsRangeGraphThreshold.getPostscript()
-        print "bitmap=", importanceFactorsRangeGraphThreshold.getBitmap()
 
         # Reset the history of the model
         f.clearHistory()
@@ -75,26 +65,16 @@ try:
         print "Importance factors at threshold/2 ", threshold / 2, " =", algo.computeImportanceFactors(threshold / 2)
         importanceFactorsGraph = algo.drawImportanceFactors()
         print "importanceFactorsGraph=", importanceFactorsGraph
-        importanceFactorsGraph.draw(
-            "importanceFactorsGraphEvent" + comparisonOperators[i].getClassName())
-        print "postscript=", importanceFactorsGraph.getPostscript()
-        print "bitmap=", importanceFactorsGraph.getBitmap()
+
         # Importance factors evolution on probability scale
         importanceFactorsRangeGraphProbability = algo.drawImportanceFactorsRange(
         )
         print "importanceFactorsRangeGraphProbability=", importanceFactorsRangeGraphProbability
-        importanceFactorsRangeGraphProbability.draw(
-            "importanceFactorsRangeGraphProbabilityEvent" + comparisonOperators[i].getClassName())
-        print "postscript=", importanceFactorsRangeGraphProbability.getPostscript()
-        print "bitmap=", importanceFactorsRangeGraphProbability.getBitmap()
+
         # Importance factors evolution on threshold scale
         importanceFactorsRangeGraphThreshold = algo.drawImportanceFactorsRange(
             False)
         print "importanceFactorsRangeGraphThreshold=", importanceFactorsRangeGraphThreshold
-        importanceFactorsRangeGraphThreshold.draw(
-            "importanceFactorsRangeGraphThresholdEvent" + comparisonOperators[i].getClassName())
-        print "postscript=", importanceFactorsRangeGraphThreshold.getPostscript()
-        print "bitmap=", importanceFactorsRangeGraphThreshold.getBitmap()
 
 except:
     import sys
