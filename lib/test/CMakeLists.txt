@@ -825,11 +825,8 @@ macro ( ot_add_wrapper wrappername )
     set_target_properties ( ${wrappername} PROPERTIES
                                            SUFFIX -0.dll )
 
-    add_custom_target ( ${wrappername}_link ALL
-      ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}-0.dll ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}.so
-      DEPENDS ${wrappername}
-      COMMENT "Add a symbolic link to ${wrappername}."
-    )
+    execute_process ( COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}-0.dll ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}.so )
+
     install ( FILES ${CMAKE_CURRENT_BINARY_DIR}/${wrappername}.so
               DESTINATION ${OPENTURNS_WRAPPER_PATH}
               OPTIONAL
