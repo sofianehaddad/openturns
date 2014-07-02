@@ -44,8 +44,7 @@ public:
   Poisson();
 
   /** Parameters constructor */
-  Poisson(const NumericalScalar lambda);
-
+  explicit Poisson(const NumericalScalar lambda);
 
   /** Comparison operator */
   Bool operator ==(const Poisson & other) const;

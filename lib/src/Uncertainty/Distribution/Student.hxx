@@ -44,8 +44,8 @@ public:
   typedef Pointer<DistributionImplementation> Implementation;
 
   /** Default constructor */
-  Student(const NumericalScalar nu = 3.0,
-          const UnsignedInteger dimension = 1);
+  explicit Student(const NumericalScalar nu = 3.0,
+                   const UnsignedInteger dimension = 1);
 
   /** Parameters constructor */
   Student(const NumericalScalar nu,

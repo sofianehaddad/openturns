@@ -19,7 +19,7 @@
  * KrigingResult
  * LevelSet
  * KDTree
- * ExponentiallyDampedCosineMOdel
+ * ExponentiallyDampedCosineModel
  * SphericalModel
  * MeshFactory
  * IntervalMesher

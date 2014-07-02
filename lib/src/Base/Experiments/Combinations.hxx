@@ -43,8 +43,8 @@ public:
   /** Default constructor */
   Combinations();
 
-  explicit Combinations(const UnsignedInteger k,
-                        const UnsignedInteger n);
+  Combinations(const UnsignedInteger k,
+               const UnsignedInteger n);
 
   /** Virtual constructor */
   virtual Combinations * clone() const;

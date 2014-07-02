@@ -43,8 +43,7 @@ public:
   ClaytonCopula();
 
   /** Parameters constructor */
-  ClaytonCopula(const NumericalScalar theta);
-
+  explicit ClaytonCopula(const NumericalScalar theta);
 
   /** Comparison operator */
   Bool operator ==(const ClaytonCopula & other) const;

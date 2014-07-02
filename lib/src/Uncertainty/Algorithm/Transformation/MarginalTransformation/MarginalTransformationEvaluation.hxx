@@ -57,8 +57,8 @@ public:
   MarginalTransformationEvaluation();
 
   /** Parameter constructor */
-  MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
-                                   const UnsignedInteger direction = FROM);
+  explicit MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
+                                            const UnsignedInteger direction = FROM);
 
   /** Parameter constructor */
   MarginalTransformationEvaluation(const DistributionCollection & inputDistributionCollection,

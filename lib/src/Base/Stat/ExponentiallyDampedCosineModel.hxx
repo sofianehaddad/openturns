@@ -49,7 +49,7 @@ public:
 
 
   /** Default constructor without parameters */
-  explicit ExponentiallyDampedCosineModel();
+  ExponentiallyDampedCosineModel();
 
   /** Standard constructor with amplitude and scale parameters parameters */
   ExponentiallyDampedCosineModel(const NumericalScalar amplitude,

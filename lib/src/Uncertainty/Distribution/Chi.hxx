@@ -43,7 +43,7 @@ public:
   Chi();
 
   /** Parameters constructor */
-  explicit Chi(const NumericalScalar nu_);
+  explicit Chi(const NumericalScalar nu);
 
 
   /** Comparison operator */

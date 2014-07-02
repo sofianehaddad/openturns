@@ -48,7 +48,7 @@ public:
   InverseNatafEllipticalDistributionGradient();
 
   /** Parameter constructor */
-  InverseNatafEllipticalDistributionGradient(const SquareMatrix & inverseCholesky);
+  explicit InverseNatafEllipticalDistributionGradient(const SquareMatrix & inverseCholesky);
 
   /** Virtual constructor */
   virtual InverseNatafEllipticalDistributionGradient * clone() const;
