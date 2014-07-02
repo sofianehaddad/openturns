@@ -30,6 +30,10 @@
 #include "ResourceMap.hxx" // For ResourceMap
 #endif
 
+#ifdef OPENTURNS_HAVE_UNISTD_H
+# include <unistd.h>  // for rmdir, unlink
+#endif
+
 #include <cstdlib>   // for system(3)
 #include <sys/types.h>            // for stat
 #include <sys/stat.h>             // for stat
