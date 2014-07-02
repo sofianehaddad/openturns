@@ -241,13 +241,7 @@ static void printToLog(void (*func)(const OT::String & msg),
                        va_list args)
 {
   OT::OSS newfmt;
-  newfmt << "[tid=" <<
-#ifdef PTW32_VERSION          // pthreads-win32
-         pthread_self().p
-#else                         // winpthreads
-         pthread_self()
-#endif
-         << "] " << format;
+  newfmt << "[tid=" << pthread_self() << "] " << format;
   char * msg = vnewFormattedString( newfmt.str().c_str(), args );
   (*func)( msg );
   free( msg );
