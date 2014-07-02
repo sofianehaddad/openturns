@@ -149,6 +149,12 @@ public:
   /** Convert a color name into a valid hexadecimal code */
   static String ConvertFromName(const String & name);
 
+  /** Convert an hexadecimal code into an RGB triplet */
+  static Indices ConvertToRGB(const String & key);
+
+  /** Convert an hexadecimal code into an RGBA quadruplet */
+  static Indices ConvertToRGBA(const String & key);
+
   /** Convert an RGB triplet to a valid hexadecimal code */
   static String ConvertFromRGB(const UnsignedInteger red,
                                const UnsignedInteger green,

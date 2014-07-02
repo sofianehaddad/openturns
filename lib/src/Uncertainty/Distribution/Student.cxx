@@ -32,8 +32,6 @@
 #include "DistFunc.hxx"
 #include "Log.hxx"
 #include "OSS.hxx"
-#include "Mvtdstpack.hxx"
-#include "Tvpack.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "NumericalPoint.hxx"
 #include "Exception.hxx"
@@ -125,7 +123,7 @@ String Student::__str__(const String & offset) const
  *  be written as p(x) = phi(t(x-mu)S^(-1)(x-mu))                      */
 NumericalScalar Student::computeDensityGenerator(const NumericalScalar betaSquare) const
 {
-  return exp(studentNormalizationFactor_ - 0.5 * (nu_ + getDimension()) * log1p(betaSquare / nu_));
+  return std::exp(studentNormalizationFactor_ - 0.5 * (nu_ + getDimension()) * log1p(betaSquare / nu_));
 }
 
 /* Compute the derivative of the density generator */
@@ -133,7 +131,7 @@ NumericalScalar Student::computeDensityGeneratorDerivative(const NumericalScalar
 {
   const NumericalScalar iNu(1.0 / nu_);
   const UnsignedInteger dimension(getDimension());
-  return -0.5 * exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 1.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu);
+  return -0.5 * std::exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 1.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu);
 }
 
 /* Compute the second derivative of the density generator */
@@ -141,7 +139,7 @@ NumericalScalar Student::computeDensityGeneratorSecondDerivative(const Numerical
 {
   const NumericalScalar iNu(1.0 / nu_);
   const UnsignedInteger dimension(getDimension());
-  return 0.25 * exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 2.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu) * (1.0 + (dimension + 2.0) * iNu);
+  return 0.25 * std::exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 2.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu) * (1.0 + (dimension + 2.0) * iNu);
 }
 
 
@@ -159,7 +157,7 @@ NumericalPoint Student::getRealization() const
   NumericalPoint value(dimension);
   // First, a realization of independant standard normal coordinates
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = DistFunc::rNormal();
-  return sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * (cholesky_ * value) + mean_;
+  return std::sqrt(0.5 * nu_ / DistFunc::rGamma(0.5 * nu_)) * (cholesky_ * value) + mean_;
 }
 
 
@@ -170,73 +168,15 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
-  // Normalize the point to use the standard form of the multivariate student distribution
-  NumericalPoint u(normalize(point));
-  // For the bidimensional case, use specialized high precision routine for integral degrees of freedom
-  if ((dimension == 2) && (nu_ == round(nu_)))
-  {
-    int nu(static_cast<int>(round(nu_)));
-    double r(R_(0, 1));
-    return bvtl_(&nu, &(u[0]), &(u[1]), &r);
-  }
-  // For the tridimensional case, use specialized high precision routine for integral degrees of freedom
-  if ((dimension == 3) && (nu_ == round(nu_)))
-  {
-    int nu(static_cast<int>(round(nu_)));
-    double r[3];
-    r[0] = R_(1, 0);
-    r[1] = R_(2, 0);
-    r[2] = R_(2, 1);
-    double eps(ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) * ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ));
-    cdfEpsilon_ = eps;
-    return tvtl_(&nu, &(u[0]), &r[0], &eps);
-  }
   // For moderate dimension, use a Gauss-Legendre integration
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
+    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
     const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" ));
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeCDF(point);
-  }
-  // For larger dimension, use an adaptive integration
-  if ((dimension <= 500) && (nu_ == round(nu_)))
-  {
-    int nu(static_cast<int>(round(nu_)));
-    NumericalPoint lower(dimension, 0.0);
-    std::vector<int> infin(dimension, 0);
-    NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
-    /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      for (UnsignedInteger j = 0; j < i; ++j) correl[j + i * (i - 1) / 2] = R_(j, i);
-    // Non-centrality parameters
-    NumericalPoint delta(dimension, 0.0);
-    int maxpts(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    // Use only relative precision
-    double abseps(0.0);
-    // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) for dimension=500
-    double releps(ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) * pow(ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) / ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ), (4.0 + dimension) / 496.0));
-    double error;
-    double value;
-    int inform;
-    int dim(static_cast<UnsignedInteger>( dimension ));
-    do
-    {
-      mvtdst_(&dim, &nu, &lower[0], &u[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
-      if (inform == 1)
-      {
-        LOGWARN(OSS() << "Warning, in Student::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
-        maxpts *= 10;
-      }
-      else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
-    }
-    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" )) && (inform == 1));
-    if (inform == 1) LOGWARN(OSS() << "Warning, in Student::computeCDF(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
-    if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Student::computeCDF(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
-    cdfEpsilon_ = error;
-    return std::min(std::max(value, 0.0), 1.0);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
@@ -271,7 +211,7 @@ NumericalScalar Student::computeCDF(const NumericalPoint & point) const
     // Quick return for value = 1
     const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
     if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
-    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
+    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
@@ -299,56 +239,11 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
   if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
   {
     // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
-    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
+    const UnsignedInteger maximumNumber(static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension()))));
     const UnsignedInteger candidateNumber(ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" ));
     if (candidateNumber > maximumNumber) LOGWARN(OSS() << "Warning! The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     return ContinuousDistribution::computeProbability(interval);
-  }
-  // For large dimension, use an adaptive integration
-  if (dimension <= 500)
-  {
-    int nu(static_cast<UnsignedInteger>(round(nu_)));
-    // Build finite/infinite flags according to MVNDST documentation
-    std::vector<int> infin(dimension, -1);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      // Infin[i] should be:
-      //  2 if finiteLower[i] && finiteUpper[i]
-      //  1 if finiteLower[i] && !finiteUpper[i]
-      //  0 if !finiteLower[i] && finiteUpper[i]
-      // -1 if !finiteLower[i] && !finiteUpper[i]
-      infin[i] += 2 * int(finiteLower[i]) + int(finiteUpper[i]);
-    }
-    NumericalPoint correl(dimension * (dimension - 1) / 2, 0.0);
-    /* Copy the correlation matrix in the proper format for mvndst */
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-      for (UnsignedInteger j = 0; j < i; ++j) correl[j + i * (i - 1) / 2] = R_(j, i);
-    // Non-centrality parameter
-    NumericalPoint delta(dimension, 0.0);
-    int maxpts(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    // Use only relative precision
-    double abseps(0.0);
-    // Reduce the precision according to the dimension. It ranges from ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) for dimension=4 to ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) for dimension=500
-    double releps(ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ) * pow(ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) / ResourceMap::GetAsNumericalScalar( "Student-MaximumCDFEpsilon" ), (4.0 + dimension) / 496.0));
-    double error;
-    double value;
-    int inform;
-    int dim = static_cast<UnsignedInteger>( dimension );
-    do
-    {
-      mvtdst_(&dim, &nu, &lower[0], &upper[0], &infin[0], &correl[0], &delta[0], &maxpts, &abseps, &releps, &error, &value, &inform);
-      if (inform == 1)
-      {
-        LOGWARN(OSS() << "Warning, in Student::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". We retry with maxpoint=" << 10 * maxpts);
-        maxpts *= 10;
-      }
-      else if (inform != 0) throw InternalException(HERE) << "MVTDST: error code=" << inform;
-    }
-    while ((static_cast<UnsignedInteger>(maxpts) <= ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" )) && (inform == 1));
-    if (inform == 1) LOGWARN(OSS() << "Warning, in Student::computeProbability(), the required precision has not been achieved with maxpts=" << NumericalScalar(maxpts) << ", we only got an absolute error of " << error << " and a relative error of " << error / value << ". No more retry.");
-    if ((value < 0.0) || (value > 1.0)) LOGWARN(OSS() << "Warning, in Student::computeProbability(), got a value outside of [0, 1], value=" << value << " your dependence structure might be too complex. The value will be truncated.");
-    return std::min(std::max(value, 0.0), 1.0);
   }
   // For very large dimension, use a MonteCarlo algorithm
   LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");
@@ -377,7 +272,7 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
     // Quick return for value = 1
     const NumericalScalar quantileEpsilon(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon"));
     if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
-    precision = a99 * sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
+    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
@@ -416,7 +311,7 @@ NumericalPoint Student::computeCDFGradient(const NumericalPoint & point) const
   {
     NumericalPoint cdfGradient(3, 0.0);
     const NumericalScalar x(point[0] - mean_[0]);
-    const NumericalScalar eps(pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0));
+    const NumericalScalar eps(std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0));
     const NumericalScalar i2Eps(0.5 / eps);
     cdfGradient[0] = (DistFunc::pStudent(nu_ + eps, x / sigma_[0]) - DistFunc::pStudent(nu_ - eps, x / sigma_[0])) * i2Eps;
     // Opposite sign for eps because x - eps = point[0] - (mu + eps)
@@ -442,9 +337,9 @@ NumericalScalar Student::computeConditionalPDF(const NumericalScalar x,
   throw NotYetImplementedException(HERE);
   NumericalScalar meanRos(0.0);
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * sqrt(sigma_[conditioningDimension]) * meanRos;
-  return exp(-0.5 * pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * sqrt(2.0 * M_PI));
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+  return std::exp(-0.5 * std::pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * std::sqrt(2.0 * M_PI));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -459,8 +354,8 @@ NumericalScalar Student::computeConditionalCDF(const NumericalScalar x,
   throw NotYetImplementedException(HERE);
   NumericalScalar meanRos(0.0);
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * sqrt(sigma_[conditioningDimension]) * meanRos;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
   return DistFunc::pNormal((x - meanRos) / sigmaRos);
 }
 
@@ -477,10 +372,10 @@ NumericalScalar Student::computeConditionalQuantile(const NumericalScalar q,
   throw NotYetImplementedException(HERE);
   NumericalScalar meanRos(0.0);
   const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * sqrt(sigma_[conditioningDimension]) * meanRos;
-  if (q == 0.0) return meanRos - 0.5 * sigmaRos * sqrt(4.0 * (log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
-  if (q == 1.0) return meanRos + 0.5 * sigmaRos * sqrt(4.0 * (log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+  if (q == 0.0) return meanRos - 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
+  if (q == 1.0) return meanRos + 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
   return meanRos + sigmaRos * DistFunc::qNormal(q);
 }
 
@@ -584,7 +479,7 @@ NumericalPoint Student::getStandardMoment(const UnsignedInteger n) const
   NumericalScalar moment(1.0);
   for (UnsignedInteger i = 0; i < n / 2; ++i) moment *= (nu_ * (2 * i + 1)) / (nu_ - 2 * (i + 1));
   // Alternate expression, not very useful as the raw moments overflow the double precision for n approximately equal to 300 (if nu is large enough), and for these values the loop is equivalent to the analytic expression both in terms of speed and
-  // const NumericalScalar moment(exp(0.5 * n * log(nu_) + SpecFunc::LogGamma(0.5 * (n + 1.0)) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)) / sqrt(M_PI));
+  // const NumericalScalar moment(exp(0.5 * n * std::log(nu_) + SpecFunc::LogGamma(0.5 * (n + 1.0)) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)) / sqrt(M_PI));
   return NumericalPoint(1, moment);
 }
 
@@ -623,6 +518,7 @@ Student::NumericalPointWithDescriptionCollection Student::getParametersCollectio
 
 void Student::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   const UnsignedInteger size(parametersCollection.getSize());
   const UnsignedInteger dimension(size > 1 ? size - 1 : size);
   if (dimension == 1) *this = Student(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
@@ -648,6 +544,7 @@ void Student::setParametersCollection(const NumericalPointCollection & parameter
     }
     *this = Student(nu, mean, sigma, R);
   }
+  setWeight(w);
 }
 
 
@@ -659,7 +556,7 @@ void Student::setNu(const NumericalScalar nu)
   nu_ = nu;
   // Only set the covarianceScalingFactor if nu > 0, else its value is -1.0
   if (nu > 2.0) covarianceScalingFactor_ = nu_ / (nu_ - 2.0);
-  studentNormalizationFactor_ = SpecFunc::LnGamma(0.5 * (nu + dimension)) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * dimension * log(nu * M_PI);
+  studentNormalizationFactor_ = SpecFunc::LnGamma(0.5 * (nu + dimension)) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
   computeRange();
 }
 

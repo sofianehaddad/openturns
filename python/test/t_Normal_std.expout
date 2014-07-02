@@ -54,7 +54,7 @@ margins CDF=0.393662
 margins quantile= class=NumericalPoint name=Unnamed dimension=2 values=[5.249,4.3327]
 margins CDF(qantile)=0.950000
 margins realization= class=NumericalPoint name=Unnamed dimension=2 values=[-2.2459,-3.0994]
-chol= class=SquareMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[2,1.5,0,0,2.5981,0.57735,0,0,0.8165]
-invchol= class=SquareMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.5,-0.28868,0.20412,0,0.3849,-0.27217,0,0,1.2247]
-chol*t(chol)= class=SquareMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4,3,0,3,9,1.5,0,1.5,1]
-chol*invchol= class=SquareMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+chol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[2,1.5,0,0,2.5981,0.57735,0,0,0.8165]
+invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.5,-0.28867,0.20412,0,0.3849,-0.27217,0,0,1.2247]
+chol*t(chol)= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4,3,0,3,9,1.5,0,1.5,1]
+chol*invchol= class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]

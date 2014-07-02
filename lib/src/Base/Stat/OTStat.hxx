@@ -72,6 +72,7 @@
 #include "UserDefinedSpectralModel.hxx"
 #include "WelchFactory.hxx"
 #include "ExponentialModel.hxx"
+#include "ExponentiallyDampedCosineModel.hxx"
 #include "CauchyModel.hxx"
 #include "CovarianceModelFactoryImplementation.hxx"
 #include "CovarianceModelFactory.hxx"
@@ -82,5 +83,6 @@
 #include "SquaredExponential.hxx"
 #include "GeneralizedExponential.hxx"
 #include "AbsoluteExponential.hxx"
+#include "SphericalModel.hxx"
 
 #endif /* OPENTURNS_OTSTAT_HXX */

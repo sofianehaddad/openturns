@@ -98,7 +98,7 @@ cdf      =0.0143877
 cdf (ref)=0.0143877
 characteristic function=(0.128,0.704)
 log characteristic function=(-0.334715,1.39094)
-quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[6.29573]
+quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[6.2957]
 quantile (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[6.29579]
 cdf(quantile)=0.95
 mean      =class=NumericalPoint name=Unnamed dimension=1 values=[3]

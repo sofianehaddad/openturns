@@ -27,11 +27,14 @@ try:
     n = 11
 
     myTimeGrid = RegularGrid(tmin, step, n)
-    size = 10000
+    size = 100
 
     myProcess = TemporalNormalProcess(myModel, myTimeGrid)
     print "myProcess = ", myProcess
     print "is stationary? ", myProcess.isStationary()
+    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0)
+    print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
+    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1)
     print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
 
     # Second order model with parameters
@@ -41,7 +44,10 @@ try:
     myProcess1 = TemporalNormalProcess(myCovModel, myTimeGrid)
     print "myProcess1 = ", myProcess1
     print "is stationary? ", myProcess1.isStationary()
-    print "mean over ", size, " realizations= ", myProcess1.getSample(size).computeMean()
+    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0)
+    print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
+    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1)
+    print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
 
     # With constant trend
     trend = TrendTransform(NumericalMathFunction("t", "4.0"))
@@ -55,7 +61,11 @@ try:
     myProcess3 = TemporalNormalProcess(trend3, myCovModel, myTimeGrid)
     print "myProcess3 = ", myProcess3
     print "is stationary? ", myProcess3.isStationary()
-    print "mean over ", size, " realizations= ", myProcess3.getSample(size).computeMean()
+    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0)
+    print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
+    ResourceMap.SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1)
+    print "mean over ", size, " realizations = ", myProcess.getSample(size).computeMean()
+    
 except:
     import sys
     print "t_TemporalNormalProcess_std.py", sys.exc_type, sys.exc_value

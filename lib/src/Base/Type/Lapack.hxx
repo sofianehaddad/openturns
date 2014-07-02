@@ -96,6 +96,9 @@ void dstev_(char *jobz, int *n, double *d, double *e, double *z, int *ldz, doubl
 /** Function dsyr performs a rank one update on a square matrix A -> A + alpha * x . x' */
 void dsyr_(char *uplo, int *n, double *alpha, double *x, int *incx, double *a, int *lda, int *luplo);
 
+/** Function dsyr performs a rank one update on a square matrix A -> A + alpha * x . x' */
+void dsyrk_(char *uplo, char *trans, int *n, int *k, double *alpha, double *a, int *lda, double *beta, double *C, int *ldc, int *luplo, int *ltrans);
+
 /** Function dtrsm solves a triangular linear system A.X = alpha B, where A can be transposed or not */
 void dtrsm_(char *side, char *uplo, char *transa, char *diag, int *m, int *n, double *alpha, double *A, int *lda, double *B, int *ldb, int *lside, int *luplo, int *ltransa, int *ldiag);
 
@@ -157,11 +160,10 @@ void zcopy_(int *n, std::complex<double> *x, int *incx, std::complex<double> *y,
 void ztrmv_(char *uplo, char *trans, char *diag, int *n, std::complex<double> *A, int *lda, std::complex<double> *X, int *incx, int *luplo, int *ltrans, int *ldiag);
 
 /** Function ztrmm is to be used to compute the product of a triangular (upper or lower) matrix with another matrix  */
-void ztrmm_(char *side, char *uplo, char *trans, char *diag, int *m, int *n, std::complex<double> *alpha , std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb,
-               int *lside , int *luplo, int *ltrans, int *ldiag);
+void ztrmm_(char *side, char *uplo, char *trans, char *diag, int *m, int *n, std::complex<double> *alpha , std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *lside , int *luplo, int *ltrans, int *ldiag);
 
-/** Function dtrmv is to be used to compute the product of a triangular (upper or lower) matrix with a vector  */
-void dtrmv_(char *uplo, char *trans, char *diag, int *n, double *A, int *lda, double *X, int *incx, int *luplo, int *ltrans, int *ldiag);
+/** Function ztrmm is to be used to compute the product of a triangular (upper or lower) matrix with another matrix  */
+void zgelsy_(int *m, int *n, int *nrhs, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, double *rwork, int *info);
 
 /** Function dposv is to be used to solve a linear system with a symmetric definite positive matrix */
 void dposv_(char *uplo, int *n, int *nrhs, double *A, int *lda, double *B, int *ldb, int *info, int *luplo);

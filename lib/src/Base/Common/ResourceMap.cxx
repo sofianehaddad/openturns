@@ -384,7 +384,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "KFold-DefaultK", 10 );
 
   // BlendedStep parameters //
-  setAsNumericalScalar( "BlendedStep-DefaultEta", 0.0 );
+  setAsNumericalScalar( "BlendedStep-DefaultEta", 1.0 );
 
   // CenteredFiniteDifferenceGradient parameters //
   setAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-5 );
@@ -522,6 +522,7 @@ void ResourceMap::loadDefaultConfiguration()
   // Mesh parameters
   setAsNumericalScalar( "Mesh-VertexEpsilon", 1.0e-12 );
   setAsUnsignedInteger( "Mesh-LargeSize", 5000 );
+  setAsUnsignedInteger( "Mesh-UseKDTree", 1 );
 
   // Matrix parameters
   setAsUnsignedInteger( "Matrix-size-visible-in-str-from", 5 );
@@ -541,6 +542,9 @@ void ResourceMap::loadDefaultConfiguration()
   // ConditionalDistribution parameters //
   setAsUnsignedInteger( "ConditionalDistribution-MarginalIntegrationNodesNumber", 16 );
   setAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber", 100000 );
+
+  // CompositeDistribution parameters //
+  setAsUnsignedInteger( "CompositeDistribution-StepNumber", 256 );
 
   // DirichletFactory parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
@@ -714,8 +718,10 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FunctionalChaosAlgorithm parameters //
   setAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6 );
+  setAsNumericalScalar( "FunctionalChaosAlgorithm-SmallSampleSize", 1000);
+  setAsNumericalScalar( "FunctionalChaosAlgorithm-MaximumMarginalDegree", 5 );
 
-  // TemporalNormalProcess parameters //
+  // KrigingAlgorithm parameters //
   setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );
   setAsNumericalScalar( "KrigingAlgorithm-MaximalScaling", 1.0e5 );
 
@@ -753,6 +759,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "DistributionImplementation-DefaultLevelNumber", 10 );
   setAsUnsignedInteger( "DistributionImplementation-DefaultQuantileCacheSize", 128 );
   setAsUnsignedInteger( "DistributionImplementation-Parallel", 0 );
+  setAsUnsignedInteger( "DistributionImplementation-CharacteristicFunctionBlockMax", 20 );
+  setAsUnsignedInteger( "DistributionImplementation-CharacteristicFunctionNMax", 1000000 );
 
   // ContinuousDistribution parameters //
   setAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber", 256 );
@@ -769,6 +777,8 @@ void ResourceMap::loadDefaultConfiguration()
   // TemporalNormalProcess parameters //
   setAsNumericalScalar( "TemporalNormalProcess-StartingScaling", 1.0e-13 );
   setAsNumericalScalar( "TemporalNormalProcess-MaximalScaling", 1.0e5 );
+  setAsUnsignedInteger( "TemporalNormalProcess-UseGibbsSampler", 0 );
+  setAsUnsignedInteger( "TemporalNormalProcess-GibbsMaximumIteration", 100 );
 
   // SpectralNormalProcess parameters //
   setAsNumericalScalar( "SpectralNormalProcess-StartingScaling", 1.0e-13 );

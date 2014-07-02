@@ -145,9 +145,11 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
   Interval::BoolCollection finiteUpperBound(size);
   if (size == 0) throw InvalidArgumentException(HERE) << "Collection of distributions is empty";
   // First, check that all the marginal distributions are of dimension 1
+  Bool isParallel(copula_.getImplementation()->isParallel());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coll[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "The marginal distribution " << i << " is of dimension " << coll[i].getDimension() << ", which is different from 1.";
+    isParallel = isParallel && coll[i].getImplementation()->isParallel();
     const Interval marginalRange(coll[i].getRange());
     lowerBound[i] = marginalRange.getLowerBound()[0];
     upperBound[i] = marginalRange.getUpperBound()[0];
@@ -164,6 +166,7 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
       description[i] = marginalName;
     }
   }
+  setParallel(isParallel);
   // Everything is ok, store the collection
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;
@@ -686,7 +689,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
   // Special case for the elliptical distribution case: linear transformation
   if (isElliptical())
   {
-    const SquareMatrix inverseCholesky(getInverseCholesky());
+    const TriangularMatrix inverseCholesky(getInverseCholesky());
     const NumericalPoint mean(getMean());
     IsoProbabilisticTransformation transform;
     transform.setEvaluationImplementation(new NatafEllipticalDistributionEvaluation(mean, inverseCholesky));
@@ -708,7 +711,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), MarginalTransformationGradient(evaluation).clone(), MarginalTransformationHessian(evaluation).clone());
     marginalTransformation.setParameters(parameters);
     // Suppress the correlation between the components.
-    const SquareMatrix inverseCholesky(copula_.getShapeMatrix().computeCholesky().solveLinearSystem(IdentityMatrix(dimension)).getImplementation());
+    const TriangularMatrix inverseCholesky(copula_.getShapeMatrix().computeCholesky().solveLinearSystem(IdentityMatrix(dimension)).getImplementation());
     LinearNumericalMathFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), inverseCholesky);
     return IsoProbabilisticTransformation(linear, marginalTransformation);
   }
@@ -759,7 +762,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
   // Special case for the elliptical distribution case: linear transformation
   if (isElliptical())
   {
-    const SquareMatrix inverseCholesky(getInverseCholesky());
+    const TriangularMatrix inverseCholesky(getInverseCholesky());
     const NumericalPoint mean(getMean());
     InverseIsoProbabilisticTransformation inverseTransform;
     inverseTransform.setEvaluationImplementation(new InverseNatafEllipticalDistributionEvaluation(mean, inverseCholesky));
@@ -781,7 +784,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
     marginalTransformation.setParameters(parameters);
     // Suppress the correlation between the components.
-    const SquareMatrix cholesky(copula_.getShapeMatrix().computeCholesky());
+    const TriangularMatrix cholesky(copula_.getShapeMatrix().computeCholesky());
     // const SquareMatrix cholesky(ComposedDistribution(DistributionCollection(dimension, standardMarginal), getCopula()).getCholesky());
     LinearNumericalMathFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), cholesky);
     return InverseIsoProbabilisticTransformation(marginalTransformation, linear);

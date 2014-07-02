@@ -25,7 +25,6 @@
 #include "Triangular.hxx"
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
-#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -105,8 +104,8 @@ NumericalPoint Triangular::getRealization() const
   const NumericalScalar ma(m_ - a_);
   const NumericalScalar ba(b_ - a_);
   const NumericalScalar prob(RandomGenerator::Generate());
-  if (ba * prob < ma) return NumericalPoint(1, a_ + sqrt(prob * ba * ma));
-  return NumericalPoint(1, b_ - sqrt((1.0 - prob) * ba * (b_ - m_)));
+  if (ba * prob < ma) return NumericalPoint(1, a_ + std::sqrt(prob * ba * ma));
+  return NumericalPoint(1, b_ - std::sqrt((1.0 - prob) * ba * (b_ - m_)));
 }
 
 
@@ -152,20 +151,20 @@ NumericalScalar Triangular::computeCDF(const NumericalPoint & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Triangular::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  if (fabs(x) < 1.0e-8) return NumericalComplex(1.0, (a_ + b_ + m_) * x / 3.0);
+  if (std::abs(x) < 1.0e-8) return NumericalComplex(1.0, (a_ + b_ + m_) * x / 3.0);
   const NumericalScalar ba(b_ - a_);
   const NumericalScalar bm(b_ - m_);
   const NumericalScalar ma(m_ - a_);
-  return 2.0 / (x * x) * (-exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
+  return 2.0 / (x * x) * (-std::exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + std::exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - std::exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
 }
 
 NumericalComplex Triangular::computeLogCharacteristicFunction(const NumericalScalar x) const
 {
-  if (fabs(x) < pdfEpsilon_) return 0.0;
+  if (std::abs(x) < pdfEpsilon_) return 0.0;
   const NumericalScalar ba(b_ - a_);
   const NumericalScalar bm(b_ - m_);
   const NumericalScalar ma(m_ - a_);
-  return  M_LN2 - 2.0 * log(fabs(x)) + log(-exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
+  return  M_LN2 - 2.0 * std::log(std::abs(x)) + std::log(-std::exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + std::exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - std::exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -233,11 +232,11 @@ NumericalScalar Triangular::computeScalarQuantile(const NumericalScalar prob,
   const NumericalScalar bm(b_ - m_);
   if (tail)
   {
-    if (bm < prob * ba) return a_ + sqrt((1.0 - prob) * ba * ma);
-    return b_ - sqrt(prob * ba * (b_ - m_));
+    if (bm < prob * ba) return a_ + std::sqrt((1.0 - prob) * ba * ma);
+    return b_ - std::sqrt(prob * ba * (b_ - m_));
   }
-  if (ba * prob < ma) return a_ + sqrt(prob * ba * ma);
-  return b_ - sqrt((1.0 - prob) * ba * bm);
+  if (ba * prob < ma) return a_ + std::sqrt(prob * ba * ma);
+  return b_ - std::sqrt((1.0 - prob) * ba * bm);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
@@ -259,7 +258,7 @@ NumericalPoint Triangular::getStandardDeviation() const
 {
   const NumericalScalar ma(m_ - a_);
   const NumericalScalar bm(b_ - m_);
-  return NumericalPoint(1, sqrt((bm * bm + bm * ma + ma * ma) / 18.0));
+  return NumericalPoint(1, std::sqrt((bm * bm + bm * ma + ma * ma) / 18.0));
 }
 
 /* Get the skewness of the distribution */
@@ -268,7 +267,7 @@ NumericalPoint Triangular::getSkewness() const
   const NumericalScalar ma(m_ - a_);
   const NumericalScalar bm(b_ - m_);
   const NumericalScalar ba(b_ - a_);
-  const NumericalScalar den(pow(bm * bm + bm * ma + ma * ma, 1.5));
+  const NumericalScalar den(std::pow(bm * bm + bm * ma + ma * ma, 1.5));
   NumericalScalar num((ba + ma) * (bm - ma) * (bm + ba));
   // 0.2828427124746190097603378 = sqrt(2) / 5
   return NumericalPoint(1, 0.2828427124746190097603378 * num / den);
@@ -299,14 +298,14 @@ NumericalPoint Triangular::getStandardMoment(const UnsignedInteger n) const
   if (n % 2 == 0)
   {
     // Vertical part?
-    if (1.0 - fabs(mu) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 1.0));
+    if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 1.0));
     // Usual case
-    return NumericalPoint(1, 2.0 * (1.0 - pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+    return NumericalPoint(1, 2.0 * (1.0 - std::pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
   }
   // Odd order
   // Vertical part?
-  if (1.0 - fabs(mu) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 2.0));
-  return NumericalPoint(1, 2.0 * mu * (1.0 - pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+  if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 2.0));
+  return NumericalPoint(1, 2.0 * mu * (1.0 - std::pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -335,7 +334,9 @@ Triangular::NumericalPointWithDescriptionCollection Triangular::getParametersCol
 
 void Triangular::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Triangular(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2]);
+  setWeight(w);
 }
 
 /* Interface specific to Triangular */

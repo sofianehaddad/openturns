@@ -69,28 +69,6 @@ UnsignedInteger CovarianceModel::getDimension() const
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix CovarianceModel::computeCovariance(const NumericalScalar s,
-    const NumericalScalar t) const
-{
-  return getImplementation()->computeCovariance(s, t);
-}
-
-CovarianceMatrix CovarianceModel::computeCovariance(const NumericalPoint & s,
-    const NumericalPoint & t) const
-{
-  return getImplementation()->computeCovariance(s, t);
-}
-
-CovarianceMatrix CovarianceModel::computeCovariance(const NumericalScalar tau) const
-{
-  return getImplementation()->computeCovariance(tau);
-}
-
-CovarianceMatrix CovarianceModel::computeCovariance(const NumericalPoint & tau) const
-{
-  return getImplementation()->computeCovariance(tau);
-}
-
 CovarianceMatrix CovarianceModel::operator() (const NumericalScalar s,
     const NumericalScalar t) const
 {
@@ -103,6 +81,12 @@ CovarianceMatrix CovarianceModel::operator() (const NumericalPoint & s,
   return getImplementation()->operator() (s, t);
 }
 
+NumericalScalar CovarianceModel::computeAsScalar (const NumericalPoint & s,
+    const NumericalPoint & t) const
+{
+  return getImplementation()->computeAsScalar(s, t);
+}
+
 CovarianceMatrix CovarianceModel::operator() (const NumericalScalar tau) const
 {
   return getImplementation()->operator() (tau);
@@ -113,6 +97,11 @@ CovarianceMatrix CovarianceModel::operator() (const NumericalPoint & tau) const
   return getImplementation()->operator() (tau);
 }
 
+NumericalScalar CovarianceModel::computeAsScalar (const NumericalPoint & tau) const
+{
+  return getImplementation()->computeAsScalar(tau);
+}
+
 /* Gradient */
 SymmetricTensor CovarianceModel::partialGradient(const NumericalPoint & s,
     const NumericalPoint & t) const
@@ -121,16 +110,6 @@ SymmetricTensor CovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Discretize the covariance function on a given TimeGrid/Mesh */
-CovarianceMatrix CovarianceModel::discretizeCovariance(const RegularGrid & timeGrid) const
-{
-  return getImplementation()->discretizeCovariance(timeGrid);
-}
-
-CovarianceMatrix CovarianceModel::discretizeCovariance(const Mesh & mesh) const
-{
-  return getImplementation()->discretizeCovariance(mesh);
-}
-
 CovarianceMatrix CovarianceModel::discretize(const RegularGrid & timeGrid) const
 {
   return getImplementation()->discretize(timeGrid);
@@ -139,6 +118,12 @@ CovarianceMatrix CovarianceModel::discretize(const RegularGrid & timeGrid) const
 CovarianceMatrix CovarianceModel::discretize(const Mesh & mesh) const
 {
   return getImplementation()->discretize(mesh);
+}
+
+NumericalSample CovarianceModel::discretizeRow(const NumericalSample & vertices,
+					       const UnsignedInteger p) const
+{
+  return getImplementation()->discretizeRow(vertices, p);
 }
 
 /* Partial discretization with respect to the second argument */
@@ -167,6 +152,7 @@ String CovarianceModel::__str__(const String & offset) const
 
 void CovarianceModel::setParameters(const NumericalPointWithDescription& parameters)
 {
+  copyOnWrite();
   getImplementation()->setParameters(parameters);
 }
 

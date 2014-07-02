@@ -44,11 +44,11 @@ static Factory<CleaningStrategy> RegisteredFactory("CleaningStrategy");
 
 /* Default constructor */
 CleaningStrategy::CleaningStrategy()
-  : AdaptiveStrategyImplementation(),
-    currentVectorIndex_(0),
-    maximumSize_(0),
-    significanceFactor_(0.0),
-    verbose_(false)
+  : AdaptiveStrategyImplementation()
+  , currentVectorIndex_(0)
+  , maximumSize_(0)
+  , significanceFactor_(0.0)
+  , verbose_(false)
 {
   // Nothing to do
 }
@@ -58,11 +58,11 @@ CleaningStrategy::CleaningStrategy()
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension,
                                    const Bool verbose)
-  : AdaptiveStrategyImplementation(basis, maximumDimension),
-    currentVectorIndex_(0),
-    maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" )),
-    significanceFactor_(ResourceMap::GetAsNumericalScalar( "CleaningStrategy-DefaultSignificanceFactor" )),
-    verbose_(verbose)
+  : AdaptiveStrategyImplementation(basis, maximumDimension)
+  , currentVectorIndex_(0)
+  , maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" )),
+    significanceFactor_(ResourceMap::GetAsNumericalScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
+  , verbose_(verbose)
 {
   // Nothing to do
 }
@@ -74,11 +74,11 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumSize,
                                    const NumericalScalar significanceFactor,
                                    const Bool verbose)
-  : AdaptiveStrategyImplementation(basis, maximumDimension),
-    currentVectorIndex_(0),
-    maximumSize_(maximumSize),
-    significanceFactor_(significanceFactor),
-    verbose_(verbose)
+  : AdaptiveStrategyImplementation(basis, maximumDimension)
+  , currentVectorIndex_(0)
+  , maximumSize_(maximumSize)
+  , significanceFactor_(significanceFactor)
+  , verbose_(verbose)
 {
   // Nothing to do
 }

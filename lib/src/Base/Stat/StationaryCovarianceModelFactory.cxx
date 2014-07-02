@@ -112,7 +112,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
         const NumericalScalar theta((size - 1.0) * k * M_PI / size);
-        const NumericalComplex alpha(cos(theta), -1.0 * sin(theta));
+        const NumericalComplex alpha(cos(theta), -sin(theta));
         const NumericalComplex spectralValue(spectralDensity(i, j));
         const NumericalComplex phi_k(spectralValue * alpha);
         matrix(k, columnIndex) = phi_k;
@@ -157,7 +157,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
         covariance(i, j) = std::real(matrix(index, columnIndex));
-        columnIndex += 1;
+	++columnIndex;
       }
     }
     collection[currentIndex] = covariance;

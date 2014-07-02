@@ -28,9 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(CorrectedLeaveOneOut);
 
 static Factory<CorrectedLeaveOneOut> RegisteredFactory("CorrectedLeaveOneOut");
@@ -70,6 +67,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   if ( sampleSize < basisSize ) throw InvalidArgumentException( HERE ) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
 
   // Build the design of experiments
+  LOGINFO("Build the Gram matrix");
   Matrix psiAk(sampleSize, basisSize);
   for (UnsignedInteger i = 0; i < sampleSize; ++ i )
     for (UnsignedInteger j = 0; j < basisSize; ++ j )
@@ -78,8 +76,10 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   // Compute the reduced SVD (first 'false' flag) trashing the psiAk matrix (second 'false' flag) as it is no more needed
   Matrix u;
   Matrix vT;
+  LOGINFO("Compute the SVD decomposition");
   const NumericalPoint svd( psiAk.computeSVD(u, vT, false, false) );
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
+  LOGINFO("Solve the least squares problem");
   NumericalPoint b( sampleSize );
   for (UnsignedInteger i = 0; i < sampleSize; ++i) b[i] = y[i][0];
   // First step
@@ -90,7 +90,8 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   // Third step
   const NumericalPoint coefficients(vT.transpose() * d);
 
-  // Compute the  empirical error
+  // Compute the empirical error
+  LOGINFO("Compute the empirical error");
   NumericalPoint h( sampleSize );
   for (UnsignedInteger i = 0; i < sampleSize; ++ i )
     for (UnsignedInteger j = 0; j < basisSize; ++ j )
@@ -100,17 +101,20 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
   const NumericalSample yHat(metamodel(x));
   NumericalScalar empiricalError(0.0);
   for ( UnsignedInteger j = 0; j < sampleSize; ++ j )
-    empiricalError += pow( ( y[j][0] - yHat[j][0] ) / ( 1.0 - h[j] ), 2.0 ) / sampleSize;
+    empiricalError += pow( ( y[j][0] - yHat[j][0] ) / ( 1.0 - h[j] ), 2 ) / sampleSize;
+  LOGINFO(OSS() << "Empirical error=" << empiricalError);
 
   // compute correcting factor
 
+  LOGINFO("Compute the correcting factor");
   NumericalScalar traceInverse( 0.0 );
   for (UnsignedInteger k = 0; k < svd.getDimension(); ++ k)
-    traceInverse += 1.0 / pow(svd[k], 2.0);
+    traceInverse += 1.0 / pow(svd[k], 2);
 
   const NumericalScalar correctingFactor( ( static_cast<NumericalScalar> (sampleSize) / static_cast<NumericalScalar>(sampleSize - basisSize) ) * ( 1.0 + traceInverse ) );
-
-  return correctingFactor * empiricalError / variance;
+  const NumericalScalar relativeError(correctingFactor * empiricalError / variance);
+  LOGINFO(OSS() << "Relative error=" << relativeError);
+  return relativeError;
 }
 
 /* Method save() stores the object through the StorageManager */

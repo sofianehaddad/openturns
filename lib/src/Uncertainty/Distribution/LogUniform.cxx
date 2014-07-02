@@ -26,7 +26,6 @@
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
-#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,8 +38,8 @@ LogUniform::LogUniform()
   : ContinuousDistribution()
   , aLog_(-1.0)
   , bLog_(1.0)
-  , a_(exp(-1.0))
-  , b_(exp(1.0))
+  , a_(std::exp(-1.0))
+  , b_(std::exp(1.0))
 {
   setName( "LogUniform" );
   setDimension( 1 );
@@ -53,8 +52,8 @@ LogUniform::LogUniform(const NumericalScalar aLog,
   : ContinuousDistribution()
   , aLog_(aLog)
   , bLog_(bLog)
-  , a_(exp(aLog_))
-  , b_(exp(bLog_))
+  , a_(std::exp(aLog_))
+  , b_(std::exp(bLog_))
 {
   if (bLog <= aLog) throw InvalidArgumentException(HERE) << "Error the lower bound aLog of a LogUniform distribution must be lesser than its upper bound bLog, here aLog=" << aLog << " bLog=" << bLog;
   setName( "LogUniform" );
@@ -106,7 +105,7 @@ void LogUniform::computeRange()
 /* Get one realization of the distribution */
 NumericalPoint LogUniform::getRealization() const
 {
-  return NumericalPoint(1, exp(aLog_ + (bLog_ - aLog_) * RandomGenerator::Generate()));
+  return NumericalPoint(1, std::exp(aLog_ + (bLog_ - aLog_) * RandomGenerator::Generate()));
 }
 
 
@@ -140,7 +139,7 @@ NumericalScalar LogUniform::computeCDF(const NumericalPoint & point) const
   const NumericalScalar x(point[0]);
   if (x <= a_) return 0.0;
   if (x >= b_)  return 1.0;
-  return (log(x) - aLog_) / (bLog_ - aLog_);
+  return (std::log(x) - aLog_) / (bLog_ - aLog_);
 }
 
 NumericalScalar LogUniform::computeComplementaryCDF(const NumericalPoint & point) const
@@ -150,7 +149,7 @@ NumericalScalar LogUniform::computeComplementaryCDF(const NumericalPoint & point
   const NumericalScalar x(point[0]);
   if (x <= a_) return 1.0;
   if (x > b_)  return 0.0;
-  return (bLog_ - log(x)) / (bLog_ - aLog_);
+  return (bLog_ - std::log(x)) / (bLog_ - aLog_);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -175,8 +174,8 @@ NumericalPoint LogUniform::computeCDFGradient(const NumericalPoint & point) cons
   NumericalPoint cdfGradient(2, 0.0);
   const NumericalScalar x(point[0]);
   if ((x <= a_) || (x > b_)) return cdfGradient;
-  const NumericalScalar denominator(pow(bLog_ - aLog_, 2));
-  const NumericalScalar logX(log(x));
+  const NumericalScalar denominator(std::pow(bLog_ - aLog_, 2));
+  const NumericalScalar logX(std::log(x));
   cdfGradient[0] = (logX - bLog_) / denominator;
   cdfGradient[1] = (aLog_ - logX) / denominator;
   return cdfGradient;
@@ -186,8 +185,8 @@ NumericalPoint LogUniform::computeCDFGradient(const NumericalPoint & point) cons
 NumericalScalar LogUniform::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (tail) return exp(bLog_ - prob * (bLog_ - aLog_));
-  return exp(aLog_ + prob * (bLog_ - aLog_));
+  if (tail) return std::exp(bLog_ - prob * (bLog_ - aLog_));
+  return std::exp(aLog_ + prob * (bLog_ - aLog_));
 }
 
 /* Compute the mean of the distribution */
@@ -200,13 +199,13 @@ void LogUniform::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint LogUniform::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(getCovariance()(0, 0)));
+  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint LogUniform::getSkewness() const
 {
-  NumericalScalar t1 = sqrt(2.0);
+  NumericalScalar t1 = std::sqrt(2.0);
   NumericalScalar t2 = a_ * a_;
   NumericalScalar t4 = b_ * b_;
   NumericalScalar t6 = bLog_ * aLog_;
@@ -216,11 +215,11 @@ NumericalPoint LogUniform::getSkewness() const
   NumericalScalar t39 = 12.0 * t2 + 12.0 * t4 - 4.0 * t4 * t6 + 2.0 * t4 * t9 - 9.0 * t4 * bLog_ + 2.0 * t4 * t14 + 9.0 * t4 *
                         aLog_ - 9.0 * t2 * aLog_ + 2.0 * t2 * t9 + 2.0 * b_ * a_ * t9 + 9.0 * t2 * bLog_ - 4.0 * t2 * t6 - 4.0 * t30 * t6 + 2.0 * b_ * a_ *
                         t14 - 24.0 * t30 + 2.0 * t2 * t14;
-  NumericalScalar t42 = sqrt(b_ - a_);
+  NumericalScalar t42 = std::sqrt(b_ - a_);
   NumericalScalar t45 = -bLog_ + aLog_;
   NumericalScalar t46 = t45 * t45;
   NumericalScalar t54 = -2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_;
-  NumericalScalar t56 = sqrt(-t54 / t46);
+  NumericalScalar t56 = std::sqrt(-t54 / t46);
   NumericalScalar t63 = 1 / t45 / t54 / t56 / t42 * t39 * t1 / 3.0;
   return NumericalPoint(1, t63);
 }
@@ -237,7 +236,7 @@ NumericalPoint LogUniform::getKurtosis() const
   NumericalScalar t42 = 12.0 * t5 + 12.0 * t7 - 4.0 * t7 * t9 + 2.0 * t7 * t12 - 9.0 * t7 * bLog_ + 2.0 * t7 * t17 + 9.0 * t7 *
                         aLog_ - 9.0 * t5 * aLog_ + 2.0 * t5 * t12 + 2.0 * b_ * a_ * t12 + 9.0 * t5 * bLog_ - 4.0 * t5 * t9 - 4.0 * t33 * t9 + 2.0 * b_ *
                         a_ * t17 - 24.0 * t33 + 2.0 * t5 * t17;
-  NumericalScalar t50 = pow(-2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_, 2.0);
+  NumericalScalar t50 = std::pow(-2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_, 2.0);
   NumericalScalar t54 = 2.0 / 3.0 / t50 * t42 * (-bLog_ + aLog_) / (-b_ + a_);
   return NumericalPoint(1, t54);
 }
@@ -247,7 +246,7 @@ void LogUniform::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
   const NumericalScalar aLogbLog(bLog_ - aLog_);
-  covariance_(0, 0) = 0.5 * (b_ - a_) * (b_ * (aLogbLog - 2.0) + a_ * (aLogbLog + 2.0)) / pow(aLogbLog, 2);
+  covariance_(0, 0) = 0.5 * (b_ - a_) * (b_ * (aLogbLog - 2.0) + a_ * (aLogbLog + 2.0)) / std::pow(aLogbLog, 2);
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -255,7 +254,7 @@ void LogUniform::computeCovariance() const
 NumericalPoint LogUniform::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return NumericalPoint(1, 1.0);
-  return NumericalPoint(1, (pow(b_, static_cast<int>(n)) - pow(a_, static_cast<int>(n))) / (n * (bLog_ - aLog_)));
+  return NumericalPoint(1, (std::pow(b_, static_cast<int>(n)) - std::pow(a_, static_cast<int>(n))) / (n * (bLog_ - aLog_)));
 }
 
 /* Parameters value and description accessor */
@@ -276,7 +275,9 @@ LogUniform::NumericalPointWithDescriptionCollection LogUniform::getParametersCol
 
 void LogUniform::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = LogUniform(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 
@@ -287,7 +288,7 @@ void LogUniform::setALog(const NumericalScalar aLog)
   if (aLog != aLog_)
   {
     aLog_ = aLog;
-    a_ = exp(aLog_);
+    a_ = std::exp(aLog_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -306,7 +307,7 @@ void LogUniform::setBLog(const NumericalScalar bLog)
   if (bLog != bLog_)
   {
     bLog_ = bLog;
-    b_ = exp(bLog);
+    b_ = std::exp(bLog);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();

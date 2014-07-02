@@ -35,8 +35,8 @@ static Factory<FarlieGumbelMorgensternCopula> RegisteredFactory("FarlieGumbelMor
 
 /* Default constructor */
 FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula()
-  : CopulaImplementation(),
-    theta_(0.0)
+  : CopulaImplementation()
+  , theta_(0.0)
 {
   setName( "FarlieGumbelMorgensternCopula" );
   setDimension( 2 );
@@ -45,8 +45,8 @@ FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula()
 
 /* Parameters constructor */
 FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula(const NumericalScalar theta)
-  : CopulaImplementation(),
-    theta_(0.0)
+  : CopulaImplementation()
+  , theta_(0.0)
 {
   setName( "FarlieGumbelMorgensternCopula" );
   // Check the value of theta
@@ -223,7 +223,7 @@ NumericalScalar FarlieGumbelMorgensternCopula::computeConditionalQuantile(const 
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const NumericalScalar alpha(theta_ * (1.0 - 2.0 * y[0]));
   const NumericalScalar alpha1(1.0 + alpha);
-  return 2.0 * q / (alpha1 + sqrt(alpha1 * alpha1 - 4.0 * q * alpha));
+  return 2.0 * q / (alpha1 + std::sqrt(alpha1 * alpha1 - 4.0 * q * alpha));
 }
 
 /* Tell if the distribution has an elliptical copula */
@@ -254,13 +254,15 @@ FarlieGumbelMorgensternCopula::NumericalPointWithDescriptionCollection FarlieGum
 
 void FarlieGumbelMorgensternCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = FarlieGumbelMorgensternCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Theta accessor */
 void FarlieGumbelMorgensternCopula::setTheta(const NumericalScalar theta)
 {
-  if (fabs(theta) > 1.0) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1]";
+  if (std::abs(theta) > 1.0) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1]";
   theta_ = theta;
 }
 

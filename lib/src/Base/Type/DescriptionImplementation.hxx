@@ -79,6 +79,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  /** Build a default description */
+  static DescriptionImplementation BuildDefault(const UnsignedInteger dimension,
+      const String & prefix = "Component");
+
 }; /* class DescriptionImplementation */
 
 END_NAMESPACE_OPENTURNS

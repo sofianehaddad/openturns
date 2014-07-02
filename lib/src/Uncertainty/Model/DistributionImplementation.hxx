@@ -67,9 +67,60 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const DistributionImplementation & other) const;
-
-  /** Comparison operator */
   Bool operator !=(const DistributionImplementation & other) const;
+
+  /** Addition operator */
+  Implementation operator + (const DistributionImplementation & other) const;
+  Implementation operator + (const Implementation & other) const;
+
+  Implementation operator + (const NumericalScalar value) const;
+
+  /** Substraction operator */
+  Implementation operator - (const DistributionImplementation & other) const;
+  Implementation operator - (const Implementation & other) const;
+
+  Implementation operator - (const NumericalScalar value) const;
+
+  /** Multiplication operator */
+  Implementation operator * (const DistributionImplementation & other) const;
+  Implementation operator * (const Implementation & other) const;
+
+  Implementation operator * (const NumericalScalar value) const;
+
+  /** Division operator */
+  Implementation operator / (const DistributionImplementation & other) const;
+  Implementation operator / (const Implementation & other) const;
+
+  Implementation operator / (const NumericalScalar value) const;
+
+  /** Static methods to transform distributions by usual functions */
+  Implementation cos() const;
+  Implementation sin() const;
+  Implementation tan() const;
+
+  Implementation acos() const;
+  Implementation asin() const;
+  Implementation atan() const;
+
+  Implementation cosh() const;
+  Implementation sinh() const;
+  Implementation tanh() const;
+
+  Implementation acosh() const;
+  Implementation asinh() const;
+  Implementation atanh() const;
+
+  Implementation exp() const;
+  Implementation log() const;
+  Implementation ln() const;
+
+  Implementation pow(const SignedInteger & exponent) const;
+  Implementation pow(const NumericalScalar & exponent) const;
+  Implementation inverse() const;
+  Implementation sqr() const;
+  Implementation sqrt() const;
+  Implementation cbrt() const;
+  Implementation abs() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -175,6 +226,14 @@ public:
 
   /** Get the probability content of an interval */
   virtual NumericalScalar computeProbability(const Interval & interval) const;
+protected:
+  /** Generic implementation for continuous distributions */
+  virtual NumericalScalar computeProbabilityContinuous(const Interval & interval) const;
+  /** Generic implementation for discrete distributions */
+  virtual NumericalScalar computeProbabilityDiscrete(const Interval & interval) const;
+  /** Generic implementation for general distributions */
+  virtual NumericalScalar computeProbabilityGeneral(const Interval & interval) const;
+public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   virtual NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
@@ -280,10 +339,10 @@ public:
   virtual CorrelationMatrix getShapeMatrix() const;
 
   /** Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getCholesky() const;
+  TriangularMatrix getCholesky() const;
 
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getInverseCholesky() const;
+  TriangularMatrix getInverseCholesky() const;
 
   /** Check if the distribution is a copula */
   virtual Bool isCopula() const;
@@ -488,6 +547,10 @@ public:
   /** Get a dispersion indicator for a 1D distribution */
   NumericalScalar getDispersionIndicator() const;
 
+  /** Is it safe to compute PDF/CDF etc in parallel? */
+  Bool isParallel() const;
+  void setParallel(const Bool flag);
+
 protected:
 
   /** Draw the PDF of a discrete distribution */
@@ -689,8 +752,13 @@ protected:
 
   /** Use parallelism */
   Bool isParallel_;
-}; /* class DistributionImplementation */
 
+  /** Data for characteristic function computation */
+  mutable Bool isInitializedCF_;
+
+  mutable NumericalPoint pdfGrid_;
+
+}; /* class DistributionImplementation */
 
 END_NAMESPACE_OPENTURNS
 

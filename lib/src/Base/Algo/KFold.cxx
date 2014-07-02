@@ -30,8 +30,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(KFold);
 
 
@@ -80,7 +78,7 @@ NumericalScalar KFold::run(const NumericalSample & x,
   // i is the initial index
   for ( UnsignedInteger i = 0; i < k_; ++ i )
   {
-
+    LOGINFO(OSS() << "Sub-sample " << i << " over " << k_ - 1);
     // build training/test samples
     NumericalSample xTrain( 0, dimension );
     NumericalSample yTrain( 0, 1 );
@@ -102,20 +100,24 @@ NumericalScalar KFold::run(const NumericalSample & x,
     } // Partitioning loop
 
     // perform LS regression on the current basis
+    LOGINFO("Solve current least-squares problem");
     PenalizedLeastSquaresAlgorithm penalizedLeastSquaresAlgorithm( xTrain, yTrain, basis );
     penalizedLeastSquaresAlgorithm.run();
     NumericalPoint coefficientsTrain( penalizedLeastSquaresAlgorithm.getCoefficients() );
-
+    LOGINFO("Compute the residual");
     // evaluate on the test sample
     NumericalMathFunction metamodelTrain( basis, coefficientsTrain );
     NumericalSample yHatTest(metamodelTrain(xTest));
     // The empirical error is the normalized L2 error
     for ( UnsignedInteger j = 0; j < testSize; ++ j ) quadraticResidual += pow( yTest[j][0] - yHatTest[j][0], 2.0 );
+    LOGINFO(OSS() << "Cumulated residual=" << quadraticResidual);
   }
 
   const NumericalScalar empiricalError( quadraticResidual / ( testSize * k_ ) );
 
-  return empiricalError / variance;
+  const NumericalScalar relativeError(empiricalError / variance);
+  LOGINFO(OSS() << "Relative error=" << relativeError);
+  return relativeError;
 }
 
 

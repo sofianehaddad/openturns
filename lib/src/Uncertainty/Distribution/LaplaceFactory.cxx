@@ -64,7 +64,7 @@ Laplace LaplaceFactory::buildAsLaplace(const NumericalSample & sample) const
   const UnsignedInteger size(sample.getSize());
   const NumericalScalar mu(sample.computeMedianPerComponent()[0]);
   NumericalScalar tau(0.0);
-  for (UnsignedInteger i = 0; i < size; ++i) tau += fabs(sample[i][0] - mu);
+  for (UnsignedInteger i = 0; i < size; ++i) tau += std::abs(sample[i][0] - mu);
   if (tau == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution with infinite lambda.";
   Laplace result(size / tau, mu);
   result.setDescription(sample.getDescription());

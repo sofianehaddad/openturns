@@ -134,6 +134,7 @@ void DatabaseNumericalMathEvaluationImplementation::setSample(const NumericalSam
   outputSample_ = outputSample;
   setInputDescription(inputSample.getDescription());
   setOutputDescription(outputSample.getDescription());
+  tree_ = KDTree(inputSample);
   // Don't activate the cache systematically as it can take a significant amount of time for large samples
   if (activateCache)
   {
@@ -160,26 +161,28 @@ NumericalPoint DatabaseNumericalMathEvaluationImplementation::operator()( const 
   }
   else
   {
-    // find the nearest
-    const UnsignedInteger size(inputSample_.getSize());
-    UnsignedInteger nearestPointIndex(0);
-    NumericalScalar nearestPointDistance( (inputSample_[0] - inP).norm() );
-    for ( UnsignedInteger i = 1; i < size; ++ i )
-    {
-      NumericalScalar pointDistance( (inputSample_[i] - inP).norm() );
-      if (pointDistance < nearestPointDistance)
-      {
-        nearestPointDistance = pointDistance;
-        nearestPointIndex = i;
-      }
-    }
-
-    result = outputSample_[nearestPointIndex];
+    result = outputSample_[tree_.getNearestNeighbourIndex(inP)];
   }
   ++ callsNumber_;
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
+NumericalSample DatabaseNumericalMathEvaluationImplementation::operator()( const NumericalSample & inS ) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
+  NumericalSample result;
+  if (inS == inputSample_) result = outputSample_;
+  else result = NumericalMathEvaluationImplementation::operator()(inS);
+  callsNumber_ += inS.getSize();
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inS);
     outputStrategy_.store(result);
   }
   return result;

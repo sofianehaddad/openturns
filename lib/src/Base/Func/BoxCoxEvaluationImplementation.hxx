@@ -21,6 +21,7 @@
 #include "NumericalMathEvaluationImplementation.hxx"
 #include "NumericalPoint.hxx"
 #include "NumericalSample.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,7 +37,7 @@ class OT_API BoxCoxEvaluationImplementation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;
-public:
+ public:
 
 
   /** Default constructor */
@@ -61,6 +62,7 @@ public:
   /** Operator () */
   using NumericalMathEvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
+  NumericalSample operator() (const NumericalSample & inS) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
@@ -80,7 +82,38 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
+ protected:
+
+  struct ComputeSamplePolicy
+  {
+    const NumericalSample & input_;
+    NumericalSample & output_;
+    const BoxCoxEvaluationImplementation & evaluation_;
+
+    ComputeSamplePolicy(const NumericalSample & input,
+                        NumericalSample & output,
+                        const BoxCoxEvaluationImplementation & evaluation)
+      : input_(input)
+      , output_(output)
+      , evaluation_(evaluation)
+    {
+      // Nothing to do
+    }
+
+    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        {
+          for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
+            {
+              const NumericalScalar lambda_j(evaluation_.getLambda()[j]);
+              const NumericalScalar logX(log(input_[i][j] + evaluation_.getShift()[j]));
+              if (std::abs(lambda_j * logX) < 1e-8) output_[i][j] = logX * (1.0 + 0.5 * lambda_j * logX);
+              else output_[i][j] = expm1(lambda_j * logX) / lambda_j;
+            } // j
+        } // i
+    } // operator ()
+  };  // struct ComputeSamplePolicy
 
   /** Lambda vector of the box cox transform */
   NumericalPoint lambda_;

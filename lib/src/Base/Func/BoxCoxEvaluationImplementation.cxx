@@ -17,6 +17,7 @@
 
 #include "BoxCoxEvaluationImplementation.hxx"
 #include "PersistentObjectFactory.hxx"
+#include "TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,8 +38,8 @@ BoxCoxEvaluationImplementation::BoxCoxEvaluationImplementation(const NumericalPo
   , lambda_(lambda)
   , shift_(lambda.getDimension())
 {
-  setInputDescription(BuildDefaultDescription(lambda_.getSize(), "x"));
-  setOutputDescription(BuildDefaultDescription(lambda_.getSize(), "y"));
+  setInputDescription(Description::BuildDefault(lambda_.getSize(), "x"));
+  setOutputDescription(Description::BuildDefault(lambda_.getSize(), "y"));
 }
 
 BoxCoxEvaluationImplementation::BoxCoxEvaluationImplementation(const NumericalPoint & lambda,
@@ -48,8 +49,8 @@ BoxCoxEvaluationImplementation::BoxCoxEvaluationImplementation(const NumericalPo
   , shift_(shift)
 {
   if (lambda.getDimension() != shift.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given exponent vector has a dimension=" << lambda.getDimension() << " different from the shift dimension=" << shift.getDimension();
-  setInputDescription(BuildDefaultDescription(lambda_.getSize(), "x"));
-  setOutputDescription(BuildDefaultDescription(lambda_.getSize(), "y"));
+  setInputDescription(Description::BuildDefault(lambda_.getSize(), "x"));
+  setOutputDescription(Description::BuildDefault(lambda_.getSize(), "y"));
 }
 
 /* Clone constructor */
@@ -100,14 +101,34 @@ NumericalPoint BoxCoxEvaluationImplementation::getShift() const
 }
 
 /* Operator () */
+NumericalSample BoxCoxEvaluationImplementation::operator() (const NumericalSample & inS) const
+{
+  if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
+  //  return NumericalMathEvaluationImplementation::operator()(inS);
+  const UnsignedInteger size(inS.getSize());
+  NumericalSample result(size, getInputDimension());
+  const BoxCoxEvaluationImplementation::ComputeSamplePolicy policy( inS, result, *this );
+  TBB::ParallelFor( 0, size, policy );
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inS);
+    outputStrategy_.store(result);
+  }
+  result.setDescription(getOutputDescription());
+  return result;
+}
+
+/* Operator () */
 NumericalPoint BoxCoxEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  if (inP.getDimension() != lambda_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  const UnsignedInteger dimension(getInputDimension());
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
   NumericalPoint result(lambda_.getDimension());
 
   // There is no check of positive variables
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
-  for (UnsignedInteger index = 0; index < inP.getDimension(); ++index)
+  for (UnsignedInteger index = 0; index < dimension; ++index)
   {
     const NumericalScalar x(inP[index] + shift_[index]);
     if (x <= 0.0)
@@ -115,8 +136,9 @@ NumericalPoint BoxCoxEvaluationImplementation::operator() (const NumericalPoint 
 
     // Applying the Box-Cox function
     const NumericalScalar lambda_i(lambda_[index]);
-    if (lambda_i == 0) result[index] = log(x);
-    else result[index] = ((pow(x, lambda_i) - 1.0) / lambda_i);
+    const NumericalScalar logX(log(x));
+    if (std::abs(lambda_i * logX) < 1e-8) result[index] = logX * (1.0 + 0.5 * lambda_i * logX);
+    else result[index] = expm1(lambda_i * logX) / lambda_i;
   }
   ++callsNumber_;
   if (isHistoryEnabled_)

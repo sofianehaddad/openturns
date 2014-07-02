@@ -69,7 +69,7 @@ NumericalScalar Normal2DCDF(const NumericalScalar x1,
                             const NumericalScalar rho,
                             const Bool tail)
 {
-  NumericalScalar absRho(fabs(rho));
+  NumericalScalar absRho(std::abs(rho));
   if (absRho > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient must be in [-1,1], here rho=" << rho;
   // Use the relation Normal2DCDF(x1, x2, false) = Normal2DCDF(-x1, -x2, true)
   if (!tail) return Normal2DCDF(-x1, -x2, rho, true);
@@ -111,12 +111,12 @@ NumericalScalar Normal2DCDF(const NumericalScalar x1,
   if (absRho <= 0.925)
   {
     const NumericalScalar halfSquare(0.5 * (u1 * u1 + u2 * u2));
-    const NumericalScalar arcSinRho(asin(rho));
+    const NumericalScalar arcSinRho(std::asin(rho));
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar sinValueMinus(sin(0.5 * arcSinRho * (1.0 - nodes[shift + i])));
-      const NumericalScalar sinValuePlus(sin(0.5 * arcSinRho * (1.0 + nodes[shift + i])));
-      cdf += weights[shift + i] * (exp((sinValueMinus * u1u2 - halfSquare) / (1.0 - sinValueMinus * sinValueMinus)) + exp((sinValuePlus * u1u2 - halfSquare) / (1.0 - sinValuePlus * sinValuePlus)));
+      const NumericalScalar sinValueMinus(std::sin(0.5 * arcSinRho * (1.0 - nodes[shift + i])));
+      const NumericalScalar sinValuePlus(std::sin(0.5 * arcSinRho * (1.0 + nodes[shift + i])));
+      cdf += weights[shift + i] * (std::exp((sinValueMinus * u1u2 - halfSquare) / (1.0 - sinValueMinus * sinValueMinus)) + std::exp((sinValuePlus * u1u2 - halfSquare) / (1.0 - sinValuePlus * sinValuePlus)));
     }
     cdf *= arcSinRho / (4.0 * M_PI);
     cdf += DistFunc::pNormal(-u1) * DistFunc::pNormal(-u2);
@@ -130,18 +130,18 @@ NumericalScalar Normal2DCDF(const NumericalScalar x1,
   if (absRho < 1.0)
   {
     const NumericalScalar aSquare((1.0 - rho) * (1.0 + rho));
-    NumericalScalar a(sqrt(aSquare));
-    const NumericalScalar b(fabs(u1 - u2));
+    NumericalScalar a(std::sqrt(aSquare));
+    const NumericalScalar b(std::abs(u1 - u2));
     const NumericalScalar bSquare(b * b);
     const NumericalScalar c(0.5 - 0.125 * u1u2);
     const NumericalScalar d(0.75 - 0.06125 * u1u2);
     const NumericalScalar aSquareReduced(-0.5 * (bSquare / aSquare + u1u2));
     const NumericalScalar firstTerm(c * (1.0 - 0.2 * d * bSquare) / 3.0);
-    if (aSquareReduced > NORMAL2DCDF_MIN_LOG) cdf = a * exp(aSquareReduced) * (1.0 - (bSquare - aSquare) * firstTerm + 0.2 * c * d * aSquare * aSquare);
+    if (aSquareReduced > NORMAL2DCDF_MIN_LOG) cdf = a * std::exp(aSquareReduced) * (1.0 - (bSquare - aSquare) * firstTerm + 0.2 * c * d * aSquare * aSquare);
     if (u1u2 < -2.0 * NORMAL2DCDF_MIN_LOG)
     {
-      const NumericalScalar sp(sqrt(2.0 * M_PI) * DistFunc::pNormal(-b / a));
-      cdf -= exp(-0.5 * u1u2) * sp * b * (1.0 - bSquare * firstTerm);
+      const NumericalScalar sp(std::sqrt(2.0 * M_PI) * DistFunc::pNormal(-b / a));
+      cdf -= std::exp(-0.5 * u1u2) * sp * b * (1.0 - bSquare * firstTerm);
     } // u1u2 < -2.0 * NORMAL2DCDF_MIN_LOG
     a *= 0.5;
     for(UnsignedInteger i = 0; i < size; ++i)
@@ -153,10 +153,10 @@ NumericalScalar Normal2DCDF(const NumericalScalar x1,
         const NumericalScalar asr(-0.5 * (bSquare / xSquare + u1u2));
         if (asr > NORMAL2DCDF_MIN_LOG)
         {
-          const NumericalScalar rs(sqrt(1.0 - xSquare));
+          const NumericalScalar rs(std::sqrt(1.0 - xSquare));
           const NumericalScalar sp(1.0 + c * xSquare * (1.0 + d * xSquare));
-          const NumericalScalar ep(exp(-u1u2 * (1.0 - rs) / (2.0 * (1.0 + rs))) / rs);
-          cdf += a * weights[shift + i] * exp(asr) * (ep - sp);
+          const NumericalScalar ep(std::exp(-u1u2 * (1.0 - rs) / (2.0 * (1.0 + rs))) / rs);
+          cdf += a * weights[shift + i] * std::exp(asr) * (ep - sp);
         } // asr > NORMAL2DCDF_MIN_LOG
       } // j
     } // i

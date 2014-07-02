@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     /* Discretize the process on a small time grid */
     RegularGrid timeGrid(0.0, 1.0, 11);
-    fullprint << "discretized covariance over the time grid = " << timeGrid << " is " <<  myModel.discretizeCovariance(timeGrid) << std::endl;
+    fullprint << "discretized covariance over the time grid = " << timeGrid << " is " <<  myModel.discretize(timeGrid) << std::endl;
 
   }
   catch (TestFailed & ex)

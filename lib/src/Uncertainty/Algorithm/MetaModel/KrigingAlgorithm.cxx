@@ -51,7 +51,8 @@ KrigingAlgorithm::KrigingAlgorithm()
 KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const Basis & basis,
-                                   const CovarianceModel & covarianceModel)
+                                   const CovarianceModel & covarianceModel,
+				   const Bool normalize)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
@@ -67,17 +68,24 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
     throw InvalidArgumentException(HERE) << "Input sample dimension (" << inputSample_.getDimension() << ") does not match covariance model dimension (" << covarianceModel.getDimension() << ").";
   
   // normalize the sample
-  UnsignedInteger dimension(inputSample.getDimension());
-  NumericalPoint mean(inputSample.computeMean());
-  NumericalPoint stdev(inputSample.computeStandardDeviationPerComponent());
-  SquareMatrix linear(dimension);
-  for (UnsignedInteger j = 0; j < dimension; ++ j)
-  {
-    linear(j, j) = 1.0;
-    if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
-  }
-  NumericalPoint zero(dimension);
-  setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+  const UnsignedInteger dimension(inputSample.getDimension());
+  if (normalize)
+    {
+      const NumericalPoint mean(inputSample.computeMean());
+      const NumericalPoint stdev(inputSample.computeStandardDeviationPerComponent());
+      SquareMatrix linear(dimension);
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+	{
+	  linear(j, j) = 1.0;
+	  if (fabs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
+	}
+      const NumericalPoint zero(dimension);
+      setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    }
+  else
+    {
+      setInputTransformation(NumericalMathFunction(Description::BuildDefault(dimension, "x"), Description::BuildDefault(dimension, "x")));
+    }
 }
 
 
@@ -112,7 +120,6 @@ void KrigingAlgorithm::run()
   const UnsignedInteger size(inputSample_.getSize());
   const UnsignedInteger basisSize(basis_.getSize());
   normalizedInputSample_ = inputTransformation_(inputSample_);
-
   const UnsignedInteger outputDimension(outputSample_.getDimension());
   NumericalMathFunction::NumericalMathFunctionCollection processEvaluationCollection(outputDimension);
   //  NumericalSample allBeta(outputDimension, size);
@@ -205,7 +212,7 @@ NumericalScalar KrigingAlgorithm::computeLogLikelihood(const NumericalPoint & th
     try
     {
       // C_ = R.computeCholesky().getImplementation();
-      C = R.computeCholesky().getImplementation();
+      C = R.computeCholesky();
       continuationCondition = false;
     }
     // If it has not yet been computed, compute it and store it

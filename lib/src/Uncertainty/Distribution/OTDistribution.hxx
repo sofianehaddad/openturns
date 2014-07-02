@@ -45,6 +45,7 @@
 #include "ClaytonCopulaFactory.hxx"
 #include "ComposedCopula.hxx"
 #include "ComposedDistribution.hxx"
+#include "CompositeDistribution.hxx"
 #include "ConditionalDistribution.hxx"
 #include "Dirac.hxx"
 #include "DiracFactory.hxx"
@@ -75,6 +76,7 @@
 #include "IndependentCopula.hxx"
 #include "InverseNormal.hxx"
 #include "InverseNormalFactory.hxx"
+#include "InverseWishart.hxx"
 #include "KPermutationsDistribution.hxx"
 #include "KernelMixture.hxx"
 #include "KernelSmoothing.hxx"
@@ -132,6 +134,7 @@
 #include "UserDefinedFactory.hxx"
 #include "Weibull.hxx"
 #include "WeibullFactory.hxx"
+#include "Wishart.hxx"
 #include "ZipfMandelbrot.hxx"
 
 #endif /* OPENTURNS_OTDISTRIBUTION_HXX */

@@ -57,14 +57,14 @@ HistogramFactory::Implementation HistogramFactory::build() const
 
 Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) const
 {
-  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   // Construct the histogram
   // It will extends from min to max.
   const NumericalScalar min(sample.getMin()[0]);
   const NumericalScalar max(sample.getMax()[0]);
   if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram for a sample with constant realizations";
   const UnsignedInteger size(sample.getSize());
-  NumericalScalar hOpt(sample.computeStandardDeviationPerComponent()[0] * pow(24.0 * sqrt(M_PI) / size, 1.0 / 3.0));
+  NumericalScalar hOpt(sample.computeStandardDeviationPerComponent()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0));
   const UnsignedInteger barNumber(static_cast<UnsignedInteger>(ceil((max - min) / hOpt + 0.5)));
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
   const NumericalScalar delta(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultQuantileEpsilon") * (max - min));

@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     fullprint << "myModel=" << myModel << std::endl;
 
     /* Sample the UserDefinedSpectralModel */
-    RegularGrid samplingGrid(-0.4, 1.0 / (3.0 * size), 5 * size);
+    RegularGrid samplingGrid(-0.4, 1.0 / 16, 5 * size);
     for (UnsignedInteger i = 0; i < samplingGrid.getN(); ++i)
     {
       NumericalScalar frequency(samplingGrid.getValue(i));

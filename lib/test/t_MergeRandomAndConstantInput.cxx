@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     input[2] = "L";
     input[3] = "I";
     NumericalMathFunction externalCode(input, Description(1, "d"), Description(1, "F*L^3/(3*E*I)"));
-
+    std::cerr << "externalCode=" << externalCode << std::endl;
     UnsignedInteger dim(externalCode.getInputDimension());
 
     /** The external code will be connected to 2 independent random variables X0 and X1 and one deterministic variable X2 with the following scheme:
@@ -71,10 +71,14 @@ int main(int argc, char *argv[])
     NumericalPoint zero(stochasticDimension, 0);
     /** A LinearNumericalMathFunction will arrive soon... */
     connect.setEvaluationImplementation(new LinearNumericalMathEvaluationImplementation(zero, b, A.transpose()));
+    std::cerr << "connect=" << connect << std::endl;
     connect.setGradientImplementation(new ConstantNumericalMathGradientImplementation(A.transpose()));
+    std::cerr << "connect=" << connect << std::endl;
     connect.setHessianImplementation(new ConstantNumericalMathHessianImplementation(SymmetricTensor(stochasticDimension, dim)));
+    std::cerr << "connect=" << connect << std::endl;
     /** We are now ready to build the resulting code externalCode(connect()) */
     NumericalMathFunction finalCode(externalCode, connect);
+    std::cerr << "finalCode=" << finalCode << std::endl;
 
     /** Check if it worked */
     NumericalPoint x(connect.getInputDimension());

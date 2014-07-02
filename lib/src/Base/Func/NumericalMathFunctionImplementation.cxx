@@ -246,7 +246,8 @@ NumericalMathFunctionImplementation * NumericalMathFunctionImplementation::clone
 /* Comparison operator */
 Bool NumericalMathFunctionImplementation::operator ==(const NumericalMathFunctionImplementation & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return (*p_evaluationImplementation_ == *other.p_evaluationImplementation_) && (*p_gradientImplementation_ == *other.p_gradientImplementation_) && (*p_hessianImplementation_ == *other.p_hessianImplementation_);
 }
 
 /* String converter */
@@ -482,6 +483,14 @@ Matrix NumericalMathFunctionImplementation::parametersGradient(const NumericalPo
   return p_evaluationImplementation_->parametersGradient(inP);
 }
 
+/* Gradient according to the marginal parameters */
+Matrix NumericalMathFunctionImplementation::parametersGradient(const NumericalPoint & inP,
+							       const NumericalPoint & parameters)
+{
+  setParameters(parameters);
+  return p_evaluationImplementation_->parametersGradient(inP);
+}
+
 /* Parameters value and description accessor */
 NumericalPointWithDescription NumericalMathFunctionImplementation::getParameters() const
 {
@@ -491,12 +500,28 @@ NumericalPointWithDescription NumericalMathFunctionImplementation::getParameters
 void NumericalMathFunctionImplementation::setParameters(const NumericalPointWithDescription & parameters)
 {
   p_evaluationImplementation_->setParameters(parameters);
+  p_gradientImplementation_->setParameters(parameters);
+  p_hessianImplementation_->setParameters(parameters);
+}
+
+void NumericalMathFunctionImplementation::setParameters(const NumericalPoint & parameters)
+{
+  p_evaluationImplementation_->setParameters(parameters);
+  p_gradientImplementation_->setParameters(parameters);
+  p_hessianImplementation_->setParameters(parameters);
 }
 
 
 /* Operator () */
 NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP) const
 {
+  return p_evaluationImplementation_->operator()(inP);
+}
+
+NumericalPoint NumericalMathFunctionImplementation::operator() (const NumericalPoint & inP,
+								const NumericalPoint & parameters)
+{
+  setParameters(parameters);
   return p_evaluationImplementation_->operator()(inP);
 }
 
@@ -519,6 +544,14 @@ Matrix NumericalMathFunctionImplementation::gradient(const NumericalPoint & inP)
   return p_gradientImplementation_->gradient(inP);
 }
 
+Matrix NumericalMathFunctionImplementation::gradient(const NumericalPoint & inP,
+						     const NumericalPoint & parameters)
+{
+  if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
+  setParameters(parameters);
+  return p_gradientImplementation_->gradient(inP);
+}
+
 /* Method hessian() returns the symetric tensor of the function at point */
 SymmetricTensor NumericalMathFunctionImplementation::hessian(const NumericalPoint & inP) const
 {
@@ -526,20 +559,12 @@ SymmetricTensor NumericalMathFunctionImplementation::hessian(const NumericalPoin
   return p_hessianImplementation_->hessian(inP);
 }
 
-
-
-
-/* Accessor for input point dimension */
-UnsignedInteger NumericalMathFunctionImplementation::getInputNumericalPointDimension() const
+SymmetricTensor NumericalMathFunctionImplementation::hessian(const NumericalPoint & inP,
+						     const NumericalPoint & parameters)
 {
-  return p_evaluationImplementation_->getInputDimension();
-}
-
-/* Accessor for output point dimension */
-UnsignedInteger NumericalMathFunctionImplementation::getOutputNumericalPointDimension() const
-{
-  return p_evaluationImplementation_->getOutputDimension();
-
+  if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
+  setParameters(parameters);
+  return p_hessianImplementation_->hessian(inP);
 }
 
 /* Accessor for input point dimension */
@@ -636,7 +661,7 @@ void NumericalMathFunctionImplementation::InitializeDocumentation()
   ValidFunctions_.add("round(arg) -> round to nearest integer");
   ValidFunctions_.add("rint(arg) -> round to nearest integer");
   ValidFunctions_.add("sign(arg) -> sign function -1 if x<0; 1 if x>0");
-  ValidFunctions_.add("if(arg1, arg2, arg3) -> if arg1 then arg2 else arg3");
+  ValidFunctions_.add("(condition ? value1 : value2) -> if condition then value1 else value2");
   ValidFunctions_.add("sum(arg1, ..., argn) -> sum of all arguments");
   ValidFunctions_.add("avg(arg1, ..., argn) -> mean value of all arguments");
   ValidFunctions_.add("min(arg1, ..., argn) -> min of all arguments");

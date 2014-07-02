@@ -53,8 +53,8 @@ KrigingEvaluation::KrigingEvaluation (const Basis & basis,
   , beta_(beta)
   , gamma_(gamma)
 {
-  setInputDescription(BuildDefaultDescription(getInputDimension(), "x"));
-  setOutputDescription(BuildDefaultDescription(getOutputDimension(), "y"));
+  setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
+  setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
   setParameters(NumericalPointWithDescription(getInputDimension()));
 }
 

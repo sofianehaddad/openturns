@@ -99,12 +99,12 @@ NumericalPoint GumbelCopula::getRealization() const
   NumericalPoint realization(2);
   const NumericalScalar u((RandomGenerator::Generate() - 0.5) * M_PI);
   const NumericalScalar u2(u + M_PI_2);
-  const NumericalScalar e(-log(RandomGenerator::Generate()));
+  const NumericalScalar e(-std::log(RandomGenerator::Generate()));
   const NumericalScalar inverseTheta(1.0 / theta_);
-  const NumericalScalar t(cos(u - u2 * inverseTheta) / e);
-  const NumericalScalar gamma(pow(sin(u2 * inverseTheta) / t, inverseTheta) * t / cos(u));
-  realization[0] = exp(-pow(-log(RandomGenerator::Generate()), inverseTheta) / gamma);
-  realization[1] = exp(-pow(-log(RandomGenerator::Generate()), inverseTheta) / gamma);
+  const NumericalScalar t(std::cos(u - u2 * inverseTheta) / e);
+  const NumericalScalar gamma(std::pow(std::sin(u2 * inverseTheta) / t, inverseTheta) * t / std::cos(u));
+  realization[0] = std::exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
+  realization[1] = std::exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
   return realization;
 }
 
@@ -119,21 +119,21 @@ NumericalPoint GumbelCopula::computeDDF(const NumericalPoint & point) const
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(2, 0.0);
   NumericalPoint result(2);
-  const NumericalScalar t1(log(u));
-  const NumericalScalar t2(pow(-t1, theta_));
-  const NumericalScalar t3(log(v));
-  const NumericalScalar t4(pow(-t3, theta_));
+  const NumericalScalar t1(std::log(u));
+  const NumericalScalar t2(std::pow(-t1, theta_));
+  const NumericalScalar t3(std::log(v));
+  const NumericalScalar t4(std::pow(-t3, theta_));
   const NumericalScalar t5(t2 + t4);
-  const NumericalScalar t7(pow(t5, 1.0 / theta_));
+  const NumericalScalar t7(std::pow(t5, 1.0 / theta_));
   const NumericalScalar t8(t2 * t2);
-  const NumericalScalar t10(pow(u, 2.0));
+  const NumericalScalar t10(std::pow(u, 2.0));
   const NumericalScalar t11(1.0 / t10);
   const NumericalScalar t12(t1 * t1);
   const NumericalScalar t13(1.0 / t12);
   const NumericalScalar t14(t11 * t13);
   const NumericalScalar t15(t5 * t5);
   const NumericalScalar t17(1.0 / t15 / t5);
-  const NumericalScalar t20(exp(-t7));
+  const NumericalScalar t20(std::exp(-t7));
   const NumericalScalar t22(-1.0 + theta_ + t7);
   const NumericalScalar t23(1.0 / v);
   const NumericalScalar t25(1.0 / t3);
@@ -151,7 +151,7 @@ NumericalPoint GumbelCopula::computeDDF(const NumericalPoint & point) const
 
   const NumericalScalar t8b(t4 * t4);
   const NumericalScalar t9b(t7 * t8b);
-  const NumericalScalar t10b(pow(v, 2.0));
+  const NumericalScalar t10b(std::pow(v, 2.0));
   const NumericalScalar t11b(1.0 / t10b);
   const NumericalScalar t12b(t3 * t3);
   const NumericalScalar t13b(1.0 / t12b);
@@ -178,13 +178,13 @@ NumericalScalar GumbelCopula::computePDF(const NumericalPoint & point) const
   const NumericalScalar v(point[1]);
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return 0.0;
-  const NumericalScalar logU(log(u));
-  const NumericalScalar logV(log(v));
-  const NumericalScalar minusLogUPowerTheta(pow(-logU, theta_));
-  const NumericalScalar minusLogVPowerTheta(pow(-logV, theta_));
+  const NumericalScalar logU(std::log(u));
+  const NumericalScalar logV(std::log(v));
+  const NumericalScalar minusLogUPowerTheta(std::pow(-logU, theta_));
+  const NumericalScalar minusLogVPowerTheta(std::pow(-logV, theta_));
   const NumericalScalar sum1(minusLogUPowerTheta + minusLogVPowerTheta);
-  const NumericalScalar pow1(pow(sum1, 1.0 / theta_));
-  return pow1 * minusLogUPowerTheta * minusLogVPowerTheta * exp(-pow1) * (pow1 + theta_ - 1.0) / (u * v * logU * logV * sum1 * sum1);
+  const NumericalScalar pow1(std::pow(sum1, 1.0 / theta_));
+  return pow1 * minusLogUPowerTheta * minusLogVPowerTheta * std::exp(-pow1) * (pow1 + theta_ - 1.0) / (u * v * logU * logV * sum1 * sum1);
 }
 
 /* Get the CDF of the distribution */
@@ -204,7 +204,7 @@ NumericalScalar GumbelCopula::computeCDF(const NumericalPoint & point) const
   // If we are outside of the support for v, in the upper part
   if (v >= 1.0) return u;
   // If we are in the support
-  return exp(-pow(pow(-log(u), theta_) + pow(-log(v), theta_), 1.0 / theta_));
+  return std::exp(-std::pow(std::pow(-std::log(u), theta_) + std::pow(-std::log(v), theta_), 1.0 / theta_));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -232,14 +232,14 @@ NumericalPoint GumbelCopula::computeCDFGradient(const NumericalPoint & point) co
   // A copula has a null CDF gradient outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(1, 0.0);
   // If we are in the support
-  const NumericalScalar logU(log(u));
-  const NumericalScalar logV(log(v));
-  const NumericalScalar minusLogUPowerTheta(pow(-logU, theta_));
-  const NumericalScalar minusLogVPowerTheta(pow(-logV, theta_));
+  const NumericalScalar logU(std::log(u));
+  const NumericalScalar logV(std::log(v));
+  const NumericalScalar minusLogUPowerTheta(std::pow(-logU, theta_));
+  const NumericalScalar minusLogVPowerTheta(std::pow(-logV, theta_));
   const NumericalScalar sum1(minusLogUPowerTheta + minusLogVPowerTheta);
   const NumericalScalar inverseTheta(1.0 / theta_);
-  const NumericalScalar pow1(pow(sum1, inverseTheta));
-  return NumericalPoint(1, pow1 * exp(-pow1) * inverseTheta * (log(sum1) * inverseTheta - (minusLogUPowerTheta * log(-logU) + minusLogVPowerTheta * log(-logV)) / sum1));
+  const NumericalScalar pow1(std::pow(sum1, inverseTheta));
+  return NumericalPoint(1, pow1 * std::exp(-pow1) * inverseTheta * (std::log(sum1) * inverseTheta - (minusLogUPowerTheta * std::log(-logU) + minusLogVPowerTheta * std::log(-logV)) / sum1));
 }
 
 /* Get the quantile of the distribution */
@@ -249,7 +249,7 @@ NumericalPoint GumbelCopula::computeQuantile(const NumericalScalar prob,
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   if (prob == 0.0) return getRange().getLowerBound();
   if (prob == 1.0) return getRange().getUpperBound();
-  return NumericalPoint(2, exp(-exp(log(-log(prob)) - M_LN2 / theta_)));
+  return NumericalPoint(2, std::exp(-std::exp(std::log(-std::log(prob)) - M_LN2 / theta_)));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -262,11 +262,11 @@ NumericalScalar GumbelCopula::computeConditionalCDF(const NumericalScalar x, con
   const NumericalScalar u(y[0]);
   const NumericalScalar v(x);
   // If we are in the support
-  const NumericalScalar minusLogU(-log(u));
-  const NumericalScalar minusLogUPowTheta(pow(minusLogU, theta_));
-  const NumericalScalar minusLogVPowTheta(pow(-log(v), theta_));
+  const NumericalScalar minusLogU(-std::log(u));
+  const NumericalScalar minusLogUPowTheta(std::pow(minusLogU, theta_));
+  const NumericalScalar minusLogVPowTheta(std::pow(-std::log(v), theta_));
   const NumericalScalar sum(minusLogUPowTheta + minusLogVPowTheta);
-  return pow(sum, -1.0 + 1.0 / theta_) * minusLogUPowTheta * exp(-pow(sum, 1.0 / theta_)) / (u * minusLogU);
+  return std::pow(sum, -1.0 + 1.0 / theta_) * minusLogUPowTheta * std::exp(-std::pow(sum, 1.0 / theta_)) / (u * minusLogU);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -282,10 +282,10 @@ NumericalScalar GumbelCopula::computeConditionalQuantile(const NumericalScalar q
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const NumericalScalar u(y[0]);
   const NumericalScalar inverseThetaMinusOne(1.0 / (theta_ - 1.0));
-  const NumericalScalar minusLogU(-log(u));
-  const NumericalScalar minusLogUPowTheta(pow(minusLogU, theta_));
+  const NumericalScalar minusLogU(-std::log(u));
+  const NumericalScalar minusLogUPowTheta(std::pow(minusLogU, theta_));
   const NumericalScalar factor(minusLogUPowTheta / (u * q * minusLogU));
-  return exp(-pow(exp(theta_ * (log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
+  return std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
 }
 
 /* Get the Spearman correlation of the distribution */
@@ -320,7 +320,9 @@ GumbelCopula::NumericalPointWithDescriptionCollection GumbelCopula::getParameter
 
 void GumbelCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = GumbelCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Compute the archimedean generator of the archimedean copula, i.e.
@@ -329,26 +331,26 @@ void GumbelCopula::setParametersCollection(const NumericalPointCollection & para
  */
 NumericalScalar GumbelCopula::computeArchimedeanGenerator(const NumericalScalar t) const
 {
-  return pow(-log(t), theta_);
+  return std::pow(-std::log(t), theta_);
 }
 
 /* Compute the inverse of the archimedean generator */
 NumericalScalar GumbelCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
 {
-  return exp(-pow(t, 1.0 / theta_));
+  return std::exp(-std::pow(t, 1.0 / theta_));
 }
 
 /* Compute the derivative of the density generator */
 NumericalScalar GumbelCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const
 {
-  return -theta_ * pow(-log(t), theta_ - 1.0) / t;
+  return -theta_ * std::pow(-std::log(t), theta_ - 1.0) / t;
 }
 
 /* Compute the seconde derivative of the density generator */
 NumericalScalar GumbelCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const
 {
-  NumericalScalar logT(log(t));
-  return theta_ * (theta_ - logT - 1.0) * pow(-logT, theta_ - 2.0) / (t * t);
+  NumericalScalar logT(std::log(t));
+  return theta_ * (theta_ - logT - 1.0) * std::pow(-logT, theta_ - 2.0) / (t * t);
 }
 
 /* Tell if the distribution has independent copula */

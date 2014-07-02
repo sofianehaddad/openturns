@@ -44,18 +44,18 @@ try:
     # Get dimension methods
     print "triangularMatrix1's nbRows = ", triangularMatrix1.getNbRows()
     print "triangularMatrix1's nbColumns = ", triangularMatrix1.getNbColumns()
-    print "isLower? ", triangularMatrix1.isTriangularLower()
+    print "isLower? ", triangularMatrix1.isLowerTriangular()
 
     # TRANSPOSE AND CONJUGATE METHOD
     print "test  : transpose and conjugate methods"
 
     print "triangularMatrix1 transpose = ", repr(triangularMatrix1.transpose())
-    print "is transpose Lower? ", triangularMatrix1.transpose().isTriangularLower()
+    print "is transpose Lower? ", triangularMatrix1.transpose().isLowerTriangular()
 
     triangularMatrix4 = triangularMatrix1.transpose()
 
     print "triangularMatrix1 conjugate and transpose = ", repr(triangularMatrix4)
-    print "is conjugate Lower? ", triangularMatrix4.isTriangularLower()
+    print "is conjugate Lower? ", triangularMatrix4.isLowerTriangular()
 
     #  ADDITION METHOD
     print "test : addition method"

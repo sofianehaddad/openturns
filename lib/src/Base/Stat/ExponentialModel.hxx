@@ -70,6 +70,7 @@ public:
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::operator();
   CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  NumericalScalar computeAsScalar(const NumericalPoint & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;

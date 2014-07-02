@@ -29,8 +29,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 class IdentityMatrix;
 
 class SymmetricMatrix;
@@ -57,6 +55,12 @@ public:
 
   /** Default constructor */
   SquareMatrix();
+
+  /** Constructor with implementation */
+  SquareMatrix(const Implementation & i);
+
+  /** Constructor with implementation */
+  SquareMatrix(const MatrixImplementation & i);
 
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
   explicit SquareMatrix(const UnsignedInteger dim);
@@ -129,13 +133,13 @@ public:
       const Bool keepIntact = true);
   NumericalScalar computeDeterminant(const Bool keepIntact = true);
 
+  /** Compute trace */
+  NumericalScalar computeTrace() const;
+
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValues(const Bool keepIntact = true);
   NumericalComplexCollection computeEVD(SquareComplexMatrix & v,
                                         const Bool keepIntact = true);
-
-  /** Constructor with implementation */
-  SquareMatrix(const Implementation & i);
 
   /** Check if it is diagonal */
   Bool isDiagonal() const;

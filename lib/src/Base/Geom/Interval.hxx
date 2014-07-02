@@ -48,7 +48,7 @@ public:
 
 
   /** Default constructor */
-  explicit Interval(const UnsignedInteger dimension = 1);
+  explicit Interval(const UnsignedInteger dimension = 0);
 
   /** Parameters constructor, simplified for 1D case */
   Interval(const NumericalScalar lowerBound,
@@ -101,7 +101,7 @@ public:
   Interval & operator *=(const NumericalScalar scalar);
 
   /** Comparison operator */
-  Bool operator == (const Interval & rhs) const;
+  Bool operator == (const Interval & other) const;
 
   /** Lower bound accessor */
   NumericalPoint getLowerBound() const;

@@ -162,16 +162,16 @@ void Pairs::buildDefaultLabels()
 void Pairs::save(Advocate & adv) const
 {
   DrawableImplementation::save(adv);
-  adv.saveAttribute( "title_", title_ );
   adv.saveAttribute( "labels_", labels_ );
+  adv.saveAttribute( "title_", title_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Pairs::load(Advocate & adv)
 {
   DrawableImplementation::load(adv);
-  adv.loadAttribute( "title_", title_ );
   adv.loadAttribute( "labels_", labels_ );
+  adv.loadAttribute( "title_", title_ );
 }
 
 

@@ -47,29 +47,17 @@ LinearNumericalMathEvaluationImplementation::LinearNumericalMathEvaluationImplem
 LinearNumericalMathEvaluationImplementation::LinearNumericalMathEvaluationImplementation(const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear)
-  : NumericalMathEvaluationImplementation(),
-    center_(center),
-    constant_(constant),
-    linear_(linear.transpose())
+  : NumericalMathEvaluationImplementation()
+  , center_(center)
+  , constant_(constant)
+  , linear_(linear.transpose())
 {
   /* Check if the dimension of the constant term is compatible with the linear term */
   if (constant.getDimension() != linear.getNbColumns()) throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term";
   /* Check if the dimension of the center term is compatible with the linear term */
   if (center.getDimension() != linear.getNbRows()) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term";
-  Description description;
-  for (UnsignedInteger i = 0; i < center.getDimension(); i++)
-  {
-    OSS oss;
-    oss << "x" << i;
-    description.add(oss);
-  }
-  for (UnsignedInteger i = 0; i < constant.getDimension(); i++)
-  {
-    OSS oss;
-    oss << "y" << i;
-    description.add(oss);
-  }
-  setDescription(description);
+  setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
+  setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
 }
 
 /* Virtual constructor */

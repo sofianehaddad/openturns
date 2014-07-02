@@ -70,6 +70,55 @@ public:
   /** Comparison operator */
   Bool operator !=(const Distribution & other) const;
 
+  /** Addition operator */
+  Distribution operator + (const Distribution & other) const;
+
+  Distribution operator + (const NumericalScalar value) const;
+
+  /** Substraction operator */
+  Distribution operator - (const Distribution & other) const;
+
+  Distribution operator - (const NumericalScalar value) const;
+
+  /** Multiplication operator */
+  Distribution operator * (const Distribution & other) const;
+
+  Distribution operator * (const NumericalScalar value) const;
+
+  /** Division operator */
+  Distribution operator / (const Distribution & other) const;
+
+  Distribution operator / (const NumericalScalar value) const;
+
+  /** Static methods to transform distributions by usual functions */
+  Distribution cos() const;
+  Distribution sin() const;
+  Distribution tan() const;
+
+  Distribution acos() const;
+  Distribution asin() const;
+  Distribution atan() const;
+
+  Distribution cosh() const;
+  Distribution sinh() const;
+  Distribution tanh() const;
+
+  Distribution acosh() const;
+  Distribution asinh() const;
+  Distribution atanh() const;
+
+  Distribution exp() const;
+  Distribution log() const;
+  Distribution ln() const;
+
+  Distribution pow(const SignedInteger & exponent) const;
+  Distribution pow(const NumericalScalar & exponent) const;
+  Distribution inverse() const;
+  Distribution sqr() const;
+  Distribution sqrt() const;
+  Distribution cbrt() const;
+  Distribution abs() const;
+
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
@@ -179,7 +228,7 @@ public:
   CovarianceMatrix getCovariance() const;
 
   /** Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getCholesky() const;
+  TriangularMatrix getCholesky() const;
 
   /** Get the raw moments of the standardized distribution */
   NumericalPoint getStandardMoment(const UnsignedInteger n) const;
@@ -191,7 +240,7 @@ public:
   NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
 
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
-  SquareMatrix getInverseCholesky() const;
+  TriangularMatrix getInverseCholesky() const;
 
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;

@@ -26,7 +26,6 @@
 #include "RandomGenerator.hxx"
 #include "PersistentObjectFactory.hxx"
 #include "Exception.hxx"
-#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -101,8 +100,8 @@ NumericalScalar Bernoulli::computePDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k(point[0]);
-  if (fabs(k) < supportEpsilon_) return 1.0 - p_;
-  if (fabs(k - 1.0) < supportEpsilon_) return p_;
+  if (std::abs(k) < supportEpsilon_) return 1.0 - p_;
+  if (std::abs(k - 1.0) < supportEpsilon_) return p_;
   return 0.0;
 }
 
@@ -128,7 +127,7 @@ NumericalPoint Bernoulli::computePDFGradient(const NumericalPoint & point) const
 
   const NumericalScalar k(point[0]);
   NumericalPoint pdfGradient(1, 0.0);
-  if ((k < -supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return pdfGradient;
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   throw NotYetImplementedException(HERE);
 }
 
@@ -154,7 +153,7 @@ NumericalScalar Bernoulli::computeScalarQuantile(const NumericalScalar prob,
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Bernoulli::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * exp(NumericalComplex(0.0, x)));
+  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
   return value;
 }
 
@@ -175,14 +174,14 @@ void Bernoulli::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Bernoulli::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(p_ * (1.0 - p_)));
+  return NumericalPoint(1, std::sqrt(p_ * (1.0 - p_)));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint Bernoulli::getSkewness() const
 {
   if ((p_ == 0.0) || (p_ == 1.0)) throw NotDefinedException(HERE) << "Error: the skewness is not defined for the Bernoulli distribution when p is zero or one.";
-  return NumericalPoint(1, (1.0 - 2.0 * p_) / sqrt(p_ * (1.0 - p_)));
+  return NumericalPoint(1, (1.0 - 2.0 * p_) / std::sqrt(p_ * (1.0 - p_)));
 }
 
 /* Get the kurtosis of the distribution */
@@ -234,7 +233,9 @@ Bernoulli::NumericalPointWithDescriptionCollection Bernoulli::getParametersColle
 
 void Bernoulli::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Bernoulli(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* P accessor */

@@ -107,6 +107,7 @@ void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
   UnsignedInteger dimension(0);
   // Compute the dimension, build the description and check the independence
   isIndependent_ = true;
+  bool isParallel(true);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger copulaDimension(coll[i].getDimension());
@@ -114,7 +115,9 @@ void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
     const Description copulaDescription(coll[i].getDescription());
     for (UnsignedInteger j = 0; j < copulaDimension; ++j) description.add(copulaDescription[j]);
     isIndependent_ = isIndependent_ && copulaCollection_[i].hasIndependentCopula();
+    isParallel = isParallel && coll[i].getImplementation()->isParallel();
   }
+  setParallel(isParallel);
   isAlreadyComputedCovariance_ = false;
   // One MUST set the dimension BEFORE the description, else an error occurs
   setDimension(dimension);

@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <sstream>
 
 #include "DrawableImplementation.hxx"
 #include "PersistentObjectFactory.hxx"
@@ -814,6 +815,42 @@ String DrawableImplementation::ConvertFromName(const String & name)
   return "#000000";
 }
 
+/* Convert an hexadecimal code into an RGB triplet */
+Indices DrawableImplementation::ConvertToRGB(const String & key)
+{
+  Indices rgb(3, 0);
+  UnsignedInteger code;
+  if (ScanColorCode(key, code))
+    {
+      code = code >> 8;
+      rgb[2] = code % 256;
+      code = code >> 8;
+      rgb[1] = code % 256;
+      code = code >> 8;
+      rgb[0] = code;
+    }
+  else LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
+  return rgb;
+}
+
+/* Convert an hexadecimal code into an RGBA quadruplet */
+Indices DrawableImplementation::ConvertToRGBA(const String & key)
+{
+  Indices rgba(4, 0);
+  UnsignedInteger code;
+  if (ScanColorCode(key, code))
+    {
+      rgba[3] = code % 256;
+      code = code >> 8;
+      rgba[2] = code % 256;
+      code = code >> 8;
+      rgba[1] = code % 256;
+      code = code >> 8;
+      rgba[0] = code;
+    }
+  else LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
+  return rgba;
+}
 
 /* Convert an RGB triplet to a valid hexadecimal code */
 String DrawableImplementation::ConvertFromRGB(const UnsignedInteger red,
@@ -1023,8 +1060,10 @@ Bool DrawableImplementation::IsValidColorName(const String & key)
   return (it != ColorCodes.end());
 }
 
-Bool DrawableImplementation::IsValidColorCode(const String & key)
+Bool DrawableImplementation::ScanColorCode(const String & key,
+					   UnsignedInteger & code)
 {
+  code = 255;
   // First, check if the color is given in RGB format
   const UnsignedInteger keySize(key.size());
   if (keySize == 0) return false;
@@ -1035,6 +1074,7 @@ Bool DrawableImplementation::IsValidColorCode(const String & key)
   // 9 for #RRGGBBAA
   if ((keySize != 7) && (keySize != 9)) return false;
   // Second, check that the values are ok
+  UnsignedInteger shift(1<<28);
   for (UnsignedInteger i = 1; i < keySize; ++i)
   {
     const char c(key[i]);
@@ -1043,8 +1083,18 @@ Bool DrawableImplementation::IsValidColorCode(const String & key)
     const Bool isValidLower((c >= 'a') && (c <= 'f'));
     const Bool isValidUpper((c >= 'A') && (c <= 'F'));
     if ((!isNum) && !(isValidLower) && !(isValidUpper)) return false;
+    if (isNum) code += (c - '0') * shift;
+    if (isValidLower) code += (c - 'a' + 10) * shift;
+    if (isValidUpper) code += (c - 'A' + 10) * shift;
+    shift = shift >> 4;
   }
   return true;
+}
+
+Bool DrawableImplementation::IsValidColorCode(const String & key)
+{
+  UnsignedInteger code;
+  return ScanColorCode(key, code);
 }
 
 Bool DrawableImplementation::IsValidColor(const String & key)
@@ -1358,7 +1408,7 @@ String DrawableImplementation::draw() const
   if (size * dimension > ResourceMap::GetAsUnsignedInteger("DrawableImplementation-DataThreshold"))
   {
     dataFileName_ = data_.storeToTemporaryFile();
-    return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))";
+    return OSS() << "dataOT <- data.matrix(read.table(\"" << dataFileName_ << "\", stringsAsFactors = F))" << "\n";
   }
   return OSS().setPrecision(20) << "dataOT <- " << data_.streamToRFormat() << "\n";
 }

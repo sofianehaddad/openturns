@@ -28,24 +28,23 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(SpatialFunction);
 
 static Factory<SpatialFunction> RegisteredFactory("SpatialFunction");
 
 /* Default constructor */
-SpatialFunction::SpatialFunction()
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(new NoNumericalMathEvaluationImplementation)
+SpatialFunction::SpatialFunction(const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-SpatialFunction::SpatialFunction(const NumericalMathFunction & function)
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(function.getEvaluationImplementation())
+SpatialFunction::SpatialFunction(const NumericalMathFunction & function,
+				 const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(function.getEvaluationImplementation())
 {
   // Set the descriptions
   setInputDescription(p_evaluation_->getInputDescription());
@@ -53,9 +52,10 @@ SpatialFunction::SpatialFunction(const NumericalMathFunction & function)
 }
 
 /* Parameter constructor */
-SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation)
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(p_evaluation)
+SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation,
+				 const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(p_evaluation)
 {
   // Set the descriptions
   setInputDescription(p_evaluation_->getInputDescription());
@@ -63,9 +63,10 @@ SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation)
 }
 
 /* Parameter constructor */
-SpatialFunction::SpatialFunction(const NumericalMathEvaluationImplementation & evaluation)
-  : DynamicalFunctionImplementation(),
-    p_evaluation_(evaluation.clone())
+SpatialFunction::SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
+				 const UnsignedInteger meshDimension)
+  : DynamicalFunctionImplementation(meshDimension)
+  , p_evaluation_(evaluation.clone())
 {
   // Set the descriptions
   setInputDescription(p_evaluation_->getInputDescription());
@@ -100,10 +101,11 @@ String SpatialFunction::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field SpatialFunction::operator() (const Field & inTS) const
+Field SpatialFunction::operator() (const Field & inFld) const
 {
+  if (inFld.getMeshDimension() != getMeshDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getMeshDimension() << ", got mesh dimension=" << inFld.getMeshDimension();
   ++callsNumber_;
-  return Field(inTS.getTimeGrid(), (*p_evaluation_)(inTS.getSample()));
+  return Field(inFld.getMesh(), (*p_evaluation_)(inFld.getValues()));
 }
 
 /* Get the i-th marginal function */
@@ -141,8 +143,5 @@ void SpatialFunction::load(Advocate & adv)
   adv.loadAttribute( "evaluation_", evaluationValue );
   p_evaluation_ = evaluationValue.getImplementation();
 }
-
-
-
 
 END_NAMESPACE_OPENTURNS

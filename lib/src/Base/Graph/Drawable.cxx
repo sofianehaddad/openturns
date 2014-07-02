@@ -316,6 +316,18 @@ Description Drawable::GetValidPointStyles()
   return DrawableImplementation::GetValidPointStyles();
 }
 
+/* Convert an hexadecimal code into an RGB triplet  */
+Indices Drawable::ConvertToRGB(const String & key)
+{
+  return DrawableImplementation::ConvertToRGB(key);
+}
+
+/* Convert an hexadecimal code into an RGBA quadruplet  */
+Indices Drawable::ConvertToRGBA(const String & key)
+{
+  return DrawableImplementation::ConvertToRGBA(key);
+}
+
 /* Convert an RGB triplet to a valid hexadecimal code */
 String Drawable::ConvertFromName(const String & name)
 {

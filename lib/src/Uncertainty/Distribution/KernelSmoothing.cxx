@@ -51,7 +51,7 @@ static Factory<KernelSmoothing> RegisteredFactory("KernelSmoothing");
 
 /* Default constructor */
 KernelSmoothing::KernelSmoothing()
-  : PersistentObject()
+  : DistributionImplementationFactory()
   , bandwidth_(NumericalPoint(0))
   , kernel_(Normal())
   , bined_(true)
@@ -65,7 +65,7 @@ KernelSmoothing::KernelSmoothing()
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
                                  const Bool & bined,
                                  const UnsignedInteger binNumber)
-  : PersistentObject()
+  : DistributionImplementationFactory()
   , bandwidth_(NumericalPoint(0))
   , kernel_(kernel)
   , bined_(bined)
@@ -90,7 +90,7 @@ NumericalPoint KernelSmoothing::computeSilvermanBandwidth(const NumericalSample 
   UnsignedInteger size(sample.getSize());
   NumericalPoint standardDeviations(sample.computeStandardDeviationPerComponent());
   // Silverman's Normal rule
-  NumericalScalar factor(pow(size, -1.0 / (4.0 + dimension)) / kernel_.getStandardDeviation()[0]);
+  NumericalScalar factor(std::pow(size, -1.0 / (4.0 + dimension)) / kernel_.getStandardDeviation()[0]);
   // Scott's Normal rule
   return factor * standardDeviations;
 }
@@ -125,10 +125,10 @@ struct PluginConstraint
         const NumericalScalar dx(sample_[i][0] - sample_[j][0]);
         const NumericalScalar x(dx / h);
         // Clipping: if x is large enough, the exponential factor is 0.0
-        if (fabs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * exp(-0.5 * x * x);
+        if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * std::exp(-0.5 * x * x);
       }
     }
-    const NumericalScalar res(phi / ((N_ * (N_ - 1.0)) * pow(h, order_ + 1.0) * sqrt(2.0 * M_PI)));
+    const NumericalScalar res(phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI)));
     return res;
   }
 
@@ -136,9 +136,9 @@ struct PluginConstraint
   NumericalPoint computeBandwidthConstraint(const NumericalPoint & x) const
   {
     const NumericalScalar h(x[0]);
-    const NumericalScalar gammaH(K_ * pow(h, 5.0 / 7.0));
+    const NumericalScalar gammaH(K_ * std::pow(h, 5.0 / 7.0));
     const NumericalScalar phiGammaH(computePhi(gammaH));
-    const NumericalScalar res(h - pow(2.0 * sqrt(M_PI) * phiGammaH * N_, -1.0 / 5.0));
+    const NumericalScalar res(h - std::pow(2.0 * std::sqrt(M_PI) * phiGammaH * N_, -1.0 / 5.0));
     return NumericalPoint(1, res);
   }
 
@@ -160,13 +160,13 @@ NumericalPoint KernelSmoothing::computePluginBandwidth(const NumericalSample & s
   const UnsignedInteger size(sample.getSize());
   // Approximate the derivatives by smoothing under the Normal assumption
   const NumericalScalar sd(sample.computeStandardDeviationPerComponent()[0]);
-  const NumericalScalar phi6Normal(-15.0 / (16.0 * sqrt(M_PI)) * pow(sd, -7.0));
-  const NumericalScalar phi8Normal(105.0 / (32.0 * sqrt(M_PI)) * pow(sd, -9.0));
-  const NumericalScalar g1(pow(-6.0 / (sqrt(2.0 * M_PI) * phi6Normal * size), 1.0 / 7.0));
-  const NumericalScalar g2(pow(30.0 / (sqrt(2.0 * M_PI) * phi8Normal * size), 1.0 / 9.0));
+  const NumericalScalar phi6Normal(-15.0 / (16.0 * std::sqrt(M_PI)) * std::pow(sd, -7.0));
+  const NumericalScalar phi8Normal(105.0 / (32.0 * std::sqrt(M_PI)) * std::pow(sd, -9.0));
+  const NumericalScalar g1(std::pow(-6.0 / (std::sqrt(2.0 * M_PI) * phi6Normal * size), 1.0 / 7.0));
+  const NumericalScalar g2(std::pow(30.0 / (std::sqrt(2.0 * M_PI) * phi8Normal * size), 1.0 / 9.0));
   const NumericalScalar phi4(PluginConstraint(sample, 1.0, 4).computePhi(g1));
   const NumericalScalar phi6(PluginConstraint(sample, 1.0, 6).computePhi(g2));
-  const NumericalScalar K(pow(-6.0 * sqrt(2.0) * phi4 / phi6, 1.0 / 7.0));
+  const NumericalScalar K(std::pow(-6.0 * std::sqrt(2.0) * phi4 / phi6, 1.0 / 7.0));
   PluginConstraint constraint(sample, K, 4);
   const NumericalMathFunction f(bindMethod<PluginConstraint, NumericalPoint, NumericalPoint>(constraint, &PluginConstraint::computeBandwidthConstraint, 1, 1));
   // Find a bracketing interval
@@ -233,7 +233,7 @@ Distribution KernelSmoothing::build(const NumericalSample & sample,
   setBandwidth(bandwidth);
   UnsignedInteger size(sample.getSize());
   // The usual case: no boundary correction, no binning
-  const Bool mustBin(bined_ && (dimension * log(1.0 * binNumber_) < log(1.0 * size)));
+  const Bool mustBin(bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size)));
   if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
   if ((dimension > 2) || ((!mustBin) && (!boundaryCorrection)))
   {
@@ -374,14 +374,14 @@ Distribution KernelSmoothing::getKernel() const
 /* Method save() stores the object through the StorageManager */
 void KernelSmoothing::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  DistributionImplementationFactory::save(adv);
   adv.saveAttribute( "bandwidth_", bandwidth_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void KernelSmoothing::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  DistributionImplementationFactory::load(adv);
   adv.loadAttribute( "bandwidth_", bandwidth_ );
 }
 

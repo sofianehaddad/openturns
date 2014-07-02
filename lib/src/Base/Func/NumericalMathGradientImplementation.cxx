@@ -32,11 +32,7 @@
 #include "ConstantNumericalMathGradientImplementation.hxx"
 #include "ComposedNumericalMathGradientImplementation.hxx"
 
-
 BEGIN_NAMESPACE_OPENTURNS
-
-
-
 
 CLASSNAMEINIT(NumericalMathGradientImplementation);
 
@@ -44,9 +40,9 @@ static Factory<NumericalMathGradientImplementation> RegisteredFactory("Numerical
 
 /* Default constructor */
 NumericalMathGradientImplementation::NumericalMathGradientImplementation()
-  : PersistentObject(),
-    callsNumber_(0),
-    description_()
+  : PersistentObject()
+  , callsNumber_(0)
+  , parameters_(0)
 {
   // Nothing to do
 }
@@ -68,8 +64,7 @@ String NumericalMathGradientImplementation::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << NumericalMathGradientImplementation::GetClassName()
-      << " name=" << getName()
-      << " description=" << description_;
+      << " name=" << getName();
   return oss;
 }
 
@@ -79,19 +74,6 @@ String NumericalMathGradientImplementation::__str__(const String & offset) const
   return OSS(false) << offset << "NumericalMathGradientImplementation";
 }
 
-
-/* Description Accessor */
-void NumericalMathGradientImplementation::setDescription(const Description & description)
-{
-  description_ = description;
-}
-
-
-/* Description Accessor */
-Description NumericalMathGradientImplementation::getDescription() const
-{
-  return description_;
-}
 
 /* Test for actual implementation */
 Bool NumericalMathGradientImplementation::isActualImplementation() const
@@ -105,6 +87,14 @@ Bool NumericalMathGradientImplementation::isActualImplementation() const
 Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
 {
   throw NotYetImplementedException(HERE);
+}
+
+/* Gradient method */
+Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP,
+						     const NumericalPoint & parameters)
+{
+  setParameters(parameters);
+  return gradient(inP);
 }
 
 /* Accessor for input point dimension */
@@ -123,6 +113,17 @@ UnsignedInteger NumericalMathGradientImplementation::getOutputDimension() const
 UnsignedInteger NumericalMathGradientImplementation::getCallsNumber() const
 {
   return callsNumber_;
+}
+
+/* Parameters value and description accessor */
+NumericalPointWithDescription NumericalMathGradientImplementation::getParameters() const
+{
+  return parameters_;
+}
+
+void NumericalMathGradientImplementation::setParameters(const NumericalPointWithDescription & parameters)
+{
+  parameters_ = parameters;
 }
 
 /* Get the i-th marginal function */
@@ -173,7 +174,6 @@ void NumericalMathGradientImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", callsNumber_ );
-  adv.saveAttribute( "description_", description_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -181,7 +181,6 @@ void NumericalMathGradientImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "callsNumber_", callsNumber_ );
-  adv.loadAttribute( "description_", description_ );
 }
 
 END_NAMESPACE_OPENTURNS

@@ -6,6 +6,7 @@ from math import *
 TESTPREAMBLE()
 
 try:
+    PlatformInfo.SetNumericalPrecision(6)
     mesh1D = Mesh()
     print "Default 1D mesh=", mesh1D
     vertices = NumericalSample(0, 1)
@@ -26,8 +27,10 @@ try:
     print "First simplex volume=", mesh1D.computeSimplexVolume(0)
     p = [1.3]
     print "is p=", p, " in mesh? ", mesh1D.contains(p)
-    mesh1D.draw().draw("mesh1D")
-    mesh1D.draw1D().draw("mesh1D")
+    point = [1.8]
+    print "Nearest index(", point, ")=", mesh1D.getNearestVertexIndex(point)
+    points = [[-0.25], [2.25]]
+    print "Nearest index(", points, ")=", mesh1D.getNearestVertexIndex(points)
     vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
                 [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
     simplicies = IndicesCollection(
@@ -35,8 +38,10 @@ try:
 
     mesh2D = Mesh(vertices, simplicies)
     print "2D mesh=", mesh2D
-    mesh2D.draw().draw("mesh2D")
-    mesh2D.draw2D().draw("mesh2D")
+    point = [1.8]*2
+    print "Nearest index(", point, ")=", mesh2D.getNearestVertexIndex(point)
+    points = [[-0.25]*2, [2.25]*2]
+    print "Nearest index(", points, ")=", mesh2D.getNearestVertexIndex(points)
 
     vertices = NumericalSample(0, 3)
 
@@ -59,14 +64,16 @@ try:
 
     mesh3D = Mesh(vertices, simplicies)
     print "3D mesh=", mesh3D
-    mesh3D.draw().draw("mesh3D")
+    point = [1.8]*3
+    print "Nearest index(", point, ")=", mesh3D.getNearestVertexIndex(point)
+    points = [[-0.25]*3, [2.25]*3]
+    print "Nearest index(", points, ")=", mesh3D.getNearestVertexIndex(points)
     rotation = SquareMatrix(3)
     rotation[0, 0] = cos(pi / 3.0)
     rotation[0, 1] = sin(pi / 3.0)
     rotation[1, 0] = -sin(pi / 3.0)
     rotation[1, 1] = cos(pi / 3.0)
     rotation[2, 2] = 1.0
-    mesh3D.draw3D(True, rotation, True).draw("mesh3D_2")
 
 except:
     import sys

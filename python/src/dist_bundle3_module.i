@@ -48,6 +48,7 @@
 %include UserDefinedFactory.i
 %include Weibull.i
 %include WeibullFactory.i
+%include Wishart.i
 %include ZipfMandelbrot.i
 
 

@@ -34,6 +34,8 @@
 #include "NearestPointAlgorithmImplementationResult.hxx"
 #include "NearestPointCheckerResult.hxx"
 #include "NearestPointChecker.hxx"
+#include "OptimizationProblem.hxx"
+#include "OptimizationProblemImplementation.hxx"
 #include "OTAbdoRackwitz.hxx"
 #include "OTCobyla.hxx"
 #include "OTSQP.hxx"

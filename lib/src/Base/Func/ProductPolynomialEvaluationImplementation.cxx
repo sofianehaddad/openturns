@@ -27,12 +27,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<UniVariatePolynomial>);
 
 static Factory<PersistentCollection<UniVariatePolynomial> > RegisteredFactory_PC_UVP("PersistentCollection<UniVariatePolynomial>");
-
 
 CLASSNAMEINIT(ProductPolynomialEvaluationImplementation);
 
@@ -41,8 +38,8 @@ static Factory<ProductPolynomialEvaluationImplementation> RegisteredFactory_PPEI
 
 /* Default constructor */
 ProductPolynomialEvaluationImplementation::ProductPolynomialEvaluationImplementation()
-  : NumericalMathEvaluationImplementation(),
-    polynomials_()
+  : NumericalMathEvaluationImplementation()
+  , polynomials_()
 {
   // Nothing to do
 }
@@ -50,14 +47,12 @@ ProductPolynomialEvaluationImplementation::ProductPolynomialEvaluationImplementa
 
 /* Constructor */
 ProductPolynomialEvaluationImplementation::ProductPolynomialEvaluationImplementation(const PolynomialCollection & coll)
-  : NumericalMathEvaluationImplementation(),
-    polynomials_(coll)
+  : NumericalMathEvaluationImplementation()
+  , polynomials_(coll)
 {
-  // Nothing to do
-  Description description(0);
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
-  setDescription(description);
+  // Set the descriptions
+  setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
+  setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
 }
 
 

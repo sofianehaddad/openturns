@@ -76,6 +76,9 @@ public:
   /** Constructor with implementation */
   Tensor(const Implementation & i);
 
+  /** Set small elements to zero */
+  Tensor clean(const NumericalScalar & threshold) const;
+
   /** String converter */
   virtual String __repr__() const;
 

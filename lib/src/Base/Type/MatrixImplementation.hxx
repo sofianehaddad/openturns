@@ -152,6 +152,9 @@ public:
   /** Symmetrize MatrixImplementation in case it is a symmetric matrix (stored as a triangular matrix) */
   void symmetrize() const;
 
+  /** Triangularize MatrixImplementation in case it is a triangular matrix (stored as a square matrix) */
+  void triangularize(const Bool isLowerTriangular) const;
+
   /** Resolution of a linear system in case of a rectangular matrix */
   NumericalPoint solveLinearSystemRect(const NumericalPoint & b,
                                        const Bool keepIntact = true);
@@ -198,6 +201,9 @@ public:
       const Bool keepIntact = true);
   NumericalScalar computeDeterminantSym(const Bool keepIntact = true);
 
+  /** Compute trace */
+  NumericalScalar computeTrace() const;
+
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
   NumericalComplexCollection computeEVDSquare(ComplexMatrixImplementation & v,
@@ -234,6 +240,9 @@ public:
 
   /** Build the QR factorization of the matrix */
   virtual MatrixImplementation computeQR(MatrixImplementation & R, const Bool keepIntact = true);
+
+  /** Compute the Gram matrix associated to the matrix */
+  virtual MatrixImplementation computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
   Bool operator == (const MatrixImplementation & rhs) const;

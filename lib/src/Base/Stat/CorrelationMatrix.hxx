@@ -47,15 +47,18 @@ public:
   /** Default constructor */
   CorrelationMatrix();
 
+  /** Constructor with implementation */
+  CorrelationMatrix(const Implementation & i);
+
+  /** Constructor with implementation */
+  CorrelationMatrix(const MatrixImplementation & i);
+
   /** Constructor with size */
   explicit CorrelationMatrix(const UnsignedInteger dim);
 
   /** Constructor from external collection */
   CorrelationMatrix(const UnsignedInteger dim,
                     const NumericalScalarCollection & elementsValues);
-
-  /** Constructor with implementation */
-  CorrelationMatrix(const Implementation & i);
 
   /** String converter */
   virtual String __repr__() const;

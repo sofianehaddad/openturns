@@ -51,7 +51,8 @@ public:
   KrigingAlgorithm (const NumericalSample & inputSample,
                     const NumericalSample & outputSample,
                     const Basis & basis,
-                    const CovarianceModel & covarianceModel);
+                    const CovarianceModel & covarianceModel,
+		    const Bool normalize = true);
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,

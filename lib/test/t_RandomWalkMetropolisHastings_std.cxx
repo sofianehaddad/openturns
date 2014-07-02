@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    // this analitycal example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
+    // this analytical example is taken from "Bayesian Modeling Using WinBUGS" - Ioannis Ntzoufras
     // 1.5.3: Inference for the mean or normal data with known variance
 
     // Variable of interest: Y=N(mu, sigma)
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 
     // observations
     UnsignedInteger size = 10;
-    Normal realDist(31., 1.2);
+    Normal realDist(31.0, 1.2);
 
     NumericalSample data(realDist.getSample(size));
 
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     proposalColl.add(std_proposal);
 
     // prior distribution
-    NumericalScalar mu0 = 25.;
+    NumericalScalar mu0 = 25.0;
 
     NumericalPoint sigma0s;
     sigma0s.add(0.1);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
 
     // play with the variance of the prior:
-    // if the prior variance is low (information concernig the mu parameter is strong)
+    // if the prior variance is low (information concerning the mu parameter is strong)
     // then the posterior mean will be equal to the prior mean
     // if large, the the posterior distribution is equivalent to the distribution of the sample mean
     for ( UnsignedInteger i = 0; i < sigma0s.getDimension(); ++ i )

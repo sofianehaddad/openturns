@@ -29,8 +29,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 class IdentityMatrix;
 
 /**
@@ -54,6 +52,12 @@ public:
   /** Default constructor */
   SymmetricMatrix();
 
+  /** Constructor with implementation */
+  SymmetricMatrix(const Implementation & i);
+
+  /** Constructor with implementation */
+  SymmetricMatrix(const MatrixImplementation & i);
+
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
   explicit SymmetricMatrix(const UnsignedInteger dim);
 #if 0
@@ -71,7 +75,7 @@ public:
   SymmetricMatrix(const UnsignedInteger dim,
                   const NumericalScalarCollection & elementsValues);
 
-  /** Check if the internal representation is really symmetric */
+  /** Check if the internal representation is actually symmetric */
   void checkSymmetry() const;
 
   /** Test if the matrix is diagonal */
@@ -146,14 +150,11 @@ public:
   NumericalPoint computeEVD(SquareMatrix & v,
                             const Bool keepIntact = true);
 
-  /** Constructor with implementation */
-  SymmetricMatrix(const Implementation & i);
-
 protected:
 
 
 private:
-  /** Check if one needs to symmetrized the internal representation of the tensor */
+  /** Check if one needs to symmetrized the internal representation of the matrix */
   mutable Bool hasBeenSymmetrized_;
 
 }; /* class SymmetricMatrix */

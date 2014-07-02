@@ -160,11 +160,11 @@ NumericalComplex Uniform::computeCharacteristicFunction(const NumericalScalar x)
   NumericalComplex result;
   const NumericalScalar ax(a_ * x);
   const NumericalScalar bx(b_ * x);
-  if (fabs(x) <= 1.0e-10) result = NumericalComplex(1.0, 0.5 * (ax + bx));
+  if (std::abs(ax) + std::abs(ax) <= 1.0e-5) result = NumericalComplex(1.0 - (ax * ax + ax * bx + bx * bx) / 6.0, 0.5 * (ax + bx));
   else
   {
     const NumericalScalar idenom(1.0 / (bx - ax));
-    result = NumericalComplex(idenom * (sin(bx) - sin(ax)), idenom * (cos(ax) - cos(bx)));
+    result = NumericalComplex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
   return result;
 }
@@ -223,7 +223,7 @@ void Uniform::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Uniform::getStandardDeviation() const
 {
-  return NumericalPoint(1, (b_ - a_) / sqrt(12.0));
+  return NumericalPoint(1, (b_ - a_) / std::sqrt(12.0));
 }
 
 /* Get the skewness of the distribution */
@@ -279,7 +279,9 @@ Uniform::NumericalPointWithDescriptionCollection Uniform::getParametersCollectio
 
 void Uniform::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Uniform(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* Check if the distribution is elliptical */
@@ -293,7 +295,7 @@ Bool Uniform::isElliptical() const
 /* A accessor */
 void Uniform::setA(const NumericalScalar a)
 {
-  if (b_ <= a) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be lesser than its upper bound b, here a=" << a << " b=" << b_;
+  if (b_ <= a) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a << " b=" << b_;
   if (a != a_)
   {
     a_ = a;
@@ -312,7 +314,7 @@ NumericalScalar Uniform::getA() const
 /* B accessor */
 void Uniform::setB(const NumericalScalar b)
 {
-  if (b <= a_) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be lesser than its upper bound b, here a=" << a_ << " b=" << b;
+  if (b <= a_) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a_ << " b=" << b;
   if (b != b_)
   {
     b_ = b;

@@ -107,6 +107,18 @@ public:
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;
 
+  /** Tell if the distribution has independent marginals */
+  Bool hasIndependentCopula() const;
+
+  /** Tell if the distribution has an elliptical copula */
+  Bool hasEllipticalCopula() const;
+
+  /** Get the Spearman correlation of the distribution */
+  CorrelationMatrix getSpearmanCorrelation() const;
+
+  /** Get the Kendall concordance of the distribution */
+  CorrelationMatrix getKendallTau() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -116,8 +128,10 @@ public:
 
 protected:
 
-
 private:
+
+  /** Initialize the integration routine */
+  void initializeIntegration() const;
 
   /** Compute the mean of the distribution */
   void computeMean() const;

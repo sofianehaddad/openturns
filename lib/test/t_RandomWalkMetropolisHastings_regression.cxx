@@ -27,25 +27,8 @@
 
 using namespace OT;
 using namespace OT::Test;
-typedef ComposedDistribution::DistributionCollection DistributionCollection;
+typedef ComposedDistribution::DistributionCollection                DistributionCollection;
 typedef RandomWalkMetropolisHastings::CalibrationStrategyCollection CalibrationStrategyCollection;
-
-NumericalScalar prec = 1.0;
-
-NumericalMathFunction buildPoly(const NumericalPoint &p)
-{
-  const UnsignedInteger d = p.getDimension();
-  NumericalPoint center(d);
-  NumericalPoint constant(2);
-  Matrix linear(2, d);
-  for ( UnsignedInteger j = 0; j < d; ++ j )
-  {
-    linear(0, j) = p[j]; // z=p1*x1+p2*x2+p3*x3
-  }
-  constant[1] = 1.0; // sigma
-  return LinearNumericalMathFunction( center, constant, linear );
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -85,12 +68,20 @@ int main(int argc, char *argv[])
     }
     std::cout << "p=" << p << std::endl;
 
-    NumericalMathFunction::NumericalMathFunctionCollection modelCollection;
-    for (UnsignedInteger i = 0; i < obsSize; ++ i)
-    {
-      modelCollection.add(buildPoly(p[i]));
-    }
-    NumericalMathFunction model(modelCollection);
+    Description fullVariables(0);
+    fullVariables.add("p1");
+    fullVariables.add("p2");
+    fullVariables.add("p3");
+    fullVariables.add("x1");
+    fullVariables.add("x2");
+    fullVariables.add("x3");
+    Description formulas(0);
+    formulas.add("p1*x1+p2*x2+p3*x3");
+    formulas.add("1.0");
+    NumericalMathFunction fullModel(fullVariables, formulas);
+    Indices parametersPosition(chainDim);
+    parametersPosition.fill();
+    NumericalMathFunction model(fullModel, parametersPosition);
 
     // calibration parameters
     CalibrationStrategyCollection calibrationColl(chainDim);
@@ -99,11 +90,11 @@ int main(int argc, char *argv[])
     DistributionCollection proposalColl;
     for (UnsignedInteger i = 0; i < chainDim; ++ i)
     {
-      proposalColl.add(Uniform(-1., 1.));
+      proposalColl.add(Uniform(-1.0, 1.0));
     }
 
     // prior distribution
-    NumericalPoint sigma0(chainDim, 10.);// sigma0= (10.,10.,10.)
+    NumericalPoint sigma0(chainDim, 10.0);// sigma0= (10.,10.,10.)
     CorrelationMatrix Q0(chainDim);// precision matrix
     CorrelationMatrix Q0_inv(chainDim);// covariance matrix
     for ( UnsignedInteger i = 0; i < chainDim; ++ i )
@@ -112,11 +103,11 @@ int main(int argc, char *argv[])
       Q0(i, i) = 1.0 / Q0_inv (i, i);
     }
     std::cout << "Q0=" << Q0 << std::endl;
-    NumericalPoint mu0(chainDim, 0.0);// mu0 = (0.,0.,0.)
+    NumericalPoint mu0(chainDim, 0.0);// mu0 = (0.0, 0.0, 0.0)
     Distribution prior(Normal( mu0, Q0_inv ) );// x0 ~ N(mu0, sigma0)
     std::cout << "x~" << prior << std::endl;
 
-    // start from te mean x0=(0.,0.,0.)
+    // start from te mean x0=(0.0, 0.0, 0.0)
     std::cout << "x0=" << mu0 << std::endl;
 
     // conditional distribution y~N(z, 1.0)
@@ -124,7 +115,13 @@ int main(int argc, char *argv[])
     std::cout << "y~" << conditional << std::endl;
 
     // create a metropolis-hastings sampler
-    RandomWalkMetropolisHastings sampler(prior, conditional, model, y_obs, mu0, proposalColl);
+    // prior=a distribution of dimension chainDim, the a priori distribution of the parameter
+    // conditional=a distribution of dimension 1, the observation error on the output
+    // model=the link between the parameter and the output
+    // y_obs=noisy observations of the output
+    // mu0=starting point of the chain
+    // proposalColl=
+    RandomWalkMetropolisHastings sampler(prior, conditional, model, p, y_obs, mu0, proposalColl);
     sampler.setVerbose(true);
     sampler.setThinning(4);
     sampler.setBurnIn(2000);

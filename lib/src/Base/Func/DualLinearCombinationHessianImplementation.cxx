@@ -37,8 +37,8 @@ static Factory<DualLinearCombinationHessianImplementation> RegisteredFactory("Du
 
 /* Default constructor */
 DualLinearCombinationHessianImplementation::DualLinearCombinationHessianImplementation()
-  : NumericalMathHessianImplementation(),
-    evaluation_()
+  : NumericalMathHessianImplementation()
+  , evaluation_()
 {
   // Nothing to do
 }
@@ -46,8 +46,8 @@ DualLinearCombinationHessianImplementation::DualLinearCombinationHessianImplemen
 
 /* Parameters constructor */
 DualLinearCombinationHessianImplementation::DualLinearCombinationHessianImplementation(const DualLinearCombinationEvaluationImplementation & evaluation)
-  : NumericalMathHessianImplementation(),
-    evaluation_(evaluation)
+  : NumericalMathHessianImplementation()
+  , evaluation_(evaluation)
 {
   // Nothing to do
 }

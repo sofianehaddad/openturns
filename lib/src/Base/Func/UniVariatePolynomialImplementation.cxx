@@ -34,8 +34,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(UniVariatePolynomialImplementation);
 
 static Factory<UniVariatePolynomialImplementation> RegisteredFactory("UniVariatePolynomialImplementation");
@@ -43,8 +41,8 @@ static Factory<UniVariatePolynomialImplementation> RegisteredFactory("UniVariate
 
 /* Default constructor */
 UniVariatePolynomialImplementation::UniVariatePolynomialImplementation()
-  : PersistentObject(),
-    coefficients_(1, 0.0)
+  : PersistentObject()
+  , coefficients_(1, 0.0)
 {
   // Nothing to do
 }
@@ -52,8 +50,8 @@ UniVariatePolynomialImplementation::UniVariatePolynomialImplementation()
 
 /* Constructor from coefficients */
 UniVariatePolynomialImplementation::UniVariatePolynomialImplementation(const Coefficients & coefficients)
-  : PersistentObject(),
-    coefficients_(coefficients)
+  : PersistentObject()
+  , coefficients_(coefficients)
 {
   compactCoefficients();
 }

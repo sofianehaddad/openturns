@@ -41,6 +41,7 @@ ClaytonCopula::ClaytonCopula()
 {
   setName( "ClaytonCopula" );
   setDimension( 2 );
+  computeRange();
 }
 
 /* Parameters constructor */
@@ -94,7 +95,7 @@ NumericalPoint ClaytonCopula::getRealization() const
   realization[0] = u1;
   // The inverse conditional CDF U2|U1
   const NumericalScalar u2(RandomGenerator::Generate());
-  realization[1] = u1 * pow(pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + pow(u1, theta_), -1.0 / theta_);
+  realization[1] = u1 * std::pow(std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_), -1.0 / theta_);
   return realization;
 }
 
@@ -104,7 +105,7 @@ NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  // Optimized version given by Maple 11, as there are a lot of pow's involved
+  // Optimized version given by Maple 11, as there are a lot of std::pow's involved
   const NumericalScalar u(point[0]);
   const NumericalScalar v(point[1]);
   // A copula has a null DDF outside of ]0, 1[^2
@@ -115,10 +116,10 @@ NumericalPoint ClaytonCopula::computeDDF(const NumericalPoint & point) const
   // Independent case
   if (theta_ == 0.0) return NumericalPoint(2, 0.0);
   // General case
-  const NumericalScalar powUMinusTheta(pow(u, -theta_));
-  const NumericalScalar powVMinusTheta(pow(v, -theta_));
+  const NumericalScalar powUMinusTheta(std::pow(u, -theta_));
+  const NumericalScalar powVMinusTheta(std::pow(v, -theta_));
   const NumericalScalar sum1(powUMinusTheta + powVMinusTheta - 1.0);
-  const NumericalScalar factor1(pow(sum1, -1.0 / theta_));
+  const NumericalScalar factor1(std::pow(sum1, -1.0 / theta_));
   const NumericalScalar factor2(factor1 * powUMinusTheta * powVMinusTheta * (theta_ + 1.0) / (sum1 * sum1 * sum1 * u * v));
   NumericalPoint result(2);
   result[0] =  factor2 * (theta_ * (powUMinusTheta - powVMinusTheta + 1.0) + 1.0 - powVMinusTheta) / u;
@@ -142,7 +143,7 @@ NumericalScalar ClaytonCopula::computePDF(const NumericalPoint & point) const
   // Independent case
   if (theta_ == 0.0) return 1.0;
   // General case
-  return pow(pow(u, -theta_) + pow(v, -theta_) - 1.0, -1.0 / theta_ - 2.0) * (1.0 + theta_) * pow(u * v, -theta_ - 1.0);
+  return std::pow(std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0, -1.0 / theta_ - 2.0) * (1.0 + theta_) * std::pow(u * v, -theta_ - 1.0);
 }
 
 /* Get the CDF of the distribution */
@@ -165,7 +166,7 @@ NumericalScalar ClaytonCopula::computeCDF(const NumericalPoint & point) const
   // Independent case
   if (theta_ == 0.0) return u * v;
   // General case
-  return pow(pow(u, -theta_) + pow(v, -theta_) - 1.0, -1.0 / theta_);
+  return std::pow(std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0, -1.0 / theta_);
 }
 
 /* Get the Spearman correlation of the distribution */
@@ -192,16 +193,16 @@ NumericalPoint ClaytonCopula::computePDFGradient(const NumericalPoint & point) c
   const NumericalScalar v(point[1]);
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(1, 0.0);
-  const NumericalScalar t1(pow(u, -theta_));
-  const NumericalScalar t2(pow(v, -theta_));
+  const NumericalScalar t1(std::pow(u, -theta_));
+  const NumericalScalar t2(std::pow(v, -theta_));
   const NumericalScalar t3(t1 + t2 - 1.0);
-  const NumericalScalar t5(pow(t3, -1.0 / theta_));
-  const NumericalScalar t7(log(v));
+  const NumericalScalar t5(std::pow(t3, -1.0 / theta_));
+  const NumericalScalar t7(std::log(v));
   const NumericalScalar t8(theta_ * theta_);
   const NumericalScalar t9(t7 * t8);
-  const NumericalScalar t10(log(u));
+  const NumericalScalar t10(std::log(u));
   const NumericalScalar t11(t10 * t8);
-  const NumericalScalar t16(log(t3));
+  const NumericalScalar t16(std::log(t3));
   const NumericalScalar t17(t16 * t1);
   const NumericalScalar t19(t16 * t2);
   const NumericalScalar t21(t8 * t1);
@@ -233,11 +234,11 @@ NumericalPoint ClaytonCopula::computeCDFGradient(const NumericalPoint & point) c
   // If we are outside of the support for v, in the upper part
   if (v >= 1.0) return NumericalPoint(1, 0.0);
   // If we are in the support
-  const NumericalScalar powUMinusTheta(pow(u, -theta_));
-  const NumericalScalar powVMinusTheta(pow(v, -theta_));
+  const NumericalScalar powUMinusTheta(std::pow(u, -theta_));
+  const NumericalScalar powVMinusTheta(std::pow(v, -theta_));
   const NumericalScalar sum1(powUMinusTheta + powVMinusTheta - 1.0);
-  const NumericalScalar factor1(pow(sum1, -1.0 / theta_));
-  return NumericalPoint(1, factor1 * (log(sum1) * (powUMinusTheta + powVMinusTheta - 1) + theta_ * (powUMinusTheta * log(u) + powVMinusTheta * log(v))) / (theta_ * theta_ * sum1));
+  const NumericalScalar factor1(std::pow(sum1, -1.0 / theta_));
+  return NumericalPoint(1, factor1 * (std::log(sum1) * (powUMinusTheta + powVMinusTheta - 1) + theta_ * (powUMinusTheta * std::log(u) + powVMinusTheta * std::log(v))) / (theta_ * theta_ * sum1));
 }
 
 /* Get the quantile of the distribution */
@@ -249,9 +250,9 @@ NumericalPoint ClaytonCopula::computeQuantile(const NumericalScalar prob,
   if (prob == 0.0) return getRange().getLowerBound();
   if (prob == 1.0) return getRange().getUpperBound();
   // Independent case
-  if (theta_ == 0.0) return NumericalPoint(2, sqrt(prob));
+  if (theta_ == 0.0) return NumericalPoint(2, std::sqrt(prob));
   // General case
-  return NumericalPoint(2, exp((M_LN2 - log1p(pow(prob, -theta_))) / theta_));
+  return NumericalPoint(2, std::exp((M_LN2 - log1p(std::pow(prob, -theta_))) / theta_));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -264,7 +265,7 @@ NumericalScalar ClaytonCopula::computeConditionalCDF(const NumericalScalar x, co
   const NumericalScalar u(y[0]);
   const NumericalScalar v(x);
   // If we are in the support
-  return pow(pow(u, -theta_) + pow(v, -theta_) - 1.0, -1.0 - 1.0 / theta_) * pow(u, -1.0 - theta_);
+  return std::pow(std::pow(u, -theta_) + std::pow(v, -theta_) - 1.0, -1.0 - 1.0 / theta_) * std::pow(u, -1.0 - theta_);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -279,7 +280,7 @@ NumericalScalar ClaytonCopula::computeConditionalQuantile(const NumericalScalar 
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const NumericalScalar z(y[0]);
-  return z * pow(pow(q, -theta_ / (1.0 + theta_)) - 1.0 + pow(z, theta_), -1.0 / theta_);
+  return z * std::pow(std::pow(q, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(z, theta_), -1.0 / theta_);
 }
 
 /* Tell if the distribution has independent copula */
@@ -295,28 +296,28 @@ Bool ClaytonCopula::hasIndependentCopula() const
 NumericalScalar ClaytonCopula::computeArchimedeanGenerator(const NumericalScalar t) const
 {
   if (theta_ == 0.0) return 0.0;
-  return pow(t, theta_) -  1.0;
+  return std::pow(t, theta_) -  1.0;
 }
 
 /* Compute the inverse of the archimedean generator */
 NumericalScalar ClaytonCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
 {
   if (theta_ == 0.0) return 0.0;
-  return pow(t + 1.0, 1.0 / theta_);
+  return std::pow(t + 1.0, 1.0 / theta_);
 }
 
 /* Compute the derivative of the density generator */
 NumericalScalar ClaytonCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const
 {
   if (theta_ == 0.0) return 0.0;
-  return theta_ * pow(t, theta_ - 1.0);
+  return theta_ * std::pow(t, theta_ - 1.0);
 }
 
 /* Compute the seconde derivative of the density generator */
 NumericalScalar ClaytonCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const
 {
   if (theta_ == 0.0) return 0.0;
-  return theta_ * (theta_ - 1) * pow(t, theta_ - 2.0);
+  return theta_ * (theta_ - 1) * std::pow(t, theta_ - 2.0);
 }
 
 /* Parameters value and description accessor */
@@ -335,7 +336,9 @@ ClaytonCopula::NumericalPointWithDescriptionCollection ClaytonCopula::getParamet
 
 void ClaytonCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = ClaytonCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Theta accessor */

@@ -26,7 +26,7 @@
 
 #include "OTprivate.hxx"
 #include "LinearNumericalMathEvaluationImplementation.hxx"
-#include "SquareMatrix.hxx"
+#include "TriangularMatrix.hxx"
 #include "NumericalPoint.hxx"
 #include "StorageManager.hxx"
 
@@ -49,7 +49,7 @@ public:
 
   /** Parameter constructor */
   InverseNatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
-      const SquareMatrix & cholesky);
+      const TriangularMatrix & cholesky);
 
   /** Virtual constructor */
   virtual InverseNatafEllipticalDistributionEvaluation * clone() const;

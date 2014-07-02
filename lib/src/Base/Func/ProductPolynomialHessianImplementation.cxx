@@ -27,8 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ProductPolynomialHessianImplementation);
 
 static Factory<ProductPolynomialHessianImplementation> RegisteredFactory("ProductPolynomialHessianImplementation");
@@ -36,8 +34,8 @@ static Factory<ProductPolynomialHessianImplementation> RegisteredFactory("Produc
 
 /* Default constructor */
 ProductPolynomialHessianImplementation::ProductPolynomialHessianImplementation()
-  : NumericalMathHessianImplementation(),
-    polynomials_()
+  : NumericalMathHessianImplementation()
+  , polynomials_()
 {
   // Nothing to do
 }
@@ -45,14 +43,10 @@ ProductPolynomialHessianImplementation::ProductPolynomialHessianImplementation()
 
 /* Constructor */
 ProductPolynomialHessianImplementation::ProductPolynomialHessianImplementation(const PolynomialCollection & coll)
-  : NumericalMathHessianImplementation(),
-    polynomials_(coll)
+  : NumericalMathHessianImplementation()
+  , polynomials_(coll)
 {
   // Nothing to do
-  Description description(0);
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
-  setDescription(description);
 }
 
 

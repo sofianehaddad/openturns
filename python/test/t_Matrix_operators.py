@@ -2,7 +2,7 @@
 
 from openturns import *
 
-ref = Matrix([[1.,0.],[0.,0.5]])
+ref = Matrix([[1.0, 0.0], [0.0, 0.5]])
 
 print SquareMatrix(ref)
 print TriangularMatrix(ref)

@@ -24,7 +24,6 @@
 #include "ExponentialModel.hxx"
 #include "Exception.hxx"
 #include "PersistentObjectFactory.hxx"
-#include "Field.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,22 +37,22 @@ static Factory<ExponentialModel> RegisteredFactory("ExponentialModel");
 
 /* Constructor with parameters */
 ExponentialModel::ExponentialModel()
-  : StationaryCovarianceModel(),
-    amplitude_(NumericalPoint(1, 1.0)),
-    scale_(NumericalPoint(1, 1.0)),
-    spatialCorrelation_(0),
-    isDiagonal_(true)
+  : StationaryCovarianceModel()
+  , amplitude_(NumericalPoint(1, 1.0))
+  , scale_(NumericalPoint(1, 1.0))
+  , spatialCorrelation_(0)
+  , isDiagonal_(true)
 {
   dimension_ = 1;
 }
 
 ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
                                    const NumericalPoint & scale)
-  : StationaryCovarianceModel(),
-    amplitude_(0),
-    scale_(0),
-    spatialCorrelation_(0),
-    isDiagonal_(true)
+  : StationaryCovarianceModel()
+  , amplitude_(0)
+  , scale_(0)
+  , spatialCorrelation_(0)
+  , isDiagonal_(true)
 {
   if (amplitude.getDimension() != scale.getDimension() )
     throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
@@ -65,11 +64,11 @@ ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
 ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
                                    const NumericalPoint & scale,
                                    const CorrelationMatrix & spatialCorrelation)
-  : StationaryCovarianceModel(),
-    amplitude_(0),
-    scale_(0),
-    spatialCorrelation_(0),
-    isDiagonal_(false)
+  : StationaryCovarianceModel()
+  , amplitude_(0)
+  , scale_(0)
+  , spatialCorrelation_(0)
+  , isDiagonal_(false)
 {
   dimension_ = amplitude.getDimension();
   if (scale.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
@@ -82,11 +81,11 @@ ExponentialModel::ExponentialModel(const NumericalPoint & amplitude,
 
 ExponentialModel::ExponentialModel(const NumericalPoint & scale,
                                    const CovarianceMatrix & spatialCovariance)
-  : StationaryCovarianceModel(),
-    amplitude_(0),
-    scale_(scale),
-    spatialCorrelation_(0),
-    isDiagonal_(false)
+  : StationaryCovarianceModel()
+  , amplitude_(0)
+  , scale_(scale)
+  , spatialCorrelation_(0)
+  , isDiagonal_(false)
 {
   dimension_ = scale.getDimension();
   if (spatialCovariance.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial covariance has a dimension different from the scales and amplitudes.";
@@ -115,8 +114,8 @@ ExponentialModel * ExponentialModel::clone() const
 
 
 /* Computation of the covariance function, stationary interface
- * C_{i,j}(tau) = amplitude_i * exp(-scale_i * |tau|) * R_{i,j} * amplitude_j * exp(-scale_j|tau|)
- * C_{i,i}(tau) = amplitude_i^2 * exp(-scale_i * |tau|)
+ * C_{i,j}(tau) = amplitude_i * exp(-|tau| / scale_i) * R_{i,j} * amplitude_j * exp(-|tau| / scale_j)
+ * C_{i,i}(tau) = amplitude_i^2 * exp(-|tau| / scale_i)
  */
 CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
 {
@@ -126,8 +125,9 @@ CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
   NumericalPoint exponentialTerms(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    exponentialTerms[i] = amplitude_[i] * exp(-0.5 * scale_[i] * absTau);
-    covarianceMatrix(i, i) = exponentialTerms[i] * exponentialTerms[i];
+    const NumericalScalar value(amplitude_[i] * exp(-0.5 * absTau / scale_[i]));
+    exponentialTerms[i] = value;
+    covarianceMatrix(i, i) = value * value;
   }
   if (!isDiagonal_)
     for (UnsignedInteger i = 0; i < dimension_ ; ++i)
@@ -135,6 +135,12 @@ CovarianceMatrix ExponentialModel::operator() (const NumericalPoint & tau) const
         covarianceMatrix(i, j) = exponentialTerms[i] * spatialCorrelation_(i, j) * exponentialTerms[j];
 
   return covarianceMatrix;
+}
+
+NumericalScalar ExponentialModel::computeAsScalar(const NumericalPoint & tau) const
+{
+  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
+  return amplitude_[0] * exp(-tau.norm() / scale_[0]);
 }
 
 /* Discretize the covariance function on a given TimeGrid */
@@ -198,8 +204,8 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
 
 /* Partial discretization with respect to the second argument */
 /* Computation of the covariance function, stationary interface
- * C_{i,j}(tau) = amplitude_i * exp(-scale_i * |tau|) * R_{i,j} * amplitude_j * exp(-scale_j|tau|)
- * C_{i,i}(tau) = amplitude_i^2 * exp(-scale_i * |tau|)
+ * C_{i,j}(tau) = amplitude_i * exp(-|tau| / scale_i) * R_{i,j} * amplitude_j * exp(-|tau| / scale_j)
+ * C_{i,i}(tau) = amplitude_i^2 * exp(-|tau| / scale_i)
  */
 Basis ExponentialModel::getPartialDiscretization(const NumericalSample & secondLocation) const
 {

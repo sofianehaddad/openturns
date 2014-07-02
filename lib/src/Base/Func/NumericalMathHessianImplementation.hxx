@@ -26,6 +26,7 @@
 
 #include "PersistentObject.hxx"
 #include "NumericalPoint.hxx"
+#include "NumericalPointWithDescription.hxx"
 #include "Description.hxx"
 #include "Indices.hxx"
 #include "SymmetricTensor.hxx"
@@ -33,9 +34,6 @@
 #include "StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-
-
 
 /**
  * @class NumericalMathHessianImplementation
@@ -66,10 +64,6 @@ public:
   virtual String __str__(const String & offset = "") const;
 
 
-  /** Description Accessor */
-  void setDescription(const Description & description);
-  Description getDescription() const;
-
   /** Test for actual implementation */
   virtual Bool isActualImplementation() const;
 
@@ -85,12 +79,18 @@ public:
 
   /** Hessian method */
   virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const NumericalPoint & inP,
+				  const NumericalPoint & parameters);
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
+
+  /** Parameters value and description accessor */
+  virtual NumericalPointWithDescription getParameters() const;
+  virtual void setParameters(const NumericalPointWithDescription & parameters);
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
@@ -106,10 +106,10 @@ protected:
   /** Number of calls since the construction */
   mutable UnsignedInteger callsNumber_;
 
-private:
+  /** The value and description of all the parameters */
+  NumericalPointWithDescription parameters_;
 
-  /** The description of all components */
-  Description description_;
+private:
 
 
 }; /* class NumericalMathHessianImplementation */

@@ -25,13 +25,25 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(CovarianceMatrix);
 
 /* Default constructor */
 CovarianceMatrix::CovarianceMatrix()
   : SymmetricMatrix(0)
+{
+  // Nothing to do
+}
+
+/* Constructor with implementation */
+CovarianceMatrix::CovarianceMatrix(const Implementation & i)
+  : SymmetricMatrix(i)
+{
+  // Nothing to do
+}
+
+/* Constructor with implementation */
+CovarianceMatrix::CovarianceMatrix(const MatrixImplementation & i)
+  : SymmetricMatrix(i)
 {
   // Nothing to do
 }
@@ -51,13 +63,6 @@ CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim)
 CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim,
                                    const Collection<NumericalScalar> &elementsValues)
   : SymmetricMatrix(dim, elementsValues)
-{
-  // Nothing to do
-}
-
-/* Constructor with implementation */
-CovarianceMatrix::CovarianceMatrix(const Implementation & i)
-  : SymmetricMatrix(i)
 {
   // Nothing to do
 }
@@ -96,7 +101,7 @@ Bool CovarianceMatrix::isPositiveDefinite(const Bool keepIntact)
 }
 
 /* Build the Cholesky factorization of the matrix */
-SquareMatrix CovarianceMatrix::computeCholesky(const Bool keepIntact)
+TriangularMatrix CovarianceMatrix::computeCholesky(const Bool keepIntact)
 {
   return Implementation(getImplementation()->computeCholesky(keepIntact).clone());
 }

@@ -43,10 +43,10 @@ static Factory<StandardDistributionPolynomialFactory> RegisteredFactory("Standar
 
 /* Default constructor */
 StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory()
-  : OrthogonalUniVariatePolynomialFactory(Uniform()),
-    orthonormalizationAlgorithm_(GramSchmidtAlgorithm(Uniform())),
-    specificFamily_(),
-    hasSpecificFamily_(false)
+  : OrthogonalUniVariatePolynomialFactory(Uniform())
+  , orthonormalizationAlgorithm_(GramSchmidtAlgorithm(Uniform()))
+  , specificFamily_()
+  , hasSpecificFamily_(false)
 {
   // Initialize the coefficient cache
   initializeCache();
@@ -55,10 +55,10 @@ StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory()
 
 /* Parameter constructor */
 StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory(const Distribution & measure)
-  : OrthogonalUniVariatePolynomialFactory(measure.getStandardRepresentative()),
-    orthonormalizationAlgorithm_(GramSchmidtAlgorithm(measure.getStandardRepresentative())),
-    specificFamily_(),
-    hasSpecificFamily_(false)
+  : OrthogonalUniVariatePolynomialFactory(measure.getStandardRepresentative())
+  , orthonormalizationAlgorithm_(GramSchmidtAlgorithm(measure.getStandardRepresentative()))
+  , specificFamily_()
+  , hasSpecificFamily_(false)
 {
   checkSpecificFamily();
   initializeCache();
@@ -67,10 +67,10 @@ StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory(con
 
 /* Parameter constructor */
 StandardDistributionPolynomialFactory::StandardDistributionPolynomialFactory(const OrthonormalizationAlgorithm & orthonormalizationAlgorithm)
-  : OrthogonalUniVariatePolynomialFactory(orthonormalizationAlgorithm.getMeasure().getStandardRepresentative()),
-    orthonormalizationAlgorithm_(orthonormalizationAlgorithm),
-    specificFamily_(),
-    hasSpecificFamily_(false)
+  : OrthogonalUniVariatePolynomialFactory(orthonormalizationAlgorithm.getMeasure().getStandardRepresentative())
+  , orthonormalizationAlgorithm_(orthonormalizationAlgorithm)
+  , specificFamily_()
+  , hasSpecificFamily_(false)
 {
   checkSpecificFamily();
   initializeCache();

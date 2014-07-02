@@ -27,8 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ConstantNumericalMathGradientImplementation);
 
 static Factory<ConstantNumericalMathGradientImplementation> RegisteredFactory("ConstantNumericalMathGradientImplementation");
@@ -43,8 +41,8 @@ ConstantNumericalMathGradientImplementation::ConstantNumericalMathGradientImplem
 
 /* Parameter constructor */
 ConstantNumericalMathGradientImplementation::ConstantNumericalMathGradientImplementation(const Matrix & constant)
-  : NumericalMathGradientImplementation(),
-    constant_(constant)
+  : NumericalMathGradientImplementation()
+  , constant_(constant)
 {
   /* Check if the dimensions of the constant term is compatible with the linear term */
 }
@@ -76,8 +74,7 @@ String ConstantNumericalMathGradientImplementation::__str__(const String & offse
 {
   OSS oss(false);
   const UnsignedInteger inputDimension(getInputDimension());
-  Description description(getDescription());
-  if (description.getSize() == 0) for (UnsignedInteger i = 0; i < inputDimension; ++i) description.add(OSS() << "x" << i);
+  const Description description(Description::BuildDefault(inputDimension, "x"));
   if (hasVisibleName()) oss << offset << getName() << ":\n";
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {

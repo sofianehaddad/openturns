@@ -55,10 +55,8 @@ QuadraticNumericalMathEvaluationImplementation::QuadraticNumericalMathEvaluation
   if ((constant.getDimension() != linear.getNbColumns()) || (constant.getDimension() != quadratic.getNbSheets())) throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term or with the quadratic term";
   /* Check if the dimension of the center is compatible with the linear and quadratic terms */
   if ((center.getDimension() != linear.getNbRows()) || (center.getDimension() != quadratic.getNbRows())) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term or with the quadratic term";
-  Description description(0);
-  for (UnsignedInteger i = 0; i < center.getDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedInteger i = 0; i < constant.getDimension(); ++i) description.add(OSS() << "y" << i);
-  setDescription(description);
+  setInputDescription(Description::BuildDefault(center.getDimension(), "x"));
+  setOutputDescription(Description::BuildDefault(constant.getDimension(), "y"));
 }
 
 /* Virtual constructor */

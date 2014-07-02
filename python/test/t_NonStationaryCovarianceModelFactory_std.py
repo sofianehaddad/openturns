@@ -42,7 +42,7 @@ try:
             s = timeGrid.getValue(j)
             estimatedValue = myCovarianceModel(t, s)[0, 0]
             modelValue = model.computeCovariance(t, s)[0, 0]
-            print "Covariance C( %.12g" % t, ",  %.12g" % s, ") : ", " evaluation =  %.12g" % estimatedValue, " model =  %.12g" % modelValue
+            print "Covariance C( %.8g" % t, ",  %.8g" % s, ") : ", " evaluation =  %.12g" % estimatedValue, " model =  %.8g" % modelValue
 
 except:
     import sys

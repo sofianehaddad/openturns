@@ -225,7 +225,7 @@ private:
       {
         const Distribution candidate(factory_.build(NumericalPointCollection(1, parameters)));
         for (UnsignedInteger i = 0; i < dataX_.getSize(); ++i)
-          norm += pow(candidate.computeCDF(dataX_[i][0]) - dataY_[i][0], 2);
+          norm += std::pow(candidate.computeCDF(dataX_[i][0]) - dataY_[i][0], 2);
         return NumericalPoint(1, norm);
       }
       catch(...)

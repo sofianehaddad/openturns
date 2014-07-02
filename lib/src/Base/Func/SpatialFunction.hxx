@@ -47,18 +47,21 @@ public:
   typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
 
   /** Default constructor */
-  SpatialFunction();
+  SpatialFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  SpatialFunction(const NumericalMathFunction & function);
+  SpatialFunction(const NumericalMathFunction & function,
+		  const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
-  SpatialFunction(const EvaluationImplementation & p_evaluation);
+  SpatialFunction(const EvaluationImplementation & p_evaluation,
+		  const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
-  SpatialFunction(const NumericalMathEvaluationImplementation & evaluation);
+  SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
+		  const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual SpatialFunction * clone() const;
@@ -71,7 +74,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  Field operator() (const Field & inTS) const;
+  Field operator() (const Field & inFld) const;
 
   /** Get the i-th marginal function */
   Implementation getMarginal(const UnsignedInteger i) const;

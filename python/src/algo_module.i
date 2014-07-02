@@ -46,6 +46,7 @@
 %include Classifier.i
 %include FittingAlgorithmImplementation.i
 %include FittingAlgorithm.i
+%include KDTree.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
 %include LeastSquaresMetaModelSelection.i

@@ -422,7 +422,7 @@ NumericalComplex KernelMixture::computeCharacteristicFunction(const NumericalSca
   const UnsignedInteger size(sample_.getSize());
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * exp(NumericalComplex(0.0, sample_[i][0] * x));
+    cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(NumericalComplex(0.0, sample_[i][0] * x));
   } /* end for */
   return cfValue * (1.0 / size);
 }
@@ -503,7 +503,7 @@ void KernelMixture::computeCovariance() const
   covariance_ = CovarianceMatrix(dimension, Collection<NumericalScalar>(sample_.computeCovariance().getImplementation()->operator*(1.0 - 1.0 / sample_.getSize())));
   // Add the diagonal kernel covariance contribution
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    covariance_(i, i) += pow(bandwidth_[i] * sigmaKernel, 2);
+    covariance_(i, i) += std::pow(bandwidth_[i] * sigmaKernel, 2);
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -517,7 +517,7 @@ NumericalPoint KernelMixture::getStandardDeviation() const
   const NumericalScalar sigmaKernel(kernel_.getStandardDeviation()[0]);
   NumericalPoint result(sample_.computeCenteredMomentPerComponent(2));
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    result[i] = sqrt(result[i] + pow(bandwidth_[i] * sigmaKernel, 2));
+    result[i] = std::sqrt(result[i] + std::pow(bandwidth_[i] * sigmaKernel, 2));
   return result;
 }
 
@@ -535,7 +535,7 @@ NumericalPoint KernelMixture::getSkewness() const
   const NumericalPoint sigma(getStandardDeviation());
   NumericalPoint result(sample_.computeCenteredMomentPerComponent(3));
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    result[i] = (result[i] + pow(bandwidth_[i] * sigmaKernel, 3) * skewnessKernel) / pow(sigma[i], 3);
+    result[i] = (result[i] + std::pow(bandwidth_[i] * sigmaKernel, 3) * skewnessKernel) / std::pow(sigma[i], 3);
   return result;
 }
 
@@ -555,7 +555,7 @@ NumericalPoint KernelMixture::getKurtosis() const
   const NumericalPoint sigma(getStandardDeviation());
   NumericalPoint result(sample_.computeCenteredMomentPerComponent(4));
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    result[i] = (result[i] + pow(bandwidth_[i] * sigmaKernel, 4) * kurtosisKernel + 6.0 * varSample[i] * pow(bandwidth_[i] * sigmaKernel, 2)) / pow(sigma[i], 4);
+    result[i] = (result[i] + std::pow(bandwidth_[i] * sigmaKernel, 4) * kurtosisKernel + 6.0 * varSample[i] * std::pow(bandwidth_[i] * sigmaKernel, 2)) / std::pow(sigma[i], 4);
   return result;
 }
 

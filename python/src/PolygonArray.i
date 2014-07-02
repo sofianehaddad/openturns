@@ -1,0 +1,12 @@
+// SWIG file PolygonArray.i
+// @author schueller
+// @date   2012-01-02 11:44:01 +0100 (Mon, 02 Jan 2012)
+
+%{
+#include "PolygonArray.hxx"
+%}
+
+%template(PolygonCollection) OT::Collection<OT::Polygon>;
+
+%include PolygonArray.hxx
+namespace OT { %extend PolygonArray { PolygonArray(const PolygonArray & other) { return new OT::PolygonArray(other); } } }

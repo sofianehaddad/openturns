@@ -36,8 +36,8 @@ static Factory<LinearCombinationGradientImplementation> RegisteredFactory("Linea
 
 /* Default constructor */
 LinearCombinationGradientImplementation::LinearCombinationGradientImplementation()
-  : NumericalMathGradientImplementation(),
-    evaluation_()
+  : NumericalMathGradientImplementation()
+  , evaluation_()
 {
   // Nothing to do
 }
@@ -45,8 +45,8 @@ LinearCombinationGradientImplementation::LinearCombinationGradientImplementation
 
 /* Parameters constructor */
 LinearCombinationGradientImplementation::LinearCombinationGradientImplementation(const LinearCombinationEvaluationImplementation & evaluation)
-  : NumericalMathGradientImplementation(),
-    evaluation_(evaluation)
+  : NumericalMathGradientImplementation()
+  , evaluation_(evaluation)
 {
   // Nothing to do
 }

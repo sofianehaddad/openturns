@@ -1,4 +1,4 @@
-jacobi=class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 r=2.5 t=3.5 a=-1 b=1
+jacobi=class=JacobiFactory alpha=0 beta=1.5 measure=class=Beta name=Beta dimension=1 r=2.5 t=3.5 a=-1 b=1
 jacobi=class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 r=4.5 t=8 a=-1 b=1
 jacobi=class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 r=4.5 t=8 a=-1 b=1
 jacobi(0)=1

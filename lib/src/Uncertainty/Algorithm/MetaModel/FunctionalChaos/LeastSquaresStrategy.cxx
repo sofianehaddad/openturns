@@ -39,8 +39,8 @@ static Factory<LeastSquaresStrategy> RegisteredFactory("LeastSquaresStrategy");
 
 /* Default constructor */
 LeastSquaresStrategy::LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(),
-    p_approximationAlgorithmImplementationFactory_( factory.clone() )
+  : ProjectionStrategyImplementation()
+  , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
 }
@@ -48,8 +48,8 @@ LeastSquaresStrategy::LeastSquaresStrategy(const ApproximationAlgorithmImplement
 /* Parameter constructor */
 LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(measure),
-    p_approximationAlgorithmImplementationFactory_( factory.clone() )
+  : ProjectionStrategyImplementation(measure)
+  , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
 }
@@ -57,8 +57,8 @@ LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
 /* Parameter constructor */
 LeastSquaresStrategy::LeastSquaresStrategy(const WeightedExperiment & weightedExperiment,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(weightedExperiment),
-    p_approximationAlgorithmImplementationFactory_( factory.clone() )
+  : ProjectionStrategyImplementation(weightedExperiment)
+  , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
 }
@@ -67,8 +67,8 @@ LeastSquaresStrategy::LeastSquaresStrategy(const WeightedExperiment & weightedEx
 LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
     const WeightedExperiment & weightedExperiment,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(measure, weightedExperiment),
-    p_approximationAlgorithmImplementationFactory_( factory.clone() )
+  : ProjectionStrategyImplementation(measure, weightedExperiment)
+  , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
 }
@@ -78,8 +78,8 @@ LeastSquaresStrategy::LeastSquaresStrategy(const NumericalSample & inputSample,
     const NumericalPoint & weights,
     const NumericalSample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(inputSample, weights, outputSample),
-    p_approximationAlgorithmImplementationFactory_( factory.clone() )
+  : ProjectionStrategyImplementation(inputSample, weights, outputSample)
+  , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
 }
@@ -88,8 +88,8 @@ LeastSquaresStrategy::LeastSquaresStrategy(const NumericalSample & inputSample,
 LeastSquaresStrategy::LeastSquaresStrategy(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(inputSample, NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample),
-    p_approximationAlgorithmImplementationFactory_( factory.clone() )
+  : ProjectionStrategyImplementation(inputSample, NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
+  , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
 }

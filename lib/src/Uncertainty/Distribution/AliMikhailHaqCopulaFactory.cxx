@@ -67,7 +67,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample of dimension not equal to 2";
   NumericalScalar tau(sample.computeKendallTau().operator()(0, 1));
-  if ((tau < (5.0 - 8.0 * log(2.0)) / 3.0) || (tau > 1.0 / 3.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample with Kendall tau not in [(5-8ln(2))/3 ~ -0.182, 1/3~0.333]. Here tau=" << tau;
+  if ((tau < (5.0 - 8.0 * std::log(2.0)) / 3.0) || (tau > 1.0 / 3.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample with Kendall tau not in [(5-8ln(2))/3 ~ -0.182, 1/3~0.333]. Here tau=" << tau;
   // Search the value of the AliMikhailHaq copula parameter by numerically inverting the relation:
   // between Kendall's tau and AliMikhailHaq copula's parameter
   NumericalScalar theta(0.0);
@@ -140,7 +140,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula() con
 NumericalScalar AliMikhailHaqCopulaFactory::KendallTauFromParameter(const NumericalScalar theta) const
 {
   // The threshold insures double precision accuracy
-  if (fabs(theta) <= 4.7121609431428177e-8) return theta * (2.0 / 9.0 + theta * (1.0 / 18.0 + theta / 45.0));
+  if (std::abs(theta) <= 4.7121609431428177e-8) return theta * (2.0 / 9.0 + theta * (1.0 / 18.0 + theta / 45.0));
   return (1.0 - 2.0 / (3.0 * theta)) - 2.0 * (1.0 - theta) * (1.0 - theta) * log1p(-theta) / (3.0 * theta * theta);
 }
 

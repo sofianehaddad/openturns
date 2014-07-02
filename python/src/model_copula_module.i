@@ -50,6 +50,7 @@
 %include GumbelCopulaFactory.i
 %include ComposedDistribution.i
 %include ComposedCopula.i
+%include CompositeDistribution.i
 
 /* At last we include template definitions */
 %include UncertaintyModelCopulaTemplateDefs.i

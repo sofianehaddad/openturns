@@ -28,18 +28,15 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(HistogramPair);
-
 
 static Factory<HistogramPair> RegisteredFactory("HistogramPair");
 
 /* Default constructor */
 HistogramPair::HistogramPair()
-  : width_(1.0),
-    height_(1.0),
-    surface_(1.0)
+  : width_(1.0)
+  , height_(1.0)
+  , surface_(1.0)
 {
   // Nothing to do
 }
@@ -47,9 +44,9 @@ HistogramPair::HistogramPair()
 /* Parameters constructor */
 HistogramPair::HistogramPair(const NumericalScalar width,
                              const NumericalScalar height)
-  : width_(width),
-    height_(height),
-    surface_(width * height)
+  : width_(width)
+  , height_(height)
+  , surface_(width * height)
 {
   // Check if the data are consistent
   if (width < 0.0) throw InvalidArgumentException(HERE) << "Error: an HistogramPair cannot have a negative width.";

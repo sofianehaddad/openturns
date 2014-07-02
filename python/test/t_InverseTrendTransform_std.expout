@@ -3,8 +3,8 @@ myInverseTrendFunc=
 | y0 = sin(t)
 | y1 = cos(t)
 
-myInverseTrendFunc input description= [t]
-myInverseTrendFunc input dimension= 1
+myInverseTrendFunc input description= [y0,y1]
+myInverseTrendFunc input dimension= 2
 myInverseTrendFunc output description= [y0,y1]
 myInverseTrendFunc output dimension= 2
 input time series =  

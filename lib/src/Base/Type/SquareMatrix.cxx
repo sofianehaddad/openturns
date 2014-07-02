@@ -28,8 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(SquareMatrix);
 
 /* Default constructor */
@@ -37,6 +35,24 @@ SquareMatrix::SquareMatrix()
   : Matrix(0, 0)
 {
   // Nothing to do
+}
+
+
+/* Constructor with implementation */
+SquareMatrix::SquareMatrix(const Implementation & i)
+  : Matrix(i)
+{
+  if (getNbRows() != getNbColumns())
+    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
+}
+
+
+/* Constructor with implementation */
+SquareMatrix::SquareMatrix(const MatrixImplementation & i)
+  : Matrix(i)
+{
+  if (getNbRows() != getNbColumns())
+    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
 }
 
 
@@ -56,15 +72,6 @@ SquareMatrix::SquareMatrix(const UnsignedInteger dim,
   : Matrix(dim, dim, elementsValues)
 {
   // Nothing to do
-}
-
-
-/* Constructor with implementation */
-SquareMatrix::SquareMatrix(const Implementation & i)
-  : Matrix(i)
-{
-  if (getNbRows() != getNbColumns())
-    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
 }
 
 
@@ -177,6 +184,12 @@ NumericalScalar SquareMatrix::computeLogAbsoluteDeterminant(NumericalScalar & si
 NumericalScalar SquareMatrix::computeDeterminant(const Bool keepIntact)
 {
   return getImplementation()->computeDeterminant(keepIntact);
+}
+
+/* Compute trace */
+NumericalScalar SquareMatrix::computeTrace() const
+{
+  return getImplementation()->computeTrace();
 }
 
 /* Compute eigenvalues */

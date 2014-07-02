@@ -33,6 +33,7 @@
 #include "ApproximationAlgorithm.hxx"
 #include "FittingAlgorithmImplementation.hxx"
 #include "FittingAlgorithm.hxx"
+#include "KDTree.hxx"
 #include "KFold.hxx"
 #include "CorrectedLeaveOneOut.hxx"
 #include "LeastSquaresMetaModelSelection.hxx"

@@ -29,10 +29,6 @@
 %import weightedexperiment_module.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
-%include EnumerateFunctionImplementation.i
-%include EnumerateFunction.i
-%include LinearEnumerateFunction.i
-%include HyperbolicAnisotropicEnumerateFunction.i
 %include OrthogonalUniVariatePolynomial.i
 %include OrthogonalUniVariatePolynomialFactory.i
 %include CharlierFactory.i

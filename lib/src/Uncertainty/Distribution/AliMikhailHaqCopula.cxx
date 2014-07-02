@@ -101,7 +101,7 @@ NumericalPoint AliMikhailHaqCopula::getRealization() const
   const NumericalScalar b(-theta_ * (2.0 * a * v + 1.0) + 2.0 * theta2 * a * a * v + 1.0);
   const NumericalScalar delta(4.0 * v * (a - 1.0));
   const NumericalScalar c(theta2 * (a * delta + 1.0) - theta_ * (delta + 2.0) + 1.0);
-  realization[1] = 2.0 * v * pow(a * theta_ - 1.0, 2) / (b + sqrt(c));
+  realization[1] = 2.0 * v * std::pow(a * theta_ - 1.0, 2) / (b + std::sqrt(c));
   return realization;
 }
 
@@ -147,7 +147,7 @@ NumericalScalar AliMikhailHaqCopula::computePDF(const NumericalPoint & point) co
     return 0.0;
   }
   const NumericalScalar prod(theta_ * (1.0 - u) * (1.0 - v));
-  return (1.0 + theta_ * ((1.0 + u) * (1.0 + v) - 3.0 + prod)) / pow(1.0 - prod, 3);
+  return (1.0 + theta_ * ((1.0 + u) * (1.0 + v) - 3.0 + prod)) / std::pow(1.0 - prod, 3);
 }
 
 /* Get the CDF of the distribution */
@@ -174,7 +174,7 @@ NumericalScalar AliMikhailHaqCopula::computeCDF(const NumericalPoint & point) co
 CorrelationMatrix AliMikhailHaqCopula::getSpearmanCorrelation() const
 {
   CorrelationMatrix rho(2);
-  if (abs(theta_) < 0.005633787383) rho(0, 1) = (1.0 / 3.0 + (1.0 / 12.0 + (3.0 / 100.0 + (1.0 / 75.0 + (1.0 / 147.0 + (3.0 / 784.0 + theta_ / 432.0) / theta_) / theta_) / theta_) / theta_) / theta_) / theta_;
+  if (std::abs(theta_) < 0.005633787383) rho(0, 1) = (1.0 / 3.0 + (1.0 / 12.0 + (3.0 / 100.0 + (1.0 / 75.0 + (1.0 / 147.0 + (3.0 / 784.0 + theta_ / 432.0) / theta_) / theta_) / theta_) / theta_) / theta_) / theta_;
   else rho(0, 1) = 12.0 * ((((1.0 + theta_) * SpecFunc::DiLog(theta_) - 2.0 * (1.0 - theta_) * log1p(-theta_)) / theta_) - 3.0) / theta_ - 3.0;
   return rho;
 }
@@ -183,7 +183,7 @@ CorrelationMatrix AliMikhailHaqCopula::getSpearmanCorrelation() const
 CorrelationMatrix AliMikhailHaqCopula::getKendallTau() const
 {
   CorrelationMatrix tau(2);
-  if (abs(theta_) < 0.005149755205) tau(0, 1) = (2.0 / 9.0 + (1.0 / 18.0 + (1.0 / 45.0 + (1.0 / 90.0 + (2.0 / 315.0 + (1.0 / 252.0 + theta_ / 378.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_;
+  if (std::abs(theta_) < 0.005149755205) tau(0, 1) = (2.0 / 9.0 + (1.0 / 18.0 + (1.0 / 45.0 + (1.0 / 90.0 + (2.0 / 315.0 + (1.0 / 252.0 + theta_ / 378.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_;
   else tau(0, 1) = 1.0 - 2.0 / (3.0 * theta_) + log1p(-theta_) * (-2.0 / 3.0 + 4.0 / (3.0 * theta_) - 2.0 / (3.0 * theta_ * theta_));
   return tau;
 }
@@ -210,7 +210,7 @@ NumericalPoint AliMikhailHaqCopula::computeCDFGradient(const NumericalPoint & po
 NumericalPoint AliMikhailHaqCopula::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  return NumericalPoint(2, (prob * theta_ + sqrt(prob * (1.0 - theta_ + prob * theta_))) / (1.0 + prob * theta_));
+  return NumericalPoint(2, (prob * theta_ + std::sqrt(prob * (1.0 - theta_ + prob * theta_))) / (1.0 + prob * theta_));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -223,7 +223,7 @@ NumericalScalar AliMikhailHaqCopula::computeConditionalCDF(const NumericalScalar
   const NumericalScalar u(y[0]);
   const NumericalScalar v(x);
   // If we are in the support
-  return v * (1.0 - theta_ * (1.0 - v)) / pow(1.0 - theta_ * (1.0 - u) * (1.0 - v), 2);
+  return v * (1.0 - theta_ * (1.0 - v)) / std::pow(1.0 - theta_ * (1.0 - u) * (1.0 - v), 2);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -247,7 +247,7 @@ NumericalScalar AliMikhailHaqCopula::computeConditionalQuantile(const NumericalS
   const NumericalScalar qThetaU(qTheta * u);
   const NumericalScalar tmp1(2.0 * qThetaU);
   const NumericalScalar tmp2(4.0 * qTheta2 * u);
-  const NumericalScalar tmp3(sqrt(1.0 + theta2 + 4.0 * qThetaU - tmp2 + 4.0 * qTheta2U2 - 2.0 * theta_));
+  const NumericalScalar tmp3(std::sqrt(1.0 + theta2 + 4.0 * qThetaU - tmp2 + 4.0 * qTheta2U2 - 2.0 * theta_));
   return -0.5 * (theta_ + 2.0 * qTheta - 2.0 * qTheta2 - 2.0 * qTheta2U2 - tmp1 - 1.0 + tmp2 + tmp3) / (theta_ * (-1.0 + qTheta - tmp1 + qTheta * u2));
 }
 
@@ -264,21 +264,21 @@ NumericalScalar AliMikhailHaqCopula::computeArchimedeanGenerator(const Numerical
 NumericalScalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
 {
   const NumericalScalar y(t * (theta_ - 1.0) / theta_);
-  return (y - SpecFunc::LambertW(-t * exp(y) / theta_)) / t;
+  return (y - SpecFunc::LambertW(-t * std::exp(y) / theta_)) / t;
 }
 
 /* Compute the derivative of the density generator */
 NumericalScalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const
 {
   const NumericalScalar u(1.0 - theta_ * (1.0 - t));
-  return (theta_ / u - log(u) / t) / t;
+  return (theta_ / u - std::log(u) / t) / t;
 }
 
 /* Compute the seconde derivative of the density generator */
 NumericalScalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const
 {
   const NumericalScalar u(1.0 - theta_ * (1.0 - t));
-  return (-theta_ * theta_ / (u * u) - 2.0 * theta_ / (t * u) + 2.0 * log(u) / (t * t)) / t;
+  return (-theta_ * theta_ / (u * u) - 2.0 * theta_ / (t * u) + 2.0 * std::log(u) / (t * t)) / t;
 }
 
 /* Parameters value and description accessor */
@@ -297,7 +297,9 @@ AliMikhailHaqCopula::NumericalPointWithDescriptionCollection AliMikhailHaqCopula
 
 void AliMikhailHaqCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = AliMikhailHaqCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Tell if the distribution has independent copula */

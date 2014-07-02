@@ -40,9 +40,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 /**
  * @class NumericalMathFunctionImplementation
  *
@@ -236,29 +233,33 @@ public:
   /** Operator () */
   NumericalPoint operator() (const NumericalPoint & inP) const;
 
+  NumericalPoint operator() (const NumericalPoint & inP,
+			     const NumericalPoint & parameters);
+
   NumericalSample operator() (const NumericalSample & inS) const;
 
-  Field operator() (const Field & inTS) const;
+  Field operator() (const Field & inField) const;
 
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const NumericalPoint & inP,
+		  const NumericalPoint & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const NumericalPoint & inP,
+			  const NumericalPoint & parameters);
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parametersGradient(const NumericalPoint & inP) const;
+  virtual Matrix parametersGradient(const NumericalPoint & inP,
+				    const NumericalPoint & parameters);
 
   /** Parameters value and description accessor */
   virtual NumericalPointWithDescription getParameters() const;
   virtual void setParameters(const NumericalPointWithDescription & parameters);
-
-  /** Accessor for input point dimension */
-  UnsignedInteger getInputNumericalPointDimension() const;
-
-  /** Accessor for output point dimension */
-  UnsignedInteger getOutputNumericalPointDimension() const;
+  virtual void setParameters(const NumericalPoint & parameters);
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

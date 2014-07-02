@@ -45,46 +45,58 @@ int main(int argc, char *argv[])
 
     /* Second order model with parameters */
     ExponentialCauchy myModel(amplitude, scale);
-    fullprint << "myModel = " << myModel << std::endl;
+    fullprint << "myModel=" << myModel << std::endl;
 
     /* checking the copy-cast*/
     SecondOrderModel mySecondOrderModel(myModel);
-    fullprint << "mySecondOrderModel = " << mySecondOrderModel << std::endl;
+    fullprint << "mySecondOrderModel=" << mySecondOrderModel << std::endl;
 
     const NumericalScalar tmin(0.0);
     const NumericalScalar step(0.1);
     const UnsignedInteger n(11);
 
     RegularGrid myTimeGrid(tmin, step, n);
-    const UnsignedInteger size(10000);
+    const UnsignedInteger size(100);
 
     TemporalNormalProcess myProcess(myModel, myTimeGrid);
-    fullprint << "myProcess = " << myProcess << std::endl;
+    fullprint << "myProcess=" << myProcess << std::endl;
     fullprint << "is stationary? " << myProcess.isStationary() << std::endl;
-    fullprint << "mean over " << size << " realizations = " << myProcess.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
+    fullprint << "mean over " << size << " realizations=" << myProcess.getSample(size).computeMean() << std::endl;
 
     /* Second order model with parameters */
     ExponentialModel myCovModel(amplitude, scale);
-    fullprint << "myCovModel = " << myCovModel << std::endl;
+    fullprint << "myCovModel=" << myCovModel << std::endl;
 
     TemporalNormalProcess myProcess1(myCovModel, myTimeGrid);
-    fullprint << "myProcess1 = " << myProcess1 << std::endl;
+    fullprint << "myProcess1=" << myProcess1 << std::endl;
     fullprint << "is stationary? " << myProcess1.isStationary() << std::endl;
-    fullprint << "mean over " << size << " realizations= " << myProcess1.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With constant trend */
     TrendTransform trend(NumericalMathFunction("t", "4.0"));
     TemporalNormalProcess myProcess2(trend, myCovModel, myTimeGrid);
-    fullprint << "myProcess2 = " << myProcess2 << std::endl;
+    fullprint << "myProcess2=" << myProcess2 << std::endl;
     fullprint << "is stationary? " << myProcess2.isStationary() << std::endl;
-    fullprint << "mean over " << size << " realizations= " << myProcess2.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With varying trend */
     TrendTransform trend3(NumericalMathFunction("t", "sin(t)"));
     TemporalNormalProcess myProcess3(trend3, myCovModel, myTimeGrid);
-    fullprint << "myProcess3 = " << myProcess3 << std::endl;
+    fullprint << "myProcess3=" << myProcess3 << std::endl;
     fullprint << "is stationary? " << myProcess3.isStationary() << std::endl;
-    fullprint << "mean over " << size << " realizations= " << myProcess3.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 0);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
+    ResourceMap::SetAsUnsignedInteger("TemporalNormalProcess-UseGibbsSampler", 1);
+    fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
   }
   catch (TestFailed & ex)
   {

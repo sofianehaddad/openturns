@@ -40,22 +40,22 @@ static Factory<CauchyModel> RegisteredFactory("CauchyModel");
 
 /* Constructor with parameters */
 CauchyModel::CauchyModel()
-  : SpectralModelImplementation(),
-    amplitude_(NumericalPoint(1, 1.0)),
-    scale_(NumericalPoint(1, 1.0)),
-    spatialCorrelation_(0),
-    isDiagonal_(true)
+  : SpectralModelImplementation()
+  , amplitude_(NumericalPoint(1, 1.0))
+  , scale_(NumericalPoint(1, 1.0))
+  , spatialCorrelation_(0)
+  , isDiagonal_(true)
 {
   dimension_ = 1;
 }
 
 CauchyModel::CauchyModel(const NumericalPoint & amplitude,
                          const NumericalPoint & scale)
-  : SpectralModelImplementation(),
-    amplitude_(0),
-    scale_(0),
-    spatialCorrelation_(0),
-    isDiagonal_(true)
+  : SpectralModelImplementation()
+  , amplitude_(0)
+  , scale_(0)
+  , spatialCorrelation_(0)
+  , isDiagonal_(true)
 {
   if (amplitude.getDimension() != scale.getDimension() )
     throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
@@ -67,11 +67,11 @@ CauchyModel::CauchyModel(const NumericalPoint & amplitude,
 CauchyModel::CauchyModel(const NumericalPoint & amplitude,
                          const NumericalPoint & scale,
                          const CorrelationMatrix & spatialCorrelation)
-  : SpectralModelImplementation(),
-    amplitude_(0),
-    scale_(0),
-    spatialCorrelation_(0),
-    isDiagonal_(false)
+  : SpectralModelImplementation()
+  , amplitude_(0)
+  , scale_(0)
+  , spatialCorrelation_(0)
+  , isDiagonal_(false)
 {
   dimension_ = amplitude.getDimension();
   if (scale.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Incompatible dimensions between amplitude and scale values";
@@ -84,11 +84,11 @@ CauchyModel::CauchyModel(const NumericalPoint & amplitude,
 
 CauchyModel::CauchyModel(const NumericalPoint & scale,
                          const CovarianceMatrix & spatialCovariance)
-  : SpectralModelImplementation(),
-    amplitude_(0),
-    scale_(scale),
-    spatialCorrelation_(0),
-    isDiagonal_(false)
+  : SpectralModelImplementation()
+  , amplitude_(0)
+  , scale_(scale)
+  , spatialCorrelation_(0)
+  , isDiagonal_(false)
 {
   dimension_ = scale.getDimension();
   if (spatialCovariance.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial covariance has a dimension different from the scales and amplitudes.";
@@ -121,11 +121,11 @@ HermitianMatrix CauchyModel::operator() (const NumericalScalar frequency) const
   const NumericalScalar scaledFrequencySquared(pow(2.0 * M_PI * fabs(frequency), 2));
   HermitianMatrix spectralDensityMatrix(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    spectralDensityMatrix(i, i) = 2.0 * amplitude_[i] * amplitude_[i] * scale_[i] / (scale_[i] * scale_[i] + scaledFrequencySquared);
+    spectralDensityMatrix(i, i) = 2.0 * amplitude_[i] * amplitude_[i] * scale_[i] / (1.0 + scale_[i] * scale_[i] * scaledFrequencySquared);
   if (!isDiagonal_)
     for (UnsignedInteger j = 0; j < dimension_ ; ++j)
       for (UnsignedInteger i = j + 1; i < dimension_ ; ++i)
-        spectralDensityMatrix(i, j) = amplitude_[i] * spatialCorrelation_(i, j) * amplitude_[j] * (scale_[i] + scale_[j]) / (pow(0.5 * (scale_[i] + scale_[j]), 2.0) + scaledFrequencySquared);
+        spectralDensityMatrix(i, j) = amplitude_[i] * spatialCorrelation_(i, j) * amplitude_[j] * (scale_[i] + scale_[j]) / (0.25 * (scale_[i] / scale_[j] + 2.0 + scale_[j] / scale_[i]) + scale_[i] * scale_[j] * scaledFrequencySquared);
 
   return spectralDensityMatrix;
 }

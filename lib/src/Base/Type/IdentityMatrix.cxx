@@ -169,9 +169,9 @@ Bool IdentityMatrix::isPositiveDefinite(const Bool keepIntact)
 }
 
 /* Build the Cholesky factorization of the matrix */
-SquareMatrix IdentityMatrix::computeCholesky(const Bool keepIntact)
+TriangularMatrix IdentityMatrix::computeCholesky(const Bool keepIntact)
 {
-  return (*this);
+  return getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

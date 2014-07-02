@@ -39,6 +39,10 @@
 %import BaseGeomTemplateDefs.i
 
 /* Base/Func */
+%include EnumerateFunctionImplementation.i
+%include EnumerateFunction.i
+%include LinearEnumerateFunction.i
+%include HyperbolicAnisotropicEnumerateFunction.i
 %include FieldImplementation.i
 %include Field.i
 %include TimeSeries.i 
@@ -93,9 +97,9 @@
 %include DatabaseNumericalMathEvaluationImplementation.i
 %include IndicatorNumericalMathEvaluationImplementation.i
 %include ProductPolynomialEvaluationImplementation.i
-%include RestrictedEvaluationImplementation.i
-%include RestrictedGradientImplementation.i
-%include RestrictedHessianImplementation.i
+%include ParametricEvaluationImplementation.i
+%include ParametricGradientImplementation.i
+%include ParametricHessianImplementation.i
 %include Basis.i
 %include BasisSequenceImplementation.i
 %include BasisSequence.i

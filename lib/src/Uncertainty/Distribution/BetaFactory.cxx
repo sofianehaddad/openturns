@@ -65,9 +65,9 @@ Beta BetaFactory::buildAsBeta(const NumericalSample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Beta distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar a(xMin - fabs(xMin) / (2.0 + size));
+  const NumericalScalar a(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar xMax(sample.getMax()[0]);
-  const NumericalScalar b(xMax + fabs(xMax) / (2.0 + size));
+  const NumericalScalar b(xMax + std::abs(xMax) / (2.0 + size));
   if (a >= b) throw InvalidArgumentException(HERE) << "Error: can build a Beta distribution only if a < b, here a=" << a << " and b=" << b;
   const NumericalScalar mean(sample.computeMean()[0]);
   const NumericalScalar sigma(sample.computeStandardDeviationPerComponent()[0]);

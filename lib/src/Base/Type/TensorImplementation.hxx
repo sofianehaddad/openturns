@@ -76,6 +76,9 @@ public:
   /** Virtual constructor */
   virtual TensorImplementation * clone() const;
 
+  /** Set small elements to zero */
+  TensorImplementation clean(const NumericalScalar threshold) const;
+
   /** String converter */
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;

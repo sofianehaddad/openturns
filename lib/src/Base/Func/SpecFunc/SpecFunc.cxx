@@ -68,6 +68,22 @@ const NumericalScalar SpecFunc::NumericalScalarEpsilon = std::numeric_limits<Num
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const NumericalScalar SpecFunc::Precision = ResourceMap::GetAsNumericalScalar("SpecFunc-Precision");
 
+// Some facilities for NaN and inf
+Bool SpecFunc::isNaN(const NumericalScalar value)
+{
+  return value != value;
+}
+
+Bool SpecFunc::isInf(const NumericalScalar value)
+{
+  return (value == value) && isNaN(value - value);
+}
+
+Bool SpecFunc::isNormal(const NumericalScalar value)
+{
+  return value - value == 0.0;
+}
+
 // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 NumericalScalar SpecFunc::SmallCaseBesselI0(const NumericalScalar x)
 {
@@ -600,7 +616,8 @@ NumericalComplex SpecFunc::HyperGeom_1_1(const NumericalScalar p1,
     eps = term / sum;
     ++k;
   }
-  while ((abs(eps) > 0.0) && (k < SpecFunc::MaximumIteration));
+  // std::abs() for complex argument
+  while ((std::abs(eps) > 0.0) && (k < SpecFunc::MaximumIteration));
   return sum;
 }
 
@@ -822,6 +839,13 @@ NumericalComplex SpecFunc::Log1p(const NumericalComplex & z)
   return log(1.0 + z);
 }
 
+// Accurate evaluation of exp(z)-1 for |z|<<1
+NumericalComplex SpecFunc::Expm1(const NumericalComplex & z)
+{
+  if (std::norm(z) < 1e-5) return z * (1.0 + 0.5 * z * (1.0 + z / 3.0));
+  return exp(z) - 1.0;
+}
+
 // Accurate evaluation of log(1-exp(-x)) for all x > 0
 NumericalComplex SpecFunc::Log1MExp(const NumericalScalar x)
 {
@@ -836,6 +860,27 @@ UnsignedInteger SpecFunc::NextPowerOfTwo(const UnsignedInteger n)
   UnsignedInteger powerOfTwo(1);
   while (powerOfTwo < n) powerOfTwo <<= 1;
   return powerOfTwo;
+}
+
+// Missing functions in cmath wrt math.h as of C++98
+NumericalScalar SpecFunc::acosh(const NumericalScalar x)
+{
+  return acosh(x);
+}
+
+NumericalScalar SpecFunc::asinh(const NumericalScalar x)
+{
+  return asinh(x);
+}
+
+NumericalScalar SpecFunc::atanh(const NumericalScalar x)
+{
+  return atanh(x);
+}
+
+NumericalScalar SpecFunc::cbrt(const NumericalScalar x)
+{
+  return cbrt(x);
 }
 
 END_NAMESPACE_OPENTURNS

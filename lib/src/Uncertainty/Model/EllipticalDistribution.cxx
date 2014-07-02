@@ -146,14 +146,14 @@ NumericalScalar EllipticalDistribution::computeLogDensityGenerator(const Numeric
 {
   const NumericalScalar densityGenerator(computeDensityGenerator(betaSquare));
   if (densityGenerator == 0.0) return -SpecFunc::MaxNumericalScalar;
-  return log(densityGenerator);
+  return std::log(densityGenerator);
 }
 
 /* Compute the derivative of the density generator */
 NumericalScalar EllipticalDistribution::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
 {
   // Use centered finite difference
-  const NumericalScalar epsilon(pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 1.0 / 3.0));
+  const NumericalScalar epsilon(std::pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 1.0 / 3.0));
   return (computeDensityGenerator(betaSquare + epsilon) - computeDensityGenerator(betaSquare - epsilon)) / epsilon;
 }
 
@@ -161,7 +161,7 @@ NumericalScalar EllipticalDistribution::computeDensityGeneratorDerivative(const 
 NumericalScalar EllipticalDistribution::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
 {
   // Use centered finite difference
-  const NumericalScalar epsilon(pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 0.25));
+  const NumericalScalar epsilon(std::pow(ResourceMap::GetAsNumericalScalar("DistributionImplementation-DefaultPDFEpsilon"), 0.25));
   return (computeDensityGenerator(betaSquare + epsilon) - 2.0 * computeDensityGenerator(betaSquare) + computeDensityGenerator(betaSquare - epsilon)) / (epsilon * epsilon);
 }
 
@@ -238,7 +238,7 @@ void EllipticalDistribution::update()
     // Compute its Cholesky factor
     cholesky_ = shape_.computeCholesky();
 
-    inverseCholesky_ = TriangularMatrix(cholesky_.getImplementation()).solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
+    inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
 
     // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)
     // R^(-1) = D.L^(-1).L^(-1)'.D
@@ -256,8 +256,8 @@ void EllipticalDistribution::update()
     {
       shape_ = CovarianceMatrix(1);
       inverseR_ = IdentityMatrix(1);
-      cholesky_ = SquareMatrix(1);
-      inverseCholesky_ = SquareMatrix(1);
+      cholesky_ = TriangularMatrix(1);
+      inverseCholesky_ = TriangularMatrix(1);
     }
     shape_(0, 0) = sigma_[0] * sigma_[0];
     cholesky_(0, 0) = sigma_[0];
@@ -327,7 +327,7 @@ NumericalPoint EllipticalDistribution::getSigma() const
    distribution with nu < 2 */
 NumericalPoint EllipticalDistribution::getStandardDeviation() const
 {
-  return sqrt(covarianceScalingFactor_) * sigma_;
+  return std::sqrt(covarianceScalingFactor_) * sigma_;
 }
 
 /* Correlation matrix accessor */
@@ -359,13 +359,13 @@ SquareMatrix EllipticalDistribution::getInverseCorrelation() const
 }
 
 /* Cholesky factor of the correlation matrix accessor */
-SquareMatrix EllipticalDistribution::getCholesky() const
+TriangularMatrix EllipticalDistribution::getCholesky() const
 {
   return cholesky_;
 }
 
 /* Inverse of the Cholesky factor of the correlation matrix accessor */
-SquareMatrix EllipticalDistribution::getInverseCholesky() const
+TriangularMatrix EllipticalDistribution::getInverseCholesky() const
 {
   return inverseCholesky_;
 }

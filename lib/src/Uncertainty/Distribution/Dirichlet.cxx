@@ -40,13 +40,13 @@ static Factory<Dirichlet> RegisteredFactory("Dirichlet");
 
 /* Default constructor */
 Dirichlet::Dirichlet()
-  : ContinuousDistribution(),
-    theta_(0),
-    sumTheta_(0.0),
-    normalizationFactor_(0.0),
-    isInitializedCDF_(false),
-    integrationNodes_(0),
-    integrationWeights_(0)
+  : ContinuousDistribution()
+  , theta_(0)
+  , sumTheta_(0.0)
+  , normalizationFactor_(0.0)
+  , isInitializedCDF_(false)
+  , integrationNodes_(0)
+  , integrationWeights_(0)
 {
   setName("Dirichlet");
   setTheta(NumericalPoint(2, 1.0));
@@ -54,13 +54,13 @@ Dirichlet::Dirichlet()
 
 /* Parameters constructor */
 Dirichlet::Dirichlet(const NumericalPoint & theta)
-  : ContinuousDistribution(),
-    theta_(0),
-    sumTheta_(0.0),
-    normalizationFactor_(0.0),
-    isInitializedCDF_(false),
-    integrationNodes_(0),
-    integrationWeights_(0)
+  : ContinuousDistribution()
+  , theta_(0)
+  , sumTheta_(0.0)
+  , normalizationFactor_(0.0)
+  , isInitializedCDF_(false)
+  , integrationNodes_(0)
+  , integrationWeights_(0)
 {
   setName("Dirichlet");
   setTheta(theta);
@@ -128,15 +128,9 @@ NumericalScalar Dirichlet::computePDF(const NumericalPoint & point) const
   const UnsignedInteger dimension(getDimension());
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar sum(0.0);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const NumericalScalar xI(point[i]);
-    if (xI <= 0.0) return 0.0;
-    sum += xI;
-  }
-  if (sum >= 1.0) return 0.0;
-  return exp(computeLogPDF(point));
+  const NumericalScalar logPDF(computeLogPDF(point));
+  if (logPDF == -SpecFunc::MaxNumericalScalar) return 0.0;
+  return std::exp(logPDF);
 }
 
 NumericalScalar Dirichlet::computeLogPDF(const NumericalPoint & point) const
@@ -153,8 +147,30 @@ NumericalScalar Dirichlet::computeLogPDF(const NumericalPoint & point) const
   }
   if (sum >= 1.0) return -SpecFunc::MaxNumericalScalar;
   NumericalScalar logPDF(normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum));
-  for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * log(point[i]);
+  for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * std::log(point[i]);
   return logPDF;
+}
+
+/* Initialize the integration routine */
+void Dirichlet::initializeIntegration() const
+{
+  const UnsignedInteger dimension(getDimension());
+  // Initialization at the first call
+  static const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize"));
+  // Do we have to initialize the CDF data?
+  if (!isInitializedCDF_)
+    {
+      integrationNodes_ = NumericalPointCollection(0);
+      integrationWeights_ = NumericalPointCollection(0);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+        {
+          NumericalPoint marginalWeights;
+          NumericalPoint marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
+          integrationNodes_.add(marginalNodes);
+          integrationWeights_.add(marginalWeights);
+        }
+      isInitializedCDF_ = true;
+    } // !isInitialized
 }
 
 /* Get the CDF of the distribution */
@@ -187,27 +203,14 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
   // The "inside simplex" case: use Gauss integration for now
   if (allPositive && (sum <= 1.0))
   {
-    // Initialization at the first call
-    static const UnsignedInteger N(ResourceMap::GetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize"));
-    // Do we have to initialize the CDF data?
-    if (!isInitializedCDF_)
-    {
-      integrationNodes_ = NumericalPointCollection(0);
-      integrationWeights_ = NumericalPointCollection(0);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        NumericalPoint marginalWeights;
-        NumericalPoint marginalNodes(JacobiFactory(0, theta_[i] - 1.0).getNodesAndWeights(N, marginalWeights));
-        integrationNodes_.add(marginalNodes);
-        integrationWeights_.add(marginalWeights);
-      }
-      isInitializedCDF_ = true;
-    } // !isInitialized
     Indices indices(dimension, 0);
     NumericalScalar value(0.0);
     NumericalScalar logFactor(normalizationFactor_);
-    for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * log(point[i]) - log(theta_[i]);
-    const UnsignedInteger size(static_cast<UnsignedInteger>(round(pow(static_cast<double>(N), static_cast<int>(dimension)))));
+    for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * std::log(point[i]) - std::log(theta_[i]);
+    // Initialize the integration data
+    initializeIntegration();
+    UnsignedInteger size(1);
+    for (UnsignedInteger i = 0; i < dimension; ++i) size *= integrationNodes_[i].getSize();
     // Loop over the integration nodes
     for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
     {
@@ -221,14 +224,14 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
         sumX += (integrationNodes_[i][indexI] + 1.0) * lI;
         w *= integrationWeights_[i][indexI];
       }
-      const NumericalScalar dCDF(w * exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX)));
+      const NumericalScalar dCDF(w * std::exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX)));
       value += dCDF;
       // Update the indices
       ++indices[0];
       // Propagate the remainders
-      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i + 1] += (indices[i] == N);
+      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i + 1] += (indices[i] == integrationNodes_[i].getSize());
       // Correction of the indices. The last index cannot overflow.
-      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i] = indices[i] % N;
+      for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i] = indices[i] % integrationNodes_[i].getSize();
     } // flatIndex
     return value;
   } // in the simplex
@@ -305,7 +308,7 @@ NumericalScalar Dirichlet::computeConditionalPDF(const NumericalScalar x,
   const NumericalScalar r(theta_[conditioningDimension]);
   const NumericalScalar s(sumTheta_ - sum - r);
   const NumericalScalar z(x / (1.0 - sum));
-  return exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
+  return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -349,7 +352,7 @@ NumericalPoint Dirichlet::getStandardDeviation() const
 {
   const UnsignedInteger dimension(getDimension());
   NumericalPoint sigma(dimension);
-  NumericalScalar factor(1.0 / (sumTheta_ * sqrt(1.0 + sumTheta_)));
+  NumericalScalar factor(1.0 / (sumTheta_ * std::sqrt(1.0 + sumTheta_)));
   for (UnsignedInteger i = 0; i < dimension; ++i) sigma[i] = theta_[i] * (sumTheta_ - theta_[i]) * factor;
   return sigma;
 }
@@ -362,7 +365,7 @@ NumericalPoint Dirichlet::getSkewness() const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar thetaI(theta_[i]);
-    skewness[i] = 2.0 * (sumTheta_ - 2.0 * thetaI) / (sumTheta_ + 2.0) * sqrt(sumTheta_ + 1.0) / (thetaI * (sumTheta_ - thetaI));
+    skewness[i] = 2.0 * (sumTheta_ - 2.0 * thetaI) / (sumTheta_ + 2.0) * std::sqrt(sumTheta_ + 1.0) / (thetaI * (sumTheta_ - thetaI));
   }
   return skewness;
 }
@@ -415,6 +418,7 @@ void Dirichlet::setTheta(const NumericalPoint & theta)
   setDimension(size - 1);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+  computeRange();
 }
 
 NumericalPoint Dirichlet::getTheta() const
@@ -468,6 +472,57 @@ Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
   return marginal.clone();
 } // getMarginal(Indices)
 
+/* Tell if the distribution has independent marginals */
+Bool Dirichlet::hasIndependentCopula() const
+{
+  return getDimension() == 1;
+}
+
+/* Tell if the distribution has an elliptical copula */
+Bool Dirichlet::hasEllipticalCopula() const
+{
+  return hasIndependentCopula();
+}
+
+/* Get the Spearman correlation of the distribution */
+CorrelationMatrix Dirichlet::getSpearmanCorrelation() const
+{
+  return DistributionImplementation::getSpearmanCorrelation();
+#ifdef NEW_IMPLEMENTATION
+  const UnsignedInteger dimension(getDimension());
+  CorrelationMatrix rho(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const UnsignedInteger nI(integrationNodes_[i].getSize());
+      for (UnsignedInteger j = 0; j < i; ++j)
+        {
+          const UnsignedInteger nJ(integrationNodes_[j].getSize());
+          // Perform the numerical integration of the (i,j) correlation
+          NumericalScalar rhoIJ(0.0);
+          for (UnsignedLong indexU = 0; indexU < nI; ++indexU)
+            {
+              const NumericalScalar u(0.5 * (integrationNodes_[j][indexU] + 1.0));
+              for (UnsignedLong indexV = 0; indexV < nJ; ++indexV)
+                {
+                  NumericalScalar v(0.5 * (integrationNodes_[j][indexU] + 1.0) * (1.0 - u));
+                } // indexV
+            } // indexU
+        } // j
+    } // i
+  return rho;
+#endif
+}
+
+/* Get the Kendall concordance of the distribution */
+CorrelationMatrix Dirichlet::getKendallTau() const
+{
+  return DistributionImplementation::getKendallTau();
+#ifdef NEW_IMPLEMENTATION
+  CorrelationMatrix tau(2);
+  tau(0, 1) = 1.0 + 4.0 * (SpecFunc::Debye(theta_, 1) - 1.0) / theta_;
+  return tau;
+#endif
+}
 
 DistributionImplementation::NumericalPointWithDescriptionCollection Dirichlet::getParametersCollection() const
 {

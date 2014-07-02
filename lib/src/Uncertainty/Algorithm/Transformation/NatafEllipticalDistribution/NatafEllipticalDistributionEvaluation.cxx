@@ -46,7 +46,7 @@ NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation():
 
 /* Parameter constructor */
 NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
-    const SquareMatrix & inverseCholesky)
+    const TriangularMatrix & inverseCholesky)
   : LinearNumericalMathEvaluationImplementation(
     mean,
     NumericalPoint(mean.getDimension(), 0.0),
@@ -102,17 +102,9 @@ Matrix NatafEllipticalDistributionEvaluation::parametersGradient(const Numerical
   Matrix result(2 * inputDimension, inputDimension);
   // dT_j/dmu_i
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
-  {
-    for (UnsignedInteger j = i; j < inputDimension; ++j)
-    {
-      result(i, j) = -linear(i, j);
-    }
-  }
+    for (UnsignedInteger j = i; j < inputDimension; ++j) result(i, j) = -linear(i, j);
   // dTj/dsigma_j
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
-  {
-    result(inputDimension + i, i) = -linear(i, i) * linear(i, i) * (inP[i] - center[i]);
-  }
+  for (UnsignedInteger i = 0; i < inputDimension; ++i) result(inputDimension + i, i) = -linear(i, i) * linear(i, i) * (inP[i] - center[i]);
   return result;
 }
 

@@ -21,8 +21,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ComposedNumericalMathEvaluationImplementation);
 
 static Factory<ComposedNumericalMathEvaluationImplementation> RegisteredFactory("ComposedNumericalMathEvaluationImplementation");
@@ -36,12 +34,8 @@ ComposedNumericalMathEvaluationImplementation::ComposedNumericalMathEvaluationIm
 {
   // Check if the dimensions of the left and right functions are compatible
   if (p_leftFunction->getInputDimension() != p_rightFunction->getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension of the left function must be equal to the output dimension of the right function to compose them";
-  const Description leftOutput(p_leftFunction->getOutputDescription());
-  const Description rightInput(p_rightFunction->getInputDescription());
-  Description description(rightInput);
-  const UnsignedInteger size(leftOutput.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i) description.add(leftOutput[i]);
-  setDescription(description);
+  setInputDescription(p_rightFunction->getInputDescription());
+  setOutputDescription(p_leftFunction->getOutputDescription());
 }
 
 /* Virtual constructor */

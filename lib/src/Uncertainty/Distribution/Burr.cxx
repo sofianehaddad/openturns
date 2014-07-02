@@ -115,7 +115,7 @@ NumericalPoint Burr::computeDDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar xC(pow(x, c_));
+  const NumericalScalar xC(std::pow(x, c_));
   return NumericalPoint(1, -(xC * (c_ * k_ + 1.0) + 1.0 - c_) * computePDF(x) / (x * (1.0 + xC)));
 }
 
@@ -127,7 +127,7 @@ NumericalScalar Burr::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return 0.0;
-  return exp(computeLogPDF(point));
+  return std::exp(computeLogPDF(point));
 }
 
 NumericalScalar Burr::computeLogPDF(const NumericalPoint & point) const
@@ -136,8 +136,8 @@ NumericalScalar Burr::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  const NumericalScalar logX(log(x));
-  return log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(exp(c_ * logX));
+  const NumericalScalar logX(std::log(x));
+  return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(std::exp(c_ * logX));
 }
 
 /* Get the CDF of the distribution */
@@ -147,7 +147,7 @@ NumericalScalar Burr::computeCDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return 0.0;
-  return -expm1(-k_ * log1p(exp(c_ * log(x))));
+  return -expm1(-k_ * log1p(std::exp(c_ * std::log(x))));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -159,9 +159,9 @@ NumericalPoint Burr::computePDFGradient(const NumericalPoint & point) const
   NumericalPoint pdfGradient(2, 0.0);
   if (x <= 0.0) return pdfGradient;
   const NumericalScalar pdf(computePDF(point));
-  const NumericalScalar logX(log(x));
-  pdfGradient[0] = ((1.0 - (1.0 + k_) / (1.0 + exp(-c_ * logX))) * logX + 1.0 / c_) * pdf;
-  pdfGradient[1] = (1.0 / k_ - log1p(pow(x, c_))) * pdf;
+  const NumericalScalar logX(std::log(x));
+  pdfGradient[0] = ((1.0 - (1.0 + k_) / (1.0 + std::exp(-c_ * logX))) * logX + 1.0 / c_) * pdf;
+  pdfGradient[1] = (1.0 / k_ - log1p(std::pow(x, c_))) * pdf;
   return pdfGradient;
 }
 
@@ -174,8 +174,8 @@ NumericalPoint Burr::computeCDFGradient(const NumericalPoint & point) const
   NumericalPoint cdfGradient(2, 0.0);
   if (x <= 0.0) return cdfGradient;
   const NumericalScalar cdfC(computeComplementaryCDF(point));
-  const NumericalScalar xC(pow(x, c_));
-  cdfGradient[0] = k_ * xC * log(x) * cdfC / (1.0 + xC);
+  const NumericalScalar xC(std::pow(x, c_));
+  cdfGradient[0] = k_ * xC * std::log(x) * cdfC / (1.0 + xC);
   cdfGradient[1] = log1p(xC) * cdfC;
   return cdfGradient;
 }
@@ -184,8 +184,8 @@ NumericalPoint Burr::computeCDFGradient(const NumericalPoint & point) const
 NumericalScalar Burr::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (tail) return exp(log(expm1(-log(prob) / k_)) / c_);
-  return exp(log(expm1(-log1p(-prob) / k_)) / c_);
+  if (tail) return std::exp(std::log(expm1(-std::log(prob) / k_)) / c_);
+  return std::exp(std::log(expm1(-log1p(-prob) / k_)) / c_);
 }
 
 /* Compute the mean of the distribution */
@@ -198,7 +198,7 @@ void Burr::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Burr::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(getCovariance()(0, 0)));
+  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
@@ -221,14 +221,14 @@ NumericalPoint Burr::getKurtosis() const
 void Burr::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = getStandardMoment(2)[0] - pow(getMean()[0], 2);
+  covariance_(0, 0) = getStandardMoment(2)[0] - std::pow(getMean()[0], 2);
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Get the moments of the standardized distribution */
 NumericalPoint Burr::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, exp(SpecFunc::LogGamma(k_ - n / c_) + SpecFunc::LogGamma(n / c_ + 1.0) - SpecFunc::LogGamma(k_)));
+  return NumericalPoint(1, std::exp(SpecFunc::LogGamma(k_ - n / c_) + SpecFunc::LogGamma(n / c_ + 1.0) - SpecFunc::LogGamma(k_)));
 }
 
 /* Parameters value and description accessor */
@@ -249,7 +249,9 @@ Burr::NumericalPointWithDescriptionCollection Burr::getParametersCollection() co
 
 void Burr::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Burr(parametersCollection[0][0], parametersCollection[0][1]);
+  setWeight(w);
 }
 
 /* C accessor */

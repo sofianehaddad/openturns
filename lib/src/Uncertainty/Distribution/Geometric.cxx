@@ -99,7 +99,7 @@ void Geometric::computeRange()
 /* Get one realization of the distribution */
 NumericalPoint Geometric::getRealization() const
 {
-  return NumericalPoint(1, ceil(log(RandomGenerator::Generate()) / log1p(-p_)));
+  return NumericalPoint(1, ceil(std::log(RandomGenerator::Generate()) / log1p(-p_)));
 }
 
 
@@ -109,8 +109,8 @@ NumericalScalar Geometric::computePDF(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k(point[0]);
-  if ((k < 1.0 - supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return 0.0;
-  return p_ * pow(1.0 - p_, k - 1.0);
+  if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
+  return p_ * std::pow(1.0 - p_, k - 1.0);
 }
 
 
@@ -121,7 +121,7 @@ NumericalScalar Geometric::computeCDF(const NumericalPoint & point) const
 
   const NumericalScalar k(point[0]);
   if (k < 1.0) return 0.0;
-  return 1.0 - pow(1.0 - p_, floor(k));
+  return 1.0 - std::pow(1.0 - p_, floor(k));
 }
 
 NumericalScalar Geometric::computeComplementaryCDF(const NumericalPoint & point) const
@@ -130,7 +130,7 @@ NumericalScalar Geometric::computeComplementaryCDF(const NumericalPoint & point)
 
   const NumericalScalar k(point[0]);
   if (k < 1.0) return 1.0;
-  return pow(1.0 - p_, floor(k));
+  return std::pow(1.0 - p_, floor(k));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -139,8 +139,8 @@ NumericalPoint Geometric::computePDFGradient(const NumericalPoint & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k(point[0]);
-  if ((k < 1.0 - supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_)) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, (1.0 - k * p_) * pow(1.0 - p_, k - 2.0));
+  if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return NumericalPoint(1, 0.0);
+  return NumericalPoint(1, (1.0 - k * p_) * std::pow(1.0 - p_, k - 2.0));
 }
 
 /* Get the CDFGradient of the distribution */
@@ -150,21 +150,21 @@ NumericalPoint Geometric::computeCDFGradient(const NumericalPoint & point) const
 
   const NumericalScalar k(floor(point[0]));
   if ( k < 1.0 ) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, k * pow(1 - p_, k - 1.0));
+  return NumericalPoint(1, k * std::pow(1 - p_, k - 1.0));
 }
 
 /* Get the quantile of the distribution */
 NumericalScalar Geometric::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (tail) return ceil(log(prob) / log1p(-p_));
+  if (tail) return ceil(std::log(prob) / log1p(-p_));
   return ceil(log1p(-prob) / log1p(-p_));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Geometric::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  const NumericalComplex value(p_ / (exp(NumericalComplex(0.0, -x)) - (1.0 - p_)));
+  const NumericalComplex value(p_ / (std::exp(NumericalComplex(0.0, -x)) - (1.0 - p_)));
   return value;
 }
 
@@ -196,13 +196,13 @@ void Geometric::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint Geometric::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(1.0 - p_) / p_);
+  return NumericalPoint(1, std::sqrt(1.0 - p_) / p_);
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint Geometric::getSkewness() const
 {
-  return NumericalPoint(1, (2.0 - p_) / sqrt(1.0 - p_));
+  return NumericalPoint(1, (2.0 - p_) / std::sqrt(1.0 - p_));
 }
 
 /* Get the kurtosis of the distribution */
@@ -235,7 +235,9 @@ Geometric::NumericalPointWithDescriptionCollection Geometric::getParametersColle
 
 void Geometric::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Geometric(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 

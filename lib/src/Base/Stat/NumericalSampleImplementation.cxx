@@ -505,7 +505,11 @@ String NumericalSampleImplementation::storeToTemporaryFile() const
   {
     String separator = "";
     for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
-      dataFile << separator << std::setprecision(16) << operator[](i)[j];
+      {
+	const NumericalScalar value(operator[](i)[j]);
+	const Bool isNaN(value != value);
+      	dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+      }
     dataFile << Os::GetEndOfLine();
   }
   dataFile.close();
@@ -521,18 +525,22 @@ String NumericalSampleImplementation::streamToRFormat() const
   String separator("");
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
-      oss << separator << operator[](i)[j];
+      {
+	const NumericalScalar value(operator[](i)[j]);
+	const Bool isNaN(value != value);
+	oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+      }
   oss << "), nrow=" << size_ << ", ncol=" << dimension_ << ")";
   return oss;
 }
 
 /* Default constructor is private */
 NumericalSampleImplementation::NumericalSampleImplementation()
-  : PersistentObject(),
-    size_(0),
-    dimension_(0),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(0)
+  , dimension_(0)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   // Nothing to do
 }
@@ -540,11 +548,11 @@ NumericalSampleImplementation::NumericalSampleImplementation()
 /* Standard constructor */
 NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteger size,
     const UnsignedInteger dim)
-  : PersistentObject(),
-    size_(size),
-    dimension_(dim),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(size)
+  , dimension_(dim)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   // Nothing to do
 }
@@ -552,11 +560,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteg
 /* Constructor from a NumericalPoint */
 NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteger size,
     const NumericalPoint & point)
-  : PersistentObject(),
-    size_(size),
-    dimension_(point.getDimension()),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(size)
+  , dimension_(point.getDimension())
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   for (UnsignedInteger i = 0; i < size_; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -566,11 +574,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const UnsignedInteg
 
 /* Constructor from a collection of NumericalPoint */
 NumericalSampleImplementation::NumericalSampleImplementation(const Collection<NumericalPoint> & coll)
-  : PersistentObject(),
-    size_(coll.getSize()),
-    dimension_((coll.getSize() > 0) ? coll[0].getDimension() : 0),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(coll.getSize())
+  , dimension_((coll.getSize() > 0) ? coll[0].getDimension() : 0)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   for (UnsignedInteger i = 0; i < size_; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -579,11 +587,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const Collection<Nu
 
 /* Constructor from a collection of Indices */
 NumericalSampleImplementation::NumericalSampleImplementation(const Collection<Indices> & coll)
-  : PersistentObject(),
-    size_(coll.getSize()),
-    dimension_((coll.getSize() > 0) ? coll[0].getSize() : 0),
-    data_(size_ * dimension_, 0.0),
-    p_description_(NULL)
+  : PersistentObject()
+  , size_(coll.getSize())
+  , dimension_((coll.getSize() > 0) ? coll[0].getSize() : 0)
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(NULL)
 {
   for (UnsignedInteger i = 0; i < size_; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -592,11 +600,11 @@ NumericalSampleImplementation::NumericalSampleImplementation(const Collection<In
 
 /* Partial copy constructor */
 NumericalSampleImplementation::NumericalSampleImplementation(const NumericalSampleImplementation & other, iterator first, iterator last)
-  : PersistentObject(),
-    size_(last - first),
-    dimension_(other.getDimension()),
-    data_(size_ * dimension_, 0.0),
-    p_description_(other.p_description_)
+  : PersistentObject()
+  , size_(last - first)
+  , dimension_(other.getDimension())
+  , data_(size_ * dimension_, 0.0)
+  , p_description_(other.p_description_)
 {
   std::copy( first, last, begin() );
 }
@@ -641,6 +649,7 @@ Description NumericalSampleImplementation::getDescription() const
 Bool operator ==(const NumericalSampleImplementation & lhs,
                  const NumericalSampleImplementation & rhs)
 {
+  if (&lhs == &rhs) return true;
   return (lhs.size_ == rhs.size_) && (lhs.dimension_ == rhs.dimension_) &&
          std::equal( lhs.begin(), lhs.end(), rhs.begin() );
 }
@@ -962,7 +971,7 @@ CovarianceMatrix NumericalSampleImplementation::computeCovariance() const
 /*
  * Gives the standard deviation of the sample, i.e. the square-root of the covariance matrix.
  */
-SquareMatrix NumericalSampleImplementation::computeStandardDeviation() const
+TriangularMatrix NumericalSampleImplementation::computeStandardDeviation() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation of an empty sample.";
   return computeCovariance().computeCholesky();
@@ -1388,7 +1397,11 @@ NumericalPoint NumericalSampleImplementation::computeSkewnessPerComponent() cons
   TBB::ParallelReduce( 0, size_, functor );
   NumericalPoint skewness(dimension_);
   const NumericalScalar factor(size_ * sqrt(size_ - 1.0) / (size_ - 2));
-  for (UnsignedInteger i = 0; i < dimension_; ++i) skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
+      skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
+    }
   return skewness;
 }
 
@@ -1443,7 +1456,11 @@ NumericalPoint NumericalSampleImplementation::computeKurtosisPerComponent() cons
   NumericalPoint kurtosis(dimension_);
   const NumericalScalar factor1((size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0)));
   const NumericalScalar factor2(-3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0)));
-  for (UnsignedInteger i = 0; i < dimension_; ++i) kurtosis[i] = factor1 * functor.accumulator_[i + dimension_] / (functor.accumulator_[i] * functor.accumulator_[i]) + factor2;
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
+      kurtosis[i] = factor1 * functor.accumulator_[i + dimension_] / (functor.accumulator_[i] * functor.accumulator_[i]) + factor2;
+    }
   return kurtosis;
 }
 
@@ -1713,11 +1730,44 @@ NumericalSampleImplementation & NumericalSampleImplementation::operator += (cons
   return *this;
 }
 
+struct PositiveTranslationSamplePolicy
+{
+  const NumericalSampleImplementation & translation_;
+  NumericalSampleImplementation & output_;
+
+  PositiveTranslationSamplePolicy( const NumericalSampleImplementation & translation,
+				   NumericalSampleImplementation & output)
+    : translation_(translation), output_(output) {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] += translation_[i];
+  }
+
+}; /* end struct TranslationSamplePolicy */
+
+struct NegativeTranslationSamplePolicy
+{
+  const NumericalSampleImplementation & translation_;
+  NumericalSampleImplementation & output_;
+
+  NegativeTranslationSamplePolicy( const NumericalSampleImplementation & translation,
+				   NumericalSampleImplementation & output)
+    : translation_(translation), output_(output) {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] -= translation_[i];
+  }
+
+}; /* end struct TranslationSamplePolicy */
+
 NumericalSampleImplementation & NumericalSampleImplementation::operator += (const NumericalSampleImplementation & translation)
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] += translation[i];
+  const PositiveTranslationSamplePolicy policy( translation, *this );
+  TBB::ParallelFor( 0, size_, policy );
   return *this;
 }
 
@@ -1731,7 +1781,8 @@ NumericalSampleImplementation & NumericalSampleImplementation::operator -= (cons
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] -= translation[i];
+  const NegativeTranslationSamplePolicy policy( translation, *this );
+  TBB::ParallelFor( 0, size_, policy );
   return *this;
 }
 

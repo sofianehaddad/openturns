@@ -131,7 +131,7 @@ void Chi::update()
 /* Get one realization of the distribution */
 NumericalPoint Chi::getRealization() const
 {
-  return NumericalPoint(1, sqrt(2.0 * DistFunc::rGamma(0.5 * nu_)));
+  return NumericalPoint(1, std::sqrt(2.0 * DistFunc::rGamma(0.5 * nu_)));
 }
 
 
@@ -153,7 +153,7 @@ NumericalScalar Chi::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return 0.0;
-  return exp(computeLogPDF(point));
+  return std::exp(computeLogPDF(point));
 }
 
 NumericalScalar Chi::computeLogPDF(const NumericalPoint & point) const
@@ -162,7 +162,7 @@ NumericalScalar Chi::computeLogPDF(const NumericalPoint & point) const
 
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return -SpecFunc::MaxNumericalScalar;
-  return normalizationFactor_ + (nu_ - 1) * log(x) - 0.5 * x * x;
+  return normalizationFactor_ + (nu_ - 1) * std::log(x) - 0.5 * x * x;
 }
 
 
@@ -194,7 +194,7 @@ NumericalComplex Chi::computeCharacteristicFunction(const NumericalScalar x) con
 {
   const NumericalScalar t(-0.5 * x * x);
   const NumericalScalar real(SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t ));
-  const NumericalScalar imag(M_SQRT2 * x * exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t));
+  const NumericalScalar imag(M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t));
   const NumericalComplex result(real, imag);
   return result;
 }
@@ -208,8 +208,8 @@ NumericalPoint Chi::computePDFGradient(const NumericalPoint & point) const
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return pdfGradient;
   NumericalScalar pdf(computePDF(point));
-  /*        pdfGradient[0] = 0.5 * (2. * log(x / sqrt(2)) - SpecFunc::Psi(0.5 * nu_)) * pdf;*/
-  pdfGradient[0] = 0.5 * (2. * log(x / M_SQRT2) - SpecFunc::Psi(0.5 * nu_)) * pdf;
+  /*        pdfGradient[0] = 0.5 * (2. * std::log(x / sqrt(2)) - SpecFunc::Psi(0.5 * nu_)) * pdf;*/
+  pdfGradient[0] = 0.5 * (2. * std::log(x / M_SQRT2) - SpecFunc::Psi(0.5 * nu_)) * pdf;
   return pdfGradient;
 }
 
@@ -221,7 +221,7 @@ NumericalPoint Chi::computeCDFGradient(const NumericalPoint & point) const
   NumericalPoint cdfGradient(1, 0.0);
   const NumericalScalar x(point[0]);
   if (x <= 0.0) return cdfGradient;
-  NumericalScalar eps(pow(cdfEpsilon_, 1.0 / 3.0));
+  NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
   cdfGradient[0] = (DistFunc::pGamma(0.5 * (nu_ + eps), 0.5 * x * x) - DistFunc::pGamma(0.5 * (nu_ - eps), 0.5 * x * x)) / (2.0 * eps);
   return cdfGradient;
 }
@@ -230,27 +230,27 @@ NumericalPoint Chi::computeCDFGradient(const NumericalPoint & point) const
 NumericalScalar Chi::computeScalarQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  return M_SQRT2 * sqrt(DistFunc::qGamma(0.5 * nu_, prob, tail));
+  return M_SQRT2 * std::sqrt(DistFunc::qGamma(0.5 * nu_, prob, tail));
 }
 
 
 void Chi::computeMean() const
 {
-  mean_ = NumericalPoint(1, M_SQRT2 * exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
+  mean_ = NumericalPoint(1, M_SQRT2 * std::exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
   isAlreadyComputedMean_ = true;
 }
 
 void Chi::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = nu_ - 2.0 * exp(2.0 * (SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
+  covariance_(0, 0) = nu_ - 2.0 * std::exp(2.0 * (SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 NumericalPoint Chi::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(getCovariance()(0, 0)) );
+  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)) );
 }
 
 /* Get the skewness of the distribution */
@@ -258,7 +258,7 @@ NumericalPoint Chi::getSkewness() const
 {
   const NumericalScalar mu(getMean()[0]);
   const NumericalScalar sigma(getStandardDeviation()[0]);
-  return NumericalPoint(1, mu * (1 - 2.0 * sigma * sigma) / pow(sigma, 3.0));
+  return NumericalPoint(1, mu * (1 - 2.0 * sigma * sigma) / std::pow(sigma, 3.0));
 }
 
 /* Get the kurtosis of the distribution */
@@ -267,13 +267,13 @@ NumericalPoint Chi::getKurtosis() const
   const NumericalScalar mu(getMean()[0]);
   const NumericalScalar sigma(getStandardDeviation()[0]);
   const NumericalScalar gamma1(getSkewness()[0]);
-  return NumericalPoint(1, 3.0 + 2.0 * (1.0 - sigma * (mu * gamma1 + sigma)) / pow(sigma, 2.0));
+  return NumericalPoint(1, 3.0 + 2.0 * (1.0 - sigma * (mu * gamma1 + sigma)) / std::pow(sigma, 2.0));
 }
 
 /* Get the moments of the standardized distribution */
 NumericalPoint Chi::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
+  return NumericalPoint(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
 }
 
 /* Parameters value and description accessor */
@@ -292,7 +292,9 @@ Chi::NumericalPointWithDescriptionCollection Chi::getParametersCollection() cons
 
 void Chi::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Chi(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Method save() stores the object through the StorageManager */

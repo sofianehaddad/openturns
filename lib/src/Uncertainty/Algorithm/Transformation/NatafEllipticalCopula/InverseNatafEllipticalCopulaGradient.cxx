@@ -37,20 +37,20 @@ CLASSNAMEINIT(InverseNatafEllipticalCopulaGradient);
 static Factory<InverseNatafEllipticalCopulaGradient> RegisteredFactory("InverseNatafEllipticalCopulaGradient");
 
 /* Default constructor */
-InverseNatafEllipticalCopulaGradient::InverseNatafEllipticalCopulaGradient():
-  NumericalMathGradientImplementation(),
-  standardDistribution_(),
-  cholesky_()
+InverseNatafEllipticalCopulaGradient::InverseNatafEllipticalCopulaGradient()
+  : NumericalMathGradientImplementation()
+  , standardDistribution_()
+  , cholesky_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseNatafEllipticalCopulaGradient::InverseNatafEllipticalCopulaGradient(const Distribution & standardDistribution,
-    const SquareMatrix & cholesky):
-  NumericalMathGradientImplementation(),
-  standardDistribution_(standardDistribution),
-  cholesky_(cholesky)
+    const TriangularMatrix & cholesky)
+  : NumericalMathGradientImplementation()
+  , standardDistribution_(standardDistribution)
+  , cholesky_(cholesky)
 {
   // Nothing to do
 }

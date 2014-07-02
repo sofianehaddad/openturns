@@ -37,7 +37,8 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-class OT_API Polygon : public DrawableImplementation
+class OT_API Polygon
+  : public DrawableImplementation
 {
 
   CLASSNAME;
@@ -95,6 +96,7 @@ protected:
   virtual void checkData(const NumericalSample & data) const;
 
 private:
+
   /** Color of the edge of the polygon */
   String edgeColor_;
 

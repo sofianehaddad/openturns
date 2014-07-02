@@ -22,18 +22,16 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(IndicatorNumericalMathEvaluationImplementation);
 
 static Factory<IndicatorNumericalMathEvaluationImplementation> RegisteredFactory("IndicatorNumericalMathEvaluationImplementation");
 
 /* Default constructor */
 IndicatorNumericalMathEvaluationImplementation::IndicatorNumericalMathEvaluationImplementation()
-  : NumericalMathEvaluationImplementation(),
-    p_evaluation_(),
-    comparisonOperator_(),
-    threshold_(0.0)
+  : NumericalMathEvaluationImplementation()
+  , p_evaluation_()
+  , comparisonOperator_()
+  , threshold_(0.0)
 {
   // Nothing to do
 } // IndicatorNumericalMathEvaluationImplementation
@@ -42,10 +40,10 @@ IndicatorNumericalMathEvaluationImplementation::IndicatorNumericalMathEvaluation
 IndicatorNumericalMathEvaluationImplementation::IndicatorNumericalMathEvaluationImplementation(const EvaluationImplementation & p_evaluation,
     const ComparisonOperator & comparisonOperator,
     const NumericalScalar threshold)
-  : NumericalMathEvaluationImplementation(),
-    p_evaluation_(),
-    comparisonOperator_(comparisonOperator),
-    threshold_(threshold)
+  : NumericalMathEvaluationImplementation()
+  , p_evaluation_()
+  , comparisonOperator_(comparisonOperator)
+  , threshold_(threshold)
 {
   setEvaluationImplementation(p_evaluation);
   setDescription(p_evaluation->getDescription());

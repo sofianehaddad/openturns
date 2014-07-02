@@ -34,6 +34,7 @@ static Factory<Polygon> RegisteredFactory("Polygon");
 /* Default constructor */
 Polygon::Polygon(const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
 {
   // Nothing to do
   setEdgeColor(getColor());
@@ -43,6 +44,7 @@ Polygon::Polygon(const String & legend)
 Polygon::Polygon(const NumericalSample & data,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
 {
   // Check data validity
   setData(data);
@@ -54,6 +56,7 @@ Polygon::Polygon(const NumericalSample & dataX,
                  const NumericalSample & dataY,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
 {
   const UnsignedInteger size(dataX.getSize());
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples with different size.";
@@ -74,6 +77,7 @@ Polygon::Polygon(const NumericalPoint & dataX,
                  const NumericalPoint & dataY,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
 {
   const UnsignedInteger size(dataX.getDimension());
   if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical points with different size.";
@@ -94,6 +98,7 @@ Polygon::Polygon(const NumericalSample & data,
                  const String & edgeColor,
                  const String & legend)
   : DrawableImplementation(NumericalSample(0, 2), legend)
+  , edgeColor_("")
 {
   NumericalSample dataFull;
   // If data is unidimensional, assume that it means Y values with indices as X values
@@ -111,7 +116,7 @@ Polygon::Polygon(const NumericalSample & data,
   // Check data validity
   setData(dataFull);
   setColor(color);
-  setEdgeColor(getColor());
+  setEdgeColor(edgeColor);
 }
 
 /* String converter */
@@ -131,22 +136,19 @@ String Polygon::draw() const
   dataFileName_ = "";
   OSS oss;
   // Stores the data in a temporary file
-  oss << DrawableImplementation::draw() << "\n";
+  oss << DrawableImplementation::draw();
   // The specific R command for drawing
   oss << "polygon(dataOT[,1], dataOT[,2]"
-      << ", border=\"" << edgeColor_
-      << "\", lty=\"" << lineStyle_
-      << "\", col=\"" << color_
-      << "\", lwd=" << lineWidth_;
+      << ", border="
+      << "\"" << edgeColor_ << "\""
+      << ", lty=\"" << lineStyle_ << "\""
+      << ", col="
+      << "\"" << color_ << "\""
+      << ", lwd=" << lineWidth_;
   if (pointStyle_ != "none")
   {
     const String code((OSS() << getPointCode(pointStyle_)));
-    oss << ", type=\"b\""
-        << ", pch=" << (pointStyle_ == "dot" ? "\".\"" : code);
-  }
-  else
-  {
-    oss << ", type=\"l\"";
+    oss << ", pch=" << (pointStyle_ == "dot" ? "\".\"" : code);
   }
   oss << ")";
 
@@ -185,12 +187,14 @@ void Polygon::setEdgeColor(const String & edgeColor)
 void Polygon::save(Advocate & adv) const
 {
   DrawableImplementation::save(adv);
+  adv.saveAttribute( "edgeColor_", edgeColor_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Polygon::load(Advocate & adv)
 {
   DrawableImplementation::load(adv);
+  adv.loadAttribute( "edgeColor_", edgeColor_ );
 }
 
 END_NAMESPACE_OPENTURNS

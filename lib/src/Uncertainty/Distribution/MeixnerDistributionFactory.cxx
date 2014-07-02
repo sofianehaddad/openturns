@@ -67,13 +67,13 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   const NumericalScalar gamma1(sample.computeSkewnessPerComponent()[0]);
   const NumericalScalar gamma2(sample.computeKurtosisPerComponent()[0]);
   const NumericalScalar upperBound(3.0 + 2.0 * gamma1 * gamma1);
-  if (gamma2 <= upperBound) throw InternalException(HERE) << "Error: cannot estimate a MeixnerDistribution distribution if the sample kurtosis=" << gamma2 << " is not greater than 2*skewness^2+3=" << upperBound;
+  if (gamma2 <= upperBound) throw InvalidArgumentException(HERE) << "Error: cannot estimate a MeixnerDistribution distribution if the sample kurtosis=" << gamma2 << " is not greater than 2*skewness^2+3=" << upperBound;
   const NumericalScalar m(sample.computeMean()[0]);
   const NumericalScalar s2(sample.computeVariancePerComponent()[0]);
   const NumericalScalar delta(1.0 / (gamma2 - gamma1 * gamma1 - 3.0));
-  const NumericalScalar beta(((0.0 < gamma1) - (gamma1 < 0.0)) * acos(2.0 - delta * (gamma2 - 3.0)));
-  const NumericalScalar alpha(cbrt(s2 * (cos(beta) + 1.0)));
-  const NumericalScalar mu(m - alpha * delta * tan(0.5 * beta));
+  const NumericalScalar beta(((0.0 < gamma1) - (gamma1 < 0.0)) * std::acos(2.0 - delta * (gamma2 - 3.0)));
+  const NumericalScalar alpha(cbrt(s2 * (std::cos(beta) + 1.0)));
+  const NumericalScalar mu(m - alpha * delta * std::tan(0.5 * beta));
   MeixnerDistribution result(alpha, beta, delta, mu);
   result.setDescription(sample.getDescription());
   return result;

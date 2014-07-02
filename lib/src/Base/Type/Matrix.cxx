@@ -97,13 +97,13 @@ Matrix Matrix::clean(const NumericalScalar threshold) const
 }
 
 /* Get the dimensions of the matrix : number of rows */
-UnsignedInteger Matrix::getNbRows() const
+const UnsignedInteger Matrix::getNbRows() const
 {
   return getImplementation()->getNbRows();
 }
 
 /* Get the dimensions of the matrix : number of columns */
-UnsignedInteger Matrix::getNbColumns() const
+const UnsignedInteger Matrix::getNbColumns() const
 {
   return getImplementation()->getNbColumns();
 }
@@ -175,11 +175,6 @@ Matrix Matrix::operator* (const Matrix & m) const
   return Implementation(getImplementation()->genProd(*(m.getImplementation())).clone());
 }
 
-Matrix Matrix::operator* (const SquareMatrix & m) const
-{
-  return Implementation(getImplementation()->genProd(*(m.getImplementation())).clone());
-}
-
 Matrix Matrix::operator* (const SymmetricMatrix & m) const
 {
   return Implementation(getImplementation()->symProd(*(m.getImplementation()), 'R').clone());
@@ -245,9 +240,15 @@ Matrix Matrix::computeQR(Matrix & R, const Bool keepIntact)
 
 
 /* Empty returns true if there is no element in the matrix */
-Bool Matrix::isEmpty() const
+const Bool Matrix::isEmpty() const
 {
   return getImplementation()->isEmpty() ;
+}
+
+/* Compute the associated Gram matrix */
+CovarianceMatrix Matrix::computeGram(const Bool transpose) const
+{
+  return getImplementation()->computeGram(transpose) ;
 }
 
 

@@ -36,8 +36,8 @@ static Factory<ProductPolynomialGradientImplementation> RegisteredFactory("Produ
 
 /* Default constructor */
 ProductPolynomialGradientImplementation::ProductPolynomialGradientImplementation()
-  : NumericalMathGradientImplementation(),
-    polynomials_()
+  : NumericalMathGradientImplementation()
+  , polynomials_()
 {
   // Nothing to do
 }
@@ -45,14 +45,10 @@ ProductPolynomialGradientImplementation::ProductPolynomialGradientImplementation
 
 /* Constructor */
 ProductPolynomialGradientImplementation::ProductPolynomialGradientImplementation(const PolynomialCollection & coll)
-  : NumericalMathGradientImplementation(),
-    polynomials_(coll)
+  : NumericalMathGradientImplementation()
+  , polynomials_(coll)
 {
   // Nothing to do
-  Description description(0);
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) description.add(OSS() << "x" << i);
-  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i) description.add(OSS() << "y" << i);
-  setDescription(description);
 }
 
 

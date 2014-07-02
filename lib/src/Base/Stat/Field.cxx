@@ -251,6 +251,12 @@ NumericalSample Field::getValues() const
   return getImplementation()->getValues();
 }
 
+/* Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
+Mesh Field::asDeformedMesh() const
+{
+  return getImplementation()->asDeformedMesh();
+}
+
 /* Compute the spatial mean of the field */
 NumericalPoint Field::getSpatialMean() const
 {
@@ -268,6 +274,11 @@ Graph Field::drawMarginal(const UnsignedInteger index,
                           const Bool interpolate) const
 {
   return getImplementation()->drawMarginal(index, interpolate);
+}
+
+Graph Field::draw() const
+{
+  return getImplementation()->draw();
 }
 
 /* VTK export */

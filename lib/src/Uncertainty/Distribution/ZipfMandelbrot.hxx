@@ -117,10 +117,9 @@ protected:
 
   /* Compute generalized harmonic numbers */
   NumericalScalar getHarmonicNumbers(UnsignedInteger const) const;
-  void computeHarmonicNumbers() const;
+  void computeHarmonicNumbers();
 
-  mutable Bool isAlreadyComputedHarmonicNumbers_;
-  mutable NumericalScalarCollection harmonicNumbers_;
+  NumericalScalarCollection harmonicNumbers_;
 
 
 private:

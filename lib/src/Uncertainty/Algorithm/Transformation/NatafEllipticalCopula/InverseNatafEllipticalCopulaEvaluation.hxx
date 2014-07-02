@@ -51,7 +51,7 @@ public:
 
   /** Parameter constructor */
   InverseNatafEllipticalCopulaEvaluation(const Distribution & standardDistribution,
-                                         const SquareMatrix & cholesky);
+                                         const TriangularMatrix & cholesky);
 
 
   /** Virtual constructor */
@@ -83,7 +83,7 @@ protected:
 
 private:
   Distribution standardDistribution_;
-  Matrix cholesky_;
+  TriangularMatrix cholesky_;
 
 }; /* InverseNatafEllipticalCopulaEvaluation */
 

@@ -21,8 +21,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ProductNumericalMathEvaluationImplementation);
 
 static Factory<ProductNumericalMathEvaluationImplementation> RegisteredFactory("ProductNumericalMathEvaluationImplementation");
@@ -30,9 +28,9 @@ static Factory<ProductNumericalMathEvaluationImplementation> RegisteredFactory("
 /* Default constructor */
 ProductNumericalMathEvaluationImplementation::ProductNumericalMathEvaluationImplementation(const EvaluationImplementation & p_leftEvaluation,
     const EvaluationImplementation & p_rightEvaluation)
-  : NumericalMathEvaluationImplementation(),
-    p_leftEvaluation_(p_leftEvaluation),
-    p_rightEvaluation_(p_rightEvaluation)
+  : NumericalMathEvaluationImplementation()
+  , p_leftEvaluation_(p_leftEvaluation)
+  , p_rightEvaluation_(p_rightEvaluation)
 {
   // Check if the dimensions of the left and right functions are compatible
   if (p_leftEvaluation->getOutputDimension() != 1)

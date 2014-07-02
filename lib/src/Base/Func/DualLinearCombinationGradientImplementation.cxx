@@ -36,8 +36,8 @@ static Factory<DualLinearCombinationGradientImplementation> RegisteredFactory("D
 
 /* Default constructor */
 DualLinearCombinationGradientImplementation::DualLinearCombinationGradientImplementation()
-  : NumericalMathGradientImplementation(),
-    evaluation_()
+  : NumericalMathGradientImplementation()
+  , evaluation_()
 {
   // Nothing to do
 }
@@ -45,8 +45,8 @@ DualLinearCombinationGradientImplementation::DualLinearCombinationGradientImplem
 
 /* Parameters constructor */
 DualLinearCombinationGradientImplementation::DualLinearCombinationGradientImplementation(const DualLinearCombinationEvaluationImplementation & evaluation)
-  : NumericalMathGradientImplementation(),
-    evaluation_(evaluation)
+  : NumericalMathGradientImplementation()
+  , evaluation_(evaluation)
 {
   // Nothing to do
 }

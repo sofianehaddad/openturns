@@ -23,8 +23,8 @@
  *  @date:   $LastChangedDate$
  *  Id:      $Id$
  */
-#include "CovarianceModelFactory.hxx"
 
+#include "CovarianceModelFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

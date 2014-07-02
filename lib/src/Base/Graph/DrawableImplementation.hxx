@@ -64,6 +64,8 @@ public:
   virtual UnsignedInteger getPointCode(const String & key) const;
 
   /** Check validity of color */
+  static Bool ScanColorCode(const String & key,
+			    UnsignedInteger & code);
   static Bool IsValidColorCode(const String & key);
   static Bool IsValidColorName(const String & key);
   static Bool IsValidColor(const String & key);
@@ -179,6 +181,12 @@ public:
 
   /** Convert a color name to a valid hexadecimal code */
   static String ConvertFromName(const String & name);
+
+  /** Convert an hexadecimal code into an RGB triplet */
+  static Indices ConvertToRGB(const String & key);
+
+  /** Convert an hexadecimal code into an RGBA quadruplet */
+  static Indices ConvertToRGBA(const String & key);
 
   /** Convert an RGB triplet to a valid hexadecimal code */
   static String ConvertFromRGB(const UnsignedInteger red,

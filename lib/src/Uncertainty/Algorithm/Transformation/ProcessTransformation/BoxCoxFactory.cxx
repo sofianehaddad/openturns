@@ -47,9 +47,9 @@ static Factory<BoxCoxFactory> RegisteredFactory("BoxCoxFactory");
 
 /* Constructor with parameters */
 BoxCoxFactory::BoxCoxFactory()
-  : PersistentObject(),
-    sample_(),
-    sumLog_(0.0)
+  : PersistentObject()
+  , sample_()
+  , sumLog_(0.0)
 {
   // Nothing to do
 }
@@ -90,7 +90,7 @@ int BoxCoxFactory::ComputeObjectiveAndConstraint(int n,
   const NumericalScalar lambda(x[0]);
 
   const BoxCoxFactory * factory = static_cast<BoxCoxFactory *>(state);
-  *f = - factory->computeLogLikelihood( lambda );
+  *f = -factory->computeLogLikelihood( lambda );
 
   return 0;
 }
@@ -184,7 +184,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   const NumericalScalar lambdaMin(*std::max_element(lambda.begin(), lambda.end()));
   const NumericalScalar xMin(std::min(0.0, 0.002 * round(1000.0 * lambdaMin)));
   const NumericalScalar xMax(std::max(0.0, 0.002 * round(1000.0 * lambdaMax)));
-  const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
+  const UnsignedInteger npts(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber"));
   NumericalSample lambdaValues(npts, 1);
   for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);
   for (UnsignedInteger d = 0; d < dimension; ++d)
@@ -209,7 +209,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
     graph.setBoundingBox(bb);
   }
   // return result ==> Box Cox transform
-  return BoxCoxTransform(lambda);
+  return BoxCoxTransform(lambda, shift);
 }
 
 /* String converter */

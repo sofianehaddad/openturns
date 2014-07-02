@@ -100,8 +100,8 @@ NumericalPoint FrankCopula::getRealization() const
     realization[1] = v;
     return realization;
   }
-  const NumericalScalar factor((v - 1.0) * exp(-theta_ * u));
-  realization[1] = 1.0 + log((factor - v) / (factor * exp(theta_) - v)) / theta_;
+  const NumericalScalar factor((v - 1.0) * std::exp(-theta_ * u));
+  realization[1] = 1.0 + std::log((factor - v) / (factor * std::exp(theta_) - v)) / theta_;
   return realization;
 }
 
@@ -122,9 +122,9 @@ NumericalPoint FrankCopula::computeDDF(const NumericalPoint & point) const
   if (theta_ == 0.0) return NumericalPoint(2, 0.0);
   // Optimized version given by Maple 11, as there are a lot of exp's involved
   const NumericalScalar theta2(theta_ * theta_);
-  const NumericalScalar expMinusTheta(exp(-theta_));
-  const NumericalScalar expMinusThetaU(exp(-theta_ * u));
-  const NumericalScalar expMinusThetaV(exp(-theta_ * v));
+  const NumericalScalar expMinusTheta(std::exp(-theta_));
+  const NumericalScalar expMinusThetaU(std::exp(-theta_ * u));
+  const NumericalScalar expMinusThetaV(std::exp(-theta_ * v));
   const NumericalScalar product1(expMinusThetaU * expMinusThetaV);
   const NumericalScalar sum1(expMinusTheta + product1 - expMinusThetaU - expMinusThetaV);
   const NumericalScalar product2(sum1 * sum1);
@@ -151,9 +151,9 @@ NumericalScalar FrankCopula::computePDF(const NumericalPoint & point) const
   // Independent case
   if (theta_ == 0.0) return 1.0;
   // General case
-  const NumericalScalar expMinusTheta(exp(-theta_));
-  const NumericalScalar expMinusThetaU(exp(-theta_ * point[0]));
-  const NumericalScalar expMinusThetaV(exp(-theta_ * point[1]));
+  const NumericalScalar expMinusTheta(std::exp(-theta_));
+  const NumericalScalar expMinusThetaU(std::exp(-theta_ * point[0]));
+  const NumericalScalar expMinusThetaV(std::exp(-theta_ * point[1]));
   const NumericalScalar sum1(expMinusTheta + expMinusThetaU * expMinusThetaV - expMinusThetaU - expMinusThetaV);
   return -theta_ * expMinusThetaU * expMinusThetaV * expm1(-theta_) / (sum1 * sum1);
 }
@@ -239,13 +239,13 @@ NumericalPoint FrankCopula::computeQuantile(const NumericalScalar prob,
   if (prob == 0.0) return getRange().getLowerBound();
   if (prob == 1.0) return getRange().getUpperBound();
   // Independent case
-  if (theta_ == 0.0) return NumericalPoint(2, sqrt(prob));
+  if (theta_ == 0.0) return NumericalPoint(2, std::sqrt(prob));
   // General case
   const NumericalScalar thetaProb(theta_ * prob);
-  const NumericalScalar expTheta(exp(theta_));
+  const NumericalScalar expTheta(std::exp(theta_));
   const NumericalScalar expm1Theta(expm1(theta_));
-  const NumericalScalar sqrtRatio(sqrt(expm1(thetaProb) * expTheta / (expm1Theta * exp(thetaProb))));
-  return NumericalPoint(2, 1.0 - log(expTheta - sqrtRatio * expm1Theta) / theta_);
+  const NumericalScalar sqrtRatio(std::sqrt(expm1(thetaProb) * expTheta / (expm1Theta * std::exp(thetaProb))));
+  return NumericalPoint(2, 1.0 - std::log(expTheta - sqrtRatio * expm1Theta) / theta_);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -258,9 +258,9 @@ NumericalScalar FrankCopula::computeConditionalCDF(const NumericalScalar x, cons
   const NumericalScalar u(y[0]);
   const NumericalScalar v(x);
   // If we are in the support
-  const NumericalScalar alpha(exp(-theta_ * v));
-  const NumericalScalar beta(exp(-theta_ * u) * (alpha - 1.0));
-  return -beta / (alpha - exp(-theta_) - beta);
+  const NumericalScalar alpha(std::exp(-theta_ * v));
+  const NumericalScalar beta(std::exp(-theta_ * u) * (alpha - 1.0));
+  return -beta / (alpha - std::exp(-theta_) - beta);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -275,8 +275,8 @@ NumericalScalar FrankCopula::computeConditionalQuantile(const NumericalScalar q,
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const NumericalScalar u(y[0]);
-  const NumericalScalar factor((q - 1.0) * exp(-theta_ * u));
-  return 1.0 + log((factor - q) / (factor * exp(theta_) - q)) / theta_;
+  const NumericalScalar factor((q - 1.0) * std::exp(-theta_ * u));
+  return 1.0 + std::log((factor - q) / (factor * std::exp(theta_) - q)) / theta_;
 }
 
 /* Compute the archimedean generator of the archimedean copula, i.e.
@@ -286,18 +286,18 @@ NumericalScalar FrankCopula::computeConditionalQuantile(const NumericalScalar q,
 NumericalScalar FrankCopula::computeArchimedeanGenerator(const NumericalScalar t) const
 {
   // Independent case
-  if (theta_ == 0.0) return -log(t);
+  if (theta_ == 0.0) return -std::log(t);
   // General case
-  return log(expm1(-theta_) / expm1(-theta_ * t));
+  return std::log(expm1(-theta_) / expm1(-theta_ * t));
 }
 
 /* Compute the inverse of the archimedean generator */
 NumericalScalar FrankCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
 {
   // Independent case
-  if (theta_ == 0.0) return exp(-t);
+  if (theta_ == 0.0) return std::exp(-t);
   // General case
-  return 1.0 + (t - log1p(exp(theta_) * expm1(t))) / theta_;
+  return 1.0 + (t - log1p(std::exp(theta_) * expm1(t))) / theta_;
 }
 
 /* Compute the derivative of the density generator */
@@ -317,7 +317,7 @@ NumericalScalar FrankCopula::computeArchimedeanGeneratorSecondDerivative(const N
   // General case
   NumericalScalar thetaT(theta_ * t);
   NumericalScalar ratio(theta_ / expm1(thetaT));
-  return ratio * ratio * exp(thetaT);
+  return ratio * ratio * std::exp(thetaT);
 }
 
 /* Parameters value and description accessor */
@@ -336,7 +336,9 @@ FrankCopula::NumericalPointWithDescriptionCollection FrankCopula::getParametersC
 
 void FrankCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = FrankCopula(parametersCollection[0][0]);
+  setWeight(w);
 }
 
 /* Tell if the distribution has independent copula */

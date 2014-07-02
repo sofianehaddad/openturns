@@ -60,36 +60,31 @@ public:
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
 
-  /** Computation of the covariance matrix */
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar s,
-      const NumericalScalar t) const;
-
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
-      const NumericalPoint & t) const;
-
+  /** Compute the covariance function */
   virtual CovarianceMatrix operator() (const NumericalScalar s,
                                        const NumericalScalar t) const;
 
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
                                        const NumericalPoint & t) const;
 
-  /** Computation of the covariance matrix for stationnary models */
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
+					   const NumericalPoint & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
+
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
 
   /** Gradient */
   virtual SymmetricTensor partialGradient(const NumericalPoint & s,
                                           const NumericalPoint & t) const;
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
-  virtual CovarianceMatrix discretizeCovariance(const RegularGrid & timeGrid) const;
-  virtual CovarianceMatrix discretizeCovariance(const Mesh & mesh) const;
-
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
+  virtual NumericalSample discretizeRow(const NumericalSample & vertices,
+					const UnsignedInteger p) const;
 
   /** Partial discretization with respect to the second argument */
   Basis getPartialDiscretization(const NumericalSample & secondLocation) const;

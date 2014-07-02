@@ -25,13 +25,26 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(CorrelationMatrix);
 
 /* Default constructor */
 CorrelationMatrix::CorrelationMatrix()
   : CovarianceMatrix(0)
+{
+  // Nothing to do
+}
+
+/* Constructor with implementation */
+CorrelationMatrix::CorrelationMatrix(const Implementation & i)
+  : CovarianceMatrix(i)
+{
+  // Nothing to do
+}
+
+
+/* Constructor with implementation */
+CorrelationMatrix::CorrelationMatrix(const MatrixImplementation & i)
+  : CovarianceMatrix(i)
 {
   // Nothing to do
 }
@@ -50,13 +63,6 @@ CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim)
 CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim,
                                      const Collection<NumericalScalar> &elementsValues)
   : CovarianceMatrix(dim, elementsValues)
-{
-  // Nothing to do
-}
-
-/* Constructor with implementation */
-CorrelationMatrix::CorrelationMatrix(const Implementation & i)
-  : CovarianceMatrix(i)
 {
   // Nothing to do
 }

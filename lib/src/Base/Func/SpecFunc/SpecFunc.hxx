@@ -99,6 +99,11 @@ public:
   // Real number accuracy
   static const NumericalScalar NumericalScalarEpsilon;
 
+  // Some facilities for NaN and inf
+  static Bool isNaN(const NumericalScalar value);
+  static Bool isInf(const NumericalScalar value);
+  static Bool isNormal(const NumericalScalar value);
+
   // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 private:
   static NumericalScalar SmallCaseBesselI0(const NumericalScalar x);
@@ -227,6 +232,8 @@ public:
                                   const Bool principal = true);
   // Accurate value of log(1+z) for |z|<<1
   static NumericalComplex Log1p(const NumericalComplex & z);
+  // Accurate value of exp(z)-1 for |z|<<1
+  static NumericalComplex Expm1(const NumericalComplex & z);
   // Accurate value of log(1-exp(-x)) for all x
   static NumericalComplex Log1MExp(const NumericalScalar x);
   // MarcumQ- function
@@ -234,6 +241,12 @@ public:
 
   // Next power of two
   static UnsignedInteger NextPowerOfTwo(const UnsignedInteger n);
+
+  // Missing functions in cmath wrt math.h as of C++98
+  static NumericalScalar acosh(const NumericalScalar x);
+  static NumericalScalar asinh(const NumericalScalar x);
+  static NumericalScalar atanh(const NumericalScalar x);
+  static NumericalScalar cbrt(const NumericalScalar x);
 
 }; /* class SpecFunc */
 

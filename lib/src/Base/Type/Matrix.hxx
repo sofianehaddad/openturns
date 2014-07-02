@@ -27,15 +27,13 @@
 #include "MatrixImplementation.hxx"
 #include "TypedInterfaceObject.hxx"
 
-
-
-
 BEGIN_NAMESPACE_OPENTURNS
 
 
+class CovarianceMatrix;
+class IdentityMatrix;
 class SquareMatrix;
 class SymmetricMatrix;
-class IdentityMatrix;
 
 /**
  * @class Matrix
@@ -109,9 +107,9 @@ public:
 
   /** Get the dimensions of the matrix */
   /** Number of rows */
-  UnsignedInteger getNbRows() const;
+  const UnsignedInteger getNbRows() const;
   /** Number of columns */
-  UnsignedInteger getNbColumns() const;
+  const UnsignedInteger getNbColumns() const;
 
   /** Matrix transpose */
   Matrix transpose () const;
@@ -131,7 +129,6 @@ public:
 
   /** Matrix multiplications (must have consistent dimensions) */
   Matrix operator * (const Matrix & m) const;
-  Matrix operator * (const SquareMatrix & m) const;
   Matrix operator * (const SymmetricMatrix & m) const;
   Matrix operator * (const IdentityMatrix & m) const;
 
@@ -153,7 +150,6 @@ public:
   /** Compute singular values */
   NumericalPoint computeSingularValues(const Bool keepIntact = true);
 
-  /** Build the singular value decomposition */
   NumericalPoint computeSVD(Matrix & u,
                             Matrix & vT,
                             const Bool fullSVD = false,
@@ -162,11 +158,14 @@ public:
   /** Build the QR factorization of the matrix */
   virtual Matrix computeQR(Matrix & R, const Bool keepIntact = true);
 
+  /** Compute the associated Gram matrix */
+  virtual CovarianceMatrix computeGram(const Bool transpose = true) const;
+
   /** Comparison operators */
   Bool operator == (const Matrix & rhs) const;
 
   /** Empty returns true if there is no element in the matrix */
-  Bool isEmpty() const;
+  const Bool isEmpty() const;
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED

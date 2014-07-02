@@ -31,9 +31,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(LeastSquaresMetaModelSelection);
 
 static Factory<LeastSquaresMetaModelSelection> RegisteredFactory("LeastSquaresMetaModelSelection");
@@ -47,13 +44,13 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection()
 
 /* Default constructor */
 LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const NumericalSample & x,
-    const NumericalSample & y,
-    const Basis & psi,
-    const BasisSequenceFactory & basisSequenceFactory,
-    const FittingAlgorithm & fittingAlgorithm)
-  : ApproximationAlgorithmImplementation( x, y, psi ),
-    basisSequenceFactory_(basisSequenceFactory),
-    fittingAlgorithm_(fittingAlgorithm)
+                                                               const NumericalSample & y,
+                                                               const Basis & psi,
+                                                               const BasisSequenceFactory & basisSequenceFactory,
+                                                               const FittingAlgorithm & fittingAlgorithm)
+  : ApproximationAlgorithmImplementation( x, y, psi )
+  , basisSequenceFactory_(basisSequenceFactory)
+  , fittingAlgorithm_(fittingAlgorithm)
 
 {
   // Nothing to do
@@ -61,14 +58,14 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const NumericalSa
 
 /* Default constructor */
 LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const NumericalSample & x,
-    const NumericalSample & y,
-    const NumericalPoint & weight,
-    const Basis & psi,
-    const BasisSequenceFactory & basisSequenceFactory,
-    const FittingAlgorithm & fittingAlgorithm)
-  : ApproximationAlgorithmImplementation( x, y, weight, psi ),
-    basisSequenceFactory_(basisSequenceFactory),
-    fittingAlgorithm_(fittingAlgorithm)
+                                                               const NumericalSample & y,
+                                                               const NumericalPoint & weight,
+                                                               const Basis & psi,
+                                                               const BasisSequenceFactory & basisSequenceFactory,
+                                                               const FittingAlgorithm & fittingAlgorithm)
+  : ApproximationAlgorithmImplementation( x, y, weight, psi )
+  , basisSequenceFactory_(basisSequenceFactory)
+  , fittingAlgorithm_(fittingAlgorithm)
 {
   // Nothing to do
 }
@@ -107,8 +104,8 @@ FittingAlgorithm LeastSquaresMetaModelSelection::getFittingAlgorithm() const
 String LeastSquaresMetaModelSelection::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-         << " basisSequenceFactory=" << basisSequenceFactory_
-         << " fittingAlgorithm=" << fittingAlgorithm_;
+               << " basisSequenceFactory=" << basisSequenceFactory_
+               << " fittingAlgorithm=" << fittingAlgorithm_;
 }
 
 
@@ -129,19 +126,19 @@ void LeastSquaresMetaModelSelection::run()
 
   UnsignedInteger optimalBasisIndex(0);
   for ( UnsignedInteger i = 0; i < sequenceSize; ++ i )
-  {
-    // retrieve the i-th basis of the sequence
-    const Basis basis( basisSequence.getBasis( i ) );
-    const NumericalScalar error( fittingAlgorithm_.run( x_, weightedY, basis ) );
-
-    if ( getVerbose() ) LOGINFO( OSS() << "subbasis=" << i << ", size=" << basis.getSize() << ", error=" << error << ", qSquare=" << 1.0 - error );
-
-    if ( error < minimumError )
     {
-      optimalBasisIndex = i;
-      minimumError = error;
+      // retrieve the i-th basis of the sequence
+      const Basis basis( basisSequence.getBasis( i ) );
+      const NumericalScalar error( fittingAlgorithm_.run( x_, weightedY, basis ) );
+
+      LOGINFO( OSS() << "\nsubbasis=" << i << ", size=" << basis.getSize() << ", error=" << error << ", qSquare=" << 1.0 - error );
+
+      if ( error < minimumError )
+        {
+          optimalBasisIndex = i;
+          minimumError = error;
+        }
     }
-  }
 
   // recompute the coefficients of the selected sparse metamodel by least-square regression
   PenalizedLeastSquaresAlgorithm penalizedLeastSquaresAlgorithm( x_, y_, weight_, basisSequence.getBasis( optimalBasisIndex ) );
@@ -161,13 +158,10 @@ void LeastSquaresMetaModelSelection::run()
   setResidual( optimalResidual );
   setRelativeError( optimalRelativeError );
 
-  if ( getVerbose() )
-  {
-    LOGINFO( OSS() << "optimalBasisIndex=" << optimalBasisIndex );
-    LOGINFO( OSS() << "optimalError=" << minimumError );
-    LOGINFO( OSS() << "optimalResidual=" << optimalResidual );
-    LOGINFO( OSS() << "optimalRelativeError=" << optimalRelativeError );
-  }
+  LOGINFO( OSS() << "optimalBasisIndex=" << optimalBasisIndex );
+  LOGINFO( OSS() << "optimalError=" << minimumError );
+  LOGINFO( OSS() << "optimalResidual=" << optimalResidual );
+  LOGINFO( OSS() << "optimalRelativeError=" << optimalRelativeError );
 }
 
 

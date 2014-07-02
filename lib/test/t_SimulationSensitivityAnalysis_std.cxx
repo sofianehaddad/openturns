@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     comparisonOperators[1] = LessOrEqual();
     comparisonOperators[2] = Greater();
     comparisonOperators[3] = GreaterOrEqual();
-    ResourceMap::SetAsUnsignedLong("SimulationSensitivityAnalysis-DefaultSampleMargin", 10);
+    ResourceMap::SetAsUnsignedInteger("SimulationSensitivityAnalysis-DefaultSampleMargin", 10);
     NumericalScalar threshold(3.0);
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
@@ -69,21 +69,14 @@ int main(int argc, char *argv[])
         fullprint << "Importance factors at " << threshold / 2 << " =" << algo.computeImportanceFactors(threshold / 2) << std::endl;
         Graph importanceFactorsGraph(algo.drawImportanceFactors());
         fullprint << "importanceFactorsGraph=" << importanceFactorsGraph << std::endl;
-        importanceFactorsGraph.draw("importanceFactorsGraphSample" + comparisonOperators[i].getImplementation()->getClassName());
-        fullprint << "postscript=" << importanceFactorsGraph.getPostscript() << std::endl;
-        fullprint << "bitmap=" << importanceFactorsGraph.getBitmap() << std::endl;
+
         /* Importance factors evolution on probability scale */
         Graph importanceFactorsRangeGraphProbability(algo.drawImportanceFactorsRange());
         fullprint << "importanceFactorsRangeGraphProbability=" << importanceFactorsRangeGraphProbability << std::endl;
-        importanceFactorsRangeGraphProbability.draw("importanceFactorsRangeGraphProbabilitySample" + comparisonOperators[i].getImplementation()->getClassName());
-        fullprint << "postscript=" << importanceFactorsRangeGraphProbability.getPostscript() << std::endl;
-        fullprint << "bitmap=" << importanceFactorsRangeGraphProbability.getBitmap() << std::endl;
+
         /* Importance factors evolution on threshold scale */
         Graph importanceFactorsRangeGraphThreshold(algo.drawImportanceFactorsRange(false));
         fullprint << "importanceFactorsRangeGraphThreshold=" << importanceFactorsRangeGraphThreshold << std::endl;
-        importanceFactorsRangeGraphThreshold.draw("importanceFactorsRangeGraphThresholdSample" + comparisonOperators[i].getImplementation()->getClassName());
-        fullprint << "postscript=" << importanceFactorsRangeGraphThreshold.getPostscript() << std::endl;
-        fullprint << "bitmap=" << importanceFactorsRangeGraphThreshold.getBitmap() << std::endl;
       }
 
       /* Clear the history of the model */
@@ -105,21 +98,14 @@ int main(int argc, char *argv[])
         fullprint << "Importance factors at threshold/2 " << threshold / 2 << " =" << algo.computeImportanceFactors(threshold / 2) << std::endl;
         Graph importanceFactorsGraph(algo.drawImportanceFactors());
         fullprint << "importanceFactorsGraph=" << importanceFactorsGraph << std::endl;
-        importanceFactorsGraph.draw("importanceFactorsGraphEvent" + comparisonOperators[i].getImplementation()->getClassName());
-        fullprint << "postscript=" << importanceFactorsGraph.getPostscript() << std::endl;
-        fullprint << "bitmap=" << importanceFactorsGraph.getBitmap() << std::endl;
+
         /* Importance factors evolution on probability scale */
         Graph importanceFactorsRangeGraphProbability(algo.drawImportanceFactorsRange());
         fullprint << "importanceFactorsRangeGraphProbability=" << importanceFactorsRangeGraphProbability << std::endl;
-        importanceFactorsRangeGraphProbability.draw("importanceFactorsRangeGraphProbabilityEvent" + comparisonOperators[i].getImplementation()->getClassName());
-        fullprint << "postscript=" << importanceFactorsRangeGraphProbability.getPostscript() << std::endl;
-        fullprint << "bitmap=" << importanceFactorsRangeGraphProbability.getBitmap() << std::endl;
+
         /* Importance factors evolution on threshold scale */
         Graph importanceFactorsRangeGraphThreshold(algo.drawImportanceFactorsRange(false));
         fullprint << "importanceFactorsRangeGraphThreshold=" << importanceFactorsRangeGraphThreshold << std::endl;
-        importanceFactorsRangeGraphThreshold.draw("importanceFactorsRangeGraphThresholdEvent" + comparisonOperators[i].getImplementation()->getClassName());
-        fullprint << "postscript=" << importanceFactorsRangeGraphThreshold.getPostscript() << std::endl;
-        fullprint << "bitmap=" << importanceFactorsRangeGraphThreshold.getBitmap() << std::endl;
       }
     }
   }

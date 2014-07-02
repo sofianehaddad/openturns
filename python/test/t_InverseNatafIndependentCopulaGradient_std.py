@@ -6,34 +6,13 @@ from math import *
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
-
-def cleanPoint(inPoint):
-    dim = inPoint.getDimension()
-    for i in range(dim):
-        inPoint[i] = 1.e-6 * round(1.e6 * inPoint[i])
-        if (abs(inPoint[i]) < 1.e-6):
-            inPoint[i] = 0.0
-    return inPoint
-
-
-def cleanMatrix(inMatrix):
-    tmp = inMatrix.__str__()
-    rowDim = inMatrix.getNbRows()
-    colDim = inMatrix.getNbColumns()
-    for i in range(rowDim):
-        for j in range(colDim):
-            inMatrix[i, j] = 1.e-6 * round(1.e6 * inMatrix[i, j])
-            if (abs(inMatrix[i, j]) < 1.e-6):
-                inMatrix[i, j] = 0.0
-    return inMatrix
-
 try:
 
     dim = 2
     transformation = InverseNatafIndependentCopulaGradient(dim)
     print "transformation=", repr(transformation)
     point = NumericalPoint(dim, 0.75)
-    print "transformation(", point, ")=", repr(transformation.gradient(point))
+    print "transformation(", point, ")=", repr(transformation.gradient(point).clean(1e-6))
     print "input dimension=", transformation.getInputDimension()
     print "output dimension=", transformation.getOutputDimension()
 

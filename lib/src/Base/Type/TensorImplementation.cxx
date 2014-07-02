@@ -27,19 +27,16 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(TensorImplementation);
 
 static Factory<TensorImplementation> RegisteredFactory("TensorImplementation");
 
-
 /* Default constructor */
 TensorImplementation::TensorImplementation()
-  : PersistentCollection<NumericalScalar>(),
-    nbRows_(0),
-    nbColumns_(0),
-    nbSheets_(0)
+  : PersistentCollection<NumericalScalar>()
+  , nbRows_(0)
+  , nbColumns_(0)
+  , nbSheets_(0)
 {
   // Nothing to do
 }
@@ -50,10 +47,10 @@ TensorImplementation::TensorImplementation()
 TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim),
-    nbSheets_(sheetDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
+  , nbSheets_(sheetDim)
 {
   // Nothing to do
 }
@@ -63,16 +60,13 @@ TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim,
     const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim),
-    nbSheets_(sheetDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
+  , nbSheets_(sheetDim)
 {
   const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, elementsValues.getSize());
-  for(UnsignedInteger i = 0; i < tensorSize; ++i)
-  {
-    (*this)[i] = elementsValues[i];
-  }
+  memcpy(&(*this)[0], &elementsValues[0], tensorSize * sizeof(NumericalScalar));
 }
 
 
@@ -82,6 +76,17 @@ TensorImplementation * TensorImplementation::clone() const
   return new TensorImplementation(*this);
 }
 
+
+/* Set small elements to zero */
+TensorImplementation TensorImplementation::clean(const NumericalScalar threshold) const
+{
+  // Nothing to do for nonpositive threshold
+  if (threshold <= 0.0) return *this;
+  TensorImplementation result(nbRows_, nbColumns_, nbSheets_);
+  for (UnsignedInteger k = 0; k < nbSheets_; ++k)
+    result.setSheet(k, getSheet(k).clean(threshold));
+  return result;
+}
 
 /* String converter */
 String TensorImplementation::__repr__() const
@@ -151,11 +156,8 @@ Matrix TensorImplementation::getSheet(const UnsignedInteger k) const
 {
   if (k >= nbSheets_) throw InvalidDimensionException(HERE);
 
-  Matrix sheet(nbRows_, nbColumns_);
-  for (UnsignedInteger i = 0; i < nbRows_; ++i)
-    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-      sheet(i, j) = (*this)(i, j, k);
-
+  MatrixImplementation sheet(nbRows_, nbColumns_);
+  memcpy( &sheet[0], &(*this)[this->convertPosition(0, 0, k)], nbRows_ * nbColumns_ * sizeof(NumericalScalar) );
   return sheet;
 }
 
@@ -164,21 +166,16 @@ void TensorImplementation::setSheet(const UnsignedInteger k,
                                     const Matrix & m)
 {
   if (k >= nbSheets_) throw InvalidDimensionException(HERE);
-
-  for (UnsignedInteger i = 0; i < nbRows_; ++i)
-    for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-      (*this)(i, j, k) = m(i, j);
+  if (m.getNbRows() != nbRows_) throw InvalidDimensionException(HERE);
+  if (m.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE);
+  memcpy( &(*this)[this->convertPosition(0, 0, k)], &m.getImplementation()->operator[](0), nbRows_ * nbColumns_ * sizeof(NumericalScalar) );
 }
 
 /* getSheetSym returns the symmetric sheet specified by its sheet number k */
 SymmetricMatrix TensorImplementation::getSheetSym(const UnsignedInteger k) const
 {
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
-  if (nbRows_ != nbColumns_) throw InvalidDimensionException(HERE);
-  SymmetricMatrix sheet(nbRows_);
-  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-    for (UnsignedInteger i = j; i < nbRows_; ++i)
-      sheet(i, j) = (*this)(i, j, k);
+  Pointer<MatrixImplementation> sheet(getSheet(k).getImplementation());
+  sheet->symmetrize();
   return sheet;
 }
 
@@ -186,16 +183,10 @@ SymmetricMatrix TensorImplementation::getSheetSym(const UnsignedInteger k) const
 void TensorImplementation::setSheetSym(const UnsignedInteger k,
                                        const SymmetricMatrix & m)
 {
-  if (k >= nbSheets_) throw InvalidDimensionException(HERE);
-
-  if (m.getDimension() != nbRows_) throw InvalidArgumentException(HERE);
-  if (nbRows_ != nbColumns_) throw InvalidDimensionException(HERE);
-
-  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-    for (UnsignedInteger i = j; i < nbRows_; ++i)
-      (*this)(i, j, k) = m(i, j);
+  Pointer<MatrixImplementation> sheet(m.getImplementation());
+  sheet->symmetrize();
+  setSheet(k, m);
 }
-
 
 /* Empty returns true if there is no element in the TensorImplementation */
 Bool TensorImplementation::isEmpty() const

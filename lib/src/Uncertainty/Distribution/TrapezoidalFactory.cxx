@@ -59,7 +59,7 @@ NumericalScalar TrapezoidalFactory::computeLogLikelihood(const NumericalPoint & 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const NumericalScalar pdf(distribution.computePDF(sample_[i]));
-    if ( pdf > 0.0 ) result += log(pdf);
+    if ( pdf > 0.0 ) result += std::log(pdf);
     else result += SpecFunc::LogMinNumericalScalar;
   }
   return result;
@@ -132,10 +132,10 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
 
   // starting point
   NumericalPoint x(4);
-  x[0] = min - fabs( min ) / ( 2.0 + size );// a
+  x[0] = min - std::abs( min ) / ( 2.0 + size );// a
   x[1] = sample.computeQuantilePerComponent( 0.25 )[0];// b
   x[2] = sample.computeQuantilePerComponent( 0.75 )[0];// c
-  x[3] = max + fabs( max ) / ( 2.0 + size );// d
+  x[3] = max + std::abs( max ) / ( 2.0 + size );// d
 
   NumericalScalar rhoBeg(ResourceMap::GetAsNumericalScalar( "TrapezoidalFactory-RhoBeg" ));
   NumericalScalar rhoEnd(ResourceMap::GetAsNumericalScalar( "TrapezoidalFactory-RhoEnd" ));

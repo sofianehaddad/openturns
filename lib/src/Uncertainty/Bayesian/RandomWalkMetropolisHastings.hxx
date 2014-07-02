@@ -30,11 +30,7 @@
 #include "Interval.hxx"
 #include "ResourceMap.hxx"
 
-
 BEGIN_NAMESPACE_OPENTURNS
-
-
-
 
 /**
  * @class RandomWalkMetropolisHastings
@@ -67,6 +63,7 @@ public:
   RandomWalkMetropolisHastings(const Distribution & prior,
                                const Distribution & conditional,
                                const NumericalMathFunction & model,
+                               const NumericalSample & parameters,
                                const NumericalSample & observations,
                                const NumericalPoint & initialState,
                                const DistributionCollection & proposal);

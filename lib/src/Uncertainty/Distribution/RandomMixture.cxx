@@ -55,19 +55,19 @@ static Factory<RandomMixture> RegisteredFactory("RandomMixture");
 /* Default constructor */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const NumericalScalar constant)
-  : DistributionImplementation(),
-    distributionCollection_(),
-    constant_(constant),
-    blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" )),
-    blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" )),
-    maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  )),
-    storedSize_(0),
-    characteristicValuesCache_(0),
-    alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" )),
-    beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" )),
-    pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" )),
-    cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" )),
-    equivalentNormal_()
+  : DistributionImplementation()
+  , distributionCollection_()
+  , constant_(constant)
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , storedSize_(0)
+  , characteristicValuesCache_(0)
+  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , equivalentNormal_()
 {
   setName("RandomMixture");
   // We could NOT set distributionCollection_ in the member area of the constructor
@@ -82,19 +82,19 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const NumericalPoint & weights,
                              const NumericalScalar constant)
-  : DistributionImplementation(),
-    distributionCollection_(),
-    constant_(constant),
-    blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" )),
-    blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" )),
-    maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  )),
-    storedSize_(0),
-    characteristicValuesCache_(0),
-    alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" )),
-    beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" )),
-    pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" )),
-    cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" )),
-    equivalentNormal_()
+  : DistributionImplementation()
+  , distributionCollection_()
+  , constant_(constant)
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , storedSize_(0)
+  , characteristicValuesCache_(0)
+  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , equivalentNormal_()
 {
   setName("RandomMixture");
   // We could NOT set distributionCollection_ in the member area of the constructor
@@ -154,8 +154,8 @@ String RandomMixture::__str__(const String & offset) const
       else oss << " - ";
     }
     if ((constant_ == 0.0) && (i == 0) && (w < 0.0)) oss << "-";
-    const String coeff(OSS() << fabs(w));
-    if (coeff != "1") oss << fabs(w) << " * ";
+    const String coeff(OSS() << std::abs(w));
+    if (coeff != "1") oss << std::abs(w) << " * ";
     oss << distributionCollection_[i];
   }
   oss << ")";
@@ -216,7 +216,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
         const NumericalScalar b1(pendingUniform.getB());
         const NumericalScalar alpha(a1 + a0);
         const NumericalScalar delta(b1 + b0);
-        const NumericalScalar halfWidth(0.5 * fabs((b1 - a1) - (b0 - a0)));
+        const NumericalScalar halfWidth(0.5 * std::abs((b1 - a1) - (b0 - a0)));
         const NumericalScalar center(0.5 * (alpha + delta));
         if (halfWidth > 0.0) distributionCollection_.add(Trapezoidal(alpha, center - halfWidth, center + halfWidth, delta));
         else distributionCollection_.add(Triangular(alpha, center, delta));
@@ -277,7 +277,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
             const NumericalScalar b1(pendingUniform.getB());
             const NumericalScalar alpha(a1 + a0);
             const NumericalScalar delta(b1 + b0);
-            const NumericalScalar halfWidth(0.5 * fabs((b1 - a1) - (b0 - a0)));
+            const NumericalScalar halfWidth(0.5 * std::abs((b1 - a1) - (b0 - a0)));
             const NumericalScalar center(0.5 * (alpha + delta));
             if (halfWidth > 0.0) distributionCollection_.add(Trapezoidal(alpha, center - halfWidth, center + halfWidth, delta));
             else distributionCollection_.add(Triangular(alpha, center, delta));
@@ -295,8 +295,10 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
     else distributionCollection_.add(coll[i]);
   }
   // Set the aggregated normal as the last atom
-  if (hasNormalAtom) distributionCollection_.add(Normal(aggregatedMean, sqrt(aggregatedVariance)));
+  if (hasNormalAtom) distributionCollection_.add(Normal(aggregatedMean, std::sqrt(aggregatedVariance)));
   if (hasPendingUniform) distributionCollection_.add(pendingUniform);
+  if (distributionCollection_.getSize() > 1) setParallel(false);
+  else setParallel(distributionCollection_[0].getImplementation()->isParallel());
   setDimension(1);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -407,13 +409,13 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
     {
       NumericalScalar sinMHX;
       NumericalScalar cosMHX;
-      sinMHX = sin((m - 1) * hX);
-      cosMHX = cos((m - 1) * hX);
+      sinMHX = std::sin((m - 1) * hX);
+      cosMHX = std::cos((m - 1) * hX);
       const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m - 1));
       const NumericalScalar contribution(factor * (deltaValue.real() * cosMHX + deltaValue.imag() * sinMHX));
       value += contribution;
       LOGDEBUG(OSS() << "m=" << m - 1 << ", delta=" << deltaValue << ", contribution=" << contribution << ", value=" << value);
-      error += fabs(contribution);
+      error += std::abs(contribution);
     }
     k *= 2;
   }
@@ -582,23 +584,23 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   UnsignedInteger k(1);
   const UnsignedInteger kmin(1 << blockMin_);
   const UnsignedInteger kmax(1 << blockMax_);
-  while ( (k < kmax) && (error > std::max(precision, fabs(precision * value)) || k < kmin) )
+  while ( (k < kmax) && (error > std::max(precision, std::abs(precision * value)) || k < kmin) )
   {
     error = 0.0;
     for (UnsignedInteger m = k + 1; m <= 2 * k; ++m)
     {
       NumericalScalar sinMHLower;
       NumericalScalar cosMHLower;
-      sinMHLower = sin((m - 1) * a);
-      cosMHLower = cos((m - 1) * a);
+      sinMHLower = std::sin((m - 1) * a);
+      cosMHLower = std::cos((m - 1) * a);
       NumericalScalar sinMHUpper;
       NumericalScalar cosMHUpper;
-      sinMHUpper = sin((m - 1) * b);
-      cosMHUpper = cos((m - 1) * b);
+      sinMHUpper = std::sin((m - 1) * b);
+      cosMHUpper = std::cos((m - 1) * b);
       const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m - 1));
       const NumericalScalar contribution(factor * (deltaValue.real() * (sinMHUpper - sinMHLower) + deltaValue.imag() * (cosMHLower - cosMHUpper)) / ((m - 1) * referenceBandwidth_));
       value += contribution;
-      error += fabs(contribution);
+      error += std::abs(contribution);
     }
     k *= 2;
   }
@@ -649,7 +651,7 @@ NumericalScalar RandomMixture::computeScalarQuantile(const NumericalScalar prob,
 NumericalComplex RandomMixture::computeCharacteristicFunction(const NumericalScalar x) const
 {
   if (x == 0.0) return 1.0;
-  return exp(computeLogCharacteristicFunction(x));
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
 NumericalComplex RandomMixture::computeLogCharacteristicFunction(const NumericalScalar x) const
@@ -657,7 +659,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Numerical
   if (x == 0.0) return 0.0;
   NumericalComplex logCfValue(0.0, constant_ * x);
   const UnsignedInteger size(distributionCollection_.getSize());
-  const NumericalScalar smallScalar(0.5 * log(SpecFunc::MinNumericalScalar));
+  const NumericalScalar smallScalar(0.5 * std::log(SpecFunc::MinNumericalScalar));
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     logCfValue += distributionCollection_[i].computeLogCharacteristicFunction(distributionCollection_[i].getWeight() * x);
@@ -684,9 +686,9 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
     const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
     const NumericalComplex deltaLog(logNormalCF - logCF);
     NumericalComplex value;
-    if (abs(deltaLog) < 1.0e-5) value = exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
-    else value = exp(logCF) - exp(logNormalCF);
-    LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << exp(logNormalCF) << ", value=" << value);
+    if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
+    else value = std::exp(logCF) - std::exp(logNormalCF);
+    LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
     return value;
   }
   // Here, the index has not been computed so far, fill-in the gap
@@ -699,9 +701,9 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
       const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
       const NumericalComplex deltaLog(logNormalCF - logCF);
       NumericalComplex value;
-      if (abs(deltaLog) < 1.0e-5) value = exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
-      else value = exp(logCF) - exp(logNormalCF);
-      LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << exp(logNormalCF) << ", value=" << value);
+      if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
+      else value = std::exp(logCF) - std::exp(logNormalCF);
+      LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
       characteristicValuesCache_.add(value);
     }
     storedSize_ = index;
@@ -760,7 +762,7 @@ void RandomMixture::computeCovariance() const
 /* Get the standard deviation of the RandomMixture */
 NumericalPoint RandomMixture::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(getCovariance().operator()(0, 0)));
+  return NumericalPoint(1, std::sqrt(getCovariance().operator()(0, 0)));
 }
 
 /* Get the skewness of the RandomMixture */
@@ -775,9 +777,9 @@ NumericalPoint RandomMixture::getSkewness() const
     const NumericalScalar wi2(wi * wi);
     const NumericalScalar vi(distributionCollection_[i].getCovariance().operator()(0, 0));
     variance += wi2 * vi;
-    skewness += wi2 * wi * distributionCollection_[i].getSkewness()[0] * pow(vi, 1.5);
+    skewness += wi2 * wi * distributionCollection_[i].getSkewness()[0] * std::pow(vi, 1.5);
   } /* end for */
-  skewness *= pow(variance, -1.5);
+  skewness *= std::pow(variance, -1.5);
   return NumericalPoint(1, skewness);
 }
 
@@ -860,8 +862,8 @@ void RandomMixture::computeDispersionIndicator() const
   dispersionIndicator_ = 0.0;
   const UnsignedInteger size(distributionCollection_.getSize());
   // Assume a quadratic additive behaviour of the dispersion indicator. It is true for the standard deviation value, and almost true for the interquartile of moderatly skewed distributions
-  for(UnsignedInteger i = 0; i < size; ++i) dispersionIndicator_ += pow(distributionCollection_[i].getWeight() * distributionCollection_[i].getDispersionIndicator(), 2.0);
-  dispersionIndicator_ = sqrt(dispersionIndicator_);
+  for(UnsignedInteger i = 0; i < size; ++i) dispersionIndicator_ += std::pow(distributionCollection_[i].getWeight() * distributionCollection_[i].getDispersionIndicator(), 2.0);
+  dispersionIndicator_ = std::sqrt(dispersionIndicator_);
   isAlreadyComputedDispersionIndicator_ = true;
 }
 
@@ -1056,7 +1058,7 @@ struct KolmogorovProjection
     {
       const Distribution candidate(factory_.build(NumericalPointCollection(1, parameters)));
       for (UnsignedInteger i = 0; i < data_.getSize(); ++i)
-        norm += pow(candidate.computeCDF(data_[i][0]) - data_[i][1], 2);
+        norm += std::pow(candidate.computeCDF(data_[i][0]) - data_[i][1], 2);
       return NumericalPoint(1, norm);
     }
     catch(...)
@@ -1090,6 +1092,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
   NumericalSample dataY;
   const NumericalSample dataX(computeCDF(xMin, xMax, size, dataY));
   // Create a NumericalMathFunction to use the TNC algorithm for finding the best candidate for projection
+  Distribution bestCandidate;
   KolmogorovProjection projection(dataX, dataY, factoryCollection[0]);
   // Loop over the factories
   for (UnsignedInteger i = 0; i < factorySize; ++i)
@@ -1130,7 +1133,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
     const Distribution bestCandidate(factory.build(NumericalPointCollection(1, optimAlgo.getResult().getOptimizer())));
     NumericalScalar kolmogorov(0.0);
     for (UnsignedInteger j = 0; j < size; ++j)
-      kolmogorov = std::max(kolmogorov, fabs(bestCandidate.computeCDF(dataX[j][0]) - dataY[j][0]));
+      kolmogorov = std::max(kolmogorov, std::abs(bestCandidate.computeCDF(dataX[j][0]) - dataY[j][0]));
     result[i] = Pair(kolmogorov, bestCandidate);
   }
   // Sort the results

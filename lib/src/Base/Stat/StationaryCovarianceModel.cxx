@@ -50,23 +50,10 @@ StationaryCovarianceModel * StationaryCovarianceModel::clone() const
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix StationaryCovarianceModel::computeCovariance(const NumericalPoint & s,
-    const NumericalPoint & t) const
-{
-  LOGUSER(OSS() << "The computeCovariance(const NumericalPoint & s, const NumericalPoint & t) method is deprecated in favor of the operator() (const NumericalPoint & s, const NumericalPoint & t) method.");
-  return operator() (t - s);
-}
-
-CovarianceMatrix StationaryCovarianceModel::computeCovariance(const NumericalPoint & tau) const
-{
-  LOGUSER(OSS() << "The computeCovariance(const NumericalPoint & tau) method is deprecated in favor of the operator() (const NumericalPoint & tau) method.");
-  return operator() (tau);
-}
-
 CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+							const NumericalPoint & t) const
 {
-  return operator() (t - s);
+  return (*this)(t - s);
 }
 
 CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & tau) const
@@ -74,13 +61,18 @@ CovarianceMatrix StationaryCovarianceModel::operator() (const NumericalPoint & t
   throw NotYetImplementedException(HERE);
 }
 
-/* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix StationaryCovarianceModel::discretizeCovariance(const RegularGrid & timeGrid) const
+NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint & s,
+						  const NumericalPoint & t) const
 {
-  LOGUSER(OSS() << "The discretizeCovariance(const RegularGrid & timeGrid) method is deprecated in favor of the discretize(const RegularGrid & timeGrid) method");
-  return discretize(timeGrid);
+  return computeAsScalar(t - s);
 }
 
+NumericalScalar StationaryCovarianceModel::computeAsScalar(const NumericalPoint & tau) const
+{
+  return (*this)(tau)(0, 0);
+}
+
+/* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeGrid) const
 {
   const UnsignedInteger size(timeGrid.getN());

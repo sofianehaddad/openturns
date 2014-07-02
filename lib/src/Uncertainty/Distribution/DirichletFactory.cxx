@@ -78,7 +78,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
       const NumericalScalar xIJ(sample[i][j]);
       if (xIJ <= 0.0) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
       sum += xIJ;
-      meanLog[j] += log(xIJ);
+      meanLog[j] += std::log(xIJ);
       sumX[j] += xIJ;
       sumX2[j] += xIJ * xIJ;
     }
@@ -149,7 +149,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
     for (UnsignedInteger i = 0; i <= dimension; ++i)
     {
       const NumericalScalar thetaI(SpecFunc::DiGammaInv(psiSumTheta + meanLog[i]));
-      delta += fabs(theta[i] - thetaI);
+      delta += std::abs(theta[i] - thetaI);
       theta[i] = thetaI;
     }
     convergence = (delta < dimension * ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" ));

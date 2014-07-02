@@ -37,9 +37,9 @@ static Factory<ComputedNumericalMathEvaluationImplementation> RegisteredFactory(
 /* Default constructor */
 ComputedNumericalMathEvaluationImplementation::ComputedNumericalMathEvaluationImplementation(const String & name,
     const WrapperFile & file)
-  : NumericalMathEvaluationImplementation(),
-    p_function_(0),
-    p_state_(0)
+  : NumericalMathEvaluationImplementation()
+  , p_function_(0)
+  , p_state_(0)
 {
   setName(name);
   const WrapperData data = file.getWrapperData();
@@ -66,9 +66,9 @@ ComputedNumericalMathEvaluationImplementation::ComputedNumericalMathEvaluationIm
 
 /* Copy constructor */
 ComputedNumericalMathEvaluationImplementation::ComputedNumericalMathEvaluationImplementation(const ComputedNumericalMathEvaluationImplementation & other)
-  : NumericalMathEvaluationImplementation(other),
-    p_function_(other.p_function_),
-    p_state_(0)
+  : NumericalMathEvaluationImplementation(other)
+  , p_function_(other.p_function_)
+  , p_state_(0)
 {
   if (p_function_.isNull()) throw WrapperInternalException(HERE) << "Unable to allocate wrapper";
 

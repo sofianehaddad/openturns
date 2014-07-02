@@ -65,6 +65,11 @@ Tensor::Tensor(const Implementation & i)
   // Nothing to do
 }
 
+/* Set small elements to zero */
+Tensor Tensor::clean(const NumericalScalar & threshold) const
+{
+  return Pointer<TensorImplementation>(getImplementation()->clean(threshold).clone());
+}
 
 /* String converter */
 String Tensor::__repr__() const

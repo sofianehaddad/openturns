@@ -28,19 +28,15 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(JacobiFactory);
 
 static Factory<JacobiFactory> RegisteredFactory("JacobiFactory");
 
-
-
 /* Default constructor: (1, 1) order Jacobi polynomial associated with the default Beta() = Beta(2, 4, -1, 1) distribution which is equal to the Epanechnikov distribution */
 JacobiFactory::JacobiFactory()
-  : OrthogonalUniVariatePolynomialFactory(Beta()),
-    alpha_(1.0),
-    beta_(1.0)
+  : OrthogonalUniVariatePolynomialFactory(Beta())
+  , alpha_(1.0)
+  , beta_(1.0)
 {
   initializeCache();
 }
@@ -50,10 +46,20 @@ JacobiFactory::JacobiFactory()
 JacobiFactory::JacobiFactory(const NumericalScalar alpha,
                              const NumericalScalar beta,
                              const ParameterSet parameterization)
-  : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + beta + 2.0, -1.0, 1.0) : Beta(alpha, beta, -1.0, 1.0))),
-    alpha_(alpha),
-    beta_(beta)
+  : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + beta + 2.0, -1.0, 1.0) : Beta(alpha, beta, -1.0, 1.0)))
+  , alpha_(0.0)
+  , beta_(0.0)
 {
+  if (parameterization == ANALYSIS)
+    {
+      alpha_ = alpha;
+      beta_ = beta;
+    }
+  else
+    {
+      alpha_ = beta - alpha - 1.0;
+      beta_ = alpha - 1.0;
+    }
   initializeCache();
 }
 

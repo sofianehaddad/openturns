@@ -64,12 +64,12 @@ LogUniform LogUniformFactory::buildAsLogUniform(const NumericalSample & sample) 
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogUniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar a(xMin - fabs(xMin) / (2.0 + size));
+  const NumericalScalar a(xMin - std::abs(xMin) / (2.0 + size));
   if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from a sample that contains non positive values.";
-  const NumericalScalar aLog(log(a));
+  const NumericalScalar aLog(std::log(a));
   const NumericalScalar xMax(sample.getMax()[0]);
-  const NumericalScalar b(xMax + fabs(xMax) / (2.0 + size));
-  const NumericalScalar bLog(log(b));
+  const NumericalScalar b(xMax + std::abs(xMax) / (2.0 + size));
+  const NumericalScalar bLog(std::log(b));
   if (aLog >= bLog) throw InvalidArgumentException(HERE) << "Error: can build a LogUniform distribution only if aLog < bLog, here aLog=" << aLog << " and bLog=" << bLog;
   LogUniform result(aLog, bLog);
   result.setDescription(sample.getDescription());

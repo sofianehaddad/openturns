@@ -201,8 +201,8 @@ NumericalScalar UserDefined::computePDF(const NumericalPoint & point) const
       }
     } // while
     // At this point we have upper == lower or upper == lower + 1, with lower - epsilon <= x < upper + epsilon
-    if (fabs(x - xUpper) <= supportEpsilon_) return collection_[upper].getP();
-    if (fabs(x - xLower) <= supportEpsilon_) return collection_[lower].getP();
+    if (std::abs(x - xUpper) <= supportEpsilon_) return collection_[upper].getP();
+    if (std::abs(x - xLower) <= supportEpsilon_) return collection_[lower].getP();
     // x is not a point in the support of the distribution
     return 0.0;
   }
@@ -350,7 +350,7 @@ Bool UserDefined::isIntegral() const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x(collection_[i].getX()[0]);
-    if (fabs(x - round(x)) >= supportEpsilon_) return false;
+    if (std::abs(x - round(x)) >= supportEpsilon_) return false;
   }
   return true;
 }
@@ -495,7 +495,7 @@ void UserDefined::setPairCollection(const UserDefinedPairCollection & collection
     if (p < 0.0) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities, which is not the case here collection=" << collection;
     sum += p;
     cumulativeProbabilities_[i] = sum;
-    hasUniformWeights_ = hasUniformWeights_ && (fabs(p - firstProbability) < pdfEpsilon_);
+    hasUniformWeights_ = hasUniformWeights_ && (std::abs(p - firstProbability) < pdfEpsilon_);
   }
   if (sum < pdfEpsilon_) throw InvalidArgumentException(HERE) << "Error: the sum of probabilities is zero.";
   // Normalize the probabilities

@@ -39,9 +39,9 @@ static Factory<ComplexMatrixImplementation> RegisteredFactory("ComplexMatrixImpl
 
 /* Default constructor */
 ComplexMatrixImplementation::ComplexMatrixImplementation()
-  : PersistentCollection<NumericalComplex>(),
-    nbRows_(0),
-    nbColumns_(0)
+  : PersistentCollection<NumericalComplex>()
+  , nbRows_(0)
+  , nbColumns_(0)
 {
   // Nothing to do
 }
@@ -51,9 +51,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation()
 /* The ComplexMatrixImplementation is viewed as a set of column vectors read one after another */
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   // Nothing to do
 }
@@ -62,9 +62,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<NumericalComplex> & elementsValues)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
@@ -74,9 +74,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0)),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
   //  Implicit cast from NumericalScalar into NumericalComplex
@@ -85,9 +85,9 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 
 
 ComplexMatrixImplementation::ComplexMatrixImplementation(const MatrixImplementation & matrix)
-  : PersistentCollection<NumericalComplex>(matrix.getNbRows() * matrix.getNbColumns(), 0.0),
-    nbRows_(matrix.getNbRows()),
-    nbColumns_(matrix.getNbColumns())
+  : PersistentCollection<NumericalComplex>(matrix.getNbRows() * matrix.getNbColumns(), 0.0)
+  , nbRows_(matrix.getNbRows())
+  , nbColumns_(matrix.getNbColumns())
 {
   // Copy from matrix
   const UnsignedInteger matrixSize(nbRows_ * nbColumns_);
@@ -100,18 +100,87 @@ ComplexMatrixImplementation * ComplexMatrixImplementation::clone() const
   return new ComplexMatrixImplementation(*this);
 }
 
+/* Resolution of a linear system : rectangular matrix
+ * MX = b, M is an mxn matrix, b is an mxq matrix and
+ * X is an nxq matrix */
+ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (const ComplexMatrixImplementation & b,
+    const Bool keepIntact)
+{
+  if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE);
+  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE);
+  int m(nbRows_);
+  int n(nbColumns_);
+  // B is an extended copy of b, it must be large enought to store the solution, see LAPACK documentation
+  int p(std::max(m, n));
+  int q(b.nbColumns_);
+  ComplexMatrixImplementation B(p, q);
+  for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
+    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(m); ++i)
+      B(i, j) = b(i, j);
+  int nrhs(q);
+  int lwork(-1);
+  std::vector< std::complex<double> > work(1);
+  std::vector<double> rwork(2 * n);
+  int info;
+  std::vector<int> jpiv(n);
+  double rcond(ResourceMap::GetAsNumericalScalar("MatrixImplementation-DefaultSmallPivot"));
+  int rank;
+  // We must copy the matrix as it will be overwritten by the operation
+  if (keepIntact)
+  {
+    ComplexMatrixImplementation A(*this);
+    // (int *m, int *n, int *nrhs, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, double *rwork, int *info)
+    zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+    lwork = static_cast<int>(std::real(work[0]));
+    NumericalComplexCollection work(lwork);
+    zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+  }
+  else
+  {
+    zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+    lwork = static_cast<int>(std::real(work[0]));
+    NumericalComplexCollection work(lwork);
+    zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
+  }
+  ComplexMatrixImplementation result(n, q);
+  for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
+    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
+      result(i, j) = B(i, j);
+  return result;
+}
+
+/* Resolution of a linear system : rectangular matrix
+ * Mx = b, M is an mxn matrix, b is an m-dimensional
+ * vector and x is an n-dimensional vector */
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::solveLinearSystemRect (const NumericalComplexCollection & b,
+    const Bool keepIntact)
+{
+  const UnsignedInteger m(b.getSize());
+  if (nbRows_ != m) throw InvalidDimensionException(HERE);
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE);
+  // Solve the matrix linear system
+  // A ComplexMatrixImplementation is also a collection of NumericalComplex, so it is automatically converted into a NumericalComplexCollection
+  return solveLinearSystemRect(ComplexMatrixImplementation(m, 1, b), keepIntact);
+}
+
+
+
 /* Set small elements to zero */
 ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalScalar threshold) const
 {
+  // Nothing to do for nonpositive threshold
+  if (threshold <= 0.0) return *this;
   ComplexMatrixImplementation result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
-      const NumericalComplex value(this->operator[](convertPosition(i, j)));
+      const NumericalComplex value((*this)[convertPosition(i, j)]);
       NumericalScalar realPart(std::real(value));
       NumericalScalar imagPart(std::imag(value));
-      if (fabs(realPart) <= threshold) realPart = 0.0;
-      if (fabs(imagPart) <= threshold) imagPart = 0.0;
+      if (std::abs(realPart) < 0.5 * threshold) realPart = 0.0;
+      else realPart = threshold * round(realPart / threshold);
+      if (std::abs(imagPart) < 0.5 * threshold) imagPart = 0.0;
+      else imagPart = threshold * round(imagPart / threshold);
       result(i, j) = NumericalComplex(realPart, imagPart);
     }
   return result;
@@ -120,18 +189,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
 /* Set small elements to zero */
 ComplexMatrixImplementation ComplexMatrixImplementation::cleanHerm(const NumericalScalar threshold) const
 {
-  ComplexMatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-    for (UnsignedInteger i = j; i < nbRows_; ++i)
-    {
-      const NumericalComplex value(this->operator[](convertPosition(i, j)));
-      NumericalScalar realPart(std::real(value));
-      NumericalScalar imagPart(std::imag(value));
-      if (fabs(realPart) <= threshold) realPart = 0.0;
-      if (fabs(imagPart) <= threshold) imagPart = 0.0;
-      result(i, j) = NumericalComplex(realPart, imagPart);
-    }
-  return result;
+  hermitianize();
+  return clean(threshold);
 }
 
 /* String converter */
@@ -277,7 +336,11 @@ void ComplexMatrixImplementation::hermitianize() const
   // The lower triangle of the source matrix is accessed columnwise in the natural order
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
-      refThis->operator[](convertPosition(j, i)) = std::conj(operator[](convertPosition(i, j)));
+      {
+	const NumericalComplex value(operator[](convertPosition(i, j)));
+	if (std::abs(value.imag()) == 0.0) refThis->operator[](convertPosition(j, i)) = value.real();
+	else refThis->operator[](convertPosition(j, i)) = std::conj(value);
+      }
 }
 
 
@@ -333,7 +396,7 @@ Bool ComplexMatrixImplementation::isTriangular(Bool lower) const
   {
     for ( UnsignedInteger j = 1; j < nbColumns_; ++ j )
       for ( UnsignedInteger i = 0; i < j; ++ i )
-        if ( std::abs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0. )
+        if ( std::abs( (*this)[lower ?  convertPosition(i, j) : convertPosition(j, i)] ) > 0.0 )
           return false;
     return true;
   }
@@ -886,7 +949,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-        A(i, j) = NumericalComplex(0.0, 0.0);
+        A(i, j) = 0.0;//NumericalComplex(0.0, 0.0);
     // Check return code from Lapack
     if(info != 0)
       throw InvalidArgumentException(HERE) << " Error - Matrix is not positive definite" ;
@@ -898,7 +961,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
     if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
     for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
       for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-        (*this)(i, j) = NumericalComplex(0.0, 0.0);
+        (*this)(i, j) = 0.0;//NumericalComplex(0.0, 0.0);
     // Check return code from Lapack
     if(info != 0)
       throw InvalidArgumentException(HERE) << " Error - Matrix is not positive definite" ;

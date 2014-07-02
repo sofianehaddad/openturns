@@ -41,7 +41,6 @@ class OT_API StationaryCovarianceModel
 
 public:
 
-
   /** Default constructor without parameters */
   StationaryCovarianceModel();
 
@@ -49,25 +48,16 @@ public:
   virtual StationaryCovarianceModel * clone() const;
 
   /** Computation of the covariance matrix */
-  /** @deprecated */
-  using CovarianceModelImplementation::computeCovariance;
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
-      const NumericalPoint & t) const;
-  /** @deprecated */
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
-
   using CovarianceModelImplementation::operator();
   virtual CovarianceMatrix operator() (const NumericalPoint & s,
-                                       const NumericalPoint & t) const;
+				       const NumericalPoint & t) const;
   virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  using CovarianceModelImplementation::computeAsScalar;
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
+					   const NumericalPoint & t) const;
+  virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
-  /** @deprecated */
-  using CovarianceModelImplementation::discretizeCovariance;
-  /** @deprecated */
-  CovarianceMatrix discretizeCovariance(const RegularGrid & timeGrid) const;
-
   using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 

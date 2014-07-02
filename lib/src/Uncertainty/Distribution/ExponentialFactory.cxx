@@ -63,7 +63,7 @@ Exponential ExponentialFactory::buildAsExponential(const NumericalSample & sampl
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Exponential distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Exponential distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);
-  const NumericalScalar gamma(xMin - fabs(xMin) / (2.0 + size));
+  const NumericalScalar gamma(xMin - std::abs(xMin) / (2.0 + size));
   const NumericalScalar mean(sample.computeMean()[0]);
   if (mean == gamma) throw InvalidArgumentException(HERE) << "Error: can build an Exponential distribution only from a sample with mean > min, here mean=" << mean << " and min=" << gamma;
   const NumericalScalar lambda(1.0 / (mean - gamma));

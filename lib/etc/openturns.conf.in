@@ -52,7 +52,7 @@
   <KFold-DefaultK                      value="10" />
   
   <!-- OT::BlendedStep parameters -->
-  <BlendedStep-DefaultEta              value="0.0" />
+  <BlendedStep-DefaultEta              value="1.0" />
 
   <!-- OT::CenteredFiniteDifferenceGradient parameters -->
   <CenteredFiniteDifferenceGradient-DefaultEpsilon value="1.0e-5" />
@@ -190,6 +190,7 @@
   <!-- OT::Mesh parameters -->
   <Mesh-VertexEpsilon value="1.0e-12" />
   <Mesh-LargeSize     value="5000" />
+  <Mesh-UseKDTree     value="1" />
   
   <!-- OT::Matrix parameters -->
   <Matrix-size-visible-in-str-from value="5"                 />
@@ -210,6 +211,9 @@
   <ConditionalDistribution-MarginalIntegrationNodesNumber value="16" />
   <ConditionalDistribution-MaximumIntegrationNodesNumber value="100000" />
   
+  <!-- OT::CompositeDistribution parameters -->
+  <CompositeDistribution-StepNumber value="256" />
+
   <!-- OT::Dirichlet parameters -->
   <Dirichlet-DefaultSamplingSize     value="500000" />
   <Dirichlet-DefaultIntegrationSize  value="50" />
@@ -382,8 +386,10 @@
 
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual    value="1.0e-6"  />
+  <FunctionalChaosAlgorithm-SmallSampleSize           value="1000"  />
+  <FunctionalChaosAlgorithm-MaximumTotalDegree        value="5"  />
   
-  <!-- OT::TemporalNormalProcess parameters -->
+  <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />
   <KrigingAlgorithm-MaximalScaling  value="1.0e5"   />
 
@@ -410,17 +416,19 @@
   <MarginalTransformationEvaluation-Simplify             value="1" />
 
   <!-- OT::DistributionImplementation parameters -->
-  <DistributionImplementation-DefaultPointNumber            value="129"     />
-  <DistributionImplementation-DefaultQuantileEpsilon        value="1.0e-12" />
-  <DistributionImplementation-DefaultPDFEpsilon             value="1.0e-14" />
-  <DistributionImplementation-DefaultCDFEpsilon             value="1.0e-14" />
-  <DistributionImplementation-DefaultQuantileIteration      value="100"     />
-  <DistributionImplementation-QMin                          value="1.5e-1"  />
-  <DistributionImplementation-QMax                          value="8.5e-1"  />
-  <DistributionImplementation-DefaultIntegrationNodesNumber value="255"     />
-  <DistributionImplementation-DefaultLevelNumber            value="10"      />
-  <DistributionImplementation-DefaultQuantileCacheSize      value="128"     />
-  <DistributionImplementation-Parallel                      value="0"       />
+  <DistributionImplementation-DefaultPointNumber             value="129"     />
+  <DistributionImplementation-DefaultQuantileEpsilon         value="1.0e-12" />
+  <DistributionImplementation-DefaultPDFEpsilon              value="1.0e-14" />
+  <DistributionImplementation-DefaultCDFEpsilon              value="1.0e-14" />
+  <DistributionImplementation-DefaultQuantileIteration       value="100"     />
+  <DistributionImplementation-QMin                           value="1.5e-1"  />
+  <DistributionImplementation-QMax                           value="8.5e-1"  />
+  <DistributionImplementation-DefaultIntegrationNodesNumber  value="255"     />
+  <DistributionImplementation-DefaultLevelNumber             value="10"      />
+  <DistributionImplementation-DefaultQuantileCacheSize       value="128"     />
+  <DistributionImplementation-Parallel                       value="1"       />
+  <DistributionImplementation-CharacteristicFunctionBlockMax value="20"      />
+  <DistributionImplementation-CharacteristicFunctionNMax     value="1000000" />
 
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />
@@ -435,8 +443,10 @@
   <WhiteNoise-MeanEpsilon value="1.0e-14" />
 
   <!-- OT::TemporalNormalProcess parameters -->
-  <TemporalNormalProcess-StartingScaling value="1.0e-13" />
-  <TemporalNormalProcess-MaximalScaling  value="1.0e5"   />
+  <TemporalNormalProcess-StartingScaling       value="1.0e-13" />
+  <TemporalNormalProcess-MaximalScaling        value="1.0e5"   />
+  <TemporalNormalProcess-UseGibbsSampler       value="0"       />
+  <TemporalNormalProcess-GibbsMaximumIteration value="100"     />
 
   <!-- OT::SpectralNormalProcess parameters -->
   <SpectralNormalProcess-StartingScaling   value="1.0e-13" />

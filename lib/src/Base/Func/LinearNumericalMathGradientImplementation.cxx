@@ -45,10 +45,10 @@ LinearNumericalMathGradientImplementation::LinearNumericalMathGradientImplementa
 LinearNumericalMathGradientImplementation::LinearNumericalMathGradientImplementation(const NumericalPoint & center,
     const Matrix & constant,
     const SymmetricTensor & linear)
-  : NumericalMathGradientImplementation(),
-    center_(center),
-    constant_(constant),
-    linear_(linear)
+  : NumericalMathGradientImplementation()
+  , center_(center)
+  , constant_(constant)
+  , linear_(linear)
 {
   /* Check if the dimensions of the constant term is compatible with the linear term */
   if ((constant.getNbRows() != linear.getNbRows()) || (constant.getNbColumns() != linear.getNbSheets())) throw InvalidDimensionException(HERE) << "Constant term dimensions are incompatible with the linear term";

@@ -12,21 +12,9 @@ def cleanScalar(inScalar):
     return inScalar
 
 
-def cleanMatrix(inMatrix):
-    tmp = inMatrix.__str__()
-    inMatrix = ComplexMatrix(inMatrix.getImplementation())
-    dim = inMatrix.getNbRows()
-    for i in range(dim):
-        for j in range(dim):
-            realIJ = cleanScalar(inMatrix[i, j].real)
-            imagIJ = cleanScalar(inMatrix[i, j].imag)
-            inMatrix[i, j] = realIJ + 1j * imagIJ
-    return inMatrix
-
-
 try:
 
-        # Default constructor
+    # Default constructor
     myDefautModel = UserDefinedSpectralModel()
     print "myDefautModel = ", myDefautModel
 
@@ -50,7 +38,7 @@ try:
     referenceModel = CauchyModel(amplitude, scale, spatialCorrelation)
 
     size = 5
-    frequencyGrid = RegularGrid(0.0, 1.0 / size, size)
+    frequencyGrid = RegularGrid(0.0, 2.0 / size, size)
     dspCollection = HermitianMatrixCollection(frequencyGrid.getN())
     for i in range(frequencyGrid.getN()):
         dspCollection[i] = referenceModel(frequencyGrid.getValue(i))
@@ -60,13 +48,13 @@ try:
     print "myModel=", myModel
 
     # Sample the UserDefinedSpectralModel
-    samplingGrid = RegularGrid(-1.5, 3.0 / (4.0 * size), 4 * size)
+    samplingGrid = RegularGrid(-0.4, 1.0 / 16, 5 * size)
 
     for i in range(samplingGrid.getN()):
         frequency = samplingGrid.getValue(i)
         print "frequency= %g myModel=" % cleanScalar(frequency)
-        print cleanMatrix(myModel(frequency)), ", referenceModel="
-        print cleanMatrix(referenceModel(frequency))
+        print myModel(frequency).clean(1e-6), ", referenceModel="
+        print referenceModel(frequency).clean(1e-6)
 
 except:
     import sys

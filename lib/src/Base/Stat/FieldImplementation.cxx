@@ -35,8 +35,8 @@
 #include "Path.hxx"
 #include "Cloud.hxx"
 #include "Curve.hxx"
+#include "PolygonArray.hxx"
 #include "Os.hxx"
-#include "TBB.hxx"
 #include "PlatformInfo.hxx"
 #include "SpecFunc.hxx"
 
@@ -56,17 +56,21 @@ FieldImplementation::FieldImplementation()
   , mesh_()
   , values_(0, 0)
   , description_(mesh_.getDescription())
+  , spatialMean_(0)
+  , isAlreadyComputedSpatialMean_(false)
 {
   // Nothing to do
 }
 
 /* Standard constructor */
 FieldImplementation::FieldImplementation(const Mesh & mesh,
-    const UnsignedInteger dim)
+                                         const UnsignedInteger dim)
   : PersistentObject()
   , mesh_(mesh)
   , values_(mesh.getVerticesNumber(), dim)
   , description_(0)
+  , spatialMean_(dim)
+  , isAlreadyComputedSpatialMean_(false)
 {
   // Build the default description
   Description description(getMeshDimension() + getDimension());
@@ -77,11 +81,13 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
 
 /* Constructor from a Mesh and a sample */
 FieldImplementation::FieldImplementation(const Mesh & mesh,
-    const NumericalSample & values)
+                                         const NumericalSample & values)
   : PersistentObject()
   , mesh_(mesh)
   , values_(values)
   , description_()
+  , spatialMean_(values.getDimension())
+  , isAlreadyComputedSpatialMean_(false)
 {
   if (mesh.getVerticesNumber() != values.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a Field with a number of values=" << values.getSize() << " different from the number of vertices=" << mesh.getVerticesNumber();
   Description description(getMeshDimension() + getDimension());
@@ -127,6 +133,7 @@ RegularGrid FieldImplementation::getTimeGrid() const
 /* Individual value accessor */
 NSI_point FieldImplementation::operator[](const UnsignedInteger index)
 {
+  isAlreadyComputedSpatialMean_ = false;
   return values_[index];
 }
 
@@ -136,8 +143,9 @@ NSI_const_point FieldImplementation::operator[](const UnsignedInteger index) con
 }
 
 NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                                    const UnsignedInteger j)
 {
+  isAlreadyComputedSpatialMean_ = false;
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
   return at(i, j);
@@ -147,7 +155,7 @@ NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
 }
 
 const NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                                          const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return at(i, j);
@@ -160,6 +168,7 @@ const NumericalScalar & FieldImplementation::operator () (const UnsignedInteger 
 NSI_point FieldImplementation::at (const UnsignedInteger index)
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  isAlreadyComputedSpatialMean_ = false;
   return (*this)[index];
 }
 
@@ -170,15 +179,16 @@ NSI_const_point FieldImplementation::at (const UnsignedInteger index) const
 }
 
 NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                           const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
+  isAlreadyComputedSpatialMean_ = false;
   return (*this)[i][j];
 }
 
 const NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                                 const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
@@ -192,8 +202,9 @@ NumericalPoint FieldImplementation::getValueAtIndex(const UnsignedInteger index)
 }
 
 void FieldImplementation::setValueAtIndex(const UnsignedInteger index,
-    const NumericalPoint & val)
+                                          const NumericalPoint & val)
 {
+  isAlreadyComputedSpatialMean_ = false;
   values_[index] = val;
 }
 
@@ -203,8 +214,9 @@ NumericalPoint FieldImplementation::getValueAtNearestPosition(const NumericalPoi
 }
 
 void FieldImplementation::setValueAtNearestPosition(const NumericalPoint & position,
-    const NumericalPoint & val)
+                                                    const NumericalPoint & val)
 {
+  isAlreadyComputedSpatialMean_ = false;
   values_[mesh_.getNearestVertexIndex(position)] = val;
 }
 
@@ -216,6 +228,7 @@ NumericalPoint FieldImplementation::getValueAtNearestTime(const NumericalScalar 
 
 void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp, const NumericalPoint & val)
 {
+  isAlreadyComputedSpatialMean_ = false;
   setValueAtNearestPosition(NumericalPoint(1, timestamp), val);
 }
 
@@ -281,11 +294,22 @@ String FieldImplementation::__str__(const String & offset) const
   return data.__str__(offset);
 }
 
+/* Compute the spatial mean of the field */
+void FieldImplementation::computeSpatialMean() const
+{
+  SpatialMeanFunctor functor( *this );
+  TBB::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
+  if (functor.volumeAccumulator_ == 0.0) throw InternalException(HERE) << "Error: cannot compute the spatial mean of a field supported by a mesh of zero volume.";
+  spatialMean_ = functor.accumulator_ / functor.volumeAccumulator_;
+  isAlreadyComputedSpatialMean_ = true;
+}
+
 
 /* Compute the spatial mean of the field */
 NumericalPoint FieldImplementation::getSpatialMean() const
 {
-  return values_.computeMean();
+  if (!isAlreadyComputedSpatialMean_) computeSpatialMean();
+  return spatialMean_;
 }
 
 /* Compute the spatial mean of the field */
@@ -314,7 +338,21 @@ NumericalSample FieldImplementation::asSample() const
   return data;
 }
 
+/* Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
+Mesh FieldImplementation::asDeformedMesh() const
+{
+  if (getDimension() != getMeshDimension()) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << values_.getDimension() << " does not match the mesh dimension=" << getMeshDimension();
+  NumericalSample data(mesh_.getVertices());
+  data += values_;
+  return Mesh(data, mesh_.getSimplices());
+}
+
 /* Draw a marginal of the Field */
+Graph FieldImplementation::draw() const
+{
+  return drawMarginal(0, false);
+}
+
 Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const
 {
@@ -325,93 +363,142 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
   const String title(OSS() << getName() << " - " << index << " marginal" );
   Graph graph(title, description_[0], "Values", true, "topright");
   if (meshDimension == 1)
-  {
-    // Discretization of the x axis
-    if (interpolate)
     {
-      const Curve curveSerie(mesh_.getVertices(), marginalValues);
-      graph.add(curveSerie);
+      // Discretization of the x axis
+      if (interpolate)
+        {
+          const Curve curveSerie(mesh_.getVertices(), marginalValues);
+          graph.add(curveSerie);
+        }
+      else
+        {
+          Cloud cloudSerie(mesh_.getVertices(), marginalValues);
+          cloudSerie.setPointStyle("bullet");
+          graph.add(cloudSerie);
+        }
     }
-    else
-    {
-      Cloud cloudSerie(mesh_.getVertices(), marginalValues);
-      cloudSerie.setPointStyle("bullet");
-      graph.add(cloudSerie);
-    }
-  }
   else if (meshDimension == 2)
-  {
-    graph.setYTitle(description_[1]);
-    if (interpolate)
     {
-      // Compute the iso-values
-      const UnsignedInteger levelsNumber(1 + 0 * ResourceMap::GetAsUnsignedInteger("FieldImplementation-LevelNumber"));
-      NumericalPoint levels(levelsNumber);
-      for (UnsignedInteger i = 0; i < levelsNumber; ++i)
-      {
-        const NumericalScalar q((i + 1.0) / (levelsNumber + 1.0));
-        levels[i] = marginalValues.computeQuantile(q)[0];
-      }
-      // Loop over the simplices to draw the segments (if any) associated with the different levels
-      const Description palette(Curve::BuildDefaultPalette(levelsNumber));
-      const UnsignedInteger simplicesNumber(mesh_.getSimplicesNumber());
-      for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
-      {
-        const Indices currentSimplex(mesh_.getSimplex(i));
-        UnsignedInteger i0(currentSimplex[0]);
-        UnsignedInteger i1(currentSimplex[1]);
-        UnsignedInteger i2(currentSimplex[2]);
-        NumericalScalar v0(marginalValues[i0][0]);
-        NumericalScalar v1(marginalValues[i1][0]);
-        NumericalScalar v2(marginalValues[i2][0]);
-        // Sort the vertices such that v0 <= v1 <= v2
-        if (v0 > v1)
+      graph.setYTitle(description_[1]);
+      const UnsignedInteger levelsNumber(ResourceMap::GetAsUnsignedInteger("FieldImplementation-LevelNumber"));
+      if (interpolate)
         {
-          std::swap(v0, v1);
-          std::swap(i0, i1);
-        }
-        if (v1 > v2)
+          // Compute the iso-values
+          NumericalPoint levels(levelsNumber);
+          Description palette(levelsNumber);
+          for (UnsignedInteger i = 0; i < levelsNumber; ++i)
+            {
+              const NumericalScalar q((i + 1.0) / (levelsNumber + 1.0));
+              levels[i] = marginalValues.computeQuantile(q)[0];
+              palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
+            }
+          // Loop over the simplices to draw the segments (if any) associated with the different levels
+          const UnsignedInteger simplicesNumber(mesh_.getSimplicesNumber());
+          for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
+            {
+              const Indices currentSimplex(mesh_.getSimplex(i));
+              UnsignedInteger i0(currentSimplex[0]);
+              UnsignedInteger i1(currentSimplex[1]);
+              UnsignedInteger i2(currentSimplex[2]);
+              NumericalScalar v0(marginalValues[i0][0]);
+              NumericalScalar v1(marginalValues[i1][0]);
+              NumericalScalar v2(marginalValues[i2][0]);
+              // Sort the vertices such that v0 <= v1 <= v2
+              if (v0 > v1)
+                {
+                  std::swap(v0, v1);
+                  std::swap(i0, i1);
+                }
+              if (v1 > v2)
+                {
+                  std::swap(v1, v2);
+                  std::swap(i1, i2);
+                }
+              // If the current simplex is constant, nothing to draw
+              if (v0 == v2) continue;
+              // For the current simplex, check all levels
+              for (UnsignedInteger j = 0; j < levelsNumber; ++j)
+                {
+                  const NumericalScalar level(levels[j]);
+                  if ((level >= v0) && (level <= v2))
+                    {
+                      const NumericalPoint x0(mesh_.getVertex(i0));
+                      const NumericalPoint x1(mesh_.getVertex(i1));
+                      const NumericalPoint x2(mesh_.getVertex(i2));
+                      NumericalSample data(2, 2);
+                      // The first point is on the [x0, x2] segment as v0 <= level <= v2 and v0 < v2
+                      data[0] = x0 + ((level - v0) / (v2 - v0)) * (x2 - x0);
+                      // if level < v1, the second point is on the [x0, x1] segment
+                      if (level < v1) data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
+                      else if (v1 == v2) data[1] = 0.5 * (x1 + x2);
+                      else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
+                      graph.add(Curve(data, palette[j], "solid"));
+                    } // (level >= v0) && (level <= v2)
+                } // j
+            } // i
+          // Simple colorbar
+          const NumericalScalar minValue(marginalValues.getMin()[0]);
+          const NumericalScalar maxValue(marginalValues.getMax()[0]);
+          const NumericalPoint xMin(mesh_.getVertices().getMin());
+          for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
+            {
+              Cloud point(NumericalSample(1, xMin));
+              point.setPointStyle("none");
+              point.setColor(palette[i]);
+              if ((i == levelsNumber - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
+              else point.setLegend(" ");
+              graph.add(point);
+            }
+        } // interpolate
+      else
         {
-          std::swap(v1, v2);
-          std::swap(i1, i2);
-        }
-        // If the current simplex is constant, nothing to draw
-        if (v0 == v2) continue;
-        // For the current simplex, check all levels
-        for (UnsignedInteger j = 0; j < levelsNumber; ++j)
-        {
-          const NumericalScalar level(levels[j]);
-          if ((level >= v0) && (level <= v2))
-          {
-            const NumericalPoint x0(mesh_.getVertex(i0));
-            const NumericalPoint x1(mesh_.getVertex(i1));
-            const NumericalPoint x2(mesh_.getVertex(i2));
-            NumericalSample data(2, 2);
-            // The first point is on the [x0, x2] segment as v0 <= level <= v2 and v0 < v2
-            data[0] = x0 + ((level - v0) / (v2 - v0)) * (x2 - x0);
-            // if level < v1, the second point is on the [x0, x1] segment
-            if (level < v1) data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
-            else if (v1 == v2) data[1] = 0.5 * (x1 + x2);
-            else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
-            graph.add(Curve(data, palette[j], "solid"));
-          } // (level >= v0) && (level <= v2)
-        } // j
-      } // i
-    } // interpolate
-    else
-    {
-      const UnsignedInteger size(marginalValues.getSize());
-      const Description palette(Cloud::BuildDefaultPalette(size));
-      const NumericalSample ranks(marginalValues.rank());
-      for (UnsignedInteger i = 0; i < size; ++i)
-      {
-        Cloud point(NumericalSample(1, mesh_.getVertex(i)));
-        point.setColor(palette[static_cast<UnsignedInteger>(round(ranks[i][0]))]);
-        point.setPointStyle("bullet");
-        graph.add(point);
-      }
-    } // !interpolate
-  } // meshDimension == 2
+          const UnsignedInteger size(marginalValues.getSize());
+          Description palette(size);
+          for (UnsignedInteger i = 0; i < size; ++i) palette[i] = Curve::ConvertFromHSV((270.0 * (size - i - 1)) / size, 1.0, 1.0);
+          const NumericalScalar minValue(marginalValues.getMin()[0]);
+          const NumericalScalar maxValue(marginalValues.getMax()[0]);
+          const UnsignedInteger simplicesNumber(mesh_.getSimplicesNumber());
+          if (simplicesNumber > 0)
+            {
+	      NumericalSample data(0, 2);
+	      Description colors(0);
+	      for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
+		{
+		  const Indices simplex(mesh_.getSimplex(i));
+		  data.add(mesh_.getVertex(simplex[0]));
+		  data.add(mesh_.getVertex(simplex[1]));
+		  data.add(mesh_.getVertex(simplex[2]));
+		  const NumericalScalar meanValue((marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0);
+		  const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
+		  colors.add(color);
+		}
+	      graph.add(PolygonArray(data, 3, colors));
+	      graph.setGrid(false);
+            } // Simplices
+          else
+            {
+              for (UnsignedInteger i = 0; i < size; ++i)
+                {
+                  Cloud point(NumericalSample(1, mesh_.getVertex(i)));
+                  const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (marginalValues[i][0] - minValue) / (maxValue - minValue)))]);
+                  point.setColor(color);
+                  point.setPointStyle("bullet");
+                  graph.add(point);
+                }
+            } // No simplex
+          // Simple colorbar
+          const NumericalPoint xMin(mesh_.getVertices().getMin());
+          for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
+            {
+              Cloud point(NumericalSample(1, xMin));
+              point.setPointStyle("none");
+              point.setColor(palette[(i * (size - 1)) / (levelsNumber - 1)]);
+              if ((i == levelsNumber - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
+              else point.setLegend(" ");
+              graph.add(point);
+            }
+        } // !interpolate
+    } // meshDimension == 2
   return graph;
 }
 
@@ -423,6 +510,8 @@ void FieldImplementation::save(Advocate & adv) const
   adv.saveAttribute( "mesh_", mesh_);
   adv.saveAttribute( "values_", values_);
   adv.saveAttribute( "description_", description_);
+  adv.saveAttribute( "spatialMean_", spatialMean_);
+  adv.saveAttribute( "isAlreadyComputedSpatialMean_", isAlreadyComputedSpatialMean_);
 }
 
 
@@ -433,6 +522,8 @@ void FieldImplementation::load(Advocate & adv)
   adv.loadAttribute( "mesh_", mesh_);
   adv.loadAttribute( "values_", values_);
   adv.loadAttribute( "description_", description_);
+  adv.loadAttribute( "spatialMean_", spatialMean_);
+  adv.loadAttribute( "isAlreadyComputedSpatialMean_", isAlreadyComputedSpatialMean_);
 }
 
 /* Export to VTK file */
@@ -446,13 +537,13 @@ void FieldImplementation::exportToVTKFile(const String & fileName) const
   file << content << "\nPOINT_DATA " << getSize() << "\n";
 
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
-  {
-    String fieldName(getDescription()[getMeshDimension() + i]);
-    replace(fieldName.begin(), fieldName.end(), ' ', '~');
-    if (fieldName.size() == 0) fieldName = String(OSS() << "v_" << i);
-    file << "SCALARS " << fieldName << " float\nLOOKUP_TABLE default\n";
-    for (UnsignedInteger j = 0; j < getSize(); ++j) file << values_[j][i] << "\n";
-  }
+    {
+      String fieldName(getDescription()[getMeshDimension() + i]);
+      replace(fieldName.begin(), fieldName.end(), ' ', '~');
+      if (fieldName.size() == 0) fieldName = String(OSS() << "v_" << i);
+      file << "SCALARS " << fieldName << " float\nLOOKUP_TABLE default\n";
+      for (UnsignedInteger j = 0; j < getSize(); ++j) file << values_[j][i] << "\n";
+    }
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   file.close();
 }

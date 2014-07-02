@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @file  FFTImplementation.cxx
+ *  @file  FFT.cxx
  *  @brief
  *
  *  Copyright (C) 2005-2014 Airbus-EDF-Phimeca

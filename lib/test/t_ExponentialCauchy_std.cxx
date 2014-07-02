@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     /* Discretize the process on a small time grid */
     RegularGrid timeGrid(0.0, 1.0 / 3.0, 4);
     fullprint << "discretized covariance over the time grid=" << timeGrid << " is" << std::endl;
-    fullprint << myModel.discretizeCovariance(timeGrid) << std::endl;
+    fullprint << myModel.discretize(timeGrid) << std::endl;
     /* Default dimension parameter to evaluate the model */
     const UnsignedInteger highDimension(3);
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     fullprint << "covariance matrix at t = "  << timeValueHigh << " : " << myHighModel.computeCovariance(0, timeValueHigh) << std::endl;
 
     fullprint << "discretized covariance over the time grid=" << timeGrid << " is" << std::endl;
-    fullprint << myHighModel.discretizeCovariance(timeGrid) << std::endl;
+    fullprint << myHighModel.discretize(timeGrid) << std::endl;
 
   }
   catch (TestFailed & ex)

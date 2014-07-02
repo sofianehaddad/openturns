@@ -6,4 +6,4 @@ result2=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows
 determinant=0.75
 ev=[0.5,1.5]
 isSPD=true
-matrix2=class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0,0.866025]
+matrix2=class=TriangularMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0,0.866025]

@@ -44,9 +44,9 @@ static Factory<MatrixImplementation> RegisteredFactory("MatrixImplementation");
 // All the pivots with a magnitude less than this threshold are considered as zero
 /* Default constructor */
 MatrixImplementation::MatrixImplementation()
-  : PersistentCollection<NumericalScalar>(),
-    nbRows_(0),
-    nbColumns_(0)
+  : PersistentCollection<NumericalScalar>()
+  , nbRows_(0)
+  , nbColumns_(0)
 {
   // Nothing to do
 }
@@ -56,9 +56,9 @@ MatrixImplementation::MatrixImplementation()
 /* The MatrixImplementation is viewed as a set of column vectors read one after another */
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   // Nothing to do
 }
@@ -67,9 +67,9 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
-    nbRows_(rowDim),
-    nbColumns_(colDim)
+  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0)
+  , nbRows_(rowDim)
+  , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize(std::min(rowDim * colDim, elementsValues.getSize()));
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
@@ -333,6 +333,26 @@ NumericalPoint MatrixImplementation::symVectProd (const NumericalPoint & pt) con
   return prod;
 }
 
+/* Gram matrix */
+MatrixImplementation MatrixImplementation::computeGram (const Bool transpose) const
+{
+  if ((nbRows_ == 0) || (nbColumns_ == 0)) return MatrixImplementation(0, 0);
+  MatrixImplementation scalprod(*this);
+  char uplo('L');
+  char trans(transpose ? 'T' : 'N');
+  int n(transpose ? nbColumns_ : nbRows_);
+  int k(transpose ? nbRows_ : nbColumns_);
+  double alpha(1.0);
+  int lda(transpose ? k : n);
+  double beta(0.0);
+  MatrixImplementation C(n, n);
+  int ldc(n);
+  int one(1);
+  dsyrk_(&uplo, &trans, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &lda, &beta, &C[0], &ldc, &one, &one);
+
+  return C;
+}
+
 /* Multiplication with a NumericalScalar */
 MatrixImplementation MatrixImplementation::operator* (const NumericalScalar s) const
 {
@@ -512,6 +532,24 @@ void MatrixImplementation::symmetrize() const
       refThis->operator[](convertPosition(i, j)) = operator[](convertPosition(j, i));
 }
 
+/* Fill the relevant triangle with zero */
+void MatrixImplementation::triangularize(const Bool isLowerTriangular) const
+{
+  MatrixImplementation *refThis(const_cast<MatrixImplementation *>(this));
+  if (isLowerTriangular)
+    {
+      for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+        for (UnsignedInteger i = 0; i < j; ++i)
+          refThis->operator[](convertPosition(i, j)) = 0.0;
+    }
+  else
+    {
+      for (UnsignedInteger j = 0; j < nbColumns_; ++j)
+        for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
+          refThis->operator[](convertPosition(i, j)) = 0.0;
+    }
+}
+
 /* Check if the matrix values belong to (-1;1) */
 Bool MatrixImplementation::hasUnitRange() const
 {
@@ -531,29 +569,25 @@ Bool MatrixImplementation::hasUnitRange() const
 /* Set small elements to zero */
 MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold) const
 {
+  // Nothing to do for nonpositive threshold
+  if (threshold <= 0.0) return *this;
   MatrixImplementation result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
-    {
-      NumericalScalar value((*this)(i, j));
-      if (fabs(value) <= threshold) value = 0.0;
-      result(i, j) = value;
-    }
+      {
+	const NumericalScalar value((*this)(i, j));
+	// Things are done this way to prevent spurious -0.0
+	if (std::abs(value) < 0.5 * threshold) result(i, j) = 0.0;
+	else result(i, j) = threshold * round(value / threshold);
+      }
   return result;
 }
 
 /* Set small elements to zero */
 MatrixImplementation MatrixImplementation::cleanSym(const NumericalScalar threshold) const
 {
-  MatrixImplementation result(nbRows_, nbColumns_);
-  for (UnsignedInteger j = 0; j < nbColumns_; ++j)
-    for (UnsignedInteger i = j; i < nbRows_; ++i)
-    {
-      NumericalScalar value((*this)(i, j));
-      if (fabs(value) <= threshold) value = 0.0;
-      result(i, j) = value;
-    }
-  return result;
+  symmetrize();
+  return clean(threshold);
 }
 
 /* Resolution of a linear system : rectangular matrix
@@ -933,6 +967,13 @@ NumericalScalar MatrixImplementation::computeDeterminantSym (const Bool keepInta
   return sign * exp(logAbsoluteDeterminant);
 }
 
+/* Compute trace */
+NumericalScalar MatrixImplementation::computeTrace() const
+{
+  NumericalScalar trace(0.0);
+  for (UnsignedInteger i = 0; i < nbRows_; ++i) trace += (*this)(i, i);
+  return trace;
+}
 
 /* Compute the eigenvalues of a square matrix */
 MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)

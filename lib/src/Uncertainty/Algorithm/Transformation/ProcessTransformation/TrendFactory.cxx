@@ -77,24 +77,15 @@ void TrendFactory::setFittingAlgorithm(const FittingAlgorithm & fittingAlgorithm
 }
 
 /* Build the factory from data */
-TrendTransform TrendFactory::build(const Field & timeSeries,
+TrendTransform TrendFactory::build(const Field & field,
                                    const Basis & basis) const
 {
   // size of the collection
   const UnsignedInteger N(basis.getSize());
 
   // Dimension and size of the time series
-  const UnsignedInteger dimension(timeSeries.getDimension());
-  NumericalSample inputSample(timeSeries.getSize(), 1);
-
-  // We get the time grid parameters
-  const RegularGrid timeGrid(timeSeries.getTimeGrid());
-
-  // We fill the inputSample with time values as we are looking for trend
-  for (UnsignedInteger k = 0; k < timeGrid.getN(); ++k)
-  {
-    inputSample[k][0] =  timeGrid.getValue(k);
-  }
+  const UnsignedInteger dimension(field.getDimension());
+  NumericalSample inputSample(field.getMesh().getVertices());
 
   // We need a sample to get coefficients result
   NumericalSample coefficients(N, dimension);
@@ -102,14 +93,11 @@ TrendTransform TrendFactory::build(const Field & timeSeries,
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // We look for best coefficients by marginal
-    const NumericalSample outputSample (timeSeries.getSample().getMarginal(d));
+    const NumericalSample outputSample(field.getValues().getMarginal(d));
     LeastSquaresMetaModelSelection selectionAlgo(inputSample, outputSample, basis, basisSequenceFactory_, fittingAlgorithm_);
     selectionAlgo.run();
     NumericalPoint localCoefficients(selectionAlgo.getCoefficients());
-    for (UnsignedInteger k = 0; k < N ; ++k)
-    {
-      coefficients[k][d] =  localCoefficients[k];
-    }
+    for (UnsignedInteger k = 0; k < N ; ++k) coefficients[k][d] = localCoefficients[k];
   }
   const NumericalMathFunction trendFunction(basis, coefficients);
 

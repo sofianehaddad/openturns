@@ -352,6 +352,7 @@ void TruncatedDistribution::setDistribution(const Distribution & distribution)
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
+  isParallel_ = distribution.getImplementation()->isParallel();
   computeRange();
 }
 

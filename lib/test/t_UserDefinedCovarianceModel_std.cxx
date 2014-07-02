@@ -71,11 +71,11 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
       const NumericalScalar t(timeGrid.getValue(i));
-      for (UnsignedInteger j = i; j < timeGrid.getN(); ++j)
+      for (UnsignedInteger j = 0; j <= i; ++j)
       {
         const NumericalScalar s(timeGrid.getValue(j));
         covarianceCollection[k] = referenceModel(t, s);
-        k++;
+        ++k;
       }
     }
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         fullprint << "myModel = " << myModel(s, t)(0, 0) << ", referenceModel = " << referenceModel(s, t)(0 , 0) << std::endl;
       }
     }
-
+    fullprint << "myModel.discretize()=" << myModel.discretize(timeGrid) << std::endl;
   }
   catch (TestFailed & ex)
   {

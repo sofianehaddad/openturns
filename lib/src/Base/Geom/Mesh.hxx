@@ -33,6 +33,8 @@
 #include "IdentityMatrix.hxx"
 #include "DomainImplementation.hxx"
 #include "Graph.hxx"
+#include "TBB.hxx"
+#include "KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -75,6 +77,9 @@ public:
   /** Get the index of the nearest vertex */
   UnsignedInteger getNearestVertexIndex(const NumericalPoint & point) const;
 
+  /** Get the index of the nearest vertex for a set of points */
+  Indices getNearestVertexIndex(const NumericalSample & points) const;
+
   /** Comparison operator */
   Bool operator == (const Mesh & rhs) const;
 
@@ -85,7 +90,6 @@ public:
       no coincident vertices */
   Bool isValid() const;
 
-public:
   /** Check if the given point is in the given simplex */
   Bool checkPointInSimplex(const NumericalPoint & point,
                            const UnsignedInteger index) const;
@@ -140,6 +144,30 @@ public:
 
 protected:
 
+  /* TBB functor to speed-up volume computation */
+  struct VolumeFunctor
+  {
+    const Mesh & mesh_;
+    NumericalScalar accumulator_;
+
+    VolumeFunctor(const Mesh & mesh)
+      : mesh_(mesh), accumulator_(0.0) {}
+
+    VolumeFunctor(const VolumeFunctor & other, TBB::Split)
+      : mesh_(other.mesh_), accumulator_(0.0) {}
+
+    void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += mesh_.computeSimplexVolume(i);
+    }
+
+    void join(const VolumeFunctor & other)
+    {
+      accumulator_ += other.accumulator_;
+    }
+
+  }; /* end struct VolumeFunctor */
+
   // Build the affine matrix associated with a given simplex
   SquareMatrix buildSimplexMatrix(const UnsignedInteger index) const;
 
@@ -153,6 +181,8 @@ protected:
   // The simplices
   IndicesPersistentCollection simplices_;
 
+  // The kd-tree associated to the vertices
+  KDTree tree_;
 }; /* class Mesh */
 
 END_NAMESPACE_OPENTURNS

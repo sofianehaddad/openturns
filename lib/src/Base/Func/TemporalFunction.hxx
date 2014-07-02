@@ -47,18 +47,21 @@ public:
   typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
 
   /** Default constructor */
-  TemporalFunction();
+  TemporalFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  TemporalFunction(const NumericalMathFunction & function);
+  TemporalFunction(const NumericalMathFunction & function,
+		   const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
-  TemporalFunction(const EvaluationImplementation & p_evaluation);
+  TemporalFunction(const EvaluationImplementation & p_evaluation,
+		   const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
-  TemporalFunction(const NumericalMathEvaluationImplementation & evaluation);
+  TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
+		   const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual TemporalFunction * clone() const;
@@ -71,7 +74,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  Field operator() (const Field & inTS) const;
+  Field operator() (const Field & inFld) const;
 
   /** Get the i-th marginal function */
   Implementation getMarginal(const UnsignedInteger i) const;

@@ -33,8 +33,9 @@ CLASSNAMEINIT(DynamicalFunctionImplementation);
 static Factory<DynamicalFunctionImplementation> RegisteredFactory("DynamicalFunctionImplementation");
 
 /* Default constructor */
-DynamicalFunctionImplementation::DynamicalFunctionImplementation()
+DynamicalFunctionImplementation::DynamicalFunctionImplementation(const UnsignedInteger meshDimension)
   : PersistentObject()
+  , meshDimension_(meshDimension)
   , inputDescription_()
   , outputDescription_()
   , callsNumber_(0)
@@ -130,14 +131,23 @@ Field DynamicalFunctionImplementation::operator() (const Field & inFld) const
 ProcessSample DynamicalFunctionImplementation::operator() (const ProcessSample & inPS) const
 {
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
+  if (inPS.getMesh().getDimension() != getMeshDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getMeshDimension() << ", got " << inPS.getMesh().getDimension();
   const UnsignedInteger size(inPS.getSize());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
-  ProcessSample outSample(computeOutputMesh(inPS.getField(0).getMesh()), size, getOutputDimension());
+  Field field0(operator()(inPS.getField(0)));
+  ProcessSample outSample(field0.getMesh(), size, field0.getDimension());
+  outSample.setField(0, field0);
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
-  for (UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 1; i < size; ++i)
     outSample.setField(i, operator()(inPS.getField(i)));
   return outSample;
+}
+
+/* Accessor for mesh dimension */
+UnsignedInteger DynamicalFunctionImplementation::getMeshDimension() const
+{
+  return meshDimension_;
 }
 
 /* Accessor for input point dimension */
@@ -156,12 +166,6 @@ UnsignedInteger DynamicalFunctionImplementation::getOutputDimension() const
 UnsignedInteger DynamicalFunctionImplementation::getCallsNumber() const
 {
   return callsNumber_;
-}
-
-/* Compute the output mesh based on a given input mesh */
-Mesh DynamicalFunctionImplementation::computeOutputMesh(const Mesh & mesh) const
-{
-  return mesh;
 }
 
 /* Method save() stores the object through the StorageManager */

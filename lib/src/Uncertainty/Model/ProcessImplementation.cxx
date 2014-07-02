@@ -37,10 +37,10 @@ static Factory<ProcessImplementation> RegisteredFactory("ProcessImplementation")
 
 /* Default constructor */
 ProcessImplementation::ProcessImplementation()
-  : PersistentObject(),
-    description_(),
-    dimension_(1),
-    mesh_(RegularGrid(0.0, 1.0, 1))
+  : PersistentObject()
+  , description_()
+  , dimension_(1)
+  , mesh_(RegularGrid(0.0, 1.0, 1))
 {
   // Nothing to do
 }

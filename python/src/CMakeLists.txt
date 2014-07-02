@@ -167,6 +167,7 @@ ot_add_python_module( statistics statistics_module.i
                       SecondOrderModelImplementation.i
                       SecondOrderModel.i
                       ExponentialCauchy.i
+                      SphericalModel.i
                       FilteringWindowsImplementation.i
                       FilteringWindows.i
                       Hamming.i
@@ -181,6 +182,7 @@ ot_add_python_module( statistics statistics_module.i
                       UserDefinedSpectralModel.i
                       WelchFactory.i
                       ExponentialModel.i
+                      ExponentiallyDampedCosineModel.i
                       CauchyModel.i
                       CovarianceModelFactoryImplementation.i
                       CovarianceModelFactory.i
@@ -196,10 +198,14 @@ ot_add_python_module( statistics statistics_module.i
                     
 ot_add_python_module( geom geom_module.i
                       DomainImplementation.i
+                      Mesh.i
                       Domain.i
                       Interval.i
-                      Mesh.i
+                      LevelSet.i
 		      RegularGrid.i
+                      MeshFactoryImplementation.i
+                      MeshFactory.i
+		      IntervalMesher.i
                       BaseGeomTemplateDefs.i
                      )
                      
@@ -215,6 +221,7 @@ ot_add_python_module( graph graph_module.i
                       Pairs.i
                       Pie.i
                       Polygon.i
+                      PolygonArray.i
                       Staircase.i
                       BaseGraphTemplateDefs.i
                       PythonWrappingFunctions.hxx
@@ -270,9 +277,9 @@ ot_add_python_module( func func_module.i
                       PiecewiseLinearEvaluationImplementation.i
                       PiecewiseHermiteEvaluationImplementation.i
                       ProductPolynomialEvaluationImplementation.i
-                      RestrictedEvaluationImplementation.i
-                      RestrictedGradientImplementation.i
-                      RestrictedHessianImplementation.i
+                      ParametricEvaluationImplementation.i
+                      ParametricGradientImplementation.i
+                      ParametricHessianImplementation.i
                       Basis.i
                       BasisSequenceImplementation.i
                       BasisSequence.i
@@ -354,6 +361,7 @@ ot_add_python_module( algo algo_module.i
                       FittingAlgorithmImplementation.i
                       FittingAlgorithm.i
                       CorrectedLeaveOneOut.i
+                      KDTree.i
                       KFold.i
                       LeastSquaresMetaModelSelection.i
                       LeastSquaresMetaModelSelectionFactory.i
@@ -420,6 +428,7 @@ ot_add_python_module( model_copula model_copula_module.i
                       GumbelCopulaFactory.i
                       ComposedDistribution.i
                       ComposedCopula.i
+                      CompositeDistribution.i
                       ConditionalDistribution.i
                       PosteriorDistribution.i
                       PythonDistributionImplementation.cxx
@@ -501,6 +510,7 @@ ot_add_python_module( dist_bundle2 dist_bundle2_module.i
                       HistogramFactory.i
                       InverseNormal.i
                       InverseNormalFactory.i
+                      InverseWishart.i
                       KPermutationsDistribution.i
                       KernelMixture.i
                       KernelSmoothing.i
@@ -553,6 +563,7 @@ ot_add_python_module( dist_bundle3 dist_bundle3_module.i
                       UserDefinedFactory.i
                       Weibull.i
                       WeibullFactory.i
+                      Wishart.i
                       ZipfMandelbrot.i
                       UncertaintyDistTemplateDefs.i
                       PythonWrappingFunctions.hxx

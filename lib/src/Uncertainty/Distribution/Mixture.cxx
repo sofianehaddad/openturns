@@ -45,6 +45,7 @@ Mixture::Mixture()
   , useApproximatePDFCDF_(false)
 {
   setName("Mixture");
+  setParallel(true);
   // Set an empty range
   setRange(Interval(1.0, 0.0));
 }
@@ -241,12 +242,15 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
 
   // We set the member with the collection passed as argument and we renormalize it in place
   UserDefined::UserDefinedPairCollection pairCollection(size, UserDefinedPair(NumericalPoint(1, 0.0), 0.0));
+  Bool isParallel(true);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar normalizedWeight(distributionCollection_[i].getWeight() / weightSum);
     distributionCollection_[i].setWeight(normalizedWeight);
     pairCollection[i] = UserDefinedPair(NumericalPoint(1, NumericalScalar(i)), normalizedWeight);
+    isParallel = isParallel && distributionCollection_[i].getImplementation()->isParallel();
   } /* end for */
+  setParallel(isParallel);
   setWeightsDistribution(UserDefined(pairCollection));
   setDimension(dimension);
   isAlreadyComputedMean_ = false;
@@ -529,7 +533,7 @@ Bool Mixture::isContinuous() const
 Bool Mixture::isDiscrete() const
 {
   const UnsignedInteger size(distributionCollection_.getSize());
-  for (UnsignedInteger i = 1; i < size; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
+  for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
   return true;
 }
 
@@ -537,7 +541,7 @@ Bool Mixture::isDiscrete() const
 Bool Mixture::isIntegral() const
 {
   const UnsignedInteger size(distributionCollection_.getSize());
-  for (UnsignedInteger i = 1; i < size; ++i) if (!distributionCollection_[i].isIntegral()) return false;
+  for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isIntegral()) return false;
   return true;
 }
 
@@ -588,7 +592,7 @@ void Mixture::load(Advocate & adv)
   adv.loadAttribute( "ccdfApproximation_", ccdfApproximation_ );
   adv.loadAttribute( "useApproximatePDFCDF_", useApproximatePDFCDF_ );
   // To compute the range
-  setDistributionCollection(distributionCollection_);
+  setDistributionCollection(DistributionCollection(distributionCollection_));
 }
 
 END_NAMESPACE_OPENTURNS

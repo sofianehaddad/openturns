@@ -5106,6 +5106,7 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
                                   HELPURL);
           }
           ret = Diff(a->GetNode(0), vi) * Exp(a->GetCopyOfNode(0));  // f'exp(f)
+	  //std::cerr << "ret=" << ret->ToString() << std::endl;
           break;
         case ERF:
           if (sz != 1)

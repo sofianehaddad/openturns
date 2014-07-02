@@ -70,15 +70,14 @@ SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
 SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel,
     const RegularGrid & timeGrid)
-
-  : ProcessImplementation(),
-    spectralModel_(spectralModel),
-    maximalFrequency_(0.0),
-    nFrequency_(0),
-    frequencyStep_(0.0),
-    choleskyFactorsCache_(0),
-    alpha_(0),
-    fftAlgorithm_()
+  : ProcessImplementation()
+  , spectralModel_(spectralModel)
+  , maximalFrequency_(0.0)
+  , nFrequency_(0)
+  , frequencyStep_(0.0)
+  , choleskyFactorsCache_(0)
+  , alpha_(0)
+  , fftAlgorithm_()
 {
   setTimeGrid(timeGrid);
   setDimension(spectralModel.getDimension());

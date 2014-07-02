@@ -150,7 +150,7 @@ NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
   {
     const NumericalScalar k(point[i]);
     // Early exit if the given point is not in the support of the distribution
-    if ((fabs(k - round(k)) > supportEpsilon_) || (k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
+    if ((std::abs(k - round(k)) > supportEpsilon_) || (k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
     sumX += k;
   }
   if (sumX > n_ + supportEpsilon_) return 0.0;
@@ -159,11 +159,11 @@ NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
   {
     const NumericalScalar k(point[i]);
     // For p_[i] > 0, it is possible to obtain any value of k between 0 and n
-    if (p_[i] > 0.0) logPDF += k * log(p_[i]) - lgamma(k + 1.0);
+    if (p_[i] > 0.0) logPDF += k * std::log(p_[i]) - lgamma(k + 1.0);
     // Else only k == 0 is allowed, with a zero contribution to the log PDF
     else if (k > 0) return 0.0;
   }
-  return exp(logPDF);
+  return std::exp(logPDF);
 }
 
 /* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
@@ -171,12 +171,12 @@ NumericalComplex Multinomial::computeGlobalPhi(const NumericalComplex & z,
     const NumericalPoint & x) const
 {
   // Initialize with the non truncated term
-  NumericalComplex value(exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
+  NumericalComplex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
   const UnsignedInteger dimension(getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     value *= computeLocalPhi(z, n_ * p_[i], x[i]);
-    if (abs(value) == 0.0)
+    if (std::abs(value) == 0.0)
     {
       LOGWARN("Underflow in Multinomial::computePhi");
       return 0.0;
@@ -196,7 +196,7 @@ NumericalComplex Multinomial::computeLocalPhi(const NumericalComplex & z,
   // Small value of a, evaluate the generating function as a polynomial
   if (a <= smallA_)
   {
-    NumericalComplex value(exp(-lambda));
+    NumericalComplex value(std::exp(-lambda));
     NumericalComplex term(value);
     for (UnsignedInteger i = 1; i <= iMax; ++i)
     {
@@ -206,10 +206,10 @@ NumericalComplex Multinomial::computeLocalPhi(const NumericalComplex & z,
     return value;
   } // smallA_
   // Large a
-  NumericalComplex value(exp(-lambda + u));
+  NumericalComplex value(std::exp(-lambda + u));
   UnsignedInteger i(iMax + 1);
-  NumericalComplex term(exp(-lambda + NumericalComplex(i) * log(u) - lgamma(i + 1.0)));
-  while (abs(term) > SpecFunc::Precision * abs(value))
+  NumericalComplex term(std::exp(-lambda + NumericalComplex(i) * std::log(u) - lgamma(i + 1.0)));
+  while (std::abs(term) > SpecFunc::Precision * std::abs(value))
   {
     value -= term;
     ++i;
@@ -245,18 +245,18 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
     // If the given point does not cover any point of the support, return 0.0
     if (point[i] < -supportEpsilon_) return 0.0;
     if (point[i] < n_ - supportEpsilon_) indices.add(i);
-    allZero = allZero && (fabs(point[i]) < supportEpsilon_);
+    allZero = allZero && (std::abs(point[i]) < supportEpsilon_);
     sumX += point[i];
   }
   // If we are at the origin, CDF=PDF(0,...,0)
-  if (allZero) return pow(1.0 - sumP_, static_cast<int>(n_));
+  if (allZero) return std::pow(1.0 - sumP_, static_cast<int>(n_));
   // If the atoms with non zero probability sum to N
-  if ((fabs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
+  if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
   {
     NumericalScalar value(lgamma(n_ + 1));
     for (UnsignedInteger j = 0; j < dimension; ++j)
-      value += point[j] * log(p_[j]) - lgamma(point[j] + 1.0);
-    return exp(value);
+      value += point[j] * std::log(p_[j]) - lgamma(point[j] + 1.0);
+    return std::exp(value);
   }
   // If the point covers the whole support of the distribution, return 1.0
   const UnsignedInteger size(indices.getSize());
@@ -276,11 +276,11 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   }
   // Evaluation of P(W=n) using Poisson's formula
   NumericalComplex phiK(computeGlobalPhi(r_, point));
-  const NumericalComplex zetaN(exp(NumericalComplex(0.0, M_PI / n_)));
+  const NumericalComplex zetaN(std::exp(NumericalComplex(0.0, M_PI / n_)));
   NumericalComplex phiKp1(computeGlobalPhi(r_ * zetaN, point));
   NumericalComplex delta(phiK - phiKp1);
   NumericalScalar value(delta.real());
-  const NumericalScalar dv0(abs(delta));
+  const NumericalScalar dv0(std::abs(delta));
   if (dv0 == 0.0)
   {
     LOGWARN("Underflow in Multinomial::computeCDF");
@@ -295,7 +295,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
     phiKp1 = computeGlobalPhi(r_ * t, point);
     delta = phiK - phiKp1;
     value += sign * delta.real();
-    const NumericalScalar dv(abs(delta));
+    const NumericalScalar dv(std::abs(delta));
     if (dv < SpecFunc::Precision * dv0) break;
     sign = -sign;
   }
@@ -329,7 +329,7 @@ NumericalScalar Multinomial::computeConditionalPDF(const NumericalScalar x,
   {
     const NumericalScalar yI(y[i]);
     const UnsignedInteger intYI(static_cast<UnsignedInteger>(round(yI)));
-    if (fabs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
+    if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
     intY[i] = intYI;
     sumP += p_[i];
@@ -355,7 +355,7 @@ NumericalScalar Multinomial::computeConditionalCDF(const NumericalScalar x,
   {
     const NumericalScalar yI(y[i]);
     const UnsignedInteger intYI(static_cast<UnsignedInteger>(round(yI)));
-    if (fabs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
+    if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
     intY[i] = intYI;
     sumP += p_[i];
@@ -382,7 +382,7 @@ NumericalScalar Multinomial::computeConditionalQuantile(const NumericalScalar q,
   {
     const NumericalScalar yI(y[i]);
     const UnsignedInteger intYI(static_cast<UnsignedInteger>(round(yI)));
-    if (fabs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
+    if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
     intY[i] = intYI;
     sumP += p_[i];
@@ -552,8 +552,17 @@ void Multinomial::setP(const NumericalPoint & p)
     if (pI < 0.0) throw InvalidArgumentException(HERE) << "P elements MUST be nonnegative";
     sum += pI;
   }
+  if (sum > 1.0)
+    {
+      LOGWARN(OSS() << "P elements have a sum=" << sum << " greater than 1. It has been renormalized to 1.0");
+      p_ = p / sum;
+      sumP_ = 1.0;
+    }
+  else
+    {
   p_ = p;
   sumP_ = sum;
+    }
   setDimension(dimension);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -574,8 +583,8 @@ void Multinomial::setN(const UnsignedInteger n)
   {
     n_ = n;
     // Best overall performance for Poisson's formula, see reference
-    r_ = pow(eta_, 1.0 / (2.0 * n));
-    normalizationCDF_ = exp(lgamma(n + 1.0) - n * log(1.0 * n) + n - log(2.0 * n) - 0.5 * log(eta_));
+    r_ = std::pow(eta_, 1.0 / (2.0 * n));
+    normalizationCDF_ = std::exp(lgamma(n + 1.0) - n * std::log(1.0 * n) + n - std::log(2.0 * n) - 0.5 * std::log(eta_));
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;

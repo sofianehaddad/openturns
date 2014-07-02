@@ -54,11 +54,16 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
   modulus_ = ComputeNextPrimeNumber(dimension);
   modulusInverse_ = 1.0 / modulus_;
   // Initialize the seed at a value large enough to avoid some of the correlation problems
-  // Seed bound
-  seedBound_ = modulus_ * modulus_ * modulus_ * modulus_;
-  seed_ = seedBound_ - 1;
+  seed_ = ResourceMap::GetAsUnsignedInteger("FaureSequence-InitialSeed");
   // Number of digits of seed_ in base modulus_
-  logSeed_ = 4;
+  logSeed_ = 1;
+  // Seed bound
+  seedBound_ = modulus_;
+  while (seedBound_ < seed_)
+    {
+      ++logSeed_;
+      seedBound_ *= modulus_;
+    }
   // Binomial coefficients modulo the modulus associated withthe current value of the seed
   computeInitialBinomialCoefficients();
 }

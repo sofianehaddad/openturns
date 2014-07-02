@@ -44,7 +44,7 @@ class OT_API PenalizedLeastSquaresAlgorithmFactory
 public:
 
   /** Default constructor */
-  PenalizedLeastSquaresAlgorithmFactory();
+  PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal = false);
 
   /** Virtual constructor */
   virtual PenalizedLeastSquaresAlgorithmFactory * clone() const;
@@ -64,6 +64,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
+ private:
+  Bool useNormal_;
 }; /* class PenalizedLeastSquaresAlgorithmFactory */
 
 

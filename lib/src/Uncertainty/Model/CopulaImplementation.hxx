@@ -90,14 +90,6 @@ public:
   NumericalPoint computeQuantile(const NumericalScalar prob,
                                  const Bool tail = false) const;
 
-  /** Draw the PDF of the copula when its dimension is 2 */
-  using ContinuousDistribution::drawPDF;
-  Graph drawPDF(const Indices & pointNumber) const;
-
-  /** Draw the CDF of the copula when its dimension is 2 */
-  using ContinuousDistribution::drawCDF;
-  Graph drawCDF(const Indices & pointNumber) const;
-
 protected:
 
   /** Compute the covariance of the copula */

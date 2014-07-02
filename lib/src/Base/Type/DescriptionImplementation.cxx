@@ -131,6 +131,14 @@ void DescriptionImplementation::load(Advocate & adv)
   PersistentCollection<String>::load(adv);
 }
 
+/* Build a default description */
+DescriptionImplementation DescriptionImplementation::BuildDefault(const UnsignedInteger dimension,
+    const String & prefix)
+{
+  DescriptionImplementation description(dimension);
+  for (UnsignedInteger k = 0; k < dimension; ++k) description[k] =  String(OSS() << prefix << k);
+  return description;
+}
 
 
 END_NAMESPACE_OPENTURNS

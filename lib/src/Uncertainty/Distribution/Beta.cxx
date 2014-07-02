@@ -42,7 +42,7 @@ Beta::Beta()
   , t_(4.0)
   , a_(-1.0)
   , b_(1.0)
-  , normalizationFactor_(log(0.75))
+  , normalizationFactor_(std::log(0.75))
 {
   setName("Beta");
   setDimension(1);
@@ -129,7 +129,7 @@ void Beta::update()
 {
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-  normalizationFactor_ = (1.0 - t_) * log(b_ - a_) - SpecFunc::LnBeta(r_, t_ - r_);
+  normalizationFactor_ = (1.0 - t_) * std::log(b_ - a_) - SpecFunc::LnBeta(r_, t_ - r_);
 }
 
 
@@ -158,7 +158,7 @@ NumericalScalar Beta::computePDF(const NumericalPoint & point) const
   const NumericalScalar x(point[0]);
   if ((x == b_) && (t_ - r_ == 1.0)) return 1.0;
   if ((x <= a_) || (x >= b_)) return 0.0;
-  return exp(computeLogPDF(point));
+  return std::exp(computeLogPDF(point));
 }
 
 NumericalScalar Beta::computeLogPDF(const NumericalPoint & point) const
@@ -168,7 +168,7 @@ NumericalScalar Beta::computeLogPDF(const NumericalPoint & point) const
   const NumericalScalar x(point[0]);
   if ((x == b_) && (t_ - r_ == 1.0)) return 0.0;
   if ((x <= a_) || (x >= b_)) return -SpecFunc::MaxNumericalScalar;
-  return normalizationFactor_ + (r_ - 1.0) * log(x - a_) + (t_ - r_ - 1.0) * log(b_ - x);
+  return normalizationFactor_ + (r_ - 1.0) * std::log(x - a_) + (t_ - r_ - 1.0) * std::log(b_ - x);
 }
 
 
@@ -198,8 +198,8 @@ NumericalPoint Beta::computePDFGradient(const NumericalPoint & point) const
   const NumericalScalar iBX(1.0 / BX);
   const NumericalScalar XA(x - a_);
   const NumericalScalar iXA(1.0 / XA);
-  pdfGradient[0] = pdf * (log(XA * iBX) + psiTR - SpecFunc::Psi(r_));
-  pdfGradient[1] = pdf * (log(BX * iBA) - psiTR + SpecFunc::Psi(t_));
+  pdfGradient[0] = pdf * (std::log(XA * iBX) + psiTR - SpecFunc::Psi(r_));
+  pdfGradient[1] = pdf * (std::log(BX * iBA) - psiTR + SpecFunc::Psi(t_));
   pdfGradient[2] = pdf * ((t_ - 1.0) * iBA - (r_ - 1.0) * iXA);
   pdfGradient[3] = pdf * ((t_ - 1.0) * XA * iBA * iBX - r_ * iBX);
   return pdfGradient;
@@ -218,7 +218,7 @@ NumericalPoint Beta::computeCDFGradient(const NumericalPoint & point) const
   const NumericalScalar cdfShift(DistFunc::pBeta(r_ + 1.0, t_ - r_ - 1.0, (x - a_) * iBA));
   const NumericalScalar cdfDiff(cdfShift - cdf);
   const NumericalScalar factor(r_ * iBA);
-  static const NumericalScalar eps(pow(cdfEpsilon_, 1.0 / 3.0));
+  static const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
   static const NumericalScalar i2Eps(0.5 / eps);
   cdfGradient[0] = i2Eps * (DistFunc::pBeta(r_ + eps, t_ - r_ - eps, (x - a_) / (b_ - a_)) - DistFunc::pBeta(r_ - eps, t_ - r_ + eps, (x - a_) / (b_ - a_)));
   cdfGradient[1] = i2Eps * (DistFunc::pBeta(r_, t_ - r_ + eps, (x - a_) / (b_ - a_)) - DistFunc::pBeta(r_, t_ - r_ - eps, (x - a_) / (b_ - a_)));
@@ -237,7 +237,7 @@ NumericalScalar Beta::computeScalarQuantile(const NumericalScalar prob,
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 NumericalComplex Beta::computeCharacteristicFunction(const NumericalScalar x) const
 {
-  return exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(r_, t_, NumericalComplex(0.0, (b_ - a_) * x));
+  return std::exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(r_, t_, NumericalComplex(0.0, (b_ - a_) * x));
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
@@ -263,7 +263,7 @@ NumericalPoint Beta::getStandardDeviation() const
 /* Get the skewness of the distribution */
 NumericalPoint Beta::getSkewness() const
 {
-  return NumericalPoint(1, 2.0 * (t_ - 2.0 * r_) / (t_ + 2.0) * sqrt((t_ + 1.0) / (r_ * (t_ - r_))));
+  return NumericalPoint(1, 2.0 * (t_ - 2.0 * r_) / (t_ + 2.0) * std::sqrt((t_ + 1.0) / (r_ * (t_ - r_))));
 }
 
 /* Get the kurtosis of the distribution */
@@ -318,7 +318,9 @@ Beta::NumericalPointWithDescriptionCollection Beta::getParametersCollection() co
 
 void Beta::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = Beta(parametersCollection[0][0], parametersCollection[0][1], parametersCollection[0][2], parametersCollection[0][3]);
+  setWeight(w);
 }
 
 /* Check if the distribution is elliptical */
@@ -395,7 +397,7 @@ NumericalScalar Beta::getMu() const
 
 NumericalScalar Beta::getSigma() const
 {
-  return (b_ - a_) / t_ * sqrt(r_ * (t_ - r_) / (t_ + 1.0));
+  return (b_ - a_) / t_ * std::sqrt(r_ * (t_ - r_) / (t_ + 1.0));
 }
 
 

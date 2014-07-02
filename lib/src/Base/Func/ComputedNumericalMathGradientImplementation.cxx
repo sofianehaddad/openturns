@@ -38,10 +38,10 @@ static Factory<ComputedNumericalMathGradientImplementation> RegisteredFactory("C
 ComputedNumericalMathGradientImplementation::ComputedNumericalMathGradientImplementation(const String & name,
     const WrapperFile & file,
     void * p_state)
-  : NumericalMathGradientImplementation(),
-    p_gradient_(0),
-    p_state_(0),
-    commonState_(file.getWrapperData().getParameters().state_ == WRAPPER_SHAREDSTATE)
+  : NumericalMathGradientImplementation()
+  , p_gradient_(0)
+  , p_state_(0)
+  , commonState_(file.getWrapperData().getParameters().state_ == WRAPPER_SHAREDSTATE)
 {
   setName(name);
   const WrapperData data = file.getWrapperData();

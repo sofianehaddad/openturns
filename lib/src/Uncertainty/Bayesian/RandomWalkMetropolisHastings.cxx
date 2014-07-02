@@ -46,6 +46,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
   , samplesNumber_(0)
   , acceptedNumber_(0)
 {
+  // Nthing to do
 }
 
 
@@ -68,10 +69,11 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution &
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
     const Distribution & conditional,
     const NumericalMathFunction & model,
+    const NumericalSample & parameters,
     const NumericalSample & observations,
     const NumericalPoint & initialState,
     const DistributionCollection & proposal)
-  : MCMC(prior, conditional, model, observations, initialState)
+  : MCMC(prior, conditional, model, parameters, observations, initialState)
   , calibrationStrategy_(proposal.getSize())
   , samplesNumber_(0)
   , acceptedNumber_(initialState.getDimension())
@@ -100,26 +102,26 @@ RandomWalkMetropolisHastings* RandomWalkMetropolisHastings::clone() const
 
 NumericalPoint RandomWalkMetropolisHastings::getRealization() const
 {
-  const UnsignedInteger dimension = initialState_.getDimension();
+  const UnsignedInteger dimension(initialState_.getDimension());
 
   // update factor
-  NumericalPoint delta(dimension, 1.);
+  NumericalPoint delta(dimension, 1.0);
 
   // number of samples accepted until calibration step
   Indices accepted(dimension);
 
   // perform burning if necessary
-  const UnsignedInteger size = getThinning() + (( samplesNumber_ < getBurnIn() ) ? getBurnIn() : 0);
+  const UnsignedInteger size(getThinning() + (( samplesNumber_ < getBurnIn() ) ? getBurnIn() : 0));
 
   // compute the first likelihood
-  NumericalScalar alphaLogSave = computeLogLikelihood(currentState_);
+  NumericalScalar alphaLogSave(computeLogLikelihood(currentState_));
   if ((samplesNumber_ == 0) && (alphaLogSave <= -SpecFunc::MaxNumericalScalar))
   {
     throw InvalidArgumentException(HERE) << "The likelihood of the initial state should be positive";
   }
 
   // for each new sample
-  UnsignedInteger acceptedSteps = 0;
+  UnsignedInteger acceptedSteps(0);
   for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     // copy ot current state to accept each component independently
@@ -138,13 +140,13 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
       // new candidate per component
       nextState[j] += delta[j] * proposal_[j].getRealization()[0];
 
-      const NumericalScalar alphaLogNext = computeLogLikelihood(nextState);
+      const NumericalScalar alphaLogNext(computeLogLikelihood(nextState));
 
       // alphaLog = likehood(newstate)/likehood(oldstate)
-      const NumericalScalar alphaLog = alphaLogNext  - alphaLogPrev;
+      const NumericalScalar alphaLog(alphaLogNext  - alphaLogPrev);
 
       // acceptance test
-      const NumericalScalar uLog = log( RandomGenerator::Generate() );
+      const NumericalScalar uLog(log( RandomGenerator::Generate() ));
       if ( uLog < alphaLog )
       {
         ++ acceptedSteps;
@@ -164,14 +166,14 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
     NumericalPoint partialRho(dimension);
     for ( UnsignedInteger j = 0; j < dimension; ++ j )
     {
-      const UnsignedInteger calibrationStep = calibrationStrategy_[j].getCalibrationStep();
+      const UnsignedInteger calibrationStep(calibrationStrategy_[j].getCalibrationStep());
       if ( ( samplesNumber_ % calibrationStep ) == ( calibrationStep - 1 ) )
       {
         // compute the current acceptation rate
-        NumericalScalar rho = static_cast<NumericalScalar>(accepted[j]) / calibrationStep;
+        NumericalScalar rho(static_cast<NumericalScalar>(accepted[j]) / calibrationStep);
 
         // compute factor
-        NumericalScalar factor = calibrationStrategy_[j].computeUpdateFactor( rho );
+        NumericalScalar factor(calibrationStrategy_[j].computeUpdateFactor( rho ));
 
         // update delta
         delta[j] *= factor;

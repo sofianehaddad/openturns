@@ -81,6 +81,10 @@ public:
 
   /** Realization accessor */
   Field getRealization() const;
+private:
+  NumericalSample getRealizationCholesky() const;
+  NumericalSample getRealizationGibbs() const;
+public:
 
   /** Covariance model accessor */
   CovarianceModel getCovarianceModel() const;
@@ -117,7 +121,7 @@ private:
   CovarianceModel covarianceModel_;
 
   /** Cholesky factor  */
-  mutable SquareMatrix choleskyFactorCovarianceMatrix_;
+  mutable TriangularMatrix choleskyFactorCovarianceMatrix_;
 
   /** Flag to manage process initialization */
   mutable Bool isInitialized_;

@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The result of a chaos expansion
  */
 
-class KrigingResult
+class OT_API KrigingResult
   : public MetaModelResult
 {
   CLASSNAME;

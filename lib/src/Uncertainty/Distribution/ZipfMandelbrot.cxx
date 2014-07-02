@@ -38,7 +38,6 @@ static Factory<ZipfMandelbrot> RegisteredFactory("ZipfMandelbrot");
 /* Default constructor */
 ZipfMandelbrot::ZipfMandelbrot()
   : DiscreteDistribution()
-  , isAlreadyComputedHarmonicNumbers_(false)
   , harmonicNumbers_(0)
   , n_(1)
   , q_(0.0)
@@ -48,6 +47,7 @@ ZipfMandelbrot::ZipfMandelbrot()
   // We set the dimension of the ZipfMandelbrot distribution
   setDimension( 1 );
   computeRange();
+  computeHarmonicNumbers();
 }
 
 /* Parameters constructor */
@@ -55,7 +55,6 @@ ZipfMandelbrot::ZipfMandelbrot(const UnsignedInteger n,
                                const NumericalScalar q,
                                const NumericalScalar s )
   : DiscreteDistribution()
-  , isAlreadyComputedHarmonicNumbers_(false)
   , harmonicNumbers_(NumericalScalarCollection(0))
   , n_(n)
   , q_(q)
@@ -68,6 +67,7 @@ ZipfMandelbrot::ZipfMandelbrot(const UnsignedInteger n,
   setN(n);
   setQ(q);
   setS(s);
+  computeHarmonicNumbers();
 }
 
 /* Comparison operator */
@@ -108,9 +108,7 @@ NumericalPoint ZipfMandelbrot::getRealization() const
 {
   const NumericalScalar uniformRealization(1.0 - RandomGenerator::Generate());
 
-  if (!isAlreadyComputedHarmonicNumbers_) computeHarmonicNumbers();
-
-  NumericalScalarCollection::iterator it(lower_bound(harmonicNumbers_.begin(),
+  NumericalScalarCollection::const_iterator it(lower_bound(harmonicNumbers_.begin(),
                                          harmonicNumbers_.end(),
                                          uniformRealization * getHarmonicNumbers(n_))
                                         );
@@ -125,8 +123,8 @@ NumericalScalar ZipfMandelbrot::computePDF(const NumericalPoint & point) const
 
   const NumericalScalar k(point[0]);
 
-  if ((k < 1 - supportEpsilon_) || (fabs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
-  return 1.0 / (pow(round(k) + q_, s_) * getHarmonicNumbers(n_) );
+  if ((k < 1 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
+  return 1.0 / (std::pow(round(k) + q_, s_) * getHarmonicNumbers(n_) );
 }
 
 
@@ -147,7 +145,7 @@ NumericalScalar ZipfMandelbrot::computeCDF(const NumericalPoint & point) const
 void ZipfMandelbrot::computeMean() const
 {
   NumericalScalar value(0.0);
-  for (UnsignedInteger i = 1; i <= n_; ++i) value += i * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += i * std::pow(i + q_, -s_);
   mean_ = NumericalPoint(1, value / getHarmonicNumbers(n_));
   isAlreadyComputedMean_ = true;
 }
@@ -155,7 +153,7 @@ void ZipfMandelbrot::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint ZipfMandelbrot::getStandardDeviation() const
 {
-  return NumericalPoint(1, sqrt(getCovariance()(0, 0)));
+  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
@@ -164,7 +162,7 @@ NumericalPoint ZipfMandelbrot::getSkewness() const
   NumericalScalar mean(getMean()[0]);
   NumericalScalar std(getStandardDeviation()[0]);
   NumericalScalar value(0.0);
-  for (UnsignedInteger i = 1; i <= n_; ++i) value += pow((i - mean) / std, 3) * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += std::pow((i - mean) / std, 3) * std::pow(i + q_, -s_);
   return NumericalPoint(1, value / getHarmonicNumbers(n_));
 }
 
@@ -174,7 +172,7 @@ NumericalPoint ZipfMandelbrot::getKurtosis() const
   NumericalScalar mean(getMean()[0]);
   NumericalScalar std(getStandardDeviation()[0]);
   NumericalScalar value(0.0);
-  for (UnsignedInteger i = 1; i <= n_; ++i) value += pow((i - mean) / std, 4) * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += std::pow((i - mean) / std, 4) * std::pow(i + q_, -s_);
   return NumericalPoint(1, value / getHarmonicNumbers(n_));
 }
 
@@ -183,7 +181,7 @@ void ZipfMandelbrot::computeCovariance() const
 {
   NumericalScalar mean(getMean()[0]);
   NumericalScalar value(0.0);
-  for (UnsignedInteger i = 1; i <= n_; ++i) value += pow(i - mean, 2) * pow(i + q_, -s_);
+  for (UnsignedInteger i = 1; i <= n_; ++i) value += std::pow(i - mean, 2) * std::pow(i + q_, -s_);
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = value / getHarmonicNumbers(n_);
   isAlreadyComputedCovariance_ = true;
@@ -293,7 +291,9 @@ ZipfMandelbrot::NumericalPointWithDescriptionCollection ZipfMandelbrot::getParam
 
 void ZipfMandelbrot::setParametersCollection(const NumericalPointCollection & parametersCollection)
 {
+  const NumericalScalar w(getWeight());
   *this = ZipfMandelbrot(static_cast< UnsignedInteger >(round(parametersCollection[0][0])), parametersCollection[0][1], parametersCollection[0][2]);
+  setWeight(w);
 }
 
 
@@ -313,8 +313,7 @@ void ZipfMandelbrot::load(Advocate & adv)
   adv.loadAttribute( "n_", n_ );
   adv.loadAttribute( "q_", q_ );
   adv.loadAttribute( "s_", s_ );
-  isAlreadyComputedHarmonicNumbers_ = false;
-  harmonicNumbers_ = NumericalScalarCollection(0);
+  computeHarmonicNumbers();
   computeRange();
 }
 
@@ -322,8 +321,6 @@ void ZipfMandelbrot::load(Advocate & adv)
 /* Method getHarmonicNumbers returns the k-th harmonic number for the current distribution */
 NumericalScalar ZipfMandelbrot::getHarmonicNumbers(const UnsignedInteger k ) const
 {
-  if (! isAlreadyComputedHarmonicNumbers_)computeHarmonicNumbers();
-
   if (k < 1) throw InvalidArgumentException(HERE) << "k must be >= 1" ;
   if (k > n_) throw InvalidArgumentException(HERE) << "k must be <= N";
 
@@ -334,16 +331,15 @@ NumericalScalar ZipfMandelbrot::getHarmonicNumbers(const UnsignedInteger k ) con
    k = 1..n
    harmonicNumbers_[i] = \sum_{l=1}^i 1./( (i+q)**s )
 */
-void ZipfMandelbrot::computeHarmonicNumbers() const
+void ZipfMandelbrot::computeHarmonicNumbers()
 {
   harmonicNumbers_ = NumericalScalarCollection(n_);
-  harmonicNumbers_[0] = pow(1.0 + q_, -s_);
+  harmonicNumbers_[0] = std::pow(1.0 + q_, -s_);
   for (UnsignedInteger i = 2; i <= n_; ++i)
   {
-    const NumericalScalar hiqs(pow(i + q_, -s_));
+    const NumericalScalar hiqs(std::pow(i + q_, -s_));
     harmonicNumbers_[i - 1] = harmonicNumbers_[i - 2] + hiqs;
   }
-  isAlreadyComputedHarmonicNumbers_ = true;
 }
 
 

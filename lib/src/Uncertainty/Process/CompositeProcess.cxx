@@ -49,7 +49,8 @@ CompositeProcess::CompositeProcess(const DynamicalFunction & function,
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a DynamicalFunction with incompatible dimensions "
                                          << "here Process dimension=" << p_antecedent->getDimension()
                                          << " and DynamicalFunction input dimension=" << function.getInputDimension();
-  setTimeGrid(p_antecedent_->getTimeGrid());
+  setMesh(p_antecedent_->getMesh());
+  setDimension(function.getOutputDimension());
 }
 
 /* Standard constructor */
@@ -63,7 +64,12 @@ CompositeProcess::CompositeProcess(const DynamicalFunction & function,
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a DynamicalFunction with incompatible dimensions "
                                          << "here Process dimension=" << p_antecedent_->getDimension()
                                          << " and DynamicalFunction input dimension=" << function.getInputDimension();
-  setTimeGrid(p_antecedent_->getTimeGrid());
+  if (function.getMeshDimension() != p_antecedent_->getMeshDimension())
+    throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a DynamicalFunction with incompatible mesh dimensions "
+                                         << "here Process mesh dimension=" << p_antecedent_->getMeshDimension()
+                                         << " and DynamicalFunction mesh dimension=" << function.getMeshDimension();
+  setMesh(p_antecedent_->getMesh());
+  setDimension(function.getOutputDimension());
 }
 
 /* Virtual constructor */

@@ -65,15 +65,15 @@ static Factory<NumericalMathEvaluationImplementation> RegisteredFactory("Numeric
 
 /* Default constructor */
 NumericalMathEvaluationImplementation::NumericalMathEvaluationImplementation()
-  : PersistentObject(),
-    callsNumber_(0),
-    p_cache_(new CacheType),
-    inputStrategy_(Full()),
-    outputStrategy_(Full()),
-    isHistoryEnabled_(false),
-    inputDescription_(0),
-    outputDescription_(0),
-    parameters_(0)
+  : PersistentObject()
+  , callsNumber_(0)
+  , p_cache_(new CacheType)
+  , inputStrategy_(Full())
+  , outputStrategy_(Full())
+  , isHistoryEnabled_(false)
+  , inputDescription_(0)
+  , outputDescription_(0)
+  , parameters_(0)
 {
   // We disable the cache by default
   p_cache_->disable();
@@ -139,7 +139,7 @@ void NumericalMathEvaluationImplementation::setInputDescription(const Descriptio
 
 Description NumericalMathEvaluationImplementation::getInputDescription() const
 {
-  if (inputDescription_.getSize() == 0) return BuildDefaultDescription(getInputDimension(), "x");
+  if (inputDescription_.getSize() == 0) return Description::BuildDefault(getInputDimension(), "x");
   return inputDescription_;
 }
 
@@ -152,7 +152,7 @@ void NumericalMathEvaluationImplementation::setOutputDescription(const Descripti
 
 Description NumericalMathEvaluationImplementation::getOutputDescription() const
 {
-  if (outputDescription_.getSize() == 0) return BuildDefaultDescription(getOutputDimension(), "y");
+  if (outputDescription_.getSize() == 0) return Description::BuildDefault(getOutputDimension(), "y");
   return outputDescription_;
 }
 
@@ -301,10 +301,22 @@ void NumericalMathEvaluationImplementation::setParameters(const NumericalPointWi
   parameters_ = parameters;
 }
 
+void NumericalMathEvaluationImplementation::setParameters(const NumericalPoint & parameters)
+{
+  parameters_ = parameters;
+}
+
 /* Operator () */
 NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
   throw NotYetImplementedException(HERE);
+}
+
+NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
+								  const NumericalPoint & parameters)
+{
+  setParameters(parameters);
+  return (*this)(inP);
 }
 
 /* Accessor for input point dimension */
@@ -317,6 +329,12 @@ UnsignedInteger NumericalMathEvaluationImplementation::getInputDimension() const
 UnsignedInteger NumericalMathEvaluationImplementation::getOutputDimension() const
 {
   throw NotYetImplementedException(HERE);
+}
+
+/* Accessor for input point dimension */
+UnsignedInteger NumericalMathEvaluationImplementation::getParametersDimension() const
+{
+  return parameters_.getDimension();
 }
 
 /* Get the i-th marginal function */
@@ -456,11 +474,22 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
-  Graph graph(title, xName, yName, true, "");
+  Graph graph(title, xName, yName, true, "topright");
   Contour isoValues(Contour(x, y, z, NumericalPoint(0), Description(0), true, title));
   isoValues.buildDefaultLevels();
   isoValues.buildDefaultLabels();
-  graph.add(isoValues);
+  NumericalPoint levels(isoValues.getLevels());
+  Description labels(isoValues.getLabels());
+  for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
+    {
+      Contour current(isoValues);
+      current.setLevels(NumericalPoint(1, levels[i]));
+      current.setLabels(Description(1, labels[i]));
+      current.setDrawLabels(false);
+      current.setLegend(labels[i]);
+      current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
+      graph.add(current);
+    }
   return graph;
 }
 
@@ -484,14 +513,6 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalPoint & xMin,
   return draw(0, 1, 0, NumericalPoint(2), xMin, xMax, pointNumber);
 }
 
-/* Build a default description */
-Description NumericalMathEvaluationImplementation::BuildDefaultDescription(const UnsignedInteger dimension,
-    const String & prefix)
-{
-  Description description(dimension);
-  for (UnsignedInteger k = 0; k < dimension; ++k) description[k] =  String(OSS() << prefix << k);
-  return description;
-}
 
 /* Method save() stores the object through the StorageManager */
 void NumericalMathEvaluationImplementation::save(Advocate & adv) const

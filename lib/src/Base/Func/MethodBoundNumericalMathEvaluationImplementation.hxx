@@ -124,8 +124,8 @@ public:
       outputDimension_(outputDimension)
   {
     // Build the descriptions
-    setInputDescription(BuildDefaultDescription(inputDimension, "x"));
-    setOutputDescription(BuildDefaultDescription(outputDimension, "y"));
+    setInputDescription(Description::BuildDefault(inputDimension, "x"));
+    setOutputDescription(Description::BuildDefault(outputDimension, "y"));
   }
 
 

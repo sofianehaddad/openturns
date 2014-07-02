@@ -27,17 +27,14 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(RandomVectorImplementation);
 
 static Factory<RandomVectorImplementation> RegisteredFactory("RandomVectorImplementation");
 
-
 /* Default constructor */
 RandomVectorImplementation::RandomVectorImplementation()
-  : PersistentObject(),
-    description_()
+  : PersistentObject()
+  , description_()
 {
   // Nothing to do
 }
@@ -138,7 +135,7 @@ NumericalMathFunction RandomVectorImplementation::getFunction() const
 /* Fake method due to pbs with dynamic_cast and Pointer */
 Distribution RandomVectorImplementation::getDistribution() const
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in RandomVectorImplementation::getDistribution";
 }
 
 /* Fake method due to pbs with dynamic_cast and Pointer */

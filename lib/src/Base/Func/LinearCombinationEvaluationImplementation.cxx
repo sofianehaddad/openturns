@@ -28,8 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalMathFunction>);
 
 static Factory<PersistentCollection<NumericalMathFunction> > RegisteredFactory_PC_NMF("PersistentCollection<NumericalMathFunction>");
@@ -42,9 +40,9 @@ static Factory<LinearCombinationEvaluationImplementation> RegisteredFactory_LCEI
 
 /* Default constructor */
 LinearCombinationEvaluationImplementation::LinearCombinationEvaluationImplementation()
-  : NumericalMathEvaluationImplementation(),
-    functionsCollection_(0),
-    coefficients_(0)
+  : NumericalMathEvaluationImplementation()
+  , functionsCollection_(0)
+  , coefficients_(0)
 {
   // Nothing to do
 }
@@ -53,9 +51,9 @@ LinearCombinationEvaluationImplementation::LinearCombinationEvaluationImplementa
 /* Parameters constructor */
 LinearCombinationEvaluationImplementation::LinearCombinationEvaluationImplementation(const NumericalMathFunctionCollection & functionsCollection,
     const NumericalPoint & coefficients)
-  : NumericalMathEvaluationImplementation(),
-    functionsCollection_(0),
-    coefficients_(0)
+  : NumericalMathEvaluationImplementation()
+  , functionsCollection_(0)
+  , coefficients_(0)
 {
   setFunctionsCollectionAndCoefficients(functionsCollection, coefficients);
 }

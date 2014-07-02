@@ -34,11 +34,7 @@
 #include "ConstantNumericalMathHessianImplementation.hxx"
 #include "ComposedNumericalMathHessianImplementation.hxx"
 
-
 BEGIN_NAMESPACE_OPENTURNS
-
-
-
 
 CLASSNAMEINIT(NumericalMathHessianImplementation);
 
@@ -46,9 +42,8 @@ static Factory<NumericalMathHessianImplementation> RegisteredFactory("NumericalM
 
 /* Default constructor */
 NumericalMathHessianImplementation::NumericalMathHessianImplementation()
-  : PersistentObject(),
-    callsNumber_(0),
-    description_()
+  : PersistentObject()
+  , callsNumber_(0)
 {
   // Nothing to do
 }
@@ -70,8 +65,7 @@ String NumericalMathHessianImplementation::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << NumericalMathHessianImplementation::GetClassName()
-      << " name=" << getName()
-      << " description=" << description_;
+      << " name=" << getName();
   return oss;
 }
 
@@ -81,31 +75,11 @@ String NumericalMathHessianImplementation::__str__(const String & offset) const
   return OSS(false) << offset << "NumericalMathHessianImplementation";
 }
 
-
-/* Description Accessor */
-void NumericalMathHessianImplementation::setDescription(const Description & description)
-{
-  description_ = description;
-}
-
-
-/* Description Accessor */
-Description NumericalMathHessianImplementation::getDescription() const
-{
-  return description_;
-}
-
 /* Test for actual implementation */
 Bool NumericalMathHessianImplementation::isActualImplementation() const
 {
   return true;
 }
-
-
-
-
-
-
 
 /* Here is the interface that all derived class must implement */
 
@@ -113,6 +87,13 @@ Bool NumericalMathHessianImplementation::isActualImplementation() const
 SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
 {
   throw NotYetImplementedException(HERE);
+}
+
+SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint & inP,
+							    const NumericalPoint & parameters)
+{
+  setParameters(parameters);
+  return hessian(inP);
 }
 
 /* Accessor for input point dimension */
@@ -133,6 +114,18 @@ UnsignedInteger NumericalMathHessianImplementation::getCallsNumber() const
   return callsNumber_;
 }
 
+/* Parameters value and description accessor */
+NumericalPointWithDescription NumericalMathHessianImplementation::getParameters() const
+{
+  return parameters_;
+}
+
+void NumericalMathHessianImplementation::setParameters(const NumericalPointWithDescription & parameters)
+{
+  parameters_ = parameters;
+}
+
+
 /* Get the i-th marginal function */
 NumericalMathHessianImplementation::Implementation NumericalMathHessianImplementation::getMarginal(const UnsignedInteger i) const
 {
@@ -150,17 +143,10 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
   // As we don't have access to f and Df here but only to D2f, we build an arbitrary cheap evaluation with the proper dimension in order to reuse the
   // generic implementation of the chain rule for the hessians. We choose to build a null function using an analytical function.
   // Fake f
-  const UnsignedInteger inputDimension = getInputDimension();
-  const UnsignedInteger outputDimension = getOutputDimension();
+  const UnsignedInteger inputDimension(getInputDimension());
+  const UnsignedInteger outputDimension(getOutputDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
-  Description input(inputDimension);
-  for (UnsignedInteger index = 0; index < inputDimension; ++index)
-    input[index] = OSS() << "x" << index;
-  Description output(outputDimension);
-  for (UnsignedInteger index = 0; index < outputDimension; ++index)
-    output[index] = OSS() << "y" << index;
-  const Description formulas(outputDimension, "0.0");
-  const AnalyticalNumericalMathEvaluationImplementation right(input, output, formulas);
+  const AnalyticalNumericalMathEvaluationImplementation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
 #else
   NumericalPoint center(inputDimension);
   Matrix linear(inputDimension, outputDimension);
@@ -185,7 +171,6 @@ void NumericalMathHessianImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", callsNumber_ );
-  adv.saveAttribute( "description_", description_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -193,7 +178,6 @@ void NumericalMathHessianImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "callsNumber_", callsNumber_ );
-  adv.loadAttribute( "description_", description_ );
 }
 
 

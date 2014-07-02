@@ -40,7 +40,7 @@ InverseTrendEvaluationImplementation::InverseTrendEvaluationImplementation(const
   Description inputDescription(function.getInputDescription());
   const Description outputDescription(function.getOutputDescription());
   const UnsignedInteger outputDimension(outputDescription.getSize());
-  const Description otherInputDescription(BuildDefaultDescription(outputDimension, "x"));
+  const Description otherInputDescription(Description::BuildDefault(outputDimension, "x"));
   for (UnsignedInteger i = 0; i < outputDimension; ++i) inputDescription.add(otherInputDescription[i]);
   setInputDescription(inputDescription);
   setOutputDescription(outputDescription);
