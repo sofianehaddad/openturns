@@ -46,6 +46,12 @@ public:
   /** Default constructor */
   CovarianceMatrix();
 
+  /** Constructor with implementation */
+  CovarianceMatrix(const Implementation & i);
+
+  /** Constructor with implementation */
+  CovarianceMatrix(const MatrixImplementation & i);
+
   /** Constructor with size */
   explicit CovarianceMatrix(const UnsignedInteger dim);
 
@@ -72,9 +78,6 @@ public:
 
   /** Build the Cholesky factorization of the matrix */
   virtual TriangularMatrix computeCholesky(const Bool keepIntact = true);
-
-  /** Constructor with implementation */
-  CovarianceMatrix(const Implementation & i);
 
   /** Resolution of a linear system */
   NumericalPoint solveLinearSystem(const NumericalPoint & b,

@@ -34,6 +34,20 @@ CovarianceMatrix::CovarianceMatrix()
   // Nothing to do
 }
 
+/* Constructor with implementation */
+CovarianceMatrix::CovarianceMatrix(const Implementation & i)
+  : SymmetricMatrix(i)
+{
+  // Nothing to do
+}
+
+/* Constructor with implementation */
+CovarianceMatrix::CovarianceMatrix(const MatrixImplementation & i)
+  : SymmetricMatrix(i)
+{
+  // Nothing to do
+}
+
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim)
   : SymmetricMatrix(dim)
@@ -49,13 +63,6 @@ CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim)
 CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim,
                                    const Collection<NumericalScalar> &elementsValues)
   : SymmetricMatrix(dim, elementsValues)
-{
-  // Nothing to do
-}
-
-/* Constructor with implementation */
-CovarianceMatrix::CovarianceMatrix(const Implementation & i)
-  : SymmetricMatrix(i)
 {
   // Nothing to do
 }

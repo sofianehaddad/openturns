@@ -76,7 +76,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Numer
     {
       return buildMethodOfProbabilityWeightedMoments(sample);
     }
-    catch (InternalException & ex)
+    catch (InvalidArgumentException & ex)
     {
       return buildMethodOfExponentialRegression(sample);
     }
@@ -116,7 +116,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Numerical
   const NumericalScalar std(sample.computeStandardDeviationPerComponent()[0]);
   const NumericalScalar xi(0.5 * (std::pow(mean / std, 2) - 1.0));
   // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
-  if (xi <= -0.25) throw InternalException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";
+  if (xi <= -0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";
   const NumericalScalar sigma(0.5 * mean * (std::pow(mean / std, 2) + 1.0));
   GeneralizedPareto result(sigma, xi);
   result.setDescription(sample.getDescription());
@@ -206,7 +206,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
   for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
   m /= size * size;
   const NumericalScalar xi(mean / (mean - 2.0 * m) - 2.0);
-  if (xi <= -0.5) throw InternalException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of probability weighted moments when the estimated xi parameter=" << xi << " is less than -0.5";
+  if (xi <= -0.5) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of probability weighted moments when the estimated xi parameter=" << xi << " is less than -0.5";
   const NumericalScalar sigma(2.0 * mean * m / (mean - 2.0 * m));
   GeneralizedPareto result(sigma, xi);
   result.setDescription(sample.getDescription());

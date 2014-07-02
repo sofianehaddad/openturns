@@ -245,6 +245,12 @@ const Bool Matrix::isEmpty() const
   return getImplementation()->isEmpty() ;
 }
 
+/* Compute the associated Gram matrix */
+CovarianceMatrix Matrix::computeGram(const Bool transpose) const
+{
+  return getImplementation()->computeGram(transpose) ;
+}
+
 
 /* Comparison operator */
 Bool Matrix::operator == (const Matrix & rhs) const

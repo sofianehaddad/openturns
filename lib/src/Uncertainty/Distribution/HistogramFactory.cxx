@@ -57,7 +57,7 @@ HistogramFactory::Implementation HistogramFactory::build() const
 
 Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) const
 {
-  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   // Construct the histogram
   // It will extends from min to max.
   const NumericalScalar min(sample.getMin()[0]);

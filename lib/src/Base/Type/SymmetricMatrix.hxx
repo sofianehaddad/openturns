@@ -52,6 +52,12 @@ public:
   /** Default constructor */
   SymmetricMatrix();
 
+  /** Constructor with implementation */
+  SymmetricMatrix(const Implementation & i);
+
+  /** Constructor with implementation */
+  SymmetricMatrix(const MatrixImplementation & i);
+
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
   explicit SymmetricMatrix(const UnsignedInteger dim);
 #if 0
@@ -143,9 +149,6 @@ public:
   NumericalPoint computeEigenValues(const Bool keepIntact = true);
   NumericalPoint computeEVD(SquareMatrix & v,
                             const Bool keepIntact = true);
-
-  /** Constructor with implementation */
-  SymmetricMatrix(const Implementation & i);
 
 protected:
 

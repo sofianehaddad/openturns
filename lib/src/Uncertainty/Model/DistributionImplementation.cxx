@@ -3010,7 +3010,7 @@ void DistributionImplementation::setDescription(const Description & description)
   // Fourth, check if there was any duplicate
   if (it != test.end())
     {
-      LOGINFO(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Appended unique identifier to fix it:");
+      LOGINFO(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Append unique identifier to fix it:");
       Description newDescription(description);
       for (UnsignedInteger i = 0; i < size; ++i) newDescription[i] = OSS() << "marginal_" << i + 1 << "_" << description[i];
       LOGINFO(OSS() << "the new description is " << newDescription);

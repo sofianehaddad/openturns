@@ -34,6 +34,21 @@ CorrelationMatrix::CorrelationMatrix()
   // Nothing to do
 }
 
+/* Constructor with implementation */
+CorrelationMatrix::CorrelationMatrix(const Implementation & i)
+  : CovarianceMatrix(i)
+{
+  // Nothing to do
+}
+
+
+/* Constructor with implementation */
+CorrelationMatrix::CorrelationMatrix(const MatrixImplementation & i)
+  : CovarianceMatrix(i)
+{
+  // Nothing to do
+}
+
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim)
   : CovarianceMatrix(dim)
@@ -48,13 +63,6 @@ CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim)
 CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim,
                                      const Collection<NumericalScalar> &elementsValues)
   : CovarianceMatrix(dim, elementsValues)
-{
-  // Nothing to do
-}
-
-/* Constructor with implementation */
-CorrelationMatrix::CorrelationMatrix(const Implementation & i)
-  : CovarianceMatrix(i)
 {
   // Nothing to do
 }

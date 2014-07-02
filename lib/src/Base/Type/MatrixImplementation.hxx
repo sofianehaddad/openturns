@@ -241,6 +241,9 @@ public:
   /** Build the QR factorization of the matrix */
   virtual MatrixImplementation computeQR(MatrixImplementation & R, const Bool keepIntact = true);
 
+  /** Compute the Gram matrix associated to the matrix */
+  virtual MatrixImplementation computeGram(const Bool transpose = true) const;
+
   /** Comparison operators */
   Bool operator == (const MatrixImplementation & rhs) const;
   inline Bool operator != (const MatrixImplementation & rhs) const

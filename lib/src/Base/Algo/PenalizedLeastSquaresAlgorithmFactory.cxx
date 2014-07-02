@@ -34,8 +34,9 @@ CLASSNAMEINIT(PenalizedLeastSquaresAlgorithmFactory);
 static Factory<PenalizedLeastSquaresAlgorithmFactory> RegisteredFactory("PenalizedLeastSquaresAlgorithmFactory");
 
 /* Default constructor */
-PenalizedLeastSquaresAlgorithmFactory::PenalizedLeastSquaresAlgorithmFactory()
+PenalizedLeastSquaresAlgorithmFactory::PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal)
   : ApproximationAlgorithmImplementationFactory()
+  , useNormal_(useNormal)
 {
   // Nothing to do
 }
@@ -59,7 +60,8 @@ PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(co
     const NumericalPoint & weight,
     const Basis & psi) const
 {
-  return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi );
+  const PenalizedLeastSquaresAlgorithm algo( x, y, weight, psi, false, useNormal_ );
+  return algo.clone();
 }
 
 /* Method save() stores the object through the StorageManager */

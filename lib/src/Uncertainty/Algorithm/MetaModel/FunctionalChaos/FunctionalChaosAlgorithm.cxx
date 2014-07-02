@@ -47,13 +47,12 @@
 #include "KernelSmoothing.hxx"
 #include "NormalCopulaFactory.hxx"
 #include "UserDefined.hxx"
-#include "UniformFactory.hxx"
-#include "NormalFactory.hxx"
+#include "DistributionFactory.hxx"
 #include "ComposedDistribution.hxx"
 #include "StandardDistributionPolynomialFactory.hxx"
 #include "LeastSquaresMetaModelSelectionFactory.hxx"
 #include "LAR.hxx"
-#include "CorrectedLeaveOneOut.hxx"
+#include "KFold.hxx"
 #include "FittingTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -175,15 +174,14 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
   // The strategy is to test first a Uniform distribution, then a Normal distribution, then a kernel smoothing for the marginals
   KernelSmoothing ks;
-  Collection< DistributionFactory > factories(0);
-  factories.add(UniformFactory());
-  factories.add(NormalFactory());
+  Collection< DistributionFactory > factories(DistributionFactory::GetContinuousUniVariateFactories());
+  LOGINFO("In FunctionalChaosAlgorithm, identify marginal distributions");
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       const Distribution candidate(FittingTest::BestModelKolmogorov(inputSample.getMarginal(i), factories));
-      if (FittingTest::GetLastResult().getPValue() > 1e-3) marginals[i] = candidate;
+	  if (FittingTest::GetLastResult().getPValue() > 1e-3) marginals[i] = candidate;
       else marginals[i] = ks.build(inputSample.getMarginal(i));
-      LOGINFO(OSS() << "Selected distribution for marginal " << i << "=" << marginals[i]);
+      LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
       polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
     }
   // For the dependence structure, we test first the independent copula, then the normal copula, but not a non-parametric copula as the penalty on the meta-model evaluation speed is most of the time prohibitive
@@ -191,15 +189,20 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   const EnumerateFunction enumerate(inputDimension);
   const UnsignedInteger maximumTotalDegree(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-MaximumTotalDegree" ));
   // For small sample size, use sparse regression
+  LOGINFO("In FunctionalChaosAlgorithm, select adaptive strategy");
   if (inputSample.getSize() < ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-SmallSampleSize" ))
     {
-      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), CorrectedLeaveOneOut()));
+      projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), KFold()));
       adaptiveStrategy_ = FixedStrategy(OrthogonalProductPolynomialFactory(polynomials), enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
+      LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LAR and KFold for a total degree of " << maximumTotalDegree);
     }
   else
     {
       projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
-      adaptiveStrategy_ = CleaningStrategy(OrthogonalProductPolynomialFactory(polynomials), enumerate.getStrataCumulatedCardinal(maximumTotalDegree));      
+      const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
+      const UnsignedInteger basisSize(std::min(totalSize, maximumTotalDegree * maximumTotalDegree * inputSample.getDimension()));
+      adaptiveStrategy_ = CleaningStrategy(OrthogonalProductPolynomialFactory(polynomials), totalSize, basisSize);      
+      LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a constrained chaos expansion based on CleaningStrategy for a total degree of " << maximumTotalDegree << " and a maximum number of terms of " << basisSize);
     }
 }
 

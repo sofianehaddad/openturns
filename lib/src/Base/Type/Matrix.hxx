@@ -30,9 +30,10 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
+class CovarianceMatrix;
+class IdentityMatrix;
 class SquareMatrix;
 class SymmetricMatrix;
-class IdentityMatrix;
 
 /**
  * @class Matrix
@@ -156,6 +157,9 @@ public:
 
   /** Build the QR factorization of the matrix */
   virtual Matrix computeQR(Matrix & R, const Bool keepIntact = true);
+
+  /** Compute the associated Gram matrix */
+  virtual CovarianceMatrix computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
   Bool operator == (const Matrix & rhs) const;

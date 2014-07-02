@@ -333,6 +333,26 @@ NumericalPoint MatrixImplementation::symVectProd (const NumericalPoint & pt) con
   return prod;
 }
 
+/* Gram matrix */
+MatrixImplementation MatrixImplementation::computeGram (const Bool transpose) const
+{
+  if ((nbRows_ == 0) || (nbColumns_ == 0)) return MatrixImplementation(0, 0);
+  MatrixImplementation scalprod(*this);
+  char uplo('L');
+  char trans(transpose ? 'T' : 'N');
+  int n(transpose ? nbColumns_ : nbRows_);
+  int k(transpose ? nbRows_ : nbColumns_);
+  double alpha(1.0);
+  int lda(transpose ? k : n);
+  double beta(0.0);
+  MatrixImplementation C(n, n);
+  int ldc(n);
+  int one(1);
+  dsyrk_(&uplo, &trans, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &lda, &beta, &C[0], &ldc, &one, &one);
+
+  return C;
+}
+
 /* Multiplication with a NumericalScalar */
 MatrixImplementation MatrixImplementation::operator* (const NumericalScalar s) const
 {

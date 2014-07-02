@@ -67,7 +67,7 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   const NumericalScalar gamma1(sample.computeSkewnessPerComponent()[0]);
   const NumericalScalar gamma2(sample.computeKurtosisPerComponent()[0]);
   const NumericalScalar upperBound(3.0 + 2.0 * gamma1 * gamma1);
-  if (gamma2 <= upperBound) throw InternalException(HERE) << "Error: cannot estimate a MeixnerDistribution distribution if the sample kurtosis=" << gamma2 << " is not greater than 2*skewness^2+3=" << upperBound;
+  if (gamma2 <= upperBound) throw InvalidArgumentException(HERE) << "Error: cannot estimate a MeixnerDistribution distribution if the sample kurtosis=" << gamma2 << " is not greater than 2*skewness^2+3=" << upperBound;
   const NumericalScalar m(sample.computeMean()[0]);
   const NumericalScalar s2(sample.computeVariancePerComponent()[0]);
   const NumericalScalar delta(1.0 / (gamma2 - gamma1 * gamma1 - 3.0));

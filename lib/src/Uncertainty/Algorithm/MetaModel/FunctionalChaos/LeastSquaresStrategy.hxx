@@ -49,30 +49,30 @@ public:
   // friend class Factory<LeastSquaresStrategy>;
 
   /** Default constructor */
-  LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
+  LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Distribution & measure,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
   LeastSquaresStrategy(const WeightedExperiment & weightedExperiment,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Distribution & measure,
                        const WeightedExperiment & weightedExperiment,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
   LeastSquaresStrategy(const NumericalSample & inputSample,
                        const NumericalPoint & weights,
                        const NumericalSample & outputSample,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   LeastSquaresStrategy(const NumericalSample & inputSample,
                        const NumericalSample & outputSample,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Virtual constructor */
   virtual LeastSquaresStrategy * clone() const;

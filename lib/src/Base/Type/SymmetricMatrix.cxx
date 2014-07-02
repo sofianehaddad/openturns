@@ -36,6 +36,24 @@ SymmetricMatrix::SymmetricMatrix()
 }
 
 
+/* Constructor with implementation */
+SymmetricMatrix::SymmetricMatrix(const Implementation & i)
+  : SquareMatrix(i)
+  , hasBeenSymmetrized_(false)
+{
+  // Nothing to do
+}
+
+
+/* Constructor with implementation */
+SymmetricMatrix::SymmetricMatrix(const MatrixImplementation & i)
+  : SquareMatrix(i)
+  , hasBeenSymmetrized_(false)
+{
+  // Nothing to do
+}
+
+
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)
   : SquareMatrix(dim)
@@ -51,15 +69,6 @@ SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)
 SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim,
                                  const Collection<NumericalScalar> & elementsValues)
   : SquareMatrix(dim, elementsValues)
-  , hasBeenSymmetrized_(false)
-{
-  // Nothing to do
-}
-
-
-/* Constructor with implementation */
-SymmetricMatrix::SymmetricMatrix(const Implementation & i)
-  : SquareMatrix(i)
   , hasBeenSymmetrized_(false)
 {
   // Nothing to do

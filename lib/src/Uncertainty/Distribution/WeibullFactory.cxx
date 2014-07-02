@@ -93,7 +93,7 @@ Weibull WeibullFactory::buildAsWeibull(const NumericalPointCollection & paramete
   }
   catch (InvalidArgumentException & ex)
   {
-    throw InternalException(HERE) << "Error: cannot build a Weibull distribution from the given parameters";
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from the given parameters";
   }
 }
 

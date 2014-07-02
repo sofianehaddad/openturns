@@ -98,7 +98,7 @@ struct LogNormalFactoryLMLEParameterConstraint
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       const NumericalScalar delta(sample_[i][0] - gamma);
-      if (delta <= 0.0) throw InternalException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
+      if (delta <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
       const NumericalScalar logDelta(std::log(delta));
       const NumericalScalar inverseDelta(1.0 / delta);
       sums[0] += inverseDelta;
@@ -138,7 +138,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Numer
     step *= 2.0;
   }
   // If we are unable to bracket the gamma parameter
-  if ((constraintLeft < 0.0) == (constraintRight < 0.0)) throw InternalException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
+  if ((constraintLeft < 0.0) == (constraintRight < 0.0)) throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
   // Second, the bisection
   // Solve the constraint equation
   const Brent solver(ResourceMap::GetAsNumericalScalar("LogNormalFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
@@ -149,7 +149,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Numer
   const NumericalPoint sums(constraint.computeMaximumLikelihoodSums(gamma));
   const NumericalScalar mu(sums[1] / size);
   const NumericalScalar sigma2(sums[2] / size - mu * mu);
-  if (sigma2 <= 0.0) throw InternalException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma2;
+  if (sigma2 <= 0.0) throw InvalidArgumentException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma2;
   return LogNormal(mu, std::sqrt(sigma2), gamma);
 }
 
@@ -169,7 +169,7 @@ struct LogNormalFactoryMMEParameterConstraint
   NumericalPoint computeConstraint(const NumericalPoint & parameter) const
   {
     const NumericalScalar omega(parameter[0]);
-    if (omega <= 0.0) throw InternalException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of modified moments, probably because the sample is constant.";
+    if (omega <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of modified moments, probably because the sample is constant.";
     return NumericalPoint(1, alpha_ * std::pow(std::sqrt(omega) - std::exp(eZ1_ * std::sqrt(std::log(omega))), 2) - omega * (omega - 1.0));
   }
 
@@ -212,7 +212,7 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample &
     fB = f(NumericalPoint(1, b))[0];
   }
   const NumericalScalar absolutePrecision(ResourceMap::GetAsNumericalScalar("LogNormalFactory-AbsolutePrecision"));
-  if (a <= quantileEpsilon) throw InternalException(HERE) << "Error: the modified moment estimator is not defined";
+  if (a <= quantileEpsilon) throw InvalidArgumentException(HERE) << "Error: the modified moment estimator is not defined";
   NumericalScalar omega(0.0);
   if (std::abs(fA) < absolutePrecision) omega = a;
   else if (std::abs(fB) < absolutePrecision) omega = b;
@@ -270,7 +270,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample,
       {
         return buildMethodOfLocalLikelihoodMaximization(sample);
       }
-      catch (InternalException & ex)
+      catch (InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << "Warning! Unable to bracket the location parameter gamma. Using the modified moment estimator.");
@@ -282,7 +282,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample,
       {
         return buildMethodOfModifiedMoments(sample);
       }
-      catch (InternalException & ex)
+      catch (InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << "Warning! Unable to bracket the shape parameter sigma. Using the classical moment estimator.");
@@ -293,7 +293,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample,
       return buildMethodOfMoments(sample);
       break;
     default:
-      throw InternalException(HERE) << "Error: invalid value=" << method << " for the key 'LogNormalFactory-EstimationMethod' in ResourceMap";
+      throw InvalidArgumentException(HERE) << "Error: invalid value=" << method << " for the key 'LogNormalFactory-EstimationMethod' in ResourceMap";
   }
 }
 

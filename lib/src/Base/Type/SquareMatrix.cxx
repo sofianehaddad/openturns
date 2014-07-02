@@ -38,6 +38,24 @@ SquareMatrix::SquareMatrix()
 }
 
 
+/* Constructor with implementation */
+SquareMatrix::SquareMatrix(const Implementation & i)
+  : Matrix(i)
+{
+  if (getNbRows() != getNbColumns())
+    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
+}
+
+
+/* Constructor with implementation */
+SquareMatrix::SquareMatrix(const MatrixImplementation & i)
+  : Matrix(i)
+{
+  if (getNbRows() != getNbColumns())
+    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
+}
+
+
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 SquareMatrix::SquareMatrix(const UnsignedInteger dim)
   : Matrix(dim, dim)
@@ -54,24 +72,6 @@ SquareMatrix::SquareMatrix(const UnsignedInteger dim,
   : Matrix(dim, dim, elementsValues)
 {
   // Nothing to do
-}
-
-
-/* Constructor with implementation */
-SquareMatrix::SquareMatrix(const Implementation & i)
-  : Matrix(i)
-{
-  if (getNbRows() != getNbColumns())
-    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
-}
-
-
-/* Constructor with implementation */
-SquareMatrix::SquareMatrix(const MatrixImplementation & i)
-  : Matrix(i)
-{
-  if (getNbRows() != getNbColumns())
-    throw InvalidDimensionException(HERE) << "The matrix provided is not square : rows=" << getNbRows() << " columns=" << getNbColumns();
 }
 
 

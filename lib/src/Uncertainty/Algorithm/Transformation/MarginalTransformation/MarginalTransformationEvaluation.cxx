@@ -25,6 +25,7 @@
 #include "PersistentObjectFactory.hxx"
 #include "Uniform.hxx"
 #include "Log.hxx"
+#include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -235,9 +236,9 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         if (mu2 != 0.0) oss << mu2 << " + ";
         if (sigma2 != 1.0) oss << sigma2 << " * ";
         if (muLog1 != 0.0) oss << "(";
-        oss << "log(" << xName;
+        oss << "log(max(" << SpecFunc::MinNumericalScalar << ", " << xName;
         if (gamma1 != 0.0) oss << " - " << gamma1;
-        oss << ")";
+        oss << "))";
         if (muLog1 != 0.0) oss << " - " << muLog1 << ")";
         if (sigmaLog1 != 1.0) oss << " / " << sigmaLog1;
         const String formula(oss);
