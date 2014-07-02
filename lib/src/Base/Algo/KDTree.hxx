@@ -92,7 +92,7 @@ protected:
     typedef Pointer< KDNode> KDNodePointer;
 
     /** Parameter constructor */
-    KDNode(const UnsignedInteger index)
+    explicit KDNode(const UnsignedInteger index)
       : index_(index)
       , p_left_(0)
       , p_right_(0)
@@ -101,12 +101,12 @@ protected:
     }
 
     /** String converter */
-    virtual String __repr__() const
+    String __repr__() const
     {
-      return OSS() << "class=" << GetClassName()
-             << " index=" << index_
-             << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
-             << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
+      return OSS() << "class=KDNode"
+                  << " index=" << index_
+                  << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
+                  << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
     }
 
     /* Index of the nodal point */
