@@ -54,6 +54,7 @@ struct _Prefix
 };
 #endif
 
+std::ostream & operator << ( std::ostream & os, const _Prefix & pfx );
 
 /**
  * @class log

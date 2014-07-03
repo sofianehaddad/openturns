@@ -264,11 +264,11 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
         atom.setWeight(atom.getWeight() * w);
         if (atom.getImplementation()->getClassName() == "Uniform")
         {
-          const NumericalScalar w(atom.getWeight());
+          const NumericalScalar wj(atom.getWeight());
           const NumericalScalar low(coll[i].getRange().getLowerBound()[0]);
           const NumericalScalar high(coll[i].getRange().getUpperBound()[0]);
-          NumericalScalar a0(w * low);
-          NumericalScalar b0(w * high);
+          NumericalScalar a0(wj * low);
+          NumericalScalar b0(wj * high);
           if (a0 > b0) std::swap(a0, b0);
           // If there is already a uniform, merge it into a symmetrical trapezoidal distribution
           if (hasPendingUniform)
@@ -1093,7 +1093,6 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
   NumericalSample dataY;
   const NumericalSample dataX(computeCDF(xMin, xMax, size, dataY));
   // Create a NumericalMathFunction to use the TNC algorithm for finding the best candidate for projection
-  Distribution bestCandidate;
   KolmogorovProjection projection(dataX, dataY, factoryCollection[0]);
   // Loop over the factories
   for (UnsignedInteger i = 0; i < factorySize; ++i)

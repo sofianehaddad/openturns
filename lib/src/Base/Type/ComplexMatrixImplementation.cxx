@@ -119,8 +119,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
       B(i, j) = b(i, j);
   int nrhs(q);
   int lwork(-1);
-  std::vector< std::complex<double> > work(1);
-  std::vector<double> rwork(2 * n);
+  NumericalComplexCollection work(1);
+  NumericalPoint rwork(2 * n);
   int info;
   std::vector<int> jpiv(n);
   double rcond(ResourceMap::GetAsNumericalScalar("MatrixImplementation-DefaultSmallPivot"));
@@ -132,14 +132,14 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
     // (int *m, int *n, int *nrhs, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, double *rwork, int *info)
     zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
     lwork = static_cast<int>(std::real(work[0]));
-    NumericalComplexCollection work(lwork);
+    work = NumericalComplexCollection(lwork);
     zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
   }
   else
   {
     zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
     lwork = static_cast<int>(std::real(work[0]));
-    NumericalComplexCollection work(lwork);
+    work = NumericalComplexCollection(lwork);
     zgelsy_(&m, &n, &nrhs, &(*this)[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
   }
   ComplexMatrixImplementation result(n, q);

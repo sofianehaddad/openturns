@@ -54,6 +54,11 @@ NumericalScalar RegularizedIncompleteBeta(const NumericalScalar a,
     const NumericalScalar x,
     const Bool tail = false);
 
+NumericalScalar RegularizedIncompleteBetaSlatec(const NumericalScalar a,
+    const NumericalScalar b,
+    const NumericalScalar x,
+    const Bool tail);
+
 NumericalScalar RegularizedIncompleteBetaInverse(const NumericalScalar a,
     const NumericalScalar b,
     const NumericalScalar x,

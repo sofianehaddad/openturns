@@ -203,8 +203,8 @@ int Os::MakeDirectory(const String & path)
   while((pos = slashPath.find('/', pos)) != String::npos)
   {
     String current_dir(path.substr(0, pos));
-    const char * path = current_dir.c_str();
-    if (!is_directory(path) && (0 != MKDIR(path, 0777))) return 1;
+    const char * cpath = current_dir.c_str();
+    if (!is_directory(cpath) && (0 != MKDIR(cpath, 0777))) return 1;
     pos++;
   }
 
