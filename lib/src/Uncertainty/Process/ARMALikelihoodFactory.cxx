@@ -880,9 +880,9 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
   // From a theoretical point of view, since W0 is symmetric, only the m(m+1)/2 first elements are useful (m = dimension for simplification)
   // Memory allocation
   const UnsignedInteger one(1);
-  const UnsignedInteger size(std::max(one, currentP_));
+  const UnsignedInteger arSize(std::max(one, currentP_));
   // Initializing the autocovariance matrix
-  autoCovariance_ = Matrix(dimension_, size * dimension_);
+  autoCovariance_ = Matrix(dimension_, arSize * dimension_);
 
   // Compute the W0 matrix
   // This matrix is symmetric, only its upper part is filled up in computeW0Matrix()
@@ -996,7 +996,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
           // compute the remaining dimension_ * dimension_ * (currentP_ - 1) columns
           for (UnsignedInteger r = 1; r < currentP_; ++r)
           {
-            UnsignedInteger columnIndex(dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (r - 1));
+            columnIndex = dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (r - 1);
             for (UnsignedInteger l = 0; l < dimension_; ++l)
             {
               if (r + s <= currentP_)

@@ -451,8 +451,7 @@ void Weibull::setMuSigma(const NumericalScalar mu,
     if (betaMax - betaMin <= epsilon * (1.0 + std::abs(betaMax + betaMin)))
     {
       alpha_ = (mu - gamma_) / SpecFunc::Gamma(1.0 + 1.0 / beta_);
-      computeRange();
-      return;
+      break;
     }
     // Non convergence, one step further
     t = std::exp(SpecFunc::LnGamma(1.0 + 2.0 / beta_) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / beta_));

@@ -52,9 +52,10 @@ struct _Prefix
   _Prefix() : color_(), nocolor_(), prefix_() {}
   _Prefix( const Value & color, const Value & nocolor, const Value & prefix) : color_(color), nocolor_(nocolor), prefix_(prefix) {}
 };
-#endif
 
 std::ostream & operator << ( std::ostream & os, const _Prefix & pfx );
+
+#endif
 
 /**
  * @class log
