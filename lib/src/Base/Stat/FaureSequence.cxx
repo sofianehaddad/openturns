@@ -103,7 +103,7 @@ NumericalPoint FaureSequence::generate()
     }
     // Compute the current component
     NumericalScalar xJ(0.0);
-    NumericalScalar factor(modulusInverse_);
+    factor = modulusInverse_;
     for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {
       xJ += aINew[j] * factor;

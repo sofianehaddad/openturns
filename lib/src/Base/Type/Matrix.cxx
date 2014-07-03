@@ -97,13 +97,13 @@ Matrix Matrix::clean(const NumericalScalar threshold) const
 }
 
 /* Get the dimensions of the matrix : number of rows */
-const UnsignedInteger Matrix::getNbRows() const
+UnsignedInteger Matrix::getNbRows() const
 {
   return getImplementation()->getNbRows();
 }
 
 /* Get the dimensions of the matrix : number of columns */
-const UnsignedInteger Matrix::getNbColumns() const
+UnsignedInteger Matrix::getNbColumns() const
 {
   return getImplementation()->getNbColumns();
 }
@@ -240,7 +240,7 @@ Matrix Matrix::computeQR(Matrix & R, const Bool keepIntact)
 
 
 /* Empty returns true if there is no element in the matrix */
-const Bool Matrix::isEmpty() const
+Bool Matrix::isEmpty() const
 {
   return getImplementation()->isEmpty() ;
 }

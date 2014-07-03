@@ -463,8 +463,6 @@ String GraphImplementation::makeRCoreCommand() const
     case LOGXY:
       graphCommand << ", log=\"xy\"";
       break;
-    default:
-      break;
   }
   graphCommand << ", cex.main=2, cex.axis=1.5, cex.lab=1.5)\n";
 
