@@ -3,14 +3,18 @@ Section: science
 Priority: extra
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Christophe Prud'homme <prudhomm@debian.org>, Denis Barbier <barbier@debian.org>
-Build-Depends: debhelper (>= 8), quilt, gfortran, bison, flex, libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev, libboost-math-dev, libtbb-dev [i386 amd64 ia64], r-base-core, python-dev, swig, cmake, bc
-Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 8), quilt, gfortran, bison, flex, cmake, bc,
+ libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev,
+ libboost-math-dev,
+ libtbb-dev [i386 amd64 ia64],
+ r-base-core, python-dev, swig
+Standards-Version: 3.9.5
 Homepage: http://www.openturns.org/
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=debian-science/packages/openturns.git
 Vcs-Git: git://anonscm.debian.org/debian-science/packages/openturns.git
 X-Python-Version: current
 
-Package: libopenturns0.4
+Package: libopenturns0.5
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -45,7 +49,7 @@ Description: dynamic libraries for OpenTURNS
 Package: libopenturns-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libopenturns0.4 (= ${binary:Version}),
+Depends: ${misc:Depends}, libopenturns0.5 (= ${binary:Version}),
   libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev, libtbb-dev [i386 amd64 ia64]
 Replaces: openturns-wrapper
 Breaks: openturns-wrapper
@@ -88,7 +92,7 @@ Description: debug symbols for OpenTURNS
 Package: python-openturns
 Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.4 (= ${binary:Version}), ${python:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.5 (= ${binary:Version}), ${python:Depends}
 Provides: ${python:Provides}
 Suggests: python-matplotlib, python-scipy
 Description: Python front-end of OpenTURNS (aka TUI)

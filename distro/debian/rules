@@ -80,10 +80,10 @@ override_dh_auto_configure: debian/tmp/usr/lib/R/site-library/rot
             -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING='$(ldflags)' \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.4 \
-            -DLIB_VERSION=0.4.0 \
-            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.3 \
-            -DOPENTURNS_WRAPPER_PATH:PATH=lib/openturns-1.3/wrappers \
+            -DLIB_SOVERSION=0.5 \
+            -DLIB_VERSION=0.5.0 \
+            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.4 \
+            -DOPENTURNS_WRAPPER_PATH:PATH=lib/openturns-1.4/wrappers \
             -DSYSTEM_INSTALL:BOOL=ON \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DLINK_PYTHON_LIBRARY:BOOL=OFF \
@@ -94,19 +94,22 @@ override_dh_auto_configure: debian/tmp/usr/lib/R/site-library/rot
 
 override_dh_auto_install: debian/tmp/usr/lib/R/site-library/rot
 	dh_auto_install
+	mkdir -p debian/libopenturns-dbg/usr/lib/debug/usr/lib
+	cp debian/libOT-gdb.py debian/libopenturns-dbg/usr/lib/debug/usr/lib/libOT.so.0.4.0-gdb.py
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	# CTestTestfile.cmake sets LD_LIBRARY_PATH to find libraries in debian/tmp.
 	# But it overrides current value, which breaks when run by fakeroot.
 	[ -z "$$LD_LIBRARY_PATH" ] || sed -i -e "s#;LD_LIBRARY_PATH=[^;]*#&:$$LD_LIBRARY_PATH#" $(builddir)/python/test/CTestTestfile.cmake
-	R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
-	  $(MAKE) $(test_makeflags) -C $(builddir) test ARGS="$(test_makeflags) -R pyinstallcheck --output-on-failure"
+	CTEST_OUTPUT_ON_FAILURE=1 \
+	  R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
+	  $(MAKE) $(test_makeflags) -C $(builddir) test ARGS="$(test_makeflags) -R pyinstallcheck" || { cat $(builddir)/Testing/Temporary/LastTest.log; false; }
 endif
 
 override_dh_makeshlibs:
 	dh_makeshlibs -Xpyshared
 
 override_dh_strip:
-	dh_strip -plibopenturns0.4 --dbg-package=libopenturns-dbg
+	dh_strip -plibopenturns0.5 --dbg-package=libopenturns-dbg
 	dh_strip
 
 override_dh_python2:
@@ -119,7 +122,7 @@ override_dh_auto_test:
 	# 'make test' does not build binary tests
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	$(MAKE) $(test_makeflags) -C $(builddir) tests
-	$(MAKE) -C $(builddir) test ARGS="$(test_makeflags) -R cppcheck --output-on-failure"
+	CTEST_OUTPUT_ON_FAILURE=1 $(MAKE) -C $(builddir) test ARGS="$(test_makeflags) -R cppcheck" || { cat $(builddir)/Testing/Temporary/LastTest.log; false; }
 endif
 
 get-orig-source:
