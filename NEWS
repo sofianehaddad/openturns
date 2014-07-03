@@ -33,8 +33,8 @@
  * Renamed WeightedExperiment::generate(weights) to WeightedExperiment::generateWithWeights(weights)
  * Removed DistributionImplementation::getGaussNodesAndWeights(void)
  * Removed DescriptionImplementation class
- * Removed method NumericalPoint::norm2 in favor of normSquare, normalize2 in favor of normalizeSquare
- * Removed SpectralModel::computeSpectralDensity
+ * Removed deprecated method NumericalPoint::norm2 in favor of normSquare, normalize2 in favor of normalizeSquare
+ * Removed deprecated method SpectralModel::computeSpectralDensity
 
 === Python module ===
  * Docstring documentation, can be used in combination with sphinx (in-progress)
