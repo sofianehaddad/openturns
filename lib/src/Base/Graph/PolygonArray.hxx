@@ -57,10 +57,10 @@ public:
                         const String & legend = "");
 
   /** Construction based on a set of vertices */
-  explicit PolygonArray(const NumericalSample & coordinates,
-                        const UnsignedInteger verticesNumber,
-                        const Description & palette,
-                        const String & legend = "");
+  PolygonArray(const NumericalSample & coordinates,
+              const UnsignedInteger verticesNumber,
+              const Description & palette,
+              const String & legend = "");
 
   /** String converter */
   String __repr__() const;

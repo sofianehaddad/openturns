@@ -47,16 +47,16 @@ public:
   typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
 
   /** Default constructor */
-  TemporalFunction(const UnsignedInteger meshDimension = 1);
+  explicit TemporalFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  TemporalFunction(const NumericalMathFunction & function,
+  explicit TemporalFunction(const NumericalMathFunction & function,
                    const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
-  TemporalFunction(const EvaluationImplementation & p_evaluation,
-                   const UnsignedInteger meshDimension = 1);
+  explicit TemporalFunction(const EvaluationImplementation & p_evaluation,
+                            const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */

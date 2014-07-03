@@ -47,21 +47,21 @@ public:
   typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
 
   /** Default constructor */
-  SpatialFunction(const UnsignedInteger meshDimension = 1);
+  explicit SpatialFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  SpatialFunction(const NumericalMathFunction & function,
+  explicit SpatialFunction(const NumericalMathFunction & function,
                   const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
-  SpatialFunction(const EvaluationImplementation & p_evaluation,
-                  const UnsignedInteger meshDimension = 1);
+  explicit SpatialFunction(const EvaluationImplementation & p_evaluation,
+                          const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
-  SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
-                  const UnsignedInteger meshDimension = 1);
+  explicit SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
+                          const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual SpatialFunction * clone() const;

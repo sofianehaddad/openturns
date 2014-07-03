@@ -49,8 +49,8 @@ public:
   explicit LevelSet(const UnsignedInteger dimension = 1);
 
   /** Parameters constructor, simplified for 1D case */
-  LevelSet(const NumericalMathFunction & function,
-           const NumericalScalar level = 0.0);
+  explicit LevelSet(const NumericalMathFunction & function,
+                    const NumericalScalar level = 0.0);
 
   /** Virtual constructor method */
   virtual LevelSet * clone() const;
