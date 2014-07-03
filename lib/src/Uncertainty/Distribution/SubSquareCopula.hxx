@@ -41,7 +41,7 @@ class OT_API SubSquareCopula
 public:
 
   /** Default constructor */
-  explicit SubSquareCopula();
+  SubSquareCopula();
 
   /** Default constructor */
   explicit SubSquareCopula(const NumericalMathFunction & phi);

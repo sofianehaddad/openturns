@@ -61,10 +61,10 @@ public:
                                 const NumericalScalar threshold);
 
   /** Standard constructor */
-  SimulationSensitivityAnalysis(const Event & event);
+  explicit SimulationSensitivityAnalysis(const Event & event);
 
   /** Standard constructor */
-  SimulationSensitivityAnalysis(const SimulationResult & result);
+  explicit SimulationSensitivityAnalysis(const SimulationResult & result);
 
   /** Virtual constructor */
   virtual SimulationSensitivityAnalysis * clone() const;

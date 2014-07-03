@@ -208,9 +208,6 @@ public:
   void initializeValidLegendPositions();
 
   /** Gives all the valid legend positions */
-  Description getValidLegendPositions();
-
-  /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();
 
 }; /* class Graph */

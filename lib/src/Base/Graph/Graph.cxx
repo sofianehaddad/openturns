@@ -353,12 +353,6 @@ void Graph::setLegendPosition(const String & position)
   return getImplementation()->setLegendPosition(position);
 }
 
-/* Gives all the valid legend positions */
-Description Graph::getValidLegendPositions()
-{
-  return getImplementation()->GetValidLegendPositions();
-}
-
 /* Get the legend font size */
 NumericalScalar Graph::getLegendFontSize() const
 {
