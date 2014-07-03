@@ -491,9 +491,9 @@ NumericalScalar Trapezoidal::getD() const
 void Trapezoidal::update()
 {
   setDimension(1);
-  if (d_ <= a_) throw InvalidArgumentException(HERE) << " in Trapezoidal : distribution parameter a must be greater than argument d, here a=" << a_ << " d=" << d_;
-  if (b_ < a_) throw InvalidArgumentException(HERE) << " in Trapezoidal : distribution parameter a must be greater or equal to argument b, here a=" << a_ << " b=" << b_;
-  if (c_ < b_) throw InvalidArgumentException(HERE) << " in Trapezoidal : distribution parameter b must be strictly greater than argument c, here b=" << b_ << " c=" << c_;
+  if (d_ <= a_) throw InvalidArgumentException(HERE) << " in Trapezoidal : distribution parameter d must be greater than argument a, here a=" << a_ << " d=" << d_;
+  if (b_ < a_) throw InvalidArgumentException(HERE) << " in Trapezoidal : distribution parameter b must be greater or equal to argument a, here a=" << a_ << " b=" << b_;
+  if (c_ <= b_) throw InvalidArgumentException(HERE) << " in Trapezoidal : distribution parameter c must be strictly greater than argument b, here b=" << b_ << " c=" << c_;
   if (d_ < c_) throw InvalidArgumentException(HERE) << " in Trapezoidal : distribution parameter d must be greater or equal to argument c, here c=" << c_ << " d=" << d_;
   h_ = 2. / (c_ - a_ + d_ - b_);
   isAlreadyComputedMean_ = false;
