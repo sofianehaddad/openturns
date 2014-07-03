@@ -13,9 +13,9 @@ arg2 : float
     If `parameters_set == ot.Beta.MUSIGMA`: the distribution's standard
     deviation.
 a : float
-    The lower bound.
+    Lower bound.
 b : float, :math:`b > a`
-    The upper bound.
+    Upper bound.
 parameters_set : int, optional
     An integer telling which parameters set is used for definining the
     distribution (amongst `ot.Beta.RT, ot.Beta.MUSIGMA`).
@@ -33,7 +33,7 @@ Its probability density function is defined as:
                   \quad x \in [a; b]
 
 with :math:`r < t` and :math:`a < b` and where :math:`\rm B` denotes
-Euler's beta function.
+Euler's beta function :class:`~openturns.SpecFunc_Beta`.
 
 Its first moments are:
 
@@ -84,7 +84,7 @@ t : float
 Returns
 -------
 a : float
-    The lower bound."
+    Lower bound."
 
 // ---------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ a : float
 Returns
 -------
 b : float
-    The upper bound."
+    Upper bound."
 
 // ---------------------------------------------------------------------
 
@@ -143,8 +143,8 @@ t : float, :math:`t > r`
 
 Parameters
 ----------
-a : float
-    The lower bound."
+a : float, :math:`a > b`
+    Lower bound."
 
 // ---------------------------------------------------------------------
 
@@ -154,7 +154,7 @@ a : float
 Parameters
 ----------
 b : float, :math:`b > a`
-    The upper bound."
+    Upper bound."
 
 // ---------------------------------------------------------------------
 

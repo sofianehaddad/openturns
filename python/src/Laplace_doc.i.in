@@ -54,7 +54,7 @@ lambda : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Laplace::getMu
-"Accessor to the distribution's locationparameter :math:`\mu`.
+"Accessor to the distribution's location parameter :math:`\mu`.
 
 Returns
 -------

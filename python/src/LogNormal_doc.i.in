@@ -72,7 +72,7 @@ Draw a sample:
 Returns
 -------
 gamma : float
-    Shit parameter :math:`\gamma`."
+    Shift parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ gamma : float
 Returns
 -------
 mu : float
-    The distribution's mean."
+    Mean."
 
 // ---------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ mu_log : float
 Returns
 -------
 sigma : float
-    The distribution's standard deviation."
+    Standard deviation."
 
 // ---------------------------------------------------------------------
 
@@ -122,7 +122,7 @@ sigma_log : float
 Returns
 -------
 cov : float
-    The distribution's coefficient of variation :math:`\sigma/\mu, \mu \neq 0`."
+    Coefficient of variation :math:`\sigma/\mu, \mu \neq 0`."
 
 // ---------------------------------------------------------------------
 
