@@ -61,7 +61,7 @@ TriangularFactory::Implementation TriangularFactory::build(const NumericalPointC
 Triangular TriangularFactory::buildAsTriangular(const NumericalSample & sample) const
 {
   const NumericalScalar size(sample.getSize());
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Triangular distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   const NumericalScalar xMin(sample.getMin()[0]);

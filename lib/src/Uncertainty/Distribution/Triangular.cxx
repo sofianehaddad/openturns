@@ -346,6 +346,7 @@ void Triangular::setAMB(const NumericalScalar a,
                         const NumericalScalar m,
                         const NumericalScalar b)
 {
+  if ( a >= b ) throw InvalidArgumentException(HERE) << "A MUST be less than b";
   if ( (m < a) || (m > b) || (b < a) ) throw InvalidArgumentException(HERE) << "M MUST be inclosed between a and b";
   if ((a != a_) || (m != m_) || (b != b_))
   {
