@@ -176,11 +176,13 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   KernelSmoothing ks;
   Collection< DistributionFactory > factories(DistributionFactory::GetContinuousUniVariateFactories());
   LOGINFO("In FunctionalChaosAlgorithm, identify marginal distributions");
+  const Description inputDescription(inputSample.getDescription());
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     const Distribution candidate(FittingTest::BestModelKolmogorov(inputSample.getMarginal(i), factories));
     if (FittingTest::GetLastResult().getPValue() > 1e-3) marginals[i] = candidate;
     else marginals[i] = ks.build(inputSample.getMarginal(i));
+    marginals[i].setDescription(Description(1, inputDescription[i]));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
     polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
   }
@@ -195,15 +197,22 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample, LeastSquaresMetaModelSelectionFactory(LAR(), KFold()));
     adaptiveStrategy_ = FixedStrategy(OrthogonalProductPolynomialFactory(polynomials), enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a sparse chaos expansion based on LAR and KFold for a total degree of " << maximumTotalDegree);
-  }
-  else
+  } // Small sample
+  if (inputSample.getSize() < ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-LargeSampleSize" ))
   {
     projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
     const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
     const UnsignedInteger basisSize(std::min(totalSize, maximumTotalDegree * maximumTotalDegree * inputSample.getDimension()));
     adaptiveStrategy_ = CleaningStrategy(OrthogonalProductPolynomialFactory(polynomials), totalSize, basisSize);
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a constrained chaos expansion based on CleaningStrategy for a total degree of " << maximumTotalDegree << " and a maximum number of terms of " << basisSize);
-  }
+  } // Medium sample
+  else
+  {
+    projectionStrategy_ = LeastSquaresStrategy(inputSample, outputSample);
+    const UnsignedInteger totalSize(enumerate.getStrataCumulatedCardinal(maximumTotalDegree));
+    adaptiveStrategy_ = FixedStrategy(OrthogonalProductPolynomialFactory(polynomials), totalSize);
+    LOGINFO(OSS() << "In FunctionalChaosAlgorithm, selected a chaos expansion based on FixedStrategy for a total degree of " << maximumTotalDegree);
+  } // Large sample
 }
 
 /* Constructor */

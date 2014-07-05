@@ -8,9 +8,9 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-#
-# Physical model
-#
+    #
+    # Physical model
+    #
 
     inputFunction = Description(6)
     inputFunction[0] = "X1"

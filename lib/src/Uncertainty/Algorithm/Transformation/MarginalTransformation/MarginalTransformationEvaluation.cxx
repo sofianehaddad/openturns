@@ -25,6 +25,7 @@
 #include "PersistentObjectFactory.hxx"
 #include "Uniform.hxx"
 #include "Log.hxx"
+#include "ResourceMap.hxx"
 #include "SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -99,7 +100,9 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         const NumericalPoint inputStandardRepresentativeParameters(inputStandardDistribution.getParametersCollection()[0]);
         const Distribution outputStandardDistribution(outputDistribution.getStandardRepresentative());
         const NumericalPoint outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
-        if (inputStandardRepresentativeParameters == outputStandardRepresentativeParameters)
+        const NumericalScalar difference((inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm());
+        const Bool sameParameters(difference < ResourceMap::GetAsNumericalScalar("MarginalTransformationEvaluation-ParametersEpsilon"));
+        if (sameParameters)
         {
           // The transformation is the composition of two affine transformations: (input distribution->standard representative of input distribution) and (standard representative of output distribution->output distribution)
           // The two affine transformations are obtained using quantiles in order to deal with distributions with no moments
@@ -136,8 +139,8 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
           const String formula(oss);
           expressions_[i] = NumericalMathFunction(xName, formula, yName);
           simplifications_[i] = 1;
-        }
-      }
+        } // sameParameters
+      } // inputClass == outputClass
       if (((inputClass == "ChiSquare") || (inputClass == "Exponential") || (inputClass == "Gamma")) &&
           ((outputClass == "ChiSquare") || (outputClass == "Exponential") || (outputClass == "Gamma")))
       {

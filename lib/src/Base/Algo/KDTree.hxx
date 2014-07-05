@@ -65,7 +65,8 @@ public:
 
   /** Get the indices of the k nearest neighbours of the given point */
   virtual Indices getNearestNeighboursIndices(const NumericalPoint & x,
-      const UnsignedInteger k) const;
+      const UnsignedInteger k,
+      const bool sorted  = false) const;
 
   /** Get the k nearest neighbours of the given point */
   virtual NumericalSample getNearestNeighbours(const NumericalPoint & x,
@@ -104,9 +105,9 @@ protected:
     String __repr__() const
     {
       return OSS() << "class=KDNode"
-                  << " index=" << index_
-                  << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
-                  << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
+             << " index=" << index_
+             << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
+             << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
     }
 
     /* Index of the nodal point */

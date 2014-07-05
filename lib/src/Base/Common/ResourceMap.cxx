@@ -719,6 +719,7 @@ void ResourceMap::loadDefaultConfiguration()
   // FunctionalChaosAlgorithm parameters //
   setAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6 );
   setAsNumericalScalar( "FunctionalChaosAlgorithm-SmallSampleSize", 1000);
+  setAsNumericalScalar( "FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   setAsNumericalScalar( "FunctionalChaosAlgorithm-MaximumMarginalDegree", 5 );
 
   // KrigingAlgorithm parameters //
@@ -746,6 +747,7 @@ void ResourceMap::loadDefaultConfiguration()
   // MarginalTransformationEvaluation parameters //
   setAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold", 0.99 );
   setAsUnsignedInteger( "MarginalTransformationEvaluation-Simplify", 1 );
+  setAsNumericalScalar( "MarginalTransformationEvaluation-ParametersEpsilon", 1e-14 );
 
   // DistributionImplementation parameters //
   setAsUnsignedInteger( "DistributionImplementation-DefaultPointNumber", 129 );

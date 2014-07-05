@@ -54,7 +54,7 @@ public:
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
-  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const NumericalPoint & x)
+  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const NumericalPoint & x, const bool sorted)
   {
     if (size_ != 0)
     {
@@ -65,9 +65,28 @@ public:
       values_[0] = SpecFunc::MaxNumericalScalar;
     }
     collectNearestNeighbours(p_node, x, 0);
-    Indices result(size_);
-    for (UnsignedInteger i = 0; i < size_; ++i) result[i] = indices_[i];
-    return result;
+    if (sorted)
+    {
+      /* Sort heap in-place in ascending order.
+         This breaks heap structure, but it does not matter, heap is
+         rebuilt when calling collectNearestNeighbours.
+       */
+      const UnsignedInteger realSize = size_;
+      while (size_ > 1)
+      {
+        // Move largest value at the end
+        std::swap(values_[size_ - 1], values_[0]);
+        std::swap(indices_[size_ - 1], indices_[0]);
+        // Make heap believe that largest value has been removed
+        --size_;
+        // Move new root to a valid location
+        moveNodeDown(0);
+      }
+      // Restore heap size
+      size_ = realSize;
+    }
+
+    return indices_;
   }
 
 private:
@@ -244,19 +263,20 @@ void KDTree::insert(KDNode::KDNodePointer & p_node,
 
 /* Get the indices of the k nearest neighbours of the given point */
 Indices KDTree::getNearestNeighboursIndices(const NumericalPoint & x,
-    const UnsignedInteger k) const
+    const UnsignedInteger k,
+    const bool sorted) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
   Indices result(k);
   // If we need as many neighbours as points in the sample, just return all the possible indices
-  if (k == points_.getSize())
+  if (k == points_.getSize() && !sorted)
   {
     result.fill();
   }
   else
   {
     KDNearestNeighboursFinder heap(points_, k);
-    result = heap.getNearestNeighboursIndices(p_root_, x);
+    result = heap.getNearestNeighboursIndices(p_root_, x, sorted);
   }
   return result;
 }

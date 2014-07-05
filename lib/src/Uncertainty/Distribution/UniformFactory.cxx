@@ -61,7 +61,7 @@ UniformFactory::Implementation UniformFactory::build() const
 Uniform UniformFactory::buildAsUniform(const NumericalSample & sample) const
 {
   const NumericalScalar size(sample.getSize());
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Uniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const NumericalScalar xMin(sample.getMin()[0]);
   const NumericalScalar a(xMin - std::abs(xMin) / (2.0 + size));

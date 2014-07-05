@@ -101,9 +101,9 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
     NumericalSample & result) const
 {
   // Normalization factor of the linear combination
-  NumericalScalar factor(1.0 / sqrt(1.0 * size_));
+  const NumericalScalar factor(1.0 / sqrt(1.0 * size_));
   // We have 2^size linear combinations to generate
-  UnsignedInteger indexLinearCombinationMax(2 << size_);
+  const UnsignedInteger indexLinearCombinationMax(1 << size_);
   // For each combination
   for (UnsignedInteger indexLinearCombination = 0; indexLinearCombination < indexLinearCombinationMax; ++indexLinearCombination)
   {
@@ -113,9 +113,9 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
     for (UnsignedInteger index = 0; index < size_; ++index)
     {
       // Which column of Q corresponds to the index position of indices?
-      UnsignedInteger column(indices[index]);
+      const UnsignedInteger column(indices[index]);
       // Sign affected to this column
-      NumericalScalar sign(1.0 - 2.0 * (mask % 2));
+      const NumericalScalar sign(1.0 - 2.0 * (mask % 2));
       // Summation
       for (UnsignedInteger row = 0; row < dimension_; ++row) direction[row] += sign * Q(row, column);
       // Next bit of the mask
@@ -131,9 +131,9 @@ NumericalSample OrthogonalDirection::generate() const
 {
   NumericalSample result(0, dimension_);
   Matrix Q(getUniformOrientationRealization());
-  Indices indices(dimension_);
+  Indices indices(size_);
   // Start with the first lexicographic combination
-  for (UnsignedInteger i = 0; i < dimension_; ++i) indices[i] = i;
+  indices.fill();
   computePartialSample(indices, Q, result);
   while(indices[0] != dimension_ - size_)
   {

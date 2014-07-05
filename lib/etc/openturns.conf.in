@@ -385,9 +385,10 @@
   <CleaningStrategy-DefaultSignificanceFactor value="1.0e-4" />
 
   <!-- OT::FunctionalChaosAlgorithm parameters -->
-  <FunctionalChaosAlgorithm-DefaultMaximumResidual    value="1.0e-6"  />
-  <FunctionalChaosAlgorithm-SmallSampleSize           value="1000"  />
-  <FunctionalChaosAlgorithm-MaximumTotalDegree        value="5"  />
+  <FunctionalChaosAlgorithm-DefaultMaximumResidual    value="1.0e-6" />
+  <FunctionalChaosAlgorithm-SmallSampleSize           value="1000"   />
+  <FunctionalChaosAlgorithm-LargeSampleSize           value="10000"  />
+  <FunctionalChaosAlgorithm-MaximumTotalDegree        value="5"      />
   
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />
@@ -412,8 +413,9 @@
   <HyperbolicAnisotropicEnumerateFunction-DefaultQ value="0.4" />
 
   <!-- OT::MarginalTransformationEvaluation parameters -->
-  <MarginalTransformationEvaluation-DefaultTailThreshold value="0.99" />
-  <MarginalTransformationEvaluation-Simplify             value="1" />
+  <MarginalTransformationEvaluation-DefaultTailThreshold value="0.99"  />
+  <MarginalTransformationEvaluation-Simplify             value="1"     />
+  <MarginalTransformationEvaluation-ParametersEpsilon    value="1e-14" />
 
   <!-- OT::DistributionImplementation parameters -->
   <DistributionImplementation-DefaultPointNumber             value="129"     />

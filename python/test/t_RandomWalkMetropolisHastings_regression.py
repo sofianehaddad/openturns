@@ -21,8 +21,6 @@ def buildPoly(p):
 
 try:
 
-#     Log::Show(Log::ALL)
-#     TTY::ShowColors(false)
     chainDim = 3
     obsDim = 1
     outputDim = 1

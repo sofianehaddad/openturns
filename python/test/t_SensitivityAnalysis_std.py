@@ -37,9 +37,9 @@ try:
     sample2 = maDistribution.getSample(size)
 
     # for i in range(size):
-        # for j in range(dimension):
-            #sample1[i, j] = (i-0.75)/size
-            #sample2[i, j] = (i-0.25)/size
+    # for j in range(dimension):
+    #sample1[i, j] = (i-0.75)/size
+    #sample2[i, j] = (i-0.25)/size
 
     sensitivityAnalysis = SensitivityAnalysis(sample1, sample2, model)
     sensitivityAnalysis.setBlockSize(17)
