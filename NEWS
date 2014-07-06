@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.4 release (in-progress) == #release-1.4
+== 1.4rc1 release (2014-07-07) == #release-1.4rc1
 
 === Library ===
 
@@ -50,13 +50,16 @@
 === Bug fixes ===
  * #693 (Distribution.computeCDFGradient(NumericalSample) segfaults)
  * #697 (Problem with LogNormal on constant sample)
+ * #700 (Problem with MeixnerDistribution (continuation))
  * #706 (rot tests fail with r 3.1.0)
  * #707 (Error when executing ot.Multinomial().drawCDF())
  * #708 (Typing across OpenTURNS matrices hangs, fills RAM and is eventually killed)
  * #710 (Slicing matrices)
  * #718 (DirectionalSampling does not set the dimension of the SamplingStrategy)
  * #712 (do not pass python arguments as reference)
-
+ * #722 (Problem with drawPDF() for Triangular distribution)
+ * #726 (Defect in the Multinomial distribution constructor)
+ 
 == 1.3 release (2014-03-06) == #release-1.3
 
 === Library ===
