@@ -51,6 +51,7 @@ Distribution FittingTest::BestModelBIC(const NumericalSample & sample,
 {
   const UnsignedInteger size(factoryCollection.getSize());
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
+  Bool builtAtLeastOne = false;
   Distribution bestDistribution;
   NumericalScalar bestConcordanceMeasure(SpecFunc::MaxNumericalScalar);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -66,6 +67,7 @@ Distribution FittingTest::BestModelBIC(const NumericalSample & sample,
       {
         bestConcordanceMeasure = concordanceMeasure;
         bestDistribution = distribution;
+        builtAtLeastOne = true;
       }
     }
     catch (InvalidArgumentException & ex)
@@ -73,6 +75,7 @@ Distribution FittingTest::BestModelBIC(const NumericalSample & sample,
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
     }
   }
+  if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
   if (bestConcordanceMeasure == SpecFunc::MaxNumericalScalar) LOGWARN(OSS(false) << "Be carefull, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   return bestDistribution;
 }
@@ -111,6 +114,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
   const UnsignedInteger size(factoryCollection.getSize());
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   const NumericalScalar fakeLevel(0.5);
+  Bool builtAtLeastOne = false;
   Distribution bestDistribution;
   TestResult bestResult;
   NumericalScalar bestPValue(0.0);
@@ -128,6 +132,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
         bestPValue = result.getPValue();
         bestResult = result;
         bestDistribution = distribution;
+        builtAtLeastOne = true;
       }
     }
     catch (InvalidArgumentException & ex)
@@ -135,6 +140,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
     }
   }
+  if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
   if ( bestPValue == 0.0) LOGWARN(OSS(false) << "Be carefull, the best model has a p-value of zero. The output distribution must be severely wrong.");
   lastResult_ = bestResult;
   return bestDistribution;
