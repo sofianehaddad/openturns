@@ -139,6 +139,7 @@ ot_add_python_module( typ typ_module.i
                     )
                     
 ot_add_python_module( statistics statistics_module.i
+                      LevelSet.i
                       Compact.i
                       Full.i
                       Last.i
@@ -200,11 +201,10 @@ ot_add_python_module( geom geom_module.i
                       Mesh.i
                       Domain.i
                       Interval.i
-                      LevelSet.i
-		      RegularGrid.i
+                      RegularGrid.i
                       MeshFactoryImplementation.i
                       MeshFactory.i
-		      IntervalMesher.i
+                      IntervalMesher.i
                       BaseGeomTemplateDefs.i
                      )
                      

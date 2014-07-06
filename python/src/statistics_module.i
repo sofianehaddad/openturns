@@ -41,6 +41,7 @@
 /* Base/Geom */
 %import geom_module.i
 %import BaseGeomTemplateDefs.i
+%include LevelSet.i
 
 /* Base/Stat */ 
 %include Compact.i  
