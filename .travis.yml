@@ -27,15 +27,13 @@ matrix:
           #compiler: clang
           #env: BUILD_PYTHON=OFF
     - os: osx
+      osx_image: xcode12.2
       compiler: clang
 
 before_install:
   - if test "$TRAVIS_OS_NAME" = "osx"; then
-        brew update &&
-        brew unlink python@2 &&
-        brew install swig openblas bison flex cminpack ceres-solver dlib nlopt tbb cmake &&
+        brew install nlopt tbb &&
         export HOMEBREW_PREFIX=`brew --prefix`;
-        pip3 install matplotlib scipy;
     fi
 
 install:
@@ -50,12 +48,9 @@ install:
              -DHMAT_DISABLE_OPENMP=OFF . ;
     fi
   - if test "$TRAVIS_OS_NAME" = "osx"; then
-        cmake -DCMAKE_INSTALL_PREFIX=~/.local
-              -DCMAKE_MACOSX_RPATH=ON
-              -DCBLAS_LIBRARIES=$HOMEBREW_PREFIX/opt/openblas/lib/libopenblas.dylib
-              -DBLAS_LIBRARIES=$HOMEBREW_PREFIX/opt/openblas/lib/libopenblas.dylib
-              -DLAPACK_LIBRARIES=$HOMEBREW_PREFIX/opt/openblas/lib/libopenblas.dylib
-              -DCBLAS_INCLUDE_DIRS=$HOMEBREW_PREFIX/opt/openblas/include . ;
+       EXTRA_CMAKE_FLAGS="-DCMAKE_CXX_FLAGS=-std=c++11 -DCMAKE_MACOSX_RPATH=ON -DCBLAS_LIBRARIES=/usr/local/opt/openblas/lib/libopenblas.dylib -DBLAS_LIBRARIES=/usr/local/opt/openblas/lib/libopenblas.dylib -DLAPACK_LIBRARIES=/usr/local/opt/openblas/lib/libopenblas.dylib -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include" 
+       CMAKE_BUILD_TYPE=Release BUILD_SHARED_LIBS=ON;
+       cmake -DCMAKE_INSTALL_PREFIX=~/.local -DBUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE $EXTRA_CMAKE_FLAGS .;
     fi
   - make install -j4
   - popd
@@ -76,11 +71,6 @@ script:
               -DCMAKE_MACOSX_RPATH=ON
               -DHMAT_DIR=~/.local/lib/cmake/hmat
               -DLAPACK_LIBRARIES="-framework Accelerate"
-              -DUSE_SPHINX=OFF
-              -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison
-              -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex
-              -DFLEX_INCLUDE_DIR=/usr/local/opt/flex/include
-              -DPYTHON_EXECUTABLE=/usr/local/bin/python3
               -DUSE_COTIRE=ON
               -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4"
               . &&
@@ -89,7 +79,7 @@ script:
   - if test "${BUILD_PYTHON}" = "OFF"; then
         make tests -j2 && ctest -R cppcheck -j2 --output-on-failure --timeout 100;
     else
-        ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100;
+        make tests -j2 && ctest -R cppcheck -j4 --output-on-failure --timeout 100;
     fi
 
 after_success:
