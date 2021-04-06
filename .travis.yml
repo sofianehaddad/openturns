@@ -30,12 +30,6 @@ matrix:
       osx_image: xcode12.2
       compiler: clang
 
-before_install:
-  - if test "$TRAVIS_OS_NAME" = "osx"; then
-        brew install nlopt tbb &&
-        export HOMEBREW_PREFIX=`brew --prefix`;
-    fi
-
 install:
   # use system python
   - export PATH=/usr/bin:$PATH
