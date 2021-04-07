@@ -30,24 +30,6 @@ matrix:
       osx_image: xcode12.2
       compiler: clang
 
-install:
-  # use system python
-  - export PATH=/usr/bin:$PATH
-  # use latest hmat-oss
-  - git clone https://github.com/jeromerobert/hmat-oss.git
-  - pushd hmat-oss
-  - git checkout 1.6.1
-  - if test "$TRAVIS_OS_NAME" = "linux"; then
-       cmake -DCMAKE_INSTALL_PREFIX=~/.local
-             -DHMAT_DISABLE_OPENMP=OFF . ;
-    fi
-  - if test "$TRAVIS_OS_NAME" = "osx"; then
-       EXTRA_CMAKE_FLAGS="-DCMAKE_CXX_FLAGS=-std=c++11 -DCMAKE_MACOSX_RPATH=ON -DCBLAS_LIBRARIES=/usr/local/opt/openblas/lib/libopenblas.dylib -DBLAS_LIBRARIES=/usr/local/opt/openblas/lib/libopenblas.dylib -DLAPACK_LIBRARIES=/usr/local/opt/openblas/lib/libopenblas.dylib -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include" 
-       CMAKE_BUILD_TYPE=Release BUILD_SHARED_LIBS=ON;
-       cmake -DCMAKE_INSTALL_PREFIX=~/.local -DBUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE $EXTRA_CMAKE_FLAGS .;
-    fi
-  - make install -j4
-  - popd
 
 script:
   - if test "$TRAVIS_OS_NAME" = "linux"; then
@@ -63,10 +45,7 @@ script:
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         cmake -DCMAKE_INSTALL_PREFIX=~/.local
               -DCMAKE_MACOSX_RPATH=ON
-              -DHMAT_DIR=~/.local/lib/cmake/hmat
               -DLAPACK_LIBRARIES="-framework Accelerate"
-              -DUSE_COTIRE=ON
-              -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4"
               . &&
         make install -j4;
     fi
