@@ -17,9 +17,7 @@ jobs:
            cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
            make install -j$(sysctl -n hw.logicalcpu)
     - run:  |
-        cmake -DR_EXECUTABLE="dummyR" \
-        -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
-        -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
+        cmake -DUSE_R=OFF \
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
         -DUSE_SWIG=OFF \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
