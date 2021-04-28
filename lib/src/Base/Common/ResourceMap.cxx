@@ -1344,9 +1344,9 @@ void ResourceMap::loadDefaultConfiguration()
   // HMatrix parameters //
   addAsBool("HMatrix-ForceSequential", false);
   addAsScalar("HMatrix-AdmissibilityFactor", 100.0);
-  addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
+  addAsScalar("HMatrix-AcaEpsilon", 1.0e-4);
   addAsScalar("HMatrix-LargestEigenValueRelativeError", 1.0e-1);
-  addAsScalar("HMatrix-RecompressionEpsilon", 1.0e-4);
+  addAsScalar("HMatrix-CoarseningEpsilon", 1.0e-4);
   addAsScalar("HMatrix-ValidationError", 0.0);
   addAsString("HMatrix-ClusteringAlgorithm", "median");
   addAsString("HMatrix-CompressionMethod", "AcaRandom");

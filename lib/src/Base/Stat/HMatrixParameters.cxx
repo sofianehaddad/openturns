@@ -31,8 +31,8 @@ static const Factory<HMatrixParameters> Factory_HMatrixParameters;
 
 HMatrixParameters::HMatrixParameters()
   : PersistentObject()
-  , assemblyEpsilon_(ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon"))
-  , recompressionEpsilon_(ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon"))
+  , acaEpsilon_(ResourceMap::GetAsScalar("HMatrix-AcaEpsilon"))
+  , coarseningEpsilon_(ResourceMap::GetAsScalar("HMatrix-CoarseningEpsilon"))
   , admissibilityFactor_(ResourceMap::GetAsScalar("HMatrix-AdmissibilityFactor"))
   , clusteringAlgorithm_(ResourceMap::GetAsString("HMatrix-ClusteringAlgorithm"))
   , compressionMethod_(ResourceMap::GetAsString("HMatrix-CompressionMethod"))
@@ -47,25 +47,25 @@ HMatrixParameters * HMatrixParameters::clone() const
 }
 
 /** accessor for assembly epsilon */
-void HMatrixParameters::setAssemblyEpsilon(const Scalar assemblyEpsilon)
+void HMatrixParameters::setAcaEpsilon(const Scalar acaEpsilon)
 {
-  assemblyEpsilon_ = assemblyEpsilon;
+  acaEpsilon_ = acaEpsilon;
 }
 
-Scalar HMatrixParameters::getAssemblyEpsilon() const
+Scalar HMatrixParameters::getAcaEpsilon() const
 {
-  return assemblyEpsilon_;
+  return acaEpsilon_;
 }
 
 /** accessor for recompression epsilon */
-void HMatrixParameters::setRecompressionEpsilon(const Scalar recompressionEpsilon)
+void HMatrixParameters::setCoarseningEpsilon(const Scalar coarseningEpsilon)
 {
-  recompressionEpsilon_ = recompressionEpsilon;
+  coarseningEpsilon_ = coarseningEpsilon;
 }
 
-Scalar HMatrixParameters::getRecompressionEpsilon() const
+Scalar HMatrixParameters::getCoarseningEpsilon() const
 {
-  return recompressionEpsilon_;
+  return coarseningEpsilon_;
 }
 
 /** accessor for admissibility factor */
@@ -122,8 +122,8 @@ String HMatrixParameters::__repr__() const
 {
   OSS oss(true);
   oss << "class= " << HMatrixParameters::GetClassName()
-      << ", assembly epsilon= " << assemblyEpsilon_
-      << ", recompression epsilon=" << recompressionEpsilon_
+      << ", assembly epsilon= " << acaEpsilon_
+      << ", recompression epsilon=" << coarseningEpsilon_
       << ", admissibility factor=" << admissibilityFactor_
       << ", clustering algorithm=" << clusteringAlgorithm_
       << ", compression method=" << compressionMethod_;
@@ -142,8 +142,8 @@ void HMatrixParameters::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
 
-  adv.saveAttribute("assemblyEpsilon_", assemblyEpsilon_);
-  adv.saveAttribute("recompressionEpsilon_", recompressionEpsilon_);
+  adv.saveAttribute("acaEpsilon_", acaEpsilon_);
+  adv.saveAttribute("coarseningEpsilon_", coarseningEpsilon_);
   adv.saveAttribute("admissibilityFactor_", admissibilityFactor_);
   adv.saveAttribute("clusteringAlgorithm_", clusteringAlgorithm_);
   adv.saveAttribute("compressionMethod_", compressionMethod_);
@@ -153,8 +153,8 @@ void HMatrixParameters::save(Advocate & adv) const
 void HMatrixParameters::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute("assemblyEpsilon_", assemblyEpsilon_);
-  adv.loadAttribute("recompressionEpsilon_", recompressionEpsilon_);
+  adv.loadAttribute("acaEpsilon_", acaEpsilon_);
+  adv.loadAttribute("coarseningEpsilon_", coarseningEpsilon_);
   adv.loadAttribute("admissibilityFactor_", admissibilityFactor_);
   adv.loadAttribute("clusteringAlgorithm_", clusteringAlgorithm_);
   adv.loadAttribute("compressionMethod_", compressionMethod_);

@@ -379,7 +379,7 @@ void HMatrixImplementation::factorize(const String& method)
     LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, or LLt.");
 
   // Compute a reasonable regularization factor
-  Scalar lambda = 2.0 * computeApproximateLargestEigenValue() * ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+  Scalar lambda = 2.0 * computeApproximateLargestEigenValue() * ResourceMap::GetAsScalar("HMatrix-AcaEpsilon");
 
   // create a backup copy as the factorization can leave the matrix in a broken state and should not be reused
   hmat_matrix_t* hmatBackup = static_cast<hmat_matrix_t*>(hmat_);
@@ -591,12 +591,12 @@ Bool HMatrixImplementation::setKey(const String & name, const String & value)
   else if (name == "assembly-epsilon")
   {
     std::istringstream iss( value );
-    iss >> settings.assemblyEpsilon;
+    iss >> settings.acaEpsilon;
   }
   else if (name == "recompression-epsilon")
   {
     std::istringstream iss( value );
-    iss >> settings.recompressionEpsilon;
+    iss >> settings.coarseningEpsilon;
   }
   else
     LOGWARN( OSS() << "Unknown parameter: " << name);

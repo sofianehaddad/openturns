@@ -43,12 +43,12 @@ public:
   HMatrixParameters * clone() const override;
 
   /** accessor for assembly epsilon */
-  void setAssemblyEpsilon(const Scalar assemblyEpsilon);
-  Scalar getAssemblyEpsilon() const;
+  void setAcaEpsilon(const Scalar acaEpsilon);
+  Scalar getAcaEpsilon() const;
 
   /** accessor for recompression epsilon */
-  void setRecompressionEpsilon(const Scalar recompressionEpsilon);
-  Scalar getRecompressionEpsilon() const;
+  void setCoarseningEpsilon(const Scalar coarseningEpsilon);
+  Scalar getCoarseningEpsilon() const;
 
   /** accessor for admissibility factor */
   void setAdmissibilityFactor(const Scalar admissibilityFactor);
@@ -74,8 +74,8 @@ public:
   void load(Advocate & adv) override;
 
 private:
-  Scalar assemblyEpsilon_;
-  Scalar recompressionEpsilon_;
+  Scalar acaEpsilon_;
+  Scalar coarseningEpsilon_;
   Scalar admissibilityFactor_;
   String clusteringAlgorithm_;
   String compressionMethod_;

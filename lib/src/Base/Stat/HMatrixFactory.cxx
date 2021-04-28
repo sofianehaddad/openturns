@@ -80,8 +80,8 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
 
   hmat_get_parameters(&settings);
   settings.compressionMethod = parameters.getCompressionMethodAsUnsignedInteger();
-  settings.assemblyEpsilon = parameters.getAssemblyEpsilon();
-  settings.recompressionEpsilon = parameters.getRecompressionEpsilon();
+  settings.acaEpsilon = parameters.getAcaEpsilon();
+  settings.coarseningEpsilon = parameters.getCoarseningEpsilon();
   settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
 
   settings.validationErrorThreshold = ResourceMap::GetAsScalar("HMatrix-ValidationError");
