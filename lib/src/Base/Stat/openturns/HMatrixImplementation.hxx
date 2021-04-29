@@ -64,7 +64,7 @@ public:
   // static for C API
   static void compute(void *me, int i, int j, void *result)
   {
-    *static_cast<Scalar*>(result) = static_cast<HMatrixRealAssemblyFunction *>(me)->operator(i, j);
+    *static_cast<Scalar*>(result) = static_cast<HMatrixRealAssemblyFunction *>(me)->operator()(i, j);
   }
 };
 
