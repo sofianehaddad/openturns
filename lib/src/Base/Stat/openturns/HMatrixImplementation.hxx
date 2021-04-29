@@ -65,7 +65,8 @@ public:
   static void compute(void *me, int i, int j, void *result)
   {
     *static_cast<Scalar*>(result) = static_cast<HMatrixRealAssemblyFunction *>(me)->operator(i, j);
-  };
+  }
+};
 
 class OT_API HMatrixTensorRealAssemblyFunction
 {
