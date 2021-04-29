@@ -123,7 +123,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   Scalar eta = parameters.getAdmissibilityFactor();
   hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
   hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
-  hmatInterface->set_low_rank_epsilon(*ptrHMat, parameters.getAcaEpsilon());
+  hmatInterface->set_low_rank_epsilon(ptrHMat, parameters.getAcaEpsilon());
   hmat_delete_admissibility(admissibility);
   return HMatrix(new HMatrixImplementation(hmatInterface, ct, outputDimension * size, ptrHMat));
 #endif /* OPENTURNS_HAVE_HMAT */
