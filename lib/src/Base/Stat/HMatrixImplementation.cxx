@@ -315,7 +315,7 @@ UnsignedInteger HMatrixImplementation::getNbColumns() const
 #endif
 }
 
-void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry)
+void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& , char symmetry)
 {
 #ifdef OPENTURNS_HAVE_HMAT
   int sym = 0;
