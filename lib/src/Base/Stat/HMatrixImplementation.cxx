@@ -278,8 +278,8 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
   }
 
   //static_cast<hmat_interface_t*>(hmatInterface_)->assemble_simple_interaction(static_cast<hmat_matrix_t*>(hmat_), const_cast<HMatrixRealAssemblyFunction*>(&f), &trampoline_simple, sym);
-  AssemblyFunction<D_t, SimpleFunction> simple(
-      SimpleFunction<D_t>(&KrigingFunction::compute, &HMatrixRealAssemblyFunction), new CompressionAcaPlus(1e-4));
+  AssemblyFunction<Scalar, SimpleFunction> simple(
+      SimpleFunction<Scalar>(&f::compute, &HMatrixRealAssemblyFunction), new CompressionAcaPlus(1e-4));
 
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -577,6 +577,7 @@ Bool HMatrixImplementation::setKey(const String & name, const String & value)
 #ifdef OPENTURNS_HAVE_HMAT
   hmat_settings_t settings;
   hmat_get_parameters(&settings);
+  /*
   if (name == "compression")
   {
     if (value == "Svd")
@@ -592,12 +593,13 @@ Bool HMatrixImplementation::setKey(const String & name, const String & value)
     else
       LOGWARN( OSS() << "Unknown compression method: " << value << ". Valid values are: SVD, ACAfull, ACApartial or ACA+");
   }
-  else if (name == "assembly-epsilon")
+  else if (name == "aca-epsilon")
   {
     std::istringstream iss( value );
     iss >> settings.acaEpsilon;
   }
-  else if (name == "recompression-epsilon")
+  */
+  if (name == "coarsening-epsilon")
   {
     std::istringstream iss( value );
     iss >> settings.coarseningEpsilon;
