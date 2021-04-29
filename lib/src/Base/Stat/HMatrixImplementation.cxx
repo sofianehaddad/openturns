@@ -43,7 +43,7 @@ static void trampoline_simple(void* user_context, int row, int col, void* result
 }
 
 /**
-  Auxiliary data structure to represente a couple of degrees of freedom.
+  Auxiliary data structure to represent a couple of degrees of freedom.
   This data structure will be sorted by compare_couple_indices so that
   all couples which have the same (point_1,point_2) are stored together.
 */
@@ -277,7 +277,10 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
       throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
 
-  static_cast<hmat_interface_t*>(hmatInterface_)->assemble_simple_interaction(static_cast<hmat_matrix_t*>(hmat_), const_cast<HMatrixRealAssemblyFunction*>(&f), &trampoline_simple, sym);
+  //static_cast<hmat_interface_t*>(hmatInterface_)->assemble_simple_interaction(static_cast<hmat_matrix_t*>(hmat_), const_cast<HMatrixRealAssemblyFunction*>(&f), &trampoline_simple, sym);
+  AssemblyFunction<D_t, SimpleFunction> simple(
+      SimpleFunction<D_t>(&KrigingFunction::compute, &HMatrixRealAssemblyFunction), new CompressionAcaPlus(1e-4));
+
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -328,10 +331,11 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f,
     default:
       throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
+  /*
   static_cast<hmat_interface_t*>(hmatInterface_)->assemble(
     static_cast<hmat_matrix_t*>(hmat_),
     const_cast<HMatrixTensorRealAssemblyFunction*>(&f),
-    &trampoline_hmat_prepare_block, &trampoline_compute, sym);
+    &trampoline_hmat_prepare_block, &trampoline_compute, sym);*/
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif

@@ -79,8 +79,8 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
     hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
 
   hmat_get_parameters(&settings);
-  settings.compressionMethod = parameters.getCompressionMethodAsUnsignedInteger();
-  settings.acaEpsilon = parameters.getAcaEpsilon();
+  //settings.compressionMethod = parameters.getCompressionMethodAsUnsignedInteger();
+  //settings.acaEpsilon = parameters.getAcaEpsilon();
   settings.coarseningEpsilon = parameters.getCoarseningEpsilon();
   settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
 
@@ -123,6 +123,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   Scalar eta = parameters.getAdmissibilityFactor();
   hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
   hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
+  hmatInterface->set_low_rank_epsilon(*ptrHMat, parameter.getAcaEpsilon());
   hmat_delete_admissibility(admissibility);
   return HMatrix(new HMatrixImplementation(hmatInterface, ct, outputDimension * size, ptrHMat));
 #endif /* OPENTURNS_HAVE_HMAT */

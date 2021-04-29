@@ -60,7 +60,12 @@ public:
 
   // Compute matrix coefficient for degrees of freedom i and j
   virtual Scalar operator() (UnsignedInteger i, UnsignedInteger j) const = 0;
-};
+  
+  // static for C API
+  static void compute(void *me, int i, int j, void *result)
+  {
+    *static_cast<Scalar*>(result) = static_cast<HMatrixRealAssemblyFunction *>(me)->operator(i, j);
+  };
 
 class OT_API HMatrixTensorRealAssemblyFunction
 {
@@ -211,13 +216,13 @@ public:
 
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const;
 
-private:
-  const CovarianceModel covarianceModel_;
-  const Sample vertices_;
-  const Collection<Scalar>::const_iterator verticesBegin_;
-  const UnsignedInteger inputDimension_;
-  const UnsignedInteger covarianceDimension_;
-};
+  private:
+    const CovarianceModel covarianceModel_;
+    const Sample vertices_;
+    const Collection<Scalar>::const_iterator verticesBegin_;
+    const UnsignedInteger inputDimension_;
+    const UnsignedInteger covarianceDimension_;
+  };
 
 // Second implementation, by using HMatrixTensorRealAssemblyFunction
 // Each local covariance matrix is built only once, and its components
