@@ -83,3 +83,4 @@
 %include UniformOrderStatistics.i
 %include GeneralizedExtremeValueValidation.i
 %include GeneralizedParetoValidation.i
+%include GaussianProcessFitterResult.i
