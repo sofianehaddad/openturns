@@ -84,3 +84,4 @@
 %include GeneralizedExtremeValueValidation.i
 %include GeneralizedParetoValidation.i
 %include GaussianProcessFitterResult.i
+%include GaussianProcessFitter.i
