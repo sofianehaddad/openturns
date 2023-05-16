@@ -94,14 +94,16 @@ myProcess4.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
 sample = myProcess4.getSample(size)
 print("mean over ", size, " realizations = ", sample.computeMean())
 print("variance over ", size, " realizations = ", sample.computeVariance())
+ot.ResourceMap.SetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration", 250)
 myProcess4.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
+size = 200
 sample = myProcess4.getSample(size)
 print("mean over ", size, " realizations = ", sample.computeMean())
 print("variance over ", size, " realizations = ", sample.computeVariance())
-
 trend5 = ot.TrendTransform(
     ot.SymbolicFunction(["t"], ["sin(pi_ / 2 * t)", "2 * sin(pi_ / 2 * t)"]), myTimeGrid
 )
+size = 1000
 myProcess5 = ot.GaussianProcess(trend5, myCovModel, myTimeGrid)
 print("myProcess5 = ", myProcess5)
 print("is stationary? ", myProcess5.isStationary())
@@ -109,6 +111,7 @@ myProcess5.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
 sample = myProcess5.getSample(size)
 print("mean over ", size, " realizations = ", sample.computeMean())
 print("variance over ", size, " realizations = ", sample.computeVariance())
+size = 200
 myProcess5.setSamplingMethod(ot.GaussianProcess.GALLIGAOGIBBS)
 sample = myProcess5.getSample(size)
 print("mean over ", size, " realizations = ", sample.computeMean())

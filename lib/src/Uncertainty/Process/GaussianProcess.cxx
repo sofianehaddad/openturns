@@ -208,7 +208,7 @@ void GaussianProcess::setSamplingMethod(const SamplingMethod samplingMethod)
 Field GaussianProcess::getRealization() const
 {
   Sample values;
-  if ((getOutputDimension() == 1) && (samplingMethod_ == 2))
+  if (samplingMethod_ == 2)
     values = getRealizationGibbs();
   else if (samplingMethod_ == 1)
     values = getRealizationHMatrix();
@@ -234,28 +234,42 @@ Sample GaussianProcess::getRealizationGibbs() const
   const UnsignedInteger fullSize = size * outputDimension;
   const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration"));
 
-  Sample values(fullSize, 1);
-  const KPermutationsDistribution permutationDistribution(fullSize, fullSize);
+  const KPermutationsDistribution permutationDistribution(size, size);
   const Sample permutationSample(permutationDistribution.getSample(nMax));
+  Point delta(outputDimension);
+  Sample perturbationSample(fullSize, outputDimension);
   for (UnsignedInteger n = 0; n < nMax; ++n)
   {
     LOGINFO(OSS() << "Gibbs sampler - start iteration " << n + 1 << " over " << nMax);
-    for (UnsignedInteger i = 0; i < fullSize; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
       const UnsignedInteger index = static_cast< UnsignedInteger >(permutationSample(n, i));
-      LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << fullSize - 1);
+      LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << size - 1);
       // Here we implement equation (6) of Arroyo and Emery (2020) with rho=0 and J={j}
+      // CovarianceRow is of dimension outputDimension_
+      // We select only the ith marginal, i corresponding to the rest of index / outputDim
       const Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
-      const Scalar diagonalIndex = covarianceRow(index, 0);
-      const Point delta(1, (std::sqrt(diagonalIndex) * DistFunc::rNormal() - values(index, 0)) / diagonalIndex);
-      values += covarianceRow * delta;
+      // covarianceRow has dimension = outputDimension
+      for (UnsignedInteger marginalIndex = 0; marginalIndex < outputDimension; ++marginalIndex)
+      {
+        const UnsignedInteger localIndex = index * outputDimension + marginalIndex;
+        const Scalar diagonalValue = covarianceRow(localIndex, marginalIndex);
+        delta[marginalIndex] = (std::sqrt(diagonalValue) * DistFunc::rNormal() - perturbationSample(localIndex, marginalIndex)) / diagonalValue;
+      }
+      perturbationSample += covarianceRow * delta;
     }
   }
-  // for output dim > 1 we need to reshape data
-  if (outputDimension == 1) return values;
+  if (outputDimension == 1)
+    return perturbationSample;
   Sample outputValues(size, outputDimension);
-  const Point rawData(values.getImplementation()->getData());
-  outputValues.getImplementation()->setData(rawData);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    for (UnsignedInteger marginalIndex = 0; marginalIndex < outputDimension; ++marginalIndex)
+    {
+      for (UnsignedInteger localIndex = 0; localIndex < outputDimension; ++localIndex)
+        outputValues(i, marginalIndex) += perturbationSample(i * outputDimension + marginalIndex, localIndex);
+    }
+  }
   return outputValues;
 }
 
