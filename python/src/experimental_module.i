@@ -87,3 +87,4 @@
 %include GaussianProcessFitter.i
 %include GaussianProcessRegressionResult.i
 %include GaussianProcessRegression.i
+%include GaussianProcessConditionalCovariance.i
