@@ -7,7 +7,7 @@
 Parameters
 ----------
 gprResult :  :class:`~openturns.experimental.GaussianProcessRegressionResult`
-    The result class of a gaussian process regression.
+    The result class of a Gaussian process regression.
 
 
 Notes
