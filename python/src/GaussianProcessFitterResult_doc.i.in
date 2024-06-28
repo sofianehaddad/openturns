@@ -36,7 +36,7 @@ linAlgMethod : int
 
 Notes
 -----
-The structure is usually created by the method *run()* of a :class:`~openturns.experimental.GaussianProcessFitter`, and obtained thanks to the *getResult()* method.
+The structure is usually created by the method `run` of a :class:`~openturns.experimental.GaussianProcessFitter`, and obtained thanks to the `getResult()` method.
 
 The meta model :math:`\tilde{\cM}: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` is defined by:
 
