@@ -80,6 +80,8 @@
 #include "openturns/SobolSequence.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/MemoizeFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -2516,26 +2518,45 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
 
 
 // Structure used to implement the computeQuantile() method efficiently
-struct CopulaQuantileWrapper
-{
-  CopulaQuantileWrapper(const DistributionImplementation * p_distribution)
+  class CopulaQuantileWrapper: public EvaluationImplementation
+  {
+  public:
+
+    CopulaQuantileWrapper(const DistributionImplementation * p_distribution)
     : p_distribution_(p_distribution)
     , dimension_(p_distribution->getDimension())
-  {
-    // Nothing to do
-  }
+    {
+      // Nothing to do
+    }
 
-  Point computeDiagonal(const Point & u) const
-  {
-    const Point point(dimension_, u[0]);
-    const Scalar cdf = p_distribution_->computeCDF(point);
-    const Point value(1, cdf);
-    return value;
-  }
+    CopulaQuantileWrapper * clone() const override
+    {
+      return new CopulaQuantileWrapper(*this);
+    }
 
-  const DistributionImplementation * p_distribution_;
-  const UnsignedInteger dimension_;
-}; // struct CopulaQuantileWrapper
+    Point operator() (const Point & u) const override
+    {
+      const Point point(dimension_, u[0]);
+      const Scalar cdf = p_distribution_->computeCDF(point);
+      const Point value(1, cdf);
+      return value;
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+  protected:
+    const DistributionImplementation * p_distribution_;
+    const UnsignedInteger dimension_;
+  }; // CopulaQuantileWrapper
+
 
 /* Generic implementation of the quantile computation for copulas */
 Point DistributionImplementation::computeQuantileCopula(const Scalar prob,
@@ -2549,7 +2570,7 @@ Point DistributionImplementation::computeQuantileCopula(const Scalar prob,
   // Special case for dimension 1
   if (dimension == 1) return Point(1, q);
   CopulaQuantileWrapper wrapper(this);
-  const Function f(bindMethod<CopulaQuantileWrapper, Point, Point>(wrapper, &CopulaQuantileWrapper::computeDiagonal, 1, 1));
+  MemoizeFunction f(wrapper);
   Scalar leftTau = q;
   const Point leftPoint(1, leftTau);
   const Point leftValue(f(leftPoint));
@@ -2604,8 +2625,8 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
   // max(n\tau - n + 1, 0) <= C(\tau,...,\tau) <= \tau
   // from which we deduce that q <= \tau and \tau <= 1 - (1 - q) / n
   // Lower bound of the bracketing interval
-  const QuantileWrapper wrapper(marginals, this);
-  const Function f(bindMethod<QuantileWrapper, Point, Point>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
+  const QuantileWrapperComputeDiagonal wrapper(marginals, this);
+  MemoizeFunction f(wrapper);
   Scalar leftTau = q;
   Scalar leftCDF = f(Point(1, leftTau))[0];
   // Due to numerical precision issues, the theoretical bound can be slightly violated
@@ -2637,99 +2658,166 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
    f(a) = f(b) = f(F^{-1}(p+F(a)))
    so we look for the root of f(F^{-1}(p+F(a))) - f(a)
 */
-struct MinimumVolumeIntervalWrapper
+  class MinimumVolumeIntervalWrapperEvaluation: public EvaluationImplementation
+  {
+  public:
+
+    MinimumVolumeIntervalWrapperEvaluation(const DistributionImplementation * p_distribution,
+                                 const Scalar prob)
+    : p_distribution_(p_distribution)
+    , prob_(prob)
+    {
+      // Nothing to do
+    }
+
+    MinimumVolumeIntervalWrapperEvaluation * clone() const override
+    {
+      return new MinimumVolumeIntervalWrapperEvaluation(*this);
+    }
+
+    // The minimum volume interval [a, b] is such that:
+    // a\in[lowerBound, F^{-1}(1-p)]
+    // b = F^{-1}(p+F(a))
+    // f(a) = f(b) = f(F^{-1}(p+F(a)))
+    // Here we compute f(F^{-1}(p+F(a))) - f(a)
+    Point operator() (const Point & point) const override
+    {
+      const Scalar B = computeB(point[0]);
+      const Scalar pdfB = p_distribution_->computePDF(B);
+      const Scalar pdfA = p_distribution_->computePDF(point);
+      return Point(1, pdfB - pdfA);
+    }
+
+    Scalar computeB(const Scalar A) const
+    {
+      const Scalar alphaB = std::min(prob_ + p_distribution_->computeCDF(A), 1.0);
+      const Scalar B = p_distribution_->computeQuantile(alphaB)[0];
+      return B;
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+  protected:
+    const DistributionImplementation * p_distribution_;
+    const Scalar prob_;
+  }; // MinimumVolumeIntervalWrapperEvaluation
+
+class MinimumVolumeIntervalObjectiveWrapperEvaluation: public MinimumVolumeIntervalWrapperEvaluation
 {
-  MinimumVolumeIntervalWrapper(const DistributionImplementation * p_distribution,
-                               const Collection<Distribution> & marginals,
-                               const Scalar prob)
-    : p_distribution_(p_distribution)
+
+  public:
+
+    MinimumVolumeIntervalObjectiveWrapperEvaluation(const DistributionImplementation * p_distribution,
+                                                    const Scalar prob)
+    : MinimumVolumeIntervalWrapperEvaluation(p_distribution, prob)
+    {
+      // Nothing to do
+    }
+
+    MinimumVolumeIntervalObjectiveWrapperEvaluation * clone() const override
+    {
+      return new MinimumVolumeIntervalObjectiveWrapperEvaluation(*this);
+    }
+
+    Point operator() (const Point & point) const override
+    {
+      const Scalar B = computeB(point[0]);
+      return Point(1, B - point[0]);
+    }
+};
+
+class MinimumVolumeProbabilityEvaluation: public MinimumVolumeIntervalWrapperEvaluation
+{
+  public:
+    MinimumVolumeProbabilityEvaluation(const DistributionImplementation * p_distribution,
+                                       const Collection<Distribution> & marginals,
+                                       const Scalar prob)
+    : MinimumVolumeIntervalWrapperEvaluation(p_distribution, prob)
     , marginals_(marginals)
-    , prob_(prob)
-  {
-    // Nothing to do
-  }
-
-  MinimumVolumeIntervalWrapper(const DistributionImplementation * p_distribution,
-                               const Scalar prob)
-    : p_distribution_(p_distribution)
-    , marginals_(0)
-    , prob_(prob)
-  {
-    // Nothing to do
-  }
-
-  // The minimum volume interval [a, b] is such that:
-  // a\in[lowerBound, F^{-1}(1-p)]
-  // b = F^{-1}(p+F(a))
-  // f(a) = f(b) = f(F^{-1}(p+F(a)))
-  // Here we compute f(F^{-1}(p+F(a))) - f(a)
-  Point operator() (const Point & A) const
-  {
-    const Scalar B = computeB(A[0]);
-    const Scalar pdfB = p_distribution_->computePDF(B);
-    const Scalar pdfA = p_distribution_->computePDF(A);
-    return Point(1, pdfB - pdfA);
-  }
-
-  Point objective(const Point & A) const
-  {
-    const Scalar B = computeB(A[0]);
-    return Point(1, B - A[0]);
-  }
-
-  Scalar computeB(const Scalar A) const
-  {
-    const Scalar alphaB = std::min(prob_ + p_distribution_->computeCDF(A), 1.0);
-    const Scalar B = p_distribution_->computeQuantile(alphaB)[0];
-    return B;
-  }
-
-  Interval buildBilateralInterval(const Scalar beta) const
-  {
-    const UnsignedInteger size(marginals_.getSize());
-    Point lower(size);
-    Point upper(size);
-    const Scalar alpha(0.5 * (1.0 - beta));
-    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      lower[i] = marginals_[i].computeQuantile(alpha, false)[0];
-      upper[i] = marginals_[i].computeQuantile(alpha, true)[0];
+      // Nothing to do
     }
-    return Interval(lower, upper);
-  }
 
-  Interval buildMinimumVolumeInterval(const Scalar beta) const
-  {
-    const UnsignedInteger size(marginals_.getSize());
-    Point lower(size);
-    Point upper(size);
-    for (UnsignedInteger i = 0; i < size; ++i)
+    MinimumVolumeProbabilityEvaluation * clone() const override
     {
-      const Interval marginalIC(marginals_[i].computeMinimumVolumeInterval(beta));
-      lower[i] = marginalIC.getLowerBound()[0];
-      upper[i] = marginalIC.getUpperBound()[0];
+      return new MinimumVolumeProbabilityEvaluation(*this);
     }
-    return Interval(lower, upper);
-  }
 
-  Point computeBilateralProbability(const Point & beta) const
-  {
-    const Interval IC(buildBilateralInterval(beta[0]));
-    const Scalar probability = p_distribution_->computeProbability(IC);
-    return Point(1, probability);
-  }
+    Interval buildMinimumVolumeInterval(const Scalar beta) const
+    {
+      const UnsignedInteger size(marginals_.getSize());
+      Point lower(size);
+      Point upper(size);
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        const Interval marginalIC(marginals_[i].computeMinimumVolumeInterval(beta));
+        lower[i] = marginalIC.getLowerBound()[0];
+        upper[i] = marginalIC.getUpperBound()[0];
+      }
+      return Interval(lower, upper);
+    }
 
-  Point computeMinimumVolumeProbability(const Point & beta) const
-  {
-    const Interval IC(buildMinimumVolumeInterval(beta[0]));
-    const Scalar probability = p_distribution_->computeProbability(IC);
-    return Point(1, probability);
-  }
+    Point operator() (const Point & beta) const override
+    {
+      const Interval IC(buildMinimumVolumeInterval(beta[0]));
+      const Scalar probability = p_distribution_->computeProbability(IC);
+      return Point(1, probability);
+    }
 
-  const DistributionImplementation * p_distribution_;
-  Collection<Distribution> marginals_;
-  const Scalar prob_;
-}; // struct MinimumVolumeIntervalWrapper
+  private:
+    Collection<Distribution> marginals_;
+};
+
+
+class MinimumVolumeBilateralIntervalEvaluation: public MinimumVolumeIntervalWrapperEvaluation
+{
+  public:
+    MinimumVolumeBilateralIntervalEvaluation(const DistributionImplementation * p_distribution,
+                                             const Collection<Distribution> & marginals,
+                                             const Scalar prob)
+    : MinimumVolumeIntervalWrapperEvaluation(p_distribution, prob)
+    , marginals_(marginals)
+    {
+      // Nothing to do
+    }
+
+    MinimumVolumeBilateralIntervalEvaluation * clone() const override
+    {
+      return new MinimumVolumeBilateralIntervalEvaluation(*this);
+    }
+
+    Interval buildBilateralInterval(const Scalar beta) const
+    {
+      const UnsignedInteger size(marginals_.getSize());
+      Point lower(size);
+      Point upper(size);
+      const Scalar alpha(0.5 * (1.0 - beta));
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        lower[i] = marginals_[i].computeQuantile(alpha, false)[0];
+        upper[i] = marginals_[i].computeQuantile(alpha, true)[0];
+      }
+      return Interval(lower, upper);
+    }
+
+    Point operator() (const Point & beta) const override
+    {
+      const Interval IC(buildBilateralInterval(beta[0]));
+      const Scalar probability = p_distribution_->computeProbability(IC);
+      return Point(1, probability);
+    }
+
+  private:
+    Collection<Distribution> marginals_;
+};
 
 Interval DistributionImplementation::computeMinimumVolumeInterval(const Scalar prob) const
 {
@@ -2778,8 +2866,8 @@ Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalPro
   }
   Collection<Distribution> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
-  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, marginals, prob);
-  const Function function(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeMinimumVolumeProbability, 1, 1));
+  MinimumVolumeProbabilityEvaluation minimumVolumeIntervalWrapper(this, marginals, prob);
+  MemoizeFunction function(minimumVolumeIntervalWrapper);
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   // Here the equation we have to solve is P(X\in IC(\beta))=prob
   marginalProb = solver.solve(function, prob, 0.0, 1.0, 0.0, 1.0);
@@ -2793,8 +2881,8 @@ Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalPro
 Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRootFinding(const Scalar prob,
     Scalar & marginalProb) const
 {
-  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
-  const Function function(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::operator(), 1, 1));
+  MinimumVolumeIntervalWrapperEvaluation minimumVolumeIntervalWrapper(this, prob);
+  MemoizeFunction function(minimumVolumeIntervalWrapper);
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   const Scalar xMin = range_.getLowerBound()[0];
   const Scalar xMax = computeScalarQuantile(prob, true);
@@ -2810,8 +2898,8 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRoo
 Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOptimization(const Scalar prob,
     Scalar & marginalProb) const
 {
-  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
-  const Function objective(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
+  MinimumVolumeIntervalObjectiveWrapperEvaluation minimumVolumeIntervalWrapper(this, prob);
+  MemoizeFunction objective(minimumVolumeIntervalWrapper);
   OptimizationProblem problem(objective);
   problem.setBounds(Interval(range_.getLowerBound(), computeQuantile(prob, true)));
   Cobyla solver(problem);
@@ -2859,8 +2947,8 @@ Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMargi
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability() for non continuous multivariate distributions";
   Collection<Distribution> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
-  const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, marginals, prob);
-  const Function function(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeBilateralProbability, 1, 1));
+  MinimumVolumeBilateralIntervalEvaluation minimumVolumeIntervalWrapper(this, marginals, prob);
+  MemoizeFunction function(minimumVolumeIntervalWrapper);
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   marginalProb = solver.solve(function, prob, 0.0, 1.0, 0.0, 1.0);
   const Interval IC(minimumVolumeIntervalWrapper.buildBilateralInterval(marginalProb));
@@ -3114,21 +3202,39 @@ void DistributionImplementation::computeCovariance() const
 
 
 
-struct CopulaCovarianceWrapper
-{
-  CopulaCovarianceWrapper(const Distribution & distribution)
-    : distribution_(distribution)
+class CopulaCovarianceWrapper: public EvaluationImplementation
   {
-    // Nothing to do
-  }
+  public:
+    CopulaCovarianceWrapper(const Distribution & distribution)
+      : EvaluationImplementation()
+      , distribution_(distribution)
+    {
+      // Nothing to do
+    }
 
-  Point kernel(const Point & point) const
-  {
-    return Point(1, distribution_.computeCDF(point) - point[0] * point[1]);
-  }
+    CopulaCovarianceWrapper * clone() const override
+    {
+      return new CopulaCovarianceWrapper(*this);
+    }
 
-  const Distribution & distribution_;
-};
+    Point operator() (const Point & point) const override
+    {
+      return Point(1, distribution_.computeCDF(point) - point[0] * point[1]);
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return 2;
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+  private:
+    const Distribution & distribution_;
+  }; // class CopulaCovarianceWrapper
 
 /* Compute the covariance of the copula */
 void DistributionImplementation::computeCovarianceCopula() const
@@ -3166,7 +3272,7 @@ void DistributionImplementation::computeCovarianceCopula() const
         {
           // Build the integrand
           CopulaCovarianceWrapper functionWrapper(marginalDistribution);
-          Function function(bindMethod<CopulaCovarianceWrapper, Point, Point>(functionWrapper, &CopulaCovarianceWrapper::kernel, 2, 1));
+          Function function(functionWrapper);
           // Compute the covariance element
           covariance_(rowIndex, columnIndex) = integrator.integrate(function, unitSquare)[0];
         }

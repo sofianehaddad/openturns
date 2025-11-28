@@ -1210,7 +1210,7 @@ protected:
 
     UnsignedInteger getOutputDimension() const override
     {
-      return p_distribution_->getDimension();
+      return 1;
     }
 
     Description getInputDescription() const override
@@ -1242,6 +1242,28 @@ protected:
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // class QuantileWrapper
+
+  class QuantileWrapperComputeDiagonal: public QuantileWrapper
+  {
+  public:
+    QuantileWrapperComputeDiagonal(const Collection< Pointer<DistributionImplementation> > marginals,
+                                   const DistributionImplementation * p_distribution)
+      : QuantileWrapper(marginals, p_distribution)
+    {
+      // Nothing to do
+    }
+
+    QuantileWrapperComputeDiagonal * clone() const override
+    {
+      return new QuantileWrapperComputeDiagonal(*this);
+    }
+
+    // This wrapper function relies on computeDiagonal to compute quantiles along the diagonal
+    Point operator() (const Point & point) const override
+    {
+      return computeDiagonal(point);
+    }
+  };
 
   // Class used to implement the computeInverseSurvivalFunction() method efficiently
   class SurvivalFunctionWrapper: public EvaluationImplementation
