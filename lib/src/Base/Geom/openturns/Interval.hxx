@@ -70,8 +70,13 @@ public:
   Bool isNumericallyEmpty() const;
 
   /** Check if the given point is inside of the closed interval */
-  Bool contains(const Point & point) const override;
   using DomainImplementation::contains;
+  Bool contains(const Point & point) const override;
+
+#ifndef SWIG
+  /** Check if the closed domain contains a given point */
+  virtual Bool contains(const Collection<Scalar>::const_iterator & s_begin) const override;
+#endif
 
   /** Compute the Euclidean distance from a given point to the domain */
   Scalar computeDistance(const Point & point) const override;

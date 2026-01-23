@@ -47,6 +47,11 @@ public:
   /** Virtual constructor method */
   DomainImplementation * clone() const override;
 
+#ifndef SWIG
+  /** Check if the closed domain contains a given point */
+  virtual Bool contains(const Collection<Scalar>::const_iterator & s_begin) const;
+#endif
+
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
 

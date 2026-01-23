@@ -64,11 +64,17 @@ Bool DomainImplementation::contains(const Point & ) const
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
+Bool DomainImplementation::contains(const Collection<Scalar>::const_iterator & ) const
+{
+  throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Collection<Scalar>::const_iterator &) const";
+}
+
 class DomainImplementationContainsSamplePolicy
 {
   const Sample & input_;
   DomainImplementation::BoolCollection & output_;
   const DomainImplementation & domain_;
+  const UnsignedInteger dimension_;
 
 public:
   DomainImplementationContainsSamplePolicy(const Sample & input,
@@ -77,6 +83,7 @@ public:
     : input_(input)
     , output_(output)
     , domain_(domain)
+    , dimension_(input.getDimension())
   {
     // Nothing to do
   }
@@ -84,7 +91,8 @@ public:
   inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      output_[i] = domain_.contains(input_[i]);
+      output_[i] = domain_.contains(input_.getImplementation()->data_begin() + i * dimension_);
+      //output_[i] = domain_.contains(input_[i]);//input_.data_begin() + i * inputDimension_,
   } // operator ()
 };  // class DomainImplementationContainsSamplePolicy
 

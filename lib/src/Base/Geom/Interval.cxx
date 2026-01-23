@@ -177,6 +177,20 @@ Bool Interval::contains(const Point & point) const
   return true;
 }
 
+Bool Interval::contains(const Collection<Scalar>::const_iterator & s_begin) const
+{
+  const UnsignedInteger dimension = getDimension();
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  for (UnsignedInteger i = 0; i < dimension; ++i, ++s_it)
+  {
+    // Check against the lower bound
+    if (finiteLowerBound_[i] && (*s_it < lowerBound_[i])) return false;
+    // Check against the upper bound
+    if (finiteUpperBound_[i] && (*s_it > upperBound_[i])) return false;
+  }
+  return true;
+}
+
 /* Compute the Euclidean distance from a given point to the domain */
 Scalar Interval::computeDistance(const Point & point) const
 {
