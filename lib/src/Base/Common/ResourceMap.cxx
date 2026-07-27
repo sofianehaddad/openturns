@@ -1617,6 +1617,9 @@ void ResourceMap::loadDefaultConfiguration()
   // GaussianProcessConditionalCovariance parameters //
   addAsScalar("GaussianProcessConditionalCovariance-DefaultConfidenceLevel", 0.95);
 
+  // GaussianProcessRegressionCrossValidation- parameters //
+  addAsUnsignedInteger("GaussianProcessRegressionCrossValidation-DefaultBlockSize", 100);
+
   // KrigingAlgorithm parameters //
   addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
