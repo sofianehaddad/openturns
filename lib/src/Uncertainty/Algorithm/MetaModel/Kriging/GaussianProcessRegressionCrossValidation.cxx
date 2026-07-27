@@ -201,28 +201,49 @@ Sample GaussianProcessRegressionCrossValidation::computeLOOWithHMat(
   // where 1 is the column vector filled with ones,
   // and S is the matrix whose elements are the squares of the elements of L^-1.
   // Therefore the vector of the Sigma^-1[i,i] is 1^T S.
-  const Matrix covarianceCholeskyFactorInverse(covarianceCholeskyFactor.solveLower(IdentityMatrix(sampleSize))); //L^-1
-  Matrix covarianceCholeskyFactorInverseSquared(covarianceCholeskyFactorInverse);
-  covarianceCholeskyFactorInverseSquared.squareElements(); // L^{-1}^2
-  // Compute L^{-T} L^{-1} 1 = (L^{-1}^2)^T 1 = (L^{-1}^2) 1 since L^{-1}^2 is symmetric
-  Point scales(covarianceCholeskyFactorInverseSquared.getImplementation()->genVectProd(Point(sampleSize, 1.0), true)); // diagonal elements of L^-T L^-1
-
-  // Then, if the trend is estimated, the scales (which are homogeneous to precisions) must be diminished:
-  // we subtract (Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)[i,i]
-  const UnsignedInteger  basisSize = gaussianProcessRegressionResult.getBasis().getSize();
+  const UnsignedInteger idealSize = ResourceMap::GetAsUnsignedInteger("GaussianProcessRegressionCrossValidation-DefaultBlockSize");
+  const UnsignedInteger blockSize = std::min(idealSize, covarianceCholeskyFactor.getNbColumns());
+  const UnsignedInteger basisSize = gaussianProcessRegressionResult.getBasis().getSize();
+  Point scales(sampleSize);
+  Matrix regressionMatrix;
+  Matrix B;
   if (basisSize > 0)
   {
-    const Matrix regressionMatrix(gaussianProcessRegressionResult.getRegressionMatrix()); // F
-    const Matrix Phi(covarianceCholeskyFactor.solveLower(regressionMatrix, false)); // Phi := L^-1 F
+    regressionMatrix = gaussianProcessRegressionResult.getRegressionMatrix(); // F
+    const Matrix Phi(covarianceCholeskyFactor.solveLower(regressionMatrix, false));
     // Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi (Phi^T Phi)^-1 Phi^T L^-1
-    const Matrix Phitranspose(Phi.transpose());
     const CovarianceMatrix PhiGram(Phi.computeGram()); // Phi^T Phi (not to be used, later modified in-place)
     TriangularMatrix phi(PhiGram.computeCholesky()); // Phi^T Phi =: phi phi^T (phi not to be used, later modified in-place)
-    // Thus Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi phi^-T phi^-1 Phi^T L^-1 = (phi^-1 Phi^T L^-1)^T (phi^-1 Phi^T L^-1)
-    Matrix auxiliary(phi.solveLinearSystemInPlace(Phitranspose * covarianceCholeskyFactorInverse)); // auxiliary := phi^-1 Phi^T L^-1 has basisSize rows
-    // (Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)[i,i] = ||auxiliary[:,i]||^2
-    auxiliary.squareElements();
-    scales -= auxiliary.getImplementation()->genVectProd(Point(basisSize, 1.0), true);
+    B = phi.solveLinearSystem(Phi.transpose());
+  }
+  // Then, if the trend is estimated, the scales (which are homogeneous to precisions) must be diminished:
+  // we subtract (Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)[i,i]
+  for (UnsignedInteger first = 0; first < sampleSize; first += blockSize)
+  {
+    const UnsignedInteger width = std::min(blockSize, sampleSize - first);
+
+    Matrix rhs(sampleSize, width);
+    for (UnsignedInteger j = 0; j < width; ++j)
+      rhs(first + j, j) = 1.0;
+
+    const Matrix W(covarianceCholeskyFactor.solveLower(rhs, false));
+
+    Matrix A;
+    if (basisSize > 0)
+      A = B * W;
+
+    for (UnsignedInteger j = 0; j < width; ++j)
+    {
+      Scalar scale = 0.0;
+      for (UnsignedInteger i = 0; i < sampleSize; ++i)
+        scale += W(i, j) * W(i, j);
+
+      if (basisSize > 0)
+        for (UnsignedInteger k = 0; k < basisSize; ++k)
+          scale -= A(k, j) * A(k, j);
+
+      scales[first + j] = scale;
+    }
   }
 
   // Each scale is actually the squared inverse of an LOO prediction standard deviation.
